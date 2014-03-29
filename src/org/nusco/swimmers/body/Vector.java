@@ -11,11 +11,13 @@ public class Vector {
 		this.x = x;
 		this.y = y;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		Vector other = (Vector)obj;
-		return other.getX() == getX() && other.getY() == getY();
+
+	public long getX() {
+		return x;
+	}
+
+	public long getY() {
+		return y;
 	}
 
 	public Vector plus(int length, double angle) {
@@ -24,17 +26,15 @@ public class Vector {
 	    long y = (long)(Math.sin(angleInRadians) * length);
 		return new Vector(getX() + x, getY() + y);
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		Vector other = (Vector)obj;
+		return other.getX() == getX() && other.getY() == getY();
+	}
+
 	@Override
 	public String toString() {
 		return "(" + getX() + ", " + getY() + ")";
-	}
-
-	public long getX() {
-		return x;
-	}
-
-	public long getY() {
-		return y;
 	}
 }

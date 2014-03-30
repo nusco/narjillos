@@ -24,7 +24,6 @@ public class SwimmerApplication extends Application {
 
 	private SwimmerBody createSwimmerBody() {
 		HeadPart head = new HeadPart(100, 10);
-//		head.setRelativeAngle(45);
 		
 		Part child1 = head.sproutChild(150, 15, 45);
 		child1.sproutChild(90, 15, 30);

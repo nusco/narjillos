@@ -54,4 +54,25 @@ public abstract class Part {
 		children.add(child);
 		return child;
 	}
+
+	@Override
+	public int hashCode() {
+		return 1;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Part other = (Part) obj;
+		if (length != other.length || thickness != other.thickness)
+			return false;
+		if (Double.doubleToLongBits(relativeAngle) != Double
+				.doubleToLongBits(other.relativeAngle))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "[" + length + "," + thickness + "," + getAngle() + "]";
+	}
 }

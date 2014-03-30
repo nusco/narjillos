@@ -6,11 +6,6 @@ import org.junit.Test;
 import org.nusco.swimmers.body.Swimmer;
 
 public class SwimmerTest {
-	@Test
-	public void returnsTheBodyPartsOfTheSwimmer() {
-		Swimmer swimmer = new Swimmer(ExampleParts.HEAD);
-		assertEquals(ExampleParts.asList(), swimmer.getParts());
-	}
 
 	@Test
 	public void returnsTheHeadOfTheSwimmer() {
@@ -18,4 +13,9 @@ public class SwimmerTest {
 		assertEquals(ExampleParts.HEAD, swimmer.getHead());
 	}
 
+	@Test
+	public void returnsTheBodyPartsOfTheSwimmer() {
+		Swimmer swimmer = new Swimmer(ExampleParts.HEAD);
+		assertEquals(ExampleParts.asList(), swimmer.getParts());
+	}
 }

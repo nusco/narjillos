@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import org.nusco.swimmers.body.Swimmer;
 import org.nusco.swimmers.genetics.DNA;
+import org.nusco.swimmers.genetics.Embryo;
 
 public class SwimmerApplication extends Application {
 
@@ -35,11 +36,11 @@ public class SwimmerApplication extends Application {
 	}
 
 	private SwimmerBody createDefaultSwimmerBody() {
-		return new SwimmerBody(DNA.sample().toPhenotype());
+		return new SwimmerBody(new Embryo(DNA.sample()).develop());
 	}
 
 	private SwimmerBody createNextSwimmerBody() {
-		Swimmer swimmer = currentDNA.toPhenotype();
+		Swimmer swimmer = new Embryo(currentDNA).develop();
 		currentDNA = currentDNA.mutate();
 		return new SwimmerBody(swimmer);
 	}

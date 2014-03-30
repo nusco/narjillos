@@ -4,7 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
 
-public class DNAParserTest {
+public class OrganParserTest {
 
 	@Test
 	public void iteratesOverRightSizedParts() {
@@ -14,10 +14,10 @@ public class DNAParserTest {
 			};
 
 		DNA dna = new DNA(genes);
-		DNAParser parser = new DNAParser(dna);
+		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.next());
-		assertArrayEquals(new int[]{5, 6, 7, 8}, parser.next());
+		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.nextPart());
+		assertArrayEquals(new int[]{5, 6, 7, 8}, parser.nextPart());
 	}
 
 	@Test
@@ -28,10 +28,10 @@ public class DNAParserTest {
 			};
 
 		DNA dna = new DNA(genes);
-		DNAParser parser = new DNAParser(dna);
+		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 0}, parser.next());
-		assertArrayEquals(new int[]{5, 6, 7, 8}, parser.next());
+		assertArrayEquals(new int[]{1, 2, 3, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{5, 6, 7, 8}, parser.nextPart());
 	}
 
 	@Test
@@ -42,10 +42,10 @@ public class DNAParserTest {
 			};
 
 		DNA dna = new DNA(genes);
-		DNAParser parser = new DNAParser(dna);
+		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{0, 0, 0, 0}, parser.next());
-		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.next());
+		assertArrayEquals(new int[]{0, 0, 0, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.nextPart());
 	}
 
 	@Test
@@ -56,9 +56,9 @@ public class DNAParserTest {
 			};
 
 		DNA dna = new DNA(genes);
-		DNAParser parser = new DNAParser(dna);
+		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.next());
-		assertArrayEquals(new int[]{5, 6, 7, 0}, parser.next());
+		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.nextPart());
+		assertArrayEquals(new int[]{5, 6, 7, 0}, parser.nextPart());
 	}
 }

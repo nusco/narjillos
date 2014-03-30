@@ -14,15 +14,15 @@ public class Swimmer {
 	public List<Organ> getParts() {
 		List<Organ> result = new LinkedList<>();
 		result.add(head);
-		addChildrenBreadthFirst(result, head);
+		addChildrenDepthFirst(result, head);
 		return result;
 	}
 
-	private void addChildrenBreadthFirst(List<Organ> result, Organ organ) {
-		for(Organ child : organ.getChildren())
+	private void addChildrenDepthFirst(List<Organ> result, Organ organ) {
+		for(Organ child : organ.getChildren()) {
 			result.add(child);
-		for(Organ child : organ.getChildren())
-			addChildrenBreadthFirst(result, child);
+			addChildrenDepthFirst(result, child);
+		}
 	}
 
 	public Organ getHead() {

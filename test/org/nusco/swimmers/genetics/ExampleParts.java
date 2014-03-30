@@ -14,16 +14,24 @@ public class ExampleParts {
 	public final static VisibleOrgan CHILD_1_2 = CHILD_1.sproutVisibleOrgan(35, 3, -30, 123);
 	public final static VisibleOrgan CHILD_2_1 = CHILD_2.sproutVisibleOrgan(15, 3, 30, 123);
 	public final static VisibleOrgan CHILD_2_2 = CHILD_2.sproutVisibleOrgan(15, 3, -30, 123);
+	public final static VisibleOrgan CHILD_1_1_1 = CHILD_1_1.sproutVisibleOrgan(25, 2, 20, 123);
+	public final static VisibleOrgan CHILD_1_1_2 = CHILD_1_1.sproutVisibleOrgan(25, 2, -20, 123);
+	public final static VisibleOrgan CHILD_2_2_1 = CHILD_2_2.sproutVisibleOrgan(25, 2, 20, 123);
+	public final static VisibleOrgan CHILD_2_2_2 = CHILD_2_2.sproutVisibleOrgan(25, 2, -20, 123);
 
 	public static List<VisibleOrgan> asList() {
 		List<VisibleOrgan> expected = new LinkedList<>();
 		expected.add(HEAD);
 		expected.add(CHILD_1);
-		expected.add(CHILD_2);
 		expected.add(CHILD_1_1);
+		expected.add(CHILD_1_1_1);
+		expected.add(CHILD_1_1_2);
 		expected.add(CHILD_1_2);
+		expected.add(CHILD_2);
 		expected.add(CHILD_2_1);
 		expected.add(CHILD_2_2);
+		expected.add(CHILD_2_2_1);
+		expected.add(CHILD_2_2_2);
 		return expected;
 	}
 }

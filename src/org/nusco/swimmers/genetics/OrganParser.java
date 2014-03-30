@@ -1,17 +1,17 @@
 package org.nusco.swimmers.genetics;
 
 
-public class DNAParser {
+class OrganParser {
 
 	private final int[] genes;
 	private int index_in_genes = 0;
 	
-	public DNAParser(DNA dna) {
+	public OrganParser(DNA dna) {
 		genes = dna.getGenes();
 	}
 
-	public int[] next() {
-		int[] result = new int[DNA.GENES_PER_PART];
+	public int[] nextPart() {
+		int[] result = new int[OrganBuilder.GENES_PER_PART];
 		int index_in_result = 0;
 		while(index_in_result < result.length) {
 			if(index_in_genes >= genes.length)

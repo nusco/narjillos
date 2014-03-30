@@ -5,23 +5,27 @@ import java.util.List;
 
 public class Swimmer {
 
-	private Part head;
+	private VisibleOrgan head;
 
-	public Swimmer(Part head) {
+	public Swimmer(VisibleOrgan head) {
 		this.head = head;
 	}
 
-	public List<Part> getParts() {
-		List<Part> result = new LinkedList<>();
+	public List<Organ> getParts() {
+		List<Organ> result = new LinkedList<>();
 		result.add(head);
 		addChildrenBreadthFirst(result, head);
 		return result;
 	}
 
-	private void addChildrenBreadthFirst(List<Part> result, Part part) {
-		for(Part child : part.getChildren())
+	private void addChildrenBreadthFirst(List<Organ> result, Organ organ) {
+		for(Organ child : organ.getChildren())
 			result.add(child);
-		for(Part child : part.getChildren())
+		for(Organ child : organ.getChildren())
 			addChildrenBreadthFirst(result, child);
+	}
+
+	public Organ getHead() {
+		return head;
 	}
 }

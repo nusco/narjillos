@@ -1,11 +1,11 @@
 package org.nusco.swimmers.body;
 
-public class HeadPart extends Part {
+public class Head extends VisibleOrgan {
 	
 	private Vector startPoint = Vector.ZERO;
 
-	public HeadPart(int length, int thickness) {
-		super(length, thickness, 0);
+	public Head(int length, int thickness, int rgb) {
+		super(length, thickness, 0, rgb);
 	}
 
 	@Override
@@ -14,8 +14,13 @@ public class HeadPart extends Part {
 	}
 
 	@Override
-	public int getAngle() {
+	public double getAngle() {
 		return normalize(getRelativeAngle());
+	}
+
+	@Override
+	public Organ getParent() {
+		return null;
 	}
 
 	public void placeAt(Vector point) {
@@ -29,7 +34,7 @@ public class HeadPart extends Part {
 
 	@Override
 	public boolean equals(Object obj) {
-		HeadPart other = (HeadPart) obj;
+		Head other = (Head) obj;
 		return startPoint == other.startPoint && super.equals(obj);
 	}
 }

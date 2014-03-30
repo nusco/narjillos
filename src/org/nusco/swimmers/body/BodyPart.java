@@ -1,15 +1,15 @@
 package org.nusco.swimmers.body;
 
-public class BodyPart extends Part {
-	private final Part parent;
+public class BodyPart extends VisibleOrgan {
+	private final Organ parent;
 
-	public BodyPart(int length, int thickness, Part parent, int relativeAngle) {
-		super(length, thickness, relativeAngle);
+	public BodyPart(int length, int thickness, Organ parent, int relativeAngle, int rgb) {
+		super(length, thickness, relativeAngle, rgb);
 		this.parent = parent;
 	}
 
-	public Part getParent() {
-		return parent;
+	public Organ getParent() {
+		return parent.getAsParent();
 	}
 	
 	public Vector getStartPoint() {
@@ -17,7 +17,7 @@ public class BodyPart extends Part {
 	}
 
 	@Override
-	public int getAngle() {
+	public double getAngle() {
 		return normalize(getRelativeAngle() + getParent().getRelativeAngle());
 	}
 

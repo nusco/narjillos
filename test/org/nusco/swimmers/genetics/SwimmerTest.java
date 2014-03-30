@@ -12,4 +12,10 @@ public class SwimmerTest {
 		assertEquals(ExampleParts.asList(), swimmer.getParts());
 	}
 
+	@Test
+	public void returnsTheHeadOfTheSwimmer() {
+		Swimmer swimmer = new Swimmer(ExampleParts.HEAD);
+		assertEquals(ExampleParts.HEAD, swimmer.getHead());
+	}
+
 }

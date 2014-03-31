@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Swimmer {
 
-	private VisibleOrgan head;
+	private Head head;
 
-	public Swimmer(VisibleOrgan head) {
+	public Swimmer(Head head) {
 		this.head = head;
 	}
 
@@ -25,7 +25,7 @@ public class Swimmer {
 		}
 	}
 
-	public Organ getHead() {
+	public Head getHead() {
 		return head;
 	}
 }

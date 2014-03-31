@@ -1,11 +1,13 @@
 package org.nusco.swimmers.body;
 
-public class BodyPart extends VisibleOrgan {
-	private final Organ parent;
+import org.nusco.swimmers.neural.DelayNeuron;
 
-	public BodyPart(int length, int thickness, Organ parent, int relativeAngle, int rgb) {
-		super(length, thickness, relativeAngle, rgb);
-		this.parent = parent;
+
+public class BodyPart extends VisibleOrgan {
+	private static final int DELAY = 13;
+	
+	public BodyPart(int length, int thickness, int relativeAngle, int rgb, Organ parent) {
+		super(length, thickness, relativeAngle, rgb, new DelayNeuron(DELAY), parent);
 	}
 
 	public Organ getParent() {
@@ -18,17 +20,9 @@ public class BodyPart extends VisibleOrgan {
 
 	@Override
 	public double getAngle() {
-		return normalize(getRelativeAngle() + getParent().getRelativeAngle());
-	}
-
-	@Override
-	public int hashCode() {
-		return 1;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		BodyPart other = (BodyPart) obj;
-		return parent.equals(other.parent) && super.equals(obj);
+		double relativeAngle = getRelativeAngle();
+		double absoluteAngle = relativeAngle + getParent().getAngle();
+		double amplifiedAngle = absoluteAngle * getNeuron().readOutputSignal();
+		return Angle.normalize(amplifiedAngle);
 	}
 }

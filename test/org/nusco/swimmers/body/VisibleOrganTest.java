@@ -59,20 +59,6 @@ public abstract class VisibleOrganTest {
 	public void hasAnEmptyListOfChildPartsByDefault() {
 		assertEquals(Collections.EMPTY_LIST, organ.getChildren());
 	}
-	
-	@Test
-	public void hasARelativeAngle() {
-		organ.setRelativeAngle(15);
-		assertEquals(15, organ.getRelativeAngle(), 0);
-	}
-	
-	@Test
-	public void theRelativeAngleIsNormalizedInDegrees() {
-		organ.setRelativeAngle(-10);
-		assertEquals(350, organ.getRelativeAngle(), 0);
-		organ.setRelativeAngle(370);
-		assertEquals(10, organ.getRelativeAngle(), 0);
-	}
 
 	@Test
 	public void canSproutVisibleOrgans() {

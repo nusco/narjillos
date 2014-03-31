@@ -1,13 +1,16 @@
 package org.nusco.swimmers.body;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.swimmers.neural.CosWave;
+import org.nusco.swimmers.neural.WaveNeuron;
 
 public class HeadTest extends VisibleOrganTest {
 
 	@Override
-	public VisibleOrgan createVisibleOrgan() {
+	public Head createVisibleOrgan() {
 		return new Head(20, THICKNESS, 100);
 	}
 
@@ -20,17 +23,10 @@ public class HeadTest extends VisibleOrganTest {
 	public void hasAngleRelativeToTheCenterPointOfZeroByDefault() {
 		assertEquals(0, organ.getAngle(), 0);
 	}
-	
+
 	@Test
-	public void theAngleToTheCenterPointIsNormalisedInDegrees() {
-		organ.setRelativeAngle(25);
-		assertEquals(25, organ.getAngle(), 0);
-		organ.setRelativeAngle(360);
-		assertEquals(0, organ.getAngle(), 0);
-		organ.setRelativeAngle(362);
-		assertEquals(2, organ.getAngle(), 0);
-		organ.setRelativeAngle(-2);
-		assertEquals(358, organ.getAngle(), 0);
+	public void hasAngleRelativeToTheParentZero() {
+		assertEquals(0, organ.getRelativeAngle(), 0);
 	}
 
 	@Test
@@ -42,14 +38,26 @@ public class HeadTest extends VisibleOrganTest {
 	@Override
 	public void hasAnEndPoint() {
 		assertEquals(new Vector(20, 0), organ.getEndPoint());
-		organ.setRelativeAngle(45);
-		assertEquals(new Vector(14, 14), organ.getEndPoint());
-		organ.setRelativeAngle(90);
-		assertEquals(new Vector(0, 20), organ.getEndPoint());
 	}
 
 	@Override
 	public void hasAParent() {
 		assertEquals(null, organ.getParent());
+	}
+
+	@Test
+	public void hasAWaveNeuron() {
+		assertTrue(organ.getNeuron() instanceof WaveNeuron);
+	}
+
+	@Test
+	public void anglesFollowASinWave() {
+		Head head = (Head)organ;
+		
+		for (int i = 0; i < CosWave.WAVE.length; i++) {
+			head.tick();
+			assertEquals(CosWave.WAVE[i], head.getAngle(), CosWave.PRECISION);
+			assertEquals(CosWave.WAVE[i], head.getRelativeAngle(), CosWave.PRECISION);
+		}
 	}
 }

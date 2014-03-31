@@ -1,22 +1,19 @@
 package org.nusco.swimmers.body;
 
-import java.util.LinkedList;
-import java.util.List;
+import org.nusco.swimmers.neural.Neuron;
 
-public abstract class VisibleOrgan implements Organ {
+public abstract class VisibleOrgan extends Organ {
 
 	private final int length;
 	private final int thickness;
 	private final int rgb;
+	private final double relativeAngle;
 
-	private double relativeAngle = 0;
-
-	private List<Organ> children = new LinkedList<>();
-
-	protected VisibleOrgan(int length, int thickness, int initialRelativeAngle, int rgb) {
+	protected VisibleOrgan(int length, int thickness, int relativeAngle, int rgb, Neuron neuron, Organ parent) {
+		super(neuron, parent);
 		this.length = length;
 		this.thickness = thickness;
-		this.relativeAngle = initialRelativeAngle;
+		this.relativeAngle = Angle.normalize(relativeAngle);
 		this.rgb = rgb;
 	}
 
@@ -28,24 +25,8 @@ public abstract class VisibleOrgan implements Organ {
 		return thickness;
 	}
 
-	public void setRelativeAngle(double angle) {
-		this.relativeAngle = angle;
-	}
-
-	@Override
-	public double getRelativeAngle() {
-		return normalize(relativeAngle);
-	}
-
-	protected double normalize(double angle) {
-		return ((angle % 360) + 360) % 360;
-	}
-
 	public abstract Vector getStartPoint();
 
-	/* (non-Javadoc)
-	 * @see org.nusco.swimmers.body.Organ#getEndPoint()
-	 */
 	@Override
 	public Vector getEndPoint() {
 		return getStartPoint().plus(length, getAngle());
@@ -62,22 +43,8 @@ public abstract class VisibleOrgan implements Organ {
 	}
 
 	@Override
-	public List<Organ> getChildren() {
-		return children;
-	}
-
-	@Override
-	public VisibleOrgan sproutVisibleOrgan(int length, int thickness, int initialRelativeAngle, int rgb) {
-		VisibleOrgan child = new BodyPart(length, thickness, this, initialRelativeAngle, rgb);
-		children.add(child);
-		return child;
-	}
-
-	@Override
-	public Organ sproutInvisibleOrgan() {
-		Organ child = new NullOrgan(this);
-		children.add(child);
-		return child;
+	public double getRelativeAngle() {
+		return relativeAngle;
 	}
 
 	public boolean isVisible() {

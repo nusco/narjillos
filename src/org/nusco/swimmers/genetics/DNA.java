@@ -1,6 +1,7 @@
 package org.nusco.swimmers.genetics;
 
 
+
 public class DNA {
 	public static final int TERMINATE_PART = 0b11000000;
 	private static final double MUTATION_RATE = 0.04;
@@ -31,13 +32,19 @@ public class DNA {
 		int[] resultGenes = new int[genes.length];
 		for (int i = 0; i < resultGenes.length; i++) {
 			if(Math.random() < MUTATION_RATE)
-				resultGenes[i] = (int)(Math.random() * 256);
+				resultGenes[i] = mutate(resultGenes, i);
 			else
 				resultGenes[i] = genes[i];
 		}
 		return new DNA(resultGenes);
 	}
-	
+
+	private int mutate(int[] resultGenes, int i) {
+		int shift = (int)(Math.random() * 8);
+		int xorMask = 0b000000001 << shift;
+		return resultGenes[i] ^ xorMask;
+	}
+
 	public static DNA random() {
 		final int genomeSize = 60;
 		int[] genes = new int[genomeSize];
@@ -49,13 +56,17 @@ public class DNA {
 
 	public static DNA sample() {
 		int[] genes =  new int[]{
-									30, 20, 0, 0,
-									25, 24, 30, 0,
-									25, 24, 30, 0,
-									15, 20, 30, 0,
-									15, 20, 30, 0,
-									15, 20, 30, 0,
-									15, 20, 30, 0
+									60, 40, 0, 0,
+									50, 48, 30, 0,
+									50, 48, 30, 0,
+									30, 40, 30, 0,
+									30, 40, 30, 0,
+									30, 40, 30, 0,
+									30, 40, 30, 0,
+									50, 30, 20, 123,
+									50, 30, -20, 123,
+									50, 30, 20, 123,
+									50, 30, -20, 123
 								};
 		return new DNA(genes);
 	}

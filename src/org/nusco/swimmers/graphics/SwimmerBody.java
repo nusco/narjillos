@@ -11,16 +11,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
+import org.nusco.swimmers.body.Head;
 import org.nusco.swimmers.body.Organ;
 import org.nusco.swimmers.body.Swimmer;
 import org.nusco.swimmers.body.Vector;
 
 public class SwimmerBody extends Parent {
 
-	private Organ head;
+	private Head head;
 
 	public SwimmerBody(Swimmer swimmer) {
-		this.head = swimmer.getHead();
+		this.head = (Head)swimmer.getHead();
 	}
 
 	public List<Node> getParts() {
@@ -89,5 +90,9 @@ public class SwimmerBody extends Parent {
 		result.getTransforms().add(new Translate(startPoint.getX(), startPoint.getY()));
 
 		return result;
+	}
+
+	public void tick() {
+		head.tick();
 	}
 }

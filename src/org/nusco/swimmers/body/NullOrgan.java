@@ -1,15 +1,13 @@
 package org.nusco.swimmers.body;
 
-import java.util.LinkedList;
-import java.util.List;
+import org.nusco.swimmers.neural.PassNeuron;
 
-public class NullOrgan implements Organ {
 
-	private final Organ parent;
-	private List<Organ> children = new LinkedList<>();
+public class NullOrgan extends Organ {
 
 	public NullOrgan(Organ parent) {
-		this.parent = parent;
+		// TODO untested neuron
+		super(new PassNeuron(), parent);
 	}
 
 	@Override
@@ -35,30 +33,6 @@ public class NullOrgan implements Organ {
 	@Override
 	public Organ getAsParent() {
 		return getParent();
-	}
-
-	@Override
-	public Organ getParent() {
-		return parent;
-	}
-
-	@Override
-	public List<Organ> getChildren() {
-		return children;
-	}
-
-	@Override
-	public VisibleOrgan sproutVisibleOrgan(int length, int thickness, int initialRelativeAngle, int rgb) {
-		VisibleOrgan child = new BodyPart(length, thickness, this, initialRelativeAngle, rgb);
-		children.add(child);
-		return child;
-	}
-
-	@Override
-	public Organ sproutInvisibleOrgan() {
-		Organ child = new NullOrgan(this);
-		children.add(child);
-		return child;
 	}
 
 	public boolean isVisible() {

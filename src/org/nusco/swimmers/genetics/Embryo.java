@@ -3,9 +3,9 @@ package org.nusco.swimmers.genetics;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.swimmers.body.Head;
 import org.nusco.swimmers.body.Organ;
 import org.nusco.swimmers.body.Swimmer;
-import org.nusco.swimmers.body.VisibleOrgan;
 
 public class Embryo {
 
@@ -18,7 +18,7 @@ public class Embryo {
 	public Swimmer develop() {
 		OrganParser parser = new OrganParser(genes);
 		
-		VisibleOrgan head = createHead(parser);
+		Head head = createHead(parser);
 		List<Organ> firstLevelChildren = createUpperAndLowerOrgans(parser, head);
 		
 		LinkedList<Organ> secondLevelChildren = new LinkedList<>();
@@ -39,7 +39,7 @@ public class Embryo {
 		return result;
 	}
 
-	private VisibleOrgan createHead(OrganParser parser) {
+	private Head createHead(OrganParser parser) {
 		return new OrganBuilder(parser.nextPart()).createHead();
 	}
 

@@ -7,17 +7,17 @@ import org.nusco.swimmers.body.Head;
 import org.nusco.swimmers.body.VisibleOrgan;
 
 public class ExampleParts {
-	public final static VisibleOrgan HEAD = new Head(25, 2, 123);
-	public final static VisibleOrgan CHILD_1 = HEAD.sproutVisibleOrgan(60, 2, 45, 123);
-	public final static VisibleOrgan CHILD_2 = HEAD.sproutVisibleOrgan(60, 2, -45, 123);
-	public final static VisibleOrgan CHILD_1_1 = CHILD_1.sproutVisibleOrgan(35, 3, 30, 123);
-	public final static VisibleOrgan CHILD_1_2 = CHILD_1.sproutVisibleOrgan(35, 3, -30, 123);
-	public final static VisibleOrgan CHILD_2_1 = CHILD_2.sproutVisibleOrgan(15, 3, 30, 123);
-	public final static VisibleOrgan CHILD_2_2 = CHILD_2.sproutVisibleOrgan(15, 3, -30, 123);
-	public final static VisibleOrgan CHILD_1_1_1 = CHILD_1_1.sproutVisibleOrgan(25, 2, 20, 123);
-	public final static VisibleOrgan CHILD_1_1_2 = CHILD_1_1.sproutVisibleOrgan(25, 2, -20, 123);
-	public final static VisibleOrgan CHILD_2_2_1 = CHILD_2_2.sproutVisibleOrgan(25, 2, 20, 123);
-	public final static VisibleOrgan CHILD_2_2_2 = CHILD_2_2.sproutVisibleOrgan(25, 2, -20, 123);
+	public final static Head HEAD = new Head(50, 4, 123);
+	public final static VisibleOrgan CHILD_1 = HEAD.sproutVisibleOrgan(120, 4, 45, 123);
+	public final static VisibleOrgan CHILD_2 = HEAD.sproutVisibleOrgan(120, 4, -45, 123);
+	public final static VisibleOrgan CHILD_1_1 = CHILD_1.sproutVisibleOrgan(70, 6, 30, 123);
+	public final static VisibleOrgan CHILD_1_2 = CHILD_1.sproutVisibleOrgan(70, 6, -30, 123);
+	public final static VisibleOrgan CHILD_2_1 = CHILD_2.sproutVisibleOrgan(30, 6, 30, 123);
+	public final static VisibleOrgan CHILD_2_2 = CHILD_2.sproutVisibleOrgan(30, 6, -30, 123);
+	public final static VisibleOrgan CHILD_1_1_1 = CHILD_1_1.sproutVisibleOrgan(50, 4, 20, 123);
+	public final static VisibleOrgan CHILD_1_1_2 = CHILD_1_1.sproutVisibleOrgan(50, 4, -20, 123);
+	public final static VisibleOrgan CHILD_2_2_1 = CHILD_2_2.sproutVisibleOrgan(50, 4, 20, 123);
+	public final static VisibleOrgan CHILD_2_2_2 = CHILD_2_2.sproutVisibleOrgan(50, 4, -20, 123);
 
 	public static List<VisibleOrgan> asList() {
 		List<VisibleOrgan> expected = new LinkedList<>();

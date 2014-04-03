@@ -10,7 +10,7 @@ import org.nusco.swimmer.genetics.Embryo;
 public class EmbryoTest {
 
 	@Test
-	public void returnsAPhenotype() {
+	public void createsASwimmerFromItsDNA() {
 		Embryo embryo = new Embryo(DNA.ancestor());
 
 		Swimmer swimmer = embryo.develop();

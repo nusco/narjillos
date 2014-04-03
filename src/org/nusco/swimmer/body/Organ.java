@@ -49,8 +49,8 @@ public abstract class Organ {
 		return children;
 	}
 
-	public VisibleOrgan sproutVisibleOrgan(int length, int thickness, int initialRelativeAngle, int rgb) {
-		VisibleOrgan child = new BodyPart(length, thickness, initialRelativeAngle, rgb, this);
+	public VisibleOrgan sproutVisibleOrgan(int length, int thickness, int relativeAngle, int rgb) {
+		VisibleOrgan child = new BodyPart(length, thickness, relativeAngle, rgb, this);
 		children.add(child);
 		getNerve().connectTo(child.getNerve());
 		return child;

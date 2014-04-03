@@ -8,58 +8,58 @@ import org.nusco.swimmer.genetics.DNA;
 public class OrganParserTest {
 
 	@Test
-	public void iteratesOverRightSizedParts() {
+	public void iteratesOverParts() {
 		int[] genes =  new int[]{
-				1, 2, 3, 4,
-				5, 6, 7, 8
+				1, 2, 3, 4, 5,
+				6, 7, 8, 9, 10
 			};
 
 		DNA dna = new DNA(genes);
 		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.nextPart());
-		assertArrayEquals(new int[]{5, 6, 7, 8}, parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5}, parser.nextPart());
+		assertArrayEquals(new int[]{6, 7, 8, 9, 10}, parser.nextPart());
 	}
 
 	@Test
-	public void padsShortSizedPartsToTheRightLength() {
+	public void padsTerminatedPartsToTheRightLength() {
 		int[] genes =  new int[]{
-				1, 2, 3, DNA.TERMINATE_PART,
-				5, 6, 7, 8
+				1, 2, 3, DNA.PART_TERMINATOR,
+				6, 7, 8, 9, 10
 			};
 
 		DNA dna = new DNA(genes);
 		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 0}, parser.nextPart());
-		assertArrayEquals(new int[]{5, 6, 7, 8}, parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 0, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{6, 7, 8, 9, 10}, parser.nextPart());
 	}
 
 	@Test
 	public void padsEmptyPartsToTheRightLength() {
 		int[] genes =  new int[]{
-				DNA.TERMINATE_PART,
-				1, 2, 3, 4
+				DNA.PART_TERMINATOR,
+				6, 7, 8, 9, 10
 			};
 
 		DNA dna = new DNA(genes);
 		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{0, 0, 0, 0}, parser.nextPart());
-		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.nextPart());
+		assertArrayEquals(new int[]{0, 0, 0, 0, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{6, 7, 8, 9, 10}, parser.nextPart());
 	}
 
 	@Test
-	public void acceptsAnUnterminatedLastPart() {
+	public void padsUnterminatedLastPart() {
 		int[] genes =  new int[]{
-				1, 2, 3, 4,
-				5, 6, 7
+				1, 2, 3, 4, 5,
+				6, 7
 			};
 
 		DNA dna = new DNA(genes);
 		OrganParser parser = new OrganParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4}, parser.nextPart());
-		assertArrayEquals(new int[]{5, 6, 7, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5}, parser.nextPart());
+		assertArrayEquals(new int[]{6, 7, 0, 0, 0}, parser.nextPart());
 	}
 }

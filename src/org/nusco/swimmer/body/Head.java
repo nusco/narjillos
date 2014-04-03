@@ -35,15 +35,4 @@ class Head extends VisibleOrgan {
 	public void tick() {
 		getNerve().send(FREQUENCY);
 	}
-
-	@Override
-	public int hashCode() {
-		return 1;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		Head other = (Head) obj;
-		return startPoint == other.startPoint && super.equals(obj);
-	}
 }

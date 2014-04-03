@@ -63,4 +63,19 @@ class NullOrgan extends Organ {
 	public String toString() {
 		return "<null organ>";
 	}
+
+	@Override
+	public int hashCode() {
+		return 1;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof NullOrgan))
+			return false;
+		NullOrgan other = (NullOrgan) obj;
+		if (!getParent().equals(other.getParent()))
+			return false;
+		return true;
+	}
 }

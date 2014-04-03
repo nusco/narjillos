@@ -1,8 +1,9 @@
 package org.nusco.swimmer.genetics;
 
 public class DNA {
-	public static final int TERMINATE_PART = 0b11000000;
-	private static final double MUTATION_RATE = 0.04;
+	public static final int MIRROR_ORGAN = 0b00000001;
+	public static final int PART_TERMINATOR = 0b11100000;
+	public static final double MUTATION_RATE = 0.03;
 
 	private int[] genes;
 
@@ -30,7 +31,7 @@ public class DNA {
 		int[] resultGenes = new int[genes.length];
 		for (int i = 0; i < resultGenes.length; i++) {
 			if(Math.random() < MUTATION_RATE)
-				resultGenes[i] = mutate(resultGenes, i);
+				resultGenes[i] = mutate(genes, i);
 			else
 				resultGenes[i] = genes[i];
 		}
@@ -39,12 +40,12 @@ public class DNA {
 
 	private int mutate(int[] resultGenes, int i) {
 		int shift = (int)(Math.random() * 8);
-		int xorMask = 0b000000001 << shift;
+		int xorMask = 0b00000001 << shift;
 		return resultGenes[i] ^ xorMask;
 	}
 
 	public static DNA random() {
-		final int genomeSize = 60;
+		final int genomeSize = 60 * Byte.SIZE;
 		int[] genes = new int[genomeSize];
 		for (int i = 0; i < genes.length; i++) {
 			genes[i] = rnd(0, 255);
@@ -53,18 +54,19 @@ public class DNA {
 	}
 
 	public static DNA ancestor() {
+		int NOT_MIRRORING = 0;
 		int[] genes =  new int[]{
-									60, 40, 0, 0,
-									50, 48, 30, 0,
-									50, 48, 30, 0,
-									30, 40, 30, 0,
-									30, 40, 30, 0,
-									30, 40, 30, 0,
-									30, 40, 30, 0,
-									50, 30, 20, 123,
-									50, 30, -20, 123,
-									50, 30, 20, 123,
-									50, 30, -20, 123
+									NOT_MIRRORING, 60, 40, 0, 0,
+									NOT_MIRRORING, 50, 60, 30, 0,
+									NOT_MIRRORING, 50, 60, 30, 0,
+									NOT_MIRRORING, 30, 50, 30, 0,
+									NOT_MIRRORING, 30, 50, 30, 0,
+									NOT_MIRRORING, 30, 50, 30, 0,
+									NOT_MIRRORING, 30, 50, 30, 0,
+									NOT_MIRRORING, 50, 40, 20, 123,
+									NOT_MIRRORING, 50, 40, 20, 123,
+									NOT_MIRRORING, 50, 40, 20, 123,
+									NOT_MIRRORING, 50, 40, 20, 123
 								};
 		return new DNA(genes);
 	}

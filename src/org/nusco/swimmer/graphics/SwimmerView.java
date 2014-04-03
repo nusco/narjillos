@@ -24,7 +24,9 @@ public class SwimmerView extends Parent {
 	}
 
 	private void addWithChildren(List<Node> result, Organ organ) {
-		result.add(new OrganView(organ).toShape());
+		Node shape = new OrganView(organ).toShape();
+		if(shape != null)
+			result.add(shape);
 		for(Organ child : organ.getChildren())
 			addWithChildren(result, child);
 	}

@@ -11,6 +11,8 @@ import org.nusco.swimmer.body.Organ;
 import org.nusco.swimmer.physics.Vector;
 
 class OrganView {
+	private final static boolean SHOW_INVISIBLE_ORGANS = true;
+	
 	private final Organ organ;
 
 	public OrganView(Organ organ) {
@@ -19,7 +21,10 @@ class OrganView {
 
 	public Node toShape() {
 		if(!organ.isVisible())
-			return toCircle();
+			if(SHOW_INVISIBLE_ORGANS)
+				return toCircle();
+			else
+				return null;
 		return toRectangle();
 	}
 

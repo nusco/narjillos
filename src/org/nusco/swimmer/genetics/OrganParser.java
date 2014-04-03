@@ -16,7 +16,7 @@ class OrganParser {
 		while(index_in_result < result.length) {
 			if(index_in_genes >= genes.length)
 				return result;
-			if(isSkip(genes[index_in_genes])) {
+			if(isTerminator(genes[index_in_genes])) {
 				index_in_genes++;
 				return result;
 			}
@@ -27,8 +27,8 @@ class OrganParser {
 		return result;
 	}
 
-	private boolean isSkip(int b) {
+	private boolean isTerminator(int b) {
 		int maskedByte = b & 0b11000000;
-		return maskedByte == DNA.TERMINATE_PART;
+		return maskedByte == DNA.PART_TERMINATOR;
 	}
 }

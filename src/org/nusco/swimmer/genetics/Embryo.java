@@ -1,7 +1,6 @@
 package org.nusco.swimmer.genetics;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import org.nusco.swimmer.Swimmer;
 import org.nusco.swimmer.body.Organ;
@@ -18,35 +17,26 @@ public class Embryo {
 		OrganParser parser = new OrganParser(genes);
 		
 		Organ head = createHead(parser);
-		List<Organ> firstLevelChildren = createUpperAndLowerOrgans(parser, head);
+		Organ[] firstLevelChildren = createTwinOrgans(parser, head);
 		
 		LinkedList<Organ> secondLevelChildren = new LinkedList<>();
 		for (Organ organ : firstLevelChildren) {
-			secondLevelChildren.addAll(createUpperAndLowerOrgans(parser, organ));
+			Organ[] twinSecondLevelChildren = createTwinOrgans(parser, organ);
+			secondLevelChildren.add(twinSecondLevelChildren[0]);
+			secondLevelChildren.add(twinSecondLevelChildren[1]);
 		}
 		
-		createUpperAndLowerOrgans(parser, secondLevelChildren.getFirst());
-		createUpperAndLowerOrgans(parser, secondLevelChildren.getLast());
+		createTwinOrgans(parser, secondLevelChildren.getFirst());
+		createTwinOrgans(parser, secondLevelChildren.getLast());
 
 		return new Swimmer(head);
 	}
 
-	private List<Organ> createUpperAndLowerOrgans(OrganParser parser, Organ parent) {
-		List<Organ> result = new LinkedList<>();
-		result.add(createUpperOrganFrom(parser.nextPart(), parent));
-		result.add(createLowerOrganFrom(parser.nextPart(), parent));
-		return result;
-	}
-
 	private Organ createHead(OrganParser parser) {
-		return new OrganBuilder(parser.nextPart()).createHead();
+		return new OrganBuilder(parser.nextPart()).buildHead();
 	}
 
-	private Organ createUpperOrganFrom(int[] genes, Organ parent) {
-		return new OrganBuilder(genes).createOrgan(parent, +1);
-	}
-
-	private Organ createLowerOrganFrom(int[] genes, Organ parent) {
-		return new OrganBuilder(genes).createOrgan(parent, -1);
+	private Organ[] createTwinOrgans(OrganParser parser, Organ parent) {
+		return new TwinOrgansBuilder(parser.nextPart(), parser.nextPart()).buildBodyParts(parent);
 	}
 }

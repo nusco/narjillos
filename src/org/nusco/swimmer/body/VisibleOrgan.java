@@ -68,14 +68,23 @@ abstract class VisibleOrgan extends Organ {
 
 	@Override
 	public boolean equals(Object obj) {
-		VisibleOrgan other = (VisibleOrgan) obj;
-		if (length != other.length || thickness != other.thickness)
+		if(!(obj instanceof VisibleOrgan))
 			return false;
-		if (Double.doubleToLongBits(relativeAngle) != Double
-				.doubleToLongBits(other.relativeAngle))
+		VisibleOrgan other = (VisibleOrgan) obj;
+		if (getLength() != other.getLength() || getThickness() != other.getThickness() || getRGB() != other.getRGB())
+			return false;
+		if (Double.doubleToLongBits(getRelativeAngle()) != Double.doubleToLongBits(other.getRelativeAngle()))
+			return false;
+		if (!getStartPoint().equals(other.getStartPoint()))
+			return false;
+		if(getParent() == null) {
+			if (other.getParent() != null)
+				return false;
+		}
+		else if (!getParent().equals(other.getParent()))
 			return false;
 		return true;
-	}
+	}	
 	
 	@Override
 	public String toString() {

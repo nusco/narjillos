@@ -22,34 +22,6 @@ public class OrganParserTest {
 	}
 
 	@Test
-	public void padsTerminatedPartsToTheRightLength() {
-		int[] genes =  new int[]{
-				1, 2, 3, DNA.PART_TERMINATOR,
-				6, 7, 8, 9, 10
-			};
-
-		DNA dna = new DNA(genes);
-		OrganParser parser = new OrganParser(dna);
-		
-		assertArrayEquals(new int[]{1, 2, 3, 0, 0}, parser.nextPart());
-		assertArrayEquals(new int[]{6, 7, 8, 9, 10}, parser.nextPart());
-	}
-
-	@Test
-	public void padsEmptyPartsToTheRightLength() {
-		int[] genes =  new int[]{
-				DNA.PART_TERMINATOR,
-				6, 7, 8, 9, 10
-			};
-
-		DNA dna = new DNA(genes);
-		OrganParser parser = new OrganParser(dna);
-		
-		assertArrayEquals(new int[]{0, 0, 0, 0, 0}, parser.nextPart());
-		assertArrayEquals(new int[]{6, 7, 8, 9, 10}, parser.nextPart());
-	}
-
-	@Test
 	public void padsUnterminatedLastPart() {
 		int[] genes =  new int[]{
 				1, 2, 3, 4, 5,

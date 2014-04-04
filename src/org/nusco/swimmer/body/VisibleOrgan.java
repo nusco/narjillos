@@ -10,9 +10,11 @@ abstract class VisibleOrgan extends Organ {
 	private final int thickness;
 	private final int rgb;
 	private final double relativeAngle;
+	private final Vector relativeVector;
 
-	protected VisibleOrgan(int length, int thickness, int relativeAngle, int rgb, Nerve neuron, Organ parent) {
+	protected VisibleOrgan(Vector relativeVector, int length, int thickness, int relativeAngle, int rgb, Nerve neuron, Organ parent) {
 		super(neuron, parent);
+		this.relativeVector = relativeVector;
 		this.length = length;
 		this.thickness = thickness;
 		this.relativeAngle = Angle.normalize(relativeAngle);
@@ -49,6 +51,10 @@ abstract class VisibleOrgan extends Organ {
 		return relativeAngle;
 	}
 
+	public Vector getRelativeVector() {
+		return relativeVector;
+	}
+
 	public boolean isVisible() {
 		return true;
 	}
@@ -60,31 +66,6 @@ abstract class VisibleOrgan extends Organ {
 	@Override
 	public void tick() {
 	}
-
-	@Override
-	public int hashCode() {
-		return 1;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof VisibleOrgan))
-			return false;
-		VisibleOrgan other = (VisibleOrgan) obj;
-		if (getLength() != other.getLength() || getThickness() != other.getThickness() || getRGB() != other.getRGB())
-			return false;
-		if (Double.doubleToLongBits(getRelativeAngle()) != Double.doubleToLongBits(other.getRelativeAngle()))
-			return false;
-		if (!getStartPoint().equals(other.getStartPoint()))
-			return false;
-		if(getParent() == null) {
-			if (other.getParent() != null)
-				return false;
-		}
-		else if (!getParent().equals(other.getParent()))
-			return false;
-		return true;
-	}	
 	
 	@Override
 	public String toString() {

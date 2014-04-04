@@ -32,7 +32,7 @@ class OrganView {
 		final int OVERLAP = 5;
 		Rectangle result = new Rectangle(0, 0, organ.getLength() + (OVERLAP * 2), organ.getThickness());
 		
-		int arc = (organ.getLength() * organ.getThickness()) % 15 + 15;
+		double arc = (organ.getLength() * organ.getThickness()) % 15 + 15;
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);
 		
@@ -44,7 +44,7 @@ class OrganView {
 		result.getTransforms().add(new Translate(200, 400));
 		
 		// overlap slightly and shift to center based on thickness
-		int widthCenter = organ.getThickness() / 2;
+		double widthCenter = organ.getThickness() / 2;
 		result.getTransforms().add(new Translate(-OVERLAP, -widthCenter));
 
 		result.getTransforms().add(moveToStartPoint());

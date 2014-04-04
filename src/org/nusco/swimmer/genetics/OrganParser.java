@@ -28,7 +28,8 @@ class OrganParser {
 	}
 
 	private boolean isTerminator(int b) {
-		int maskedByte = b & 0b11000000;
-		return maskedByte == DNA.PART_TERMINATOR;
+		// TODO: is the idea of a terminator ever useful?
+		// (for sure, it wasn't working the way I implemented it)
+		return false;
 	}
 }

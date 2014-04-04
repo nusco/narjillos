@@ -3,20 +3,22 @@ package org.nusco.swimmer.body.pns;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.swimmer.physics.Vector;
+
 public abstract class Nerve {
 
 	private final List<Nerve> children = new LinkedList<>();
-	private double outputSignal = 1;
+	private Vector outputSignal = Vector.ONE;
 
-	public abstract double process(double inputSignal);
+	public abstract Vector process(Vector inputSignal);
 
-	public void send(double inputSignal) {
+	public void send(Vector inputSignal) {
 		outputSignal = process(inputSignal);
-		for (Nerve neuron : children)
-			neuron.send(outputSignal);
+		for (Nerve child : children)
+			child.send(outputSignal);
 	}
 
-	public double readOutputSignal() {
+	public Vector readOutputSignal() {
 		return outputSignal;
 	}
 

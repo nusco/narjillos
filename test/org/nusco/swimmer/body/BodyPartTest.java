@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.swimmer.body.pns.Nerve;
+import org.nusco.swimmer.physics.Vector;
 
 public class BodyPartTest extends VisibleOrganTest {
 	private VisibleOrgan parent;
@@ -11,14 +12,24 @@ public class BodyPartTest extends VisibleOrganTest {
 	@Override
 	public VisibleOrgan createVisibleOrgan() {
 		parent = new Head(15, THICKNESS, 100);
-		return new BodyPart(20, THICKNESS, 10, 100, parent);
+		return new BodyPart(new Vector(20, 10), 20, THICKNESS, 10, 100, parent);
+	}
+
+	@Override
+	public void hasAParent() {
+		assertEquals(parent, organ.getParent());
+	}
+
+	@Override
+	public void hasAVectorRelativeToItsParent() {
+		assertEquals(new Vector(20, 10), organ.getRelativeVector());
 	}
 
 	@Test
 	public void startsAtItsParentsEndPoint() {
 		assertEquals(parent.getEndPoint(), organ.getStartPoint());
 	}
-	
+
 	@Test
 	public void hasAnAngleRelativeToTheParent() {
 		assertEquals(10, organ.getRelativeAngle(), 0);
@@ -27,16 +38,11 @@ public class BodyPartTest extends VisibleOrganTest {
 	@Test
 	public void hasAnAbsoluteAngle() {
 		Head head = new Head(0, 0, 0);
-		VisibleOrgan organ1 = new BodyPart(0, 0, 30, 0, head);
-		VisibleOrgan organ2 = new BodyPart(0, 0, -10, 0, organ1);
+		VisibleOrgan organ1 = new BodyPart(Vector.ONE, 0, 0, 30, 0, head);
+		VisibleOrgan organ2 = new BodyPart(Vector.ONE, 0, 0, -10, 0, organ1);
 		assertEquals(20, organ2.getAngle(), 0);
 	}
-
-	@Override
-	public void hasAParent() {
-		assertEquals(parent, organ.getParent());
-	}
-
+	
 	@Test
 	public void theAngleRelativeToTheParentStaysInTheMinusOrPlus180To180DegreesRange() {
 		assertRelativeAngleEquals(-10, 350);
@@ -45,7 +51,7 @@ public class BodyPartTest extends VisibleOrganTest {
 	}
 
 	private void assertRelativeAngleEquals(int expectedAngle, int relativeAngle) {
-		BodyPart part = new BodyPart(0, 0, relativeAngle, 0 , new Head(0, 0, 0));
+		BodyPart part = new BodyPart(Vector.ONE, 0, 0, relativeAngle, 0 , new Head(0, 0, 0));
 		assertEquals(expectedAngle, part.getRelativeAngle(), 0);
 	}
 
@@ -59,18 +65,18 @@ public class BodyPartTest extends VisibleOrganTest {
 	}
 
 	@Test
-	public void anglesAreControllerByTheNeurons() {
+	public void anglesAreControlledByTheNeurons() {
 		//TODO: this test doesn't work. find a smarter way to test this complex chain
 		// TODO: also add NullOrgans to the mix
 		final Nerve doublerNeuron = new Nerve() {
 			@Override
-			public double process(double inputSignal) {
-				return 2;
+			public Vector process(Vector inputSignal) {
+				return new Vector(inputSignal.getX() * 2, inputSignal.getY() * 2);
 			}
 			
 			@Override
-			public double readOutputSignal() {
-				return 2;
+			public Vector readOutputSignal() {
+				return new Vector(2, 0);
 			}
 		};
 		Head head = new Head(0, 0, 0) {
@@ -81,8 +87,8 @@ public class BodyPartTest extends VisibleOrganTest {
 		};
 
 		int angleFromParent = 1;
-		VisibleOrgan organ1 = head.sproutVisibleOrgan(0, 0, angleFromParent, 0);
-		VisibleOrgan organ2 = organ1.sproutVisibleOrgan(0, 0, angleFromParent, 0);
+		VisibleOrgan organ1 = head.sproutVisibleOrgan(Vector.ONE, 0, 0, angleFromParent, 0);
+		VisibleOrgan organ2 = organ1.sproutVisibleOrgan(Vector.ONE, 0, 0, angleFromParent, 0);
 		
 		assertAngle(1, organ1);
 		assertAngle(2, organ2);

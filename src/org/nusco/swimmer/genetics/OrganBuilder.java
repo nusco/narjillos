@@ -1,12 +1,13 @@
 package org.nusco.swimmer.genetics;
 
 import org.nusco.swimmer.body.Organ;
+import org.nusco.swimmer.physics.Vector;
 
 class OrganBuilder {
-
 	public static final int GENES_PER_PART = 5;
+	public static final int MIN_GENES_VALUE = 25;
 
-	static final double PART_LENGTH_MULTIPLIER = 1;
+	static final double PART_LENGTH_MULTIPLIER = 1.0;
 	static final double PART_THICKNESS_MULTIPLIER = 0.15;
 	static final int PART_MAX_RELATIVE_ANGLE = 120;
 
@@ -21,17 +22,25 @@ class OrganBuilder {
 	}
 
 	public Organ buildBodyPart(Organ parent, int angleSign) {
-		if(getLength() <= 10 || getThickness() <= 4)
+		if(getLengthGenes() <= MIN_GENES_VALUE || getThicknessGenes() <= MIN_GENES_VALUE)
 			return parent.sproutInvisibleOrgan();
-		return parent.sproutVisibleOrgan(getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
+		return parent.sproutVisibleOrgan(new Vector(getLength(), 0), getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
+	}
+
+	private int getLengthGenes() {
+		return genes[1];
+	}
+
+	private int getThicknessGenes() {
+		return genes[2];
 	}
 
 	private int getLength() {
-		return (int)(genes[1] * PART_LENGTH_MULTIPLIER);
+		return (int)(getLengthGenes() * PART_LENGTH_MULTIPLIER);
 	}
 
 	private int getThickness() {
-		return (int)(genes[2] * PART_THICKNESS_MULTIPLIER);
+		return (int)(getThicknessGenes() * PART_THICKNESS_MULTIPLIER);
 	}
 
 	private int getRelativeAngle(int angleSign) {

@@ -3,25 +3,27 @@ package org.nusco.swimmer.body.pns;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.swimmer.body.pns.DelayNerve;
-import org.nusco.swimmer.body.pns.Nerve;
+import org.nusco.swimmer.physics.Vector;
 
-public class DelayNerveTest {
-
-	@Test
-	public void readsOneByDefault() {
-		Nerve nerve = new DelayNerve(4);
-
-		assertEquals(1.0, nerve.readOutputSignal(), 0);
-	}
+public class DelayNerveTest extends NerveTest {
 
 	@Test
 	public void delaysASignal() {
 		DelayNerve nerve = new DelayNerve(3);
 
-		assertEquals(1.0, nerve.process(0.1), CosWave.PRECISION);
-		assertEquals(1.0, nerve.process(0.2), CosWave.PRECISION);
-		assertEquals(0.1, nerve.process(0.3), CosWave.PRECISION);
-		assertEquals(0.2, nerve.process(0.4), CosWave.PRECISION);
+		Vector vector1 = new Vector(0.1, 0);
+		Vector vector2 = new Vector(0.2, 0);
+		Vector vector3 = new Vector(0.3, 0);
+		Vector vector4 = new Vector(0.4, 0);
+
+		assertEquals(Vector.ONE, nerve.process(vector1));
+		assertEquals(Vector.ONE, nerve.process(vector2));
+		assertEquals(vector1, nerve.process(vector3));
+		assertEquals(vector2, nerve.process(vector4));
+	}
+
+	@Override
+	protected Nerve createNerve() {
+		return new DelayNerve(3);
 	}
 }

@@ -1,31 +1,37 @@
 package org.nusco.swimmer.body.pns;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.swimmer.body.pns.Nerve;
-import org.nusco.swimmer.body.pns.WaveNerve;
+import org.nusco.swimmer.physics.Vector;
 
-public class WaveNerveTest {
-
-	@Test
-	public void readsOneByDefault() {
-		Nerve nerve = new WaveNerve();
-
-		assertEquals(1.0, nerve.readOutputSignal(), 0);
-	}
-
+public class WaveNerveTest extends NerveTest {
+	
 	@Test
 	public void generatesASinusoidalWave() {
-		WaveNerve nerve = new WaveNerve();
+		assertWaveEquals(0.1, new double[] { 1.0, 0.809, 0.309, -0.309, -0.809, -1, -0.809, -0.309, 0.309, 0.809, 1 });
+		assertWaveEquals(0.5, new double[] { 1, -1, 1 });
+	}
 
-		double ticks[] = new double[CosWave.WAVE.length];
-		for (int i = 0; i < ticks.length; i++) {
-			nerve.send(CosWave.FREQUENCY);
-			ticks[i] = nerve.readOutputSignal();
+	private void assertWaveEquals(double frequency, double[] expectedWave) {
+		final double maxX = 10.0;
+		final double maxY = 20.0;
+		Vector inputSignal = new Vector(maxX, maxY);
+
+		WaveNerve nerve = new WaveNerve(frequency);
+		for (int i = 0; i < expectedWave.length; i++) {
+			nerve.send(inputSignal);
+			Vector outputSignal = nerve.readOutputSignal();
+			
+			double currentWave = expectedWave[i];
+			Vector expected = new Vector(maxX * currentWave, maxY * currentWave);
+			assertEquals(expected.getX(), outputSignal.getX(), 0.01);
+			assertEquals(expected.getY(), outputSignal.getY(), 0.01);
 		}
-		
-		assertArrayEquals(CosWave.WAVE, ticks, CosWave.PRECISION);
+	}
+
+	@Override
+	protected Nerve createNerve() {
+		return new WaveNerve(0.1);
 	}
 }

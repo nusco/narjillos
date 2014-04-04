@@ -17,6 +17,11 @@ class NullOrgan extends Organ {
 	}
 
 	@Override
+	public Vector getRelativeVector() {
+		return Vector.ZERO;
+	}
+
+	@Override
 	public Vector getStartPoint() {
 		return getParent().getEndPoint();
 	}
@@ -62,20 +67,5 @@ class NullOrgan extends Organ {
 	@Override
 	public String toString() {
 		return "<null organ>";
-	}
-
-	@Override
-	public int hashCode() {
-		return 1;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof NullOrgan))
-			return false;
-		NullOrgan other = (NullOrgan) obj;
-		if (!getParent().equals(other.getParent()))
-			return false;
-		return true;
 	}
 }

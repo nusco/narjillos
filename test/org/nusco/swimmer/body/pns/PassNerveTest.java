@@ -3,26 +3,20 @@ package org.nusco.swimmer.body.pns;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.swimmer.body.pns.Nerve;
-import org.nusco.swimmer.body.pns.PassNerve;
+import org.nusco.swimmer.physics.Vector;
 
-public class PassNerveTest {
-
-	@Test
-	public void readsOneByDefault() {
-		Nerve nerve = new PassNerve();
-
-		assertEquals(1.0, nerve.readOutputSignal(), 0);
-	}
+public class PassNerveTest extends NerveTest {
 
 	@Test
 	public void passesASignalWithoutChangingIt() {
 		PassNerve nerve = new PassNerve();
 
-		nerve.send(3.0);
-		assertEquals(3.0, nerve.readOutputSignal(), 0);
+		nerve.send(new Vector(3, 42));
+		assertEquals(new Vector(3, 42), nerve.readOutputSignal());
+	}
 
-		nerve.send(42);
-		assertEquals(42, nerve.readOutputSignal(), 0);
+	@Override
+	protected Nerve createNerve() {
+		return new PassNerve();
 	}
 }

@@ -2,19 +2,21 @@ package org.nusco.swimmer.body.pns;
 
 import java.util.LinkedList;
 
+import org.nusco.swimmer.physics.Vector;
+
 class DelayNerve extends Nerve {
 
 	private final int delay;
-	private final LinkedList<Double> buffer = new LinkedList<>();
+	private final LinkedList<Vector> buffer = new LinkedList<>();
 
 	public DelayNerve(int delay) {
 		this.delay = delay;
 	}
 
-	public double process(double inputSignal) {
+	public Vector process(Vector inputSignal) {
 		buffer.add(inputSignal);
 		if(buffer.size() < delay)
-			return 1.0;
+			return Vector.ONE;
 		return buffer.pop();
 	}
 }

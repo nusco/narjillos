@@ -2,10 +2,11 @@ package org.nusco.swimmer.genetics;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.nusco.swimmer.Swimmer;
-import org.nusco.swimmer.genetics.DNA;
-import org.nusco.swimmer.genetics.Embryo;
+import org.nusco.swimmer.body.Organ;
 
 public class EmbryoTest {
 
@@ -15,6 +16,15 @@ public class EmbryoTest {
 
 		Swimmer swimmer = embryo.develop();
 		
-		assertEquals(ExampleParts.asList(), swimmer.getParts());
+		List<Organ> exampleParts = ExampleParts.asList();
+		List<Organ> parts = swimmer.getParts();
+		assertEquals(exampleParts.size(), parts.size());
+		for (int i = 0; i < exampleParts.size(); i++) {
+			assertKindaEquals(exampleParts.get(i), parts.get(i));
+		}
+	}
+
+	private void assertKindaEquals(Organ organ1, Organ organ2) {
+		organ1.toString().equals(organ2.toString());
 	}
 }

@@ -2,7 +2,6 @@ package org.nusco.swimmer.genetics;
 
 public class DNA {
 	public static final int MIRROR_ORGAN = 0b00000001;
-	public static final int PART_TERMINATOR = 0b11100000;
 	public static final double MUTATION_RATE = 0.03;
 
 	private int[] genes;

@@ -7,12 +7,11 @@ import org.nusco.swimmer.physics.Angle;
 
 public class AngleTest {
 	@Test
-	public void normalizesToPlusOrMinus180Degrees() {
+	public void normalizesToPlus180DegreesToMinus179Degrees() {
 		assertEquals(0.0, Angle.normalize(0), 0);
 		assertEquals(90.0, Angle.normalize(90), 0);
 		assertEquals(180.0, Angle.normalize(180), 0);
 		
-		assertEquals(-180.0, Angle.normalize(181), 180);
 		assertEquals(-179.0, Angle.normalize(181), 0);
 		assertEquals(-90.0, Angle.normalize(270), 0);
 		assertEquals(-1.0, Angle.normalize(359), 0);

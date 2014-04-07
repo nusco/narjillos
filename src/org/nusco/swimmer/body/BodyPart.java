@@ -9,8 +9,8 @@ import org.nusco.swimmer.physics.Vector;
 class BodyPart extends VisibleOrgan {
 	private static final int DELAY = 13;
 	
-	public BodyPart(Vector relativeVector, int length, int thickness, int relativeAngle, int rgb, Organ parent) {
-		super(relativeVector, length, thickness, relativeAngle, rgb, createNerve(), parent);
+	public BodyPart(int length, int thickness, int relativeAngle, int rgb, Organ parent) {
+		super(length, thickness, relativeAngle, rgb, createNerve(), parent);
 	}
 
 	private static Nerve createNerve() {

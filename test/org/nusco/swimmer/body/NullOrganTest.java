@@ -28,8 +28,8 @@ public class NullOrganTest {
 	public void hasChildren() {
 		VisibleOrgan head = new Head(10, 10, 100);
 		Organ nullOrgan = head.sproutInvisibleOrgan();
-		Organ child1 = nullOrgan.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 10, 100);
-		Organ child2 = nullOrgan.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, -10, 100);
+		Organ child1 = nullOrgan.sproutVisibleOrgan(10, 10, 10, 100);
+		Organ child2 = nullOrgan.sproutVisibleOrgan(10, 10, -10, 100);
 		
 		List<Organ> expected = new LinkedList<>();
 		expected.add(child1);
@@ -42,7 +42,7 @@ public class NullOrganTest {
 	public void doesntAppearAmongstChildrensAncestors() {
 		VisibleOrgan head = new Head(10, 10, 100);
 		Organ nullOrgan = head.sproutInvisibleOrgan();
-		Organ child = nullOrgan.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 10, 100);
+		Organ child = nullOrgan.sproutVisibleOrgan(10, 10, 10, 100);
 		
 		assertEquals(head, child.getParent());
 	}
@@ -61,21 +61,12 @@ public class NullOrganTest {
 	@Test
 	public void itsRelativeAngleIsTheSameAsItsParent() {
 		VisibleOrgan head = new Head(10, 10, 100);
-		Organ child = head.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 45, 100);
+		Organ child = head.sproutVisibleOrgan(10, 10, 45, 100);
 		Organ nullOrgan = child.sproutInvisibleOrgan();
 
 		assertEquals(45, nullOrgan.getRelativeAngle(), 0);
 	}
 
-	@Test
-	public void itsRelativeVectorIsZero() {
-		VisibleOrgan head = new Head(10, 10, 100);
-		Organ child = head.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 45, 100);
-		Organ nullOrgan = child.sproutInvisibleOrgan();
-
-		assertEquals(Vector.ZERO, nullOrgan.getRelativeVector());
-	}
-	
 	@Test
 	public void itBeginsAndEndsWhereItsParentEnds() {
 		Head head = new Head(15, 10, 100);
@@ -88,7 +79,7 @@ public class NullOrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = new NullOrgan(null).sproutVisibleOrgan(Vector.cartesian(10, 0), 20, 12, 45, 100);
+		Organ child = new NullOrgan(null).sproutVisibleOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);

@@ -33,14 +33,6 @@ public class HeadTest extends VisibleOrganTest {
 		assertEquals(null, organ.getParent());
 	}
 
-	@Override
-	public void hasAVectorRelativeToItsParent() {
-		Vector expected = Vector.cartesian(20, 0);
-		Vector relativeVector = organ.getRelativeVector();
-		assertEquals(expected.getX(), relativeVector.getX(), 0.001);
-		assertEquals(expected.getY(), relativeVector.getY(), 0.001);
-	}
-
 	@Test
 	public void emitsASinusoidalSignalWhileTicking() {
 		Head head = new Head(0, 0, 0);

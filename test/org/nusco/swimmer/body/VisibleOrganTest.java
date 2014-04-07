@@ -10,9 +10,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.swimmer.body.Organ;
-import org.nusco.swimmer.body.VisibleOrgan;
-import org.nusco.swimmer.physics.Vector;
 
 public abstract class VisibleOrganTest {
 
@@ -49,9 +46,6 @@ public abstract class VisibleOrganTest {
 	public abstract void hasAParent();
 
 	@Test
-	public abstract void hasAVectorRelativeToItsParent();
-
-	@Test
 	public void hasAnRGBValue() {
 		assertEquals(100, organ.getRGB());
 	}
@@ -68,7 +62,7 @@ public abstract class VisibleOrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		VisibleOrgan child = organ.sproutVisibleOrgan(Vector.cartesian(20, 0), 20, 12, 45, 100);
+		VisibleOrgan child = organ.sproutVisibleOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);
@@ -82,8 +76,8 @@ public abstract class VisibleOrganTest {
 	
 	@Test
 	public void knowsItsChildren() {
-		VisibleOrgan child1 = organ.sproutVisibleOrgan(Vector.cartesian(20, 0), 20, THICKNESS, 45, 100);
-		VisibleOrgan child2 = organ.sproutVisibleOrgan(Vector.cartesian(20, 0), 20, THICKNESS, 45, 100);
+		VisibleOrgan child1 = organ.sproutVisibleOrgan(20, THICKNESS, 45, 100);
+		VisibleOrgan child2 = organ.sproutVisibleOrgan(20, THICKNESS, 45, 100);
 
 		List<VisibleOrgan> expected = new LinkedList<>();
 		expected.add(child1);

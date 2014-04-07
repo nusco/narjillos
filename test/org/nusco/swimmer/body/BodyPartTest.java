@@ -12,17 +12,12 @@ public class BodyPartTest extends VisibleOrganTest {
 	@Override
 	public VisibleOrgan createVisibleOrgan() {
 		parent = new Head(15, THICKNESS, 100);
-		return new BodyPart(Vector.cartesian(20, 10), 20, THICKNESS, 10, 100, parent);
+		return new BodyPart(20, THICKNESS, 10, 100, parent);
 	}
 
 	@Override
 	public void hasAParent() {
 		assertEquals(parent, organ.getParent());
-	}
-
-	@Override
-	public void hasAVectorRelativeToItsParent() {
-		assertEquals(Vector.cartesian(20, 10), organ.getRelativeVector());
 	}
 
 	@Test
@@ -38,8 +33,8 @@ public class BodyPartTest extends VisibleOrganTest {
 	@Test
 	public void hasAnAbsoluteAngle() {
 		Head head = new Head(0, 0, 0);
-		VisibleOrgan organ1 = new BodyPart(Vector.ONE, 0, 0, 30, 0, head);
-		VisibleOrgan organ2 = new BodyPart(Vector.ONE, 0, 0, -10, 0, organ1);
+		VisibleOrgan organ1 = new BodyPart(0, 0, 30, 0, head);
+		VisibleOrgan organ2 = new BodyPart(0, 0, -10, 0, organ1);
 		assertEquals(20, organ2.getAngle(), 0);
 	}
 	
@@ -51,7 +46,7 @@ public class BodyPartTest extends VisibleOrganTest {
 	}
 
 	private void assertRelativeAngleEquals(int expectedAngle, int relativeAngle) {
-		BodyPart part = new BodyPart(Vector.ONE, 0, 0, relativeAngle, 0 , new Head(0, 0, 0));
+		BodyPart part = new BodyPart(0, 0, relativeAngle, 0 , new Head(0, 0, 0));
 		assertEquals(expectedAngle, part.getRelativeAngle(), 0);
 	}
 
@@ -87,8 +82,8 @@ public class BodyPartTest extends VisibleOrganTest {
 		};
 
 		int angleFromParent = 1;
-		VisibleOrgan organ1 = head.sproutVisibleOrgan(Vector.ONE, 0, 0, angleFromParent, 0);
-		VisibleOrgan organ2 = organ1.sproutVisibleOrgan(Vector.ONE, 0, 0, angleFromParent, 0);
+		VisibleOrgan organ1 = head.sproutVisibleOrgan(0, 0, angleFromParent, 0);
+		VisibleOrgan organ2 = organ1.sproutVisibleOrgan(0, 0, angleFromParent, 0);
 		
 		assertAngle(1, organ1);
 		assertAngle(2, organ2);

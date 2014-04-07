@@ -10,11 +10,9 @@ abstract class VisibleOrgan extends Organ {
 	private final int thickness;
 	private final int rgb;
 	private final double relativeAngle;
-	private final Vector relativeVector;
 
-	protected VisibleOrgan(Vector relativeVector, int length, int thickness, int relativeAngle, int rgb, Nerve neuron, Organ parent) {
+	protected VisibleOrgan(int length, int thickness, int relativeAngle, int rgb, Nerve neuron, Organ parent) {
 		super(neuron, parent);
-		this.relativeVector = relativeVector;
 		this.length = length;
 		this.thickness = thickness;
 		this.relativeAngle = Angle.normalize(relativeAngle);
@@ -49,10 +47,6 @@ abstract class VisibleOrgan extends Organ {
 	@Override
 	public double getRelativeAngle() {
 		return relativeAngle;
-	}
-
-	public Vector getRelativeVector() {
-		return relativeVector;
 	}
 
 	public boolean isVisible() {

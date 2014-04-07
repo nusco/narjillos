@@ -17,11 +17,6 @@ class NullOrgan extends Organ {
 	}
 
 	@Override
-	public Vector getRelativeVector() {
-		return Vector.ZERO;
-	}
-
-	@Override
 	public Vector getStartPoint() {
 		return getParent().getEndPoint();
 	}

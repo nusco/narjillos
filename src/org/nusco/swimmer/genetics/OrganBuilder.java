@@ -1,7 +1,6 @@
 package org.nusco.swimmer.genetics;
 
 import org.nusco.swimmer.body.Organ;
-import org.nusco.swimmer.physics.Vector;
 
 class OrganBuilder {
 	public static final int GENES_PER_PART = 5;
@@ -24,7 +23,7 @@ class OrganBuilder {
 	public Organ buildBodyPart(Organ parent, int angleSign) {
 		if(getLengthGenes() <= MIN_GENES_VALUE || getThicknessGenes() <= MIN_GENES_VALUE)
 			return parent.sproutInvisibleOrgan();
-		return parent.sproutVisibleOrgan(Vector.cartesian(getLength(), 0), getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
+		return parent.sproutVisibleOrgan(getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
 	}
 
 	private int getLengthGenes() {

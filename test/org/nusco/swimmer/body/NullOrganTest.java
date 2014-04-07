@@ -2,16 +2,11 @@ package org.nusco.swimmer.body;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.swimmer.body.Head;
-import org.nusco.swimmer.body.NullOrgan;
-import org.nusco.swimmer.body.Organ;
-import org.nusco.swimmer.body.VisibleOrgan;
 import org.nusco.swimmer.physics.Vector;
 
 public class NullOrganTest {
@@ -33,8 +28,8 @@ public class NullOrganTest {
 	public void hasChildren() {
 		VisibleOrgan head = new Head(10, 10, 100);
 		Organ nullOrgan = head.sproutInvisibleOrgan();
-		Organ child1 = nullOrgan.sproutVisibleOrgan(new Vector(10, 0), 10, 10, 10, 100);
-		Organ child2 = nullOrgan.sproutVisibleOrgan(new Vector(10, 0), 10, 10, -10, 100);
+		Organ child1 = nullOrgan.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 10, 100);
+		Organ child2 = nullOrgan.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, -10, 100);
 		
 		List<Organ> expected = new LinkedList<>();
 		expected.add(child1);
@@ -47,7 +42,7 @@ public class NullOrganTest {
 	public void doesntAppearAmongstChildrensAncestors() {
 		VisibleOrgan head = new Head(10, 10, 100);
 		Organ nullOrgan = head.sproutInvisibleOrgan();
-		Organ child = nullOrgan.sproutVisibleOrgan(new Vector(10, 0), 10, 10, 10, 100);
+		Organ child = nullOrgan.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 10, 100);
 		
 		assertEquals(head, child.getParent());
 	}
@@ -66,7 +61,7 @@ public class NullOrganTest {
 	@Test
 	public void itsRelativeAngleIsTheSameAsItsParent() {
 		VisibleOrgan head = new Head(10, 10, 100);
-		Organ child = head.sproutVisibleOrgan(new Vector(10, 0), 10, 10, 45, 100);
+		Organ child = head.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 45, 100);
 		Organ nullOrgan = child.sproutInvisibleOrgan();
 
 		assertEquals(45, nullOrgan.getRelativeAngle(), 0);
@@ -75,7 +70,7 @@ public class NullOrganTest {
 	@Test
 	public void itsRelativeVectorIsZero() {
 		VisibleOrgan head = new Head(10, 10, 100);
-		Organ child = head.sproutVisibleOrgan(new Vector(10, 0), 10, 10, 45, 100);
+		Organ child = head.sproutVisibleOrgan(Vector.cartesian(10, 0), 10, 10, 45, 100);
 		Organ nullOrgan = child.sproutInvisibleOrgan();
 
 		assertEquals(Vector.ZERO, nullOrgan.getRelativeVector());
@@ -84,16 +79,16 @@ public class NullOrganTest {
 	@Test
 	public void itBeginsAndEndsWhereItsParentEnds() {
 		Head head = new Head(15, 10, 100);
-		head.placeAt(new Vector(20, 30));
+		head.placeAt(Vector.cartesian(20, 30));
 		Organ nullOrgan = new NullOrgan(head).sproutInvisibleOrgan();
 
-		assertEquals(new Vector(35, 30), nullOrgan.getStartPoint());
-		assertEquals(new Vector(35, 30), nullOrgan.getEndPoint());
+		assertEquals(Vector.cartesian(35, 30), nullOrgan.getStartPoint());
+		assertEquals(Vector.cartesian(35, 30), nullOrgan.getEndPoint());
 	}
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = new NullOrgan(null).sproutVisibleOrgan(new Vector(10, 0), 20, 12, 45, 100);
+		Organ child = new NullOrgan(null).sproutVisibleOrgan(Vector.cartesian(10, 0), 20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);

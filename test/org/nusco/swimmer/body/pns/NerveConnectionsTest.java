@@ -8,7 +8,7 @@ import org.nusco.swimmer.physics.Vector;
 class DoubleNerve extends Nerve {
 	@Override
 	public Vector process(Vector inputSignal) {
-		return new Vector(inputSignal.getX() * 2, inputSignal.getY() * 2);
+		return Vector.cartesian(inputSignal.getX() * 2, inputSignal.getY() * 2);
 	}	
 }
 
@@ -24,11 +24,11 @@ public class NerveConnectionsTest {
 		nerve1.connectTo(nerve3);
 		nerve3.connectTo(nerve4);
 
-		nerve1.send(new Vector(1, 1));
+		nerve1.send(Vector.cartesian(1, 1));
 		
-		assertEquals(new Vector(2, 2), nerve1.readOutputSignal());
-		assertEquals(new Vector(4, 4), nerve2.readOutputSignal());
-		assertEquals(new Vector(4, 4), nerve3.readOutputSignal());
-		assertEquals(new Vector(8, 8), nerve4.readOutputSignal());
+		assertEquals(Vector.cartesian(2, 2), nerve1.readOutputSignal());
+		assertEquals(Vector.cartesian(4, 4), nerve2.readOutputSignal());
+		assertEquals(Vector.cartesian(4, 4), nerve3.readOutputSignal());
+		assertEquals(Vector.cartesian(8, 8), nerve4.readOutputSignal());
 	}
 }

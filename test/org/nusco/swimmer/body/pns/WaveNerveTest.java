@@ -16,7 +16,7 @@ public class WaveNerveTest extends NerveTest {
 	private void assertWaveEquals(double frequency, double[] expectedWave) {
 		final double maxX = 10.0;
 		final double maxY = 20.0;
-		Vector inputSignal = new Vector(maxX, maxY);
+		Vector inputSignal = Vector.cartesian(maxX, maxY);
 
 		WaveNerve nerve = new WaveNerve(frequency);
 		for (int i = 0; i < expectedWave.length; i++) {
@@ -24,7 +24,7 @@ public class WaveNerveTest extends NerveTest {
 			Vector outputSignal = nerve.readOutputSignal();
 			
 			double currentWave = expectedWave[i];
-			Vector expected = new Vector(maxX * currentWave, maxY * currentWave);
+			Vector expected = Vector.cartesian(maxX * currentWave, maxY * currentWave);
 			assertEquals(expected.getX(), outputSignal.getX(), 0.01);
 			assertEquals(expected.getY(), outputSignal.getY(), 0.01);
 		}

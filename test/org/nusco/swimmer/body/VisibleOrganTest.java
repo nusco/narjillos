@@ -68,7 +68,7 @@ public abstract class VisibleOrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		VisibleOrgan child = organ.sproutVisibleOrgan(new Vector(20, 0), 20, 12, 45, 100);
+		VisibleOrgan child = organ.sproutVisibleOrgan(Vector.cartesian(20, 0), 20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);
@@ -82,8 +82,8 @@ public abstract class VisibleOrganTest {
 	
 	@Test
 	public void knowsItsChildren() {
-		VisibleOrgan child1 = organ.sproutVisibleOrgan(new Vector(20, 0), 20, THICKNESS, 45, 100);
-		VisibleOrgan child2 = organ.sproutVisibleOrgan(new Vector(20, 0), 20, THICKNESS, 45, 100);
+		VisibleOrgan child1 = organ.sproutVisibleOrgan(Vector.cartesian(20, 0), 20, THICKNESS, 45, 100);
+		VisibleOrgan child2 = organ.sproutVisibleOrgan(Vector.cartesian(20, 0), 20, THICKNESS, 45, 100);
 
 		List<VisibleOrgan> expected = new LinkedList<>();
 		expected.add(child1);

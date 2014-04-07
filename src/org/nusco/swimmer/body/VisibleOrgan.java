@@ -33,7 +33,7 @@ abstract class VisibleOrgan extends Organ {
 
 	@Override
 	public Vector getEndPoint() {
-		return getStartPoint().plus(length, getAngle());
+		return getStartPoint().plus(Vector.polar(getAngle(), length));
 	}
 
 	public abstract double getAngle();

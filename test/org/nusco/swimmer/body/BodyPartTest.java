@@ -12,7 +12,7 @@ public class BodyPartTest extends VisibleOrganTest {
 	@Override
 	public VisibleOrgan createVisibleOrgan() {
 		parent = new Head(15, THICKNESS, 100);
-		return new BodyPart(new Vector(20, 10), 20, THICKNESS, 10, 100, parent);
+		return new BodyPart(Vector.cartesian(20, 10), 20, THICKNESS, 10, 100, parent);
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class BodyPartTest extends VisibleOrganTest {
 
 	@Override
 	public void hasAVectorRelativeToItsParent() {
-		assertEquals(new Vector(20, 10), organ.getRelativeVector());
+		assertEquals(Vector.cartesian(20, 10), organ.getRelativeVector());
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class BodyPartTest extends VisibleOrganTest {
 //		Head head = new Head(10, 0, 0);
 //		VisibleOrgan organ1 = head.sproutVisibleOrgan(10, 0, 90, 0);
 //		VisibleOrgan organ2 = organ1.sproutVisibleOrgan(10, 0, -90, 0);
-//		assertEquals(new Vector(20, 15), organ2.getEndPoint());
+//		assertEquals(Vector.cartesian(20, 15), organ2.getEndPoint());
 	}
 
 	@Test
@@ -71,12 +71,12 @@ public class BodyPartTest extends VisibleOrganTest {
 		final Nerve doublerNeuron = new Nerve() {
 			@Override
 			public Vector process(Vector inputSignal) {
-				return new Vector(inputSignal.getX() * 2, inputSignal.getY() * 2);
+				return Vector.cartesian(inputSignal.getX() * 2, inputSignal.getY() * 2);
 			}
 			
 			@Override
 			public Vector readOutputSignal() {
-				return new Vector(2, 0);
+				return Vector.cartesian(2, 0);
 			}
 		};
 		Head head = new Head(0, 0, 0) {

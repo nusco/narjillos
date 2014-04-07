@@ -11,10 +11,10 @@ public class DelayNerveTest extends NerveTest {
 	public void delaysASignal() {
 		DelayNerve nerve = new DelayNerve(3);
 
-		Vector vector1 = new Vector(0.1, 0);
-		Vector vector2 = new Vector(0.2, 0);
-		Vector vector3 = new Vector(0.3, 0);
-		Vector vector4 = new Vector(0.4, 0);
+		Vector vector1 = Vector.cartesian(0.1, 0);
+		Vector vector2 = Vector.cartesian(0.2, 0);
+		Vector vector3 = Vector.cartesian(0.3, 0);
+		Vector vector4 = Vector.cartesian(0.4, 0);
 
 		assertEquals(Vector.ONE, nerve.process(vector1));
 		assertEquals(Vector.ONE, nerve.process(vector2));

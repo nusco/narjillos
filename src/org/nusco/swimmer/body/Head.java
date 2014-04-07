@@ -10,7 +10,7 @@ class Head extends VisibleOrgan {
 	private Vector startPoint = Vector.ZERO;
 
 	public Head(int length, int thickness, int rgb) {
-		super(new Vector(length, 0), length, thickness, 0, rgb, NerveBuilder.createWaveNerve(FREQUENCY), null);
+		super(Vector.cartesian(length, 0), length, thickness, 0, rgb, NerveBuilder.createWaveNerve(FREQUENCY), null);
 	}
 
 	@Override
@@ -33,6 +33,6 @@ class Head extends VisibleOrgan {
 	}
 
 	public final void tick() {
-		getNerve().send(new Vector(1, 1));
+		getNerve().send(Vector.cartesian(1, 1));
 	}
 }

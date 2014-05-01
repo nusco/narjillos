@@ -1,7 +1,6 @@
 package org.nusco.swimmer.body;
 
 import org.nusco.swimmer.body.pns.Nerve;
-import org.nusco.swimmer.physics.Angle;
 import org.nusco.swimmer.physics.Vector;
 
 abstract class VisibleOrgan extends Organ {
@@ -15,7 +14,7 @@ abstract class VisibleOrgan extends Organ {
 		super(neuron, parent);
 		this.length = length;
 		this.thickness = thickness;
-		this.relativeAngle = Angle.normalize(relativeAngle);
+		this.relativeAngle = relativeAngle;
 		this.rgb = rgb;
 	}
 

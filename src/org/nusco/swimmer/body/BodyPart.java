@@ -2,7 +2,6 @@ package org.nusco.swimmer.body;
 
 import org.nusco.swimmer.body.pns.Nerve;
 import org.nusco.swimmer.body.pns.NerveBuilder;
-import org.nusco.swimmer.physics.Angle;
 import org.nusco.swimmer.physics.Vector;
 
 class BodyPart extends VisibleOrgan {
@@ -27,7 +26,6 @@ class BodyPart extends VisibleOrgan {
 	@Override
 	public double getAngle() {
 		double relativeAngle = getRelativeAngle() * getNerve().readOutputSignal().getLength();
-		double absoluteAngle = relativeAngle + getParent().getAngle();
-		return Angle.normalize(absoluteAngle);
+		return relativeAngle + getParent().getAngle();
 	}
 }

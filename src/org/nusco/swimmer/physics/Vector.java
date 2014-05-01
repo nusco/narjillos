@@ -33,7 +33,7 @@ public class Vector {
 	}
 
 	public double getAngle() {
-	    return Angle.normalize(Math.toDegrees(Math.atan2(getY(), getX())));
+	    return Math.toDegrees(Math.atan2(getY(), getX()));
 	}
 
 	public double getLength() {

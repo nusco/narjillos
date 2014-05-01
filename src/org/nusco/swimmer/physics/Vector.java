@@ -53,7 +53,7 @@ public class Vector {
 	}
 
 	public Vector normalize() {
-		return new Vector(getAngle(), 1);
+		return Vector.polar(getAngle(), 1);
 	}
 
 	@Override

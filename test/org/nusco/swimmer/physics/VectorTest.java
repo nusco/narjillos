@@ -80,7 +80,6 @@ public class VectorTest {
 	public void canBeNormalizedToALengthOfOne() {
 		Vector original = Vector.polar(42, 1234);
 		
-		//assertEquals(Vector.polar(42, 1), original.normalize());
-		assertEquals(42, original.getAngle(), 0);
+		assertEquals(Vector.polar(42, 1), original.normalize());
 	}
 }

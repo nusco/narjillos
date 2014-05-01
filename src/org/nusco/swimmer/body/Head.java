@@ -3,7 +3,6 @@ package org.nusco.swimmer.body;
 import org.nusco.swimmer.body.pns.NerveBuilder;
 import org.nusco.swimmer.physics.Vector;
 
-
 class Head extends VisibleOrgan {
 	
 	private static final double FREQUENCY = 0.01;
@@ -33,6 +32,6 @@ class Head extends VisibleOrgan {
 	}
 
 	public final void tick() {
-		getNerve().send(Vector.cartesian(1, 1));
+		getNerve().send(Vector.ONE);
 	}
 }

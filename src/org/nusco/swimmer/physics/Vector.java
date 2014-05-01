@@ -3,7 +3,7 @@ package org.nusco.swimmer.physics;
 public class Vector {
 
 	public static final Vector ZERO = Vector.cartesian(0, 0);
-	public static final Vector ONE = Vector.polar(0, 1);  // TODO: this is not really "one" - fix
+	public static final Vector ZERO_ONE = Vector.polar(0, 1);
 
 	public static Vector polar(double degrees, double length) {
 		double sin = Math.sin(Math.toRadians(degrees));

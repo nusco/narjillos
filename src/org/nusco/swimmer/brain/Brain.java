@@ -1,17 +1,25 @@
 package org.nusco.swimmer.brain;
 
+import org.nusco.swimmer.physics.Vector;
+import org.nusco.swimmer.pond.Pond;
+
 public class Brain {
 
-	private Behaviour behaviour = Behaviour.FEEDING;
+	private Behaviour behaviour = new FeedingBehaviour();
+
 	
-	public Behaviour getBehaviour() {
+	public void reachGoal() {
+		if(behaviour.toString().equals("feeding"))
+			behaviour = new MatingBehaviour();
+		else
+			behaviour = new FeedingBehaviour();
+	}
+	
+	Behaviour getBehaviour() {
 		return behaviour;
 	}
 
-	public void reachGoal() {
-		if(behaviour == Behaviour.FEEDING)
-			behaviour = Behaviour.MATING;
-		else
-			behaviour = Behaviour.FEEDING;
+	public Vector getDirection(Pond pond, Vector self) {
+		return behaviour.acquireTarget(pond, self).minus(self).normalize();
 	}
 }

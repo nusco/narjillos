@@ -32,6 +32,6 @@ class Head extends VisibleOrgan {
 	}
 
 	public final void tick() {
-		getNerve().send(Vector.ONE);
+		getNerve().send(Vector.ZERO_ONE);
 	}
 }

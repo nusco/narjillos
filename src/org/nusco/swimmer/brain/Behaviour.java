@@ -1,13 +1,10 @@
 package org.nusco.swimmer.brain;
 
 import org.nusco.swimmer.physics.Vector;
-import org.nusco.swimmer.world.World;
+import org.nusco.swimmer.pond.Pond;
 
-public class Behaviour {
+public abstract class Behaviour {
 
-	public static final Behaviour FEEDING = new FeedingBehaviour();
-	public static final Behaviour MATING = new Behaviour("mating");
-	
 	private final String name;
 
 	public Behaviour(String name) {
@@ -19,8 +16,10 @@ public class Behaviour {
 		return name;
 	}
 
-	public Vector lookAt(World world, Vector self) {
-		Vector target = world.closestFoodTo(self);
+	public Vector lookAt(Pond pond, Vector self) {
+		Vector target = acquireTarget(pond, self);
 		return target.minus(self).normalize();
 	}
+
+	public abstract Vector acquireTarget(Pond pond, Vector self);
 }

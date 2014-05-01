@@ -16,8 +16,8 @@ public class DelayNerveTest extends NerveTest {
 		Vector vector3 = Vector.cartesian(0.3, 0);
 		Vector vector4 = Vector.cartesian(0.4, 0);
 
-		assertEquals(Vector.ONE, nerve.process(vector1));
-		assertEquals(Vector.ONE, nerve.process(vector2));
+		assertEquals(Vector.ZERO_ONE, nerve.process(vector1));
+		assertEquals(Vector.ZERO_ONE, nerve.process(vector2));
 		assertEquals(vector1, nerve.process(vector3));
 		assertEquals(vector2, nerve.process(vector4));
 	}

@@ -16,7 +16,7 @@ class DelayNerve extends Nerve {
 	public Vector process(Vector inputSignal) {
 		buffer.add(inputSignal);
 		if(buffer.size() < delay)
-			return Vector.ONE;
+			return Vector.ZERO_ONE;
 		return buffer.pop();
 	}
 }

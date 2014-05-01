@@ -8,7 +8,7 @@ import org.nusco.swimmer.physics.Vector;
 public abstract class Nerve {
 
 	private final List<Nerve> children = new LinkedList<>();
-	private Vector outputSignal = Vector.ONE;
+	private Vector outputSignal = Vector.ZERO_ONE;
 
 	public abstract Vector process(Vector inputSignal);
 

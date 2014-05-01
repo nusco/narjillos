@@ -1,4 +1,4 @@
-package org.nusco.swimmer.world;
+package org.nusco.swimmer.pond;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,16 +7,16 @@ import org.nusco.swimmer.Swimmer;
 import org.nusco.swimmer.physics.Vector;
 import org.nusco.swimmer.things.Food;
 
-public class World {
+public class Pond {
 
 	private Map<Object, Vector> foodToPositions = new HashMap<>();
 	private Map<Object, Vector> swimmersToPositions = new HashMap<>();
 
-	public void placeAt(Food food, int x, int y) {
+	public void add(Food food, int x, int y) {
 		foodToPositions.put(food, Vector.cartesian(x, y));
 	}
 
-	public void placeAt(Swimmer swimmer, int x, int y) {
+	public void add(Swimmer swimmer, int x, int y) {
 		swimmersToPositions.put(swimmer, Vector.cartesian(x, y));
 	}
 

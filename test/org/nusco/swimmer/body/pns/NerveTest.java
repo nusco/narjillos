@@ -11,7 +11,7 @@ public abstract class NerveTest {
 	public void emitsAPredeterminedInitialValueByDefault() {
 		Nerve nerve = createNerve();
 
-		assertEquals(Vector.ONE, nerve.readOutputSignal());
+		assertEquals(Vector.ZERO_ONE, nerve.readOutputSignal());
 	}
 
 	protected abstract Nerve createNerve();

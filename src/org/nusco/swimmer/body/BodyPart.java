@@ -25,7 +25,7 @@ class BodyPart extends VisibleOrgan {
 
 	@Override
 	public double getAngle() {
-		double relativeAngle = getRelativeAngle() * getNerve().readOutputSignal().getLength();
+		double relativeAngle = getRelativeAngle() * getNerve().readOutputSignal().getX();
 		return relativeAngle + getParent().getAngle();
 	}
 }

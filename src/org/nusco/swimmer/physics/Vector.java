@@ -3,11 +3,11 @@ package org.nusco.swimmer.physics;
 public class Vector {
 
 	public static final Vector ZERO = Vector.cartesian(0, 0);
-	public static final Vector ONE = Vector.polar(0, 1);
+	public static final Vector ONE = Vector.polar(0, 1);  // TODO: this is not really "one" - fix
 
 	public static Vector polar(double degrees, double length) {
-		double cos = Math.cos(Math.toRadians(degrees));
 		double sin = Math.sin(Math.toRadians(degrees));
+		double cos = Math.cos(Math.toRadians(degrees));
 		
 		return new Vector(cos * length, sin * length);
 	}
@@ -33,19 +33,27 @@ public class Vector {
 	}
 
 	public double getAngle() {
-	    return Angle.normalize(Math.toDegrees(Math.atan2(getX(), getY())));
+	    return Angle.normalize(Math.toDegrees(Math.atan2(getY(), getX())));
 	}
 
 	public double getLength() {
 		return Math.sqrt(getX() * getX() + getY() * getY());
 	}
 
-	public Vector plus(Vector vector) {
-		return new Vector(getX() + vector.getX(), getY() + vector.getY());
+	public Vector plus(Vector other) {
+		return new Vector(getX() + other.getX(), getY() + other.getY());
+	}
+
+	public Vector minus(Vector other) {
+		return new Vector(getX() - other.getX(), getY() - other.getY());
 	}
 
 	public Vector by(double scalar) {
 		return new Vector(getX() * scalar, getY() * scalar);
+	}
+
+	public Vector normalize() {
+		return new Vector(getAngle(), 1);
 	}
 
 	@Override

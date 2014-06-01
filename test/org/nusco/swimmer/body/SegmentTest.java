@@ -6,13 +6,13 @@ import org.junit.Test;
 import org.nusco.swimmer.body.pns.Nerve;
 import org.nusco.swimmer.physics.Vector;
 
-public class BodyPartTest extends VisibleOrganTest {
-	private VisibleOrgan parent;
+public class SegmentTest extends VisibleOrganTest {
+	private Organ parent;
 	
 	@Override
-	public VisibleOrgan createVisibleOrgan() {
+	public Organ createVisibleOrgan() {
 		parent = new Head(15, THICKNESS, 100);
-		return new BodyPart(20, THICKNESS, 10, 100, parent);
+		return new Segment(20, THICKNESS, 10, 100, parent);
 	}
 
 	@Override
@@ -33,21 +33,9 @@ public class BodyPartTest extends VisibleOrganTest {
 	@Test
 	public void hasAnAbsoluteAngle() {
 		Head head = new Head(0, 0, 0);
-		VisibleOrgan organ1 = new BodyPart(0, 0, 30, 0, head);
-		VisibleOrgan organ2 = new BodyPart(0, 0, -10, 0, organ1);
+		Organ organ1 = new Segment(0, 0, 30, 0, head);
+		Organ organ2 = new Segment(0, 0, -10, 0, organ1);
 		assertEquals(20, organ2.getAngle(), 0);
-	}
-	
-	@Test
-	public void theAngleRelativeToTheParentStaysInTheMinusOrPlus180To180DegreesRange() {
-		assertRelativeAngleEquals(-10, 350);
-		assertRelativeAngleEquals(10, 10);
-		assertRelativeAngleEquals(179, -181);
-	}
-
-	private void assertRelativeAngleEquals(int expectedAngle, int relativeAngle) {
-		BodyPart part = new BodyPart(0, 0, relativeAngle, 0 , new Head(0, 0, 0));
-		assertEquals(expectedAngle, part.getRelativeAngle(), 0);
 	}
 
 	@Override
@@ -82,8 +70,8 @@ public class BodyPartTest extends VisibleOrganTest {
 		};
 
 		int angleFromParent = 1;
-		VisibleOrgan organ1 = head.sproutVisibleOrgan(0, 0, angleFromParent, 0);
-		VisibleOrgan organ2 = organ1.sproutVisibleOrgan(0, 0, angleFromParent, 0);
+		Organ organ1 = head.sproutOrgan(0, 0, angleFromParent, 0);
+		Organ organ2 = organ1.sproutOrgan(0, 0, angleFromParent, 0);
 		
 		assertAngle(1, organ1);
 		assertAngle(2, organ2);
@@ -104,7 +92,7 @@ public class BodyPartTest extends VisibleOrganTest {
 
 	}
 
-	private void assertAngle(int expected, VisibleOrgan organ) {
+	private void assertAngle(int expected, Organ organ) {
 		assertEquals(expected, organ.getAngle(), 0.1);
 	}
 }

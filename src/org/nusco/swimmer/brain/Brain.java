@@ -7,7 +7,6 @@ public class Brain {
 
 	private Behaviour behaviour = new FeedingBehaviour();
 
-	
 	public void reachGoal() {
 		if(behaviour.toString().equals("feeding"))
 			behaviour = new MatingBehaviour();

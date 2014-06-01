@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.nusco.swimmer.physics.Vector;
 
-class WaveNerve extends Nerve {
+public class WaveNerve extends Nerve {
 
 	private final double frequency;
 

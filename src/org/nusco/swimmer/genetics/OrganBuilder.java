@@ -8,7 +8,7 @@ class OrganBuilder {
 
 	static final double PART_LENGTH_MULTIPLIER = 1.0;
 	static final double PART_THICKNESS_MULTIPLIER = 0.15;
-	static final int PART_MAX_RELATIVE_ANGLE = 120;
+	static final int PART_MAX_RELATIVE_ANGLE = 100;
 
 	private final int[] genes;
 
@@ -20,10 +20,10 @@ class OrganBuilder {
 		return Organ.createHead(getLength(), getThickness(), getRGB());
 	}
 
-	public Organ buildBodyPart(Organ parent, int angleSign) {
+	public Organ buildSegment(Organ parent, int angleSign) {
 		if(getLengthGenes() <= MIN_GENES_VALUE || getThicknessGenes() <= MIN_GENES_VALUE)
-			return parent.sproutInvisibleOrgan();
-		return parent.sproutVisibleOrgan(getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
+			return parent.sproutNullOrgan();
+		return parent.sproutOrgan(getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
 	}
 
 	private int getLengthGenes() {

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import org.nusco.swimmer.physics.Vector;
 
-class DelayNerve extends Nerve {
+public class DelayNerve extends Nerve {
 
 	private final int delay;
 	private final LinkedList<Vector> buffer = new LinkedList<>();

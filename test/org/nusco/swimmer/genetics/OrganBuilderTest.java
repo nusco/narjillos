@@ -33,7 +33,7 @@ public class OrganBuilderTest {
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, relativeAngleGene, rgbGene});
 		Organ head = builder.buildHead();
-		Organ organ = builder.buildBodyPart(head, +1);
+		Organ organ = builder.buildSegment(head, +1);
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
@@ -46,7 +46,7 @@ public class OrganBuilderTest {
 		int relativeAngleGene = 200;
 		int angleSign = +1;
 		
-		Organ organ = buildBodyPart(relativeAngleGene, angleSign);
+		Organ organ = buildSegment(relativeAngleGene, angleSign);
 		
 		assertEquals(relativeAngleGene % OrganBuilder.PART_MAX_RELATIVE_ANGLE, organ.getRelativeAngle(), 0);
 	}
@@ -56,14 +56,14 @@ public class OrganBuilderTest {
 		int relativeAngleGene = 20;
 		int angleSign = -1;
 		
-		Organ organ = buildBodyPart(relativeAngleGene, angleSign);
+		Organ organ = buildSegment(relativeAngleGene, angleSign);
 		
 		assertEquals(-20, organ.getRelativeAngle(), 0);
 	}
 
-	private Organ buildBodyPart(int relativeAngleGene, int angleSign) {
+	private Organ buildSegment(int relativeAngleGene, int angleSign) {
 		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, relativeAngleGene, 10});
 		Organ head = builder.buildHead();
-		return builder.buildBodyPart(head, angleSign);
+		return builder.buildSegment(head, angleSign);
 	}
 }

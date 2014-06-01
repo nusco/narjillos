@@ -11,31 +11,19 @@ public abstract class Organ {
 	protected final Organ parent;
 	private final Nerve nerve;
 	private List<Organ> children = new LinkedList<>();
+	protected final int length;
+	protected final int thickness;
+	protected final int rgb;
+	protected final double relativeAngle;
 
-	public Organ(Nerve nerve, Organ parent) {
+	protected Organ(int length, int thickness, int relativeAngle, int rgb, Nerve nerve, Organ parent) {
+		this.length = length;
+		this.thickness = thickness;
+		this.relativeAngle = relativeAngle;
+		this.rgb = rgb;
 		this.nerve = nerve;
 		this.parent = parent;
 	}
-
-	public abstract double getAngle();
-
-	public abstract double getRelativeAngle();
-
-	public abstract Vector getEndPoint();
-
-	public abstract int getRGB();
-
-	public abstract Organ getAsParent();
-
-	public abstract boolean isVisible();
-
-	public abstract String toString();
-
-	public abstract int getLength();
-
-	public abstract int getThickness();
-
-	public abstract Vector getStartPoint();
 
 	public Nerve getNerve() {
 		return nerve;
@@ -49,15 +37,15 @@ public abstract class Organ {
 		return children;
 	}
 
-	public VisibleOrgan sproutVisibleOrgan(int length, int thickness, int relativeAngle, int rgb) {
-		VisibleOrgan child = new BodyPart(length, thickness, relativeAngle, rgb, this);
+	public Organ sproutOrgan(int length, int thickness, int relativeAngle, int rgb) {
+		Organ child = new Segment(length, thickness, relativeAngle, rgb, this);
 		children.add(child);
 		getNerve().connectTo(child.getNerve());
 		return child;
 	}
 
-	public Organ sproutInvisibleOrgan() {
-		Organ child = new NullOrgan(this);
+	public NullOrgan sproutNullOrgan() {
+		NullOrgan child = new NullOrgan(this);
 		children.add(child);
 		getNerve().connectTo(child.getNerve());
 		return child;
@@ -67,5 +55,39 @@ public abstract class Organ {
 		return new Head(length, thickness, rgb);
 	}
 
-	public abstract void tick();
+	public int getLength() {
+		return length;
+	}
+
+	public int getThickness() {
+		return thickness;
+	}
+
+	public abstract Vector getStartPoint();
+
+	public Vector getEndPoint() {
+		return getStartPoint().plus(Vector.polar(getAngle(), length));
+	}
+
+	public abstract double getAngle();
+
+	public Organ getAsParent() {
+		return this;
+	}
+
+	public double getRelativeAngle() {
+		return relativeAngle;
+	}
+
+	public int getRGB() {
+		return rgb;
+	}
+
+	public void tick() {
+	}
+
+	@Override
+	public String toString() {
+		return "[" + length + "," + thickness + "," + getAngle() + "]";
+	}
 }

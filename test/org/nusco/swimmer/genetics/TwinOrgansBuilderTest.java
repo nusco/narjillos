@@ -17,35 +17,35 @@ public class TwinOrgansBuilderTest {
 	Organ parent = new OrganBuilder(new int[]{0, 7, 7, 7, 7}).buildHead();
 
 	@Test
-	public void buildsRegularBodyPartIfNeitherGenesIsMirroring() {
-		Organ[] bodyParts = new TwinOrgansBuilder(notMirroringGenes1, notMirroringGenes2).buildBodyParts(parent);
+	public void buildsRegularSegmentIfNeitherGenesIsMirroring() {
+		Organ[] segments = new TwinOrgansBuilder(notMirroringGenes1, notMirroringGenes2).buildSegments(parent);
 		
-		assertEquals(60, bodyParts[0].getLength());
-		assertEquals(61, bodyParts[1].getLength());
+		assertEquals(60, segments[0].getLength());
+		assertEquals(61, segments[1].getLength());
 	}
 
 	@Test
-	public void buildsMirrorOrganOfSecondOrgaIfBothGenesAreMirroring() {
-		Organ[] bodyParts = new TwinOrgansBuilder(mirroringGenes1, mirroringGenes2).buildBodyParts(parent);
+	public void buildsMirrorSegmentOfSecondSegmentIfBothGenesAreMirroring() {
+		Organ[] segments = new TwinOrgansBuilder(mirroringGenes1, mirroringGenes2).buildSegments(parent);
 		
-		assertEquals(63, bodyParts[0].getLength());
-		assertEqualOrgans(bodyParts[0], bodyParts[1]);
+		assertEquals(63, segments[0].getLength());
+		assertEqualOrgans(segments[0], segments[1]);
 	}
 
 	@Test
-	public void buildsMirrorOrganIfFirstOrganGenesAreMirroring() {
+	public void buildsMirrorSegmentIfFirstSegmentGenesAreMirroring() {
 		TwinOrgansBuilder builder = new TwinOrgansBuilder(mirroringGenes1, notMirroringGenes2);
-		Organ[] bodyParts = builder.buildBodyParts(parent);
+		Organ[] segments = builder.buildSegments(parent);
 		
-		assertEqualOrgans(bodyParts[0], bodyParts[1]);
+		assertEqualOrgans(segments[0], segments[1]);
 	}
 
 	@Test
-	public void buildsMirrorOrganIfSecondOrganGenesAreMirroring() {
+	public void buildsMirrorSegmentIfSecondSegmentGenesAreMirroring() {
 		TwinOrgansBuilder builder = new TwinOrgansBuilder(notMirroringGenes1, mirroringGenes2);
-		Organ[] bodyParts = builder.buildBodyParts(parent);
+		Organ[] segments = builder.buildSegments(parent);
 		
-		assertEqualOrgans(bodyParts[0], bodyParts[1]);
+		assertEqualOrgans(segments[0], segments[1]);
 	}
 
 	private void assertEqualOrgans(Organ organ1, Organ organ2) {

@@ -37,6 +37,6 @@ public class Embryo {
 	}
 
 	private Organ[] createTwinOrgans(OrganParser parser, Organ parent) {
-		return new TwinOrgansBuilder(parser.nextPart(), parser.nextPart()).buildBodyParts(parent);
+		return new TwinOrgansBuilder(parser.nextPart(), parser.nextPart()).buildSegments(parent);
 	}
 }

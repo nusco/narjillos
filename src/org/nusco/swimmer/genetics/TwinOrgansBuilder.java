@@ -12,26 +12,26 @@ class TwinOrgansBuilder {
 		this.organ2Genes = organ2Genes;
 	}
 
-	private boolean isMirrorPart(int[] genes) {
+	private boolean isMirrorSegment(int[] genes) {
 		int controlGene = genes[0];
 		return (controlGene & DNA.MIRROR_ORGAN) == DNA.MIRROR_ORGAN;
 	}
 
-	public Organ[] buildBodyParts(Organ parent) {
-		if(isMirrorPart(organ1Genes))
-			return buildMirrorBodyParts(parent, organ2Genes);
-		else if(isMirrorPart(organ2Genes))
-			return buildMirrorBodyParts(parent, organ1Genes);
+	public Organ[] buildSegments(Organ parent) {
+		if(isMirrorSegment(organ1Genes))
+			return buildMirrorSegments(parent, organ2Genes);
+		else if(isMirrorSegment(organ2Genes))
+			return buildMirrorSegments(parent, organ1Genes);
 		else return new Organ[] {
-			new OrganBuilder(organ1Genes).buildBodyPart(parent, +1),
-			new OrganBuilder(organ2Genes).buildBodyPart(parent, -1)
+			new OrganBuilder(organ1Genes).buildSegment(parent, +1),
+			new OrganBuilder(organ2Genes).buildSegment(parent, -1)
 		};
 	}
 
-	private Organ[] buildMirrorBodyParts(Organ parent, int[] genes) {
+	private Organ[] buildMirrorSegments(Organ parent, int[] genes) {
 		return new Organ[] {
-			new OrganBuilder(genes).buildBodyPart(parent, +1),
-			new OrganBuilder(genes).buildBodyPart(parent, -1)
+			new OrganBuilder(genes).buildSegment(parent, +1),
+			new OrganBuilder(genes).buildSegment(parent, -1)
 		};
 	}
 }

@@ -1,8 +1,6 @@
 package org.nusco.swimmer.body;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -15,19 +13,14 @@ public abstract class VisibleOrganTest {
 
 	protected static int THICKNESS = 8;
 	
-	protected VisibleOrgan organ;
+	protected Organ organ;
 
 	@Before
 	public void setUpPart() {
 		organ = createVisibleOrgan();
 	}
 
-	public abstract VisibleOrgan createVisibleOrgan();
-
-	@Test
-	public void isVisible() {
-		assertTrue(organ.isVisible());
-	}
+	public abstract Organ createVisibleOrgan();
 
 	@Test
 	public void hasALength() {
@@ -62,24 +55,18 @@ public abstract class VisibleOrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		VisibleOrgan child = organ.sproutVisibleOrgan(20, 12, 45, 100);
+		Organ child = organ.sproutOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);
 	}
-
-	@Test
-	public void canSproutInvisibleOrgans() {
-		Organ child = organ.sproutInvisibleOrgan();
-		assertFalse(child.isVisible());
-	}
 	
 	@Test
 	public void knowsItsChildren() {
-		VisibleOrgan child1 = organ.sproutVisibleOrgan(20, THICKNESS, 45, 100);
-		VisibleOrgan child2 = organ.sproutVisibleOrgan(20, THICKNESS, 45, 100);
+		Organ child1 = organ.sproutOrgan(20, THICKNESS, 45, 100);
+		Organ child2 = organ.sproutOrgan(20, THICKNESS, 45, 100);
 
-		List<VisibleOrgan> expected = new LinkedList<>();
+		List<Organ> expected = new LinkedList<>();
 		expected.add(child1);
 		expected.add(child2);
 		

@@ -1,6 +1,6 @@
 package org.nusco.swimmer.body;
 
-import org.nusco.swimmer.body.pns.NerveBuilder;
+import org.nusco.swimmer.body.pns.PassNerve;
 import org.nusco.swimmer.physics.Vector;
 
 
@@ -8,7 +8,7 @@ class NullOrgan extends Organ {
 
 	public NullOrgan(Organ parent) {
 		// TODO untested neuron
-		super(NerveBuilder.createPassNerve(), parent);
+		super(0, 0, 0, 0, new PassNerve(), parent);
 	}
 
 	@Override
@@ -36,10 +36,6 @@ class NullOrgan extends Organ {
 		return getParent();
 	}
 
-	public boolean isVisible() {
-		return false;
-	}
-
 	@Override
 	public int getLength() {
 		return 0;
@@ -53,10 +49,6 @@ class NullOrgan extends Organ {
 	@Override
 	public double getAngle() {
 		return 0;
-	}
-
-	@Override
-	public void tick() {
 	}
 
 	@Override

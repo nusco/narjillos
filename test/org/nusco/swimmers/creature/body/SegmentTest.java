@@ -43,18 +43,17 @@ public class SegmentTest extends OrganTest {
 
 	@Override
 	public void hasAnEndPoint() {
-		// TODO
-//		Head head = new Head(10, 0, 0);
-//		VisibleOrgan organ1 = head.sproutVisibleOrgan(10, 0, 90, 0);
-//		VisibleOrgan organ2 = organ1.sproutVisibleOrgan(10, 0, -90, 0);
-//		assertEquals(Vector.cartesian(20, 15), organ2.getEndPoint());
+		Head head = new Head(10, 0, 0);
+		Organ organ1 = head.sproutOrgan(10, 0, 90, 0);
+		Organ organ2 = organ1.sproutOrgan(10, 0, -90, 0);
+		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
 
 	@Test
-	public void anglesAreControlledByTheNeurons() {
+	public void anglesAreControlledByTheNerves() {
 		//TODO: this test doesn't work. find a smarter way to test this complex chain
 		// TODO: also add NullOrgans to the mix
-		final Nerve doublerNeuron = new Nerve() {
+		final Nerve doublerNerve = new Nerve() {
 			@Override
 			public Vector process(Vector inputSignal) {
 				return Vector.cartesian(inputSignal.getX() * 2, inputSignal.getY() * 2);
@@ -68,7 +67,7 @@ public class SegmentTest extends OrganTest {
 		Head head = new Head(0, 0, 0) {
 			@Override
 			public Nerve getNerve() {
-				return doublerNeuron;
+				return doublerNerve;
 			}
 		};
 

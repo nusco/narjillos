@@ -14,7 +14,7 @@ public class PassNerveTest extends NerveTest {
 		PassNerve nerve = new PassNerve();
 
 		nerve.send(Vector.cartesian(3, 42));
-		assertEquals(Vector.cartesian(3, 42), nerve.readOutputSignal());
+		assertEquals(Vector.cartesian(3, 42), nerve.getOutputSignal());
 	}
 
 	@Override

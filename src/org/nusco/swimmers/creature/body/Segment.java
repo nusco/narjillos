@@ -22,7 +22,7 @@ class Segment extends Organ {
 
 	@Override
 	public double getAngle() {
-		double relativeAngle = getRelativeAngle() * getNerve().readOutputSignal().getX();
+		double relativeAngle = getRelativeAngle() * getNerve().getOutputSignal().getX();
 		return relativeAngle + getParent().getAngle();
 	}
 }

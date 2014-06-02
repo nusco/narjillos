@@ -13,7 +13,7 @@ public abstract class Organ {
 	protected final double relativeAngle;
 	protected final int rgb;
 
-	private final Nerve nerve;
+	private Nerve nerve;
 
 	protected final Organ parent;
 	private List<Organ> children = new LinkedList<>();
@@ -23,7 +23,7 @@ public abstract class Organ {
 		this.thickness = thickness;
 		this.relativeAngle = relativeAngle;
 		this.rgb = rgb;
-		this.nerve = nerve;
+		setNerve(nerve);
 		this.parent = parent;
 	}
 	
@@ -66,14 +66,22 @@ public abstract class Organ {
 	public Organ sproutOrgan(int length, int thickness, int relativeAngle, int rgb) {
 		Organ child = new Segment(length, thickness, relativeAngle, rgb, this);
 		children.add(child);
-		getNerve().connectTo(child.getNerve());
 		return child;
 	}
 
 	public NullOrgan sproutNullOrgan() {
 		NullOrgan child = new NullOrgan(this);
 		children.add(child);
-		getNerve().connectTo(child.getNerve());
 		return child;
+	}
+
+	final void setNerve(Nerve nerve) {
+		this.nerve = nerve;
+	}
+
+	public void tick(Vector inputSignal) {
+		getNerve().send(inputSignal);
+		for(Organ child : getChildren())
+			child.getNerve().send(getNerve().getOutputSignal());
 	}
 }

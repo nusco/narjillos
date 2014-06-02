@@ -23,7 +23,7 @@ public class WaveNerveTest extends NerveTest {
 		WaveNerve nerve = new WaveNerve(frequency);
 		for (int i = 0; i < expectedWave.length; i++) {
 			nerve.send(inputSignal);
-			Vector outputSignal = nerve.readOutputSignal();
+			Vector outputSignal = nerve.getOutputSignal();
 			
 			double currentWave = expectedWave[i];
 			Vector expected = Vector.cartesian(maxX * currentWave, maxY * currentWave);

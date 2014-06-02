@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.physics.Vector;
 
-public class HeadTest extends VisibleOrganTest {
+public class HeadTest extends OrganTest {
 
 	@Override
-	public Head createVisibleOrgan() {
+	public Head createOrgan() {
 		return new Head(20, THICKNESS, 100);
 	}
 
@@ -48,8 +48,8 @@ public class HeadTest extends VisibleOrganTest {
 												};
 
 		for (int i = 0; i < expectedSignal.length; i++) {
-			head.tick();
-			Vector outputSignal = head.getNerve().readOutputSignal();
+			head.tick(Vector.ZERO_ONE);
+			Vector outputSignal = head.getNerve().getOutputSignal();
 			assertEquals(expectedSignal[i].getX(), outputSignal.getX(), 0.0001);
 			assertEquals(expectedSignal[i].getY(), outputSignal.getY(), 0.0001);
 		}

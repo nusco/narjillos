@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.NullOrgan;
 import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class NullOrganTest {
@@ -77,5 +78,15 @@ public class NullOrganTest {
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);
+	}
+
+	@Test
+	public void hasAPassNerve() {
+		Nerve nerve = new NullOrgan(null).getNerve();
+		Vector signal = Vector.polar(2, 3);
+
+		nerve.send(signal);
+		
+		assertEquals(signal, nerve.getOutputSignal());
 	}
 }

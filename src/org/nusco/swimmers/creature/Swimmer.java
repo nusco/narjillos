@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.physics.Vector;
 
 public class Swimmer {
 
@@ -33,6 +34,6 @@ public class Swimmer {
 	}
 	
 	public void tick() {
-		head.tick();
+		head.tick(Vector.ZERO_ONE);
 	}
 }

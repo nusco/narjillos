@@ -7,7 +7,6 @@ import org.nusco.swimmers.physics.Vector;
 class NullOrgan extends Organ {
 
 	public NullOrgan(Organ parent) {
-		// TODO untested neuron
 		super(0, 0, 0, 0, new PassNerve(), parent);
 	}
 

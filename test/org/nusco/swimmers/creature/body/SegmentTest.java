@@ -9,11 +9,11 @@ import org.nusco.swimmers.creature.body.Segment;
 import org.nusco.swimmers.creature.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
-public class SegmentTest extends VisibleOrganTest {
+public class SegmentTest extends OrganTest {
 	private Organ parent;
 	
 	@Override
-	public Organ createVisibleOrgan() {
+	public Organ createOrgan() {
 		parent = new Head(15, THICKNESS, 100);
 		return new Segment(20, THICKNESS, 10, 100, parent);
 	}
@@ -61,7 +61,7 @@ public class SegmentTest extends VisibleOrganTest {
 			}
 			
 			@Override
-			public Vector readOutputSignal() {
+			public Vector getOutputSignal() {
 				return Vector.cartesian(2, 0);
 			}
 		};
@@ -80,15 +80,15 @@ public class SegmentTest extends VisibleOrganTest {
 		assertAngle(2, organ2);
 
 		for (int i = 0; i < 4; i++) {
-			head.tick();
+			head.tick(Vector.ZERO_ONE);
 			assertAngle(1, organ1);
 			assertAngle(2, organ2);
 
-			head.tick();
+			head.tick(Vector.ZERO_ONE);
 			assertAngle(1, organ1);
 			assertAngle(2, organ2);
 
-			head.tick();
+			head.tick(Vector.ZERO_ONE);
 			assertAngle(1, organ1);
 			assertAngle(2, organ2);
 		}

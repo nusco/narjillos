@@ -30,8 +30,4 @@ public class Head extends Organ {
 	public void placeAt(Vector point) {
 		this.startPoint = point;
 	}
-
-	public final void tick() {
-		getNerve().send(Vector.ZERO_ONE);
-	}
 }

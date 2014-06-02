@@ -64,13 +64,14 @@ public abstract class Organ {
 	}
 
 	public Organ sproutOrgan(int length, int thickness, int relativeAngle, int rgb) {
-		Organ child = new Segment(length, thickness, relativeAngle, rgb, this);
-		children.add(child);
-		return child;
+		return addChild(new Segment(length, thickness, relativeAngle, rgb, this));
 	}
 
-	public NullOrgan sproutNullOrgan() {
-		NullOrgan child = new NullOrgan(this);
+	public Organ sproutNullOrgan() {
+		return addChild(new NullOrgan(this));
+	}
+
+	private Organ addChild(Organ child) {
 		children.add(child);
 		return child;
 	}

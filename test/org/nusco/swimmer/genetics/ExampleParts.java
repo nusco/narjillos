@@ -3,11 +3,12 @@ package org.nusco.swimmer.genetics;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.swimmer.body.Head;
 import org.nusco.swimmer.body.Organ;
 
 public class ExampleParts {
 
-	public final static Organ HEAD = Organ.createHead(60, 6, 123);
+	public final static Organ HEAD = new Head(60, 6, 123);
 	public final static Organ CHILD_1 = HEAD.sproutOrgan(50, 9, 30, 123);
 	public final static Organ CHILD_2 = HEAD.sproutOrgan(50, 9, -30, 123);
 	public final static Organ CHILD_1_1 = CHILD_1.sproutOrgan(30, 7, 30, 123);

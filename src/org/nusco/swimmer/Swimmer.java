@@ -3,13 +3,14 @@ package org.nusco.swimmer;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.swimmer.body.Head;
 import org.nusco.swimmer.body.Organ;
 
 public class Swimmer {
 
-	private Organ head;
+	private Head head;
 
-	public Swimmer(Organ head) {
+	public Swimmer(Head head) {
 		this.head = head;
 	}
 

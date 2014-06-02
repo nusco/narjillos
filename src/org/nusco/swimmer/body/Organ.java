@@ -8,14 +8,16 @@ import org.nusco.swimmer.physics.Vector;
 
 public abstract class Organ {
 
-	protected final Organ parent;
-	private final Nerve nerve;
-	private List<Organ> children = new LinkedList<>();
 	protected final int length;
 	protected final int thickness;
-	protected final int rgb;
 	protected final double relativeAngle;
+	protected final int rgb;
 
+	private final Nerve nerve;
+
+	protected final Organ parent;
+	private List<Organ> children = new LinkedList<>();
+	
 	protected Organ(int length, int thickness, int relativeAngle, int rgb, Nerve nerve, Organ parent) {
 		this.length = length;
 		this.thickness = thickness;
@@ -24,6 +26,30 @@ public abstract class Organ {
 		this.nerve = nerve;
 		this.parent = parent;
 	}
+	
+	public int getLength() {
+		return length;
+	}
+
+	public int getThickness() {
+		return thickness;
+	}
+
+	public double getRelativeAngle() {
+		return relativeAngle;
+	}
+
+	public int getRGB() {
+		return rgb;
+	}
+
+	public abstract Vector getStartPoint();
+
+	public Vector getEndPoint() {
+		return getStartPoint().plus(Vector.polar(getAngle(), length));
+	}
+
+	public abstract double getAngle();
 
 	public Nerve getNerve() {
 		return nerve;
@@ -49,45 +75,5 @@ public abstract class Organ {
 		children.add(child);
 		getNerve().connectTo(child.getNerve());
 		return child;
-	}
-	
-	public static Organ createHead(int length, int thickness, int rgb) {
-		return new Head(length, thickness, rgb);
-	}
-
-	public int getLength() {
-		return length;
-	}
-
-	public int getThickness() {
-		return thickness;
-	}
-
-	public abstract Vector getStartPoint();
-
-	public Vector getEndPoint() {
-		return getStartPoint().plus(Vector.polar(getAngle(), length));
-	}
-
-	public abstract double getAngle();
-
-	public Organ getAsParent() {
-		return this;
-	}
-
-	public double getRelativeAngle() {
-		return relativeAngle;
-	}
-
-	public int getRGB() {
-		return rgb;
-	}
-
-	public void tick() {
-	}
-
-	@Override
-	public String toString() {
-		return "[" + length + "," + thickness + "," + getAngle() + "]";
 	}
 }

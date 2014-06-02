@@ -1,5 +1,6 @@
 package org.nusco.swimmer.genetics;
 
+import org.nusco.swimmer.body.Head;
 import org.nusco.swimmer.body.Organ;
 
 class OrganBuilder {
@@ -16,8 +17,8 @@ class OrganBuilder {
 		this.genes = partGenes;
 	}
 
-	public Organ buildHead() {
-		return Organ.createHead(getLength(), getThickness(), getRGB());
+	public Head buildHead() {
+		return new Head(getLength(), getThickness(), getRGB());
 	}
 
 	public Organ buildSegment(Organ parent, int angleSign) {

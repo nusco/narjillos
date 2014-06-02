@@ -12,11 +12,6 @@ class NullOrgan extends Organ {
 	}
 
 	@Override
-	public double getRelativeAngle() {
-		return getParent().getRelativeAngle();
-	}
-
-	@Override
 	public Vector getStartPoint() {
 		return getParent().getEndPoint();
 	}
@@ -32,11 +27,6 @@ class NullOrgan extends Organ {
 	}
 
 	@Override
-	public Organ getAsParent() {
-		return getParent();
-	}
-
-	@Override
 	public int getLength() {
 		return 0;
 	}
@@ -49,6 +39,10 @@ class NullOrgan extends Organ {
 	@Override
 	public double getAngle() {
 		return 0;
+	}
+
+	public double getRelativeAngle() {
+		return getParent().getRelativeAngle();
 	}
 
 	@Override

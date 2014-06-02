@@ -42,11 +42,6 @@ public abstract class VisibleOrganTest {
 	public void hasAnRGBValue() {
 		assertEquals(100, organ.getRGB());
 	}
-
-	@Test
-	public void returnsItselfAsAParent() {
-		assertEquals(organ, organ.getAsParent());
-	}
 	
 	@Test
 	public void hasAnEmptyListOfChildPartsByDefault() {

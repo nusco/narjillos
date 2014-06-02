@@ -39,15 +39,6 @@ public class NullOrganTest {
 	}
 
 	@Test
-	public void doesntAppearAmongstChildrensAncestors() {
-		Organ head = new Head(10, 10, 100);
-		Organ nullOrgan = head.sproutNullOrgan();
-		Organ child = nullOrgan.sproutOrgan(10, 10, 10, 100);
-		
-		assertEquals(head, child.getParent());
-	}
-
-	@Test
 	public void itsGeometricDataIsAllZeros() {
 		Organ head = new Head(10, 10, 100);
 		Organ nullOrgan = head.sproutNullOrgan();

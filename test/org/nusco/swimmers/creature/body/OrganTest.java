@@ -74,18 +74,21 @@ public abstract class OrganTest {
 	@Test
 	public void sendsNerveSignalsToItsChildren() {
 		
-		Organ child1 = organ.sproutOrgan(20, THICKNESS, 45, 100);
-		Organ child2 = organ.sproutOrgan(20, THICKNESS, 45, 100);
+		Organ child1 = organ.sproutOrgan(0, 0, 45, 100);
+		Organ child2 = organ.sproutOrgan(0, 0, 45, 100);
+		Organ child1_1 = child1.sproutOrgan(0, 0, 45, 100);
 		
 		organ.setNerve(new CounterNerve());
 		child1.setNerve(new CounterNerve());
 		child2.setNerve(new CounterNerve());
+		child1_1.setNerve(new CounterNerve());
 		
 		organ.tick(Vector.ZERO_ONE);
 		
 		assertEquals(2, organ.getNerve().getOutputSignal().getLength(), 0.0);
 		assertEquals(3, child1.getNerve().getOutputSignal().getLength(), 0.0);
 		assertEquals(3, child2.getNerve().getOutputSignal().getLength(), 0.0);
+		assertEquals(4, child1_1.getNerve().getOutputSignal().getLength(), 0.0);
 	}
 	
 	class CounterNerve extends Nerve {

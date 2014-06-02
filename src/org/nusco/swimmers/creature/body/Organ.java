@@ -83,6 +83,6 @@ public abstract class Organ {
 	public void tick(Vector inputSignal) {
 		getNerve().send(inputSignal);
 		for(Organ child : getChildren())
-			child.getNerve().send(getNerve().getOutputSignal());
+			child.tick(getNerve().getOutputSignal());
 	}
 }

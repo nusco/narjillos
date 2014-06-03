@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.nusco.swimmers.physics.Vector;
 
+/**
+ * Given an input V, generates an output that goes from -V to V and back in a sinusoidal wave.
+ */
 public class WaveNerve extends Nerve {
 
 	private final double frequency;
 
-	private double angle = 0;
+	private double cosWave = 0;
 	private List<DelayNerve> children = new LinkedList<>();
 
 	public WaveNerve(double frequency) {
@@ -18,14 +21,13 @@ public class WaveNerve extends Nerve {
 	
 	@Override
 	public Vector process(Vector inputSignal) {
-		double amplitude = Math.cos(Math.toRadians(angle));
-		updateAngle();
+		double amplitude = Math.cos(cosWave);
+		updateCosWave();
 		return inputSignal.by(amplitude);
 	}
 
-	private void updateAngle() {
-		angle += 360 * frequency;
-		angle = angle % 360;
+	private void updateCosWave() {
+		cosWave = (cosWave + Math.PI * 2 * frequency) % (Math.PI * 2);
 	}
 
 	public void connectTo(DelayNerve box) {

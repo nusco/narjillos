@@ -67,11 +67,15 @@ public abstract class Organ {
 		return addChild(new Segment(length, thickness, relativeAngle, rgb, this));
 	}
 
+	Organ sproutOrgan(Nerve nerve) {
+		return addChild(new Segment(nerve));
+	}
+
 	public Organ sproutNullOrgan() {
 		return addChild(new NullOrgan(this));
 	}
 
-	private Organ addChild(Organ child) {
+	Organ addChild(Organ child) {
 		children.add(child);
 		return child;
 	}

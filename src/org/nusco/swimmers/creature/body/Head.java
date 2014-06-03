@@ -1,5 +1,6 @@
 package org.nusco.swimmers.creature.body;
 
+import org.nusco.swimmers.creature.pns.Nerve;
 import org.nusco.swimmers.creature.pns.WaveNerve;
 import org.nusco.swimmers.physics.Vector;
 
@@ -10,6 +11,10 @@ public class Head extends Organ {
 
 	public Head(int length, int thickness, int rgb) {
 		super(length, thickness, 0, rgb, new WaveNerve(FREQUENCY), null);
+	}
+
+	Head(Nerve nerve) {
+		super(0, 0, 0, 0, nerve, null);
 	}
 
 	@Override

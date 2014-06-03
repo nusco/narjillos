@@ -17,14 +17,13 @@ public abstract class Organ {
 
 	protected final Organ parent;
 	private List<Organ> children = new LinkedList<>();
-	private Vector outputSignal = Vector.ZERO_ONE;
 	
 	protected Organ(int length, int thickness, int relativeAngle, int rgb, Nerve nerve, Organ parent) {
 		this.length = length;
 		this.thickness = thickness;
 		this.relativeAngle = relativeAngle;
 		this.rgb = rgb;
-		setNerve(nerve);
+		this.nerve = nerve;
 		this.parent = parent;
 	}
 	
@@ -52,10 +51,6 @@ public abstract class Organ {
 
 	public abstract double getAngle();
 
-	public Nerve getNerve() {
-		return nerve;
-	}
-
 	public Organ getParent() {
 		return parent;
 	}
@@ -81,18 +76,14 @@ public abstract class Organ {
 		return child;
 	}
 
-	final void setNerve(Nerve nerve) {
-		this.nerve = nerve;
-	}
-
 	public Vector tick(Vector inputSignal) {
-		outputSignal = getNerve().send(inputSignal);
+		Vector outputSignal = getNerve().send(inputSignal);
 		for(Organ child : getChildren())
 			child.tick(outputSignal);
 		return outputSignal;
 	}
 
-	protected Vector getOutputSignal() {
-		return outputSignal;
+	Nerve getNerve() {
+		return nerve;
 	}
 }

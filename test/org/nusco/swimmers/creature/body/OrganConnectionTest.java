@@ -1,6 +1,6 @@
 package org.nusco.swimmers.creature.body;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.swimmers.creature.pns.Nerve;
@@ -10,28 +10,31 @@ public abstract class OrganConnectionTest {
 	
 	@Test
 	public void sendsNerveSignalsToItsChildren() {
-		Organ head = new Head(new CounterNerve());
-		Organ child1 = head.sproutOrgan(new CounterNerve());
-		Organ child2 = head.sproutOrgan(new CounterNerve());
-		Organ child1_1 = child1.sproutOrgan(new CounterNerve());
+		ClickNerve nerve1 = new ClickNerve();
+		ClickNerve nerve2 = new ClickNerve();
+		ClickNerve nerve3 = new ClickNerve();
+		ClickNerve nerve4 = new ClickNerve();
+
+		Organ head = new Head(nerve1);
+		Organ child1 = head.sproutOrgan(nerve2);
+		child1.sproutOrgan(nerve3);
+		head.sproutOrgan(nerve4);
+
+		head.tick(null);
 		
-		head.setNerve(new CounterNerve());
-		child1.setNerve(new CounterNerve());
-		child2.setNerve(new CounterNerve());
-		child1_1.setNerve(new CounterNerve());
-		
-		head.tick(Vector.ZERO_ONE);
-		
-		assertEquals(2, head.getOutputSignal().getLength(), 0.0);
-		assertEquals(3, child1.getOutputSignal().getLength(), 0.0);
-		assertEquals(3, child2.getOutputSignal().getLength(), 0.0);
-		assertEquals(4, child1_1.getOutputSignal().getLength(), 0.0);
+		assertTrue(nerve1.clicked);
+		assertTrue(nerve2.clicked);
+		assertTrue(nerve3.clicked);
+		assertTrue(nerve4.clicked);
 	}
 	
-	class CounterNerve extends Nerve {
+	class ClickNerve extends Nerve {
+		public boolean clicked = false;
+		
 		@Override
 		public Vector send(Vector inputSignal) {
-			return Vector.polar(0, inputSignal.getLength() + 1);
+			clicked = true;
+			return null;
 		}		
 	}
 }

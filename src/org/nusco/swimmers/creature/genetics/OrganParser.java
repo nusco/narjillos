@@ -16,20 +16,10 @@ class OrganParser {
 		while(index_in_result < result.length) {
 			if(index_in_genes >= genes.length)
 				return result;
-			if(isTerminator(genes[index_in_genes])) {
-				index_in_genes++;
-				return result;
-			}
 			result[index_in_result] = genes[index_in_genes];
 			index_in_result++;
 			index_in_genes++;
 		}
 		return result;
-	}
-
-	private boolean isTerminator(int b) {
-		// TODO: is the idea of a terminator ever useful?
-		// (for sure, it wasn't working the way I implemented it)
-		return false;
 	}
 }

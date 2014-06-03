@@ -67,4 +67,11 @@ public abstract class OrganTest {
 		
 		assertEquals(expected, organ.getChildren());
 	}
+	
+	@Test
+	public void hasAMassEqualToItsArea() {
+		double expectedMass = organ.getLength() * organ.getThickness();
+		
+		assertEquals(expectedMass, organ.getMass(), 0.01);
+	}
 }

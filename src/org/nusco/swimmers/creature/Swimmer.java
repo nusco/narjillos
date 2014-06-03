@@ -9,7 +9,9 @@ import org.nusco.swimmers.physics.Vector;
 
 public class Swimmer {
 
-	private Head head;
+	private final Head head;
+	
+	private Vector target = Vector.ZERO;
 
 	public Swimmer(Head head) {
 		this.head = head;
@@ -34,8 +36,14 @@ public class Swimmer {
 	}
 	
 	public void tick() {
-		// TODO: once I change this to a real direction/distance vector,
-		// remember to remove AMPLITUDE from WaveNerve
-		head.tick(Vector.ZERO_ONE);
+		head.tick(target);
+	}
+
+	public Vector getCurrentTarget() {
+		return target;
+	}
+
+	public void setCurrentTarget(Vector target) {
+		this.target  = target;
 	}
 }

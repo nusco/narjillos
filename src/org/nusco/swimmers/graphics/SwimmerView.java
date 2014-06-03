@@ -8,8 +8,12 @@ import javafx.scene.Parent;
 
 import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.physics.Vector;
 
 public class SwimmerView extends Parent {
+
+	static final int OFFSET_X = 200;
+	static final int OFFSET_Y = 400;
 
 	private final Swimmer swimmer;
 
@@ -23,6 +27,10 @@ public class SwimmerView extends Parent {
 		return result;
 	}
 
+	public Node getTarget() {
+		return new VectorView(swimmer.getCurrentTarget()).toShape();
+	}
+
 	private void addWithChildren(List<Node> result, Organ organ) {
 		Node shape = new OrganView(organ).toShape();
 		if(shape != null)
@@ -33,5 +41,9 @@ public class SwimmerView extends Parent {
 
 	public void tick() {
 		swimmer.tick();
+	}
+
+	public void setCurrentTarget(Vector target) {
+		swimmer.setCurrentTarget(target);
 	}
 }

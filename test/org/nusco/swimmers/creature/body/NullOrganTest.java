@@ -22,6 +22,11 @@ public class NullOrganTest {
 	}
 
 	@Test
+	public void hasNoMass() {
+		assertEquals(0, new NullOrgan(null).getMass(), 0.0);
+	}
+
+	@Test
 	public void hasAParent() {
 		Organ head = new Head(10, 10, 100);
 		Organ nullOrgan = head.sproutNullOrgan();

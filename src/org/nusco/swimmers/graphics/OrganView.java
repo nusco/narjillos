@@ -42,7 +42,7 @@ class OrganView {
 			result.setStroke(Color.BLACK);
 
 		// shift towards the center of the screen
-		result.getTransforms().add(new Translate(200, 400));
+		result.getTransforms().add(new Translate(SwimmerView.OFFSET_X, SwimmerView.OFFSET_Y));
 		
 		// overlap slightly and shift to center based on thickness
 		double widthCenter = organ.getThickness() / 2;

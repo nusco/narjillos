@@ -90,4 +90,8 @@ public abstract class Organ {
 	Nerve getNerve() {
 		return nerve;
 	}
+
+	public double getMass() {
+		return getLength() * getThickness();
+	}
 }

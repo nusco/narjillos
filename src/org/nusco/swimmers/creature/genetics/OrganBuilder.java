@@ -46,7 +46,8 @@ class OrganBuilder {
 
 	private int getRelativeAngle(Side side) {
 		int angleSign = side == Side.RIGHT ? 1 : -1;
-		return (genes[3] % PART_MAX_RELATIVE_ANGLE) * angleSign;
+		int shift = PART_MAX_RELATIVE_ANGLE / 5;
+		return (genes[3] % PART_MAX_RELATIVE_ANGLE - shift) * angleSign;
 	}
 	
 	private int getRGB() {

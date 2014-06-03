@@ -30,7 +30,7 @@ public class OrganBuilderTest {
 		int controlGene = 0b00000000;
 		int lengthGene = 50;
 		int thicknessGene = 60;
-		int relativeAngleGene = 65;
+		int relativeAngleGene = 80;
 		int rgbGene = 40;
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, relativeAngleGene, rgbGene});
@@ -39,26 +39,17 @@ public class OrganBuilderTest {
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
-		assertEquals(relativeAngleGene, organ.getRelativeAngle(), 0);
+		assertEquals(60, organ.getRelativeAngle(), 0);
 		assertEquals(rgbGene, organ.getRGB(), 0);
 	}
 	
 	@Test
-	public void clipsTheMaximumRelativeAngleOfTheOrgan() {
-		int relativeAngleGene = 200;
-		
-		Organ organ = buildSegment(relativeAngleGene, Side.RIGHT);
-		
-		assertEquals(relativeAngleGene % OrganBuilder.PART_MAX_RELATIVE_ANGLE, organ.getRelativeAngle(), 0);
-	}
-	
-	@Test
 	public void generateAMirroredOrgan() {
-		int relativeAngleGene = 20;
+		int relativeAngleGene = 80;
 		
 		Organ organ = buildSegment(relativeAngleGene, Side.LEFT);
 		
-		assertEquals(-20, organ.getRelativeAngle(), 0);
+		assertEquals(-60, organ.getRelativeAngle(), 0);
 	}
 
 	private Organ buildSegment(int relativeAngleGene, Side side) {

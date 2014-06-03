@@ -12,7 +12,7 @@ class Segment extends Organ {
 
 	public Segment(int length, int thickness, int relativeAngle, Side side, int rgb, Organ parent) {
 		super(length, thickness, relativeAngle, rgb, new DelayNerve(DELAY), parent);
-		this.angle = this.relativeAngle;
+		this.angle = relativeAngle + parent.getAngle();
 		this.side = side;
 	}
 

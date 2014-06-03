@@ -37,7 +37,7 @@ public class SegmentTest extends OrganTest {
 	public void hasAnAbsoluteAngle() {
 		Head head = new Head(0, 0, 0);
 		Organ organ1 = new Segment(0, 0, 30, Side.RIGHT, 0, head);
-		Organ organ2 = new Segment(0, 0, -10, Side.LEFT, 0, organ1);
+		Organ organ2 = new Segment(0, 0, -10, Side.RIGHT, 0, organ1);
 		assertEquals(20, organ2.getAngle(), 0);
 	}
 

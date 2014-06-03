@@ -17,7 +17,7 @@ public class DelayNerve extends Nerve {
 	public Vector send(Vector inputSignal) {
 		buffer.add(inputSignal);
 		if(buffer.size() < delay)
-			return Vector.ZERO_ONE;
+			return buffer.getFirst();
 		return buffer.pop();
 	}
 }

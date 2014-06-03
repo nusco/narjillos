@@ -16,8 +16,8 @@ public class DelayNerveTest {
 		Vector vector3 = Vector.cartesian(0.3, 0);
 		Vector vector4 = Vector.cartesian(0.4, 0);
 
-		assertEquals(Vector.ZERO_ONE, nerve.send(vector1));
-		assertEquals(Vector.ZERO_ONE, nerve.send(vector2));
+		assertEquals(vector1, nerve.send(vector1));
+		assertEquals(vector1, nerve.send(vector2));
 		assertEquals(vector1, nerve.send(vector3));
 		assertEquals(vector2, nerve.send(vector4));
 	}

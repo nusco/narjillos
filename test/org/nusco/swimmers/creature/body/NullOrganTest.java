@@ -10,6 +10,7 @@ import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.NullOrgan;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.pns.Nerve;
+import org.nusco.swimmers.creature.pns.PassNerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class NullOrganTest {
@@ -83,10 +84,7 @@ public class NullOrganTest {
 	@Test
 	public void hasAPassNerve() {
 		Nerve nerve = new NullOrgan(null).getNerve();
-		Vector signal = Vector.polar(2, 3);
-
-		nerve.send(signal);
-		
-		assertEquals(signal, nerve.getOutputSignal());
+				
+		assertEquals(PassNerve.class, nerve.getClass());
 	}
 }

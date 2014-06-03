@@ -4,7 +4,8 @@ import org.nusco.swimmers.physics.Vector;
 
 public class PassNerve extends Nerve {
 
-	public Vector process(Vector inputSignal) {
+	@Override
+	public Vector send(Vector inputSignal) {
 		return inputSignal;
 	}
 }

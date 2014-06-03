@@ -16,7 +16,7 @@ public class WaveNerve extends Nerve {
 	}
 	
 	@Override
-	public Vector process(Vector inputSignal) {
+	public Vector send(Vector inputSignal) {
 		double amplitude = Math.cos(cosWave);
 		updateCosWave();
 		return inputSignal.by(amplitude);

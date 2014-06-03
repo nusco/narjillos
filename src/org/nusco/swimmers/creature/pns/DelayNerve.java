@@ -13,7 +13,8 @@ public class DelayNerve extends Nerve {
 		this.delay = delay;
 	}
 
-	public Vector process(Vector inputSignal) {
+	@Override
+	public Vector send(Vector inputSignal) {
 		buffer.add(inputSignal);
 		if(buffer.size() < delay)
 			return Vector.ZERO_ONE;

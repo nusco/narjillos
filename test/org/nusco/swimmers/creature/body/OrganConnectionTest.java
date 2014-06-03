@@ -22,15 +22,15 @@ public abstract class OrganConnectionTest {
 		
 		head.tick(Vector.ZERO_ONE);
 		
-		assertEquals(2, head.getNerve().getOutputSignal().getLength(), 0.0);
-		assertEquals(3, child1.getNerve().getOutputSignal().getLength(), 0.0);
-		assertEquals(3, child2.getNerve().getOutputSignal().getLength(), 0.0);
-		assertEquals(4, child1_1.getNerve().getOutputSignal().getLength(), 0.0);
+		assertEquals(2, head.getOutputSignal().getLength(), 0.0);
+		assertEquals(3, child1.getOutputSignal().getLength(), 0.0);
+		assertEquals(3, child2.getOutputSignal().getLength(), 0.0);
+		assertEquals(4, child1_1.getOutputSignal().getLength(), 0.0);
 	}
 	
 	class CounterNerve extends Nerve {
 		@Override
-		public Vector process(Vector inputSignal) {
+		public Vector send(Vector inputSignal) {
 			return Vector.polar(0, inputSignal.getLength() + 1);
 		}		
 	}

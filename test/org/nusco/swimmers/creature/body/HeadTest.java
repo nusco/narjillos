@@ -48,8 +48,7 @@ public class HeadTest extends OrganTest {
 												};
 
 		for (int i = 0; i < expectedSignal.length; i++) {
-			head.tick(Vector.ZERO_ONE);
-			Vector outputSignal = head.getNerve().getOutputSignal();
+			Vector outputSignal = head.tick(Vector.ZERO_ONE);
 			assertEquals(expectedSignal[i].getX(), outputSignal.getX(), 0.0001);
 			assertEquals(expectedSignal[i].getY(), outputSignal.getY(), 0.0001);
 		}

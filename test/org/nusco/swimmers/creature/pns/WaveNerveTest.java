@@ -3,11 +3,9 @@ package org.nusco.swimmers.creature.pns;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.swimmers.creature.pns.Nerve;
-import org.nusco.swimmers.creature.pns.WaveNerve;
 import org.nusco.swimmers.physics.Vector;
 
-public class WaveNerveTest extends NerveTest {
+public class WaveNerveTest {
 	
 	@Test
 	public void generatesASinusoidalWave() {
@@ -21,18 +19,12 @@ public class WaveNerveTest extends NerveTest {
 
 		WaveNerve nerve = new WaveNerve(frequency);
 		for (int i = 0; i < expectedWave.length; i++) {
-			nerve.send(inputSignal);
-			Vector outputSignal = nerve.getOutputSignal();
+			Vector outputSignal = nerve.send(inputSignal);
 			
 			int expectedAngle = expectedWave[i] >= 0 ? angle : angle - 180;
 			assertEquals(expectedAngle, outputSignal.getAngle(), 0.01);
 
 			assertEquals(Math.abs(expectedWave[i]), outputSignal.getLength(), 0.01);
 		}
-	}
-
-	@Override
-	protected Nerve createNerve() {
-		return new WaveNerve(0.1);
 	}
 }

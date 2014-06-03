@@ -33,8 +33,8 @@ public class NullOrganTest {
 	public void hasChildren() {
 		Organ head = new Head(10, 10, 100);
 		Organ nullOrgan = head.sproutNullOrgan();
-		Organ child1 = nullOrgan.sproutOrgan(10, 10, 10, 100);
-		Organ child2 = nullOrgan.sproutOrgan(10, 10, -10, 100);
+		Organ child1 = nullOrgan.sproutOrgan(10, 10, 10, Side.RIGHT, 100);
+		Organ child2 = nullOrgan.sproutOrgan(10, 10, -10, Side.LEFT, 100);
 		
 		List<Organ> expected = new LinkedList<>();
 		expected.add(child1);
@@ -57,7 +57,7 @@ public class NullOrganTest {
 	@Test
 	public void itsRelativeAngleIsTheSameAsItsParent() {
 		Organ head = new Head(10, 10, 100);
-		Organ child = head.sproutOrgan(10, 10, 45, 100);
+		Organ child = head.sproutOrgan(10, 10, 45, Side.RIGHT, 100);
 		Organ nullOrgan = child.sproutNullOrgan();
 
 		assertEquals(45, nullOrgan.getRelativeAngle(), 0);
@@ -75,7 +75,7 @@ public class NullOrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = new NullOrgan(null).sproutOrgan(20, 12, 45, 100);
+		Organ child = new NullOrgan(new Head(0, 0, 0)).sproutOrgan(20, 12, 45, Side.RIGHT, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);

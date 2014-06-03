@@ -52,8 +52,13 @@ public class Vector {
 		return new Vector(getX() * scalar, getY() * scalar);
 	}
 
-	public Vector normalize() {
-		return Vector.polar(getAngle(), 1);
+	public Vector normalize(double length) {
+		return Vector.polar(getAngle(), length);
+	}
+
+	public Vector getNormal() {
+		double degrees = getAngle() - 90;
+		return Vector.polar(degrees, 1);
 	}
 
 	@Override

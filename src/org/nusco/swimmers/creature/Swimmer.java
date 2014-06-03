@@ -34,6 +34,8 @@ public class Swimmer {
 	}
 	
 	public void tick() {
+		// TODO: once I change this to a real direction/distance vector,
+		// remember to remove AMPLITUDE from WaveNerve
 		head.tick(Vector.ZERO_ONE);
 	}
 }

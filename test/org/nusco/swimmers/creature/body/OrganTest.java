@@ -50,7 +50,7 @@ public abstract class OrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = organ.sproutOrgan(20, 12, 45, 100);
+		Organ child = organ.sproutOrgan(20, 12, 45, Side.RIGHT, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 		assertEquals(45, child.getRelativeAngle(), 0);
@@ -58,8 +58,8 @@ public abstract class OrganTest {
 	
 	@Test
 	public void knowsItsChildren() {
-		Organ child1 = organ.sproutOrgan(20, THICKNESS, 45, 100);
-		Organ child2 = organ.sproutOrgan(20, THICKNESS, 45, 100);
+		Organ child1 = organ.sproutOrgan(20, THICKNESS, 45, Side.RIGHT, 100);
+		Organ child2 = organ.sproutOrgan(20, THICKNESS, 45, Side.LEFT, 100);
 
 		List<Organ> expected = new LinkedList<>();
 		expected.add(child1);

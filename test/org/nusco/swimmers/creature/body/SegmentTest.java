@@ -15,7 +15,7 @@ public class SegmentTest extends OrganTest {
 	@Override
 	public Organ createOrgan() {
 		parent = new Head(15, THICKNESS, 100);
-		return new Segment(20, THICKNESS, 10, 100, parent);
+		return new Segment(20, THICKNESS, 10, Side.RIGHT, 100, parent);
 	}
 
 	@Override
@@ -36,16 +36,16 @@ public class SegmentTest extends OrganTest {
 	@Test
 	public void hasAnAbsoluteAngle() {
 		Head head = new Head(0, 0, 0);
-		Organ organ1 = new Segment(0, 0, 30, 0, head);
-		Organ organ2 = new Segment(0, 0, -10, 0, organ1);
+		Organ organ1 = new Segment(0, 0, 30, Side.RIGHT, 0, head);
+		Organ organ2 = new Segment(0, 0, -10, Side.LEFT, 0, organ1);
 		assertEquals(20, organ2.getAngle(), 0);
 	}
 
 	@Override
 	public void hasAnEndPoint() {
 		Head head = new Head(10, 0, 0);
-		Organ organ1 = head.sproutOrgan(10, 0, 90, 0);
-		Organ organ2 = organ1.sproutOrgan(10, 0, -90, 0);
+		Organ organ1 = head.sproutOrgan(10, 0, 90, Side.RIGHT, 0);
+		Organ organ2 = organ1.sproutOrgan(10, 0, -90, Side.RIGHT, 0);
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
 
@@ -67,8 +67,8 @@ public class SegmentTest extends OrganTest {
 		};
 
 		int angleFromParent = 1;
-		Organ organ1 = head.sproutOrgan(0, 0, angleFromParent, 0);
-		Organ organ2 = organ1.sproutOrgan(0, 0, angleFromParent, 0);
+		Organ organ1 = head.sproutOrgan(0, 0, angleFromParent, Side.RIGHT, 0);
+		Organ organ2 = organ1.sproutOrgan(0, 0, angleFromParent, Side.LEFT, 0);
 		
 		assertAngle(1, organ1);
 		assertAngle(2, organ2);

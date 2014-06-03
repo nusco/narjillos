@@ -8,15 +8,16 @@ class Segment extends Organ {
 	private static final int DELAY = 13;
 	
 	private double angle;
+	private final Side side;
 
-	public Segment(int length, int thickness, int relativeAngle, int rgb, Organ parent) {
+	public Segment(int length, int thickness, int relativeAngle, Side side, int rgb, Organ parent) {
 		super(length, thickness, relativeAngle, rgb, new DelayNerve(DELAY), parent);
-		updateAngle(Vector.ZERO_ONE);
+		this.angle = this.relativeAngle;
+		this.side = side;
 	}
 
 	Segment(Nerve nerve) {
-		super(0, 0, 0, 0, nerve, null);
-		updateAngle(Vector.ZERO_ONE);
+		this(0, 0, 0, Side.LEFT, 0, null);
 	}
 
 	@Override
@@ -32,13 +33,12 @@ class Segment extends Organ {
 	@Override
 	public Vector tick(Vector inputSignal) {
 		Vector outputSignal = super.tick(inputSignal);
-		updateAngle(outputSignal);
+		this.angle = getUpdatedAngle(outputSignal);
 		return outputSignal;
 	}
 	
-	private void updateAngle(Vector outputSignal) {
-		double relativeAngle = getRelativeAngle() * outputSignal.getLength();
-		this.angle = relativeAngle + getParent().getAngle();
+	private double getUpdatedAngle(Vector signal) {
+		return getVector().plus(signal.by(side.toSign())).getAngle();
 	}
 
 	@Override

@@ -19,6 +19,6 @@ public class Brain {
 	}
 
 	public Vector getDirection(Pond pond, Vector self) {
-		return behaviour.acquireTarget(pond, self).minus(self).normalize();
+		return behaviour.acquireTarget(pond, self).minus(self).normalize(1);
 	}
 }

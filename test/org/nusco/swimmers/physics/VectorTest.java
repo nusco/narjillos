@@ -78,9 +78,22 @@ public class VectorTest {
 	}
 
 	@Test
-	public void canBeNormalizedToALengthOfOne() {
+	public void canBeNormalizedToAnArbitraryLength() {
 		Vector original = Vector.polar(42, 1234);
 		
-		assertEquals(Vector.polar(42, 1), original.normalize());
+		assertEquals(Vector.polar(42, 10), original.normalize(10));
+	}
+
+	@Test
+	public void hasANormalVector() {
+		assertEqualsVector(Vector.polar(-50, 1), Vector.polar(40, 1234).getNormal());
+		assertEqualsVector(Vector.polar(0, 1), Vector.polar(90, 1234).getNormal());
+		assertEqualsVector(Vector.polar(90, 1), Vector.polar(180, 1234).getNormal());
+		assertEqualsVector(Vector.polar(180, 1), Vector.polar(-90, 1234).getNormal());
+	}
+
+	private void assertEqualsVector(Vector v1, Vector v2) {
+		assertEquals(v1.getX(), v2.getX(), 0.001);
+		assertEquals(v1.getY(), v2.getY(), 0.001);
 	}
 }

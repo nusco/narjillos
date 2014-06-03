@@ -8,20 +8,19 @@ import org.nusco.swimmers.physics.Vector;
 public class WaveNerveTest {
 	
 	@Test
-	public void generatesASinusoidalWave() {
-		assertWaveEquals(0.1, new double[] { 1.0, 0.809, 0.309, -0.309, -0.809, -1, -0.809, -0.309, 0.309, 0.809, 1 });
-		assertWaveEquals(0.5, new double[] { 1, -1, 1 });
+	public void generatesASinusoidalWaveBasedOnTheInputSign() {
+		assertWaveEquals(0.1, Vector.polar(15, 1), new double[] { 10.0, 8.09, 3.09, -3.09, -8.09, -10, -8.09, -3.09, 3.09, 8.09, 10 });
+		assertWaveEquals(0.5, Vector.polar(15, 10), new double[] { 100, -100, 100 });
 	}
 
-	private void assertWaveEquals(double frequency, double[] expectedWave) {
-		final int angle = 15;
-		Vector inputSignal = Vector.polar(angle, 1);
-
+	private void assertWaveEquals(double frequency, Vector inputSignal, double[] expectedWave) {
+		double angle = inputSignal.getAngle();
+		
 		WaveNerve nerve = new WaveNerve(frequency);
 		for (int i = 0; i < expectedWave.length; i++) {
 			Vector outputSignal = nerve.send(inputSignal);
 			
-			int expectedAngle = expectedWave[i] >= 0 ? angle : angle - 180;
+			double expectedAngle = expectedWave[i] >= 0 ? angle - 90 : angle + 90;
 			assertEquals(expectedAngle, outputSignal.getAngle(), 0.01);
 
 			assertEquals(Math.abs(expectedWave[i]), outputSignal.getLength(), 0.01);

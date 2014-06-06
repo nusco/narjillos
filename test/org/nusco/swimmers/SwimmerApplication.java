@@ -17,7 +17,7 @@ import org.nusco.swimmers.physics.Vector;
 
 public class SwimmerApplication extends Application {
 
-	private DNA currentDNA = DNA.random();
+	private DNA currentDNA = DNA.ancestor();
 	
 	@Override
 	public void start(final Stage primaryStage) {
@@ -43,8 +43,7 @@ public class SwimmerApplication extends Application {
                     public void handle(MouseEvent event) {
                     	if(event.getButton() == MouseButton.PRIMARY)
                     		swimmer[0] = updateSwimmerBody();
-                    	else
-                    		swimmer[0].setCurrentTarget(generateRandomTarget());
+                    	swimmer[0].setCurrentTarget(generateRandomTarget());
                     	showSwimmer(root, swimmer);
                     };
                 });
@@ -62,7 +61,8 @@ public class SwimmerApplication extends Application {
 
     private Vector generateRandomTarget() {
     	double randomAngle = Math.random() * 360 - 180;
-    	return Vector.polar(randomAngle, 1);
+    	// TODO
+    	return Vector.polar(180, 1);
 	}
 
 	public static void run(Runnable treatment) {

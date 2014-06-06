@@ -41,15 +41,15 @@ public class Vector {
 	}
 
 	public Vector plus(Vector other) {
-		return new Vector(getX() + other.getX(), getY() + other.getY());
+		return Vector.cartesian(getX() + other.getX(), getY() + other.getY());
 	}
 
 	public Vector minus(Vector other) {
-		return new Vector(getX() - other.getX(), getY() - other.getY());
+		return Vector.cartesian(getX() - other.getX(), getY() - other.getY());
 	}
 
 	public Vector by(double scalar) {
-		return new Vector(getX() * scalar, getY() * scalar);
+		return Vector.cartesian(getX() * scalar, getY() * scalar);
 	}
 
 	public Vector normalize(double length) {

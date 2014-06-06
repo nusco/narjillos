@@ -59,8 +59,8 @@ public abstract class Organ {
 		return children;
 	}
 
-	public Organ sproutOrgan(int length, int thickness, int relativeAngle, Side side, int rgb) {
-		return addChild(new Segment(length, thickness, relativeAngle, side, rgb, this));
+	public Organ sproutOrgan(int length, int thickness, int relativeAngle, int rgb) {
+		return addChild(new Segment(length, thickness, relativeAngle, rgb, this));
 	}
 
 	Organ sproutOrgan(Nerve nerve) {
@@ -84,7 +84,7 @@ public abstract class Organ {
 	}
 
 	Vector getVector() {
-		return getEndPoint().minus(getStartPoint());
+		return Vector.polar(getAngle(), getLength());
 	}
 	
 	Nerve getNerve() {

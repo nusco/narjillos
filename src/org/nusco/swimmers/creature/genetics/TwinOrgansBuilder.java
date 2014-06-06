@@ -1,7 +1,6 @@
 package org.nusco.swimmers.creature.genetics;
 
 import org.nusco.swimmers.creature.body.Organ;
-import org.nusco.swimmers.creature.body.Side;
 
 class TwinOrgansBuilder {
 
@@ -24,15 +23,15 @@ class TwinOrgansBuilder {
 		else if(isMirrorSegment(organ2Genes))
 			return buildMirrorSegments(parent, organ1Genes);
 		else return new Organ[] {
-			new OrganBuilder(organ1Genes).buildSegment(parent, Side.RIGHT),
-			new OrganBuilder(organ2Genes).buildSegment(parent, Side.LEFT)
+			new OrganBuilder(organ1Genes).buildSegment(parent, 1),
+			new OrganBuilder(organ2Genes).buildSegment(parent, -1)
 		};
 	}
 
 	private Organ[] buildMirrorSegments(Organ parent, int[] genes) {
 		return new Organ[] {
-			new OrganBuilder(genes).buildSegment(parent, Side.RIGHT),
-			new OrganBuilder(genes).buildSegment(parent, Side.LEFT)
+			new OrganBuilder(genes).buildSegment(parent, 1),
+			new OrganBuilder(genes).buildSegment(parent, -1)
 		};
 	}
 }

@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.swimmers.creature.body.Organ;
-import org.nusco.swimmers.creature.body.Side;
-import org.nusco.swimmers.creature.genetics.OrganBuilder;
 
 public class OrganBuilderTest {
 
@@ -35,7 +33,7 @@ public class OrganBuilderTest {
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, relativeAngleGene, rgbGene});
 		Organ head = builder.buildHead();
-		Organ organ = builder.buildSegment(head, Side.RIGHT);
+		Organ organ = builder.buildSegment(head, 1);
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
@@ -47,14 +45,14 @@ public class OrganBuilderTest {
 	public void generateAMirroredOrgan() {
 		int relativeAngleGene = 80;
 		
-		Organ organ = buildSegment(relativeAngleGene, Side.LEFT);
+		Organ organ = buildSegment(relativeAngleGene, -1);
 		
 		assertEquals(-60, organ.getRelativeAngle(), 0);
 	}
 
-	private Organ buildSegment(int relativeAngleGene, Side side) {
+	private Organ buildSegment(int relativeAngleGene, int angleSign) {
 		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, relativeAngleGene, 10});
 		Organ head = builder.buildHead();
-		return builder.buildSegment(head, side);
+		return builder.buildSegment(head, angleSign);
 	}
 }

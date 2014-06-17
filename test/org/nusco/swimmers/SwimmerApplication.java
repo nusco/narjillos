@@ -18,7 +18,7 @@ import org.nusco.swimmers.physics.Vector;
 
 public class SwimmerApplication extends Application {
 
-	private DNA currentDNA = DNA.ancestor();
+	private DNA currentDNA = DNA.random();
 	
 	@Override
 	public void start(final Stage primaryStage) {

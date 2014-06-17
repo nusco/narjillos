@@ -5,7 +5,8 @@ import org.nusco.swimmers.creature.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class Segment extends Organ {
-	private static final int DELAY = 13;
+	private static final int DELAY = 21;
+	private static final double AMPLITUDE_AMPLIFICATION = 4;
 	
 	private double angle;
 
@@ -31,19 +32,13 @@ public class Segment extends Organ {
 	@Override
 	public Vector tick(Vector inputSignal) {
 		Vector outputSignal = super.tick(inputSignal);
-		// TODO
-		// special case: if the output is zero, try something random-ish
-//		if(outputSignal.getLength() < 0.01)
-//			outputSignal = Vector.polar(Math.random() * 30 + 30, Math.random() * 10 + 10);
-		this.angle = getAngularVelocity(outputSignal) + parent.getAngle();
+		
+		Vector base = Vector.polar(getRelativeAngle(), getLength());
+		Vector impulse = outputSignal.by(AMPLITUDE_AMPLIFICATION * Math.sin(relativeAngle));
+		Vector direction = base.plus(impulse);
+		this.angle = direction.getAngle();
+
 		return outputSignal;
-	}
-	
-	private double getAngularVelocity(Vector signal) {
-		Vector vector = getVector();
-		Vector change = vector.plus(signal).by(0.5); //.by(-Math.signum(getRelativeAngle())));
-		peek = change;
-		return change.getAngle() - vector.getAngle();
 	}
 
 	@Override

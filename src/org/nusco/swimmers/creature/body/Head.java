@@ -11,12 +11,12 @@ public class Head extends Organ {
 	private double angle;
 
 	public Head(int length, int thickness, int rgb) {
-		super(length, thickness, 90, rgb, new WaveNerve(FREQUENCY), null);
+		super(length, thickness, 0, rgb, new WaveNerve(FREQUENCY), null);
 		angle = getRelativeAngle();
 	}
 
 	Head(Nerve nerve) {
-		super(0, 0, 90, 0, nerve, null);
+		super(0, 0, 0, 0, nerve, null);
 		angle = getRelativeAngle();
 	}
 
@@ -38,16 +38,16 @@ public class Head extends Organ {
 	@Override
 	public Vector tick(Vector inputSignal) {
 		Vector result = super.tick(inputSignal);
-		correctAngle(inputSignal);
+//		correctAngle(inputSignal);
 		return result;
 	}
 
-	private void correctAngle(Vector inputSignal) {
-		if(angle - 180 < inputSignal.getAngle())
-			angle -= 0.5;
-		else if(angle - 180  > inputSignal.getAngle())
-			angle -= 0.5;
-	}
+//	private void correctAngle(Vector inputSignal) {
+//		if(angle - 180 < inputSignal.getAngle())
+//			angle -= 0.5;
+//		else if(angle - 180  > inputSignal.getAngle())
+//			angle -= 0.5;
+//	}
 	
 	public void placeAt(Vector point) {
 		this.startPoint = point;

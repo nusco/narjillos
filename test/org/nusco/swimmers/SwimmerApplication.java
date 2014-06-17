@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +26,7 @@ public class SwimmerApplication extends Application {
 
 		final Group root = new Group();
 		final SwimmerView[] swimmer = new SwimmerView[]{ updateSwimmerBody() };
-    	swimmer[0].setCurrentTarget(generateRandomTarget());
+    	swimmer[0].setCurrentTarget(Vector.polar(180, 3));
     	showSwimmer(root, swimmer);
 
 		Scene scene = new Scene(root, 1200, 800);
@@ -52,22 +53,22 @@ public class SwimmerApplication extends Application {
 		primaryStage.show();
 	}
 	
-	private void showSwimmer(final Group root,
-			final SwimmerView[] swimmer) {
+	private void showSwimmer(Group root, SwimmerView[] swimmer) {
 		root.getChildren().clear();
     	root.getChildren().addAll(swimmer[0].getParts());
     	root.getChildren().add(swimmer[0].getTarget());
+
+    	for(Node node : swimmer[0].getChangeVectors())
+    		root.getChildren().add(node);
 	}
 
     private Vector generateRandomTarget() {
     	double randomAngle = Math.random() * 360 - 180;
-    	// TODO
-    	return Vector.polar(180, 1);
+    	double randomLength = Math.random() * 3 + 2;
+    	return Vector.polar(randomAngle, randomLength);
 	}
 
 	public static void run(Runnable treatment) {
-        if(treatment == null) throw new IllegalArgumentException("The treatment to perform can not be null");
- 
         if(Platform.isFxApplicationThread()) treatment.run();
         else Platform.runLater(treatment);
     }

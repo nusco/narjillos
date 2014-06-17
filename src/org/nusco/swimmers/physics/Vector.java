@@ -57,8 +57,17 @@ public class Vector {
 	}
 
 	public Vector getNormal() {
-		double degrees = getAngle() - 90;
-		return Vector.polar(degrees, 1);
+		return Vector.polar(getAngle() - 90, 1);
+	}
+
+	public Vector getTangentialComponentOn(Vector other) {
+		double relativeAngle = other.getAngle() - getAngle();
+		double resultLength = Math.cos(Math.toRadians(relativeAngle)) * getLength();
+		return Vector.polar(other.getAngle(), resultLength);
+	}
+
+	public Vector getNormalComponentOn(Vector other) {
+		return getTangentialComponentOn(other.getNormal());
 	}
 
 	@Override

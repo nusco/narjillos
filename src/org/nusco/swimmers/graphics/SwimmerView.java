@@ -5,6 +5,10 @@ import java.util.List;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.creature.body.Organ;
@@ -37,6 +41,20 @@ public class SwimmerView extends Parent {
 			result.add(shape);
 		for(Organ child : organ.getChildren())
 			addWithChildren(result, child);
+	}
+
+	public List<Rectangle> getChangeVectors() {
+		List<Rectangle> results = new LinkedList<>();
+		for(Organ part : swimmer.getParts()) {
+			Vector peek = part.peek;
+			Rectangle line = new Rectangle(0, 0, peek.getLength(), 2);
+			line.setFill(Color.BLUEVIOLET);
+			line.getTransforms().add(new Translate(200, 400));
+			line.getTransforms().add(new Translate(part.getStartPoint().getX(), part.getStartPoint().getY()));
+			line.getTransforms().add(new Rotate(peek.getAngle()));
+			results.add(line);
+		}
+		return results;
 	}
 
 	public void tick() {

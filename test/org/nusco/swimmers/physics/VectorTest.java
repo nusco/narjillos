@@ -40,6 +40,7 @@ public class VectorTest {
 		assertEquals(-135, Vector.cartesian(-1, -1).getAngle(), 0);
 		assertEquals(180, Vector.cartesian(-1, 0).getAngle(), 0);
 		assertEquals(135, Vector.cartesian(-1, 1).getAngle(), 0);
+		assertEquals(-179, Vector.polar(185, 0).getAngle(), 0);
 	}
 	
 	@Test
@@ -92,6 +93,22 @@ public class VectorTest {
 		assertEqualsVector(Vector.polar(180, 1), Vector.polar(-90, 1234).getNormal());
 	}
 
+	@Test
+	public void hasATangentialComponentOnAnotherVector() {
+		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getTangentialComponentOn(Vector.polar(180, 1)));
+		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getTangentialComponentOn(Vector.polar(180, 10)));
+		assertEqualsVector(Vector.ZERO, Vector.polar(180, 10).getTangentialComponentOn(Vector.polar(90, 1)));
+		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getTangentialComponentOn(Vector.polar(45, 1)));
+	}
+
+	@Test
+	public void hasANormalComponentOnAnotherVector() {
+		assertEqualsVector(Vector.ZERO, Vector.polar(90, 10).getNormalComponentOn(Vector.polar(90, 1)));
+		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 1)));
+		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 10)));
+		assertEqualsVector(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(0, 10)));
+	}
+	
 	private void assertEqualsVector(Vector v1, Vector v2) {
 		assertEquals(v1.getX(), v2.getX(), 0.001);
 		assertEquals(v1.getY(), v2.getY(), 0.001);

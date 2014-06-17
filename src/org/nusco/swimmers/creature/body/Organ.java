@@ -80,6 +80,7 @@ public abstract class Organ {
 		Vector outputSignal = getNerve().send(inputSignal);
 		for(Organ child : getChildren())
 			child.tick(outputSignal);
+		peek = outputSignal;
 		return outputSignal;
 	}
 
@@ -94,4 +95,7 @@ public abstract class Organ {
 	public double getMass() {
 		return getLength() * getThickness();
 	}
+
+	// for debugging
+	public Vector peek = Vector.ZERO;
 }

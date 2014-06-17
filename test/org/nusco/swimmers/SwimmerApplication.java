@@ -42,9 +42,11 @@ public class SwimmerApplication extends Application {
 		scene.addEventFilter(MouseEvent.MOUSE_CLICKED, 
                 new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event) {
-                    	if(event.getButton() == MouseButton.PRIMARY)
+                    	if(event.getButton() == MouseButton.PRIMARY) {
                     		swimmer[0] = updateSwimmerBody();
-                    	swimmer[0].setCurrentTarget(generateRandomTarget());
+                        	swimmer[0].setCurrentTarget(Vector.polar(180, 3));
+                    	} else
+                    		swimmer[0].setCurrentTarget(generateRandomTarget());
                     	showSwimmer(root, swimmer);
                     };
                 });

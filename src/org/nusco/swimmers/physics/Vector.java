@@ -9,7 +9,7 @@ public class Vector {
 		double sin = Math.sin(Math.toRadians(degrees));
 		double cos = Math.cos(Math.toRadians(degrees));
 		
-		return new Vector(cos * length, sin * length);
+		return Vector.cartesian(cos * length, sin * length);
 	}
 
 	public static Vector cartesian(double x, double y) {
@@ -60,14 +60,14 @@ public class Vector {
 		return Vector.polar(getAngle() - 90, 1);
 	}
 
-	public Vector getTangentialComponentOn(Vector other) {
+	public Vector getProjectionOn(Vector other) {
 		double relativeAngle = other.getAngle() - getAngle();
 		double resultLength = Math.cos(Math.toRadians(relativeAngle)) * getLength();
 		return Vector.polar(other.getAngle(), resultLength);
 	}
 
 	public Vector getNormalComponentOn(Vector other) {
-		return getTangentialComponentOn(other.getNormal());
+		return getProjectionOn(other.getNormal());
 	}
 
 	@Override

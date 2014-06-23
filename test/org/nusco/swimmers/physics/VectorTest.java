@@ -31,6 +31,16 @@ public class VectorTest {
 	}
 	
 	@Test
+	public void canHaveANegativePolarAngle() {
+		assertEquals(-10, Vector.polar(-10, 1).getAngle(), 0);
+	}
+	
+	@Test
+	public void canHaveAPolarAngleGreaterThan180() {
+		assertEquals(-175, Vector.polar(185, 1).getAngle(), 0.001);
+	}
+	
+	@Test
 	public void hasANormalizedAngle() {
 		assertEquals(0, Vector.cartesian(1, 0).getAngle(), 0);
 		assertEquals(45, Vector.cartesian(1, 1).getAngle(), 0);
@@ -40,7 +50,6 @@ public class VectorTest {
 		assertEquals(-135, Vector.cartesian(-1, -1).getAngle(), 0);
 		assertEquals(180, Vector.cartesian(-1, 0).getAngle(), 0);
 		assertEquals(135, Vector.cartesian(-1, 1).getAngle(), 0);
-		assertEquals(-179, Vector.polar(185, 0).getAngle(), 0);
 	}
 	
 	@Test
@@ -94,11 +103,11 @@ public class VectorTest {
 	}
 
 	@Test
-	public void hasATangentialComponentOnAnotherVector() {
-		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getTangentialComponentOn(Vector.polar(180, 1)));
-		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getTangentialComponentOn(Vector.polar(180, 10)));
-		assertEqualsVector(Vector.ZERO, Vector.polar(180, 10).getTangentialComponentOn(Vector.polar(90, 1)));
-		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getTangentialComponentOn(Vector.polar(45, 1)));
+	public void hasAProjectionOnAnotherVector() {
+		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 1)));
+		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 10)));
+		assertEqualsVector(Vector.ZERO, Vector.polar(180, 10).getProjectionOn(Vector.polar(90, 1)));
+		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(45, 1)));
 	}
 
 	@Test

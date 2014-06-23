@@ -45,16 +45,17 @@ public class Head extends Organ {
 	}
 
 	private double correctAngle(Vector inputSignal) {
-		double difference = inputSignal.getAngle() - getVector().revert().getAngle();
+		Vector inverseVector = getVector().invert();
+		double difference = inputSignal.getAngleWith(inverseVector);
 		if(Math.abs(difference) < ROTATION_SPEED * 2)
 			return 0;
 		double unsignedResult = ROTATION_SPEED * Math.signum(difference);
-		if(Math.abs(difference) <= 180) {
+		if(Math.abs(difference) <= 180)
 			return unsignedResult;
-		} else
+		else
 			return -unsignedResult;
 	}
-	
+
 	public void placeAt(Vector point) {
 		this.startPoint = point;
 	}

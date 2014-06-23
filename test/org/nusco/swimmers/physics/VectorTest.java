@@ -91,10 +91,10 @@ public class VectorTest {
 	}
 
 	@Test
-	public void canBeReverted() {
+	public void canBeInverted() {
 		Vector original = Vector.cartesian(10, -20);
 		
-		Vector calculated = original.revert();
+		Vector calculated = original.invert();
 
 		assertEquals(Vector.cartesian(-10, 20), calculated);
 	}
@@ -128,6 +128,17 @@ public class VectorTest {
 		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 1)));
 		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 10)));
 		assertEqualsVector(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(0, 10)));
+	}
+	
+	@Test
+	public void hasAnAngleWithAnotherVector() {
+		Vector ninetyDegrees = Vector.polar(90, 10);
+		assertEquals(0, ninetyDegrees.getAngleWith(ninetyDegrees), 0.001);
+		assertEquals(90, ninetyDegrees.getAngleWith(Vector.ZERO), 0.001);
+		assertEquals(180, ninetyDegrees.getAngleWith(Vector.polar(-90, 1)), 0.001);
+		assertEquals(-90, ninetyDegrees.getAngleWith(Vector.polar(180, 1)), 0.001);
+		assertEquals(-179, ninetyDegrees.getAngleWith(Vector.polar(-91, 1)), 0.001);
+		assertEquals(179, Vector.polar(-91, 1).getAngleWith(ninetyDegrees), 0.001);
 	}
 	
 	private void assertEqualsVector(Vector v1, Vector v2) {

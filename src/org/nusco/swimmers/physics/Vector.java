@@ -52,7 +52,7 @@ public class Vector {
 		return Vector.cartesian(getX() * scalar, getY() * scalar);
 	}
 
-	public Vector revert() {
+	public Vector invert() {
 		return this.by(-1);
 	}
 
@@ -72,6 +72,15 @@ public class Vector {
 
 	public Vector getNormalComponentOn(Vector other) {
 		return getProjectionOn(other.getNormal());
+	}
+
+	public double getAngleWith(Vector other) {
+		double result = getAngle() - other.getAngle();
+		if(result < -180)
+			return result + 360;
+		if(result > 180)
+			return result - 360;
+		return result;
 	}
 
 	@Override

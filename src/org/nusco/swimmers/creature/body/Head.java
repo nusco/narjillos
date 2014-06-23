@@ -6,12 +6,14 @@ import org.nusco.swimmers.physics.Vector;
 
 public class Head extends Organ {
 	
-	private static final double FREQUENCY = 0.01;
+	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
+	private static final double ROTATION_SPEED = 0.5;
+
 	private Vector startPoint = Vector.ZERO;
 	private double angle;
 
 	public Head(int length, int thickness, int rgb) {
-		super(length, thickness, 0, rgb, new WaveNerve(FREQUENCY), null);
+		super(length, thickness, 0, rgb, new WaveNerve(WAVE_SIGNAL_FREQUENCY), null);
 		angle = getRelativeAngle();
 	}
 
@@ -32,22 +34,26 @@ public class Head extends Organ {
 
 	@Override
 	public double getAngle() {
-		return -angle;
+		return angle;
 	}
 
 	@Override
 	public Vector tick(Vector inputSignal) {
 		Vector result = super.tick(inputSignal);
-//		correctAngle(inputSignal);
+		angle += correctAngle(inputSignal);
 		return result;
 	}
 
-//	private void correctAngle(Vector inputSignal) {
-//		if(angle - 180 < inputSignal.getAngle())
-//			angle -= 0.5;
-//		else if(angle - 180  > inputSignal.getAngle())
-//			angle -= 0.5;
-//	}
+	private double correctAngle(Vector inputSignal) {
+		double difference = inputSignal.getAngle() - getVector().revert().getAngle();
+		if(Math.abs(difference) < ROTATION_SPEED * 2)
+			return 0;
+		double unsignedResult = ROTATION_SPEED * Math.signum(difference);
+		if(Math.abs(difference) <= 180) {
+			return unsignedResult;
+		} else
+			return -unsignedResult;
+	}
 	
 	public void placeAt(Vector point) {
 		this.startPoint = point;

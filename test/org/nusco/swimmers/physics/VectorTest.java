@@ -31,17 +31,20 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void canHaveANegativePolarAngle() {
-		assertEquals(-10, Vector.polar(-10, 1).getAngle(), 0);
+	public void normalizesAnglesWhenUsingPolarCoordinates() {
+		assertEquals(0, Vector.polar(0, 1).getAngle(), 0.001);
+		assertEquals(180, Vector.polar(180, 1).getAngle(), 0.001);
+		assertEquals(0, Vector.polar(360, 1).getAngle(), 0.001);
+		assertEquals(1, Vector.polar(361, 1).getAngle(), 0.001);
+		assertEquals(-10, Vector.polar(-10, 1).getAngle(), 0.001);
+		assertEquals(-180, Vector.polar(-180, 1).getAngle(), 0.001);
+		assertEquals(179, Vector.polar(-181, 1).getAngle(), 0.001);
+		assertEquals(0, Vector.polar(-360, 1).getAngle(), 0.001);
+		assertEquals(-1, Vector.polar(-361, 1).getAngle(), 0.001);
 	}
 	
 	@Test
-	public void canHaveAPolarAngleGreaterThan180() {
-		assertEquals(-175, Vector.polar(185, 1).getAngle(), 0.001);
-	}
-	
-	@Test
-	public void hasANormalizedAngle() {
+	public void normalizesAnglesWhenUsingCartesianCoordinates() {
 		assertEquals(0, Vector.cartesian(1, 0).getAngle(), 0);
 		assertEquals(45, Vector.cartesian(1, 1).getAngle(), 0);
 		assertEquals(90, Vector.cartesian(0, 1).getAngle(), 0);
@@ -85,6 +88,15 @@ public class VectorTest {
 		Vector calculated = original.by(-0.5);
 
 		assertEquals(Vector.cartesian(-5, 10), calculated);
+	}
+
+	@Test
+	public void canBeReverted() {
+		Vector original = Vector.cartesian(10, -20);
+		
+		Vector calculated = original.revert();
+
+		assertEquals(Vector.cartesian(-10, 20), calculated);
 	}
 
 	@Test

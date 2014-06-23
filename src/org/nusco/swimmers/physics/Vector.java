@@ -52,6 +52,10 @@ public class Vector {
 		return Vector.cartesian(getX() * scalar, getY() * scalar);
 	}
 
+	public Vector revert() {
+		return this.by(-1);
+	}
+
 	public Vector normalize(double length) {
 		return Vector.polar(getAngle(), length);
 	}

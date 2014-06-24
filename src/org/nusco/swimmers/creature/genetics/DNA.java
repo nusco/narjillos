@@ -38,9 +38,6 @@ public class DNA {
 	}
 
 	private int mutate(int[] resultGenes, int i) {
-		//		int shift = (int)(Math.random() * 8);
-//		int xorMask = 0b00000001 << shift;
-//		return resultGenes[i] ^ xorMask;
 		int randomFactor = ((int)(Math.random() * 40)) - 20;
 		return resultGenes[i] + randomFactor;
 	}

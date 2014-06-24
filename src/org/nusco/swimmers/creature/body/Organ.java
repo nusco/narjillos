@@ -120,6 +120,17 @@ public abstract class Organ {
 		for(Organ child : getChildren())
 			child.setMovementListener(listener);
 	}
+	
+	@Override
+	public int hashCode() {
+		return length;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Organ other = (Organ) obj;
+		return color == other.color && length == other.length && relativeAngle == other.relativeAngle  && thickness == other.thickness;
+	}
 
 	// for debugging
 	public Vector peek = Vector.ZERO;

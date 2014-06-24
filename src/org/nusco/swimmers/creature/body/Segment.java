@@ -30,19 +30,15 @@ public class Segment extends Organ {
 	}
 
 	@Override
-	public Vector tick(Vector inputSignal) {
-		Vector outputSignal = super.tick(inputSignal);
-		
-		Vector base = Vector.polar(getRelativeAngle(), getLength());
-		Vector impulse = outputSignal.by(AMPLITUDE_AMPLIFICATION * Math.sin(relativeAngle));
-		Vector direction = base.plus(impulse);
-		this.angle = direction.getAngle();
-
-		return outputSignal;
+	public double getAngle() {
+		return angle;
 	}
 
 	@Override
-	public double getAngle() {
-		return angle;
+	protected void move(Vector signal) {
+		Vector base = Vector.polar(getRelativeAngle(), getLength());
+		Vector impulse = signal.by(AMPLITUDE_AMPLIFICATION * Math.sin(relativeAngle));
+		Vector direction = base.plus(impulse);
+		this.angle = direction.getAngle();
 	}
 }

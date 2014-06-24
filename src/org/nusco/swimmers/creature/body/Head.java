@@ -37,11 +37,13 @@ public class Head extends Organ {
 		return angle;
 	}
 
+	public void placeAt(Vector point) {
+		this.startPoint = point;
+	}
+
 	@Override
-	public Vector tick(Vector inputSignal) {
-		Vector result = super.tick(inputSignal);
-		angle += correctAngle(inputSignal);
-		return result;
+	protected void move(Vector signal) {
+		angle += correctAngle(signal);
 	}
 
 	private double correctAngle(Vector inputSignal) {
@@ -54,9 +56,5 @@ public class Head extends Organ {
 			return unsignedResult;
 		else
 			return -unsignedResult;
-	}
-
-	public void placeAt(Vector point) {
-		this.startPoint = point;
 	}
 }

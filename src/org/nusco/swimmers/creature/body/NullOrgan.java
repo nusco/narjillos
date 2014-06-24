@@ -48,4 +48,8 @@ class NullOrgan extends Organ {
 	public String toString() {
 		return "<null organ>";
 	}
+
+	@Override
+	protected void move(Vector signal) {
+	}
 }

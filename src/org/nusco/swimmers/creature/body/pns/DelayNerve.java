@@ -1,10 +1,10 @@
-package org.nusco.swimmers.creature.pns;
+package org.nusco.swimmers.creature.body.pns;
 
 import java.util.LinkedList;
 
 import org.nusco.swimmers.physics.Vector;
 
-public class DelayNerve extends Nerve {
+public class DelayNerve implements Nerve {
 
 	private final int delay;
 	private final LinkedList<Vector> buffer = new LinkedList<>();

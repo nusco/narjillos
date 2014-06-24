@@ -1,7 +1,7 @@
 package org.nusco.swimmers.creature.body;
 
-import org.nusco.swimmers.creature.pns.Nerve;
-import org.nusco.swimmers.creature.pns.WaveNerve;
+import org.nusco.swimmers.creature.body.pns.Nerve;
+import org.nusco.swimmers.creature.body.pns.WaveNerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class Head extends Organ {

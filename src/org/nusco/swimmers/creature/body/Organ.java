@@ -3,7 +3,7 @@ package org.nusco.swimmers.creature.body;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.swimmers.creature.pns.Nerve;
+import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
 public abstract class Organ {

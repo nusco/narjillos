@@ -1,4 +1,4 @@
-package org.nusco.swimmers.creature.pns;
+package org.nusco.swimmers.creature.body.pns;
 
 import org.nusco.swimmers.physics.Vector;
 
@@ -6,7 +6,7 @@ import org.nusco.swimmers.physics.Vector;
  * Given an input vector V, and its normal vector of the same length N,
  * this Nerve generates an output that goes from -N to N and back, in a sinusoidal wave.
  */
-public class WaveNerve extends Nerve {
+public class WaveNerve implements Nerve {
 
 	// TODO: remove this once we have a better policy for input signals
 	private static final double AMPLITUDE = 10;

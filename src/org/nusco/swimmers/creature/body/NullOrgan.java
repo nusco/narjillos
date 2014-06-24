@@ -1,6 +1,6 @@
 package org.nusco.swimmers.creature.body;
 
-import org.nusco.swimmers.creature.pns.PassNerve;
+import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.physics.Vector;
 
 

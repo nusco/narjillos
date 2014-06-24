@@ -3,8 +3,8 @@ package org.nusco.swimmers.creature.body;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.swimmers.creature.pns.Nerve;
-import org.nusco.swimmers.creature.pns.WaveNerve;
+import org.nusco.swimmers.creature.body.pns.Nerve;
+import org.nusco.swimmers.creature.body.pns.WaveNerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class HeadTest extends OrganTest {

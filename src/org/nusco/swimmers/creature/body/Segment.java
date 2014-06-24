@@ -1,7 +1,7 @@
 package org.nusco.swimmers.creature.body;
 
-import org.nusco.swimmers.creature.pns.DelayNerve;
-import org.nusco.swimmers.creature.pns.Nerve;
+import org.nusco.swimmers.creature.body.pns.DelayNerve;
+import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class Segment extends Organ {

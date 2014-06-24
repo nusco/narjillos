@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.NullOrgan;
 import org.nusco.swimmers.creature.body.Organ;
-import org.nusco.swimmers.creature.pns.Nerve;
-import org.nusco.swimmers.creature.pns.PassNerve;
+import org.nusco.swimmers.creature.body.pns.Nerve;
+import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class NullOrganTest {

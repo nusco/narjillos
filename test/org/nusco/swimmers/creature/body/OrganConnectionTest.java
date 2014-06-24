@@ -3,7 +3,7 @@ package org.nusco.swimmers.creature.body;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.swimmers.creature.pns.Nerve;
+import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
 public abstract class OrganConnectionTest {
@@ -28,7 +28,7 @@ public abstract class OrganConnectionTest {
 		assertTrue(nerve4.clicked);
 	}
 	
-	class ClickNerve extends Nerve {
+	class ClickNerve implements Nerve {
 		public boolean clicked = false;
 		
 		@Override

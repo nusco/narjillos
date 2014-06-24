@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.body.Segment;
-import org.nusco.swimmers.creature.pns.Nerve;
+import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class SegmentTest extends OrganTest {

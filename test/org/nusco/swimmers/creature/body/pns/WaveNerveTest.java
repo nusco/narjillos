@@ -1,8 +1,9 @@
-package org.nusco.swimmers.creature.pns;
+package org.nusco.swimmers.creature.body.pns;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.swimmers.creature.body.pns.WaveNerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class WaveNerveTest {

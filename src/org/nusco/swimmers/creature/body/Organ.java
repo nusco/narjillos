@@ -17,10 +17,7 @@ public abstract class Organ {
 
 	protected final Organ parent;
 	private List<Organ> children = new LinkedList<>();
-	private MovementListener movementListener = new MovementListener() {
-		@Override
-		public void moveEvent(Vector before, Vector after) {}
-	};
+	private MovementListener movementListener = MovementListener.NULL;
 	
 	protected Organ(int length, int thickness, int relativeAngle, int rgb, Nerve nerve, Organ parent) {
 		this.length = length;

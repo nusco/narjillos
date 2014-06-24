@@ -7,13 +7,12 @@ import org.nusco.swimmers.physics.Vector;
  * Nerve generates an output that goes from -N to N and back, in a sinusoidal
  * wave.
  * 
- * The negative part of the sinusoid has twice the amplitude of the positive
- * part. This generates a life-like motion, where organs move slowly in one
- * direction, and then return quickly to the original position.
+ * The negative part of the sinusoidal wave has a higher frequency than the
+ * positive part. This generates a life-like motion, where organs move slowly
+ * in one direction, and then return quickly to the original position.
  */
 public class WaveNerve implements Nerve {
 
-	// TODO: remove this once we have a better policy for input signals
 	private static final double AMPLITUDE = 10;
 
 	private final double frequency;
@@ -35,12 +34,11 @@ public class WaveNerve implements Nerve {
 	private double getCurrentAmplitude() {
 		double amplitude = Math.cos(currentAngle);
 		currentAngle = update(currentAngle);
-		if (currentAngle > Math.PI)
-			currentAngle = update(currentAngle);
 		return amplitude;
 	}
 
 	private double update(double currentAngle) {
-		return (currentAngle + Math.PI * 2 * frequency) % (Math.PI * 2);
+		double multFactor = (currentAngle > Math.PI) ? 1 : 1.5;
+		return (currentAngle + Math.PI * 2 * multFactor  * frequency) % (Math.PI * 2);
 	}
 }

@@ -98,6 +98,11 @@ public class Vector {
 		return Double.doubleToLongBits(d1) == Double.doubleToLongBits(d2);
 	}
 
+	public boolean almostEquals(Vector other) {
+		final double delta = 0.00001;
+		return Math.abs(getAngle() - other.getAngle()) < delta && Math.abs(getLength() - other.getLength()) < delta;
+	}
+	
 	@Override
 	public String toString() {
 		return "(" + getX() + ", " + getY() + ")";

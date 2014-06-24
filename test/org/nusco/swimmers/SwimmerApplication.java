@@ -77,6 +77,7 @@ public class SwimmerApplication extends Application {
 
 	private SwimmerView updateSwimmerBody() {
 		Swimmer swimmer = new Embryo(currentDNA).develop();
+		swimmer.placeAt(Vector.cartesian(400, 0));
 		currentDNA = currentDNA.mutate();
 		return new SwimmerView(swimmer);
 	}

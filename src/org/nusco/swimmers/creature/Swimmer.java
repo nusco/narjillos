@@ -5,18 +5,23 @@ import java.util.List;
 
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.physics.Propulsion;
 import org.nusco.swimmers.physics.Vector;
 
 public class Swimmer {
 
 	private final Head head;
-	
+
 	private Vector target = Vector.ZERO;
 
 	public Swimmer(Head head) {
 		this.head = head;
 	}
 
+	public void placeAt(Vector position) {
+		head.placeAt(position);
+	}
+	
 	public List<Organ> getParts() {
 		List<Organ> result = new LinkedList<>();
 		result.add(head);
@@ -25,7 +30,7 @@ public class Swimmer {
 	}
 
 	private void addChildrenDepthFirst(List<Organ> result, Organ organ) {
-		for(Organ child : organ.getChildren()) {
+		for (Organ child : organ.getChildren()) {
 			result.add(child);
 			addChildrenDepthFirst(result, child);
 		}
@@ -34,9 +39,15 @@ public class Swimmer {
 	public Organ getHead() {
 		return head;
 	}
-	
+
 	public void tick() {
+		Propulsion propulsion = new Propulsion(head.getVector());
+		head.setMovementListener(propulsion);
+
 		head.tick(target);
+
+		Vector tangentialForce = propulsion.getTangentialForce();
+		head.placeAt(head.getStartPoint().plus(tangentialForce));
 	}
 
 	public Vector getCurrentTarget() {
@@ -44,6 +55,6 @@ public class Swimmer {
 	}
 
 	public void setCurrentTarget(Vector target) {
-		this.target  = target;
+		this.target = target;
 	}
 }

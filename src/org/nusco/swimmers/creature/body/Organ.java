@@ -17,7 +17,10 @@ public abstract class Organ {
 
 	protected final Organ parent;
 	private List<Organ> children = new LinkedList<>();
-	private List<MovementListener> movementListeners = new LinkedList<>();
+	private MovementListener movementListener = new MovementListener() {
+		@Override
+		public void moveEvent(Vector before, Vector after) {}
+	};
 	
 	protected Organ(int length, int thickness, int relativeAngle, int rgb, Nerve nerve, Organ parent) {
 		this.length = length;
@@ -82,7 +85,7 @@ public abstract class Organ {
 		
 		Vector beforeVector = getVector();
 		move(outputSignal);
-		notifyMovementListeners(beforeVector, getVector());
+		notifyMovementListener(beforeVector, getVector());
 
 		tickChildren(outputSignal);
 
@@ -91,9 +94,8 @@ public abstract class Organ {
 
 	protected abstract void move(Vector signal);
 
-	private void notifyMovementListeners(Vector beforeVector, Vector afterVector) {
-		for (MovementListener listener : movementListeners)
-			listener.moveEvent(beforeVector, afterVector);
+	private void notifyMovementListener(Vector beforeVector, Vector afterVector) {
+		movementListener.moveEvent(beforeVector, afterVector);
 	}
 
 	private void tickChildren(Vector signal) {
@@ -101,7 +103,7 @@ public abstract class Organ {
 			child.tick(signal);
 	}
 
-	Vector getVector() {
+	public Vector getVector() {
 		return Vector.polar(getAngle(), getLength());
 	}
 	
@@ -113,10 +115,10 @@ public abstract class Organ {
 		return getLength() * getThickness();
 	}
 
-	public void addMovementListener(MovementListener listener) {
-		movementListeners.add(listener);
+	public void setMovementListener(MovementListener listener) {
+		movementListener = listener;
 		for(Organ child : getChildren())
-			child.addMovementListener(listener);
+			child.setMovementListener(listener);
 	}
 
 	// for debugging

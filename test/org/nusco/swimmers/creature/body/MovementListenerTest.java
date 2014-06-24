@@ -21,7 +21,7 @@ public class MovementListenerTest {
 				movement[counter++] = (int)before.getLength();
 			}
 		};
-		organ.addMovementListener(listener);
+		organ.setMovementListener(listener);
 		
 		organ.tick(Vector.ZERO);
 		

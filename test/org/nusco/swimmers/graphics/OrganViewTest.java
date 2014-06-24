@@ -9,7 +9,7 @@ public class OrganViewTest {
 
 	@Test
 	public void testReadsRedFromTheLowest3BitsMultipliedBy7() {
-		Color color = OrganView.toColor(0b00000111);
+		Color color = OrganView.toRGBColor(0b00000111);
 		assertEquals(1, color.getRed(), 0.0);
 		assertEquals(0, color.getGreen(), 0.0);
 		assertEquals(0, color.getBlue(), 0.0);
@@ -17,7 +17,7 @@ public class OrganViewTest {
 
 	@Test
 	public void testReadsGreenFromTheCentral3BitsMultipliedBy7() {
-		Color color = OrganView.toColor(0b00111000);
+		Color color = OrganView.toRGBColor(0b00111000);
 		assertEquals(0, color.getRed(), 0.0);
 		assertEquals(1, color.getGreen(), 0.0);
 		assertEquals(0, color.getBlue(), 0.0);
@@ -25,7 +25,7 @@ public class OrganViewTest {
 
 	@Test
 	public void testReadsGreenFromTheTopmost2BitsMultipliedBy7() {
-		Color color = OrganView.toColor(0b11000000);
+		Color color = OrganView.toRGBColor(0b11000000);
 		assertEquals(0, color.getRed(), 0.0);
 		assertEquals(0, color.getGreen(), 0.0);
 		assertEquals(0.8, color.getBlue(), 0.1);
@@ -33,7 +33,7 @@ public class OrganViewTest {
 
 	@Test
 	public void testAddsTransparency() {
-		Color color = OrganView.toColor(0);
+		Color color = OrganView.toRGBColor(0);
 		assertEquals(0.6, color.getOpacity(), 0.01);
 	}
 

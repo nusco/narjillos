@@ -11,7 +11,7 @@ public abstract class Organ {
 	protected final int length;
 	protected final int thickness;
 	protected final double relativeAngle;
-	protected final int rgb;
+	protected final int color;
 
 	private Nerve nerve;
 
@@ -23,7 +23,7 @@ public abstract class Organ {
 		this.length = length;
 		this.thickness = thickness;
 		this.relativeAngle = relativeAngle;
-		this.rgb = rgb;
+		this.color = rgb;
 		this.nerve = nerve;
 		this.parent = parent;
 	}
@@ -40,8 +40,8 @@ public abstract class Organ {
 		return relativeAngle;
 	}
 
-	public int getRGB() {
-		return rgb;
+	public int getColor() {
+		return color;
 	}
 
 	public abstract Vector getStartPoint();

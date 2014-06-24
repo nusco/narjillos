@@ -56,7 +56,7 @@ public class NullOrganTest {
 		assertEquals(0, nullOrgan.getLength());
 		assertEquals(0, nullOrgan.getThickness());
 		assertEquals(0, nullOrgan.getAngle(), 0);
-		assertEquals(0, nullOrgan.getRGB(), 0);
+		assertEquals(0, nullOrgan.getColor(), 0);
 	}
 
 	@Test

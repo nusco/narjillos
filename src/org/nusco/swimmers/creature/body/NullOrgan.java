@@ -21,7 +21,7 @@ class NullOrgan extends Organ {
 	}
 
 	@Override
-	public int getRGB() {
+	public int getColor() {
 		return 0;
 	}
 

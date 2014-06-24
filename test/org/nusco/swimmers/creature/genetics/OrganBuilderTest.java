@@ -13,14 +13,14 @@ public class OrganBuilderTest {
 		int lengthGene = 50;
 		int thicknessGene = 60;
 		int ignoredGene = 0;
-		int rgbGene = 40;
+		int colorGene = 40;
 		
-		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene, rgbGene});
+		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene, colorGene});
 		Organ head = builder.buildHead();
 
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, head.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, head.getThickness(), 0);
-		assertEquals(rgbGene, head.getRGB(), 0);
+		assertEquals(colorGene, head.getColor(), 0);
 	}
 
 	@Test
@@ -29,16 +29,16 @@ public class OrganBuilderTest {
 		int lengthGene = 50;
 		int thicknessGene = 60;
 		int relativeAngleGene = 80;
-		int rgbGene = 40;
+		int colorGene = 40;
 		
-		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, relativeAngleGene, rgbGene});
+		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, relativeAngleGene, colorGene});
 		Organ head = builder.buildHead();
 		Organ organ = builder.buildSegment(head, 1);
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
 		assertEquals(60, organ.getRelativeAngle(), 0);
-		assertEquals(rgbGene, organ.getRGB(), 0);
+		assertEquals(colorGene, organ.getColor(), 0);
 	}
 	
 	@Test

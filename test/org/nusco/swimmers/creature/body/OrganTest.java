@@ -39,8 +39,8 @@ public abstract class OrganTest {
 	public abstract void hasAParent();
 
 	@Test
-	public void hasAnRGBValue() {
-		assertEquals(100, organ.getRGB());
+	public void hasAColorValue() {
+		assertEquals(100, organ.getColor());
 	}
 	
 	@Test

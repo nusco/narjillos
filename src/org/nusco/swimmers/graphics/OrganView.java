@@ -37,7 +37,7 @@ class OrganView {
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);
 		
-		result.setFill(toColor(organ.getRGB()));
+		result.setFill(toRGBColor(organ.getColor()));
 		if(organ.getThickness() > 5)
 			result.setStroke(Color.BLACK);
 
@@ -76,8 +76,8 @@ class OrganView {
 		return new Translate(startPoint.getX(), startPoint.getY());
 	}
 	
-	public static Color toColor(int rgb) {
-		byte rgbByte = (byte)rgb;
+	public static Color toRGBColor(int organColor) {
+		byte rgbByte = (byte)organColor;
 		double MAX_VALUE_IN_3_BITS = 7.0;
 		double red = (rgbByte & 0b00000111) / MAX_VALUE_IN_3_BITS;
 		double green = ((rgbByte & 0b00111000) >> 3) / MAX_VALUE_IN_3_BITS;

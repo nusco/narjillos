@@ -5,7 +5,7 @@ import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.physics.Vector;
 
 /**
- * An Organ so small, it cannot be seen.
+ * An Organ that is invisible to the naked eye---but still contains a Nerve.
  */
 class ConnectiveTissue extends Organ {
 
@@ -47,8 +47,8 @@ class ConnectiveTissue extends Organ {
 		return 0;
 	}
 
-	public double getRelativeAngle() {
-		return getParent().getRelativeAngle();
+	public double getAngleToParentAtRest() {
+		return getParent().getAngleToParentAtRest();
 	}
 
 	@Override

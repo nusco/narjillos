@@ -11,12 +11,12 @@ public class Head extends Organ {
 
 	public Head(int length, int thickness, int rgb) {
 		super(length, thickness, 0, rgb, new TrackingNerve(), null);
-		angle = getRelativeAngle();
+		angle = getAngleToParentAtRest();
 	}
 
 	Head(Nerve nerve) {
 		super(0, 0, 0, 0, nerve, null);
-		angle = getRelativeAngle();
+		angle = getAngleToParentAtRest();
 	}
 
 	@Override

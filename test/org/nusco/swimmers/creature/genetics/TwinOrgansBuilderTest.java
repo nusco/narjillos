@@ -55,7 +55,7 @@ public class TwinOrgansBuilderTest {
 		assertEquals(organ1.getLength(), organ2.getLength());
 		assertEquals(organ1.getThickness(), organ2.getThickness());
 		assertEquals(organ1.getColor(), organ2.getColor());
-		assertEquals(-organ1.getRelativeAngle(), organ2.getRelativeAngle(), 0);
+		assertEquals(-organ1.getAngleToParentAtRest(), organ2.getAngleToParentAtRest(), 0);
 		assertEquals(organ1.getParent(), organ2.getParent());
 	}
 }

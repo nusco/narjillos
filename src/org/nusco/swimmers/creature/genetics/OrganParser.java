@@ -1,6 +1,5 @@
 package org.nusco.swimmers.creature.genetics;
 
-
 class OrganParser {
 
 	private final int[] genes;

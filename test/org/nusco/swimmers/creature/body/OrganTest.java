@@ -53,7 +53,7 @@ public abstract class OrganTest {
 		Organ child = organ.sproutOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
-		assertEquals(45, child.getRelativeAngle(), 0);
+		assertEquals(45, child.getAngleToParentAtRest(), 0);
 	}
 	
 	@Test

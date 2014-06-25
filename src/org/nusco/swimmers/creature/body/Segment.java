@@ -10,9 +10,9 @@ public class Segment extends Organ {
 	
 	private double angle;
 
-	public Segment(int length, int thickness, int relativeAngle, int rgb, Organ parent) {
-		super(length, thickness, relativeAngle, rgb, new DelayNerve(DELAY), parent);
-		this.angle = relativeAngle + parent.getAngle();
+	public Segment(int length, int thickness, int angleToParenAtRest, int rgb, Organ parent) {
+		super(length, thickness, angleToParenAtRest, rgb, new DelayNerve(DELAY), parent);
+		this.angle = angleToParenAtRest + parent.getAngle();
 	}
 
 	Segment(Nerve nerve) {
@@ -36,8 +36,8 @@ public class Segment extends Organ {
 
 	@Override
 	protected void move(Vector signal) {
-		Vector base = Vector.polar(getRelativeAngle(), getLength());
-		Vector impulse = signal.by(AMPLITUDE_AMPLIFICATION * Math.sin(relativeAngle));
+		Vector base = Vector.polar(getAngleToParentAtRest(), getLength());
+		Vector impulse = signal.by(AMPLITUDE_AMPLIFICATION * Math.sin(angleToParentAtRest));
 		Vector direction = base.plus(impulse);
 		this.angle = direction.getAngle();
 	}

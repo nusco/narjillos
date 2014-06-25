@@ -26,7 +26,7 @@ class OrganBuilder {
 	public Organ buildSegment(Organ parent, int angleSign) {
 		if(getLengthGenes() <= MIN_GENES_VALUE || getThicknessGenes() <= MIN_GENES_VALUE)
 			return parent.sproutConnectiveTissue();
-		return parent.sproutOrgan(getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
+		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getRGB());
 	}
 
 	private int getLengthGenes() {
@@ -45,7 +45,7 @@ class OrganBuilder {
 		return (int)(getThicknessGenes() * PART_THICKNESS_MULTIPLIER);
 	}
 
-	private int getRelativeAngle(int angleSign) {
+	private int getAngleToParentAtRest(int angleSign) {
 		int shift = PART_MAX_RELATIVE_ANGLE / 5;
 		return (genes[3] % PART_MAX_RELATIVE_ANGLE - shift) * angleSign;
 	}

@@ -10,7 +10,7 @@ public abstract class Organ {
 
 	protected final int length;
 	protected final int thickness;
-	protected final double relativeAngle;
+	protected final double angleToParentAtRest;
 	protected final int color;
 
 	private Nerve nerve;
@@ -19,10 +19,10 @@ public abstract class Organ {
 	private List<Organ> children = new LinkedList<>();
 	private MovementListener movementListener = MovementListener.NULL;
 	
-	protected Organ(int length, int thickness, int relativeAngle, int rgb, Nerve nerve, Organ parent) {
+	protected Organ(int length, int thickness, int angleToParentAtRest, int rgb, Nerve nerve, Organ parent) {
 		this.length = length;
 		this.thickness = thickness;
-		this.relativeAngle = relativeAngle;
+		this.angleToParentAtRest = angleToParentAtRest;
 		this.color = rgb;
 		this.nerve = nerve;
 		this.parent = parent;
@@ -36,8 +36,8 @@ public abstract class Organ {
 		return thickness;
 	}
 
-	public double getRelativeAngle() {
-		return relativeAngle;
+	public double getAngleToParentAtRest() {
+		return angleToParentAtRest;
 	}
 
 	public int getColor() {
@@ -111,14 +111,14 @@ public abstract class Organ {
 	@Override
 	public boolean equals(Object obj) {
 		Organ other = (Organ) obj;
-		return color == other.color && length == other.length && relativeAngle == other.relativeAngle  && thickness == other.thickness;
+		return color == other.color && length == other.length && angleToParentAtRest == other.angleToParentAtRest  && thickness == other.thickness;
 	}
 
 	// for debugging
 	public Vector peek = Vector.ZERO;
 
-	public Organ sproutOrgan(int length, int thickness, int relativeAngle, int rgb) {
-		return addChild(new Segment(length, thickness, relativeAngle, rgb, this));
+	public Organ sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb) {
+		return addChild(new Segment(length, thickness, angleToParentAtRest, rgb, this));
 	}
 
 	Organ sproutOrgan(Nerve nerve) {

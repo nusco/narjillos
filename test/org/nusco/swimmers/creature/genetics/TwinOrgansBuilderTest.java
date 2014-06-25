@@ -32,7 +32,7 @@ public class TwinOrgansBuilderTest {
 		Organ[] segments = new TwinOrgansBuilder(mirroringGenes1, mirroringGenes2).buildSegments(parent);
 		
 		assertEquals(63, segments[0].getLength());
-		assertMirrorOrgans(segments[0], segments[1]);
+		assertEqualOrgans(segments[0], segments[1]);
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class TwinOrgansBuilderTest {
 		TwinOrgansBuilder builder = new TwinOrgansBuilder(mirroringGenes1, notMirroringGenes2);
 		Organ[] segments = builder.buildSegments(parent);
 		
-		assertMirrorOrgans(segments[0], segments[1]);
+		assertEqualOrgans(segments[0], segments[1]);
 	}
 
 	@Test
@@ -48,10 +48,10 @@ public class TwinOrgansBuilderTest {
 		TwinOrgansBuilder builder = new TwinOrgansBuilder(notMirroringGenes1, mirroringGenes2);
 		Organ[] segments = builder.buildSegments(parent);
 		
-		assertMirrorOrgans(segments[0], segments[1]);
+		assertEqualOrgans(segments[0], segments[1]);
 	}
 
-	private void assertMirrorOrgans(Organ organ1, Organ organ2) {
+	private void assertEqualOrgans(Organ organ1, Organ organ2) {
 		assertEquals(organ1.getLength(), organ2.getLength());
 		assertEquals(organ1.getThickness(), organ2.getThickness());
 		assertEquals(organ1.getColor(), organ2.getColor());

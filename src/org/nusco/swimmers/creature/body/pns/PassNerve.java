@@ -2,10 +2,13 @@ package org.nusco.swimmers.creature.body.pns;
 
 import org.nusco.swimmers.physics.Vector;
 
+/**
+ * Always outputs the same vector it receives in input.
+ */
 public class PassNerve implements Nerve {
 
 	@Override
-	public Vector send(Vector inputSignal) {
+	public Vector tick(Vector inputSignal) {
 		return inputSignal;
 	}
 }

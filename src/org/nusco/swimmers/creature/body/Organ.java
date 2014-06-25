@@ -81,7 +81,7 @@ public abstract class Organ {
 		Vector beforeVector = getVector();
 		Vector beforeStartPoint = getStartPoint();
 
-		Vector outputSignal = getNerve().send(inputSignal);
+		Vector outputSignal = getNerve().tick(inputSignal);
 		move(outputSignal);
 		
 		notifyMovementListener(beforeVector, beforeStartPoint, getVector(), getStartPoint());

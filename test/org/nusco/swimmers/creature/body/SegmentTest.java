@@ -55,7 +55,7 @@ public class SegmentTest extends OrganTest {
 		// TODO: also add NullOrgans to the mix
 		final Nerve doublerNerve = new Nerve() {
 			@Override
-			public Vector send(Vector inputSignal) {
+			public Vector tick(Vector inputSignal) {
 				return Vector.cartesian(inputSignal.getX() * 2, inputSignal.getY() * 2);
 			}
 		};

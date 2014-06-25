@@ -12,6 +12,6 @@ public class PassNerveTest {
 	public void passesASignalWithoutChangingIt() {
 		PassNerve nerve = new PassNerve();
 
-		assertEquals(Vector.cartesian(3, 42), nerve.send(Vector.cartesian(3, 42)));
+		assertEquals(Vector.cartesian(3, 42), nerve.tick(Vector.cartesian(3, 42)));
 	}
 }

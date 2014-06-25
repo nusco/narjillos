@@ -2,7 +2,11 @@ package org.nusco.swimmers.creature.body.pns;
 
 import org.nusco.swimmers.physics.Vector;
 
+/**
+ * Processes nervous impulses, turning input signals into
+ * (generally different) output signals.
+ */
 public interface Nerve {
 
-	public Vector send(Vector inputSignal);
+	public Vector tick(Vector inputSignal);
 }

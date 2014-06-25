@@ -4,6 +4,10 @@ import java.util.LinkedList;
 
 import org.nusco.swimmers.physics.Vector;
 
+/**
+ * Outputs the same signal it received as an input, but
+ * delayed by a given number of ticks.
+ */
 public class DelayNerve implements Nerve {
 
 	private final int delay;
@@ -14,7 +18,7 @@ public class DelayNerve implements Nerve {
 	}
 
 	@Override
-	public Vector send(Vector inputSignal) {
+	public Vector tick(Vector inputSignal) {
 		buffer.add(inputSignal);
 		if(buffer.size() < delay)
 			return buffer.getFirst();

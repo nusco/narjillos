@@ -3,7 +3,7 @@ package org.nusco.swimmers.creature.body.pns;
 import org.nusco.swimmers.physics.Vector;
 
 /**
- * Given an input vector V, and its normal vector of the same length N, this
+ * Given an input signal V, and its normal vector of the same length N, this
  * Nerve generates an output that goes from -N to N and back, in a sinusoidal
  * wave.
  * 
@@ -24,7 +24,7 @@ public class WaveNerve implements Nerve {
 	}
 
 	@Override
-	public Vector send(Vector inputSignal) {
+	public Vector tick(Vector inputSignal) {
 		double inputSignalLength = inputSignal.getLength() * AMPLITUDE;
 		Vector inputSignalNormal = inputSignal.getNormal();
 		double amplitude = getCurrentAmplitude() * inputSignalLength;

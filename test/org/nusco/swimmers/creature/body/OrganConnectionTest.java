@@ -32,7 +32,7 @@ public abstract class OrganConnectionTest {
 		public boolean clicked = false;
 		
 		@Override
-		public Vector send(Vector inputSignal) {
+		public Vector tick(Vector inputSignal) {
 			clicked = true;
 			return null;
 		}		

@@ -19,7 +19,7 @@ public class Swimmer {
 	}
 
 	public void placeAt(Vector position) {
-		head.placeAt(position);
+		head.setStartPoint(position);
 	}
 
 	public List<Organ> getParts() {
@@ -47,7 +47,8 @@ public class Swimmer {
 		head.tick(target);
 
 		Vector tangentialForce = propulsion.getTangentialForce();
-		head.placeAt(head.getStartPoint().plus(tangentialForce));
+		Vector newPosition = head.getStartPoint().plus(tangentialForce);
+		head.setStartPoint(newPosition);
 	}
 
 	public Vector getCurrentTarget() {

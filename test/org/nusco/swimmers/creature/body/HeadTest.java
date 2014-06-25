@@ -21,7 +21,7 @@ public class HeadTest extends OrganTest {
 
 	@Test
 	public void canBeSetAtADifferentPoint() {
-		((Head)organ).placeAt(Vector.cartesian(20, 30));
+		((Head)organ).setStartPoint(Vector.cartesian(20, 30));
 		assertEquals(Vector.cartesian(20, 30), organ.getStartPoint());
 	}
 

@@ -10,6 +10,7 @@ public class Head extends Organ {
 	public Head(int length, int thickness, int rgb) {
 		super(length, thickness, rgb, new TrackingNerve(), null);
 		setAngle(0);
+		tick(Vector.ZERO);
 	}
 
 	@Override
@@ -17,7 +18,7 @@ public class Head extends Organ {
 		return startPoint;
 	}
 
-	public void placeAt(Vector point) {
+	public void setStartPoint(Vector point) {
 		this.startPoint = point;
 	}
 

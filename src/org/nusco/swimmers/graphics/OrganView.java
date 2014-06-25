@@ -1,7 +1,6 @@
 package org.nusco.swimmers.graphics;
 
 import javafx.scene.Node;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;

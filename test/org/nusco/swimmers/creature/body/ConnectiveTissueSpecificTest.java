@@ -51,7 +51,7 @@ public class ConnectiveTissueSpecificTest {
 	@Test
 	public void itBeginsAndEndsWhereItsParentEnds() {
 		Head head = new Head(15, 10, 100);
-		head.placeAt(Vector.cartesian(20, 30));
+		head.setStartPoint(Vector.cartesian(20, 30));
 		Organ connectiveTissue = new ConnectiveTissue(head).sproutConnectiveTissue();
 
 		assertEquals(Vector.cartesian(35, 30), connectiveTissue.getStartPoint());

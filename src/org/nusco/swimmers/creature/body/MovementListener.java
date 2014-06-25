@@ -6,8 +6,8 @@ public interface MovementListener {
 
 	MovementListener NULL = new MovementListener() {
 		@Override
-		public void moveEvent(Vector before, Vector after) {}
+		public void moveEvent(Vector beforeVector, Vector beforeStartPoint, Vector afterVector, Vector afterStartPoint) {}
 	};
 
-	public void moveEvent(Vector before, Vector after);
+	public void moveEvent(Vector beforeVector, Vector beforeStartPoint, Vector afterVector, Vector afterStartPoint);
 }

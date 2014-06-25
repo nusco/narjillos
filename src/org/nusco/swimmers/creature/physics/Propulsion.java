@@ -18,11 +18,11 @@ public class Propulsion implements MovementListener {
 	}
 
 	@Override
-	public void moveEvent(Vector before, Vector after) {
-		double velocityAngle = after.getAngleWith(before);
-		double force = velocityAngle * before.getLength() * PROPULSION_SCALE;
+	public void moveEvent(Vector beforeVector, Vector beforeStartPoint, Vector afterVector, Vector afterStartPoint) {
+		double velocityAngle = afterVector.getAngleWith(beforeVector);
+		double force = velocityAngle * beforeVector.getLength() * PROPULSION_SCALE;
 		
-		Vector normal = before.getNormal();
+		Vector normal = beforeVector.getNormal();
 		
 		addForce(Vector.polar(normal.getAngle(), force));
 	}

@@ -78,11 +78,13 @@ public abstract class Organ {
 	}
 
 	public final Vector tick(Vector inputSignal) {
-		Vector outputSignal = getNerve().send(inputSignal);
-		
 		Vector beforeVector = getVector();
+		Vector beforeStartPoint = getStartPoint();
+
+		Vector outputSignal = getNerve().send(inputSignal);
 		move(outputSignal);
-		notifyMovementListener(beforeVector, getVector());
+		
+		notifyMovementListener(beforeVector, beforeStartPoint, getVector(), getStartPoint());
 
 		tickChildren(outputSignal);
 
@@ -91,8 +93,8 @@ public abstract class Organ {
 
 	protected abstract void move(Vector signal);
 
-	private void notifyMovementListener(Vector beforeVector, Vector afterVector) {
-		movementListener.moveEvent(beforeVector, afterVector);
+	private void notifyMovementListener(Vector beforeVector, Vector beforeStartPoint, Vector afterVector, Vector afterStartPoint) {
+		movementListener.moveEvent(beforeVector, beforeStartPoint, afterVector, afterStartPoint);
 	}
 
 	private void tickChildren(Vector signal) {

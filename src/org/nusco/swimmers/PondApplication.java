@@ -17,7 +17,7 @@ import org.nusco.swimmers.creature.genetics.Embryo;
 import org.nusco.swimmers.graphics.SwimmerView;
 import org.nusco.swimmers.physics.Vector;
 
-public class SwimmerApplication extends Application {
+public class PondApplication extends Application {
 
     private DNA currentDNA = DNA.random();
 

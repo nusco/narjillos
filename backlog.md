@@ -1,7 +1,13 @@
-* start/stop buttons
-* mutate button
-* change direction button
+* Fix position bug
+* Swimmer "mouth" visible
 * view large world
-* follow food
+* Add one food item
+* Swimmer chases food
+* Swimmer consumes food
+* Food respawns
+* Multiple food items
+* Swimmer reproduces after eating (with mutation)
+* Death of old age
+
 
 

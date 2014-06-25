@@ -9,25 +9,30 @@ import org.nusco.swimmers.physics.Vector;
  */
 class ConnectiveTissue extends Organ {
 
-	public ConnectiveTissue(Organ parent) {
-		this(parent, new PassNerve());
-	}
+    public ConnectiveTissue(Organ parent) {
+	this(parent, new PassNerve());
+    }
 
-	protected ConnectiveTissue(Organ parent, Nerve nerve) {
-		super(0, 0, 0, nerve, parent);
-	}
+    protected ConnectiveTissue(Organ parent, Nerve nerve) {
+	super(0, 0, 0, nerve, parent);
+    }
 
-	@Override
-	public double getAngle() {
-		return getParent().getAngle();
-	}
+    @Override
+    public double getAngle() {
+	return getParent().getAngle();
+    }
 
-	@Override
-	public String toString() {
-		return "<null organ>";
-	}
+    @Override
+    public int getColor() {
+        return getParent().getColor();
+    }
+    
+    @Override
+    public String toString() {
+	return "<null organ>";
+    }
 
-	@Override
-	protected void move(Vector signal) {
-	}
+    @Override
+    protected void move(Vector signal) {
+    }
 }

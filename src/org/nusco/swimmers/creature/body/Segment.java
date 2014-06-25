@@ -20,6 +20,11 @@ public class Segment extends Organ {
 		this(0, 0, 0, 0, null);
 	}
 
+	@Override
+	public int getColor() {
+	    return getParent().getColor() & super.getColor();
+	}
+	
 	public double getAngleToParentAtRest() {
 		return angleToParentAtRest;
 	}

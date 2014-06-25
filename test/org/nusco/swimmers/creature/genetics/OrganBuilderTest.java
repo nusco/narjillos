@@ -39,7 +39,7 @@ public class OrganBuilderTest {
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
-		assertEquals(60, organ.getAngleToParentAtRest(), 0);
+		assertEquals(60, organ.getAngle(), 0);
 		assertEquals(colorGene, organ.getColor(), 0);
 	}
 	
@@ -49,7 +49,7 @@ public class OrganBuilderTest {
 		
 		Organ organ = buildSegment(angleToParentGene, -1);
 		
-		assertEquals(-60, organ.getAngleToParentAtRest(), 0);
+		assertEquals(-60, organ.getAngle(), 0);
 	}
 
 	private Organ buildSegment(int angleToParentGene, int angleSign) {

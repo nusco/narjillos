@@ -26,7 +26,7 @@ public class SegmentTest extends OrganTest {
 
 	@Test
 	public void hasAnAngleRelativeToTheParent() {
-		assertEquals(10, organ.getAngleToParentAtRest(), 0);
+		assertEquals(10, ((Segment)organ).getAngleToParentAtRest(), 0);
 	}
 	
 	@Test

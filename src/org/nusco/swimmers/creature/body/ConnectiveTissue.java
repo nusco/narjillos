@@ -14,41 +14,12 @@ class ConnectiveTissue extends Organ {
 	}
 
 	protected ConnectiveTissue(Organ parent, Nerve nerve) {
-		super(0, 0, 0, 0, nerve, parent);
-	}
-	
-	@Override
-	public Vector getStartPoint() {
-		return getParent().getEndPoint();
-	}
-
-	@Override
-	public Vector getEndPoint() {
-		return getParent().getEndPoint();
-	}
-
-	@Override
-	public int getColor() {
-		return 0;
-	}
-
-	@Override
-	public int getLength() {
-		return 0;
-	}
-
-	@Override
-	public int getThickness() {
-		return 0;
+		super(0, 0, 0, nerve, parent);
 	}
 
 	@Override
 	public double getAngle() {
-		return 0;
-	}
-
-	public double getAngleToParentAtRest() {
-		return getParent().getAngleToParentAtRest();
+		return getParent().getAngle();
 	}
 
 	@Override

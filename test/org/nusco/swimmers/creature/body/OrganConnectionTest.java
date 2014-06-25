@@ -10,12 +10,17 @@ public abstract class OrganConnectionTest {
 	
 	@Test
 	public void sendsNerveSignalsToItsChildren() {
-		ClickNerve nerve1 = new ClickNerve();
-		ClickNerve nerve2 = new ClickNerve();
-		ClickNerve nerve3 = new ClickNerve();
-		ClickNerve nerve4 = new ClickNerve();
+		final ClickNerve nerve1 = new ClickNerve();
+		final ClickNerve nerve2 = new ClickNerve();
+		final ClickNerve nerve3 = new ClickNerve();
+		final ClickNerve nerve4 = new ClickNerve();
 
-		Organ head = new Head(nerve1);
+		Organ head = new Head(0, 0, 0) {
+			@Override
+			public Nerve getNerve() {
+				return nerve1;
+			}
+		};
 		Organ child1 = head.sproutOrgan(nerve2);
 		child1.sproutOrgan(nerve3);
 		head.sproutOrgan(nerve4);

@@ -38,23 +38,14 @@ public class ConnectiveTissueSpecificTest {
 	}
 
 	@Test
-	public void itsGeometricDataIsAllZeros() {
+	public void itsGeometricDataHasSimpleDefaultValues() {
 		Organ head = new Head(10, 10, 100);
 		Organ connectiveTissue = head.sproutConnectiveTissue();
 
 		assertEquals(0, connectiveTissue.getLength());
 		assertEquals(0, connectiveTissue.getThickness());
-		assertEquals(0, connectiveTissue.getAngle(), 0);
+		assertEquals(0, connectiveTissue.getAngle(), 180);
 		assertEquals(0, connectiveTissue.getColor(), 0);
-	}
-
-	@Test
-	public void itsAngleToParentIsTheSameAsItsParents() {
-		Organ head = new Head(10, 10, 100);
-		Organ child = head.sproutOrgan(10, 10, 45, 100);
-		Organ connectiveTissue = child.sproutConnectiveTissue();
-
-		assertEquals(45, connectiveTissue.getAngleToParentAtRest(), 0);
 	}
 
 	@Test
@@ -72,7 +63,6 @@ public class ConnectiveTissueSpecificTest {
 		Organ child = new ConnectiveTissue(new Head(0, 0, 0)).sproutOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
-		assertEquals(45, child.getAngleToParentAtRest(), 0);
 	}
 
 	@Test

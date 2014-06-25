@@ -8,21 +8,21 @@ import org.nusco.swimmers.physics.Vector;
 
 public abstract class Organ {
 
-	protected final int length;
-	protected final int thickness;
-	protected final double angleToParentAtRest;
-	protected final int color;
+	private final int length;
+	private final int thickness;
+	private final int color;
 
-	private Nerve nerve;
+	private final Nerve nerve;
+	private final Organ parent;
 
-	protected final Organ parent;
+	private double angle = 0;
 	private List<Organ> children = new LinkedList<>();
+
 	private MovementListener movementListener = MovementListener.NULL;
 	
-	protected Organ(int length, int thickness, int angleToParentAtRest, int rgb, Nerve nerve, Organ parent) {
+	protected Organ(int length, int thickness, int rgb, Nerve nerve, Organ parent) {
 		this.length = length;
 		this.thickness = thickness;
-		this.angleToParentAtRest = angleToParentAtRest;
 		this.color = rgb;
 		this.nerve = nerve;
 		this.parent = parent;
@@ -36,23 +36,27 @@ public abstract class Organ {
 		return thickness;
 	}
 
-	public double getAngleToParentAtRest() {
-		return angleToParentAtRest;
-	}
-
 	public int getColor() {
 		return color;
 	}
 
-	public abstract Vector getStartPoint();
+	public double getAngle() {
+		return angle;
+	}
+
+	protected final void setAngle(double angle) {
+		this.angle = angle;
+	}
+
+	public Vector getStartPoint() {
+		return getParent().getEndPoint();
+	}
 
 	public Vector getEndPoint() {
 		return getStartPoint().plus(Vector.polar(getAngle(), length));
 	}
-	
-	public abstract double getAngle();
 
-	public Organ getParent() {
+	protected final Organ getParent() {
 		return parent;
 	}
 
@@ -111,7 +115,7 @@ public abstract class Organ {
 	@Override
 	public boolean equals(Object obj) {
 		Organ other = (Organ) obj;
-		return color == other.color && length == other.length && angleToParentAtRest == other.angleToParentAtRest  && thickness == other.thickness;
+		return color == other.color && length == other.length && thickness == other.thickness;
 	}
 
 	// for debugging

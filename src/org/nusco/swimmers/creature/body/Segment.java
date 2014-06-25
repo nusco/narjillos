@@ -8,37 +8,35 @@ public class Segment extends Organ {
 	private static final int DELAY = 21;
 	private static final double AMPLITUDE_AMPLIFICATION = 4;
 	
-	private double angle;
+	protected final double angleToParentAtRest;
 
-	public Segment(int length, int thickness, int angleToParenAtRest, int rgb, Organ parent) {
-		super(length, thickness, angleToParenAtRest, rgb, new DelayNerve(DELAY), parent);
-		this.angle = angleToParenAtRest + parent.getAngle();
+	public Segment(int length, int thickness, int angleToParentAtRest, int rgb, Organ parent) {
+		super(length, thickness, rgb, new DelayNerve(DELAY), parent);
+		this.angleToParentAtRest = angleToParentAtRest;
+		setAngle(this.angleToParentAtRest + getParent().getAngle());
 	}
 
 	Segment(Nerve nerve) {
 		this(0, 0, 0, 0, null);
 	}
 
-	@Override
-	public Organ getParent() {
-		return parent;
-	}
-
-	@Override
-	public Vector getStartPoint() {
-		return parent.getEndPoint();
-	}
-
-	@Override
-	public double getAngle() {
-		return angle;
+	public double getAngleToParentAtRest() {
+		return angleToParentAtRest;
 	}
 
 	@Override
 	protected void move(Vector signal) {
-		Vector base = Vector.polar(getAngleToParentAtRest(), getLength());
+		double angle = getAngleToParentAtRest() + getParent().getAngle();
+		Vector base = Vector.polar(angle, getLength());
 		Vector impulse = signal.by(AMPLITUDE_AMPLIFICATION * Math.sin(angleToParentAtRest));
 		Vector direction = base.plus(impulse);
-		this.angle = direction.getAngle();
+		setAngle(direction.getAngle());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(angleToParentAtRest != ((Segment)obj).getAngleToParentAtRest())
+			return false;
+		return super.equals(obj);
 	}
 }

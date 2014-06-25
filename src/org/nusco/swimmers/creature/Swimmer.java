@@ -21,7 +21,7 @@ public class Swimmer {
 	public void placeAt(Vector position) {
 		head.placeAt(position);
 	}
-	
+
 	public List<Organ> getParts() {
 		List<Organ> result = new LinkedList<>();
 		result.add(head);
@@ -56,5 +56,9 @@ public class Swimmer {
 
 	public void setCurrentTarget(Vector target) {
 		this.target = target;
+	}
+
+	public Vector getPosition() {
+		return head.getStartPoint();
 	}
 }

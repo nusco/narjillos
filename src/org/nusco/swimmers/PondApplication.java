@@ -108,10 +108,7 @@ public class PondApplication extends Application {
     private void showSwimmer(Group root, SwimmerView[] swimmer) {
 	root.getChildren().clear();
 	root.getChildren().addAll(swimmer[0].getParts());
-	root.getChildren().add(swimmer[0].getTarget());
-
-	for (Node node : swimmer[0].getChangeVectors())
-	    root.getChildren().add(node);
+	root.getChildren().add(swimmer[0].getMouth());
     }
 
     private SwimmerView updateSwimmerBody() {

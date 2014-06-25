@@ -1,5 +1,4 @@
 * Fix position bug
-* Swimmer "mouth" visible
 * view large world
 * Add one food item
 * Swimmer chases food

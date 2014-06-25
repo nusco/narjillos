@@ -17,8 +17,9 @@ public class Embryo {
 	public Swimmer develop() {
 		OrganParser parser = new OrganParser(genes);
 		
-		Head head = createHead(parser);
-		Organ[] firstLevelChildren = createTwinOrgans(parser, head);
+		Head head = createHeadSystem(parser);
+		Organ neck = head.getChildren().get(0);
+		Organ[] firstLevelChildren = createTwinOrgans(parser, neck);
 		
 		LinkedList<Organ> secondLevelChildren = new LinkedList<>();
 		for (Organ organ : firstLevelChildren) {
@@ -33,8 +34,8 @@ public class Embryo {
 		return new Swimmer(head);
 	}
 
-	private Head createHead(OrganParser parser) {
-		return new OrganBuilder(parser.nextPart()).buildHead();
+	private Head createHeadSystem(OrganParser parser) {
+		return new OrganBuilder(parser.nextPart()).buildHeadSystem();
 	}
 
 	private Organ[] createTwinOrgans(OrganParser parser, Organ parent) {

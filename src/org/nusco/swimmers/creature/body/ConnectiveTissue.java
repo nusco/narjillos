@@ -1,15 +1,22 @@
 package org.nusco.swimmers.creature.body;
 
+import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.physics.Vector;
 
+/**
+ * An Organ so small, it cannot be seen.
+ */
+class ConnectiveTissue extends Organ {
 
-class NullOrgan extends Organ {
-
-	public NullOrgan(Organ parent) {
-		super(0, 0, 0, 0, new PassNerve(), parent);
+	public ConnectiveTissue(Organ parent) {
+		this(parent, new PassNerve());
 	}
 
+	protected ConnectiveTissue(Organ parent, Nerve nerve) {
+		super(0, 0, 0, 0, nerve, parent);
+	}
+	
 	@Override
 	public Vector getStartPoint() {
 		return getParent().getEndPoint();

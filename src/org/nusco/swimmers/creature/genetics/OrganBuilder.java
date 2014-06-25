@@ -17,13 +17,15 @@ class OrganBuilder {
 		this.genes = partGenes;
 	}
 
-	public Head buildHead() {
-		return new Head(getLength(), getThickness(), getRGB());
+	public Head buildHeadSystem() {
+		Head result = new Head(getLength(), getThickness(), getRGB());
+		result.sproutNeck();
+		return result;
 	}
 
 	public Organ buildSegment(Organ parent, int angleSign) {
 		if(getLengthGenes() <= MIN_GENES_VALUE || getThicknessGenes() <= MIN_GENES_VALUE)
-			return parent.sproutNullOrgan();
+			return parent.sproutConnectiveTissue();
 		return parent.sproutOrgan(getLength(), getThickness(), getRelativeAngle(angleSign), getRGB());
 	}
 

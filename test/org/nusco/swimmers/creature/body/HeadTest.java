@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.swimmers.creature.body.pns.Nerve;
-import org.nusco.swimmers.creature.body.pns.WaveNerve;
+import org.nusco.swimmers.creature.body.pns.TrackingNerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class HeadTest extends OrganTest {
@@ -36,9 +36,9 @@ public class HeadTest extends OrganTest {
 	}
 
 	@Test
-	public void hasAWaveNerve() {
+	public void hasATrackingNerve() {
 		Nerve nerve = new Head(0, 0, 0).getNerve();
 				
-		assertEquals(WaveNerve.class, nerve.getClass());
+		assertEquals(TrackingNerve.class, nerve.getClass());
 	}
 }

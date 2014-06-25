@@ -60,23 +60,6 @@ public abstract class Organ {
 		return children;
 	}
 
-	public Organ sproutOrgan(int length, int thickness, int relativeAngle, int rgb) {
-		return addChild(new Segment(length, thickness, relativeAngle, rgb, this));
-	}
-
-	Organ sproutOrgan(Nerve nerve) {
-		return addChild(new Segment(nerve));
-	}
-
-	public Organ sproutNullOrgan() {
-		return addChild(new NullOrgan(this));
-	}
-
-	Organ addChild(Organ child) {
-		children.add(child);
-		return child;
-	}
-
 	public final Vector tick(Vector inputSignal) {
 		Vector beforeVector = getVector();
 		Vector beforeStartPoint = getStartPoint();
@@ -133,4 +116,21 @@ public abstract class Organ {
 
 	// for debugging
 	public Vector peek = Vector.ZERO;
+
+	public Organ sproutOrgan(int length, int thickness, int relativeAngle, int rgb) {
+		return addChild(new Segment(length, thickness, relativeAngle, rgb, this));
+	}
+
+	Organ sproutOrgan(Nerve nerve) {
+		return addChild(new Segment(nerve));
+	}
+
+	public Organ sproutConnectiveTissue() {
+		return addChild(new ConnectiveTissue(this));
+	}
+
+	protected Organ addChild(Organ child) {
+		children.add(child);
+		return child;
+	}
 }

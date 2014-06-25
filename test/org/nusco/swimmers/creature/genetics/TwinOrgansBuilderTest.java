@@ -17,7 +17,7 @@ public class TwinOrgansBuilderTest {
 	int[] mirroringGenes1 = new int[] {MIRRORING, 62, 72, 82, 92};
 	int[] mirroringGenes2 = new int[] {MIRRORING, 63, 73, 83, 93};
 
-	Organ parent = new OrganBuilder(new int[]{0, 7, 7, 7, 7}).buildHead();
+	Organ parent = new OrganBuilder(new int[]{0, 7, 7, 7, 7}).buildHeadSystem();
 
 	@Test
 	public void buildsRegularSegmentIfNeitherGenesIsMirroring() {

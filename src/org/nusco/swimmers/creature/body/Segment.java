@@ -5,15 +5,16 @@ import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
 public class Segment extends Organ {
-	private static final int DELAY = 21;
-	private static final double AMPLITUDE_AMPLIFICATION = 4;
+	private static final int DELAY = 13;
+	private static final double AMPLITUDE_MULTIPLIER = 1.5;
+	private static final int MAX_ROTATION_SPEED = 5;
 	
-	protected final double angleToParentAtRest;
-
+	private final double angleToParentAtRest;
+	
 	public Segment(int length, int thickness, int angleToParentAtRest, int rgb, Organ parent) {
 		super(length, thickness, rgb, new DelayNerve(DELAY), parent);
 		this.angleToParentAtRest = angleToParentAtRest;
-		setAngle(this.angleToParentAtRest + getParent().getAngle());
+		setAngleToParent(angleToParentAtRest);
 	}
 
 	Segment(Nerve nerve) {
@@ -24,23 +25,64 @@ public class Segment extends Organ {
 	public int getColor() {
 	    return getParent().getColor() & super.getColor();
 	}
-	
-	public double getAngleToParentAtRest() {
+
+	private double getAngleToParentAtRest() {
 		return angleToParentAtRest;
+	}
+	
+	@Override
+	public double getAbsoluteAngle() {
+		return getParent().getAbsoluteAngle() + getAngleToParent();
+	}
+
+	private int getOrientationSign() {
+		return (int)Math.signum(angleToParentAtRest);
 	}
 
 	@Override
 	protected void move(Vector signal) {
-		double angle = getAngleToParentAtRest() + getParent().getAngle();
-		Vector base = Vector.polar(angle, getLength());
-		Vector impulse = signal.by(AMPLITUDE_AMPLIFICATION * Math.sin(angleToParentAtRest));
-		Vector direction = base.plus(impulse);
-		setAngle(direction.getAngle());
+		updateAngle(signal);
+	}
+
+	private void updateAngle(Vector signal) {
+		Vector mainAxis = getMainAxis();
+		
+		Vector signedScaledSignal = signal.by(AMPLITUDE_MULTIPLIER * getOrientationSign());
+		
+		Vector direction = mainAxis.minus(signedScaledSignal);
+		Vector rotatedDirection = direction.rotateBy(getAngleToParentAtRest() - mainAxis.getAngle());
+		
+		setAngleToParent(incrementAngleToParentBy(-rotatedDirection.getAngle()));
+	}
+
+	private double incrementAngleToParentBy(double targetAngleToParent) {
+		double targetRotationSpeed = targetAngleToParent - getAngleToParent();
+		double rotationSpeed = clip(targetRotationSpeed, MAX_ROTATION_SPEED);
+		return getAngleToParent() + rotationSpeed;
+	}
+
+	private Vector getMainAxis() {
+		return getHead().getVector().normalize(1);
+	}
+
+	private double clip(double value, double max) {
+		if (value > max)
+			return max;
+		if (value < -max)
+			return -max;
+		return value;
+	}
+
+	private Organ getHead() {
+		Organ result = this;
+		while(result.getParent() != null)
+			result = result.getParent();
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if(angleToParentAtRest != ((Segment)obj).getAngleToParentAtRest())
+		if(angleToParentAtRest != ((Segment)obj).angleToParentAtRest)
 			return false;
 		return super.equals(obj);
 	}

@@ -1,4 +1,3 @@
-* Fix position bug
 * view large world
 * Add one food item
 * Swimmer chases food
@@ -7,6 +6,7 @@
 * Multiple food items
 * Swimmer reproduces after eating (with mutation)
 * Death of old age
+* Thicker segments exercise more push
 
 
 

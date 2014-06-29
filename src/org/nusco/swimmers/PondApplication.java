@@ -20,6 +20,7 @@ public class PondApplication extends Application {
 
 	private DNA currentDNA = DNA.random();
 	private final SwimmerView[] swimmerViewContainer = new SwimmerView[1];
+	private Vector target = Vector.polar(180, 1);
 	
 	public static void main(String... args) {
 		launch(args);
@@ -39,7 +40,7 @@ public class PondApplication extends Application {
 
 		final Group root = new Group();
 		setSwimmerView(createNewSwimmer());
-		getSwimmerView().setCurrentTarget(Vector.polar(180, 3));
+		getSwimmerView().setCurrentTarget(target);
 		showSwimmer(root);
 
 		final Scene scene = new Scene(root, 1200, 800);
@@ -110,14 +111,15 @@ public class PondApplication extends Application {
 
 	private synchronized void setRandomTarget(final SwimmerView swimmer) {
 		double randomAngle = Math.random() * 360 - 180;
-		double randomLength = Math.random() * 3 + 2;
-		Vector newTarget = Vector.polar(randomAngle, randomLength);
+		Vector newTarget = Vector.polar(randomAngle, 1);
+		newTarget = target.rotateBy(180);
+		target = newTarget;
 		getSwimmerView().setCurrentTarget(newTarget);
 	}
 
 	private synchronized void mutate(final SwimmerView swimmer) {
 		setSwimmerView(createNewSwimmer());
-		getSwimmerView().setCurrentTarget(Vector.polar(180, 3));
+		getSwimmerView().setCurrentTarget(Vector.polar(180, 1));
 	}
 
 	private synchronized SwimmerView createNewSwimmer() {

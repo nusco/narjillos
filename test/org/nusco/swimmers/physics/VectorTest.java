@@ -64,6 +64,22 @@ public class VectorTest {
 	}
 
 	@Test
+	public void itsLengthIsAlwaysPositive() {
+		assertEquals(1, Vector.polar(0, -1).getLength(), 0.001);
+		assertEquals(1, Vector.polar(180, -1).getLength(), 0.001);
+		assertEquals(1, Vector.polar(90, -1).getLength(), 0.001);
+		assertEquals(1, Vector.polar(45, -1).getLength(), 0.001);
+	}
+
+	@Test
+	public void itsAngleIsCorrectedForNegativeLengths() {
+		assertEquals(-180, Vector.polar(0, -1).getAngle(), 0.001);
+		assertEquals(0, Vector.polar(180, -1).getAngle(), 0.001);
+		assertEquals(-90, Vector.polar(90, -1).getAngle(), 0.001);
+		assertEquals(-135, Vector.polar(45, -1).getAngle(), 0.001);
+	}
+	
+	@Test
 	public void canBeAddedToAnotherVector() {
 		Vector start = Vector.cartesian(10, 20);
 	
@@ -117,9 +133,11 @@ public class VectorTest {
 	@Test
 	public void hasAProjectionOnAnotherVector() {
 		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 1)));
+		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(0, 1)));
 		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 10)));
 		assertEqualsVector(Vector.ZERO, Vector.polar(180, 10).getProjectionOn(Vector.polar(90, 1)));
 		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(45, 1)));
+		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(-135, 1)));
 	}
 
 	@Test
@@ -128,8 +146,11 @@ public class VectorTest {
 		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 1)));
 		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 10)));
 		assertEqualsVector(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(0, 10)));
+		assertEqualsVector(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(180, 10)));
+		assertEqualsVector(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(0, 10)));
+		assertEqualsVector(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(180, 10)));
 	}
-	
+
 	@Test
 	public void hasAnAngleWithAnotherVector() {
 		Vector ninetyDegrees = Vector.polar(90, 10);
@@ -139,6 +160,15 @@ public class VectorTest {
 		assertEquals(-90, ninetyDegrees.getAngleWith(Vector.polar(180, 1)), 0.001);
 		assertEquals(-179, ninetyDegrees.getAngleWith(Vector.polar(-91, 1)), 0.001);
 		assertEquals(179, Vector.polar(-91, 1).getAngleWith(ninetyDegrees), 0.001);
+	}
+
+	@Test
+	public void canBeRotated() {
+		Vector ninetyDegrees = Vector.polar(90, 10);
+		assertEqualsVector(Vector.polar(180, 10), ninetyDegrees.rotateBy(90));
+		assertEqualsVector(Vector.polar(-179, 10), ninetyDegrees.rotateBy(91));
+		assertEqualsVector(Vector.polar(0, 10), ninetyDegrees.rotateBy(-90));
+		assertEqualsVector(Vector.polar(-1, 10), ninetyDegrees.rotateBy(-91));
 	}
 	
 	private void assertEqualsVector(Vector v1, Vector v2) {

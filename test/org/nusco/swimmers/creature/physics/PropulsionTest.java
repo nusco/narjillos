@@ -21,9 +21,4 @@ public class PropulsionTest {
 	public void collectsTangentialForce() {
 		assertTrue(propulsion.getTangentialForce().almostEquals(Vector.polar(45,  3)));
 	}
-
-	@Test
-	public void collectsNormalForce() {
-		assertTrue(propulsion.getNormalForce().almostEquals(Vector.polar(135,  10)));
-	}
 }

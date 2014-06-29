@@ -15,7 +15,7 @@ public abstract class Organ {
 	private final Nerve nerve;
 	private final Organ parent;
 
-	private double angle = 0;
+	private double angleToParent = 0;
 	private List<Organ> children = new LinkedList<>();
 
 	private MovementListener movementListener = MovementListener.NULL;
@@ -40,20 +40,22 @@ public abstract class Organ {
 		return color;
 	}
 
-	public double getAngle() {
-		return angle;
+	protected final double getAngleToParent() {
+		return angleToParent;
 	}
 
-	protected final void setAngle(double angle) {
-		this.angle = angle;
+	protected final void setAngleToParent(double angleToParent) {
+		this.angleToParent = angleToParent;
 	}
+
+	public abstract double getAbsoluteAngle();
 
 	public Vector getStartPoint() {
 		return getParent().getEndPoint();
 	}
 
 	public Vector getEndPoint() {
-		return getStartPoint().plus(Vector.polar(getAngle(), length));
+		return getStartPoint().plus(Vector.polar(getAbsoluteAngle(), length));
 	}
 
 	protected final Organ getParent() {
@@ -64,7 +66,7 @@ public abstract class Organ {
 		return children;
 	}
 
-	public final Vector tick(Vector inputSignal) {
+	public Vector tick(Vector inputSignal) {
 		Vector beforeVector = getVector();
 		Vector beforeStartPoint = getStartPoint();
 
@@ -90,7 +92,7 @@ public abstract class Organ {
 	}
 
 	public Vector getVector() {
-		return Vector.polar(getAngle(), getLength());
+		return Vector.polar(getAbsoluteAngle(), getLength());
 	}
 	
 	public Nerve getNerve() {

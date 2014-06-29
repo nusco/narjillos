@@ -23,18 +23,13 @@ public class SegmentTest extends OrganTest {
 	public void startsAtItsParentsEndPoint() {
 		assertEquals(parent.getEndPoint(), organ.getStartPoint());
 	}
-
-	@Test
-	public void hasAnAngleRelativeToTheParent() {
-		assertEquals(10, ((Segment)organ).getAngleToParentAtRest(), 0);
-	}
 	
 	@Test
-	public void hasAnAbsoluteAngle() {
+	public void hasAnAngleAtRest() {
 		Head head = new Head(0, 0, 0);
 		Organ organ1 = new Segment(0, 0, 30, 0, head);
 		Organ organ2 = new Segment(0, 0, -10, 0, organ1);
-		assertEquals(20, organ2.getAngle(), 0);
+		assertEquals(20, organ2.getAbsoluteAngle(), 0);
 	}
 
 	@Override

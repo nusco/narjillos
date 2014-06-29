@@ -41,8 +41,4 @@ public class Propulsion implements MovementListener {
 	public Vector getTangentialForce() {
 		return getTotalForce().getProjectionOn(direction);
 	}
-
-	public Vector getNormalForce() {
-		return getTotalForce().getNormalComponentOn(direction);
-	}
 }

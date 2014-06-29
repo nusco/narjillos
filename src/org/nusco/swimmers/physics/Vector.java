@@ -65,9 +65,14 @@ public class Vector {
 	}
 
 	public Vector getProjectionOn(Vector other) {
-		double relativeAngle = other.getAngle() - getAngle();
+		Vector direction = pointsInSameDirectionAs(other) ? other : other.invert();
+		double relativeAngle = direction.getAngle() - getAngle();
 		double resultLength = Math.cos(Math.toRadians(relativeAngle)) * getLength();
-		return Vector.polar(other.getAngle(), resultLength);
+		return Vector.polar(direction.getAngle(), resultLength);
+	}
+
+	private boolean pointsInSameDirectionAs(Vector other) {
+		return other.getAngle() - getAngle() < 90;
 	}
 
 	public Vector getNormalComponentOn(Vector other) {
@@ -81,6 +86,10 @@ public class Vector {
 		if(result > 180)
 			return result - 360;
 		return result;
+	}
+
+	public Vector rotateBy(double degrees) {
+		return Vector.polar(getAngle() + degrees, getLength());
 	}
 
 	@Override
@@ -99,12 +108,17 @@ public class Vector {
 	}
 
 	public boolean almostEquals(Vector other) {
-		final double delta = 0.00001;
+		final double delta = 0.001;
 		return Math.abs(getAngle() - other.getAngle()) < delta && Math.abs(getLength() - other.getLength()) < delta;
 	}
 	
 	@Override
 	public String toString() {
-		return "(" + getX() + ", " + getY() + ")";
+		return "(" + approx(getX()) + ", " + approx(getY()) + ")";
+	}
+
+	private double approx(double n) {
+		final double decimals = 100.0;
+		return (Math.round(n * decimals)) / decimals;
 	}
 }

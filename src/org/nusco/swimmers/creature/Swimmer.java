@@ -44,7 +44,7 @@ public class Swimmer {
 		Propulsion propulsion = new Propulsion(head.getVector());
 		head.setMovementListener(propulsion);
 
-		head.tick(target);
+		head.tick(getCurrentTarget());
 
 		Vector tangentialForce = propulsion.getTangentialForce();
 		Vector newPosition = head.getStartPoint().plus(tangentialForce);

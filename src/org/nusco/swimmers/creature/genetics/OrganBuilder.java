@@ -9,7 +9,7 @@ class OrganBuilder {
 
 	static final double PART_LENGTH_MULTIPLIER = 1.0;
 	static final double PART_THICKNESS_MULTIPLIER = 0.15;
-	static final int PART_MAX_RELATIVE_ANGLE = 100;
+	static final int PART_MAX_ANGLE_TO_PARENT = 70;
 
 	private final int[] genes;
 
@@ -46,8 +46,7 @@ class OrganBuilder {
 	}
 
 	private int getAngleToParentAtRest(int angleSign) {
-		int shift = PART_MAX_RELATIVE_ANGLE / 5;
-		return (genes[3] % PART_MAX_RELATIVE_ANGLE - shift) * angleSign;
+		return (genes[3] % PART_MAX_ANGLE_TO_PARENT) * angleSign;
 	}
 	
 	private int getRGB() {

@@ -44,10 +44,16 @@ public class ConnectiveTissueSpecificTest {
 
 		assertEquals(0, connectiveTissue.getLength());
 		assertEquals(0, connectiveTissue.getThickness());
-		assertEquals(0, connectiveTissue.getAngle(), 180);
-		assertEquals(0, connectiveTissue.getColor(), 0);
 	}
 
+	@Test
+	public void itsColorIsTheSameAsItsParents() {
+		Organ head = new Head(10, 10, 100);
+		Organ connectiveTissue = head.sproutConnectiveTissue();
+
+		assertEquals(100, connectiveTissue.getColor(), 0);
+	}
+	
 	@Test
 	public void itBeginsAndEndsWhereItsParentEnds() {
 		Head head = new Head(15, 10, 100);

@@ -51,7 +51,7 @@ class OrganView {
 	result.getTransforms().add(moveToStartPoint());
 
 	// rotate in position
-	result.getTransforms().add(new Rotate(organ.getAngle(), OVERLAP, widthCenter));
+	result.getTransforms().add(new Rotate(organ.getAbsoluteAngle(), OVERLAP, widthCenter));
 
 	return result;
     }

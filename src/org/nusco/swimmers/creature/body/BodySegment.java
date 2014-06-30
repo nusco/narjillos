@@ -4,20 +4,20 @@ import org.nusco.swimmers.creature.body.pns.DelayNerve;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.physics.Vector;
 
-public class Segment extends Organ {
+public class BodySegment extends Organ {
 	private static final int DELAY = 13;
 	private static final double AMPLITUDE_MULTIPLIER = 1.5;
 	private static final int MAX_ROTATION_SPEED = 5;
 	
 	private final double angleToParentAtRest;
 	
-	public Segment(int length, int thickness, int angleToParentAtRest, int rgb, Organ parent) {
+	public BodySegment(int length, int thickness, int angleToParentAtRest, int rgb, Organ parent) {
 		super(length, thickness, rgb, new DelayNerve(DELAY), parent);
 		this.angleToParentAtRest = angleToParentAtRest;
 		setAngleToParent(angleToParentAtRest);
 	}
 
-	Segment(Nerve nerve) {
+	BodySegment(Nerve nerve) {
 		this(0, 0, 0, 0, null);
 	}
 
@@ -82,7 +82,7 @@ public class Segment extends Organ {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(angleToParentAtRest != ((Segment)obj).angleToParentAtRest)
+		if(angleToParentAtRest != ((BodySegment)obj).angleToParentAtRest)
 			return false;
 		return super.equals(obj);
 	}

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.swimmers.creature.body.pns.Nerve;
+import org.nusco.swimmers.physics.Segment;
 import org.nusco.swimmers.physics.Vector;
 
 public abstract class Organ {
@@ -67,13 +68,12 @@ public abstract class Organ {
 	}
 
 	public Vector tick(Vector inputSignal) {
-		Vector beforeVector = getVector();
-		Vector beforeStartPoint = getStartPoint();
+		Segment beforeMovement = new Segment(getStartPoint(), getVector());
 
 		Vector outputSignal = getNerve().tick(inputSignal);
 		move(outputSignal);
 		
-		notifyMovementListener(beforeVector, beforeStartPoint, getVector(), getStartPoint());
+		notifyMovementListener(beforeMovement, new Segment(getStartPoint(), getVector()));
 
 		tickChildren(outputSignal);
 
@@ -82,8 +82,8 @@ public abstract class Organ {
 
 	protected abstract void move(Vector signal);
 
-	private void notifyMovementListener(Vector beforeVector, Vector beforeStartPoint, Vector afterVector, Vector afterStartPoint) {
-		movementListener.moveEvent(beforeVector, beforeStartPoint, afterVector, afterStartPoint);
+	private void notifyMovementListener(Segment beforeMovement, Segment afterMovement) {
+		movementListener.moveEvent(beforeMovement, afterMovement);
 	}
 
 	private void tickChildren(Vector signal) {
@@ -124,11 +124,11 @@ public abstract class Organ {
 	public Vector peek = Vector.ZERO;
 
 	public Organ sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb) {
-		return addChild(new Segment(length, thickness, angleToParentAtRest, rgb, this));
+		return addChild(new BodySegment(length, thickness, angleToParentAtRest, rgb, this));
 	}
 
 	Organ sproutOrgan(Nerve nerve) {
-		return addChild(new Segment(nerve));
+		return addChild(new BodySegment(nerve));
 	}
 
 	public Organ sproutConnectiveTissue() {

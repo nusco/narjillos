@@ -16,7 +16,7 @@ import org.nusco.swimmers.physics.Vector;
 public class ConnectiveTissueSpecificTest {
 
 	@Test
-	public void hasAParent() {
+	public void isAVectorWithAP() {
 		Organ head = new Head(10, 10, 100);
 		Organ connectiveTissue = head.sproutConnectiveTissue();
 

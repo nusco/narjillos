@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.swimmers.creature.body.MovementListener;
+import org.nusco.swimmers.physics.Segment;
 import org.nusco.swimmers.physics.Vector;
 
 public class Propulsion implements MovementListener {
@@ -18,7 +19,10 @@ public class Propulsion implements MovementListener {
 	}
 
 	@Override
-	public void moveEvent(Vector beforeVector, Vector beforeStartPoint, Vector afterVector, Vector afterStartPoint) {
+	public void moveEvent(Segment beforeMovement, Segment afterMovement) {
+		Vector beforeVector = beforeMovement.shape;
+		Vector afterVector = afterMovement.shape;
+		
 		double velocityAngle = afterVector.getAngleWith(beforeVector);
 		double force = velocityAngle * beforeVector.getLength() * PROPULSION_SCALE;
 		

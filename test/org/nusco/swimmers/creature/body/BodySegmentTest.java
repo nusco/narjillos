@@ -5,13 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nusco.swimmers.physics.Vector;
 
-public class SegmentTest extends OrganTest {
+public class BodySegmentTest extends OrganTest {
 	private Organ parent;
 	
 	@Override
 	public Organ createOrgan() {
 		parent = new Head(15, THICKNESS, 100);
-		return new Segment(20, THICKNESS, 10, 100, parent);
+		return new BodySegment(20, THICKNESS, 10, 100, parent);
 	}
 
 	@Override
@@ -25,10 +25,10 @@ public class SegmentTest extends OrganTest {
 	}
 	
 	@Test
-	public void hasAnAngleAtRest() {
+	public void hasAnAbsoluteAngle() {
 		Head head = new Head(0, 0, 0);
-		Organ organ1 = new Segment(0, 0, 30, 0, head);
-		Organ organ2 = new Segment(0, 0, -10, 0, organ1);
+		Organ organ1 = new BodySegment(0, 0, 30, 0, head);
+		Organ organ2 = new BodySegment(0, 0, -10, 0, organ1);
 		assertEquals(20, organ2.getAbsoluteAngle(), 0);
 	}
 

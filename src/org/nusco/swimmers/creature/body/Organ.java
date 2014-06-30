@@ -103,6 +103,10 @@ public abstract class Organ {
 		return getLength() * getThickness();
 	}
 
+	protected Vector getMainAxis() {
+		return getParent().getMainAxis();
+	}
+
 	public void setMovementListener(MovementListener listener) {
 		movementListener = listener;
 		for(Organ child : getChildren())

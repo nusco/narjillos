@@ -30,6 +30,10 @@ public class Head extends Organ {
 		this.startPoint = point;
 	}
 
+	protected Vector getMainAxis() {
+		return getVector().normalize(1);
+	}
+
 	@Override
 	protected void move(Vector signal) {
 		setAngleToParent(getAngleToParent() + turnTowards(signal.invert()));

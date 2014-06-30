@@ -61,23 +61,12 @@ public class BodySegment extends Organ {
 		return getAngleToParent() + rotationSpeed;
 	}
 
-	private Vector getMainAxis() {
-		return getHead().getVector().normalize(1);
-	}
-
 	private double clip(double value, double max) {
 		if (value > max)
 			return max;
 		if (value < -max)
 			return -max;
 		return value;
-	}
-
-	private Organ getHead() {
-		Organ result = this;
-		while(result.getParent() != null)
-			result = result.getParent();
-		return result;
 	}
 
 	@Override

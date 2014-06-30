@@ -6,23 +6,31 @@ import java.util.List;
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.physics.Propulsion;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.things.Thing;
 
-public class Swimmer {
+public class Swimmer implements Thing {
 
 	private final Head head;
 
+	private Vector position;
 	private Vector target = Vector.ZERO;
 
 	public Swimmer(Head head) {
 		this.head = head;
 	}
 
-	public void placeAt(Vector position) {
-		head.setStartPoint(position);
+	@Override
+	public void setPosition(Vector position) {
+		this.position = position;
 	}
 
-	public List<Organ> getParts() {
+	@Override
+	public Vector getPosition() {
+		return position;
+	}
+
+	public List<Organ> getOrgans() {
 		List<Organ> result = new LinkedList<>();
 		result.add(head);
 		addChildrenDepthFirst(result, head);
@@ -36,7 +44,7 @@ public class Swimmer {
 		}
 	}
 
-	public Organ getHead() {
+	public Head getHead() {
 		return head;
 	}
 
@@ -47,8 +55,8 @@ public class Swimmer {
 		head.tick(getCurrentTarget());
 
 		Vector tangentialForce = propulsion.getTangentialForce();
-		Vector newPosition = head.getStartPoint().plus(tangentialForce);
-		head.setStartPoint(newPosition);
+		Vector newPosition = getPosition().plus(tangentialForce);
+		setPosition(newPosition);
 	}
 
 	public Vector getCurrentTarget() {
@@ -56,10 +64,12 @@ public class Swimmer {
 	}
 
 	public void setCurrentTarget(Vector target) {
-		this.target = target;
+		// TODO: make the signal stronger when farther away?
+		this.target = target.normalize(1);
 	}
 
-	public Vector getPosition() {
-		return head.getStartPoint();
+	@Override
+	public String getLabel() {
+		return "swimmer";
 	}
 }

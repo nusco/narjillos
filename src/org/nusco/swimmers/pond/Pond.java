@@ -4,67 +4,43 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.nusco.swimmers.creature.Swimmer;
-import org.nusco.swimmers.creature.genetics.DNA;
-import org.nusco.swimmers.creature.genetics.Embryo;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.things.Thing;
 
 public class Pond {
 
-	private Map<Object, Vector> foodToPositions = new HashMap<>();
-	private Map<Object, Vector> swimmersToPositions = new HashMap<>();
+	public final static int USEFUL_AREA_SIZE = 30000;
 
-	public void add(Food food, int x, int y) {
-		foodToPositions.put(food, Vector.cartesian(x, y));
+	private Map<Thing, Vector> thingsToPositions = new HashMap<>();
+
+	public Set<Thing> getThings() {
+		return thingsToPositions.keySet();
 	}
 
-	public void add(Swimmer swimmer, int x, int y) {
-		swimmersToPositions.put(swimmer, Vector.cartesian(x, y));
+	public void add(Thing thing, long x, long y) {
+		Vector position = Vector.cartesian(x, y);
+		thing.setPosition(position);
+		thingsToPositions.put(thing, position);
 	}
 
-	public Vector closestFoodTo(Vector position) {
-		return closestThingTo(position, foodToPositions);
-	}
-
-	public Vector closestSwimmerTo(Vector position) {
-		return closestThingTo(position, swimmersToPositions);
-	}
-
-	private Vector closestThingTo(Vector position, Map<Object, Vector> things) {
+	public Vector find(String typeOfThing, Vector near) {
 		double minDistance = Double.MAX_VALUE;
 		Vector result = Vector.ZERO;
-		for (Object thing : things.keySet()) {
-			Vector target = things.get(thing);
-			double distance = target.minus(position).getLength();
-			if(distance < minDistance) {
-				minDistance = distance;
-				result = target;
+		for (Thing thing : getThings()) {
+			if (thing.getLabel().equals(typeOfThing)) {
+				Vector target = thingsToPositions.get(thing);
+				double distance = target.minus(near).getLength();
+				if (distance < minDistance) {
+					minDistance = distance;
+					result = target;
+				}
 			}
-		};
+		}
 		return result;
 	}
-	
-	public Pond random() {
-		Pond result = new Pond();
-		
-		Swimmer swimmer = new Embryo(DNA.random()).develop();
-		add(swimmer, randomCoordinate(), randomCoordinate());
-		
-		for (int i = 0; i < 50; i++)
-			add(new Food(), randomCoordinate(), randomCoordinate());
-		
-		return result;
-	}
-	
-	private int randomCoordinate() {
-		return (int)(Math.random() * 1000) - 500;
-	}
 
-	public Set<Object> getSwimmers() {
-		return swimmersToPositions.keySet();
-	}
-
-	public Set<Object> getFood() {
-		return foodToPositions.keySet();
+	public void tick() {
+		for (Thing thing : thingsToPositions.keySet())
+			thing.tick();
 	}
 }

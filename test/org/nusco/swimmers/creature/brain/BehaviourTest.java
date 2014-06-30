@@ -5,12 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.Before;
 import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.brain.Behaviour;
 import org.nusco.swimmers.creature.brain.FeedingBehaviour;
 import org.nusco.swimmers.creature.brain.MatingBehaviour;
-import org.nusco.swimmers.physics.Vector;
 import org.nusco.swimmers.pond.Food;
 import org.nusco.swimmers.pond.Pond;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class BehaviourTest {
 
@@ -20,8 +21,8 @@ public class BehaviourTest {
 	public void setupPond() {
 		pond.add(new Food(), 10, 10);
 		pond.add(new Food(), 100, 100);
-		pond.add(new Swimmer(null), 50, 30);
-		pond.add(new Swimmer(null), 30, 100);
+		pond.add(new Swimmer(new Head(0, 0, 0)), 50, 30);
+		pond.add(new Swimmer(new Head(0, 0, 0)), 30, 100);
 	}
 	
 	@Test

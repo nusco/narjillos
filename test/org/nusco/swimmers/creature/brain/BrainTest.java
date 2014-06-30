@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.swimmers.creature.brain.Brain;
-import org.nusco.swimmers.physics.Vector;
 import org.nusco.swimmers.pond.Food;
 import org.nusco.swimmers.pond.Pond;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class BrainTest {
 

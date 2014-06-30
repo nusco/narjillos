@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.swimmers.creature.body.pns.Nerve;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public abstract class OrganConnectionTest {
 	

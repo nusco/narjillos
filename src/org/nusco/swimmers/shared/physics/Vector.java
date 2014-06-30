@@ -1,4 +1,4 @@
-package org.nusco.swimmers.physics;
+package org.nusco.swimmers.shared.physics;
 
 public class Vector {
 

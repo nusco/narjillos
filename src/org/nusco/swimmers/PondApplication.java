@@ -10,60 +10,58 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import org.nusco.swimmers.creature.Swimmer;
-import org.nusco.swimmers.creature.genetics.DNA;
-import org.nusco.swimmers.creature.genetics.Embryo;
-import org.nusco.swimmers.graphics.SwimmerView;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.graphics.PondView;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class PondApplication extends Application {
 
-	private DNA currentDNA = DNA.random();
-	private final SwimmerView[] swimmerViewContainer = new SwimmerView[1];
-	private Vector target = Vector.polar(180, 1);
-	
+	protected static final int FRAMES_PER_SECOND = 30;
+	protected static final int TICKS_PER_SECOND = 25;
+	protected static final int TICKS_PERIOD = 1000 / TICKS_PER_SECOND;
+
+	private PondView pondView;
+
 	public static void main(String... args) {
 		launch(args);
 	}
 
-	private synchronized void setSwimmerView(SwimmerView swimmerView) {
-		swimmerViewContainer[0] = swimmerView;
+	private synchronized void setPondView(PondView pondView) {
+		this.pondView = pondView;
 	}
 
-	private synchronized SwimmerView getSwimmerView() {
-		return swimmerViewContainer[0];
+	private synchronized PondView getPondView() {
+		return pondView;
 	}
-	
+
 	@Override
 	public void start(final Stage primaryStage) throws InterruptedException {
-		primaryStage.setTitle("Swimmer");
-
 		final Group root = new Group();
-		setSwimmerView(createNewSwimmer());
-		getSwimmerView().setCurrentTarget(target);
-		showSwimmer(root);
-
-		final Scene scene = new Scene(root, 1200, 800);
+		
+		setUpNewPond();
+		showPond(root);
 
 		startModelUpdateThread();
 		startViewUpdateThread(root);
-		scene.addEventFilter(MouseEvent.MOUSE_CLICKED, createMouseEvent(getSwimmerView()));
 
+		double viewSize = (double) getPondView().getViewSize();
+		final Scene scene = new Scene(root, viewSize, viewSize);
+		scene.addEventFilter(MouseEvent.MOUSE_CLICKED, createMouseEvent());
+		primaryStage.setTitle("Swimmers");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
-	private EventHandler<MouseEvent> createMouseEvent(final SwimmerView swimmer) {
+	private EventHandler<MouseEvent> createMouseEvent() {
 		return new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				handleMouse(swimmer, event);
+				handleMouse(event);
 			}
 
-			private synchronized void handleMouse(final SwimmerView swimmer, MouseEvent event) {
+			private synchronized void handleMouse(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY)
-					mutate(swimmer);
+					getPondView().zoomIn(Vector.cartesian(event.getX(), event.getY()));
 				else
-					setRandomTarget(swimmer);
+					getPondView().zoomOut();
 			}
 		};
 	}
@@ -76,10 +74,10 @@ public class PondApplication extends Application {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							showSwimmer(root);
+							showPond(root);
 						}
 					});
-					Thread.sleep(10);
+					Thread.sleep(1000 / FRAMES_PER_SECOND);
 				}
 			}
 		};
@@ -93,9 +91,14 @@ public class PondApplication extends Application {
 			@Override
 			public void run() {
 				while (true) {
+					long start = System.currentTimeMillis();
+					
 					tick();
+					
+					long timeTaken = System.currentTimeMillis() - start;
+					long waitTime = Math.max(TICKS_PERIOD - timeTaken, 1);
 					try {
-						Thread.sleep(30);
+						Thread.sleep(waitTime);
 					} catch (InterruptedException e) {
 					}
 				}
@@ -104,34 +107,20 @@ public class PondApplication extends Application {
 		updateThread.setDaemon(true);
 		updateThread.start();
 	}
-	
+
 	private synchronized void tick() {
-		getSwimmerView().tick();
-	};
-
-	private synchronized void setRandomTarget(final SwimmerView swimmer) {
-		double randomAngle = Math.random() * 360 - 180;
-		Vector newTarget = Vector.polar(randomAngle, 1);
-		newTarget = target.rotateBy(180);
-		target = newTarget;
-		getSwimmerView().setCurrentTarget(newTarget);
+		getPondView().tick();
 	}
 
-	private synchronized void mutate(final SwimmerView swimmer) {
-		setSwimmerView(createNewSwimmer());
-		getSwimmerView().setCurrentTarget(Vector.polar(180, 1));
+	private synchronized void setUpNewPond() {
+		setPondView(createNewPondView());
 	}
 
-	private synchronized SwimmerView createNewSwimmer() {
-		Swimmer swimmer = new Embryo(currentDNA).develop();
-		swimmer.placeAt(Vector.cartesian(400, 0));
-		currentDNA = currentDNA.mutate();
-		return new SwimmerView(swimmer);
+	private synchronized PondView createNewPondView() {
+		return new PondView(new RandomPond());
 	}
 
-	private synchronized void showSwimmer(Group root) {
-		root.getChildren().clear();
-		root.getChildren().addAll(getSwimmerView().getParts());
-		root.getChildren().add(getSwimmerView().getMouth());
+	private synchronized void showPond(final Group root) {
+		getPondView().show(root);
 	}
 }

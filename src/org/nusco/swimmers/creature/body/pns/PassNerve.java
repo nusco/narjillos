@@ -1,6 +1,6 @@
 package org.nusco.swimmers.creature.body.pns;
 
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 /**
  * Always outputs the same vector it receives in input.

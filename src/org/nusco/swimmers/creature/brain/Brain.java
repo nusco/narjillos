@@ -1,7 +1,7 @@
 package org.nusco.swimmers.creature.brain;
 
-import org.nusco.swimmers.physics.Vector;
 import org.nusco.swimmers.pond.Pond;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class Brain {
 

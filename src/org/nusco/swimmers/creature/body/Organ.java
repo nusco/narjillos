@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.swimmers.creature.body.pns.Nerve;
-import org.nusco.swimmers.physics.Segment;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Segment;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public abstract class Organ {
 

@@ -43,7 +43,7 @@ public class MutationManualTest {
 
 	private static Set<Object> toSetOfParts(Swimmer swimmer) {
 		Set<Object> result = new HashSet<Object>();
-		result.addAll(swimmer.getParts());
+		result.addAll(swimmer.getOrgans());
 		return result;
 	}
 

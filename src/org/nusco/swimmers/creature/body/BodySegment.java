@@ -2,7 +2,7 @@ package org.nusco.swimmers.creature.body;
 
 import org.nusco.swimmers.creature.body.pns.DelayNerve;
 import org.nusco.swimmers.creature.body.pns.Nerve;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class BodySegment extends Organ {
 	private static final int DELAY = 13;

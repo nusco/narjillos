@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.creature.body.pns.PassNerve;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class HeadTest extends OrganTest {
 
@@ -17,12 +17,6 @@ public class HeadTest extends OrganTest {
 	@Test
 	public void startsAtPointZeroByDefault() {
 		assertEquals(Vector.ZERO, organ.getStartPoint());
-	}
-
-	@Test
-	public void canBeSetAtADifferentPoint() {
-		((Head)organ).setStartPoint(Vector.cartesian(20, 30));
-		assertEquals(Vector.cartesian(20, 30), organ.getStartPoint());
 	}
 
 	@Override

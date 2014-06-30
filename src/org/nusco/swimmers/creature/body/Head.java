@@ -1,14 +1,12 @@
 package org.nusco.swimmers.creature.body;
 
 import org.nusco.swimmers.creature.body.pns.PassNerve;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class Head extends Organ {
 
 	static final double ROTATION_SPEED = 0.5;
 	static final double ROTATION_HISTERESIS = ROTATION_SPEED;
-
-	private Vector startPoint = Vector.ZERO;
 
 	public Head(int length, int thickness, int rgb) {
 		super(length, thickness, rgb, new PassNerve(), null);
@@ -23,11 +21,7 @@ public class Head extends Organ {
 
 	@Override
 	public Vector getStartPoint() {
-		return startPoint;
-	}
-
-	public void setStartPoint(Vector point) {
-		this.startPoint = point;
+		return Vector.ZERO;
 	}
 
 	protected Vector getMainAxis() {

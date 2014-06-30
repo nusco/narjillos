@@ -11,7 +11,7 @@ import org.nusco.swimmers.creature.body.ConnectiveTissue;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.creature.body.pns.PassNerve;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class ConnectiveTissueSpecificTest {
 
@@ -57,11 +57,10 @@ public class ConnectiveTissueSpecificTest {
 	@Test
 	public void itBeginsAndEndsWhereItsParentEnds() {
 		Head head = new Head(15, 10, 100);
-		head.setStartPoint(Vector.cartesian(20, 30));
 		Organ connectiveTissue = new ConnectiveTissue(head).sproutConnectiveTissue();
 
-		assertEquals(Vector.cartesian(35, 30), connectiveTissue.getStartPoint());
-		assertEquals(Vector.cartesian(35, 30), connectiveTissue.getEndPoint());
+		assertEquals(Vector.cartesian(15, 0), connectiveTissue.getStartPoint());
+		assertEquals(Vector.cartesian(15, 0), connectiveTissue.getEndPoint());
 	}
 
 	@Test

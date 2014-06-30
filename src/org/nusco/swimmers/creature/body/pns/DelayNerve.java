@@ -2,7 +2,7 @@ package org.nusco.swimmers.creature.body.pns;
 
 import java.util.LinkedList;
 
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 /**
  * Outputs the same signal it received as an input, but

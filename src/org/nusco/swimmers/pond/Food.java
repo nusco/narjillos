@@ -1,5 +1,28 @@
 package org.nusco.swimmers.pond;
 
-public class Food {
+import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.things.Thing;
 
+public class Food implements Thing {
+
+	public Vector position;
+
+	@Override
+	public void setPosition(Vector position) {
+		this.position = position;
+	}
+
+	@Override
+	public Vector getPosition() {
+		return position;
+	}
+
+	@Override
+	public void tick() {
+	}
+
+	@Override
+	public String getLabel() {
+		return "food";
+	}
 }

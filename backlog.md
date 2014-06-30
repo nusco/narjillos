@@ -1,5 +1,3 @@
-* view large world
-* Add one food item
 * Swimmer chases food
 * Swimmer consumes food
 * Food respawns

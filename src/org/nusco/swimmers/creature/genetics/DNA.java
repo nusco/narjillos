@@ -46,21 +46,20 @@ public class DNA {
 
 	public static DNA random() {
 		long seed = new Random().nextLong();
-		System.out.println("Generate DNA based on seed: " + seed);
 		return random(seed);
 	}
 	
 	public static DNA ancestor() {
-		return DNA.random(9018779372573137080L);
+		final long ancestorSeed = 9018779372573137080L;
+		return DNA.random(ancestorSeed);
 	}
 
 	private static DNA random(long seed) {
 		Random random = new Random(seed);
 		final int genomeSize = 60 * Byte.SIZE;
 		int[] genes = new int[genomeSize];
-		for (int i = 0; i < genes.length; i++) {
+		for (int i = 0; i < genes.length; i++)
 			genes[i] = rnd(0, 255, random);
-		}
 		return new DNA(genes);
 	}
 

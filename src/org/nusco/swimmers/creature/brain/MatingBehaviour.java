@@ -1,7 +1,7 @@
 package org.nusco.swimmers.creature.brain;
 
-import org.nusco.swimmers.physics.Vector;
 import org.nusco.swimmers.pond.Pond;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class MatingBehaviour extends Behaviour {
 	public MatingBehaviour() {
@@ -9,6 +9,6 @@ public class MatingBehaviour extends Behaviour {
 	}
 	
 	public Vector acquireTarget(Pond pond, Vector self) {
-		return pond.closestSwimmerTo(self);
+		return pond.find("swimmer", self);
 	}
 }

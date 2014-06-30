@@ -2,7 +2,7 @@ package org.nusco.swimmers.creature.body;
 
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.creature.body.pns.PassNerve;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Vector;
 
 /**
  * An Organ that is invisible to the naked eye---but still contains a Nerve.

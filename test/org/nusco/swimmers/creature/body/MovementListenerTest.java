@@ -3,8 +3,8 @@ package org.nusco.swimmers.creature.body;
 import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
-import org.nusco.swimmers.physics.Segment;
-import org.nusco.swimmers.physics.Vector;
+import org.nusco.swimmers.shared.physics.Segment;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class MovementListenerTest {
 	@Test
@@ -19,7 +19,7 @@ public class MovementListenerTest {
 			
 			@Override
 			public void moveEvent(Segment beforeMovement, Segment afterMovement) {
-				movement[counter++] = (int)beforeMovement.shape.getLength();
+				movement[counter++] = (int)beforeMovement.vector.getLength();
 			}
 		};
 		organ.setMovementListener(listener);

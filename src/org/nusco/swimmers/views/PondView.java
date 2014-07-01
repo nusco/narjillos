@@ -15,9 +15,9 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class PondView extends ThingView {
 
-	private static final int ZOOM_INCREMENT = 20;
+	private static final int DEFAULT_SIZE = 800;
 	
-	private int viewSize = 800;
+	private int viewSize = DEFAULT_SIZE;
 	private final Pond pond;
 
 	private final List<ThingView> thingViews;
@@ -79,12 +79,16 @@ public class PondView extends ThingView {
 		return pond;
 	}
 
-	public void zoomIn(Vector center) {
-		viewSize += viewSize / 100 * ZOOM_INCREMENT;
+	public void zoomIn(Vector center, double percent) {
+		viewSize += viewSize / 100 * percent;
 	}
 
-	public void zoomOut() {
-		viewSize -= viewSize / 100 * ZOOM_INCREMENT;
+	public void zoomOut(double percent) {
+		viewSize -= viewSize / 100 * percent;
+	}
+
+	public void zoomToDefault() {
+		viewSize = DEFAULT_SIZE;
 	}
 
 	public void show(Group root) {

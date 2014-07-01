@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import org.nusco.swimmers.shared.physics.Vector;
@@ -44,12 +45,27 @@ public class PondApplication extends Application {
 		startModelUpdateThread();
 		startViewUpdateThread(root);
 
+		root.setOnMouseClicked(createMouseEvent());
+		root.setOnScroll(createMouseScrollHandler());
+
 		double viewSize = (double) getPondView().getViewSize();
 		final Scene scene = new Scene(root, viewSize, viewSize);
-		scene.setOnMouseClicked(createMouseEvent());
 		primaryStage.setTitle("Swimmers");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+
+	private EventHandler<ScrollEvent> createMouseScrollHandler() {
+		return new EventHandler<ScrollEvent>() {
+			@Override
+			public void handle(ScrollEvent event) {
+				double deltaX = event.getDeltaX();
+				if (deltaX > 0)
+					getPondView().zoomIn(Vector.ZERO, deltaX);
+				else if (deltaX < 0)
+					getPondView().zoomOut(-deltaX);
+			}
+		};
 	}
 
 	private EventHandler<MouseEvent> createMouseEvent() {
@@ -60,9 +76,9 @@ public class PondApplication extends Application {
 
 			private synchronized void handleMouse(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY)
-					getPondView().zoomIn(Vector.cartesian(event.getX(), event.getY()));
+					getPondView().zoomIn(Vector.cartesian(event.getX(), event.getY()), 1);
 				else
-					getPondView().zoomOut();
+					getPondView().zoomToDefault();
 			}
 		};
 	}

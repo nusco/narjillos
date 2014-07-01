@@ -92,7 +92,6 @@ public class PondView extends ThingView {
 	}
 
 	public void show(Group root) {
-		root.getChildren().clear();
 		root.getChildren().add(toNode());
 	}
 }

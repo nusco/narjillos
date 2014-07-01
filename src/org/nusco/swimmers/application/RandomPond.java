@@ -1,4 +1,4 @@
-package org.nusco.swimmers;
+package org.nusco.swimmers.application;
 
 import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.creature.genetics.DNA;

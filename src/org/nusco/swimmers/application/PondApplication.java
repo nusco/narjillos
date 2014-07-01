@@ -1,4 +1,4 @@
-package org.nusco.swimmers;
+package org.nusco.swimmers.application;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,6 +12,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.Chronometer;
+import org.nusco.swimmers.views.ChronometersView;
 import org.nusco.swimmers.views.PondView;
 
 public class PondApplication extends Application {
@@ -20,6 +22,10 @@ public class PondApplication extends Application {
 	private static final int TICKS_PER_SECOND = 25;
 	private static final int FRAMES_PERIOD = 1000 / FRAMES_PER_SECOND;
 	private static final int TICKS_PERIOD = 1000 / TICKS_PER_SECOND;
+
+	private final Chronometer ticksChronometer = new Chronometer();
+	private final Chronometer framesChronometer = new Chronometer();
+	private final ChronometersView chronometersView = new ChronometersView(framesChronometer, ticksChronometer);
 
 	private PondView pondView;
 
@@ -40,8 +46,9 @@ public class PondApplication extends Application {
 		final Group root = new Group();
 
 		setUpNewPond();
-		showPond(root);
-
+		
+		showRoot(root);
+		
 		startModelUpdateThread();
 		startViewUpdateThread(root);
 
@@ -96,13 +103,14 @@ public class PondApplication extends Application {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							showPond(root);
+							showRoot(root);
 							renderingFinished = true;
 						}
 					});
 					waitForAtLeast(FRAMES_PERIOD, startTime);
 					while (!renderingFinished)
 						Thread.sleep(FRAMES_PERIOD * 2);
+					framesChronometer.tick();
 				}
 			}
 		};
@@ -119,6 +127,7 @@ public class PondApplication extends Application {
 					long startTime = System.currentTimeMillis();
 					tick();
 					waitForAtLeast(TICKS_PERIOD, startTime);
+					ticksChronometer.tick();
 				}
 			}
 		};
@@ -138,10 +147,20 @@ public class PondApplication extends Application {
 		return new PondView(new RandomPond());
 	}
 
-	private synchronized void showPond(final Group root) {
+	private synchronized void showRoot(final Group root) {
+		root.getChildren().clear();
+		showPond(root);
+		showChronometers(root);
+	}
+
+	private void showPond(final Group root) {
 		getPondView().show(root);
 	}
 
+	private void showChronometers(Group root) {
+		root.getChildren().add(chronometersView.toNode());
+	}
+	
 	private void waitForAtLeast(int time, long since) {
 		long timeTaken = System.currentTimeMillis() - since;
 		long waitTime = Math.max(time - timeTaken, 1);

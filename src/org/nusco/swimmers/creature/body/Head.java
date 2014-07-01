@@ -36,7 +36,7 @@ public class Head extends Organ {
 
 	@Override
 	protected void move(Vector signal) {
-		setAngleToParent(getAngleToParent() + turnTowards(signal.invert()));
+		setAngleToParent(getAngleToParent() + turnTowards(signal.getInverse()));
 	}
 
 	private double turnTowards(Vector inputSignal) {

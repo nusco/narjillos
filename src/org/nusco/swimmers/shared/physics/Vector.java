@@ -18,10 +18,16 @@ public class Vector {
 
 	private final double x;
 	private final double y;
+
+	// redundant data for performance
+	private final double angle;
+	private final double length;
 	
 	private Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
+		this.angle = Math.toDegrees(Math.atan2(y, x));
+		this.length = Math.sqrt(x * x + y * y);
 	}
 
 	public double getX() {
@@ -33,11 +39,19 @@ public class Vector {
 	}
 
 	public double getAngle() {
-	    return Math.toDegrees(Math.atan2(getY(), getX()));
+	    return angle;
 	}
 
 	public double getLength() {
-		return Math.sqrt(getX() * getX() + getY() * getY());
+		return length;
+	}
+
+	public Vector getInverse() {
+		return Vector.cartesian(-x, -y);
+	}
+
+	public Vector getNormal() {
+		return Vector.polar(angle - 90, 1);
 	}
 
 	public Vector plus(Vector other) {
@@ -52,20 +66,12 @@ public class Vector {
 		return Vector.cartesian(getX() * scalar, getY() * scalar);
 	}
 
-	public Vector invert() {
-		return this.by(-1);
-	}
-
 	public Vector normalize(double length) {
 		return Vector.polar(getAngle(), length);
 	}
 
-	public Vector getNormal() {
-		return Vector.polar(getAngle() - 90, 1);
-	}
-
 	public Vector getProjectionOn(Vector other) {
-		Vector direction = pointsInSameDirectionAs(other) ? other : other.invert();
+		Vector direction = pointsInSameDirectionAs(other) ? other : other.getInverse();
 		double relativeAngle = direction.getAngle() - getAngle();
 		double resultLength = Math.cos(Math.toRadians(relativeAngle)) * getLength();
 		return Vector.polar(direction.getAngle(), resultLength);
@@ -94,7 +100,7 @@ public class Vector {
 
 	@Override
 	public int hashCode() {
-		return 1;
+		return (int)x ^ (int)y;
 	}
 
 	@Override

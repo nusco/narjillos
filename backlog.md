@@ -1,3 +1,4 @@
+* Level Of Detail
 * Swimmer consumes food
 * Food respawns
 * Energy
@@ -10,3 +11,4 @@
 * Death animation
 * Eggs
 * Birth animation
+* "Fuzzy" effect on close zooming

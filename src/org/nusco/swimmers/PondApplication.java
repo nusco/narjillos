@@ -15,9 +15,10 @@ import org.nusco.swimmers.views.PondView;
 
 public class PondApplication extends Application {
 
-	protected static final int FRAMES_PER_SECOND = 60;
-	protected static final int TICKS_PER_SECOND = 25;
-	protected static final int TICKS_PERIOD = 1000 / TICKS_PER_SECOND;
+	private static final int FRAMES_PER_SECOND = 25;
+	private static final int TICKS_PER_SECOND = 25;
+	private static final int FRAMES_PERIOD = 1000 / FRAMES_PER_SECOND;
+	private static final int TICKS_PERIOD = 1000 / TICKS_PER_SECOND;
 
 	private PondView pondView;
 
@@ -36,7 +37,7 @@ public class PondApplication extends Application {
 	@Override
 	public void start(final Stage primaryStage) throws InterruptedException {
 		final Group root = new Group();
-		
+
 		setUpNewPond();
 		showPond(root);
 
@@ -45,7 +46,7 @@ public class PondApplication extends Application {
 
 		double viewSize = (double) getPondView().getViewSize();
 		final Scene scene = new Scene(root, viewSize, viewSize);
-		scene.addEventFilter(MouseEvent.MOUSE_CLICKED, createMouseEvent());
+		scene.setOnMouseClicked(createMouseEvent());
 		primaryStage.setTitle("Swimmers");
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -68,16 +69,24 @@ public class PondApplication extends Application {
 
 	private void startViewUpdateThread(final Group root) {
 		Task<Void> task = new Task<Void>() {
+			private volatile boolean renderingFinished = false;
+
 			@Override
 			public Void call() throws Exception {
 				while (true) {
+					long startTime = System.currentTimeMillis();
+					renderingFinished = false;
+
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
 							showPond(root);
+							renderingFinished = true;
 						}
 					});
-					Thread.sleep(1000 / FRAMES_PER_SECOND);
+					waitForAtLeast(FRAMES_PERIOD, startTime);
+					while (!renderingFinished)
+						Thread.sleep(FRAMES_PERIOD * 2);
 				}
 			}
 		};
@@ -91,16 +100,9 @@ public class PondApplication extends Application {
 			@Override
 			public void run() {
 				while (true) {
-					long start = System.currentTimeMillis();
-					
+					long startTime = System.currentTimeMillis();
 					tick();
-					
-					long timeTaken = System.currentTimeMillis() - start;
-					long waitTime = Math.max(TICKS_PERIOD - timeTaken, 1);
-					try {
-						Thread.sleep(waitTime);
-					} catch (InterruptedException e) {
-					}
+					waitForAtLeast(TICKS_PERIOD, startTime);
 				}
 			}
 		};
@@ -122,5 +124,14 @@ public class PondApplication extends Application {
 
 	private synchronized void showPond(final Group root) {
 		getPondView().show(root);
+	}
+
+	private void waitForAtLeast(int time, long since) {
+		long timeTaken = System.currentTimeMillis() - since;
+		long waitTime = Math.max(time - timeTaken, 1);
+		try {
+			Thread.sleep(waitTime);
+		} catch (InterruptedException e) {
+		}
 	}
 }

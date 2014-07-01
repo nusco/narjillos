@@ -5,6 +5,8 @@ import java.util.List;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 
 import org.nusco.swimmers.pond.Pond;
@@ -19,14 +21,16 @@ public class PondView extends ThingView {
 	private final Pond pond;
 
 	private final List<ThingView> thingViews;
+	private final Node background;
 
 	public PondView(Pond pond) {
 		this.pond = pond;
 		// TODO: this will have to get more dynamic once the set of Things
 		// can change because swimmers eat, die, etc.
 		thingViews = createThingViews(pond);
+		background = createBackground(pond);
 	}
-
+	
 	public int getViewSize() {
 		return viewSize;
 	}
@@ -37,15 +41,26 @@ public class PondView extends ThingView {
 
 	public Node toNode() {
 		Group group = new Group();
+		group.getChildren().add(getBackground());
 		group.getChildren().addAll(getNodesForThings());
 		group.getTransforms().add(new Scale(getScale(), getScale()));
 		return group;
+	}
+
+	private Node getBackground() {
+		return background;
 	}
 	
 	private List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
 		for (ThingView view : thingViews)
 			result.add(view.toNode());
+		return result;
+	}
+
+	private Node createBackground(Pond pond) {
+		Rectangle result = new Rectangle(0, 0, Pond.USEFUL_AREA_SIZE, Pond.USEFUL_AREA_SIZE );
+		result.setFill(Color.ANTIQUEWHITE);
 		return result;
 	}
 

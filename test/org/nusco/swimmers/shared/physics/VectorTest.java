@@ -110,7 +110,7 @@ public class VectorTest {
 	public void canBeInverted() {
 		Vector original = Vector.cartesian(10, -20);
 		
-		Vector calculated = original.getInverse();
+		Vector calculated = original.invert();
 
 		assertEquals(Vector.cartesian(-10, 20), calculated);
 	}

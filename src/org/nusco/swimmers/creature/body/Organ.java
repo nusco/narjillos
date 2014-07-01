@@ -21,7 +21,11 @@ public abstract class Organ {
 
 	private MovementListener movementListener = MovementListener.NULL;
 
-	// cached fields (for performance)
+	// Cached fields (for performance).
+	// This optimization makes the entire class much more complicated - but
+	// the performance gains are huge.
+	// Most of these fields are calculated with recursive calls that traverse
+	// the entire body, and their values are accessed many, many times.
 	private Vector cachedStartPoint = null;
 	private Vector cachedEndPoint = null;
 	private Double cachedAbsoluteAngle = null;
@@ -59,7 +63,6 @@ public abstract class Organ {
 	}
 
 	protected void resetAllCaches() {
-		// optimization (calling recursively up the tree was consuming CPU)
 		cachedAbsoluteAngle = null;
 		cachedStartPoint = null;
 		cachedEndPoint = null;

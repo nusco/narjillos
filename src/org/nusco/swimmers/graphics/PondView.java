@@ -31,8 +31,8 @@ public class PondView extends ThingView {
 		return (double) getViewSize() / Pond.USEFUL_AREA_SIZE;
 	}
 
-	public void add(Swimmer swimmer, long x, long y) {
-		pond.add(swimmer, x, y);
+	public void add(Swimmer swimmer, Vector position) {
+		pond.add(swimmer, position);
 	}
 
 	public Node toNode() {

@@ -1,10 +1,6 @@
-* Swimmer chases food
 * Swimmer consumes food
 * Food respawns
-* Multiple food items
+* Energy
 * Swimmer reproduces after eating (with mutation)
 * Death of old age
-* Thicker segments exercise more push
-
-
-
+* Thicker segments exercise more push and require more energy

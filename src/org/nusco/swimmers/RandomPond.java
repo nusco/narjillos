@@ -31,7 +31,7 @@ public class RandomPond extends Pond {
 
 	public final void randomize() {
 		for (int i = 0; i < NUMBER_OF_FOOD_THINGS; i++)
-			add(new Food(), randomCoordinate(), randomCoordinate());
+			add(new Food(), randomPosition());
 
 		for (int i = 0; i < NUMBER_OF_SWIMMERS; i++)
 			addRandomSwimmer();
@@ -41,11 +41,14 @@ public class RandomPond extends Pond {
 
 	private final void addRandomSwimmer() {
 		Swimmer swimmer = new Embryo(DNA.random()).develop();
-		add(swimmer, randomCoordinate(), randomCoordinate());
+		add(swimmer, randomPosition());
 	}
 
-	private final long randomCoordinate() {
-		return (long) (Math.random() * Pond.USEFUL_AREA_SIZE);
+	private Vector randomPosition() {
+		double randomAngle = Math.random() * 360;
+		double radius = Pond.USEFUL_AREA_SIZE / 2;
+		double randomDistance = Math.random() * radius;
+		return Vector.cartesian(radius, radius).plus(Vector.polar(randomAngle, randomDistance));
 	}
 
 	@Override

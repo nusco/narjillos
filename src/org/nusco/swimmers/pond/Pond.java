@@ -9,7 +9,7 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Pond {
 
-	public final static int USEFUL_AREA_SIZE = 30000;
+	public final static int USEFUL_AREA_SIZE = 50000;
 
 	private Map<Thing, Vector> thingsToPositions = new HashMap<>();
 
@@ -17,8 +17,7 @@ public class Pond {
 		return thingsToPositions.keySet();
 	}
 
-	public void add(Thing thing, long x, long y) {
-		Vector position = Vector.cartesian(x, y);
+	public void add(Thing thing, Vector position) {
 		thing.setPosition(position);
 		thingsToPositions.put(thing, position);
 	}

@@ -19,10 +19,10 @@ public class BehaviourTest {
 
 	@Before
 	public void setupPond() {
-		pond.add(new Food(), 10, 10);
-		pond.add(new Food(), 100, 100);
-		pond.add(new Swimmer(new Head(0, 0, 0)), 50, 30);
-		pond.add(new Swimmer(new Head(0, 0, 0)), 30, 100);
+		pond.add(new Food(), Vector.cartesian(10, 10));
+		pond.add(new Food(), Vector.cartesian(100, 100));
+		pond.add(new Swimmer(new Head(0, 0, 0)), Vector.cartesian(50, 30));
+		pond.add(new Swimmer(new Head(0, 0, 0)), Vector.cartesian(30, 100));
 	}
 	
 	@Test

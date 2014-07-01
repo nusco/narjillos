@@ -22,11 +22,11 @@ public class PondTest {
 
 	@Before
 	public void setUpPond() {
-		pond.add(food1, 100, 100);
-		pond.add(food2, 1000, 1000);
+		pond.add(food1, Vector.cartesian(100, 100));
+		pond.add(food2, Vector.cartesian(1000, 1000));
 
-		pond.add(swimmer1, 100, 100);
-		pond.add(swimmer2, 1000, 1000);
+		pond.add(swimmer1, Vector.cartesian(100, 100));
+		pond.add(swimmer2, Vector.cartesian(1000, 1000));
 	}
 
 	@Test

@@ -14,7 +14,7 @@ public class BrainTest {
 	public void aimsForADirection() {
 		Brain brain = new Brain();
 		Pond pond = new Pond();
-		pond.add(new Food(), 0, 100);
+		pond.add(new Food(), Vector.cartesian(0, 100));
 		Vector self = Vector.ZERO;
 		
 		Vector direction = brain.getDirection(pond, self);

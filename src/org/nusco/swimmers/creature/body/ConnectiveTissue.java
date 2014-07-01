@@ -18,18 +18,28 @@ class ConnectiveTissue extends Organ {
 	}
 
 	@Override
-	public double getAbsoluteAngle() {
+	public double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle();
 	}
 
 	@Override
-	public int getColor() {
+	public int calculateColor() {
 		return getParent().getColor();
 	}
 
 	@Override
 	public String toString() {
 		return "<null organ>";
+	}
+
+	// Optimization: ticking is simpler for ConnectiveTissue.
+	// The duplication is ugly, but it does help performance.
+	@Override
+	public Vector tick(Vector inputSignal) {
+		resetAllCaches();
+		Vector outputSignal = getNerve().tick(inputSignal);
+		tickChildren(outputSignal);
+		return outputSignal;
 	}
 
 	@Override

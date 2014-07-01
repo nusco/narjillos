@@ -22,8 +22,8 @@ public class BodySegment extends Organ {
 	}
 
 	@Override
-	public int getColor() {
-	    return getParent().getColor() & super.getColor();
+	public int calculateColor() {
+		return getParent().getColor() & getHue();
 	}
 
 	private double getAngleToParentAtRest() {
@@ -31,7 +31,7 @@ public class BodySegment extends Organ {
 	}
 	
 	@Override
-	public double getAbsoluteAngle() {
+	public double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle() + getAngleToParent();
 	}
 
@@ -45,10 +45,9 @@ public class BodySegment extends Organ {
 	}
 
 	private void updateAngle(Vector signal) {
-		Vector mainAxis = getMainAxis();
-		
 		Vector signedScaledSignal = signal.by(AMPLITUDE_MULTIPLIER * getOrientationSign());
 		
+		Vector mainAxis = getMainAxis();
 		Vector direction = mainAxis.minus(signedScaledSignal);
 		Vector rotatedDirection = direction.rotateBy(getAngleToParentAtRest() - mainAxis.getAngle());
 		

@@ -8,23 +8,29 @@ public class Head extends Organ {
 	static final double ROTATION_SPEED = 0.5;
 	static final double ROTATION_HISTERESIS = ROTATION_SPEED;
 
-	public Head(int length, int thickness, int rgb) {
-		super(length, thickness, rgb, new PassNerve(), null);
+	public Head(int length, int thickness, int color) {
+		super(length, thickness, color, new PassNerve(), null);
 		setAngleToParent(0);
 		tick(Vector.ZERO);
 	}
+
+	@Override
+	public Vector calculateStartPoint() {
+		return Vector.ZERO;
+	}
 	
 	@Override
-	public double getAbsoluteAngle() {
+	public double calculateAbsoluteAngle() {
 		return getAngleToParent();
 	}
 
 	@Override
-	public Vector getStartPoint() {
-		return Vector.ZERO;
+	protected int calculateColor() {
+		return getHue();
 	}
 
-	protected Vector getMainAxis() {
+	@Override
+	protected Vector calculateMainAxis() {
 		return getVector().normalize(1);
 	}
 

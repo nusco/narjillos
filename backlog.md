@@ -4,3 +4,9 @@
 * Swimmer reproduces after eating (with mutation)
 * Death of old age
 * Thicker segments exercise more push and require more energy
+* Real rotation
+* Centered zooming
+* Panning
+* Death animation
+* Eggs
+* Birth animation

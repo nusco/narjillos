@@ -11,24 +11,32 @@ public abstract class Organ {
 
 	private final int length;
 	private final int thickness;
-	private final int color;
+	private final int hue;
 
 	private final Nerve nerve;
 	private final Organ parent;
+	private final List<Organ> children = new LinkedList<>();
 
 	private double angleToParent = 0;
-	private List<Organ> children = new LinkedList<>();
 
 	private MovementListener movementListener = MovementListener.NULL;
-	
+
+	// cached fields (for performance)
+	private Vector cachedStartPoint = null;
+	private Vector cachedEndPoint = null;
+	private Double cachedAbsoluteAngle = null;
+	private Vector cachedMainAxis = null;
+	private Vector cachedVector = null;
+	private Integer cachedColor = null;
+
 	protected Organ(int length, int thickness, int rgb, Nerve nerve, Organ parent) {
 		this.length = length;
 		this.thickness = thickness;
-		this.color = rgb;
+		this.hue = rgb;
 		this.nerve = nerve;
 		this.parent = parent;
 	}
-	
+
 	public int getLength() {
 		return length;
 	}
@@ -37,8 +45,8 @@ public abstract class Organ {
 		return thickness;
 	}
 
-	public int getColor() {
-		return color;
+	public int getHue() {
+		return hue;
 	}
 
 	protected final double getAngleToParent() {
@@ -47,17 +55,66 @@ public abstract class Organ {
 
 	protected final void setAngleToParent(double angleToParent) {
 		this.angleToParent = angleToParent;
+		resetAllCaches();
 	}
 
-	public abstract double getAbsoluteAngle();
+	protected void resetAllCaches() {
+		// optimization (calling recursively up the tree was consuming CPU)
+		cachedAbsoluteAngle = null;
+		cachedStartPoint = null;
+		cachedEndPoint = null;
+		cachedMainAxis = null;
+		cachedVector = null;
+		cachedColor = null;
+	}
 
-	public Vector getStartPoint() {
+	public final double getAbsoluteAngle() {
+		if (cachedAbsoluteAngle == null)
+			cachedAbsoluteAngle = calculateAbsoluteAngle();
+		return cachedAbsoluteAngle;
+	}
+
+	protected Vector calculateStartPoint() {
 		return getParent().getEndPoint();
 	}
 
-	public Vector getEndPoint() {
-		return getStartPoint().plus(Vector.polar(getAbsoluteAngle(), length));
+	public final Vector getStartPoint() {
+		if (cachedStartPoint == null)
+			cachedStartPoint = calculateStartPoint();
+		return cachedStartPoint;
 	}
+
+	public final Vector getEndPoint() {
+		if (cachedEndPoint == null)
+			cachedEndPoint = getStartPoint().plus(Vector.polar(getAbsoluteAngle(), length));
+		return cachedEndPoint;
+	}
+
+	public final Vector getVector() {
+		if (cachedVector == null)
+			cachedVector = Vector.polar(getAbsoluteAngle(), getLength());
+		return cachedVector;
+	}
+
+	protected final Vector getMainAxis() {
+		if (cachedMainAxis == null)
+			cachedMainAxis = calculateMainAxis();
+		return cachedMainAxis;
+	}
+
+	public final int getColor() {
+		if (cachedColor == null)
+			cachedColor = calculateColor();
+		return cachedColor;
+	}
+
+	protected abstract double calculateAbsoluteAngle();
+
+	protected Vector calculateMainAxis() {
+		return getParent().calculateMainAxis();
+	}
+
+	protected abstract int calculateColor();
 
 	protected final Organ getParent() {
 		return parent;
@@ -71,8 +128,10 @@ public abstract class Organ {
 		Segment beforeMovement = new Segment(getStartPoint(), getVector());
 
 		Vector outputSignal = getNerve().tick(inputSignal);
+
 		move(outputSignal);
-		
+		resetAllCaches();
+
 		notifyMovementListener(beforeMovement, new Segment(getStartPoint(), getVector()));
 
 		tickChildren(outputSignal);
@@ -86,15 +145,11 @@ public abstract class Organ {
 		movementListener.moveEvent(beforeMovement, afterMovement);
 	}
 
-	private void tickChildren(Vector signal) {
-		for(Organ child : getChildren())
+	protected void tickChildren(Vector signal) {
+		for (Organ child : getChildren())
 			child.tick(signal);
 	}
 
-	public Vector getVector() {
-		return Vector.polar(getAbsoluteAngle(), getLength());
-	}
-	
 	public Nerve getNerve() {
 		return nerve;
 	}
@@ -103,16 +158,12 @@ public abstract class Organ {
 		return getLength() * getThickness();
 	}
 
-	protected Vector getMainAxis() {
-		return getParent().getMainAxis();
-	}
-
 	public void setMovementListener(MovementListener listener) {
 		movementListener = listener;
-		for(Organ child : getChildren())
+		for (Organ child : getChildren())
 			child.setMovementListener(listener);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return length;
@@ -121,7 +172,7 @@ public abstract class Organ {
 	@Override
 	public boolean equals(Object obj) {
 		Organ other = (Organ) obj;
-		return color == other.color && length == other.length && thickness == other.thickness;
+		return hue == other.hue && length == other.length && thickness == other.thickness;
 	}
 
 	// for debugging

@@ -1,4 +1,4 @@
-package org.nusco.swimmers.graphics;
+package org.nusco.swimmers.views;
 
 import javafx.scene.Node;
 import javafx.scene.paint.Color;

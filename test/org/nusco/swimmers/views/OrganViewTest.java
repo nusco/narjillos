@@ -1,9 +1,10 @@
-package org.nusco.swimmers.graphics;
+package org.nusco.swimmers.views;
 
 import static org.junit.Assert.assertEquals;
 import javafx.scene.paint.Color;
 
 import org.junit.Test;
+import org.nusco.swimmers.views.OrganView;
 
 public class OrganViewTest {
 

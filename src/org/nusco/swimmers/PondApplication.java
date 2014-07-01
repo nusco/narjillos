@@ -10,8 +10,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import org.nusco.swimmers.graphics.PondView;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.views.PondView;
 
 public class PondApplication extends Application {
 

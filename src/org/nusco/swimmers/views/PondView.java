@@ -1,4 +1,4 @@
-package org.nusco.swimmers.graphics;
+package org.nusco.swimmers.views;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -14,7 +14,8 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class PondView extends ThingView {
 
-	private static final int ZOOM_INCREMENT = 100;
+	private static final int ZOOM_INCREMENT = 20;
+	
 	private int viewSize = 800;
 	private final Pond pond;
 
@@ -43,11 +44,23 @@ public class PondView extends ThingView {
 
 	private List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
-		for (Thing thing : pond.getThings()) {
-			ThingView view = ThingView.createViewFor(thing);
-			result.add(view.toNode());
-		}
+		for (Thing thing : pond.getThings())
+			addThing(result, thing);
 		return result;
+	}
+
+	private void addThing(List<Node> result, Thing thing) {
+		// optimization
+		if (!isInsideVisibleArea(thing))
+			return;
+
+		ThingView view = ThingView.createViewFor(thing);
+		result.add(view.toNode());
+	}
+
+	private boolean isInsideVisibleArea(Thing thing) {
+		// TODO
+		return true;
 	}
 
 	public void tick() {
@@ -59,11 +72,11 @@ public class PondView extends ThingView {
 	}
 
 	public void zoomIn(Vector center) {
-		viewSize += ZOOM_INCREMENT;
+		viewSize += viewSize / 100 * ZOOM_INCREMENT;
 	}
 
 	public void zoomOut() {
-		viewSize -= ZOOM_INCREMENT;
+		viewSize -= viewSize / 100 * ZOOM_INCREMENT;
 	}
 
 	public void show(Group root) {

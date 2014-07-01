@@ -15,7 +15,7 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 public class PondApplication extends Application {
 
-	protected static final int FRAMES_PER_SECOND = 30;
+	protected static final int FRAMES_PER_SECOND = 60;
 	protected static final int TICKS_PER_SECOND = 25;
 	protected static final int TICKS_PERIOD = 1000 / TICKS_PER_SECOND;
 

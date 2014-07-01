@@ -6,29 +6,31 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
 
-import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.creature.Swimmer;
 
-public class MouthView extends ThingView {
+class MouthView extends ThingView {
 
-	private final Vector direction;
+	private final Swimmer swimmer;
+	private final Group group = new Group();
+	private final Line line1 = createLine();
+	private final Line line2 = createLine();
 
-	public MouthView(Vector direction) {
-		this.direction = direction;
+	public MouthView(Swimmer swimmer) {
+		this.swimmer = swimmer;
+		group.getChildren().add(line1);
+		group.getChildren().add(line2);
 	}
 
 	@Override
 	public Node toNode() {
-		Group result = new Group();
-		
-		Line line1 = createLine();
-		line1.getTransforms().add(new Rotate(direction.getAngle() + 10));
-		result.getChildren().add(line1);
-		
-		Line line2 = createLine();
-		line2.getTransforms().add(new Rotate(direction.getAngle() - 10));
-		result.getChildren().add(line2);
-		
-		return result;
+		rotate(line1, 10);
+		rotate(line2, -10);
+		return group;
+	}
+
+	private void rotate(Line line, int angle) {
+		line.getTransforms().clear();
+		line.getTransforms().add(new Rotate(swimmer.getCurrentTarget().getAngle() + angle));
 	}
 
 	private Line createLine() {

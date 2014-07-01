@@ -11,18 +11,17 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 class OrganView extends ThingView {
 
+	private final static int OVERLAP = 5;
+
 	private final Organ organ;
+	private final Rectangle rectangle;
 
 	public OrganView(Organ organ) {
 		this.organ = organ;
+		rectangle = createRectangle();
 	}
 
-	public Node toNode() {
-		return toDetailView();
-	}
-
-	private Node toDetailView() {
-		final int OVERLAP = 5;
+	private Rectangle createRectangle() {
 		Rectangle result = new Rectangle(0, 0, organ.getLength() + (OVERLAP * 2), organ.getThickness());
 
 		double arc = (organ.getLength() * organ.getThickness()) % 15 + 15;
@@ -33,16 +32,25 @@ class OrganView extends ThingView {
 		if (organ.getThickness() > 5)
 			result.setStroke(Color.BLACK);
 
+		return result;
+	}
+
+	public Node toNode() {
+		return toDetailView();
+	}
+
+	private Node toDetailView() {
+		rectangle.getTransforms().clear();
+		
 		// overlap slightly and shift to center based on thickness
 		double widthCenter = organ.getThickness() / 2;
-		result.getTransforms().add(new Translate(-OVERLAP, -widthCenter));
-
-		result.getTransforms().add(moveToStartPoint());
+		rectangle.getTransforms().add(new Translate(-OVERLAP, -widthCenter));
+		rectangle.getTransforms().add(moveToStartPoint());
 
 		// rotate in position
-		result.getTransforms().add(new Rotate(organ.getAbsoluteAngle(), OVERLAP, widthCenter));
+		rectangle.getTransforms().add(new Rotate(organ.getAbsoluteAngle(), OVERLAP, widthCenter));
 
-		return result;
+		return rectangle;
 	}
 
 	// TODO: Level Of Detail

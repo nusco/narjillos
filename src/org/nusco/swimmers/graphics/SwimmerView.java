@@ -11,46 +11,59 @@ import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.shared.physics.Vector;
 
-public class SwimmerView extends ThingView {
+class SwimmerView extends ThingView {
 
 	private final Swimmer swimmer;
 
+	private final Group group = new Group();
+	private final List<OrganView> organViews;
+	private final MouthView mouthView;
+
 	public SwimmerView(Swimmer swimmer) {
 		this.swimmer = swimmer;
+		organViews = createOrganViews();
+		mouthView = new MouthView(swimmer);
 	}
 
 	@Override
 	public Node toNode() {
-		Group result = new Group();
-		result.getChildren().addAll(getOrganNodes());
-
-		result.getChildren().add(new MouthView(swimmer.getCurrentTarget()).toNode());
-		
+		group.getChildren().clear();
+		group.getChildren().addAll(getOrganNodes());
+		group.getChildren().add(mouthView.toNode());
 		Vector position = swimmer.getPosition();
-		result.getTransforms().add(new Translate(position.getX(), position.getY()));
-
-		return result;
+		group.getTransforms().clear();
+		group.getTransforms().add(new Translate(position.getX(), position.getY()));
+		return group;
 	}
 
 	private List<Node> getOrganNodes() {
-		List<Node> nodes = new LinkedList<>();
-		addWithChildren(nodes, swimmer.getHead());
-		return nodes;
+		List<Node> result = new LinkedList<>();
+		for (ThingView view : organViews) {
+			Node node = view.toNode();
+			if (node != null)
+				result.add(node);
+		}
+		return result;
 	}
 
-	private void addWithChildren(List<Node> result, Organ organ) {
-		Node shape = new OrganView(organ).toNode();
-		if (shape != null)
-			result.add(shape);
+	private List<OrganView> createOrganViews() {
+		List<OrganView> result = new LinkedList<>();
+		addWithChildren(swimmer.getHead(), result);
+		return result;
+	}
+
+	private void addWithChildren(Organ organ, List<OrganView> result) {
+		result.add(new OrganView(organ));
 		for (Organ child : organ.getChildren())
-			addWithChildren(result, child);
+			addWithChildren(child, result);
 	}
 
 	public void tick() {
 		swimmer.tick();
 	}
 
-	// TODO: this method should disappear once swimmers learn to find their own target
+	// TODO: this method should disappear once swimmers learn
+	// to find their own target
 	public void setCurrentTarget(Vector target) {
 		swimmer.setCurrentTarget(target);
 	}

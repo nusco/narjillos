@@ -11,27 +11,27 @@ import org.nusco.swimmers.shared.physics.Vector;
 class FoodView extends ThingView {
 
 	private final Food food;
+	private final Node circle;
 
 	public FoodView(Food food) {
 		this.food = food;
+		circle = createCircle(food);
 	}
 
 	public Node toNode() {
-			return toCircle();
+		circle.getTransforms().clear();
+		circle.getTransforms().add(moveToStartPoint(food));
+		return circle;
 	}
 
-	private Node toCircle() {
+	private Node createCircle(Food food) {
 		Circle result = new Circle(10);
-
 		Color baseColor = Color.LIMEGREEN;
-		result.setFill(new Color(baseColor.getBlue(), baseColor.getRed(), baseColor.getGreen(), 0.8));
-
-		result.getTransforms().add(moveToStartPoint());
-
+		result.setFill(new Color(baseColor.getGreen(), baseColor.getRed(), baseColor.getBlue(), 0.8));
 		return result;
 	}
 
-	private Translate moveToStartPoint() {
+	private Translate moveToStartPoint(Food food) {
 		Vector position = food.getPosition();
 		return new Translate(position.getX(), position.getY());
 	}

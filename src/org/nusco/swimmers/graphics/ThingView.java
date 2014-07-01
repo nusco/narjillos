@@ -6,7 +6,7 @@ import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.pond.Food;
 import org.nusco.swimmers.shared.things.Thing;
 
-public abstract class ThingView {
+abstract class ThingView {
 
 	public abstract Node toNode();
 
@@ -15,8 +15,6 @@ public abstract class ThingView {
 			return new SwimmerView((Swimmer) thing);
 		else if (thing.getLabel().equals("food")) {
 			return new FoodView((Food)thing);
-			// TODO
-			// result.add(new FoodView((Food)thing))
 		} else
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}

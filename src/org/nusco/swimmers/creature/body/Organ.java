@@ -166,7 +166,7 @@ public abstract class Organ {
 
 	@Override
 	public int hashCode() {
-		return length;
+		return hue ^ length ^ thickness;
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class PondView extends ThingView {
 	}
 
 	private double getScale() {
-		return (double) getViewSize() / Pond.USEFUL_AREA_SIZE;
+		return (double) getViewSize() / pond.getSize();
 	}
 
 	public Node toNode() {
@@ -44,6 +44,8 @@ public class PondView extends ThingView {
 		group.getChildren().add(getBackground());
 		group.getChildren().addAll(getNodesForThings());
 		group.getTransforms().add(new Scale(getScale(), getScale()));
+		// TODO: at close distance
+		//group.setEffect(new BoxBlur(4, 4, 1));
 		return group;
 	}
 
@@ -59,7 +61,7 @@ public class PondView extends ThingView {
 	}
 
 	private Node createBackground(Pond pond) {
-		Rectangle result = new Rectangle(0, 0, Pond.USEFUL_AREA_SIZE, Pond.USEFUL_AREA_SIZE );
+		Rectangle result = new Rectangle(0, 0, pond.getSize(), pond.getSize());
 		result.setFill(Color.ANTIQUEWHITE);
 		return result;
 	}

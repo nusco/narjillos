@@ -58,10 +58,6 @@ class SwimmerView extends ThingView {
 			addWithChildren(child, result);
 	}
 
-	public void tick() {
-		swimmer.tick();
-	}
-
 	// TODO: this method should disappear once swimmers learn
 	// to find their own target
 	public void setCurrentTarget(Vector target) {

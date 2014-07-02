@@ -3,7 +3,7 @@ package org.nusco.swimmers.pond;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Set;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class PondTest {
 	
-	Pond pond = new Pond();
+	Pond pond = new Pond(1000);
 	Food food1 = new Food();
 	Food food2 = new Food();
 	Swimmer swimmer1 = new Swimmer(new Head(0, 0, 0));
@@ -43,7 +43,7 @@ public class PondTest {
 
 	@Test
 	public void returnsTheOriginIfLookingForThingsInAThinglessWorld() {
-		Pond pond = new Pond();
+		Pond pond = new Pond(1000);
 		
 		assertEquals(Vector.ZERO, pond.find("food", Vector.cartesian(150, 150)));
 		assertEquals(Vector.ZERO, pond.find("swimmer", Vector.cartesian(150, 150)));
@@ -51,7 +51,7 @@ public class PondTest {
 
 	@Test
 	public void returnsAllTheThings() {
-		Set<Thing> swimmers = pond.getThings();
+		List<Thing> swimmers = pond.getThings();
 		
 		assertTrue(swimmers.contains(swimmer1));
 		assertTrue(swimmers.contains(food1));

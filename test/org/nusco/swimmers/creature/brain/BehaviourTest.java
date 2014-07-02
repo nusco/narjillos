@@ -15,7 +15,7 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 public class BehaviourTest {
 
-	Pond pond = new Pond();
+	Pond pond = new Pond(1000);
 
 	@Before
 	public void setupPond() {

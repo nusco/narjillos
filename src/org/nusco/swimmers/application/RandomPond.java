@@ -10,12 +10,14 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class RandomPond extends Pond {
 
+	public final static int SIZE = 1000;
 	private static final int NUMBER_OF_FOOD_THINGS = 30;
-	private static final int NUMBER_OF_SWIMMERS = 100;
+	private static final int NUMBER_OF_SWIMMERS = 2;
 
 	private int tickCounter = 0;
 
 	public RandomPond() {
+		super(SIZE);
 		randomize();
 	}
 
@@ -46,7 +48,7 @@ public class RandomPond extends Pond {
 
 	private Vector randomPosition() {
 		double randomAngle = Math.random() * 360;
-		double radius = Pond.USEFUL_AREA_SIZE / 2;
+		double radius = SIZE / 2;
 		double randomDistance = Math.random() * radius;
 		return Vector.cartesian(radius, radius).plus(Vector.polar(randomAngle, randomDistance));
 	}

@@ -13,7 +13,7 @@ public class BrainTest {
 	@Test
 	public void aimsForADirection() {
 		Brain brain = new Brain();
-		Pond pond = new Pond();
+		Pond pond = new Pond(1000);
 		pond.add(new Food(), Vector.cartesian(0, 100));
 		Vector self = Vector.ZERO;
 		

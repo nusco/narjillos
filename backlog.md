@@ -13,4 +13,3 @@
 * Death animation
 * Eggs
 * Birth animation
-* "Fuzzy" effect on close zooming

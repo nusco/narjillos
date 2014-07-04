@@ -11,10 +11,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
-import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.utilities.Chronometer;
 import org.nusco.swimmers.views.ChronometersView;
 import org.nusco.swimmers.views.PondView;
+import org.nusco.swimmers.views.Viewport;
 
 public class PondApplication extends Application {
 
@@ -28,13 +28,16 @@ public class PondApplication extends Application {
 	private final ChronometersView chronometersView = new ChronometersView(framesChronometer, ticksChronometer);
 
 	private PondView pondView;
-
+	private Viewport viewport;
+	
 	public static void main(String... args) {
 		launch(args);
 	}
 
+	// TODO: do we need synchronized here? and, does zooming on the viewport need to be synchronized?
 	private synchronized void setPondView(PondView pondView) {
 		this.pondView = pondView;
+		this.viewport = pondView.getViewport();
 	}
 
 	private synchronized PondView getPondView() {
@@ -55,8 +58,8 @@ public class PondApplication extends Application {
 		root.setOnMouseClicked(createMouseEvent());
 		root.setOnScroll(createMouseScrollHandler());
 
-		double viewSize = (double) getPondView().getViewSize();
-		final Scene scene = new Scene(root, viewSize, viewSize);
+		Viewport viewport = getPondView().getViewport();
+		final Scene scene = new Scene(root, viewport.getSizeX(), viewport.getSizeY());
 		primaryStage.setTitle("Swimmers");
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -66,11 +69,10 @@ public class PondApplication extends Application {
 		return new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
-				double deltaX = event.getDeltaX();
-				if (deltaX > 0)
-					getPondView().zoomIn(Vector.ZERO, deltaX);
-				else if (deltaX < 0)
-					getPondView().zoomOut(-deltaX);
+				if (event.getDeltaY() > 0)
+					viewport.zoomOut();
+				else
+					viewport.zoomIn();
 			}
 		};
 	}
@@ -83,9 +85,9 @@ public class PondApplication extends Application {
 
 			private synchronized void handleMouse(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY)
-					getPondView().zoomIn(Vector.cartesian(event.getX(), event.getY()), 1);
+					viewport.zoomIn();
 				else
-					getPondView().zoomToDefault();
+					viewport.zoomToFit();
 			}
 		};
 	}

@@ -5,48 +5,59 @@ import java.util.List;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 
 import org.nusco.swimmers.pond.Pond;
-import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
 public class PondView extends ThingView {
 
-	private static final int DEFAULT_SIZE = 800;
-	
-	private int viewSize = DEFAULT_SIZE;
 	private final Pond pond;
-
+	private final Viewport viewport;
 	private final List<ThingView> thingViews;
 	private final Node background;
 
 	public PondView(Pond pond) {
 		this.pond = pond;
+		viewport = new Viewport(pond);
 		// TODO: this will have to get more dynamic once the set of Things
 		// can change because swimmers eat, die, etc.
 		thingViews = createThingViews(pond);
 		background = createBackground(pond);
 	}
-	
-	public int getViewSize() {
-		return viewSize;
-	}
 
-	private double getScale() {
-		return (double) getViewSize() / pond.getSize();
+	public Viewport getViewport() {
+		return viewport;
 	}
 
 	public Node toNode() {
 		Group group = new Group();
 		group.getChildren().add(getBackground());
 		group.getChildren().addAll(getNodesForThings());
-		group.getTransforms().add(new Scale(getScale(), getScale()));
-		// TODO: at close distance
-		//group.setEffect(new BoxBlur(4, 4, 1));
+
+		group.getTransforms().add(new Translate(viewport.getSizeX() / 2, viewport.getSizeY() / 2));
+
+		double zoomLevel = viewport.getZoomLevel();
+		group.getTransforms().add(new Scale(zoomLevel, zoomLevel));
+
+		double pondSizeAtThisZoomLevel = pond.getSize() * zoomLevel;
+		double translation = (-pondSizeAtThisZoomLevel) / 2 / zoomLevel;
+		group.getTransforms().add(new Translate(translation, translation));
+
+		setZoomBlurEffect(group);
+
 		return group;
+	}
+
+	private void setZoomBlurEffect(Group group) {
+		if(viewport.getZoomLevel() <= 1)
+			return;
+		int blurAmount = (int)(15 * (viewport.getZoomLevel() - 1));
+		group.setEffect(new BoxBlur(blurAmount, blurAmount, 3));
 	}
 
 	private Node getBackground() {
@@ -75,22 +86,11 @@ public class PondView extends ThingView {
 
 	public void tick() {
 		pond.tick();
+		viewport.tick();
 	}
 
 	public Pond getPond() {
 		return pond;
-	}
-
-	public void zoomIn(Vector center, double percent) {
-		viewSize += viewSize / 100 * percent;
-	}
-
-	public void zoomOut(double percent) {
-		viewSize -= viewSize / 100 * percent;
-	}
-
-	public void zoomToDefault() {
-		viewSize = DEFAULT_SIZE;
 	}
 
 	public void show(Group root) {

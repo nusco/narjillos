@@ -8,14 +8,14 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Pond {
 
-	private final int size;
+	private final long size;
 	private final List<Thing> things = new LinkedList<>();
 
-	public Pond(int size) {
+	public Pond(long size) {
 		this.size = size;
 	}
 	
-	public double getSize() {
+	public long getSize() {
 		return size;
 	}
 

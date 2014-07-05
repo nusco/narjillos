@@ -92,15 +92,15 @@ public class Viewport {
 	}
 
 	public boolean isVisible(double x, double y, double margin) {
-		double maxRadius = maxVisibleRadius();
+		double maxRadius = maxVisibleRadius(margin);
 		double distanceX = getCenterX() - x;
 		double distanceY = getCenterY() - y;
 		return (Math.abs(distanceX) < maxRadius &&
 				Math.abs(distanceY) < maxRadius);
 	}
 
-	private double maxVisibleRadius() {
-		return Math.max(getSizeX(), getSizeY()) / getZoomLevel() / 2;
+	private double maxVisibleRadius(double margin) {
+		return (Math.max(getSizeX(), getSizeY()) / 2 / getZoomLevel()) + margin * getZoomLevel();
 	}
 
 	public void tick() {

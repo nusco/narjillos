@@ -56,6 +56,15 @@ public class ViewportVisibilityTest {
 	}
 
 	@Test
+	public void hasATolerance() {
+		assertFalse(viewport.isVisible(49, 49, 0));
+		assertTrue(viewport.isVisible(49, 49, 3));
+		
+		assertFalse(viewport.isVisible(1, 1, 0));
+		assertTrue(viewport.isVisible(1, 1, 100));
+	}
+
+	@Test
 	public void knowsWhetherAPointIsInsideTheViewport() {
 		assertTrue(viewport.isVisible(51, 81, 0));
 		assertTrue(viewport.isVisible(149, 119, 0));

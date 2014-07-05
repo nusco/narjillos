@@ -8,6 +8,8 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Pond {
 
+	public static final double MAX_THING_SIZE = 800;
+
 	private final long size;
 	private final List<Thing> things = new LinkedList<>();
 

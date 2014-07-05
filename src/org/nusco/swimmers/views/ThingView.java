@@ -8,8 +8,18 @@ import org.nusco.swimmers.shared.things.Thing;
 
 abstract class ThingView {
 
-	public abstract Node toNode();
+	private final Thing thing;
 
+	public ThingView(Thing thing) {
+		this.thing = thing;
+	}
+
+	public Thing getThing() {
+		return thing;
+	}
+
+	public abstract Node toNode();
+	
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("swimmer"))
 			return new SwimmerView((Swimmer) thing);

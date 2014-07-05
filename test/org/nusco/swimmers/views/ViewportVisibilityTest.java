@@ -15,6 +15,7 @@ public class ViewportVisibilityTest {
 	
 	@Before
 	public void setUpViewPort() {
+		//
 		// (0, 0)                                                    (200, 0)      
 		//    ____________________________________________________________
 		//    |                                                          |
@@ -39,7 +40,6 @@ public class ViewportVisibilityTest {
 		//    |                                                          |
 		//    ____________________________________________________________
 		// (0, 200)                                                  (200, 200)      
-		//
 
 		viewport = new Viewport(new Pond(200));
 		viewport.setSize(100, 40);
@@ -51,6 +51,8 @@ public class ViewportVisibilityTest {
 	public void knowsWhetherAPointIsOutsideTheViewport() {
 		assertFalse(viewport.isVisible(49, 49, 0));
 		assertFalse(viewport.isVisible(151, 151, 0));
+		assertFalse(viewport.isVisible(100, 10, 0));
+		assertFalse(viewport.isVisible(10, 100, 0));
 	}
 
 	@Test
@@ -61,6 +63,22 @@ public class ViewportVisibilityTest {
 
 	@Test
 	public void approximateToTheLongesViewportSize() {
-		assertTrue(viewport.isVisible(45, 100, 0));
+		assertTrue(viewport.isVisible(100, 70, 0));
+	}
+
+	@Test
+	public void takesZoomIntoAccountToDecideOnVisibility() {
+		assertFalse(viewport.isVisible(49, 79, 0));
+		
+		viewport.zoomOut();
+
+		assertTrue(viewport.isVisible(49, 79, 0));
+
+		assertFalse(viewport.isVisible(1, 21, 0));
+		
+		for (int i = 0; i < 50; i++)
+			viewport.zoomIn();
+
+		assertFalse(viewport.isVisible(1, 21, 0));
 	}
 }

@@ -9,7 +9,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.shared.physics.Vector;
 
-class OrganView extends ThingView {
+class OrganView {
 
 	private final static int OVERLAP = 5;
 

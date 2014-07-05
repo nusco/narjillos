@@ -10,13 +10,12 @@ import org.nusco.swimmers.creature.Swimmer;
 
 class MouthView extends ThingView {
 
-	private final Swimmer swimmer;
 	private final Group group = new Group();
 	private final Line line1 = createLine();
 	private final Line line2 = createLine();
 
 	public MouthView(Swimmer swimmer) {
-		this.swimmer = swimmer;
+		super(swimmer);
 		group.getChildren().add(line1);
 		group.getChildren().add(line2);
 	}
@@ -30,12 +29,16 @@ class MouthView extends ThingView {
 
 	private void rotate(Line line, int angle) {
 		line.getTransforms().clear();
-		line.getTransforms().add(new Rotate(swimmer.getCurrentTarget().getAngle() + angle));
+		line.getTransforms().add(new Rotate(getSwimmer().getCurrentTarget().getAngle() + angle));
 	}
 
 	private Line createLine() {
 		Line result = new Line(0, 0, 50, 2);
 		result.setStroke(Color.GREEN);
 		return result;
+	}
+
+	private Swimmer getSwimmer() {
+		return (Swimmer)getThing();
 	}
 }

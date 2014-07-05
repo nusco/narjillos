@@ -91,17 +91,16 @@ public class Viewport {
 		this.zoomLevel = Math.min(Math.max(zoomLevel, wholePondScale()), MAX_ZOOM);
 	}
 
-	public boolean isVisible(long x, long y, long margin) {
-		double maxRadius = maxRadius();
-		if (x >= getCenterX() - maxRadius && x <= getCenterX() + maxRadius)
-			return true;
-		if (y >= getCenterY() - maxRadius && y <= getCenterY() + maxRadius)
-			return true;
-		return false;
+	public boolean isVisible(double x, double y, double margin) {
+		double maxRadius = maxVisibleRadius();
+		double distanceX = getCenterX() - x;
+		double distanceY = getCenterY() - y;
+		return (Math.abs(distanceX) < maxRadius &&
+				Math.abs(distanceY) < maxRadius);
 	}
 
-	private long maxRadius() {
-		return Math.max(getSizeX(), getSizeY()) / 2;
+	private double maxVisibleRadius() {
+		return Math.max(getSizeX(), getSizeY()) / getZoomLevel() / 2;
 	}
 
 	public void tick() {

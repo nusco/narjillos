@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 
 import org.nusco.swimmers.shared.utilities.Chronometer;
 
-public class ChronometersView extends ThingView {
+public class ChronometersView {
 
 	private final Chronometer ticksChronometer;
 	private final Chronometer framesChronometer;
@@ -17,7 +17,6 @@ public class ChronometersView extends ThingView {
 		this.framesChronometer = framesChronometer;
 	}
 
-	@Override
 	public Node toNode() {
 		Text result = new Text(toString());
 		result.setFont(Font.font ("Helvetica Light", 10));

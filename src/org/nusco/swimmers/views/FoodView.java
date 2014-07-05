@@ -10,17 +10,16 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 class FoodView extends ThingView {
 
-	private final Food food;
 	private final Node circle;
 
 	public FoodView(Food food) {
-		this.food = food;
+		super(food);
 		circle = createCircle(food);
 	}
 
 	public Node toNode() {
 		circle.getTransforms().clear();
-		circle.getTransforms().add(moveToStartPoint(food));
+		circle.getTransforms().add(moveToStartPoint());
 		return circle;
 	}
 
@@ -31,8 +30,8 @@ class FoodView extends ThingView {
 		return result;
 	}
 
-	private Translate moveToStartPoint(Food food) {
-		Vector position = food.getPosition();
+	private Translate moveToStartPoint() {
+		Vector position = getThing().getPosition();
 		return new Translate(position.getX(), position.getY());
 	}
 }

@@ -13,14 +13,12 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 class SwimmerView extends ThingView {
 
-	private final Swimmer swimmer;
-
 	private final Group group = new Group();
 	private final List<OrganView> organViews;
 	private final MouthView mouthView;
 
 	public SwimmerView(Swimmer swimmer) {
-		this.swimmer = swimmer;
+		super(swimmer);
 		organViews = createOrganViews();
 		mouthView = new MouthView(swimmer);
 	}
@@ -30,7 +28,7 @@ class SwimmerView extends ThingView {
 		group.getChildren().clear();
 		group.getChildren().addAll(getOrganNodes());
 		group.getChildren().add(mouthView.toNode());
-		Vector position = swimmer.getPosition();
+		Vector position = getSwimmer().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.getX(), position.getY()));
 		return group;
@@ -38,7 +36,7 @@ class SwimmerView extends ThingView {
 
 	private List<Node> getOrganNodes() {
 		List<Node> result = new LinkedList<>();
-		for (ThingView view : organViews) {
+		for (OrganView view : organViews) {
 			Node node = view.toNode();
 			if (node != null)
 				result.add(node);
@@ -48,7 +46,7 @@ class SwimmerView extends ThingView {
 
 	private List<OrganView> createOrganViews() {
 		List<OrganView> result = new LinkedList<>();
-		addWithChildren(swimmer.getHead(), result);
+		addWithChildren(getSwimmer().getHead(), result);
 		return result;
 	}
 
@@ -61,6 +59,10 @@ class SwimmerView extends ThingView {
 	// TODO: this method should disappear once swimmers learn
 	// to find their own target
 	public void setCurrentTarget(Vector target) {
-		swimmer.setCurrentTarget(target);
+		getSwimmer().setCurrentTarget(target);
+	}
+
+	private Swimmer getSwimmer() {
+		return (Swimmer)getThing();
 	}
 }

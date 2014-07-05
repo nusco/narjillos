@@ -12,9 +12,10 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 import org.nusco.swimmers.pond.Pond;
+import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
-public class PondView extends ThingView {
+public class PondView {
 
 	private final Pond pond;
 	private final Viewport viewport;
@@ -66,8 +67,11 @@ public class PondView extends ThingView {
 	
 	private List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
-		for (ThingView view : thingViews)
-			result.add(view.toNode());
+		for (ThingView view : thingViews) {
+			Vector position = view.getThing().getPosition();
+			if (viewport.isVisible(position.getX(), position.getY(), 0))
+				result.add(view.toNode());
+		}
 		return result;
 	}
 

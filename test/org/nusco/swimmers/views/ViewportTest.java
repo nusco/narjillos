@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.swimmers.pond.Pond;
-import org.nusco.swimmers.views.Viewport;
 
 public class ViewportTest {
 
@@ -126,11 +125,11 @@ public class ViewportTest {
 
 		viewport.zoomIn();
 		
-		assertEquals(0.505, viewport.getZoomLevel(), 0.0001);
+		assertEquals(0.515, viewport.getZoomLevel(), 0.0001);
 
 		viewport.zoomIn();
 		
-		assertEquals(0.510, viewport.getZoomLevel(), 0.0001);
+		assertEquals(0.5304, viewport.getZoomLevel(), 0.0001);
 	}
 
 	@Test
@@ -143,11 +142,11 @@ public class ViewportTest {
 
 		viewport.zoomOut();
 		
-		assertEquals(0.4950, viewport.getZoomLevel(), 0.0001);
+		assertEquals(0.4854, viewport.getZoomLevel(), 0.0001);
 
 		viewport.zoomOut();
 		
-		assertEquals(0.4901, viewport.getZoomLevel(), 0.0001);
+		assertEquals(0.4712, viewport.getZoomLevel(), 0.0001);
 	}
 
 	@Test
@@ -176,7 +175,7 @@ public class ViewportTest {
 		for (int i = 0; i < 50; i++)
 			viewport.zoomIn();
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 50; i++)
 			viewport.tick();
 		
 		assertEquals(1, viewport.getZoomLevel(), 0.0001);

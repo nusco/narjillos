@@ -29,12 +29,13 @@ public class PondApplication extends Application {
 
 	private PondView pondView;
 	private Viewport viewport;
-	
+
 	public static void main(String... args) {
 		launch(args);
 	}
 
-	// TODO: do we need synchronized here? and, does zooming on the viewport need to be synchronized?
+	// TODO: do we need synchronized in the next two methods? and, does zooming on the viewport
+	// need to be synchronized?
 	private synchronized void setPondView(PondView pondView) {
 		this.pondView = pondView;
 		this.viewport = pondView.getViewport();
@@ -49,9 +50,9 @@ public class PondApplication extends Application {
 		final Group root = new Group();
 
 		setUpNewPond();
-		
+
 		showRoot(root);
-		
+
 		startModelUpdateThread();
 		startViewUpdateThread(root);
 
@@ -162,7 +163,7 @@ public class PondApplication extends Application {
 	private void showChronometers(Group root) {
 		root.getChildren().add(chronometersView.toNode());
 	}
-	
+
 	private void waitForAtLeast(int time, long since) {
 		long timeTaken = System.currentTimeMillis() - since;
 		long waitTime = Math.max(time - timeTaken, 1);

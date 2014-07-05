@@ -91,6 +91,19 @@ public class Viewport {
 		this.zoomLevel = Math.min(Math.max(zoomLevel, wholePondScale()), MAX_ZOOM);
 	}
 
+	public boolean isVisible(long x, long y, long margin) {
+		double maxRadius = maxRadius();
+		if (x >= getCenterX() - maxRadius && x <= getCenterX() + maxRadius)
+			return true;
+		if (y >= getCenterY() - maxRadius && y <= getCenterY() + maxRadius)
+			return true;
+		return false;
+	}
+
+	private long maxRadius() {
+		return Math.max(getSizeX(), getSizeY()) / 2;
+	}
+
 	public void tick() {
 		correctOverzooming();
 	}

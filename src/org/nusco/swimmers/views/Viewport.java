@@ -5,7 +5,7 @@ import org.nusco.swimmers.pond.Pond;
 public class Viewport {
 
 	public static final long MAX_INITIAL_SIZE = 800;
-	static final double ZOOM_FACTOR = 1.01;
+	static final double ZOOM_FACTOR = 1.03;
 	static final double MAX_ZOOM = 1.6;
 
 	private long sizeX;

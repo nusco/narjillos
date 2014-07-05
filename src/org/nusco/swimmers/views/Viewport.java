@@ -6,7 +6,7 @@ public class Viewport {
 
 	public static final long MAX_INITIAL_SIZE = 800;
 	static final double ZOOM_FACTOR = 1.01;
-	static final double MAX_ZOOM = 1.3;
+	static final double MAX_ZOOM = 1.6;
 
 	private long sizeX;
 	private long sizeY;
@@ -92,5 +92,20 @@ public class Viewport {
 	}
 
 	public void tick() {
+		correctOverzooming();
+	}
+
+	private void correctOverzooming() {
+		if (zoomLevel < 1)
+			return;
+		
+		double excessZoom = zoomLevel - 1;
+		if (excessZoom < 0.001) {
+			setZoomLevel(1);
+			return;
+		}
+		
+		double attenuation = Math.max(0.01, excessZoom / 10);
+		setZoomLevel(getZoomLevel() - attenuation);
 	}
 }

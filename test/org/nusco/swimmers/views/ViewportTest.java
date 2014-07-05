@@ -163,10 +163,23 @@ public class ViewportTest {
 	@Test
 	public void cannotZoomInOverAMaximum() {
 		Viewport viewport = new Viewport(new Pond(100));
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 50; i++)
 			viewport.zoomIn();
 		
 		assertEquals(Viewport.MAX_ZOOM, viewport.getZoomLevel(), 0);
+	}
+
+	@Test
+	public void zoomsOverOneRegressToOne() {
+		Viewport viewport = new Viewport(new Pond(100));
+		viewport.setSize(50, 50);
+		for (int i = 0; i < 50; i++)
+			viewport.zoomIn();
+
+		for (int i = 0; i < 10; i++)
+			viewport.tick();
+		
+		assertEquals(1, viewport.getZoomLevel(), 0.0001);
 	}
 
 	@Test

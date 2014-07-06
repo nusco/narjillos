@@ -10,9 +10,9 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class RandomPond extends Pond {
 
-	public final static int SIZE = 10000;
+	public final static int SIZE = 80000;
 	private static final int NUMBER_OF_FOOD_THINGS = 20;
-	private static final int NUMBER_OF_SWIMMERS = 20;
+	private static final int NUMBER_OF_SWIMMERS = 100;
 
 	private int tickCounter = 0;
 

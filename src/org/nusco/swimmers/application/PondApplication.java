@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -60,7 +61,6 @@ public class PondApplication extends Application {
 		startModelUpdateThread();
 		startViewUpdateThread(root);
 
-
 		Viewport viewport = getPondView().getViewport();
 		final Scene scene = new Scene(root, viewport.getSizeX(), viewport.getSizeY());
 
@@ -107,10 +107,15 @@ public class PondApplication extends Application {
 			}
 
 			private synchronized void handleMouse(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY)
-					viewport.zoomIn();
-				else
+				if (event.getButton() == MouseButton.PRIMARY) {
+					if (event.getClickCount() == 2)
+						viewport.centerOn(viewport.toPondX(event.getSceneX()), viewport.toPondY(event.getSceneY()));
+					else
+						viewport.zoomIn();
+				}
+				if (event.getButton() == MouseButton.SECONDARY) {
 					viewport.zoomToFit();
+				}
 			}
 		};
 	}

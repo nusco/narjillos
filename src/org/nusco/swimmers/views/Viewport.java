@@ -47,6 +47,16 @@ public class Viewport {
 		this.centerY  = y;
 	}
 
+	public double toPondX(double viewportX) {
+		System.out.println("viewX: " + viewportX + " pondX:" + (getPositionX() + viewportX * zoomLevel));
+		return getPositionX() + viewportX * zoomLevel;
+	}
+
+	public double toPondY(double viewportY) {
+		System.out.println("viewY: " + viewportY + " pondY:" + (getPositionY() + viewportY * zoomLevel));
+		return getPositionY() + viewportY * zoomLevel;
+	}
+
 	public double getCenterX() {
 		return centerX;
 	}

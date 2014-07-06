@@ -65,7 +65,7 @@ class OrganView {
 
 	private Translate moveToStartPoint() {
 		Vector startPoint = organ.getStartPoint();
-		return new Translate(startPoint.getX(), startPoint.getY());
+		return new Translate(startPoint.x, startPoint.y);
 	}
 
 	public static Color toRGBColor(int organColor) {

@@ -32,6 +32,6 @@ class FoodView extends ThingView {
 
 	private Translate moveToStartPoint() {
 		Vector position = getThing().getPosition();
-		return new Translate(position.getX(), position.getY());
+		return new Translate(position.x, position.y);
 	}
 }

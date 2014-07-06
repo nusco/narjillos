@@ -3,7 +3,9 @@ package org.nusco.swimmers.shared.physics;
 public class Vector {
 
 	public static final Vector ZERO = Vector.cartesian(0, 0);
-	public static final Vector ZERO_ONE = Vector.polar(0, 1);
+
+	public final double x;
+	public final double y;
 
 	public static Vector polar(double degrees, double length) {
 		double sin = Math.sin(Math.toRadians(degrees));
@@ -15,41 +17,30 @@ public class Vector {
 	public static Vector cartesian(double x, double y) {
 		return new Vector(x, y);
 	}
-
-	private final double x;
-	private final double y;
 	
 	private Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
 	public double getAngle() {
-	    return Math.toDegrees(Math.atan2(getY(), getX()));
+	    return Math.toDegrees(Math.atan2(y, x));
 	}
 
 	public double getLength() {
-		return Math.sqrt(getX() * getX() + getY() * getY());
+		return Math.sqrt(x * x + y * y);
 	}
 
 	public Vector plus(Vector other) {
-		return Vector.cartesian(getX() + other.getX(), getY() + other.getY());
+		return Vector.cartesian(x + other.x, y + other.y);
 	}
 
 	public Vector minus(Vector other) {
-		return Vector.cartesian(getX() - other.getX(), getY() - other.getY());
+		return Vector.cartesian(x - other.x, y - other.y);
 	}
 
 	public Vector by(double scalar) {
-		return Vector.cartesian(getX() * scalar, getY() * scalar);
+		return Vector.cartesian(x * scalar, y * scalar);
 	}
 
 	public Vector invert() {
@@ -114,7 +105,7 @@ public class Vector {
 	
 	@Override
 	public String toString() {
-		return "(" + approx(getX()) + ", " + approx(getY()) + ")";
+		return "(" + approx(x) + ", " + approx(y) + ")";
 	}
 
 	private double approx(double n) {

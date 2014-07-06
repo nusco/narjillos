@@ -64,7 +64,7 @@ public class PondView {
 		List<Node> result = new LinkedList<>();
 		for (ThingView view : thingViews) {
 			Vector position = view.getThing().getPosition();
-			if (viewport.isVisible(position.getX(), position.getY(), Pond.MAX_THING_SIZE))
+			if (viewport.isVisible(position.x, position.y, Pond.MAX_THING_SIZE))
 				result.add(view.toNode());
 		}
 		return result;

@@ -30,7 +30,7 @@ class SwimmerView extends ThingView {
 		group.getChildren().add(mouthView.toNode());
 		Vector position = getSwimmer().getPosition();
 		group.getTransforms().clear();
-		group.getTransforms().add(new Translate(position.getX(), position.getY()));
+		group.getTransforms().add(new Translate(position.x, position.y));
 		return group;
 	}
 

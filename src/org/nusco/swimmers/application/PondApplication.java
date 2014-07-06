@@ -6,6 +6,8 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -22,6 +24,7 @@ public class PondApplication extends Application {
 	private static final int TICKS_PER_SECOND = 25;
 	private static final int FRAMES_PERIOD = 1000 / FRAMES_PER_SECOND;
 	private static final int TICKS_PERIOD = 1000 / TICKS_PER_SECOND;
+	protected static final long PAN_SPEED = 10;
 
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final Chronometer framesChronometer = new Chronometer();
@@ -34,7 +37,8 @@ public class PondApplication extends Application {
 		launch(args);
 	}
 
-	// TODO: do we need synchronized in the next two methods? and, does zooming on the viewport
+	// TODO: do we need synchronized in the next two methods? and, does zooming
+	// on the viewport
 	// need to be synchronized?
 	private synchronized void setPondView(PondView pondView) {
 		this.pondView = pondView;
@@ -56,14 +60,32 @@ public class PondApplication extends Application {
 		startModelUpdateThread();
 		startViewUpdateThread(root);
 
-		root.setOnMouseClicked(createMouseEvent());
-		root.setOnScroll(createMouseScrollHandler());
 
 		Viewport viewport = getPondView().getViewport();
 		final Scene scene = new Scene(root, viewport.getSizeX(), viewport.getSizeY());
+
+		scene.setOnMouseClicked(createMouseEvent());
+		scene.setOnScroll(createMouseScrollHandler());
+		scene.setOnKeyPressed(createKeyboardHandler());
+
 		primaryStage.setTitle("Swimmers");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+
+	private EventHandler<? super KeyEvent> createKeyboardHandler() {
+		return new EventHandler<KeyEvent>() {
+			public void handle(final KeyEvent keyEvent) {
+				if (keyEvent.getCode() == KeyCode.RIGHT)
+					moveViewport(PAN_SPEED, 0, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.LEFT)
+					moveViewport(-PAN_SPEED, 0, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.UP)
+					moveViewport(0, -PAN_SPEED, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.DOWN)
+					moveViewport(0, PAN_SPEED, keyEvent);
+			}
+		};
 	}
 
 	private EventHandler<ScrollEvent> createMouseScrollHandler() {
@@ -137,6 +159,11 @@ public class PondApplication extends Application {
 		updateThread.setDaemon(true);
 		updateThread.start();
 	}
+
+	private synchronized void moveViewport(long velocityX, long velocityY, KeyEvent event) {
+		viewport.moveBy(velocityX, velocityY);
+		event.consume();
+	};
 
 	private synchronized void tick() {
 		getPondView().tick();

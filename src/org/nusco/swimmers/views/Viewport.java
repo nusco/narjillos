@@ -10,8 +10,8 @@ public class Viewport {
 
 	private long sizeX;
 	private long sizeY;
-	private long centerX;
-	private long centerY;
+	private double centerX;
+	private double centerY;
 	private double zoomLevel = 1;
 
 	private final double pondSize;
@@ -38,24 +38,28 @@ public class Viewport {
 		this.sizeY = sizeY;
 	}
 
-	public void centerOn(long x, long y) {
+	public void moveBy(long velocityX, long velocityY) {
+		centerOn(getCenterX() + velocityX / zoomLevel, getCenterY() + velocityY / zoomLevel);
+	}
+
+	public void centerOn(double x, double y) {
 		this.centerX  = x;
 		this.centerY  = y;
 	}
 
-	long getCenterX() {
+	public double getCenterX() {
 		return centerX;
 	}
 
-	long getCenterY() {
+	public double getCenterY() {
 		return centerY;
 	}
 
-	public long getUpperLeftCornerX() {
+	public double getPositionX() {
 		return centerX - (sizeX / 2);
 	}
 
-	public long getUpperLeftCornerY() {
+	public double getPositionY() {
 		return centerY - (sizeY / 2);
 	}
 

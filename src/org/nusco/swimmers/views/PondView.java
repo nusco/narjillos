@@ -40,14 +40,9 @@ public class PondView {
 		group.getChildren().add(getBackground());
 		group.getChildren().addAll(getNodesForThings());
 
-		group.getTransforms().add(new Translate(viewport.getSizeX() / 2, viewport.getSizeY() / 2));
-
-		double zoomLevel = viewport.getZoomLevel();
-		group.getTransforms().add(new Scale(zoomLevel, zoomLevel));
-
-		double pondSizeAtThisZoomLevel = pond.getSize() * zoomLevel;
-		double translation = (-pondSizeAtThisZoomLevel) / 2 / zoomLevel;
-		group.getTransforms().add(new Translate(translation, translation));
+		group.getTransforms().add(new Translate(-viewport.getPositionX(), -viewport.getPositionY()));
+		group.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
+											viewport.getCenterX(), viewport.getCenterY()));
 
 		setZoomBlurEffect(group);
 

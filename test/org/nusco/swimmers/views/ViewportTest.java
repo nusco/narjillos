@@ -36,8 +36,8 @@ public class ViewportTest {
 	public void isPositionedAtTheCenterOfThePondByDefault() {
 		Viewport viewport = new Viewport(new Pond(100));
 
-		assertEquals(50, viewport.getCenterX());
-		assertEquals(50, viewport.getCenterY());
+		assertEquals(50, viewport.getCenterX(), 0);
+		assertEquals(50, viewport.getCenterY(), 0);
 	}
 
 	@Test
@@ -45,16 +45,16 @@ public class ViewportTest {
 		Viewport viewport = new Viewport(new Pond(100));
 		viewport.centerOn(100, 200);
 		
-		assertEquals(100, viewport.getCenterX());
-		assertEquals(200, viewport.getCenterY());
+		assertEquals(100, viewport.getCenterX(), 0);
+		assertEquals(200, viewport.getCenterY(), 0);
 	}
 
 	@Test
 	public void hasAnUpperAngleInTheOriginByDefault() {
 		Viewport viewport = new Viewport(new Pond(100));
 		
-		assertEquals(0, viewport.getUpperLeftCornerX());
-		assertEquals(0, viewport.getUpperLeftCornerY());
+		assertEquals(0, viewport.getPositionX(), 0);
+		assertEquals(0, viewport.getPositionY(), 0);
 	}
 
 	@Test
@@ -63,8 +63,8 @@ public class ViewportTest {
 		viewport.centerOn(100, 200);
 		viewport.setSize(40, 60);
 		
-		assertEquals(80, viewport.getUpperLeftCornerX());
-		assertEquals(170, viewport.getUpperLeftCornerY());
+		assertEquals(80, viewport.getPositionX(), 0);
+		assertEquals(170, viewport.getPositionY(), 0);
 	}
 
 	@Test
@@ -97,13 +97,13 @@ public class ViewportTest {
 
 		viewport.zoomIn();
 
-		assertEquals(50, viewport.getCenterX());
-		assertEquals(50, viewport.getCenterY());
+		assertEquals(50, viewport.getCenterX(), 0);
+		assertEquals(50, viewport.getCenterY(), 0);
 
 		viewport.zoomOut();
 
-		assertEquals(50, viewport.getCenterX());
-		assertEquals(50, viewport.getCenterY());
+		assertEquals(50, viewport.getCenterX(), 0);
+		assertEquals(50, viewport.getCenterY(), 0);
 	}
 
 	@Test
@@ -112,8 +112,8 @@ public class ViewportTest {
 
 		viewport.setSize(20, 1000);
 
-		assertEquals(50, viewport.getCenterX());
-		assertEquals(50, viewport.getCenterY());
+		assertEquals(50, viewport.getCenterX(), 0);
+		assertEquals(50, viewport.getCenterY(), 0);
 	}
 
 	@Test

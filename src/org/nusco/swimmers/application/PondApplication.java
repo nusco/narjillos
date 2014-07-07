@@ -23,10 +23,10 @@ import org.nusco.swimmers.views.Viewport;
 
 public class PondApplication extends Application {
 
-	private static final int FRAMES_PER_SECOND = 25;
-	private static final int TICKS_PER_SECOND = 25;
-	private static final int FRAMES_PERIOD = 1000 / FRAMES_PER_SECOND;
-	private static final int TICKS_PERIOD = 1000 / TICKS_PER_SECOND;
+	private static final int TARGET_FRAMES_PER_SECOND = 25;
+	private static final int TARGET_TICKS_PER_SECOND = 25;
+	private static final int FRAMES_PERIOD = 1000 / TARGET_FRAMES_PER_SECOND;
+	private static final int TICKS_PERIOD = 1000 / TARGET_TICKS_PER_SECOND;
 	protected static final long PAN_SPEED = 10;
 
 	private final Chronometer ticksChronometer = new Chronometer();
@@ -41,8 +41,8 @@ public class PondApplication extends Application {
 	}
 
 	// TODO: do we need synchronized in the next two methods? and, does zooming
-	// on the viewport
-	// need to be synchronized?
+	// on the viewport need to be synchronized? And what about other methods
+	// in this class?
 	private synchronized void setPondView(PondView pondView) {
 		this.pondView = pondView;
 		this.viewport = pondView.getViewport();
@@ -64,7 +64,7 @@ public class PondApplication extends Application {
 		startViewUpdateThread(root);
 
 		final Viewport viewport = getPondView().getViewport();
-		final Scene scene = new Scene(root, viewport.getSize().x, viewport.getSize().y);
+		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 
 		scene.setOnMouseClicked(createMouseEvent());
 		scene.setOnScroll(createMouseScrollHandler());
@@ -112,7 +112,7 @@ public class PondApplication extends Application {
 			private synchronized void handleMouse(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if (event.getClickCount() == 2)
-						viewport.centerOn(viewport.toPondCoordinates(Vector.cartesian(event.getSceneX(), event.getSceneY())));
+						viewport.setCenterSC(Vector.cartesian(event.getSceneX(), event.getSceneY()));
 					else
 						viewport.zoomIn();
 				}
@@ -126,12 +126,12 @@ public class PondApplication extends Application {
 	private void addResizeListeners(final Scene scene, final Viewport viewport) {
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
 		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-		        viewport.setSize(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSize().y));
+		        viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
 		    }
 		});
 		scene.heightProperty().addListener(new ChangeListener<Number>() {
 		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-		        viewport.setSize(Vector.cartesian(viewport.getSize().x, newSceneHeight.doubleValue()));
+		        viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
 		    }
 		});
 	}

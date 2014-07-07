@@ -27,7 +27,7 @@ public class ViewportVisibilityTest {
 		//    |              ______________________________              |
 		//    |              |                            |              |
 		//    |              |                            |              |
-		//    |              |     VIEWPORT (100 x 50)    |              |
+		//    |              |     VIEWPORT (100 x 40)    |              |
 		//    |              |                            |              |
 		//    |              ______________________________              |
 		//    |         (50, 120)                        (150, 120)      |
@@ -41,8 +41,8 @@ public class ViewportVisibilityTest {
 		// (0, 200)                                                  (200, 200)      
 
 		viewport = new Viewport(new Pond(200));
-		viewport.setSize(Vector.cartesian(100, 40));
-		assertTrue(viewport.getCenter().almostEquals(Vector.cartesian(100, 100)));
+		viewport.setSizeSC(Vector.cartesian(100, 40));
+		assertTrue(viewport.getCenterPC().almostEquals(Vector.cartesian(100, 100)));
 	}
 
 	@Test
@@ -51,6 +51,18 @@ public class ViewportVisibilityTest {
 		assertFalse(viewport.isVisible(Vector.cartesian(151, 151), 0));
 		assertFalse(viewport.isVisible(Vector.cartesian(100, 10), 0));
 		assertFalse(viewport.isVisible(Vector.cartesian(10, 100), 0));
+	}
+
+	@Test
+	public void knowsWhetherAPointIsInsideTheViewport() {
+		assertTrue(viewport.isVisible(Vector.cartesian(51, 81), 0));
+		assertTrue(viewport.isVisible(Vector.cartesian(149, 119), 0));
+	}
+
+	@Test
+	public void takesTheLongestAxisDistanceAsAReferenceToDetermineVisibility() {
+		assertTrue(viewport.isVisible(Vector.cartesian(51, 51), 0));
+		assertTrue(viewport.isVisible(Vector.cartesian(149, 149), 0));
 	}
 
 	@Test
@@ -63,12 +75,6 @@ public class ViewportVisibilityTest {
 	}
 
 	@Test
-	public void knowsWhetherAPointIsInsideTheViewport() {
-		assertTrue(viewport.isVisible(Vector.cartesian(51, 81), 0));
-		assertTrue(viewport.isVisible(Vector.cartesian(149, 119), 0));
-	}
-
-	@Test
 	public void approximateToTheLongesViewportSize() {
 		assertTrue(viewport.isVisible(Vector.cartesian(100, 70), 0));
 	}
@@ -76,7 +82,7 @@ public class ViewportVisibilityTest {
 	@Test
 	public void takesZoomIntoAccountToDecideOnVisibility() {
 		assertFalse(viewport.isVisible(Vector.cartesian(49, 79), 0));
-		
+
 		viewport.zoomOut();
 
 		assertTrue(viewport.isVisible(Vector.cartesian(49, 79), 0));
@@ -87,5 +93,16 @@ public class ViewportVisibilityTest {
 			viewport.zoomIn();
 
 		assertFalse(viewport.isVisible(Vector.cartesian(1, 21), 0));
+	}
+
+	@Test
+	public void takesPositionIntoAccountToDecideOnVisibility() {
+		assertFalse(viewport.isVisible(Vector.cartesian(49, 79), 0));
+		assertTrue(viewport.isVisible(Vector.cartesian(149, 119), 0));
+		
+		viewport.moveBy(Vector.cartesian(-1, -1));
+
+		assertTrue(viewport.isVisible(Vector.cartesian(49, 79), 0));
+		assertFalse(viewport.isVisible(Vector.cartesian(150, 120), 0));
 	}
 }

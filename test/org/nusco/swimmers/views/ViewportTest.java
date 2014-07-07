@@ -12,53 +12,58 @@ public class ViewportTest {
 	public void hasTheSameSizeAsThePondByDefault() {
 		Viewport viewport = new Viewport(new Pond(100));
 
-		assertAlmostEquals(Vector.cartesian(100, 100), viewport.getSize());
+		assertAlmostEquals(Vector.cartesian(100, 100), viewport.getSizeSC());
 	}
 
 	@Test
 	public void hasAMaximumInitialSize() {
 		Viewport viewport = new Viewport(new Pond(100000));
 
-		assertAlmostEquals(Vector.cartesian(Viewport.MAX_INITIAL_SIZE, Viewport.MAX_INITIAL_SIZE), viewport.getSize());
+		assertAlmostEquals(Vector.cartesian(Viewport.MAX_INITIAL_SIZE_SC, Viewport.MAX_INITIAL_SIZE_SC), viewport.getSizeSC());
 	}
 
 	@Test
 	public void canBeResized() {
 		Viewport viewport = new Viewport(new Pond(100));
-		viewport.setSize(Vector.cartesian(1000, 900));
+		viewport.setSizeSC(Vector.cartesian(1000, 900));
 		
-		assertAlmostEquals(Vector.cartesian(1000, 900), viewport.getSize());
+		assertAlmostEquals(Vector.cartesian(1000, 900), viewport.getSizeSC());
 	}
 
 	@Test
-	public void isPositionedAtTheCenterOfThePondByDefault() {
+	public void isCenteredOnTheCenterOfThePondByDefault() {
 		Viewport viewport = new Viewport(new Pond(100));
 
-		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenter());
+		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 	}
 
 	@Test
 	public void canBeCenteredOnADifferentPosition() {
 		Viewport viewport = new Viewport(new Pond(100));
-		viewport.centerOn(Vector.cartesian(100, 200));
+		viewport.setCenterSC(Vector.cartesian(100, 200));
 		
-		assertAlmostEquals(Vector.cartesian(100, 200), viewport.getCenter());
+		assertAlmostEquals(Vector.cartesian(100, 200), viewport.getCenterPC());
 	}
 
 	@Test
 	public void hasAnUpperAngleInTheOriginByDefault() {
 		Viewport viewport = new Viewport(new Pond(100));
 		
-		assertAlmostEquals(Vector.ZERO, viewport.getPosition());
+		assertAlmostEquals(Vector.ZERO, viewport.getPositionPC());
 	}
 
 	@Test
-	public void itsUpperAngleMovesWithItsCenter() {
-		Viewport viewport = new Viewport(new Pond(100));
-		viewport.centerOn(Vector.cartesian(100, 200));
-		viewport.setSize(Vector.cartesian(40, 60));
+	public void canBeRecentered() {
+		Viewport viewport = new Viewport(new Pond(800));
+		viewport.setSizeSC(Vector.cartesian(100, 400));
+		assertAlmostEquals(Vector.cartesian(350, 200), viewport.getPositionPC());
+		assertAlmostEquals(Vector.cartesian(400, 400), viewport.getCenterPC());
+		assertEquals(1, viewport.getZoomLevel(), 0);
 
-		assertAlmostEquals(Vector.cartesian(80, 170), viewport.getPosition());
+		viewport.setCenterSC(Vector.cartesian(300, 500));
+
+		assertAlmostEquals(Vector.cartesian(650, 700), viewport.getCenterPC());
+		assertAlmostEquals(Vector.cartesian(600, 500), viewport.getPositionPC());
 	}
 
 	@Test
@@ -70,47 +75,62 @@ public class ViewportTest {
 
 	@Test
 	public void zoomsToViewTheEntirePondAtTheBeginning() {
-		final long pondSize = Viewport.MAX_INITIAL_SIZE * 10;
+		final long pondSize = Viewport.MAX_INITIAL_SIZE_SC * 10;
 		Viewport viewport = new Viewport(new Pond(pondSize));
 
-		assertEquals(0.1, viewport.getZoomLevel(), 0);
+		assertEquals(0.1, viewport.getZoomLevel(), 0.001);
 	}
 
 	@Test
 	public void resizingItDoesNotChangeTheZoomLevel() {
-		final long pondSize = Viewport.MAX_INITIAL_SIZE * 10;
+		final long pondSize = Viewport.MAX_INITIAL_SIZE_SC * 10;
 		Viewport viewport = new Viewport(new Pond(pondSize));
 
-		viewport.setSize(Vector.cartesian(100, 10000));
-		assertEquals(0.1, viewport.getZoomLevel(), 0);
+		viewport.setSizeSC(Vector.cartesian(100, 10000));
+		assertEquals(0.1, viewport.getZoomLevel(), 0.001);
 	}
 
 	@Test
 	public void zoomingItDoesNotChangeItsCenter() {
 		Viewport viewport = new Viewport(new Pond(100));
+		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 
 		viewport.zoomIn();
 
-		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenter());
+		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 
 		viewport.zoomOut();
 
-		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenter());
+		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 	}
 
 	@Test
 	public void resizingItDoesNotChangeItsCenter() {
 		Viewport viewport = new Viewport(new Pond(100));
+		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 
-		viewport.setSize(Vector.cartesian(20, 1000));
+		viewport.setSizeSC(Vector.cartesian(20, 1000));
 
-		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenter());
+		assertAlmostEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+	}
+
+	@Test
+	public void resizingChangesItsPosition() {
+		Viewport viewport = new Viewport(new Pond(300));
+		viewport.setSizeSC(Vector.cartesian(50, 60));
+		viewport.setCenterPC(Vector.cartesian(100, 200));
+		assertAlmostEquals(Vector.cartesian(75, 170), viewport.getPositionPC());
+		
+		viewport.setSizeSC(Vector.cartesian(40, 90));
+
+		assertAlmostEquals(Vector.cartesian(100, 200), viewport.getCenterPC());
+		assertAlmostEquals(Vector.cartesian(80, 155), viewport.getPositionPC());
 	}
 
 	@Test
 	public void canZoomIn() {
 		Viewport viewport = new Viewport(new Pond(100));
-		viewport.setSize(Vector.cartesian(50, 50));
+		viewport.setSizeSC(Vector.cartesian(50, 50));
 		viewport.zoomToFit();
 		assertEquals(0.5, viewport.getZoomLevel(), 0);
 
@@ -126,10 +146,10 @@ public class ViewportTest {
 	@Test
 	public void canZoomOut() {
 		Viewport viewport = new Viewport(new Pond(100));
-		viewport.setSize(Vector.cartesian(50, 50));
+		viewport.setSizeSC(Vector.cartesian(50, 50));
 		viewport.zoomToFit();
 		assertEquals(0.5, viewport.getZoomLevel(), 0);
-		viewport.setSize(Vector.cartesian(20, 20));
+		viewport.setSizeSC(Vector.cartesian(20, 20));
 
 		viewport.zoomOut();
 		
@@ -143,7 +163,7 @@ public class ViewportTest {
 	@Test
 	public void canZoomInToFitEntirePond() {
 		Viewport viewport = new Viewport(new Pond(100));
-		viewport.setSize(Vector.cartesian(50, 50));
+		viewport.setSizeSC(Vector.cartesian(50, 50));
 
 		viewport.zoomToFit();
 		
@@ -162,33 +182,24 @@ public class ViewportTest {
 	@Test
 	public void zoomsOverOneRegressToOne() {
 		Viewport viewport = new Viewport(new Pond(100));
-		viewport.setSize(Vector.cartesian(50, 50));
+		viewport.setSizeSC(Vector.cartesian(50, 50));
 		for (int i = 0; i < 50; i++)
 			viewport.zoomIn();
 
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 60; i++)
 			viewport.tick();
 		
-		assertEquals(1, viewport.getZoomLevel(), 0.0001);
+		assertEquals(1, viewport.getZoomLevel(), 0.01);
 	}
 
 	@Test
 	public void cannotZoomOutToSeeMoreThanTheEntirePond() {
 		Viewport viewport = new Viewport(new Pond(100));
-		viewport.setSize(Vector.cartesian(50, 50));
+		viewport.setSizeSC(Vector.cartesian(50, 50));
 		for (int i = 0; i < 100; i++)
 			viewport.zoomOut();
 		
 		assertEquals(0.5, viewport.getZoomLevel(), 0);
-	}
-
-	@Test
-	public void itsVisibleAreaDependsOnScaleAndSize() {
-		Viewport viewport = new Viewport(new Pond(100));
-		viewport.zoomIn();
-		viewport.setSize(Vector.cartesian(100, 50));
-
-		assertAlmostEquals(Vector.cartesian(100 / Viewport.ZOOM_FACTOR, 50 / Viewport.ZOOM_FACTOR), viewport.getVisibleArea());
 	}
 
 	private void assertAlmostEquals(Vector expected, Vector actual) {

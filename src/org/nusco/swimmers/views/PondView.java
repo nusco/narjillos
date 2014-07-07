@@ -12,7 +12,6 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 import org.nusco.swimmers.pond.Pond;
-import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
 public class PondView {
@@ -40,9 +39,9 @@ public class PondView {
 		group.getChildren().add(getBackground());
 		group.getChildren().addAll(getNodesForThings());
 
-		group.getTransforms().add(new Translate(-viewport.getPositionX(), -viewport.getPositionY()));
+		group.getTransforms().add(new Translate(-viewport.getPosition().x, -viewport.getPosition().y));
 		group.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
-											viewport.getCenterX(), viewport.getCenterY()));
+											viewport.getCenter().x, viewport.getCenter().y));
 
 		setZoomBlurEffect(group);
 
@@ -63,8 +62,7 @@ public class PondView {
 	private List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
 		for (ThingView view : thingViews) {
-			Vector position = view.getThing().getPosition();
-			if (viewport.isVisible(position.x, position.y, Pond.MAX_THING_SIZE))
+			if (viewport.isVisible(view.getThing().getPosition(), Pond.MAX_THING_SIZE))
 				result.add(view.toNode());
 		}
 		return result;

@@ -1,6 +1,7 @@
 package org.nusco.swimmers.views;
 
 import org.nusco.swimmers.pond.Pond;
+import org.nusco.swimmers.shared.physics.Vector;
 
 public class Viewport {
 
@@ -8,69 +9,51 @@ public class Viewport {
 	static final double ZOOM_FACTOR = 1.03;
 	static final double MAX_ZOOM = 1.6;
 
-	private long sizeX;
-	private long sizeY;
-	private double centerX;
-	private double centerY;
+	private Vector size;
+	private Vector center;
 	private double zoomLevel = 1;
 
 	private final double pondSize;
 	
 	public Viewport(Pond pond) {
 		this.pondSize = pond.getSize();
-		sizeX = Math.min(pond.getSize(), MAX_INITIAL_SIZE);
-		sizeY = Math.min(pond.getSize(), MAX_INITIAL_SIZE);
-		centerX = (long)(pond.getSize() / 2.0);
-		centerY = (long)(pond.getSize() / 2.0);
+		double sizeValue = Math.min(pond.getSize(), MAX_INITIAL_SIZE);
+		size = Vector.cartesian(sizeValue, sizeValue);
+		long centerValue = (long)(pond.getSize() / 2.0);
+		center = Vector.cartesian(centerValue, centerValue);
 		zoomToFit();
 	}
 
-	public long getSizeX() {
-		return sizeX;
+	public Vector getSize() {
+		return size;
 	}
 
-	public long getSizeY() {
-		return sizeY;
+	public void setSize(Vector size) {
+		this.size = size;
 	}
 
-	public void setSize(long sizeX, long sizeY) {
-		this.sizeX = sizeX;
-		this.sizeY = sizeY;
+	public void moveBy(Vector velocity) {
+		centerOn(Vector.cartesian(getCenter().x + velocity.x / zoomLevel, getCenter().y + velocity.y / zoomLevel));
 	}
 
-	public void moveBy(long velocityX, long velocityY) {
-		centerOn(getCenterX() + velocityX / zoomLevel, getCenterY() + velocityY / zoomLevel);
+	public void centerOn(Vector coordinates) {
+		this.center  = coordinates;
 	}
 
-	public void centerOn(double x, double y) {
-		this.centerX  = x;
-		this.centerY  = y;
+	public Vector toPondCoordinates(Vector viewportCoordinates) {
+		double x = getPosition().x + viewportCoordinates.x * zoomLevel;
+		double y = getPosition().y + viewportCoordinates.y * zoomLevel;
+		return Vector.cartesian(x, y);
 	}
 
-	public double toPondX(double viewportX) {
-		System.out.println("viewX: " + viewportX + " pondX:" + (getPositionX() + viewportX * zoomLevel));
-		return getPositionX() + viewportX * zoomLevel;
+	public Vector getCenter() {
+		return center;
 	}
 
-	public double toPondY(double viewportY) {
-		System.out.println("viewY: " + viewportY + " pondY:" + (getPositionY() + viewportY * zoomLevel));
-		return getPositionY() + viewportY * zoomLevel;
-	}
-
-	public double getCenterX() {
-		return centerX;
-	}
-
-	public double getCenterY() {
-		return centerY;
-	}
-
-	public double getPositionX() {
-		return centerX - (sizeX / 2);
-	}
-
-	public double getPositionY() {
-		return centerY - (sizeY / 2);
+	public Vector getPosition() {
+		double x = getCenter().x - (getSize().x / 2);
+		double y = getCenter().y - (getSize().y / 2);
+		return Vector.cartesian(x, y);
 	}
 
 	public double getZoomLevel() {
@@ -89,32 +72,30 @@ public class Viewport {
 		setZoomLevel(wholePondScale());
 	}
 
-	public double getVisibleAreaX() {
-		return getSizeX() / getZoomLevel();
-	}
-
-	public double getVisibleAreaY() {
-		return getSizeY() / getZoomLevel();
+	public Vector getVisibleArea() {
+		double x = getSize().x / getZoomLevel();
+		double y = getSize().y / getZoomLevel();
+		return Vector.cartesian(x, y);
 	}
 
 	private double wholePondScale() {
-		return Math.max(getSizeX(), getSizeY()) / pondSize;
+		return Math.max(getSize().x, getSize().y) / pondSize;
 	}
 
 	private void setZoomLevel(double zoomLevel) {
 		this.zoomLevel = Math.min(Math.max(zoomLevel, wholePondScale()), MAX_ZOOM);
 	}
 
-	public boolean isVisible(double x, double y, double margin) {
+	public boolean isVisible(Vector point, double margin) {
 		double maxRadius = maxVisibleRadius(margin);
-		double distanceX = getCenterX() - x;
-		double distanceY = getCenterY() - y;
+		double distanceX = getCenter().x - point.x;
+		double distanceY = getCenter().y - point.y;
 		return (Math.abs(distanceX) < maxRadius &&
 				Math.abs(distanceY) < maxRadius);
 	}
 
 	private double maxVisibleRadius(double margin) {
-		return (Math.max(getSizeX(), getSizeY()) / 2 / getZoomLevel()) + margin * getZoomLevel();
+		return (Math.max(getSize().x, getSize().y) / 2 / getZoomLevel()) + margin * getZoomLevel();
 	}
 
 	public void tick() {

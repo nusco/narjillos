@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
+import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.utilities.Chronometer;
 import org.nusco.swimmers.views.ChronometersView;
 import org.nusco.swimmers.views.PondView;
@@ -61,7 +62,7 @@ public class PondApplication extends Application {
 		startViewUpdateThread(root);
 
 		Viewport viewport = getPondView().getViewport();
-		final Scene scene = new Scene(root, viewport.getSizeX(), viewport.getSizeY());
+		final Scene scene = new Scene(root, viewport.getSize().x, viewport.getSize().y);
 
 		scene.setOnMouseClicked(createMouseEvent());
 		scene.setOnScroll(createMouseScrollHandler());
@@ -108,7 +109,7 @@ public class PondApplication extends Application {
 			private synchronized void handleMouse(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if (event.getClickCount() == 2)
-						viewport.centerOn(viewport.toPondX(event.getSceneX()), viewport.toPondY(event.getSceneY()));
+						viewport.centerOn(viewport.toPondCoordinates(Vector.cartesian(event.getSceneX(), event.getSceneY())));
 					else
 						viewport.zoomIn();
 				}
@@ -165,7 +166,7 @@ public class PondApplication extends Application {
 	}
 
 	private synchronized void moveViewport(long velocityX, long velocityY, KeyEvent event) {
-		viewport.moveBy(velocityX, velocityY);
+		viewport.moveBy(Vector.cartesian(velocityX, velocityY));
 		event.consume();
 	};
 

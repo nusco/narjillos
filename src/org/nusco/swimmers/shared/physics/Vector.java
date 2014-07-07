@@ -100,7 +100,7 @@ public class Vector {
 
 	public boolean almostEquals(Vector other) {
 		final double delta = 0.001;
-		return Math.abs(getAngle() - other.getAngle()) < delta && Math.abs(getLength() - other.getLength()) < delta;
+		return Math.abs(x - other.x) < delta && Math.abs(y - other.y) < delta;
 	}
 	
 	@Override

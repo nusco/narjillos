@@ -2,6 +2,8 @@ package org.nusco.swimmers.application;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -61,13 +63,14 @@ public class PondApplication extends Application {
 		startModelUpdateThread();
 		startViewUpdateThread(root);
 
-		Viewport viewport = getPondView().getViewport();
+		final Viewport viewport = getPondView().getViewport();
 		final Scene scene = new Scene(root, viewport.getSize().x, viewport.getSize().y);
 
 		scene.setOnMouseClicked(createMouseEvent());
 		scene.setOnScroll(createMouseScrollHandler());
 		scene.setOnKeyPressed(createKeyboardHandler());
-
+		addResizeListeners(scene, viewport);
+		
 		primaryStage.setTitle("Swimmers");
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -120,6 +123,19 @@ public class PondApplication extends Application {
 		};
 	}
 
+	private void addResizeListeners(final Scene scene, final Viewport viewport) {
+		scene.widthProperty().addListener(new ChangeListener<Number>() {
+		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+		        viewport.setSize(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSize().y));
+		    }
+		});
+		scene.heightProperty().addListener(new ChangeListener<Number>() {
+		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+		        viewport.setSize(Vector.cartesian(viewport.getSize().x, newSceneHeight.doubleValue()));
+		    }
+		});
+	}
+	
 	private void startViewUpdateThread(final Group root) {
 		Task<Void> task = new Task<Void>() {
 			private volatile boolean renderingFinished = false;

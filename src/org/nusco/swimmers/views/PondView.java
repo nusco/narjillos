@@ -14,7 +14,7 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 import org.nusco.swimmers.pond.Pond;
-import org.nusco.swimmers.pond.PondEvent;
+import org.nusco.swimmers.pond.PondEventListener;
 import org.nusco.swimmers.shared.things.Thing;
 
 public class PondView {
@@ -32,10 +32,15 @@ public class PondView {
 		for (Thing thing : pond.getThings())
 			addThingView(thing);
 
-		pond.addEventListener(new PondEvent() {
+		pond.addEventListener(new PondEventListener() {
 			@Override
 			public void thingAdded(Thing thing) {
 				addThingView(thing);
+			}
+
+			@Override
+			public void thingRemoved(Thing thing) {
+				removeThingView(thing);
 			}
 		});
 	}
@@ -88,6 +93,12 @@ public class PondView {
 	private ThingView addThingView(Thing thing) {
 		synchronized(thingsToViews) {
 			return thingsToViews.put(thing, ThingView.createViewFor(thing));
+		}
+	}
+
+	private void removeThingView(Thing thing) {
+		synchronized(thingsToViews) {
+			thingsToViews.remove(thing);
 		}
 	}
 

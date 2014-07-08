@@ -7,14 +7,14 @@ import org.nusco.swimmers.creature.body.MovementListener;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 
-public class Propulsion implements MovementListener {
+public class ForceField implements MovementListener {
 
 	private static final double PROPULSION_SCALE = 0.01;
 	
 	private final List<Vector> forces = new LinkedList<>();
 	private final Vector direction;
 
-	public Propulsion(Vector direction) {
+	public ForceField(Vector direction) {
 		this.direction = direction;
 	}
 
@@ -36,13 +36,20 @@ public class Propulsion implements MovementListener {
 	}
 
 	private Vector getTotalForce() {
-		Vector sum = Vector.ZERO;
+		Vector result = Vector.ZERO;
 		for (Vector force : forces)
-			sum = sum.plus(force);
-		return sum;
+			result = result.plus(force);
+		return result;
 	}
 
 	public Vector getTangentialForce() {
 		return getTotalForce().getProjectionOn(direction);
+	}
+
+	public double getAmount() {
+		double result = 0;
+		for (Vector force : forces)
+			result += force.getLength();
+		return result;
 	}
 }

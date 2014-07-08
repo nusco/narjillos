@@ -68,16 +68,20 @@ public class PondTest {
 	
 	@Test
 	public void sendsEventsWhenAddingThings() {
-		final boolean[] fired = {false};
-		pond.addEventListener(new PondEvent() {
+		final boolean[] eventFired = {false};
+		pond.addEventListener(new PondEventListener() {
 
 			@Override
 			public void thingAdded(Thing thing) {
-				fired[0] = true;
+				eventFired[0] = true;
+			}
+
+			@Override
+			public void thingRemoved(Thing thing) {
 			}
 		});
 		
 		pond.add(new Food(), Vector.ZERO);
-		assertTrue(fired[0]);
+		assertTrue(eventFired[0]);
 	}
 }

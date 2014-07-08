@@ -3,6 +3,10 @@ package org.nusco.swimmers.pond;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.swimmers.creature.LifecycleEventListener;
+import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.genetics.DNA;
+import org.nusco.swimmers.creature.genetics.Embryo;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
@@ -12,7 +16,7 @@ public class Pond {
 
 	private final long size;
 	private final List<Thing> things = new LinkedList<>();
-	private final List<PondEvent> pondEvents = new LinkedList<>();
+	private final List<PondEventListener> pondEvents = new LinkedList<>();
 
 	public Pond(long size) {
 		this.size = size;
@@ -37,7 +41,7 @@ public class Pond {
 	public final void add(Thing thing, Vector position) {
 		thing.setPosition(position);
 		things.add(thing);
-		for (PondEvent pondEvent : pondEvents)
+		for (PondEventListener pondEvent : pondEvents)
 			pondEvent.thingAdded(thing);
 	}
 
@@ -61,7 +65,31 @@ public class Pond {
 			thing.tick();
 	}
 
-	public void addEventListener(PondEvent pondEvent) {
-		pondEvents.add(pondEvent);
+	protected void spawnFood() {
+		add(new Food(), randomPosition());
+	}
+
+	protected final void spawnSwimmer() {
+		final Swimmer swimmer = new Embryo(DNA.random()).develop();
+		swimmer.addLifecycleEventListener(new LifecycleEventListener() {
+			
+			@Override
+			public void died() {
+				for (PondEventListener pondEvent : pondEvents)
+					pondEvent.thingRemoved(swimmer);
+			}
+		});
+		add(swimmer, randomPosition());
+	}
+
+	public void addEventListener(PondEventListener pondEventListener) {
+		pondEvents.add(pondEventListener);
+	}
+
+	private Vector randomPosition() {
+		double randomAngle = Math.random() * 360;
+		double radius = getSize() / 2;
+		double randomDistance = Math.random() * radius;
+		return Vector.cartesian(radius, radius).plus(Vector.polar(randomAngle, randomDistance));
 	}
 }

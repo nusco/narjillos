@@ -5,17 +5,22 @@ import java.util.List;
 
 import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.Organ;
-import org.nusco.swimmers.creature.physics.Propulsion;
+import org.nusco.swimmers.creature.physics.ForceField;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
 public class Swimmer implements Thing {
 
+	public static final double INITIAL_ENERGY = 10_000;
+
 	private final Head head;
 
 	private Vector position;
 	private Vector target = Vector.ZERO;
-
+	private double energy = INITIAL_ENERGY;
+	
+	private final List<LifecycleEventListener> lifecycleEventListeners = new LinkedList<>();
+	
 	public Swimmer(Head head) {
 		this.head = head;
 	}
@@ -49,14 +54,23 @@ public class Swimmer implements Thing {
 	}
 
 	public void tick() {
-		Propulsion propulsion = new Propulsion(head.getVector());
-		head.setMovementListener(propulsion);
+		ForceField forceField = new ForceField(head.getVector());
+		head.setMovementListener(forceField);
 
 		head.tick(getCurrentTarget());
 
-		Vector tangentialForce = propulsion.getTangentialForce();
+		Vector tangentialForce = forceField.getTangentialForce();
 		Vector newPosition = getPosition().plus(tangentialForce);
 		setPosition(newPosition);
+		
+		decreaseEnergy(forceField.getAmount());
+	}
+
+	void decreaseEnergy(double amount) {
+		energy -= amount;
+		if (energy <= 0)
+			for (LifecycleEventListener lifecycleEventListener : lifecycleEventListeners)
+				lifecycleEventListener.died();
 	}
 
 	public Vector getCurrentTarget() {
@@ -71,5 +85,9 @@ public class Swimmer implements Thing {
 	@Override
 	public String getLabel() {
 		return "swimmer";
+	}
+
+	public void addLifecycleEventListener(LifecycleEventListener lifecycleEventListener) {
+		lifecycleEventListeners .add(lifecycleEventListener);
 	}
 }

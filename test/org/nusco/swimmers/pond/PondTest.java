@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.creature.body.Head;
+import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
@@ -18,8 +19,8 @@ public class PondTest {
 	Pond pond = new Pond(1000);
 	Food food1 = new Food();
 	Food food2 = new Food();
-	Swimmer swimmer1 = new Swimmer(new Head(0, 0, 0));
-	Swimmer swimmer2 = new Swimmer(new Head(0, 0, 0));
+	Swimmer swimmer1 = new Swimmer(new Head(0, 0, 0), DNA.random());
+	Swimmer swimmer2 = new Swimmer(new Head(0, 0, 0), DNA.random());
 
 	@Before
 	public void setUpPond() {

@@ -20,8 +20,8 @@ public class ForceField implements MovementListener {
 
 	@Override
 	public void moveEvent(Segment beforeMovement, Segment afterMovement) {
-		Vector beforeVector = beforeMovement.vector;
-		Vector afterVector = afterMovement.vector;
+		Vector beforeVector = beforeMovement.end;
+		Vector afterVector = afterMovement.end;
 		
 		double velocityAngle = afterVector.getAngleWith(beforeVector);
 		double force = velocityAngle * beforeVector.getLength() * PROPULSION_SCALE;

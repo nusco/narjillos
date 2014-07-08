@@ -56,12 +56,6 @@ class SwimmerView extends ThingView {
 			addWithChildren(child, result);
 	}
 
-	// TODO: this method should disappear once swimmers learn
-	// to find their own target
-	public void setCurrentTarget(Vector target) {
-		getSwimmer().setCurrentTarget(target);
-	}
-
 	private Swimmer getSwimmer() {
 		return (Swimmer)getThing();
 	}

@@ -83,6 +83,10 @@ public class Vector {
 		return Vector.polar(getAngle() + degrees, getLength());
 	}
 
+	double getDistanceFrom(Vector other) {
+		return this.minus(other).getLength();
+	}
+
 	@Override
 	public int hashCode() {
 		return 1;

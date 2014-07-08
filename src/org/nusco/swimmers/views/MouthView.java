@@ -29,7 +29,7 @@ class MouthView extends ThingView {
 
 	private void rotate(Line line, int angle) {
 		line.getTransforms().clear();
-		line.getTransforms().add(new Rotate(getSwimmer().getCurrentTarget().getAngle() + angle));
+		line.getTransforms().add(new Rotate(getSwimmer().getTargetDirection().getAngle() + angle));
 	}
 
 	private Line createLine() {

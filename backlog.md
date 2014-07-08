@@ -1,6 +1,4 @@
 ##First evo experiment
-  * Swimmer consumes food (replenish energy, remove food)
-  * Swimmer reproduces after eating (with mutation)
   * Cosmos lends to evolution (configuration and tweaking)
 ##Eye candy
   * Death animation
@@ -21,5 +19,6 @@
   * Smooth scrolling
   * Pan intertia
 ##Misc
+  * Profiled optimization
   * Level Of Detail (probably not worth the effort - performance seems to simply depend on number of nodes)
   * Death of old age

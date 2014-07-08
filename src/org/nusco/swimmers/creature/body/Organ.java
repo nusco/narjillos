@@ -161,7 +161,7 @@ public abstract class Organ {
 		return getLength() * getThickness();
 	}
 
-	public void setMovementListener(MovementListener listener) {
+	protected void setMovementListener(MovementListener listener) {
 		movementListener = listener;
 		for (Organ child : getChildren())
 			child.setMovementListener(listener);

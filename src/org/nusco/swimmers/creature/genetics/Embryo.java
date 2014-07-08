@@ -31,7 +31,7 @@ public class Embryo {
 		createTwinOrgans(parser, secondLevelChildren.getFirst());
 		createTwinOrgans(parser, secondLevelChildren.getLast());
 
-		return new Swimmer(head);
+		return new Swimmer(head, genes);
 	}
 
 	private Head createHeadSystem(OrganParser parser) {

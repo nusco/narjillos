@@ -2,15 +2,14 @@ package org.nusco.swimmers.application;
 
 import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.pond.Pond;
-import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
 public class Cosmos extends Pond {
 
-	public final static int SIZE = 4000;
-	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 20;
-	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 1000;
-	private static final int INITIAL_NUMBER_OF_SWIMMERS = 2;
+	public final static int SIZE = 100_000;
+	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 50;
+	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
+	private static final int INITIAL_NUMBER_OF_SWIMMERS = 400;
 
 	private int tickCounter = 0;
 
@@ -20,12 +19,8 @@ public class Cosmos extends Pond {
 	}
 
 	private void updateTargets() {
-		for (Thing thing : getThings("swimmer")) {
-			Swimmer swimmer = (Swimmer) thing;
-			Vector position = swimmer.getPosition();
-			Vector locationOfClosestFood = find("food", position);
-			swimmer.setCurrentTarget(locationOfClosestFood.minus(position));
-		}
+		for (Thing thing : getThings("swimmer"))
+			updateTarget((Swimmer)thing);
 	}
 
 	private void randomize() {

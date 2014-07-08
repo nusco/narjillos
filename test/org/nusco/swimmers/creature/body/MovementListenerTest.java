@@ -19,7 +19,7 @@ public class MovementListenerTest {
 			
 			@Override
 			public void moveEvent(Segment beforeMovement, Segment afterMovement) {
-				movement[counter++] = (int)beforeMovement.vector.getLength();
+				movement[counter++] = (int)beforeMovement.end.getLength();
 			}
 		};
 		organ.setMovementListener(listener);

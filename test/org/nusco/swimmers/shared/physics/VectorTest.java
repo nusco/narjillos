@@ -3,7 +3,6 @@ package org.nusco.swimmers.shared.physics;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.swimmers.shared.physics.Vector;
 
 public class VectorTest {
 	@Test
@@ -169,6 +168,15 @@ public class VectorTest {
 		assertEqualsVector(Vector.polar(-179, 10), ninetyDegrees.rotateBy(91));
 		assertEqualsVector(Vector.polar(0, 10), ninetyDegrees.rotateBy(-90));
 		assertEqualsVector(Vector.polar(-1, 10), ninetyDegrees.rotateBy(-91));
+	}
+
+	@Test
+	public void hasADistanceFromAnotherVector() {
+		Vector vector1 = Vector.cartesian(120, 130);
+		Vector vector2 = Vector.cartesian(-20, 80);
+
+		assertEquals(148.66, vector1.getDistanceFrom(vector2), 0.001);
+		assertEquals(148.66, vector2.getDistanceFrom(vector1), 0.001);
 	}
 	
 	private void assertEqualsVector(Vector v1, Vector v2) {

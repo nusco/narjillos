@@ -1,6 +1,7 @@
 package org.nusco.swimmers.creature.body;
 
 import org.nusco.swimmers.creature.body.pns.PassNerve;
+import org.nusco.swimmers.creature.physics.ForceField;
 import org.nusco.swimmers.shared.physics.Vector;
 
 public class Head extends Organ {
@@ -55,5 +56,11 @@ public class Head extends Organ {
 
 	public Organ sproutNeck() {
 		return addChild(new Neck(this));
+	}
+
+	public ForceField createForceField() {
+		ForceField result = new ForceField(getVector());
+		setMovementListener(result);
+		return result;
 	}
 }

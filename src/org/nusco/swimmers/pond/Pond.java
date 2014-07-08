@@ -26,6 +26,14 @@ public class Pond {
 		return things;
 	}
 
+	protected List<Thing> getThings(String label) {
+		List<Thing> result = new LinkedList<>();
+		for (Thing thing : things)
+			if (thing.getLabel().equals(label))
+				result.add(thing);
+		return result;
+	}
+
 	public final void add(Thing thing, Vector position) {
 		thing.setPosition(position);
 		things.add(thing);

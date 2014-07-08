@@ -1,6 +1,7 @@
 package org.nusco.swimmers.pond;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -57,6 +58,14 @@ public class PondTest {
 		assertTrue(swimmers.contains(food1));
 	}
 
+	@Test
+	public void returnsASpecificTypeOfThings() {
+		List<Thing> swimmers = pond.getThings("swimmer");
+		
+		assertTrue(swimmers.contains(swimmer1));
+		assertFalse(swimmers.contains(food1));
+	}
+	
 	@Test
 	public void sendsEventsWhenAddingThings() {
 		final boolean[] fired = {false};

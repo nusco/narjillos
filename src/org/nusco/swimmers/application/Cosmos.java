@@ -23,13 +23,12 @@ public class Cosmos extends Pond {
 	}
 
 	private void updateTargets() {
-		for (Thing thing : getThings())
-			if (thing.getLabel().equals("swimmer")) {
-				Swimmer swimmer = (Swimmer) thing;
-				Vector position = swimmer.getPosition();
-				Vector locationOfClosestFood = find("food", position);
-				swimmer.setCurrentTarget(locationOfClosestFood.minus(position));
-			}
+		for (Thing thing : getThings("swimmer")) {
+			Swimmer swimmer = (Swimmer) thing;
+			Vector position = swimmer.getPosition();
+			Vector locationOfClosestFood = find("food", position);
+			swimmer.setCurrentTarget(locationOfClosestFood.minus(position));
+		}
 	}
 
 	private void randomize() {
@@ -64,7 +63,7 @@ public class Cosmos extends Pond {
 
 		if (Math.random() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
 			spawnFood();
-			
+
 		if (tickCounter++ > 100) {
 			tickCounter = 0;
 			updateTargets();

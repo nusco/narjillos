@@ -4,8 +4,8 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 public interface Thing {
 
-	void setPosition(Vector position);
 	Vector getPosition();
+	void setPosition(Vector position);
 	void tick();
 	String getLabel();
 }

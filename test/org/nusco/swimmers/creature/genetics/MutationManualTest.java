@@ -1,9 +1,12 @@
 package org.nusco.swimmers.creature.genetics;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.body.Organ;
 
 public class MutationManualTest {
 
@@ -34,6 +37,7 @@ public class MutationManualTest {
 		return ((double)sum) / values.length;
 	}
 
+	// TODO: currently doesn't work - I removed the verbose equals() code from Organs
 	private static int getNumberOfDifferences(Set<Object> set1, Set<Object> set2) {
 		Set<Object> result = new HashSet<>();
 		result.addAll(set1);
@@ -43,8 +47,22 @@ public class MutationManualTest {
 
 	private static Set<Object> toSetOfParts(Swimmer swimmer) {
 		Set<Object> result = new HashSet<Object>();
-		result.addAll(swimmer.getOrgans());
+		result.addAll(getOrgans(swimmer));
 		return result;
+	}
+
+	public static List<Organ> getOrgans(Swimmer swimmer) {
+		List<Organ> result = new LinkedList<>();
+		result.add(swimmer.getHead());
+		addChildrenDepthFirst(result, swimmer.getHead());
+		return result;
+	}
+
+	private static void addChildrenDepthFirst(List<Organ> result, Organ organ) {
+		for (Organ child : organ.getChildren()) {
+			result.add(child);
+			addChildrenDepthFirst(result, child);
+		}
 	}
 
 	private static Swimmer nextGeneration(DNA genes) {

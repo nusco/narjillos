@@ -15,12 +15,12 @@ public class Head extends Organ {
 	}
 
 	@Override
-	public Vector calculateStartPoint() {
+	protected Vector calculateStartPoint() {
 		return Vector.ZERO;
 	}
 	
 	@Override
-	public double calculateAbsoluteAngle() {
+	protected double calculateAbsoluteAngle() {
 		return getAngleToParent();
 	}
 

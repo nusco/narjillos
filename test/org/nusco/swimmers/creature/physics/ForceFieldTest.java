@@ -25,6 +25,6 @@ public class ForceFieldTest {
 
 	@Test
 	public void collectsTotalAmountOfForce() {
-		assertEquals(13, forceField.getAmount(), 0);
+		assertEquals(13, forceField.getTotalEnergy(), 0);
 	}
 }

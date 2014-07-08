@@ -35,21 +35,21 @@ public class ForceField implements MovementListener {
 		forces.add(force);
 	}
 
-	private Vector getTotalForce() {
-		Vector result = Vector.ZERO;
-		for (Vector force : forces)
-			result = result.plus(force);
-		return result;
-	}
-
 	public Vector getTangentialForce() {
 		return getTotalForce().getProjectionOn(direction);
 	}
 
-	public double getAmount() {
+	public double getTotalEnergy() {
 		double result = 0;
 		for (Vector force : forces)
 			result += force.getLength();
+		return result;
+	}
+
+	private Vector getTotalForce() {
+		Vector result = Vector.ZERO;
+		for (Vector force : forces)
+			result = result.plus(force);
 		return result;
 	}
 }

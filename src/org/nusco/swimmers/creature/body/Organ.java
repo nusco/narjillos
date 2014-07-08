@@ -49,7 +49,7 @@ public abstract class Organ {
 		return thickness;
 	}
 
-	public int getHue() {
+	int getHue() {
 		return hue;
 	}
 
@@ -177,9 +177,6 @@ public abstract class Organ {
 		Organ other = (Organ) obj;
 		return hue == other.hue && length == other.length && thickness == other.thickness;
 	}
-
-	// for debugging
-	public Vector peek = Vector.ZERO;
 
 	public Organ sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb) {
 		return addChild(new BodySegment(length, thickness, angleToParentAtRest, rgb, this));

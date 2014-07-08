@@ -45,7 +45,7 @@ public class Cosmos extends Pond {
 		if (Math.random() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
 			spawnFood();
 
-		if (tickCounter++ > 100) {
+		if (tickCounter++ > 1000) {
 			tickCounter = 0;
 			updateTargets();
 		}

@@ -195,7 +195,7 @@ public class PondApplication extends Application {
 	}
 
 	private synchronized PondView createNewPondView() {
-		return new PondView(new RandomPond());
+		return new PondView(new Cosmos());
 	}
 
 	private synchronized void showRoot(final Group root) {

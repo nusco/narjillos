@@ -12,6 +12,7 @@ public class Pond {
 
 	private final long size;
 	private final List<Thing> things = new LinkedList<>();
+	private final List<PondEvent> pondEvents = new LinkedList<>();
 
 	public Pond(long size) {
 		this.size = size;
@@ -25,9 +26,11 @@ public class Pond {
 		return things;
 	}
 
-	public void add(Thing thing, Vector position) {
+	public final void add(Thing thing, Vector position) {
 		thing.setPosition(position);
 		things.add(thing);
+		for (PondEvent pondEvent : pondEvents)
+			pondEvent.thingAdded(thing);
 	}
 
 	public Vector find(String typeOfThing, Vector near) {
@@ -48,5 +51,9 @@ public class Pond {
 	public void tick() {
 		for (Thing thing : things)
 			thing.tick();
+	}
+
+	public void addEventListener(PondEvent pondEvent) {
+		pondEvents.add(pondEvent);
 	}
 }

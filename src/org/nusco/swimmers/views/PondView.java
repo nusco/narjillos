@@ -1,7 +1,9 @@
 package org.nusco.swimmers.views;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -12,22 +14,30 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 import org.nusco.swimmers.pond.Pond;
+import org.nusco.swimmers.pond.PondEvent;
 import org.nusco.swimmers.shared.things.Thing;
 
 public class PondView {
 
 	private final Pond pond;
 	private final Viewport viewport;
-	private final List<ThingView> thingViews;
 	private final Node background;
+	private final Map<Thing, ThingView> thingsToViews = new HashMap<>();
 
 	public PondView(Pond pond) {
 		this.pond = pond;
 		viewport = new Viewport(pond);
-		// TODO: this will have to get more dynamic once the set of Things
-		// can change because swimmers eat, die, etc.
-		thingViews = createThingViews(pond);
 		background = createBackground(pond);
+
+		for (Thing thing : pond.getThings())
+			addThingView(thing);
+
+		pond.addEventListener(new PondEvent() {
+			@Override
+			public void thingAdded(Thing thing) {
+				addThingView(thing);
+			}
+		});
 	}
 
 	public Viewport getViewport() {
@@ -61,9 +71,10 @@ public class PondView {
 	
 	private List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
-		for (ThingView view : thingViews) {
-			if (viewport.isVisible(view.getThing().getPosition(), Pond.MAX_THING_SIZE))
-				result.add(view.toNode());
+		synchronized (thingsToViews) {
+			for (ThingView view : thingsToViews.values())
+				if (viewport.isVisible(view.getThing().getPosition(), Pond.MAX_THING_SIZE))
+					result.add(view.toNode());
 		}
 		return result;
 	}
@@ -74,11 +85,10 @@ public class PondView {
 		return result;
 	}
 
-	private List<ThingView> createThingViews(Pond pond) {
-		List<ThingView> result = new LinkedList<>();
-		for (Thing thing : pond.getThings())
-			result.add(ThingView.createViewFor(thing));
-		return result;
+	private ThingView addThingView(Thing thing) {
+		synchronized(thingsToViews) {
+			return thingsToViews.put(thing, ThingView.createViewFor(thing));
+		}
 	}
 
 	public void tick() {

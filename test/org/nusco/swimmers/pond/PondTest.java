@@ -56,4 +56,19 @@ public class PondTest {
 		assertTrue(swimmers.contains(swimmer1));
 		assertTrue(swimmers.contains(food1));
 	}
+
+	@Test
+	public void sendsEventsWhenAddingThings() {
+		final boolean[] fired = {false};
+		pond.addEventListener(new PondEvent() {
+
+			@Override
+			public void thingAdded(Thing thing) {
+				fired[0] = true;
+			}
+		});
+		
+		pond.add(new Food(), Vector.ZERO);
+		assertTrue(fired[0]);
+	}
 }

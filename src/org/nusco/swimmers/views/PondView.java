@@ -74,13 +74,11 @@ public class PondView {
 		return background;
 	}
 	
-	private List<Node> getNodesForThings() {
+	private synchronized List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
-		synchronized (thingsToViews) {
-			for (ThingView view : thingsToViews.values())
-				if (viewport.isVisible(view.getThing().getPosition(), Pond.MAX_THING_SIZE))
-					result.add(view.toNode());
-		}
+		for (ThingView view : thingsToViews.values())
+			if (viewport.isVisible(view.getThing().getPosition(), Pond.MAX_THING_SIZE))
+				result.add(view.toNode());
 		return result;
 	}
 
@@ -90,16 +88,12 @@ public class PondView {
 		return result;
 	}
 
-	private ThingView addThingView(Thing thing) {
-		synchronized(thingsToViews) {
-			return thingsToViews.put(thing, ThingView.createViewFor(thing));
-		}
+	private synchronized ThingView addThingView(Thing thing) {
+		return thingsToViews.put(thing, ThingView.createViewFor(thing));
 	}
 
-	private void removeThingView(Thing thing) {
-		synchronized(thingsToViews) {
-			thingsToViews.remove(thing);
-		}
+	private synchronized void removeThingView(Thing thing) {
+		thingsToViews.remove(thing);
 	}
 
 	public void tick() {
@@ -113,5 +107,9 @@ public class PondView {
 
 	public void show(Group root) {
 		root.getChildren().add(toNode());
+	}
+
+	public void reportStuff() {
+		// for debugging
 	}
 }

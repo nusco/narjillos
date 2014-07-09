@@ -3,8 +3,6 @@ package org.nusco.swimmers.creature.brain;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.swimmers.creature.brain.Brain;
-import org.nusco.swimmers.pond.Food;
 import org.nusco.swimmers.pond.Pond;
 import org.nusco.swimmers.shared.physics.Vector;
 
@@ -14,7 +12,7 @@ public class BrainTest {
 	public void aimsForADirection() {
 		Brain brain = new Brain();
 		Pond pond = new Pond(1000);
-		pond.add(new Food(), Vector.cartesian(0, 100));
+		pond.spawnFood(Vector.cartesian(0, 100));
 		Vector self = Vector.ZERO;
 		
 		Vector direction = brain.getDirection(pond, self);

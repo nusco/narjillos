@@ -2,15 +2,9 @@ package org.nusco.swimmers.creature.brain;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
 import org.junit.Before;
-import org.nusco.swimmers.creature.Swimmer;
-import org.nusco.swimmers.creature.body.Head;
-import org.nusco.swimmers.creature.brain.Behaviour;
-import org.nusco.swimmers.creature.brain.FeedingBehaviour;
-import org.nusco.swimmers.creature.brain.MatingBehaviour;
+import org.junit.Test;
 import org.nusco.swimmers.creature.genetics.DNA;
-import org.nusco.swimmers.pond.Food;
 import org.nusco.swimmers.pond.Pond;
 import org.nusco.swimmers.shared.physics.Vector;
 
@@ -20,10 +14,10 @@ public class BehaviourTest {
 
 	@Before
 	public void setupPond() {
-		pond.add(new Food(), Vector.cartesian(10, 10));
-		pond.add(new Food(), Vector.cartesian(100, 100));
-		pond.add(new Swimmer(new Head(0, 0, 0), DNA.random()), Vector.cartesian(50, 30));
-		pond.add(new Swimmer(new Head(0, 0, 0), DNA.random()), Vector.cartesian(30, 100));
+		pond.spawnFood(Vector.cartesian(10, 10));
+		pond.spawnFood(Vector.cartesian(100, 100));
+		pond.spawnSwimmer(Vector.cartesian(50, 30), DNA.random());
+		pond.spawnSwimmer(Vector.cartesian(30, 100), DNA.random());
 	}
 	
 	@Test

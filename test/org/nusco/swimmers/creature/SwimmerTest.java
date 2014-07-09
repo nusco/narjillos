@@ -1,6 +1,7 @@
 package org.nusco.swimmers.creature;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -36,10 +37,9 @@ public class SwimmerTest {
 			}
 		});
 
-		swimmer.setPosition(Vector.cartesian(10, 10));
+		swimmer.tick();
 		
-		assertEquals(Vector.ZERO, moved[0].start);
-		assertEquals(Vector.cartesian(10, 10), moved[0].end);
+		assertNotNull(moved[0]);
 	}
 	
 	@Test

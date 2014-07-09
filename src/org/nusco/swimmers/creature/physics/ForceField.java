@@ -9,7 +9,7 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 public class ForceField implements MovementListener {
 
-	private static final double PROPULSION_SCALE = 0.01;
+	private static final double PROPULSION_SCALE = 0.003;
 	
 	private final List<Vector> forces = new LinkedList<>();
 	private final Vector direction;

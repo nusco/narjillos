@@ -114,7 +114,7 @@ public class PondApplication extends Application {
 					if (event.getClickCount() == 2)
 						viewport.setCenterSC(Vector.cartesian(event.getSceneX(), event.getSceneY()));
 					else
-						viewport.zoomIn();
+						pondView.reportStuff();
 				}
 				if (event.getButton() == MouseButton.SECONDARY) {
 					viewport.zoomToFit();

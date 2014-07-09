@@ -78,7 +78,7 @@ public class Swimmer implements Thing {
 		return genes;
 	}
 
-	double getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 

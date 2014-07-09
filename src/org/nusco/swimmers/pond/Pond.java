@@ -15,7 +15,7 @@ public class Pond {
 
 	public static final double MAX_THING_SIZE = 1500;
 
-	private static final double COLLISION_DISTANCE = 10;
+	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;
 	private final List<Thing> things = new LinkedList<>();
@@ -29,11 +29,11 @@ public class Pond {
 		return size;
 	}
 
-	public List<Thing> getThings() {
+	public synchronized List<Thing> getThings() {
 		return new LinkedList<Thing>(things);
 	}
 
-	protected List<Thing> getThings(String label) {
+	public List<Thing> getThings(String label) {
 		List<Thing> result = new LinkedList<>();
 		for (Thing thing : getThings())
 			if (thing.getLabel().equals(label))
@@ -43,7 +43,7 @@ public class Pond {
 
 	public Vector find(String typeOfThing, Vector near) {
 		double minDistance = Double.MAX_VALUE;
-		Vector result = Vector.ZERO;
+		Vector result = Vector.cartesian(getSize() / 2, getSize() / 2);
 		for (Thing thing : getThings()) {
 			if (thing.getLabel().equals(typeOfThing)) {
 				double distance = thing.getPosition().minus(near).getLength();
@@ -61,25 +61,28 @@ public class Pond {
 			thing.tick();
 	}
 
-	protected void spawnFood() {
-		add(new Food(), randomPosition());
+	public Food spawnFood(Vector position) {
+		Food food = new Food();
+		addToThings(food, position);
+		return food;
 	}
 
-	protected final void spawnSwimmer() {
-		final Swimmer swimmer = new Embryo(DNA.random()).develop();
+	public final Swimmer spawnSwimmer(Vector position, DNA genes) {
+		final Swimmer swimmer = new Embryo(genes).develop();
 		swimmer.addSwimmerEventListener(new SwimmerEventListener() {
 			
 			@Override
 			public void moved(Segment movement) {
 				checkCollisionsWithFood(swimmer, movement);
 			}
-
+		
 			@Override
 			public void died() {
 				remove(swimmer);
 			}
 		});
-		add(swimmer, randomPosition());
+		addToThings(swimmer, position);
+		return swimmer;
 	}
 
 	protected void updateTarget(Swimmer swimmer) {
@@ -88,7 +91,7 @@ public class Pond {
 		swimmer.setTarget(locationOfClosestFood);
 	}
 
-	private synchronized void checkCollisionsWithFood(Swimmer swimmer, Segment movement) {
+	private void checkCollisionsWithFood(Swimmer swimmer, Segment movement) {
 		// TODO: naive algorithm. replace with space partitioning and finding neighbors
 		List<Thing> foodThings = getThings("food");
 		for (Thing foodThing : foodThings) {
@@ -106,11 +109,11 @@ public class Pond {
 
 	private void reproduce(Swimmer swimmer) {
 		DNA childDNA = swimmer.getGenes().mutate();
-		Swimmer child = new Embryo(childDNA).develop();
-		add(child, randomPosition());
+		Vector position = swimmer.getPosition().plus(Vector.cartesian(6000 * Math.random() - 3000, 6000 * Math.random() - 3000));
+		spawnSwimmer(position, childDNA);
 	}
 
-	public synchronized final void add(Thing thing, Vector position) {
+	private synchronized final void addToThings(Thing thing, Vector position) {
 		thing.setPosition(position);
 		things.add(thing);
 		for (PondEventListener pondEvent : pondEvents)
@@ -125,12 +128,5 @@ public class Pond {
 
 	public void addEventListener(PondEventListener pondEventListener) {
 		pondEvents.add(pondEventListener);
-	}
-
-	private Vector randomPosition() {
-		double randomAngle = Math.random() * 360;
-		double radius = getSize() / 2;
-		double randomDistance = Math.random() * radius;
-		return Vector.cartesian(radius, radius).plus(Vector.polar(randomAngle, randomDistance));
 	}
 }

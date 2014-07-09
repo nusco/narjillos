@@ -6,10 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.nusco.swimmers.creature.Swimmer;
-import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
@@ -17,19 +15,10 @@ import org.nusco.swimmers.shared.things.Thing;
 public class PondTest {
 	
 	Pond pond = new Pond(1000);
-	Food food1 = new Food();
-	Food food2 = new Food();
-	Swimmer swimmer1 = new Swimmer(new Head(0, 0, 0), DNA.random());
-	Swimmer swimmer2 = new Swimmer(new Head(0, 0, 0), DNA.random());
-
-	@Before
-	public void setUpPond() {
-		pond.add(food1, Vector.cartesian(100, 100));
-		pond.add(food2, Vector.cartesian(1000, 1000));
-
-		pond.add(swimmer1, Vector.cartesian(100, 100));
-		pond.add(swimmer2, Vector.cartesian(1000, 1000));
-	}
+	Food food1 = pond.spawnFood(Vector.cartesian(100, 100));
+	Food food2 = pond.spawnFood(Vector.cartesian(1000, 1000));
+	Swimmer swimmer1 = pond.spawnSwimmer(Vector.cartesian(100, 100), DNA.random());
+	Swimmer swimmer2 = pond.spawnSwimmer(Vector.cartesian(1000, 1000), DNA.random());
 
 	@Test
 	public void findsTheClosestFoodToAGivenPosition() {
@@ -44,11 +33,11 @@ public class PondTest {
 	}
 
 	@Test
-	public void returnsTheOriginIfLookingForThingsInAThinglessWorld() {
+	public void returnsThePondCenterIfLookingForThingsInAThinglessWorld() {
 		Pond pond = new Pond(1000);
 		
-		assertEquals(Vector.ZERO, pond.find("food", Vector.cartesian(150, 150)));
-		assertEquals(Vector.ZERO, pond.find("swimmer", Vector.cartesian(150, 150)));
+		assertEquals(Vector.cartesian(500, 500), pond.find("food", Vector.cartesian(150, 150)));
+		assertEquals(Vector.cartesian(500, 500), pond.find("swimmer", Vector.cartesian(150, 150)));
 	}
 
 	@Test
@@ -82,7 +71,7 @@ public class PondTest {
 			}
 		});
 		
-		pond.add(new Food(), Vector.ZERO);
+		pond.spawnFood(Vector.ZERO);
 		assertTrue(eventFired[0]);
 	}
 }

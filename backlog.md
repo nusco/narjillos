@@ -1,5 +1,3 @@
-##First evo experiment
-  * Cosmos lends to evolution (configuration and tweaking)
 ##Eye candy
   * Death animation
   * Eggs

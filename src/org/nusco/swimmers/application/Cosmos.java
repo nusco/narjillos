@@ -8,10 +8,10 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Cosmos extends Pond {
 
-	public final static int SIZE = 50000;
-	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 50;
-	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 1500;
-	private static final int INITIAL_NUMBER_OF_SWIMMERS = 100;
+	public final static int SIZE = 100_000;
+	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 100;
+	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 1000;
+	private static final int INITIAL_NUMBER_OF_SWIMMERS = 200;
 
 	private int tickCounter = 0;
 

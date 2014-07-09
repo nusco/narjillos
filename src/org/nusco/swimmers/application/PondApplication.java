@@ -71,7 +71,7 @@ public class PondApplication extends Application {
 		scene.setOnKeyPressed(createKeyboardHandler());
 		addResizeListeners(scene, viewport);
 		
-		primaryStage.setTitle("Narjilli");
+		primaryStage.setTitle("Narjillos");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

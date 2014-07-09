@@ -22,6 +22,8 @@ public class Pond {
 	private final List<Thing> things = new LinkedList<>();
 	private final List<PondEventListener> pondEvents = new LinkedList<>();
 
+	private int tickCounter = 0;
+
 	public Pond(long size) {
 		this.size = size;
 	}
@@ -60,6 +62,11 @@ public class Pond {
 	public void tick() {
 		for (Thing thing : getThings())
 			thing.tick();
+
+		if (tickCounter-- < 0) {
+			tickCounter = 1000;
+			updateTargets();
+		}
 	}
 
 	public Food spawnFood(Vector position) {
@@ -86,10 +93,15 @@ public class Pond {
 		return swimmer;
 	}
 
-	protected void updateTarget(Swimmer swimmer) {
+	private void updateTarget(Swimmer swimmer) {
 		Vector position = swimmer.getPosition();
 		Vector locationOfClosestFood = find("food", position);
 		swimmer.setTarget(locationOfClosestFood);
+	}
+
+	private void updateTargets() {
+		for (Thing thing : getThings("swimmer"))
+			updateTarget((Swimmer)thing);
 	}
 
 	private void checkCollisionsWithFood(Swimmer swimmer, Segment movement) {
@@ -97,15 +109,15 @@ public class Pond {
 		List<Thing> foodThings = getThings("food");
 		for (Thing foodThing : foodThings) {
 			if (movement.getMinimumDistanceFromPoint(foodThing.getPosition()) < COLLISION_DISTANCE)
-				collide(swimmer, foodThing);
+				consumeFood(swimmer, foodThing);
 		}
 	}
 
-	private void collide(Swimmer swimmer, Thing foodThing) {
+	private void consumeFood(Swimmer swimmer, Thing foodThing) {
 		swimmer.feed();
 		remove(foodThing);
 		reproduce(swimmer);
-		updateTarget(swimmer);
+		updateTargets();
 	}
 
 	private void reproduce(Swimmer swimmer) {

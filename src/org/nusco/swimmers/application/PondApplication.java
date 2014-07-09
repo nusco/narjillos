@@ -24,9 +24,8 @@ import org.nusco.swimmers.views.Viewport;
 public class PondApplication extends Application {
 
 	private static final int TARGET_FRAMES_PER_SECOND = 25;
-	private static final int TARGET_TICKS_PER_SECOND = 25;
 	private static final int FRAMES_PERIOD = 1000 / TARGET_FRAMES_PER_SECOND;
-	private static final int TICKS_PERIOD = 1000 / TARGET_TICKS_PER_SECOND;
+	private static final int DEFAULT_TARGET_TICKS_PER_SECOND = 25;
 	protected static final long PAN_SPEED = 10;
 
 	private final Chronometer ticksChronometer = new Chronometer();
@@ -35,7 +34,8 @@ public class PondApplication extends Application {
 
 	private PondView pondView;
 	private Viewport viewport;
-
+	private volatile int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+	
 	public static void main(String... args) {
 		launch(args);
 	}
@@ -113,8 +113,12 @@ public class PondApplication extends Application {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if (event.getClickCount() == 2)
 						viewport.setCenterSC(Vector.cartesian(event.getSceneX(), event.getSceneY()));
-					else
-						pondView.reportStuff();
+					else {
+						if (targetTicksPerSecond == 1000)
+							targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+						else
+							targetTicksPerSecond = 1000;
+					}
 				}
 				if (event.getButton() == MouseButton.SECONDARY) {
 					viewport.zoomToFit();
@@ -165,6 +169,10 @@ public class PondApplication extends Application {
 		updateGUI.start();
 	}
 
+	private int getTicksPeriod() {
+		return 1000 / targetTicksPerSecond;
+	}
+
 	private void startModelUpdateThread() {
 		Thread updateThread = new Thread() {
 			@Override
@@ -172,7 +180,7 @@ public class PondApplication extends Application {
 				while (true) {
 					long startTime = System.currentTimeMillis();
 					tick();
-					waitForAtLeast(TICKS_PERIOD, startTime);
+					waitForAtLeast(getTicksPeriod(), startTime);
 					ticksChronometer.tick();
 				}
 			}

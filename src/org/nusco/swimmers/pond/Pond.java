@@ -10,6 +10,7 @@ import org.nusco.swimmers.creature.genetics.Embryo;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
+import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class Pond {
 
@@ -109,7 +110,7 @@ public class Pond {
 
 	private void reproduce(Swimmer swimmer) {
 		DNA childDNA = swimmer.getGenes().mutate();
-		Vector position = swimmer.getPosition().plus(Vector.cartesian(6000 * Math.random() - 3000, 6000 * Math.random() - 3000));
+		Vector position = swimmer.getPosition().plus(Vector.cartesian(6000 * RanGen.next() - 3000, 6000 * RanGen.next() - 3000));
 		spawnSwimmer(position, childDNA);
 	}
 

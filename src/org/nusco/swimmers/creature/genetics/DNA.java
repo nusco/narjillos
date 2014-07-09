@@ -2,6 +2,8 @@ package org.nusco.swimmers.creature.genetics;
 
 import java.util.Random;
 
+import org.nusco.swimmers.shared.utilities.RanGen;
+
 public class DNA {
 	public static final int MIRROR_ORGAN = 0b00000001;
 	public static final double MUTATION_RATE = 0.03;
@@ -31,7 +33,7 @@ public class DNA {
 	public DNA mutate() {
 		int[] resultGenes = new int[genes.length];
 		for (int i = 0; i < resultGenes.length; i++) {
-			if(Math.random() < MUTATION_RATE)
+			if(RanGen.next() < MUTATION_RATE)
 				resultGenes[i] = mutate(genes, i);
 			else
 				resultGenes[i] = genes[i];
@@ -40,12 +42,12 @@ public class DNA {
 	}
 
 	private int mutate(int[] resultGenes, int i) {
-		int randomFactor = ((int)(Math.random() * 40)) - 20;
+		int randomFactor = ((int)(RanGen.next() * 40)) - 20;
 		return resultGenes[i] + randomFactor;
 	}
 
 	public static DNA random() {
-		long seed = new Random().nextLong();
+		long seed = (long)(RanGen.next() * Long.MAX_VALUE);
 		return random(seed);
 	}
 	

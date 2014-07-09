@@ -75,6 +75,7 @@ public class Viewport {
 
 	public final void zoomToFit() {
 		setZoomLevel(wholePondScale());
+		centerPC = Vector.cartesian(pondSizePC /2, pondSizePC / 2);
 	}
 
 	private double wholePondScale() {

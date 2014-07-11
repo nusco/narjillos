@@ -14,7 +14,7 @@ import org.nusco.swimmers.shared.physics.Vector;
 public class Viewport {
 
 	static final long MAX_INITIAL_SIZE_SC = 800;
-	static final double MAX_ZOOM = 1.6;
+	static final double MAX_ZOOM = 2;
 	private static final double ZOOM_VELOCITY = 1.03;
 	
 	private final double pondSizePC;

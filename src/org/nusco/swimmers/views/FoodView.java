@@ -25,7 +25,7 @@ class FoodView extends ThingView {
 
 	private Node createCircle(Food food) {
 		Circle result = new Circle(10);
-		Color baseColor = Color.LIMEGREEN;
+		Color baseColor = Color.PURPLE;
 		result.setFill(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0.8));
 		return result;
 	}

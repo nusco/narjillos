@@ -5,13 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.body.BodyPart;
-import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.creature.genetics.OrganBuilder;
 import org.nusco.swimmers.creature.genetics.TwinOrgansBuilder;
 
 public class TwinOrgansBuilderTest {
-	private static final int MIRRORING = DNA.MIRROR_ORGAN;
-	private static final int NOT_MIRRORING = DNA.MIRROR_ORGAN ^ DNA.MIRROR_ORGAN;
+	private static final int MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN;
+	private static final int NOT_MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN ^ TwinOrgansBuilder.MIRROR_ORGAN;
 
 	int[] notMirroringGenes1 = new int[] {NOT_MIRRORING, 60, 70, 80, 90};
 	int[] notMirroringGenes2 = new int[] {NOT_MIRRORING, 61, 71, 81, 91};

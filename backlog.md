@@ -1,6 +1,5 @@
 ##More Complex Swimming
-  * Thicker segments exercise more push
-  * Thicker segments require more energy
+  * Genes determine delay
   * Genes determine amplitude
   * Real rotation
 ##More Realistic Swimmers

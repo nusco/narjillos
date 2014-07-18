@@ -5,25 +5,14 @@ import java.util.Random;
 import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class DNA {
-	public static final int MIRROR_ORGAN = 0b00000001;
+
+	public static final int GENES_PER_PART = 5;
 	public static final double MUTATION_RATE = 0.03;
 
-	private int[] genes;
+	private final int[] genes;
 
 	public DNA(int... genes) {
-		this.genes = normalize(genes);
-	}
-
-	private int[] normalize(int[] genes) {
-		int[] result = new int[genes.length];
-		for (int i = 0; i < genes.length; i++) {
-			int normalized = genes[i] % 256;
-			if(normalized < 0)
-				result[i] = -normalized;
-			else
-				result[i] = normalized;
-		}
-		return result;
+		this.genes = genes;
 	}
 
 	public int[] getGenes() {
@@ -31,9 +20,11 @@ public class DNA {
 	}
 
 	public DNA mutate() {
-		int[] resultGenes = new int[genes.length];
-		for (int i = 0; i < resultGenes.length; i++) {
-			if(RanGen.next() < MUTATION_RATE)
+		int length = Math.max(0, genes.length + getLengthMutation());
+		int[] resultGenes = new int[length];
+		int copyLength = Math.min(resultGenes.length, genes.length);
+		for (int i = 0; i < copyLength; i++) {
+			if (RanGen.nextDouble() < MUTATION_RATE)
 				resultGenes[i] = mutate(genes, i);
 			else
 				resultGenes[i] = genes[i];
@@ -41,31 +32,38 @@ public class DNA {
 		return new DNA(resultGenes);
 	}
 
+	private int getLengthMutation() {
+		if (RanGen.nextDouble() < MUTATION_RATE * 3)
+			return (int) (RanGen.nextGaussian() * GENES_PER_PART * 2);
+
+		return 0;
+	}
+
 	private int mutate(int[] resultGenes, int i) {
-		int randomFactor = ((int)(RanGen.next() * 40)) - 20;
+		int randomFactor = ((int) (RanGen.nextDouble() * 40)) - 20;
 		return resultGenes[i] + randomFactor;
 	}
 
-	public static DNA random() {
-		long seed = (long)(RanGen.next() * Long.MAX_VALUE);
-		return random(seed);
-	}
-	
 	public static DNA ancestor() {
 		final long ancestorSeed = 9018779372573137080L;
 		return DNA.random(ancestorSeed);
 	}
 
+	public static DNA random() {
+		long seed = (long) (RanGen.nextDouble() * Long.MAX_VALUE);
+		return random(seed);
+	}
+
 	private static DNA random(long seed) {
 		Random random = new Random(seed);
-		final int genomeSize = 60 * Byte.SIZE;
+		final int genomeSize = GENES_PER_PART * (Math.abs(random.nextInt()) % 6 + 2);
 		int[] genes = new int[genomeSize];
 		for (int i = 0; i < genes.length; i++)
-			genes[i] = rnd(0, 255, random);
+			genes[i] = randomByte(random);
 		return new DNA(genes);
 	}
 
-	private static int rnd(int min, int max, Random random) {
-		return (int)(random.nextDouble() * (max - min)) + min;
+	private static int randomByte(Random random) {
+		return Math.abs(random.nextInt()) % 255;
 	}
 }

@@ -4,8 +4,8 @@ import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.BodyPart;
 
 class OrganBuilder {
-	public static final int GENES_PER_PART = 5;
-	public static final int MIN_GENES_VALUE = 25;
+	
+	public static final int MIN_ORGAN_SIZE = 25;
 
 	static final double PART_LENGTH_MULTIPLIER = 1.0;
 	static final double PART_THICKNESS_MULTIPLIER = 0.15;
@@ -24,7 +24,7 @@ class OrganBuilder {
 	}
 
 	public BodyPart buildSegment(BodyPart parent, int angleSign) {
-		if(getLengthGenes() <= MIN_GENES_VALUE || getThicknessGenes() <= MIN_GENES_VALUE)
+		if(getLengthGenes() <= MIN_ORGAN_SIZE || getThicknessGenes() <= MIN_ORGAN_SIZE)
 			return parent.sproutConnectiveTissue();
 		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getRGB());
 	}

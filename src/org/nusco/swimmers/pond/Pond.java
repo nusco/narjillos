@@ -122,7 +122,7 @@ public class Pond {
 
 	private void reproduce(Swimmer swimmer) {
 		DNA childDNA = swimmer.getGenes().mutate();
-		Vector position = swimmer.getPosition().plus(Vector.cartesian(6000 * RanGen.next() - 3000, 6000 * RanGen.next() - 3000));
+		Vector position = swimmer.getPosition().plus(Vector.cartesian(6000 * RanGen.nextDouble() - 3000, 6000 * RanGen.nextDouble() - 3000));
 		spawnSwimmer(position, childDNA);
 	}
 

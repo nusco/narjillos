@@ -28,16 +28,16 @@ public class Cosmos extends Pond {
 
 	@Override
 	public void tick() {
-		if (RanGen.next() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
+		if (RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
 			spawnFood(randomPosition());
 
 		super.tick();
 	}
 
 	protected Vector randomPosition() {
-		double randomAngle = RanGen.next() * 360;
+		double randomAngle = RanGen.nextDouble() * 360;
 		double radius = getSize() / 2;
-		double randomDistance = RanGen.next() * radius;
+		double randomDistance = RanGen.nextDouble() * radius;
 		return Vector.cartesian(radius, radius).plus(Vector.polar(randomAngle, randomDistance));
 	}
 }

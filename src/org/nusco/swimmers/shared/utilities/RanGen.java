@@ -14,11 +14,11 @@ public class RanGen {
 		random = new Random(seed);
 	}
 
-	private double nextDouble() {
-		return random.nextDouble();
+	public static double nextDouble() {
+		return INSTANCE.random.nextDouble();
 	}
-	
-	public static double next() {
-		return INSTANCE.nextDouble();
+
+	public static double nextGaussian() {
+		return INSTANCE.random.nextGaussian();
 	}
 }

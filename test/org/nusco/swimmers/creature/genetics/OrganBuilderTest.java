@@ -14,10 +14,11 @@ public class OrganBuilderTest {
 		int controlGene = 0b00000000;
 		int lengthGene = 50;
 		int thicknessGene = 60;
-		int ignoredGene = 0;
+		int ignoredGene1 = 0;
+		int ignoredGene2 = 0;
 		int colorGene = 40;
 		
-		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene, colorGene});
+		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene1, ignoredGene2, colorGene});
 		BodyPart head = builder.buildHeadSystem();
 
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, head.getLength(), 0);
@@ -31,10 +32,11 @@ public class OrganBuilderTest {
 		int controlGene = 0b00000000;
 		int lengthGene = 50;
 		int thicknessGene = 60;
+		int delayGene = 90;
 		int angleToParentGene = 80;
 		int colorGene = 40;
 		
-		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, angleToParentGene, colorGene});
+		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, delayGene, angleToParentGene, colorGene});
 		BodyPart headSystem = builder.buildHeadSystem();
 		Organ organ = builder.buildSegment(headSystem, 1);
 		
@@ -54,7 +56,7 @@ public class OrganBuilderTest {
 	}
 
 	private Organ buildSegment(int angleToParentGene, int angleSign) {
-		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, angleToParentGene, 10});
+		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, 70, angleToParentGene, 10});
 		BodyPart head = builder.buildHeadSystem();
 		BodyPart neck = head.getChildren().get(0);
 		return builder.buildSegment(neck, angleSign);

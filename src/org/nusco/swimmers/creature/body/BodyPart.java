@@ -17,7 +17,7 @@ public abstract class BodyPart extends Organ {
 
 	private MovementListener movementListener = MovementListener.NULL;
 
-	protected BodyPart(int length, int thickness, int hue, Nerve nerve, BodyPart parent) {
+	protected BodyPart(int length, int thickness, int hue, BodyPart parent, Nerve nerve) {
 		super(length, thickness, hue);
 		this.nerve = nerve;
 		this.parent = parent;
@@ -88,8 +88,8 @@ public abstract class BodyPart extends Organ {
 			child.setMovementListener(listener);
 	}
 
-	public BodyPart sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb) {
-		return addChild(new BodySegment(length, thickness, angleToParentAtRest, rgb, this));
+	public BodyPart sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb, int delay) {
+		return addChild(new BodySegment(length, thickness, angleToParentAtRest, rgb, this, delay));
 	}
 
 	BodyPart sproutOrgan(Nerve nerve) {

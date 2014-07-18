@@ -16,8 +16,8 @@ public class Embryo {
 		DNAParser parser = new DNAParser(genes);
 		
 		Head head = createHeadSystem(parser);
+		
 		BodyPart neck = head.getChildren().get(0);
-
 		BodyPart[] children = new BodyPart[] { neck };
 		createDescendants(children, parser);
 		

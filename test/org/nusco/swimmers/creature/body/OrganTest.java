@@ -50,15 +50,15 @@ public abstract class OrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = organ.sproutOrgan(20, 12, 45, 100);
+		Organ child = organ.sproutOrgan(20, 12, 45, 100, 0);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}
 	
 	@Test
 	public void knowsItsChildren() {
-		BodyPart child1 = organ.sproutOrgan(20, THICKNESS, 45, 100);
-		BodyPart child2 = organ.sproutOrgan(20, THICKNESS, -45, 100);
+		BodyPart child1 = organ.sproutOrgan(20, THICKNESS, 45, 100, 0);
+		BodyPart child2 = organ.sproutOrgan(20, THICKNESS, -45, 100, 0);
 
 		List<BodyPart> expected = new LinkedList<>();
 		expected.add(child1);

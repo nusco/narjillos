@@ -10,7 +10,7 @@ public class Head extends BodyPart {
 	static final double ROTATION_HISTERESIS = ROTATION_SPEED;
 
 	public Head(int length, int thickness, int color) {
-		super(length, thickness, color, new PassNerve(), null);
+		super(length, thickness, color, null, new PassNerve());
 		setAngleToParent(0);
 		tick(Vector.ZERO);
 	}

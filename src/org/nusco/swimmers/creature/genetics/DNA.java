@@ -6,7 +6,7 @@ import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class DNA {
 
-	public static final int GENES_PER_PART = 5;
+	public static final int GENES_PER_PART = 6;
 	public static final double MUTATION_RATE = 0.03;
 
 	private final int[] genes;

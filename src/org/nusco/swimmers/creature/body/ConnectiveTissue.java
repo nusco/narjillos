@@ -14,7 +14,7 @@ class ConnectiveTissue extends BodyPart {
 	}
 
 	protected ConnectiveTissue(BodyPart parent, Nerve nerve) {
-		super(0, 0, 0, nerve, parent);
+		super(0, 0, 0, parent, nerve);
 	}
 
 	@Override

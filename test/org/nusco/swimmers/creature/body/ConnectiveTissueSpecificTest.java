@@ -27,8 +27,8 @@ public class ConnectiveTissueSpecificTest {
 	public void hasChildren() {
 		BodyPart head = new Head(10, 10, 100);
 		BodyPart connectiveTissue = head.sproutConnectiveTissue();
-		BodyPart child1 = connectiveTissue.sproutOrgan(10, 10, 10, 100);
-		BodyPart child2 = connectiveTissue.sproutOrgan(10, 10, -10, 100);
+		BodyPart child1 = connectiveTissue.sproutOrgan(10, 10, 10, 100, 0);
+		BodyPart child2 = connectiveTissue.sproutOrgan(10, 10, -10, 100, 0);
 		
 		List<BodyPart> expected = new LinkedList<>();
 		expected.add(child1);
@@ -65,7 +65,7 @@ public class ConnectiveTissueSpecificTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = new ConnectiveTissue(new Head(0, 0, 0)).sproutOrgan(20, 12, 45, 100);
+		Organ child = new ConnectiveTissue(new Head(0, 0, 0)).sproutOrgan(20, 12, 45, 100, 0);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

@@ -7,11 +7,7 @@ import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 
-public abstract class Organ {
-
-	private final int length;
-	private final int thickness;
-	private final int hue;
+public abstract class Organ extends BodyPart {
 
 	private final Nerve nerve;
 	private final Organ parent;
@@ -33,24 +29,10 @@ public abstract class Organ {
 	private Vector cachedVector = null;
 	private Integer cachedColor = null;
 
-	protected Organ(int length, int thickness, int rgb, Nerve nerve, Organ parent) {
-		this.length = length;
-		this.thickness = thickness;
-		this.hue = rgb;
+	protected Organ(int length, int thickness, int hue, Nerve nerve, Organ parent) {
+		super(length, thickness, hue);
 		this.nerve = nerve;
 		this.parent = parent;
-	}
-
-	public int getLength() {
-		return length;
-	}
-
-	public int getThickness() {
-		return thickness;
-	}
-
-	int getHue() {
-		return hue;
 	}
 
 	protected final double getAngleToParent() {
@@ -161,10 +143,6 @@ public abstract class Organ {
 		return nerve;
 	}
 
-	public double getMass() {
-		return getLength() * getThickness();
-	}
-
 	protected void setMovementListener(MovementListener listener) {
 		movementListener = listener;
 		for (Organ child : getChildren())
@@ -178,7 +156,7 @@ public abstract class Organ {
 
 	@Override
 	public boolean equals(Object obj) {
-		Organ other = (Organ) obj;
+		BodyPart other = (BodyPart) obj;
 		return hue == other.hue && length == other.length && thickness == other.thickness;
 	}
 

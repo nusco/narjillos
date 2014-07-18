@@ -54,7 +54,7 @@ public class Head extends Organ {
 		return sign * unsignedResult;
 	}
 
-	public Organ sproutNeck() {
+	public BodyPart sproutNeck() {
 		return addChild(new Neck(this));
 	}
 

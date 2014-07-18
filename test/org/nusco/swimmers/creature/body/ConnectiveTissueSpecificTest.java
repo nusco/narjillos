@@ -40,7 +40,7 @@ public class ConnectiveTissueSpecificTest {
 	@Test
 	public void itsGeometricDataHasSimpleDefaultValues() {
 		Organ head = new Head(10, 10, 100);
-		Organ connectiveTissue = head.sproutConnectiveTissue();
+		BodyPart connectiveTissue = head.sproutConnectiveTissue();
 
 		assertEquals(0, connectiveTissue.getLength());
 		assertEquals(0, connectiveTissue.getThickness());
@@ -65,7 +65,7 @@ public class ConnectiveTissueSpecificTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = new ConnectiveTissue(new Head(0, 0, 0)).sproutOrgan(20, 12, 45, 100);
+		BodyPart child = new ConnectiveTissue(new Head(0, 0, 0)).sproutOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

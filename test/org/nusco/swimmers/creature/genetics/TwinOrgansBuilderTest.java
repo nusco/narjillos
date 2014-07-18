@@ -3,6 +3,7 @@ package org.nusco.swimmers.creature.genetics;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.creature.genetics.OrganBuilder;
@@ -21,7 +22,7 @@ public class TwinOrgansBuilderTest {
 
 	@Test
 	public void buildsRegularSegmentIfNeitherGenesIsMirroring() {
-		Organ[] segments = new TwinOrgansBuilder(notMirroringGenes1, notMirroringGenes2).buildSegments(parent);
+		BodyPart[] segments = new TwinOrgansBuilder(notMirroringGenes1, notMirroringGenes2).buildSegments(parent);
 		
 		assertEquals(60, segments[0].getLength());
 		assertEquals(61, segments[1].getLength());

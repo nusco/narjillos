@@ -13,7 +13,7 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Swimmer implements Thing {
 
-	public static final double INITIAL_ENERGY = 80_000;
+	public static final double INITIAL_ENERGY = 50_000;
 	private static final double ENERGY_PER_FOOD_ITEM = 80_000;
 
 	private final Head head;

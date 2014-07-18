@@ -50,7 +50,7 @@ public abstract class OrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = organ.sproutOrgan(20, 12, 45, 100);
+		BodyPart child = organ.sproutOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

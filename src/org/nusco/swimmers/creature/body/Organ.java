@@ -128,24 +128,28 @@ public abstract class Organ {
 	}
 
 	public Vector tick(Vector inputSignal) {
-		Segment beforeMovement = new Segment(getStartPoint(), getVector());
+		Segment beforeMovement = getSegment();
 
 		Vector outputSignal = getNerve().tick(inputSignal);
 
 		move(outputSignal);
 		resetAllCaches();
 
-		notifyMovementListener(beforeMovement, new Segment(getStartPoint(), getVector()));
+		notifyMovementListener(beforeMovement, this);
 
 		tickChildren(outputSignal);
 
 		return outputSignal;
 	}
 
+	private Segment getSegment() {
+		return new Segment(getStartPoint(), getVector());
+	}
+
 	protected abstract void move(Vector signal);
 
-	private void notifyMovementListener(Segment beforeMovement, Segment afterMovement) {
-		movementListener.moveEvent(beforeMovement, afterMovement);
+	private void notifyMovementListener(Segment beforeMovement, Organ organ) {
+		movementListener.moveEvent(beforeMovement, organ);
 	}
 
 	protected void tickChildren(Vector signal) {

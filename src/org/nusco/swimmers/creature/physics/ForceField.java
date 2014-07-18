@@ -4,9 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.swimmers.creature.body.MovementListener;
+import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 
+// TODO: replace Organ here with a new superclass or interface describing an organ's geometry
 public class ForceField implements MovementListener {
 
 	private static final double PROPULSION_SCALE = 0.003;
@@ -19,9 +21,9 @@ public class ForceField implements MovementListener {
 	}
 
 	@Override
-	public void moveEvent(Segment beforeMovement, Segment afterMovement) {
+	public void moveEvent(Segment beforeMovement, Organ organ) {
 		Vector beforeVector = beforeMovement.end;
-		Vector afterVector = afterMovement.end;
+		Vector afterVector = organ.getVector();
 		
 		double velocityAngle = afterVector.getAngleWith(beforeVector);
 		double force = velocityAngle * beforeVector.getLength() * PROPULSION_SCALE;

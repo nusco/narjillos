@@ -9,7 +9,7 @@ public class Cosmos extends Pond {
 
 	public final static int SIZE = 10_000;
 	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 100;
-	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 200;
+	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 	private static final int INITIAL_NUMBER_OF_SWIMMERS = 50;
 
 	public Cosmos() {

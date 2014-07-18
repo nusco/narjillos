@@ -6,8 +6,8 @@ public interface MovementListener {
 
 	MovementListener NULL = new MovementListener() {
 		@Override
-		public void moveEvent(Segment beforeMovement, Segment afterMovement) {}
+		public void moveEvent(Segment beforeMovement, Organ organ) {}
 	};
 
-	public void moveEvent(Segment beforeMovement, Segment afterMovement);
+	public void moveEvent(Segment beforeMovement, Organ organ);
 }

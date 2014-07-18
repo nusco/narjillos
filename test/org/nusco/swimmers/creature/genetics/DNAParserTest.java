@@ -10,30 +10,30 @@ public class DNAParserTest {
 	@Test
 	public void iteratesOverParts() {
 		int[] genes =  new int[]{
-				1, 2, 3, 4, 5,
-				6, 7, 8, 9, 10
+				1, 2, 3, 4, 5, 6,
+				7, 8, 9, 10, 11, 12
 			};
 
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4, 5}, parser.nextPart());
-		assertArrayEquals(new int[]{6, 7, 8, 9, 10}, parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextPart());
+		assertArrayEquals(new int[]{7, 8, 9, 10, 11, 12}, parser.nextPart());
 		assertNull(parser.nextPart());
 	}
 
 	@Test
 	public void padsUnterminatedLastPart() {
 		int[] genes =  new int[]{
-				1, 2, 3, 4, 5,
-				6, 7
+				1, 2, 3, 4, 5, 6,
+				7, 8
 			};
 
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4, 5}, parser.nextPart());
-		assertArrayEquals(new int[]{6, 7, 0, 0, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextPart());
+		assertArrayEquals(new int[]{7, 8, 0, 0, 0, 0}, parser.nextPart());
 		assertNull(parser.nextPart());
 	}
 
@@ -46,7 +46,7 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 0, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 0, 0, 0}, parser.nextPart());
 		assertNull(parser.nextPart());
 	}
 
@@ -57,7 +57,7 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{0, 0, 0, 0, 0}, parser.nextPart());
+		assertArrayEquals(new int[]{0, 0, 0, 0, 0, 0}, parser.nextPart());
 		assertNull(parser.nextPart());
 	}
 }

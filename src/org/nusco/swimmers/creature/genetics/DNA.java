@@ -33,8 +33,8 @@ public class DNA {
 	}
 
 	private int getLengthMutation() {
-		if (RanGen.nextDouble() < MUTATION_RATE * 3)
-			return (int) (RanGen.nextGaussian() * GENES_PER_PART * 2);
+		if (RanGen.nextDouble() < MUTATION_RATE * 10)
+			return (int) (RanGen.nextGaussian() * GENES_PER_PART);
 
 		return 0;
 	}

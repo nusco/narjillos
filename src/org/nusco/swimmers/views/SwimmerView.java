@@ -16,11 +16,13 @@ class SwimmerView extends ThingView {
 	private final Group group = new Group();
 	private final List<OrganView> organViews;
 	private final MouthView mouthView;
+	private final EyeView eyeView;
 
 	public SwimmerView(Swimmer swimmer) {
 		super(swimmer);
 		organViews = createOrganViews();
 		mouthView = new MouthView(swimmer);
+		eyeView = new EyeView(swimmer);
 	}
 
 	@Override
@@ -28,6 +30,7 @@ class SwimmerView extends ThingView {
 		group.getChildren().clear();
 		group.getChildren().addAll(getOrganNodes());
 		group.getChildren().add(mouthView.toNode());
+		group.getChildren().add(eyeView.toNode());
 		Vector position = getSwimmer().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));

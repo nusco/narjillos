@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.swimmers.creature.body.Head;
-import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.creature.physics.ForceField;
 import org.nusco.swimmers.shared.physics.Segment;
@@ -70,7 +70,7 @@ public class Swimmer implements Thing {
 		return "swimmer";
 	}
 	
-	public Organ getHead() {
+	public BodyPart getHead() {
 		return head;
 	}
 

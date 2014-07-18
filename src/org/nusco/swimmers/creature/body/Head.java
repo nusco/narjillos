@@ -4,7 +4,7 @@ import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.creature.physics.ForceField;
 import org.nusco.swimmers.shared.physics.Vector;
 
-public class Head extends Organ {
+public class Head extends BodyPart {
 
 	static final double ROTATION_SPEED = 0.5;
 	static final double ROTATION_HISTERESIS = ROTATION_SPEED;
@@ -54,7 +54,7 @@ public class Head extends Organ {
 		return sign * unsignedResult;
 	}
 
-	public BodyPart sproutNeck() {
+	public Organ sproutNeck() {
 		return addChild(new Neck(this));
 	}
 

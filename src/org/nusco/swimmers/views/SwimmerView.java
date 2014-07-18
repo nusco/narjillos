@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.transform.Translate;
 
 import org.nusco.swimmers.creature.Swimmer;
-import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.shared.physics.Vector;
 
 class SwimmerView extends ThingView {
@@ -50,9 +50,9 @@ class SwimmerView extends ThingView {
 		return result;
 	}
 
-	private void addWithChildren(Organ organ, List<OrganView> result) {
+	private void addWithChildren(BodyPart organ, List<OrganView> result) {
 		result.add(new OrganView(organ));
-		for (Organ child : organ.getChildren())
+		for (BodyPart child : organ.getChildren())
 			addWithChildren(child, result);
 	}
 

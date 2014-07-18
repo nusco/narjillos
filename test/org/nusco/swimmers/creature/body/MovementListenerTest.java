@@ -9,8 +9,8 @@ import org.nusco.swimmers.shared.physics.Vector;
 public class MovementListenerTest {
 	@Test
 	public void wholeBodySendsMoveEvents() {
-		Organ organ = new Head(1, 0, 0);
-		Organ child1 = organ.sproutOrgan(2, 0, 0, 0);
+		BodyPart organ = new Head(1, 0, 0);
+		BodyPart child1 = organ.sproutOrgan(2, 0, 0, 0);
 		child1.sproutOrgan(3, 0, 0, 0);
 
 		final int[] movement = new int[3];

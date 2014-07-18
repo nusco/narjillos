@@ -1,27 +1,15 @@
 package org.nusco.swimmers.creature.body;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 
-public abstract class Organ extends BodyPart {
+public abstract class Organ {
 
-	private final Nerve nerve;
-	private final Organ parent;
-	private final List<Organ> children = new LinkedList<>();
-
-	private double angleToParent = 0;
-
-	private MovementListener movementListener = MovementListener.NULL;
-
-	// Cached fields (for performance).
-	// This optimization makes the entire class much more complicated - but
-	// the performance gains are huge.
-	// Most of these fields are calculated with recursive calls that traverse
-	// the entire body, and their values are accessed many, many times.
+	protected final int length;
+	protected final int thickness;
+	protected final int hue;
+	
+	// ugly caching - has huge performance benefits
 	private Vector cachedStartPoint = null;
 	private Vector cachedEndPoint = null;
 	private Double cachedAbsoluteAngle = null;
@@ -29,19 +17,26 @@ public abstract class Organ extends BodyPart {
 	private Vector cachedVector = null;
 	private Integer cachedColor = null;
 
-	protected Organ(int length, int thickness, int hue, Nerve nerve, Organ parent) {
-		super(length, thickness, hue);
-		this.nerve = nerve;
-		this.parent = parent;
+	public Organ(int length, int thickness, int hue) {
+		this.length = length;
+		this.thickness = thickness;
+		this.hue = hue;
 	}
 
-	protected final double getAngleToParent() {
-		return angleToParent;
+	public int getLength() {
+		return length;
 	}
 
-	protected final void setAngleToParent(double angleToParent) {
-		this.angleToParent = angleToParent;
-		resetAllCaches();
+	public int getThickness() {
+		return thickness;
+	}
+
+	protected int getHue() {
+		return hue;
+	}
+
+	public double getMass() {
+		return getLength() * getThickness();
 	}
 
 	protected void resetAllCaches() {
@@ -59,15 +54,15 @@ public abstract class Organ extends BodyPart {
 		return cachedAbsoluteAngle;
 	}
 
-	protected Vector calculateStartPoint() {
-		return getParent().getEndPoint();
-	}
+	protected abstract double calculateAbsoluteAngle();
 
 	public final Vector getStartPoint() {
 		if (cachedStartPoint == null)
 			cachedStartPoint = calculateStartPoint();
 		return cachedStartPoint;
 	}
+
+	protected abstract Vector calculateStartPoint();
 
 	public final Vector getEndPoint() {
 		if (cachedEndPoint == null)
@@ -87,66 +82,18 @@ public abstract class Organ extends BodyPart {
 		return cachedMainAxis;
 	}
 
+	protected abstract Vector calculateMainAxis();
+
 	public final int getColor() {
 		if (cachedColor == null)
 			cachedColor = calculateColor();
 		return cachedColor;
 	}
 
-	protected abstract double calculateAbsoluteAngle();
-
-	protected Vector calculateMainAxis() {
-		return getParent().calculateMainAxis();
-	}
-
 	protected abstract int calculateColor();
 
-	protected final Organ getParent() {
-		return parent;
-	}
-
-	public List<Organ> getChildren() {
-		return children;
-	}
-
-	public Vector tick(Vector inputSignal) {
-		Segment beforeMovement = getSegment();
-
-		Vector outputSignal = getNerve().tick(inputSignal);
-
-		move(outputSignal);
-		resetAllCaches();
-
-		notifyMovementListener(beforeMovement, this);
-
-		tickChildren(outputSignal);
-
-		return outputSignal;
-	}
-
-	private Segment getSegment() {
+	protected Segment getSegment() {
 		return new Segment(getStartPoint(), getVector());
-	}
-
-	protected abstract void move(Vector signal);
-
-	private void notifyMovementListener(Segment beforeMovement, Organ organ) {
-		movementListener.moveEvent(beforeMovement, organ);
-	}
-
-	protected void tickChildren(Vector signal) {
-		for (Organ child : getChildren())
-			child.tick(signal);
-	}
-
-	public Nerve getNerve() {
-		return nerve;
-	}
-
-	protected void setMovementListener(MovementListener listener) {
-		movementListener = listener;
-		for (Organ child : getChildren())
-			child.setMovementListener(listener);
 	}
 
 	@Override
@@ -156,24 +103,8 @@ public abstract class Organ extends BodyPart {
 
 	@Override
 	public boolean equals(Object obj) {
-		BodyPart other = (BodyPart) obj;
+		Organ other = (Organ) obj;
 		return hue == other.hue && length == other.length && thickness == other.thickness;
 	}
 
-	public Organ sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb) {
-		return addChild(new BodySegment(length, thickness, angleToParentAtRest, rgb, this));
-	}
-
-	Organ sproutOrgan(Nerve nerve) {
-		return addChild(new BodySegment(nerve));
-	}
-
-	public Organ sproutConnectiveTissue() {
-		return addChild(new ConnectiveTissue(this));
-	}
-
-	protected Organ addChild(Organ child) {
-		children.add(child);
-		return child;
-	}
 }

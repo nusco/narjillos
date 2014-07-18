@@ -1,7 +1,7 @@
 package org.nusco.swimmers.creature.genetics;
 
 import org.nusco.swimmers.creature.body.Head;
-import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.body.BodyPart;
 
 class OrganBuilder {
 	public static final int GENES_PER_PART = 5;
@@ -23,7 +23,7 @@ class OrganBuilder {
 		return result;
 	}
 
-	public Organ buildSegment(Organ parent, int angleSign) {
+	public BodyPart buildSegment(BodyPart parent, int angleSign) {
 		if(getLengthGenes() <= MIN_GENES_VALUE || getThicknessGenes() <= MIN_GENES_VALUE)
 			return parent.sproutConnectiveTissue();
 		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getRGB());

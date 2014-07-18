@@ -13,14 +13,14 @@ public abstract class OrganTest {
 
 	protected static int THICKNESS = 8;
 	
-	protected Organ organ;
+	protected BodyPart organ;
 
 	@Before
 	public void setUpPart() {
 		organ = createOrgan();
 	}
 
-	public abstract Organ createOrgan();
+	public abstract BodyPart createOrgan();
 
 	@Test
 	public void hasALength() {
@@ -50,17 +50,17 @@ public abstract class OrganTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		BodyPart child = organ.sproutOrgan(20, 12, 45, 100);
+		Organ child = organ.sproutOrgan(20, 12, 45, 100);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}
 	
 	@Test
 	public void knowsItsChildren() {
-		Organ child1 = organ.sproutOrgan(20, THICKNESS, 45, 100);
-		Organ child2 = organ.sproutOrgan(20, THICKNESS, -45, 100);
+		BodyPart child1 = organ.sproutOrgan(20, THICKNESS, 45, 100);
+		BodyPart child2 = organ.sproutOrgan(20, THICKNESS, -45, 100);
 
-		List<Organ> expected = new LinkedList<>();
+		List<BodyPart> expected = new LinkedList<>();
 		expected.add(child1);
 		expected.add(child2);
 		

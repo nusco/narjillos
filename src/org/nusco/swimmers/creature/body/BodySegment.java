@@ -4,14 +4,14 @@ import org.nusco.swimmers.creature.body.pns.DelayNerve;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.shared.physics.Vector;
 
-public class BodySegment extends Organ {
+public class BodySegment extends BodyPart {
 	private static final int DELAY = 13;
 	private static final double AMPLITUDE_MULTIPLIER = 1.5;
 	private static final int MAX_ROTATION_SPEED = 5;
 	
 	private final double angleToParentAtRest;
 	
-	public BodySegment(int length, int thickness, int angleToParentAtRest, int rgb, Organ parent) {
+	public BodySegment(int length, int thickness, int angleToParentAtRest, int rgb, BodyPart parent) {
 		super(length, thickness, rgb, new DelayNerve(DELAY), parent);
 		this.angleToParentAtRest = angleToParentAtRest;
 		setAngleToParent(angleToParentAtRest);

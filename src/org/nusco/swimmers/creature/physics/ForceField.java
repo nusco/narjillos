@@ -3,8 +3,8 @@ package org.nusco.swimmers.creature.physics;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.swimmers.creature.body.MovementListener;
 import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.body.MovementListener;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 

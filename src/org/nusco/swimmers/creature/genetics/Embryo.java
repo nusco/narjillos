@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.creature.body.Head;
-import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.body.BodyPart;
 
 public class Embryo {
 
@@ -18,12 +18,12 @@ public class Embryo {
 		OrganParser parser = new OrganParser(genes);
 		
 		Head head = createHeadSystem(parser);
-		Organ neck = head.getChildren().get(0);
-		Organ[] firstLevelChildren = createTwinOrgans(parser, neck);
+		BodyPart neck = head.getChildren().get(0);
+		BodyPart[] firstLevelChildren = createTwinOrgans(parser, neck);
 		
-		LinkedList<Organ> secondLevelChildren = new LinkedList<>();
-		for (Organ organ : firstLevelChildren) {
-			Organ[] twinSecondLevelChildren = createTwinOrgans(parser, organ);
+		LinkedList<BodyPart> secondLevelChildren = new LinkedList<>();
+		for (BodyPart organ : firstLevelChildren) {
+			BodyPart[] twinSecondLevelChildren = createTwinOrgans(parser, organ);
 			secondLevelChildren.add(twinSecondLevelChildren[0]);
 			secondLevelChildren.add(twinSecondLevelChildren[1]);
 		}
@@ -38,7 +38,7 @@ public class Embryo {
 		return new OrganBuilder(parser.nextPart()).buildHeadSystem();
 	}
 
-	private Organ[] createTwinOrgans(OrganParser parser, Organ parent) {
+	private BodyPart[] createTwinOrgans(OrganParser parser, BodyPart parent) {
 		return new TwinOrgansBuilder(parser.nextPart(), parser.nextPart()).buildSegments(parent);
 	}
 }

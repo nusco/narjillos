@@ -15,13 +15,13 @@ public abstract class OrganConnectionTest {
 		final ClickNerve nerve3 = new ClickNerve();
 		final ClickNerve nerve4 = new ClickNerve();
 
-		Organ head = new Head(0, 0, 0) {
+		BodyPart head = new Head(0, 0, 0) {
 			@Override
 			public Nerve getNerve() {
 				return nerve1;
 			}
 		};
-		Organ child1 = head.sproutOrgan(nerve2);
+		BodyPart child1 = head.sproutOrgan(nerve2);
 		child1.sproutOrgan(nerve3);
 		head.sproutOrgan(nerve4);
 

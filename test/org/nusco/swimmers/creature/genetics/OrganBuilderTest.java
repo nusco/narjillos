@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.body.BodyPart;
 
 public class OrganBuilderTest {
 
@@ -17,7 +18,7 @@ public class OrganBuilderTest {
 		int colorGene = 40;
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene, colorGene});
-		Organ head = builder.buildHeadSystem();
+		BodyPart head = builder.buildHeadSystem();
 
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, head.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, head.getThickness(), 0);
@@ -34,7 +35,7 @@ public class OrganBuilderTest {
 		int colorGene = 40;
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, angleToParentGene, colorGene});
-		Organ headSystem = builder.buildHeadSystem();
+		BodyPart headSystem = builder.buildHeadSystem();
 		Organ organ = builder.buildSegment(headSystem, 1);
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
@@ -54,8 +55,8 @@ public class OrganBuilderTest {
 
 	private Organ buildSegment(int angleToParentGene, int angleSign) {
 		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, angleToParentGene, 10});
-		Organ head = builder.buildHeadSystem();
-		Organ neck = head.getChildren().get(0);
+		BodyPart head = builder.buildHeadSystem();
+		BodyPart neck = head.getChildren().get(0);
 		return builder.buildSegment(neck, angleSign);
 	}
 }

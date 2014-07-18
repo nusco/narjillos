@@ -1,33 +1,107 @@
 package org.nusco.swimmers.creature.body;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.nusco.swimmers.creature.body.pns.Nerve;
+import org.nusco.swimmers.shared.physics.Segment;
+import org.nusco.swimmers.shared.physics.Vector;
 
-public class BodyPart {
+public abstract class BodyPart extends Organ {
 
-	protected final int length;
-	protected final int thickness;
-	protected final int hue;
+	private final Nerve nerve;
+	private final BodyPart parent;
+	private final List<BodyPart> children = new LinkedList<>();
 
-	public BodyPart(int length, int thickness, int hue) {
-		this.length = length;
-		this.thickness = thickness;
-		this.hue = hue;
+	private double angleToParent = 0;
+
+	private MovementListener movementListener = MovementListener.NULL;
+
+	protected BodyPart(int length, int thickness, int hue, Nerve nerve, BodyPart parent) {
+		super(length, thickness, hue);
+		this.nerve = nerve;
+		this.parent = parent;
 	}
 
-	public int getLength() {
-		return length;
+	protected final double getAngleToParent() {
+		return angleToParent;
 	}
 
-	public int getThickness() {
-		return thickness;
+	protected final void setAngleToParent(double angleToParent) {
+		this.angleToParent = angleToParent;
+		resetAllCaches();
 	}
 
-	protected int getHue() {
-		return hue;
+	protected Vector calculateStartPoint() {
+		return getParent().getEndPoint();
 	}
 
-	public double getMass() {
-		return getLength() * getThickness();
+	protected abstract double calculateAbsoluteAngle();
+
+	protected Vector calculateMainAxis() {
+		return getParent().calculateMainAxis();
 	}
 
+	protected abstract int calculateColor();
+
+	protected final BodyPart getParent() {
+		return parent;
+	}
+
+	public List<BodyPart> getChildren() {
+		return children;
+	}
+
+	public Vector tick(Vector inputSignal) {
+		Segment beforeMovement = getSegment();
+
+		Vector outputSignal = getNerve().tick(inputSignal);
+
+		move(outputSignal);
+		resetAllCaches();
+
+		notifyMovementListener(beforeMovement, this);
+
+		tickChildren(outputSignal);
+
+		return outputSignal;
+	}
+
+	protected abstract void move(Vector signal);
+
+	private void notifyMovementListener(Segment beforeMovement, Organ organ) {
+		movementListener.moveEvent(beforeMovement, organ);
+	}
+
+	protected void tickChildren(Vector signal) {
+		for (BodyPart child : getChildren())
+			child.tick(signal);
+	}
+
+	public Nerve getNerve() {
+		return nerve;
+	}
+
+	protected void setMovementListener(MovementListener listener) {
+		movementListener = listener;
+		for (BodyPart child : getChildren())
+			child.setMovementListener(listener);
+	}
+
+	public BodyPart sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb) {
+		return addChild(new BodySegment(length, thickness, angleToParentAtRest, rgb, this));
+	}
+
+	BodyPart sproutOrgan(Nerve nerve) {
+		return addChild(new BodySegment(nerve));
+	}
+
+	public BodyPart sproutConnectiveTissue() {
+		return addChild(new ConnectiveTissue(this));
+	}
+
+	protected BodyPart addChild(BodyPart child) {
+		children.add(child);
+		return child;
+	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.nusco.swimmers.creature.Swimmer;
-import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.creature.body.BodyPart;
 
 public class MutationManualTest {
 
@@ -51,15 +51,15 @@ public class MutationManualTest {
 		return result;
 	}
 
-	public static List<Organ> getOrgans(Swimmer swimmer) {
-		List<Organ> result = new LinkedList<>();
+	public static List<BodyPart> getOrgans(Swimmer swimmer) {
+		List<BodyPart> result = new LinkedList<>();
 		result.add(swimmer.getHead());
 		addChildrenDepthFirst(result, swimmer.getHead());
 		return result;
 	}
 
-	private static void addChildrenDepthFirst(List<Organ> result, Organ organ) {
-		for (Organ child : organ.getChildren()) {
+	private static void addChildrenDepthFirst(List<BodyPart> result, BodyPart organ) {
+		for (BodyPart child : organ.getChildren()) {
 			result.add(child);
 			addChildrenDepthFirst(result, child);
 		}

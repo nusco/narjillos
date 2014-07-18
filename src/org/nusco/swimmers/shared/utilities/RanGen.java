@@ -9,7 +9,8 @@ public class RanGen {
 	private final Random random;
 	
 	private RanGen() {
-		long seed = (long)(Math.random() * Long.MAX_VALUE);
+		//long seed = (long)(Math.random() * Long.MAX_VALUE);
+		long seed = 5306841226579940352l;
 		System.out.println("Random seed: " + seed);
 		random = new Random(seed);
 	}

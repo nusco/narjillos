@@ -15,6 +15,7 @@ public class Swimmer implements Thing {
 
 	public static final double INITIAL_ENERGY = 50_000;
 	private static final double ENERGY_PER_FOOD_ITEM = 80_000;
+	private static final double NATURAL_ENERGY_DECAY = 5;
 
 	private final Head head;
 
@@ -62,7 +63,7 @@ public class Swimmer implements Thing {
 		Vector newPosition = getPosition().plus(tangentialForce);
 		updatePosition(newPosition);
 
-		decreaseEnergy(forceField.getTotalEnergy());
+		decreaseEnergy(forceField.getTotalEnergy() + NATURAL_ENERGY_DECAY);
 	}
 
 	@Override

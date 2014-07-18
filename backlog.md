@@ -21,4 +21,3 @@
 ##Misc
   * Profiled optimization
   * Level Of Detail (probably not worth the effort - performance seems to simply depend on number of nodes)
-  * Death of old age

@@ -8,7 +8,7 @@ import org.junit.Test;
 public class DNAParserTest {
 
 	@Test
-	public void iteratesOverParts() {
+	public void iteratesOverChromosomes() {
 		int[] genes =  new int[]{
 				1, 2, 3, 4, 5, 6,
 				7, 8, 9, 10, 11, 12
@@ -17,13 +17,13 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextPart());
-		assertArrayEquals(new int[]{7, 8, 9, 10, 11, 12}, parser.nextPart());
-		assertNull(parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextChromosome());
+		assertArrayEquals(new int[]{7, 8, 9, 10, 11, 12}, parser.nextChromosome());
+		assertNull(parser.nextChromosome());
 	}
 
 	@Test
-	public void padsUnterminatedLastPart() {
+	public void padsUnterminatedLastChromosome() {
 		int[] genes =  new int[]{
 				1, 2, 3, 4, 5, 6,
 				7, 8
@@ -32,13 +32,13 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextPart());
-		assertArrayEquals(new int[]{7, 8, 0, 0, 0, 0}, parser.nextPart());
-		assertNull(parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextChromosome());
+		assertArrayEquals(new int[]{7, 8, 0, 0, 0, 0}, parser.nextChromosome());
+		assertNull(parser.nextChromosome());
 	}
 
 	@Test
-	public void padsUnterminatedSinglePart() {
+	public void padsUnterminatedSingleChromosome() {
 		int[] genes =  new int[]{
 				1, 2, 3
 			};
@@ -46,18 +46,18 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 0, 0, 0}, parser.nextPart());
-		assertNull(parser.nextPart());
+		assertArrayEquals(new int[]{1, 2, 3, 0, 0, 0}, parser.nextChromosome());
+		assertNull(parser.nextChromosome());
 	}
 
 	@Test
-	public void alwaysReturnsAtLeastOnePart() {
+	public void alwaysReturnsAtLeastOneChromosome() {
 		int[] genes =  new int[0];
 
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{0, 0, 0, 0, 0, 0}, parser.nextPart());
-		assertNull(parser.nextPart());
+		assertArrayEquals(new int[]{0, 0, 0, 0, 0, 0}, parser.nextChromosome());
+		assertNull(parser.nextChromosome());
 	}
 }

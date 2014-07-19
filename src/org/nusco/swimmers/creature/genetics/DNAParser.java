@@ -12,11 +12,11 @@ class DNAParser {
 			genes = new int[1];
 	}
 
-	public int[] nextPart() {
+	public int[] nextChromosome() {
 		if (indexInGenes > 0 && indexInGenes >= genes.length)
 			return null;
 		
-		int[] result = new int[DNA.GENES_PER_PART];
+		int[] result = new int[DNA.CHROMOSOME_SIZE];
 		int index_in_result = 0;
 		while(index_in_result < result.length && indexInGenes < genes.length) {
 			result[index_in_result] = genes[indexInGenes];

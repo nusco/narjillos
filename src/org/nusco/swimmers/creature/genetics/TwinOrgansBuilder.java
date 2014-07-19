@@ -27,9 +27,11 @@ class TwinOrgansBuilder {
 		
 		if(isMirrorSegment(organ1Genes))
 			return buildMirrorSegments(parent, organ2Genes);
-		else if(isMirrorSegment(organ2Genes))
+		
+		if(isMirrorSegment(organ2Genes))
 			return buildMirrorSegments(parent, organ1Genes);
-		else return new BodyPart[] {
+		
+		return new BodyPart[] {
 			new OrganBuilder(organ1Genes).buildSegment(parent, 1),
 			new OrganBuilder(organ2Genes).buildSegment(parent, -1)
 		};

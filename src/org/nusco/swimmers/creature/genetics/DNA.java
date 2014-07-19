@@ -1,13 +1,11 @@
 package org.nusco.swimmers.creature.genetics;
 
-import java.util.Random;
-
 import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class DNA {
 
-	public static final int GENES_PER_PART = 6;
-	public static final double MUTATION_RATE = 0.03;
+	public static final int CHROMOSOME_SIZE = 6;
+	public static final double MUTATION_RATE = 0.1;
 
 	private final int[] genes;
 
@@ -29,41 +27,40 @@ public class DNA {
 			else
 				resultGenes[i] = genes[i];
 		}
+		for (int i = genes.length; i < resultGenes.length; i++)
+			resultGenes[i] = randomByte();
 		return new DNA(resultGenes);
 	}
 
 	private int getLengthMutation() {
-		if (RanGen.nextDouble() < MUTATION_RATE * 10)
-			return (int) (RanGen.nextGaussian() * GENES_PER_PART);
+		if (RanGen.nextDouble() < MUTATION_RATE)
+			return (int) (RanGen.nextGaussian() * CHROMOSOME_SIZE);
 
 		return 0;
 	}
 
 	private int mutate(int[] resultGenes, int i) {
 		int randomFactor = ((int) (RanGen.nextDouble() * 40)) - 20;
-		return resultGenes[i] + randomFactor;
+		return clipToByteSize(resultGenes[i] + randomFactor);
 	}
 
-	public static DNA ancestor() {
-		final long ancestorSeed = 9018779372573137080L;
-		return DNA.random(ancestorSeed);
+	private int clipToByteSize(int number) {
+		if (number < 0)
+			number = 0;
+		if (number > Byte.MAX_VALUE)
+			number = Byte.MAX_VALUE;
+		return number;
 	}
 
 	public static DNA random() {
-		long seed = (long) (RanGen.nextDouble() * Long.MAX_VALUE);
-		return random(seed);
-	}
-
-	private static DNA random(long seed) {
-		Random random = new Random(seed);
-		final int genomeSize = GENES_PER_PART * (Math.abs(random.nextInt()) % 6 + 2);
+		final int genomeSize = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 5 + 1);
 		int[] genes = new int[genomeSize];
 		for (int i = 0; i < genes.length; i++)
-			genes[i] = randomByte(random);
+			genes[i] = randomByte();
 		return new DNA(genes);
 	}
 
-	private static int randomByte(Random random) {
-		return Math.abs(random.nextInt()) % 255;
+	private static int randomByte() {
+		return Math.abs(RanGen.nextInt()) % 255;
 	}
 }

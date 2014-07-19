@@ -11,6 +11,7 @@ class OrganBuilder {
 	static final double PART_THICKNESS_MULTIPLIER = 0.15;
 	static final int PART_MAX_ANGLE_TO_PARENT = 70;
 	private static final int MAX_DELAY = 30;
+	private static final int DELAY_SCALE = Byte.MAX_VALUE / MAX_DELAY;
 
 	private final int[] genes;
 
@@ -48,7 +49,7 @@ class OrganBuilder {
 
 	private int getDelay() {
 		int delayGene = genes[3];
-		return delayGene % MAX_DELAY;
+		return delayGene / DELAY_SCALE;
 	}
 
 	private int getAngleToParentAtRest(int angleSign) {

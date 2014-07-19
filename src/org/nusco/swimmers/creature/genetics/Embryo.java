@@ -25,7 +25,7 @@ public class Embryo {
 	}
 
 	private Head createHeadSystem(DNAParser parser) {
-		return new OrganBuilder(parser.nextPart()).buildHeadSystem();
+		return new OrganBuilder(parser.nextChromosome()).buildHeadSystem();
 	}
 
 	private void createDescendants(BodyPart[] organs, DNAParser parser) {
@@ -36,6 +36,6 @@ public class Embryo {
 	}
 
 	private BodyPart[] createOrgans(BodyPart parent, DNAParser parser) {
-		return new TwinOrgansBuilder(parser.nextPart(), parser.nextPart()).buildSegments(parent);
+		return new TwinOrgansBuilder(parser.nextChromosome(), parser.nextChromosome()).buildSegments(parent);
 	}
 }

@@ -10,7 +10,7 @@ public class RanGen {
 	
 	private RanGen() {
 		//long seed = (long)(Math.random() * Long.MAX_VALUE);
-		long seed = 5306841226579940352l;
+		long seed = 2648718169735535616l;
 		System.out.println("Random seed: " + seed);
 		random = new Random(seed);
 	}
@@ -21,5 +21,9 @@ public class RanGen {
 
 	public static double nextGaussian() {
 		return INSTANCE.random.nextGaussian();
+	}
+
+	public static int nextInt() {
+		return INSTANCE.random.nextInt();
 	}
 }

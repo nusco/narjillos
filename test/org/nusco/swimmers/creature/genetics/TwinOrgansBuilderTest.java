@@ -12,12 +12,12 @@ public class TwinOrgansBuilderTest {
 	private static final int MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN;
 	private static final int NOT_MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN ^ TwinOrgansBuilder.MIRROR_ORGAN;
 
-	int[] notMirroringGenes1 = new int[] {NOT_MIRRORING, 60, 70, 80, 90};
-	int[] notMirroringGenes2 = new int[] {NOT_MIRRORING, 61, 71, 81, 91};
-	int[] mirroringGenes1 = new int[] {MIRRORING, 62, 72, 82, 92};
-	int[] mirroringGenes2 = new int[] {MIRRORING, 63, 73, 83, 93};
+	int[] notMirroringGenes1 = new int[] {NOT_MIRRORING, 60, 70, 80, 90, 100};
+	int[] notMirroringGenes2 = new int[] {NOT_MIRRORING, 61, 71, 81, 91, 101};
+	int[] mirroringGenes1 = new int[] {MIRRORING, 62, 72, 82, 92, 102};
+	int[] mirroringGenes2 = new int[] {MIRRORING, 63, 73, 83, 93, 103};
 
-	BodyPart parent = new OrganBuilder(new int[]{0, 7, 7, 7, 7}).buildHeadSystem();
+	BodyPart parent = new OrganBuilder(new int[]{0, 7, 7, 7, 7, 7}).buildHeadSystem();
 
 	@Test
 	public void buildsRegularSegmentIfNeitherGenesIsMirroring() {

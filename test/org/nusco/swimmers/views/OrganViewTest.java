@@ -33,9 +33,9 @@ public class OrganViewTest {
 	}
 
 	@Test
-	public void testAddsTransparency() {
+	public void testHasNoTransparency() {
 		Color color = OrganView.toRGBColor(0);
-		assertEquals(0.6, color.getOpacity(), 0.01);
+		assertEquals(1, color.getOpacity(), 0);
 	}
 
 }

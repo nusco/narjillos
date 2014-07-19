@@ -6,6 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
+import org.nusco.swimmers.creature.Swimmer;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.shared.physics.Vector;
 
@@ -14,10 +15,12 @@ class OrganView {
 	private final static int OVERLAP = 5;
 
 	private final Organ organ;
+	private final Swimmer swimmer;
 	private final Rectangle rectangle;
 
-	public OrganView(Organ organ) {
+	public OrganView(Organ organ, Swimmer swimmer) {
 		this.organ = organ;
+		this.swimmer = swimmer;
 		rectangle = createRectangle();
 	}
 
@@ -28,7 +31,6 @@ class OrganView {
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);
 
-		result.setFill(toRGBColor(organ.getColor()));
 		if (organ.getThickness() > 5)
 			result.setStroke(Color.BLACK);
 
@@ -40,6 +42,8 @@ class OrganView {
 	}
 
 	private Node toDetailView() {
+		rectangle.setFill(getRGBColor());
+
 		rectangle.getTransforms().clear();
 		
 		// overlap slightly and shift to center based on thickness
@@ -68,13 +72,22 @@ class OrganView {
 		return new Translate(startPoint.x, startPoint.y);
 	}
 
-	public static Color toRGBColor(int organColor) {
-		byte rgbByte = (byte) organColor;
+	public Color getRGBColor() {
+		byte rgbByte = (byte) organ.getColor();
+		Color noalpha = toRGBColor(rgbByte);
+
+		double alpha = Math.min(0.6, swimmer.getEnergy() / 10_000);
+		
+		return new Color(noalpha.getRed(), noalpha.getGreen(), noalpha.getBlue(), alpha);
+	}
+
+	public static Color toRGBColor(int rgbint) {
+		byte rgbByte = (byte)rgbint;
 		double MAX_VALUE_IN_3_BITS = 7.0;
 		double red = (rgbByte & 0b00000111) / MAX_VALUE_IN_3_BITS;
 		double green = ((rgbByte & 0b00111000) >> 3) / MAX_VALUE_IN_3_BITS;
 		double blue = ((rgbByte & 0b11000000) >> 5) / MAX_VALUE_IN_3_BITS;
-		final double alpha = 0.6;
-		return new Color(red, green, blue, alpha);
+		Color noalpha = new Color(red, green, blue, 1);
+		return noalpha;
 	}
 }

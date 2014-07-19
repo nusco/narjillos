@@ -54,7 +54,7 @@ class SwimmerView extends ThingView {
 	}
 
 	private void addWithChildren(BodyPart organ, List<OrganView> result) {
-		result.add(new OrganView(organ));
+		result.add(new OrganView(organ, getSwimmer()));
 		for (BodyPart child : organ.getChildren())
 			addWithChildren(child, result);
 	}

@@ -17,7 +17,8 @@ import javafx.stage.Stage;
 
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.utilities.Chronometer;
-import org.nusco.swimmers.views.ChronometersView;
+import org.nusco.swimmers.shared.utilities.NumberFormat;
+import org.nusco.swimmers.views.DataView;
 import org.nusco.swimmers.views.PondView;
 import org.nusco.swimmers.views.Viewport;
 
@@ -30,10 +31,10 @@ public class Narjillos extends Application {
 
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final Chronometer framesChronometer = new Chronometer();
-	private final ChronometersView chronometersView = new ChronometersView(framesChronometer, ticksChronometer);
 
 	private PondView pondView;
 	private Viewport viewport;
+	private long numberOfTicks = 0;
 	private volatile int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
 	
 	public static void main(String... args) {
@@ -181,6 +182,7 @@ public class Narjillos extends Application {
 					long startTime = System.currentTimeMillis();
 					tick();
 					waitForAtLeast(getTicksPeriod(), startTime);
+					numberOfTicks++;
 					ticksChronometer.tick();
 				}
 			}
@@ -217,7 +219,10 @@ public class Narjillos extends Application {
 	}
 
 	private void showChronometers(Group root) {
-		root.getChildren().add(chronometersView.toNode());
+		String message = "FPS: " + framesChronometer.getTicksInLastSecond() +
+				" / TPS: " + ticksChronometer.getTicksInLastSecond() +
+				" / TICKS: " + NumberFormat.format(numberOfTicks);
+		root.getChildren().add(DataView.toNode(message));
 	}
 
 	private void waitForAtLeast(int time, long since) {

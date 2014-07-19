@@ -22,13 +22,12 @@ class EyeView extends ThingView {
 	}
 
 	private Color toColor(double energy) {
-		double intensity = Math.min(1, energy / 50_000);
+		double intensity = Math.min(0.8, energy / 50_000);
 		return new Color(1 - intensity, intensity, 0, 0.8);
 	}
 
 	private Circle createCircle() {
 		Circle result = new Circle(6);
-		result.setStroke(Color.BLACK);
 		return result;
 	}
 }

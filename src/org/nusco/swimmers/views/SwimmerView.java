@@ -12,7 +12,7 @@ import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.shared.physics.Vector;
 
 class SwimmerView extends ThingView {
-
+	
 	private final Group group = new Group();
 	private final List<OrganView> organViews;
 	private final MouthView mouthView;
@@ -28,12 +28,13 @@ class SwimmerView extends ThingView {
 	@Override
 	public Node toNode() {
 		group.getChildren().clear();
-		group.getChildren().addAll(getOrganNodes());
 		group.getChildren().add(mouthView.toNode());
+		group.getChildren().addAll(getOrganNodes());
 		group.getChildren().add(eyeView.toNode());
 		Vector position = getSwimmer().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));
+		group.setEffect(PondView.SHADOW);
 		return group;
 	}
 

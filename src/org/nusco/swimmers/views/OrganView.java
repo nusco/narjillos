@@ -16,11 +16,13 @@ class OrganView {
 
 	private final Organ organ;
 	private final Swimmer swimmer;
+	private final Color color;
 	private final Rectangle rectangle;
-
+	
 	public OrganView(Organ organ, Swimmer swimmer) {
 		this.organ = organ;
 		this.swimmer = swimmer;
+		color = toRGBColor(organ.getColor());
 		rectangle = createRectangle();
 	}
 
@@ -31,9 +33,6 @@ class OrganView {
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);
 
-		if (organ.getThickness() > 5)
-			result.setStroke(Color.BLACK);
-
 		return result;
 	}
 
@@ -42,7 +41,7 @@ class OrganView {
 	}
 
 	private Node toDetailView() {
-		rectangle.setFill(getRGBColor());
+		rectangle.setFill(getColor());
 
 		rectangle.getTransforms().clear();
 		
@@ -72,13 +71,12 @@ class OrganView {
 		return new Translate(startPoint.x, startPoint.y);
 	}
 
-	public Color getRGBColor() {
-		byte rgbByte = (byte) organ.getColor();
-		Color noalpha = toRGBColor(rgbByte);
+	private Color getColor() {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), getAlpha());
+	}
 
-		double alpha = Math.min(0.6, swimmer.getEnergy() / 10_000);
-		
-		return new Color(noalpha.getRed(), noalpha.getGreen(), noalpha.getBlue(), alpha);
+	private double getAlpha() {
+		return Math.min(0.7, swimmer.getEnergy() / 10_000);
 	}
 
 	public static Color toRGBColor(int rgbint) {
@@ -87,7 +85,6 @@ class OrganView {
 		double red = (rgbByte & 0b00000111) / MAX_VALUE_IN_3_BITS;
 		double green = ((rgbByte & 0b00111000) >> 3) / MAX_VALUE_IN_3_BITS;
 		double blue = ((rgbByte & 0b11000000) >> 5) / MAX_VALUE_IN_3_BITS;
-		Color noalpha = new Color(red, green, blue, 1);
-		return noalpha;
+		return new Color(red, green, blue, 1);
 	}
 }

@@ -37,7 +37,7 @@ public class WaveNerve implements Nerve {
 
 	private double update(double currentAngle) {
 		boolean positiveSide = currentAngle > 0 && currentAngle <= Math.PI;
-		double multFactor = positiveSide ? BEAT_RATIO : 1;
+		double multFactor = positiveSide ? 1 : BEAT_RATIO;
 		return (currentAngle + Math.PI * 2  * frequency * multFactor) % (Math.PI * 2);
 	}
 }

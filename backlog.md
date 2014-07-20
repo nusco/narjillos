@@ -1,4 +1,5 @@
 ##Swimming 2.0
+  * Fix energy calculation (consider all forces, not just the resulting force)
   * Real rotation
 ##Eggs
   * Swimmer spends energy to reproduce

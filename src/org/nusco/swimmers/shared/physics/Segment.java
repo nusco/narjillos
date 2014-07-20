@@ -2,33 +2,33 @@ package org.nusco.swimmers.shared.physics;
 
 public class Segment {
 
-	public final Vector start;
-	public final Vector end;
+	public final Vector startPoint;
+	public final Vector vector;
 
-	public Segment(Vector start, Vector end) {
-		this.start = start;
-		this.end = end;
+	public Segment(Vector startPoint, Vector vector) {
+		this.startPoint = startPoint;
+		this.vector = vector;
 	}
 
 	private double getLength() {
-		return end.minus(start).getLength();
+		return vector.minus(startPoint).getLength();
 	}
-
+	
 	public double getMinimumDistanceFromPoint(Vector point) {
 		if (getLength() < 0.0001)
-			return start.getDistanceFrom(point);
+			return startPoint.getDistanceFrom(point);
 
 		double lengthSquared = getLength() * getLength();
 
-		double t = ((point.x - start.x) * (end.x - start.x) + (point.y - start.y) * (end.y - start.y)) / lengthSquared;
+		double t = ((point.x - startPoint.x) * (vector.x - startPoint.x) + (point.y - startPoint.y) * (vector.y - startPoint.y)) / lengthSquared;
 
 		if (t < 0)
-			return start.getDistanceFrom(point);
+			return startPoint.getDistanceFrom(point);
 
 		if (t > 1)
-			return end.getDistanceFrom(point);
+			return vector.getDistanceFrom(point);
 
-		Vector projection = start.plus(end.minus(start).by(t));
+		Vector projection = startPoint.plus(vector.minus(startPoint).by(t));
 		return projection.minus(point).getLength();
 	}
 }

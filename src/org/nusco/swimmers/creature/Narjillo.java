@@ -14,16 +14,15 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Narjillo implements Thing {
 
-	public static final double MAX_ENERGY = 300_000;
-	public static final double INITIAL_ENERGY = 200_000;
-	private static final double ENERGY_PER_FOOD_ITEM = 200_000;
-	private static final double ENERGY_CONSUMPTION_PER_FORCE_UNIT = 0.001;
-	private static final double NATURAL_ENERGY_DECAY = 5;
+	public static final double MAX_ENERGY = 50_000_000;
+	static final double INITIAL_ENERGY = 250_000_000;
+	private static final double ENERGY_PER_FOOD_ITEM = 250_000_000;
+	private static final double NATURAL_ENERGY_DECAY = 100;
 
-	private static final double PROPULSION_SCALE = 2;
+	private static final double PROPULSION_SCALE = 0.03;
 	
 	private final Head head;
-	private final int mass;
+	private final double mass;
 
 	private Vector position;
 	private Vector target = Vector.ZERO;
@@ -35,7 +34,7 @@ public class Narjillo implements Thing {
 	public Narjillo(Head head, DNA genes) {
 		this.head = head;
 		this.genes = genes;
-		mass = calculateMass();
+		mass = calculateTotalMass();
 	}
 
 	@Override
@@ -65,7 +64,10 @@ public class Narjillo implements Thing {
 		head.tick(targetDirection);
 
 		// TODO: physical movement should probably move
-		// outside this class. do we need a Body class?
+		// outside this class. create a Body class that encapsulates
+		// all body operations (except for construction and visualization).
+		// the entire body should be just a machine that mechanically reacts
+		// to a simple input target vector
 		Vector force = forceField.getTotalForce().by(PROPULSION_SCALE);
 		
 		Vector movement = calculateMovement(force);
@@ -73,7 +75,7 @@ public class Narjillo implements Thing {
 		Vector newPosition = getPosition().plus(movement);
 		updatePosition(newPosition);
 
-		double energySpentForMovement = force.getLength() * getMetabolicRate() * ENERGY_CONSUMPTION_PER_FORCE_UNIT;
+		double energySpentForMovement = forceField.getTotalEnergySpent() * getMetabolicRate();
 		decreaseEnergy(energySpentForMovement + NATURAL_ENERGY_DECAY);
 	}
 
@@ -88,7 +90,8 @@ public class Narjillo implements Thing {
 		if (getMass() == 0)
 			return force;
 
-		return force.by(1.0 / getMass());
+		return force;
+//		return force.by(1.0 / Math.pow(getMass(), 0.8));
 	}
 
 	@Override
@@ -122,7 +125,6 @@ public class Narjillo implements Thing {
 	}
 
 	public Vector getTargetDirection() {
-		// TODO: make the signal stronger when farther away?
 		return target.minus(position).normalize(1);
 	}
 
@@ -134,12 +136,12 @@ public class Narjillo implements Thing {
 		swimmerEventListeners.add(lifecycleEventListener);
 	}
 
-	public int getMass() {
+	public double getMass() {
 		return mass;
 	}
 
-	private int calculateMass() {
-		int result = 0;
+	private double calculateTotalMass() {
+		double result = 0;
 		List<Organ> allOrgans = getAllOrgans();
 		for (Organ organ : allOrgans)
 			result += organ.getMass();

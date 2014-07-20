@@ -12,18 +12,35 @@ import org.nusco.swimmers.shared.physics.Vector;
 public class ForceField implements MovementListener {
 
 	private final List<Vector> forces = new LinkedList<>();
-
+	private double energySpent = 0;
+	
 	@Override
 	public void moveEvent(Segment beforeMovement, Organ organ) {
-		Vector beforeVector = beforeMovement.end;
-		Vector afterVector = organ.getVector();
+		Vector force = calculateForceOfMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
+		addForce(force);
+	}
+
+	private Vector calculateForceOfMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
+		Vector startPointMovement = afterMovement.startPoint.minus(beforeMovement.startPoint);
+		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);
+		Vector averageMovement = startPointMovement.plus(endPointMovement).by(0.5);
 		
-		double velocityAngle = afterVector.getAngleWith(beforeVector);
-		double force = velocityAngle * beforeVector.getLength() * organ.getThickness();
+		double normalizedMovementLength = averageMovement.getLength();
+		double viscousMovement = addViscosity(normalizedMovementLength);
+
+		energySpent += averageMovement.getLength() * mass;
 		
-		Vector normal = beforeVector.getNormal();
-		
-		addForce(Vector.polar(normal.getAngle(), force));
+		return averageMovement.normalize(viscousMovement).getProjectionOn(afterMovement.vector.getNormal()).invert();
+	}
+
+	private double addViscosity(double normalizedMovementLength) {
+		double viscousMovement;
+		if (normalizedMovementLength < 1)
+			viscousMovement = normalizedMovementLength;
+		else
+			viscousMovement = Math.pow(normalizedMovementLength, 1.7);
+		viscousMovement = Math.min(viscousMovement, 300);
+		return viscousMovement;
 	}
 
 	void addForce(Vector force) {
@@ -35,5 +52,9 @@ public class ForceField implements MovementListener {
 		for (Vector force : forces)
 			result = result.plus(force);
 		return result;
+	}
+
+	public double getTotalEnergySpent() {
+		return energySpent;
 	}
 }

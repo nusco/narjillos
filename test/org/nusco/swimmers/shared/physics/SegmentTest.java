@@ -9,10 +9,10 @@ public class SegmentTest {
 	public void isIdentifiedByTwoVectors() {
 		Segment segment = new Segment(Vector.cartesian(10, 12), Vector.cartesian(13, 17));
 		
-		assertEquals(10, segment.start.x, 0);
-		assertEquals(12, segment.start.y, 0);
-		assertEquals(13, segment.end.x, 0);
-		assertEquals(17, segment.end.y, 0);
+		assertEquals(10, segment.startPoint.x, 0);
+		assertEquals(12, segment.startPoint.y, 0);
+		assertEquals(13, segment.vector.x, 0);
+		assertEquals(17, segment.vector.y, 0);
 	}
 
 	@Test

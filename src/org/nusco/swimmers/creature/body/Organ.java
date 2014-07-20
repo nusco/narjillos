@@ -9,7 +9,7 @@ public abstract class Organ {
 	protected final int thickness;
 	protected final int hue;
 	
-	// ugly caching - has huge performance benefits
+	// caching - ugly, but huge performance benefits
 	private Vector cachedStartPoint = null;
 	private Vector cachedEndPoint = null;
 	private Double cachedAbsoluteAngle = null;
@@ -36,7 +36,7 @@ public abstract class Organ {
 	}
 
 	public double getMass() {
-		return getLength() * getThickness();
+		return getLength() * getThickness() * 0.1;
 	}
 
 	protected void resetAllCaches() {
@@ -92,7 +92,7 @@ public abstract class Organ {
 
 	protected abstract int calculateColor();
 
-	protected Segment getSegment() {
+	public Segment getSegment() {
 		return new Segment(getStartPoint(), getVector());
 	}
 

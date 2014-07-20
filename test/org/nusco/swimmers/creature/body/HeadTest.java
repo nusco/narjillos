@@ -10,23 +10,23 @@ import org.nusco.swimmers.shared.physics.Vector;
 public class HeadTest extends OrganTest {
 
 	@Override
-	public Head createOrgan() {
-		return new Head(20, THICKNESS, 100, 1);
+	public Head createConcreteBodyPart(int length, int thickness) {
+		return new Head(length, thickness, 100, 1);
 	}
 
 	@Test
 	public void startsAtPointZeroByDefault() {
-		assertEquals(Vector.ZERO, organ.getStartPoint());
+		assertEquals(Vector.ZERO, part.getStartPoint());
 	}
 
 	@Override
 	public void hasAnEndPoint() {
-		assertEquals(Vector.cartesian(20, 0), organ.getEndPoint());
+		assertEquals(Vector.cartesian(20, 0), part.getEndPoint());
 	}
 
 	@Override
 	public void hasAParent() {
-		assertEquals(null, organ.getParent());
+		assertEquals(null, part.getParent());
 	}
 
 	@Test

@@ -6,71 +6,34 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
-public abstract class OrganTest {
-
-	protected static int THICKNESS = 8;
-	
-	protected BodyPart organ;
-
-	@Before
-	public void setUpPart() {
-		organ = createOrgan();
-	}
-
-	public abstract BodyPart createOrgan();
-
-	@Test
-	public void hasALength() {
-		assertEquals(20, organ.getLength());
-	}
-
-	@Test
-	public void hasAThickness() {
-		assertEquals(THICKNESS, organ.getThickness());
-	}
-
-	@Test
-	public abstract void hasAnEndPoint();
+public abstract class OrganTest extends BodyPartTest {
 
 	@Test
 	public abstract void hasAParent();
-
-	@Test
-	public void hasAColorValue() {
-		assertEquals(100, organ.getColor());
-	}
 	
 	@Test
 	public void hasAnEmptyListOfChildPartsByDefault() {
-		assertEquals(Collections.EMPTY_LIST, organ.getChildren());
-	}
-
-	@Test
-	public void canSproutVisibleOrgans() {
-		Organ child = organ.sproutOrgan(20, 12, 45, 100, 0);
-		assertEquals(20, child.getLength());
-		assertEquals(12, child.getThickness());
+		assertEquals(Collections.EMPTY_LIST, part.getChildren());
 	}
 	
 	@Test
 	public void knowsItsChildren() {
-		BodyPart child1 = organ.sproutOrgan(20, THICKNESS, 45, 100, 0);
-		BodyPart child2 = organ.sproutOrgan(20, THICKNESS, -45, 100, 0);
+		BodyPart child1 = part.sproutOrgan(20, 10, 45, 100, 0);
+		BodyPart child2 = part.sproutOrgan(20, 10, -45, 100, 0);
 
 		List<BodyPart> expected = new LinkedList<>();
 		expected.add(child1);
 		expected.add(child2);
 		
-		assertEquals(expected, organ.getChildren());
+		assertEquals(expected, part.getChildren());
 	}
-	
+
 	@Test
-	public void hasAMassEqualToItsArea() {
-		double expectedMass = organ.getLength() * organ.getThickness();
-		
-		assertEquals(expectedMass, organ.getMass(), 0.01);
+	public void sproutsVisibleOrgans() {
+		Organ child = part.sproutOrgan(20, 12, 45, 100, 0);
+		assertEquals(20, child.getLength());
+		assertEquals(12, child.getThickness());
 	}
 }

@@ -22,7 +22,7 @@ class EyeView extends ThingView {
 	}
 
 	private Color toColor(double energy) {
-		double intensity = Math.min(0.8, energy / 50_000);
+		double intensity = Math.min(0.8, energy / Narjillo.MAX_ENERGY);
 		return new Color(0, intensity, 0, 0.8);
 	}
 

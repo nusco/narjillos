@@ -15,13 +15,13 @@ class OrganView {
 	private final static int OVERLAP = 5;
 
 	private final Organ organ;
-	private final Narjillo swimmer;
+	private final Narjillo narjillo;
 	private final Color color;
 	private final Rectangle rectangle;
 	
-	public OrganView(Organ organ, Narjillo swimmer) {
+	public OrganView(Organ organ, Narjillo narjillo) {
 		this.organ = organ;
-		this.swimmer = swimmer;
+		this.narjillo = narjillo;
 		color = toRGBColor(organ.getColor());
 		rectangle = createRectangle();
 	}
@@ -76,7 +76,7 @@ class OrganView {
 	}
 
 	private double getAlpha() {
-		return Math.min(0.7, swimmer.getEnergy() / 10_000);
+		return Math.min(0.7, narjillo.getEnergy() / Narjillo.MAX_ENERGY);
 	}
 
 	public static Color toRGBColor(int rgbint) {

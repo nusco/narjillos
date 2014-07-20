@@ -9,19 +9,19 @@ public class BodySegmentTest extends OrganTest {
 	private BodyPart parent;
 	
 	@Override
-	public BodyPart createOrgan() {
-		parent = new Head(15, THICKNESS, 100, 1);
-		return new BodySegment(20, THICKNESS, 10, 100, parent, 0);
+	public BodyPart createConcreteBodyPart(int length, int thickness) {
+		parent = new Head(10, 5, 100, 1);
+		return new BodySegment(20, 10, 10, 100, parent, 0);
 	}
 
 	@Override
 	public void hasAParent() {
-		assertEquals(parent, organ.getParent());
+		assertEquals(parent, part.getParent());
 	}
 
 	@Test
 	public void startsAtItsParentsEndPoint() {
-		assertEquals(parent.getEndPoint(), organ.getStartPoint());
+		assertEquals(parent.getEndPoint(), part.getStartPoint());
 	}
 	
 	@Test

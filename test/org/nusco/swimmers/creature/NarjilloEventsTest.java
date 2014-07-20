@@ -12,7 +12,7 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 public class NarjilloEventsTest {
 
-	Narjillo narjillo = new Narjillo(new Head(10, 10, 10), DNA.random());
+	Narjillo narjillo = new Narjillo(new Head(10, 10, 10, 1), DNA.random());
 
 	class NullSwimmerEventListener implements SwimmerEventListener {
 		@Override

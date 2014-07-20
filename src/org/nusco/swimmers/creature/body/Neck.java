@@ -7,9 +7,9 @@ import org.nusco.swimmers.creature.body.pns.WaveNerve;
  */
 class Neck extends ConnectiveTissue {
 	
-	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
+	private static final double WAVE_SIGNAL_FREQUENCY = 0.005;
 
-	public Neck(Head parent) {
-		super(parent, new WaveNerve(WAVE_SIGNAL_FREQUENCY));
+	public Neck(Head parent, double metabolicRate) {
+		super(parent, new WaveNerve(metabolicRate * WAVE_SIGNAL_FREQUENCY));
 	}
 }

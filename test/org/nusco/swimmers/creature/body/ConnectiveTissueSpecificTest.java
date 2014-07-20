@@ -17,7 +17,7 @@ public class ConnectiveTissueSpecificTest {
 
 	@Test
 	public void isAVectorWithAP() {
-		BodyPart head = new Head(10, 10, 100);
+		BodyPart head = new Head(10, 10, 100, 1);
 		BodyPart connectiveTissue = head.sproutConnectiveTissue();
 
 		assertEquals(head, connectiveTissue.getParent());
@@ -25,7 +25,7 @@ public class ConnectiveTissueSpecificTest {
 
 	@Test
 	public void hasChildren() {
-		BodyPart head = new Head(10, 10, 100);
+		BodyPart head = new Head(10, 10, 100, 1);
 		BodyPart connectiveTissue = head.sproutConnectiveTissue();
 		BodyPart child1 = connectiveTissue.sproutOrgan(10, 10, 10, 100, 0);
 		BodyPart child2 = connectiveTissue.sproutOrgan(10, 10, -10, 100, 0);
@@ -39,7 +39,7 @@ public class ConnectiveTissueSpecificTest {
 
 	@Test
 	public void itsGeometricDataHasSimpleDefaultValues() {
-		BodyPart head = new Head(10, 10, 100);
+		BodyPart head = new Head(10, 10, 100, 1);
 		Organ connectiveTissue = head.sproutConnectiveTissue();
 
 		assertEquals(0, connectiveTissue.getLength());
@@ -48,7 +48,7 @@ public class ConnectiveTissueSpecificTest {
 
 	@Test
 	public void itsColorIsTheSameAsItsParents() {
-		BodyPart head = new Head(10, 10, 100);
+		BodyPart head = new Head(10, 10, 100, 1);
 		Organ connectiveTissue = head.sproutConnectiveTissue();
 
 		assertEquals(100, connectiveTissue.getColor(), 0);
@@ -56,7 +56,7 @@ public class ConnectiveTissueSpecificTest {
 	
 	@Test
 	public void itBeginsAndEndsWhereItsParentEnds() {
-		Head head = new Head(15, 10, 100);
+		Head head = new Head(15, 10, 100, 1);
 		Organ connectiveTissue = new ConnectiveTissue(head).sproutConnectiveTissue();
 
 		assertEquals(Vector.cartesian(15, 0), connectiveTissue.getStartPoint());
@@ -65,7 +65,7 @@ public class ConnectiveTissueSpecificTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = new ConnectiveTissue(new Head(0, 0, 0)).sproutOrgan(20, 12, 45, 100, 0);
+		Organ child = new ConnectiveTissue(new Head(0, 0, 0, 1)).sproutOrgan(20, 12, 45, 100, 0);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

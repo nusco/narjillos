@@ -16,6 +16,7 @@ public class Narjillo implements Thing {
 
 	public static final double INITIAL_ENERGY = 100_000;
 	private static final double ENERGY_PER_FOOD_ITEM = 100_000;
+	private static final double ENERGY_CONSUMPTION_PER_FORCE_UNIT = 0.001;
 	private static final double NATURAL_ENERGY_DECAY = 5;
 
 	private static final double PROPULSION_SCALE = 2;
@@ -71,7 +72,14 @@ public class Narjillo implements Thing {
 		Vector newPosition = getPosition().plus(movement);
 		updatePosition(newPosition);
 
-		decreaseEnergy(force.getLength() / 1000 + NATURAL_ENERGY_DECAY);
+		double energySpentForMovement = force.getLength() * getMetabolicRate() * ENERGY_CONSUMPTION_PER_FORCE_UNIT;
+		decreaseEnergy(energySpentForMovement + NATURAL_ENERGY_DECAY);
+	}
+
+	private double getMetabolicRate() {
+		// FIXME: the metabolic rate shouldn't be stored in the head.
+		// the entire narjillo/head/neck thing should be rethought
+		return getHead().getMetabolicRate();
 	}
 
 	private Vector calculateMovement(Vector force) {
@@ -87,7 +95,7 @@ public class Narjillo implements Thing {
 		return "swimmer";
 	}
 	
-	public BodyPart getHead() {
+	public Head getHead() {
 		return head;
 	}
 

@@ -15,7 +15,7 @@ public abstract class OrganConnectionTest {
 		final ClickNerve nerve3 = new ClickNerve();
 		final ClickNerve nerve4 = new ClickNerve();
 
-		BodyPart head = new Head(0, 0, 0) {
+		BodyPart head = new Head(0, 0, 0, 1) {
 			@Override
 			public Nerve getNerve() {
 				return nerve1;

@@ -10,7 +10,7 @@ public class NarjilloTest {
 
 	@Test
 	public void hasAMass() {
-		Head head = new Head(3, 4, 0);
+		Head head = new Head(3, 4, 0, 1);
 		head.sproutOrgan(10, 20, 0, 0, 0);
 		Narjillo narjillo = new Narjillo(head, DNA.random());
 		

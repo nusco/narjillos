@@ -11,7 +11,7 @@ public class HeadTest extends OrganTest {
 
 	@Override
 	public Head createOrgan() {
-		return new Head(20, THICKNESS, 100);
+		return new Head(20, THICKNESS, 100, 1);
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class HeadTest extends OrganTest {
 
 	@Test
 	public void hasAPassNerve() {
-		Nerve nerve = new Head(0, 0, 0).getNerve();
+		Nerve nerve = new Head(0, 0, 0, 1).getNerve();
 				
 		assertEquals(PassNerve.class, nerve.getClass());
 	}

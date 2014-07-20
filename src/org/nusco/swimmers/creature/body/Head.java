@@ -9,8 +9,11 @@ public class Head extends BodyPart {
 	static final double ROTATION_SPEED = 0.5;
 	static final double ROTATION_HISTERESIS = ROTATION_SPEED;
 
-	public Head(int length, int thickness, int color) {
+	private final double metabolicRate;
+	
+	public Head(int length, int thickness, int color, double metabolicRate) {
 		super(length, thickness, color, null, new PassNerve());
+		this.metabolicRate = metabolicRate;
 		setAngleToParent(0);
 		tick(Vector.ZERO);
 	}
@@ -55,7 +58,11 @@ public class Head extends BodyPart {
 	}
 
 	public Organ sproutNeck() {
-		return addChild(new Neck(this));
+		return addChild(new Neck(this, getMetabolicRate()));
+	}
+
+	public double getMetabolicRate() {
+		return metabolicRate;
 	}
 
 	public ForceField createForceField() {

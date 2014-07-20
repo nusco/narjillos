@@ -10,8 +10,6 @@ class OrganBuilder {
 	static final double PART_LENGTH_MULTIPLIER = 1.0;
 	static final double PART_THICKNESS_MULTIPLIER = 0.15;
 	static final int PART_MAX_ANGLE_TO_PARENT = 70;
-	private static final int MAX_DELAY = 30;
-	private static final int DELAY_SCALE = Byte.MAX_VALUE / MAX_DELAY;
 
 	private final int[] genes;
 
@@ -20,7 +18,7 @@ class OrganBuilder {
 	}
 
 	public Head buildHeadSystem() {
-		Head result = new Head(getLength(), getThickness(), getRGB());
+		Head result = new Head(getLength(), getThickness(), getRGB(), getMetabolicRate());
 		result.sproutNeck();
 		return result;
 	}
@@ -48,8 +46,21 @@ class OrganBuilder {
 	}
 
 	private int getDelay() {
+		double maxDelay = 30;
+		double maxByteValue = 255.0;
+		double delayScale = maxByteValue / maxDelay;
+
 		int delayGene = genes[3];
-		return delayGene / DELAY_SCALE;
+		return (int)(delayGene / delayScale);
+	}
+
+	private double getMetabolicRate() {
+		double maxMetabolicRate = 3;
+		double maxByteValue = 255.0;
+		double rateScale = maxByteValue / maxMetabolicRate;
+
+		int metabolicRateGene = genes[3];
+		return metabolicRateGene / rateScale;
 	}
 
 	private int getAngleToParentAtRest(int angleSign) {

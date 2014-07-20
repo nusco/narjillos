@@ -59,7 +59,7 @@ public class Swimmer implements Thing {
 
 		// TODO: collision detection and physical movement should probably move
 		// outside this class. do we need a Body class?
-		Vector tangentialForce = forceField.getTangentialForce();
+		Vector tangentialForce = forceField.getTotalForce();
 		Vector newPosition = getPosition().plus(tangentialForce);
 		updatePosition(newPosition);
 

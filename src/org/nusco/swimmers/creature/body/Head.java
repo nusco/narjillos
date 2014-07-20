@@ -59,7 +59,7 @@ public class Head extends BodyPart {
 	}
 
 	public ForceField createForceField() {
-		ForceField result = new ForceField(getVector());
+		ForceField result = new ForceField();
 		setMovementListener(result);
 		return result;
 	}

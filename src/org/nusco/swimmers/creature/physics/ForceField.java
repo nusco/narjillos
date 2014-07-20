@@ -14,11 +14,6 @@ public class ForceField implements MovementListener {
 	private static final double PROPULSION_SCALE = 0.000075;
 	
 	private final List<Vector> forces = new LinkedList<>();
-	private final Vector direction;
-
-	public ForceField(Vector direction) {
-		this.direction = direction;
-	}
 
 	@Override
 	public void moveEvent(Segment beforeMovement, Organ organ) {
@@ -37,21 +32,14 @@ public class ForceField implements MovementListener {
 		forces.add(force);
 	}
 
-	public Vector getTangentialForce() {
-		return getTotalForce().getProjectionOn(direction);
-	}
-
-	public double getTotalEnergy() {
-		double result = 0;
-		for (Vector force : forces)
-			result += force.getLength();
-		return result;
-	}
-
-	private Vector getTotalForce() {
+	public Vector getTotalForce() {
 		Vector result = Vector.ZERO;
 		for (Vector force : forces)
 			result = result.plus(force);
 		return result;
+	}
+
+	public double getTotalEnergy() {
+		return getTotalForce().getLength();
 	}
 }

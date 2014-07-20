@@ -1,23 +1,39 @@
-##More Complex Swimming
-  * Genes determine delay
-  * Genes determine amplitude
+##Swimming 2.0
   * Real rotation
-##More Realistic Swimmers
-  * Energy consumption for a body segment depends on its children segments?
-  * Swimmer updates food item when not existing anymore
-  * Swimmer updates food item when not in range anymore
+##Eggs
   * Swimmer spends energy to reproduce
-##Eye candy
-  * Death animation
   * Eggs
+  * "Egg-firing"
+  * Additional cost for long-distance egg-firing
   * Birth animation
-##Better viewport
+##Lab Bench
+  * Bench with stats
+  * Speed-up toggle button
+  * Disable graphics toggle button
+  * Population counter
+  * Food counter
+  * Select creature
+  * View creature energy
+##Speed
+  * New "hidden objects" algorythm (based on segment size)
+  * Basic Level Of Detail (for things such as shadows and eyes)
+  * Buffered pond image (for static elements such as food)
+  * Advanced Level Of Detail (probably not worth the effort - performance seems to simply depend on number of nodes)
+##Viewport
   * Clip viewport inside pond
-  * Corner map
-  * fly to target
+  * Fly to target
   * Smooth overzooming
   * Smooth scrolling
-  * Pan intertia
-##Misc
-  * Profiled optimization
-  * Level Of Detail (probably not worth the effort - performance seems to simply depend on number of nodes)
+  * Pan intertia?
+##Analytics
+  * Export genome
+  * Human-readable genome
+##Smarter Narjillos
+  * Swimmer updates food item when not existing anymore
+  * Swimmer updates food item when not in range anymore
+##Eye candy
+  * Long Narjillos colors don't shift to black
+  * Detailed death animation
+##...
+  * Sexual reproduction
+  * Corner map

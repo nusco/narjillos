@@ -9,22 +9,22 @@ import org.nusco.swimmers.shared.physics.Vector;
 
 public class ForceFieldTest {
 
-	ForceField forceField = new ForceField(Vector.polar(45, 1));
+	ForceField forceField = new ForceField();
 
 	@Before
 	public void setUpForces() {
-		forceField.addForce(Vector.polar(45, 1));
-		forceField.addForce(Vector.polar(45, 2));
-		forceField.addForce(Vector.polar(135, 10));
+		forceField.addForce(Vector.cartesian(1, 2));
+		forceField.addForce(Vector.cartesian(3, 4));
+		forceField.addForce(Vector.cartesian(5, 6));
 	}
 
 	@Test
-	public void collectsTangentialForce() {
-		assertTrue(forceField.getTangentialForce().almostEquals(Vector.polar(45,  3)));
+	public void collectsTotalForce() {
+		assertTrue(forceField.getTotalForce().almostEquals(Vector.cartesian(9, 12)));
 	}
 
 	@Test
-	public void collectsTotalAmountOfForce() {
-		assertEquals(13, forceField.getTotalEnergy(), 0);
+	public void collectsTotalEnergy() {
+		assertEquals(15, forceField.getTotalEnergy(), 0.01);
 	}
 }

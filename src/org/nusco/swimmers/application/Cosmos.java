@@ -21,9 +21,9 @@ public class Cosmos extends Pond {
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_THINGS; i++)
 			spawnFood(randomPosition());
 
-		DNA randomGenes = DNA.random();
+//		DNA randomGenes = DNA.random();
 		for (int i = 0; i < INITIAL_NUMBER_OF_SWIMMERS; i++)
-			spawnSwimmer(randomPosition(), randomGenes);
+			spawnSwimmer(randomPosition(), DNA.random());
 	}
 
 	@Override

@@ -14,12 +14,12 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Narjillo implements Thing {
 
-	public static final double MAX_ENERGY = 50_000_000;
+	public static final double MAX_ENERGY = 500_000_000;
 	static final double INITIAL_ENERGY = 250_000_000;
 	private static final double ENERGY_PER_FOOD_ITEM = 250_000_000;
 	private static final double NATURAL_ENERGY_DECAY = 100;
 
-	private static final double PROPULSION_SCALE = 0.03;
+	private static final double PROPULSION_SCALE = 0.3;
 	
 	private final Head head;
 	private final double mass;
@@ -86,11 +86,16 @@ public class Narjillo implements Thing {
 	}
 
 	private Vector calculateMovement(Vector force) {
-		// this can actually happen
-		if (getMass() == 0)
-			return force;
-
 		return force;
+		
+		// FIXME: as soon as I take mass into account, there is
+		// a double penalty for mass: more energy consumption,
+		// and slower movement. this makes higher mass a sure-fire loss.
+		// It should be either/or, and more balanced.
+		
+		// zero mass can actually happen
+//		if (getMass() == 0)
+//			return force;
 //		return force.by(1.0 / Math.pow(getMass(), 0.8));
 	}
 

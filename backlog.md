@@ -9,11 +9,16 @@
   * Birth animation
 ##Lab Bench
   * Bench with stats
-  * Speed-up toggle button
-  * Disable graphics toggle button
+  * "Real Time" and "Fast" slider
+  * "Paused" setting in speed slider
+  * "No graphics" setting in speed slider
   * Population counter
   * Food counter
   * Select creature
+  * Export creature DNA
+  * "Most Prolific" button
+  * Save experiment (as a seed)
+  * Load experiment
   * View creature energy
 ##Speed
   * New "hidden objects" algorythm (based on segment size)
@@ -38,3 +43,4 @@
 ##...
   * Sexual reproduction
   * Corner map
+  * Add multithread protection to random generator (to avoid bugs)

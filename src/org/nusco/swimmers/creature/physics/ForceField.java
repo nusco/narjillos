@@ -25,8 +25,8 @@ public class ForceField implements MovementListener {
 		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);
 		Vector averageMovement = startPointMovement.plus(endPointMovement).by(0.5);
 		
-		double normalizedMovementLength = averageMovement.getLength();
-		double viscousMovement = addViscosity(normalizedMovementLength);
+		double normalizedMovementIntensity = averageMovement.getLength() * mass / 1000;
+		double viscousMovement = addViscosity(normalizedMovementIntensity);
 
 		energySpent += averageMovement.getLength() * mass;
 		
@@ -34,13 +34,13 @@ public class ForceField implements MovementListener {
 	}
 
 	private double addViscosity(double normalizedMovementLength) {
-		double viscousMovement;
+		double result;
 		if (normalizedMovementLength < 1)
-			viscousMovement = normalizedMovementLength;
+			result = normalizedMovementLength;
 		else
-			viscousMovement = Math.pow(normalizedMovementLength, 1.7);
-		viscousMovement = Math.min(viscousMovement, 300);
-		return viscousMovement;
+			result = Math.pow(normalizedMovementLength, 1.7);
+		result = Math.min(result, 300);
+		return result;
 	}
 
 	void addForce(Vector force) {

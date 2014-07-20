@@ -65,7 +65,10 @@ class OrganBuilder {
 
 	private int getAngleToParentAtRest(int angleSign) {
 		int angleToParentGene = genes[4];
-		return (angleToParentGene % PART_MAX_ANGLE_TO_PARENT) * angleSign;
+		int randomSign = (genes[4] & 1) == 1 ? -1 : 1;
+		
+		int result = (angleToParentGene % PART_MAX_ANGLE_TO_PARENT) * angleSign * randomSign;
+		return result;
 	}
 	
 	private int getRGB() {

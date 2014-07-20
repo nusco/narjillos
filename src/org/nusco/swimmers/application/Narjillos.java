@@ -114,16 +114,19 @@ public class Narjillos extends Application {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if (event.getClickCount() == 2)
 						viewport.setCenterSC(Vector.cartesian(event.getSceneX(), event.getSceneY()));
-					else {
-						if (targetTicksPerSecond == 1000)
-							targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
-						else
-							targetTicksPerSecond = 1000;
-					}
+					else
+						toggleMaxSpeed();
 				}
 				if (event.getButton() == MouseButton.SECONDARY) {
 					viewport.zoomToFit();
 				}
+			}
+
+			private void toggleMaxSpeed() {
+				if (targetTicksPerSecond == 1000)
+					targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+				else
+					targetTicksPerSecond = 1000;
 			}
 		};
 	}

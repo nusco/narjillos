@@ -15,11 +15,11 @@ public class WaveNerveTest {
 		WaveNerve nerve = new WaveNerve(1.0 / 8);
 		Vector signal = Vector.cartesian(0, length);
 
-		// on the positive side, the wave is twice as fast
 		assertApproxEqualsVector(Vector.ZERO, nerve.tick(signal));
 		assertApproxEqualsVector(Vector.cartesian(-10, 0), nerve.tick(signal));
 		assertApproxEqualsVector(Vector.ZERO, nerve.tick(signal));
 
+		// on the negative side, the wave is twice as fast
 		assertApproxEqualsVector(Vector.cartesian(lengthAt45Degrees, 0), nerve.tick(signal));
 		assertApproxEqualsVector(Vector.cartesian(length, 0), nerve.tick(signal));
 		assertApproxEqualsVector(Vector.cartesian(lengthAt45Degrees, 0), nerve.tick(signal));

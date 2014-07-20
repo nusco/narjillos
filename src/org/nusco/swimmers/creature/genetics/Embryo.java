@@ -1,8 +1,12 @@
 package org.nusco.swimmers.creature.genetics;
 
+import java.util.List;
+import java.util.LinkedList;
+
 import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.creature.body.Head;
+import org.nusco.swimmers.creature.body.Organ;
 
 public class Embryo {
 
@@ -18,8 +22,9 @@ public class Embryo {
 		Head head = createHeadSystem(parser);
 		
 		BodyPart neck = head.getChildren().get(0);
-		BodyPart[] children = new BodyPart[] { neck };
-		createDescendants(children, parser);
+		List<BodyPart> bodyParts = new LinkedList<>();
+		bodyParts.add(neck);
+		createDescendants(bodyParts, parser);
 		
 		return new Narjillo(head, genes);
 	}
@@ -28,14 +33,16 @@ public class Embryo {
 		return new OrganBuilder(parser.nextChromosome()).buildHeadSystem();
 	}
 
-	private void createDescendants(BodyPart[] organs, DNAParser parser) {
-		for (int i = 0; i < organs.length; i++) {
-			BodyPart[] nextDescendants = createOrgans(organs[i], parser);
-			createDescendants(nextDescendants, parser);
-		}
+	private void createDescendants(List<BodyPart> bodyParts, DNAParser parser) {
+		List<BodyPart> descendants = new LinkedList<>();
+		for (BodyPart bodyPart : bodyParts)
+			descendants.addAll(createDirectDescendants(bodyPart, parser));
+		if (descendants.isEmpty())
+			return;
+		createDescendants(descendants, parser);
 	}
 
-	private BodyPart[] createOrgans(BodyPart parent, DNAParser parser) {
-		return new TwinOrgansBuilder(parser.nextChromosome(), parser.nextChromosome()).buildSegments(parent);
+	private List<BodyPart> createDirectDescendants(BodyPart parent, DNAParser parser) {
+		return new TwinOrgansBuilder(parser.nextChromosome(), parser.nextChromosome()).buildBodyPart(parent);
 	}
 }

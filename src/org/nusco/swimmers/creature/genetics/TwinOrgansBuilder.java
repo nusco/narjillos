@@ -1,5 +1,8 @@
 package org.nusco.swimmers.creature.genetics;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.nusco.swimmers.creature.body.BodyPart;
 
 class TwinOrgansBuilder {
@@ -18,12 +21,16 @@ class TwinOrgansBuilder {
 		return (controlGene & TwinOrgansBuilder.MIRROR_ORGAN) == TwinOrgansBuilder.MIRROR_ORGAN;
 	}
 
-	public BodyPart[] buildSegments(BodyPart parent) {
+	public List<BodyPart> buildBodyPart(BodyPart parent) {
+		List<BodyPart> result = new LinkedList<>();
+		
 		if (organ1Genes == null)
-			return new BodyPart[0];
+			return result;
 
-		if (organ2Genes == null)
-			return new BodyPart[] { new OrganBuilder(organ1Genes).buildSegment(parent, 1) };
+		if (organ2Genes == null) {
+			result.add(new OrganBuilder(organ1Genes).buildSegment(parent, 1));
+			return result;
+		}
 		
 		if(isMirrorSegment(organ1Genes))
 			return buildMirrorSegments(parent, organ2Genes);
@@ -31,16 +38,15 @@ class TwinOrgansBuilder {
 		if(isMirrorSegment(organ2Genes))
 			return buildMirrorSegments(parent, organ1Genes);
 		
-		return new BodyPart[] {
-			new OrganBuilder(organ1Genes).buildSegment(parent, 1),
-			new OrganBuilder(organ2Genes).buildSegment(parent, -1)
-		};
+		result.add(new OrganBuilder(organ1Genes).buildSegment(parent, 1));
+		result.add(new OrganBuilder(organ2Genes).buildSegment(parent, -1));
+		return result;
 	}
 
-	private BodyPart[] buildMirrorSegments(BodyPart parent, int[] genes) {
-		return new BodyPart[] {
-			new OrganBuilder(genes).buildSegment(parent, 1),
-			new OrganBuilder(genes).buildSegment(parent, -1)
-		};
+	private List<BodyPart> buildMirrorSegments(BodyPart parent, int[] genes) {
+		List<BodyPart> result = new LinkedList<>();
+		result.add(new OrganBuilder(genes).buildSegment(parent, 1));
+		result.add(new OrganBuilder(genes).buildSegment(parent, -1));
+		return result;
 	}
 }

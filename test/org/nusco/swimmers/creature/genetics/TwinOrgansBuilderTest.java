@@ -2,11 +2,11 @@ package org.nusco.swimmers.creature.genetics;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Test;
-import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.body.BodyPart;
-import org.nusco.swimmers.creature.genetics.OrganBuilder;
-import org.nusco.swimmers.creature.genetics.TwinOrgansBuilder;
+import org.nusco.swimmers.creature.body.Organ;
 
 public class TwinOrgansBuilderTest {
 	private static final int MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN;
@@ -21,34 +21,34 @@ public class TwinOrgansBuilderTest {
 
 	@Test
 	public void buildsRegularSegmentIfNeitherGenesIsMirroring() {
-		Organ[] segments = new TwinOrgansBuilder(notMirroringGenes1, notMirroringGenes2).buildSegments(parent);
+		List<BodyPart> bodyParts = new TwinOrgansBuilder(notMirroringGenes1, notMirroringGenes2).buildBodyPart(parent);
 		
-		assertEquals(60, segments[0].getLength());
-		assertEquals(61, segments[1].getLength());
+		assertEquals(60, bodyParts.get(0).getLength());
+		assertEquals(61, bodyParts.get(1).getLength());
 	}
 
 	@Test
 	public void buildsMirrorSegmentOfSecondSegmentIfBothGenesAreMirroring() {
-		Organ[] segments = new TwinOrgansBuilder(mirroringGenes1, mirroringGenes2).buildSegments(parent);
+		List<BodyPart> bodyParts = new TwinOrgansBuilder(mirroringGenes1, mirroringGenes2).buildBodyPart(parent);
 		
-		assertEquals(63, segments[0].getLength());
-		assertEqualOrgans(segments[0], segments[1]);
+		assertEquals(63, bodyParts.get(0).getLength());
+		assertEqualOrgans(bodyParts.get(0), bodyParts.get(1));
 	}
 
 	@Test
 	public void buildsMirrorSegmentIfFirstSegmentGenesAreMirroring() {
 		TwinOrgansBuilder builder = new TwinOrgansBuilder(mirroringGenes1, notMirroringGenes2);
-		Organ[] segments = builder.buildSegments(parent);
+		List<BodyPart> bodyParts = builder.buildBodyPart(parent);
 		
-		assertEqualOrgans(segments[0], segments[1]);
+		assertEqualOrgans(bodyParts.get(0), bodyParts.get(1));
 	}
 
 	@Test
 	public void buildsMirrorSegmentIfSecondSegmentGenesAreMirroring() {
 		TwinOrgansBuilder builder = new TwinOrgansBuilder(notMirroringGenes1, mirroringGenes2);
-		Organ[] segments = builder.buildSegments(parent);
+		List<BodyPart> bodyParts = builder.buildBodyPart(parent);
 		
-		assertEqualOrgans(segments[0], segments[1]);
+		assertEqualOrgans(bodyParts.get(0), bodyParts.get(1));
 	}
 
 	private void assertEqualOrgans(Organ organ1, Organ organ2) {

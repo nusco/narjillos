@@ -19,7 +19,7 @@ public class Narjillo implements Thing {
 	private static final double ENERGY_PER_FOOD_ITEM = 250_000_000;
 	private static final double NATURAL_ENERGY_DECAY = 100;
 
-	private static final double PROPULSION_SCALE = 0.3;
+	private static final double PROPULSION_SCALE = 0.1;
 	
 	private final Head head;
 	private final double mass;

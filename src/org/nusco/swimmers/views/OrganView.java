@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
-import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.shared.physics.Vector;
 
@@ -15,11 +15,11 @@ class OrganView {
 	private final static int OVERLAP = 5;
 
 	private final Organ organ;
-	private final Swimmer swimmer;
+	private final Narjillo swimmer;
 	private final Color color;
 	private final Rectangle rectangle;
 	
-	public OrganView(Organ organ, Swimmer swimmer) {
+	public OrganView(Organ organ, Narjillo swimmer) {
 		this.organ = organ;
 		this.swimmer = swimmer;
 		color = toRGBColor(organ.getColor());

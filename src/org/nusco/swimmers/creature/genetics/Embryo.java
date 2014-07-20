@@ -1,6 +1,6 @@
 package org.nusco.swimmers.creature.genetics;
 
-import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.creature.body.Head;
 
@@ -12,7 +12,7 @@ public class Embryo {
 		this.genes = genes;
 	}
 	
-	public Swimmer develop() {
+	public Narjillo develop() {
 		DNAParser parser = new DNAParser(genes);
 		
 		Head head = createHeadSystem(parser);
@@ -21,7 +21,7 @@ public class Embryo {
 		BodyPart[] children = new BodyPart[] { neck };
 		createDescendants(children, parser);
 		
-		return new Swimmer(head, genes);
+		return new Narjillo(head, genes);
 	}
 
 	private Head createHeadSystem(DNAParser parser) {

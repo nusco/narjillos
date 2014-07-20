@@ -3,21 +3,25 @@ package org.nusco.swimmers.creature;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.BodyPart;
+import org.nusco.swimmers.creature.body.Head;
+import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.creature.physics.ForceField;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
-public class Swimmer implements Thing {
+public class Narjillo implements Thing {
 
-	public static final double INITIAL_ENERGY = 50_000;
-	private static final double ENERGY_PER_FOOD_ITEM = 50_000;
+	public static final double INITIAL_ENERGY = 100_000;
+	private static final double ENERGY_PER_FOOD_ITEM = 100_000;
 	private static final double NATURAL_ENERGY_DECAY = 5;
 
+	private static final double PROPULSION_SCALE = 2;
+	
 	private final Head head;
+	private final int mass;
 
 	private Vector position;
 	private Vector target = Vector.ZERO;
@@ -26,9 +30,10 @@ public class Swimmer implements Thing {
 	private final List<SwimmerEventListener> swimmerEventListeners = new LinkedList<>();
 	private final DNA genes;
 
-	public Swimmer(Head head, DNA genes) {
+	public Narjillo(Head head, DNA genes) {
 		this.head = head;
 		this.genes = genes;
+		mass = calculateMass();
 	}
 
 	@Override
@@ -57,13 +62,24 @@ public class Swimmer implements Thing {
 
 		head.tick(targetDirection);
 
-		// TODO: collision detection and physical movement should probably move
+		// TODO: physical movement should probably move
 		// outside this class. do we need a Body class?
-		Vector tangentialForce = forceField.getTotalForce();
-		Vector newPosition = getPosition().plus(tangentialForce);
+		Vector force = forceField.getTotalForce().by(PROPULSION_SCALE);
+		
+		Vector movement = calculateMovement(force);
+		
+		Vector newPosition = getPosition().plus(movement);
 		updatePosition(newPosition);
 
-		decreaseEnergy(forceField.getTotalEnergy() + NATURAL_ENERGY_DECAY);
+		decreaseEnergy(force.getLength() / 1000 + NATURAL_ENERGY_DECAY);
+	}
+
+	private Vector calculateMovement(Vector force) {
+		// this can actually happen
+		if (getMass() == 0)
+			return force;
+
+		return force.by(1.0 / getMass());
 	}
 
 	@Override
@@ -105,5 +121,29 @@ public class Swimmer implements Thing {
 
 	public void addSwimmerEventListener(SwimmerEventListener lifecycleEventListener) {
 		swimmerEventListeners.add(lifecycleEventListener);
+	}
+
+	public int getMass() {
+		return mass;
+	}
+
+	private int calculateMass() {
+		int result = 0;
+		List<Organ> allOrgans = getAllOrgans();
+		for (Organ organ : allOrgans)
+			result += organ.getMass();
+		return result;
+	}
+
+	private List<Organ> getAllOrgans() {
+		List<Organ> result = new LinkedList<>();
+		addWithChildren(getHead(), result);
+		return result;
+	}
+
+	private void addWithChildren(BodyPart organ, List<Organ> result) {
+		result.add(organ);
+		for (BodyPart child : organ.getChildren())
+			addWithChildren(child, result);
 	}
 }

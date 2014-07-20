@@ -11,8 +11,6 @@ import org.nusco.swimmers.shared.physics.Vector;
 // TODO: replace Organ here with a new superclass or interface describing an organ's geometry
 public class ForceField implements MovementListener {
 
-	private static final double PROPULSION_SCALE = 0.000075;
-	
 	private final List<Vector> forces = new LinkedList<>();
 
 	@Override
@@ -21,7 +19,7 @@ public class ForceField implements MovementListener {
 		Vector afterVector = organ.getVector();
 		
 		double velocityAngle = afterVector.getAngleWith(beforeVector);
-		double force = velocityAngle * beforeVector.getLength() * organ.getThickness() * PROPULSION_SCALE;
+		double force = velocityAngle * beforeVector.getLength() * organ.getThickness();
 		
 		Vector normal = beforeVector.getNormal();
 		
@@ -37,9 +35,5 @@ public class ForceField implements MovementListener {
 		for (Vector force : forces)
 			result = result.plus(force);
 		return result;
-	}
-
-	public double getTotalEnergy() {
-		return getTotalForce().getLength();
 	}
 }

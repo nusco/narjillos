@@ -4,19 +4,19 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.Narjillo;
 
 class EyeView extends ThingView {
 
 	private final Circle circle = createCircle();
 
-	public EyeView(Swimmer swimmer) {
+	public EyeView(Narjillo swimmer) {
 		super(swimmer);
 	}
 
 	@Override
 	public Node toNode() {
-		double energy = ((Swimmer)getThing()).getEnergy();
+		double energy = ((Narjillo)getThing()).getEnergy();
 		circle.setFill(toColor(energy));
 		return circle;
 	}

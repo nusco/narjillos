@@ -3,7 +3,7 @@ package org.nusco.swimmers.pond;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.SwimmerEventListener;
 import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.creature.genetics.Embryo;
@@ -75,8 +75,8 @@ public class Pond {
 		return food;
 	}
 
-	public final Swimmer spawnSwimmer(Vector position, DNA genes) {
-		final Swimmer swimmer = new Embryo(genes).develop();
+	public final Narjillo spawnSwimmer(Vector position, DNA genes) {
+		final Narjillo swimmer = new Embryo(genes).develop();
 		swimmer.addSwimmerEventListener(new SwimmerEventListener() {
 			
 			@Override
@@ -93,7 +93,7 @@ public class Pond {
 		return swimmer;
 	}
 
-	private void updateTarget(Swimmer swimmer) {
+	private void updateTarget(Narjillo swimmer) {
 		Vector position = swimmer.getPosition();
 		Vector locationOfClosestFood = find("food", position);
 		swimmer.setTarget(locationOfClosestFood);
@@ -101,10 +101,10 @@ public class Pond {
 
 	private void updateTargets() {
 		for (Thing thing : getThings("swimmer"))
-			updateTarget((Swimmer)thing);
+			updateTarget((Narjillo)thing);
 	}
 
-	private void checkCollisionsWithFood(Swimmer swimmer, Segment movement) {
+	private void checkCollisionsWithFood(Narjillo swimmer, Segment movement) {
 		// TODO: naive algorithm. replace with space partitioning and finding neighbors
 		List<Thing> foodThings = getThings("food");
 		for (Thing foodThing : foodThings) {
@@ -113,14 +113,14 @@ public class Pond {
 		}
 	}
 
-	private void consumeFood(Swimmer swimmer, Thing foodThing) {
+	private void consumeFood(Narjillo swimmer, Thing foodThing) {
 		swimmer.feed();
 		remove(foodThing);
 		reproduce(swimmer);
 		updateTargets();
 	}
 
-	private void reproduce(Swimmer swimmer) {
+	private void reproduce(Narjillo swimmer) {
 		DNA childDNA = swimmer.getGenes().mutate();
 		Vector position = swimmer.getPosition().plus(Vector.cartesian(6000 * RanGen.nextDouble() - 3000, 6000 * RanGen.nextDouble() - 3000));
 		spawnSwimmer(position, childDNA);

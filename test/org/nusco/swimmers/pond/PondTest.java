@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
@@ -17,8 +17,8 @@ public class PondTest {
 	Pond pond = new Pond(1000);
 	Food food1 = pond.spawnFood(Vector.cartesian(100, 100));
 	Food food2 = pond.spawnFood(Vector.cartesian(1000, 1000));
-	Swimmer swimmer1 = pond.spawnSwimmer(Vector.cartesian(100, 100), DNA.random());
-	Swimmer swimmer2 = pond.spawnSwimmer(Vector.cartesian(1000, 1000), DNA.random());
+	Narjillo swimmer1 = pond.spawnSwimmer(Vector.cartesian(100, 100), DNA.random());
+	Narjillo swimmer2 = pond.spawnSwimmer(Vector.cartesian(1000, 1000), DNA.random());
 
 	@Test
 	public void findsTheClosestFoodToAGivenPosition() {

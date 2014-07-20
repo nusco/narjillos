@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
 
-import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.Narjillo;
 
 class MouthView extends ThingView {
 
@@ -14,7 +14,7 @@ class MouthView extends ThingView {
 	private final Line line1 = createLine();
 	private final Line line2 = createLine();
 
-	public MouthView(Swimmer swimmer) {
+	public MouthView(Narjillo swimmer) {
 		super(swimmer);
 		group.getChildren().add(line1);
 		group.getChildren().add(line2);
@@ -38,7 +38,7 @@ class MouthView extends ThingView {
 		return result;
 	}
 
-	private Swimmer getSwimmer() {
-		return (Swimmer)getThing();
+	private Narjillo getSwimmer() {
+		return (Narjillo)getThing();
 	}
 }

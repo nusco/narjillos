@@ -10,9 +10,9 @@ import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 
-public class SwimmerTest {
+public class NarjilloEventsTest {
 
-	Swimmer swimmer = new Swimmer(new Head(10, 10, 10), DNA.random());
+	Narjillo narjillo = new Narjillo(new Head(10, 10, 10), DNA.random());
 
 	class NullSwimmerEventListener implements SwimmerEventListener {
 		@Override
@@ -26,10 +26,10 @@ public class SwimmerTest {
 	
 	@Test
 	public void sendsEventsWhenMoving() {
-		swimmer.setPosition(Vector.ZERO);
+		narjillo.setPosition(Vector.ZERO);
 
 		final Segment[] moved = new Segment[] { null };
-		swimmer.addSwimmerEventListener(new NullSwimmerEventListener() {
+		narjillo.addSwimmerEventListener(new NullSwimmerEventListener() {
 
 			@Override
 			public void moved(Segment movement) {
@@ -37,7 +37,7 @@ public class SwimmerTest {
 			}
 		});
 
-		swimmer.tick();
+		narjillo.tick();
 		
 		assertNotNull(moved[0]);
 	}
@@ -45,7 +45,7 @@ public class SwimmerTest {
 	@Test
 	public void sendsEventsWhenDying() {
 		final boolean[] died = new boolean[] { false };
-		swimmer.addSwimmerEventListener(new NullSwimmerEventListener() {
+		narjillo.addSwimmerEventListener(new NullSwimmerEventListener() {
 
 			@Override
 			public void died() {
@@ -53,23 +53,23 @@ public class SwimmerTest {
 			}
 		});
 
-		swimmer.decreaseEnergy(Swimmer.INITIAL_ENERGY);
+		narjillo.decreaseEnergy(Narjillo.INITIAL_ENERGY);
 		
 		assertTrue(died[0]);
 	}
 	
 	@Test
 	public void hasLimitedEnergy() {
-		swimmer.decreaseEnergy(Swimmer.INITIAL_ENERGY);
+		narjillo.decreaseEnergy(Narjillo.INITIAL_ENERGY);
 		
-		assertEquals(0, swimmer.getEnergy(), 0.001);
+		assertEquals(0, narjillo.getEnergy(), 0.001);
 	}
 	
 	@Test
 	public void increasesEnergyByFeeding() {
-		swimmer.feed();
-		swimmer.decreaseEnergy(Swimmer.INITIAL_ENERGY);
+		narjillo.feed();
+		narjillo.decreaseEnergy(Narjillo.INITIAL_ENERGY);
 		
-		assertTrue(swimmer.getEnergy() > 0);
+		assertTrue(narjillo.getEnergy() > 0);
 	}
 }

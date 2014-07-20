@@ -1,6 +1,5 @@
 package org.nusco.swimmers.creature.physics;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -21,10 +20,5 @@ public class ForceFieldTest {
 	@Test
 	public void collectsTotalForce() {
 		assertTrue(forceField.getTotalForce().almostEquals(Vector.cartesian(9, 12)));
-	}
-
-	@Test
-	public void collectsTotalEnergy() {
-		assertEquals(15, forceField.getTotalEnergy(), 0.01);
 	}
 }

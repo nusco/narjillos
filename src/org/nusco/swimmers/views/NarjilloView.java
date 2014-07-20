@@ -7,18 +7,18 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Translate;
 
-import org.nusco.swimmers.creature.Swimmer;
+import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.shared.physics.Vector;
 
-class SwimmerView extends ThingView {
+class NarjilloView extends ThingView {
 	
 	private final Group group = new Group();
 	private final List<OrganView> organViews;
 	private final MouthView mouthView;
 	private final EyeView eyeView;
 
-	public SwimmerView(Swimmer swimmer) {
+	public NarjilloView(Narjillo swimmer) {
 		super(swimmer);
 		organViews = createOrganViews();
 		mouthView = new MouthView(swimmer);
@@ -60,7 +60,7 @@ class SwimmerView extends ThingView {
 			addWithChildren(child, result);
 	}
 
-	private Swimmer getSwimmer() {
-		return (Swimmer)getThing();
+	private Narjillo getSwimmer() {
+		return (Narjillo)getThing();
 	}
 }

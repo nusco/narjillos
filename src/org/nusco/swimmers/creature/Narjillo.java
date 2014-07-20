@@ -14,8 +14,9 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Narjillo implements Thing {
 
-	public static final double INITIAL_ENERGY = 100_000;
-	private static final double ENERGY_PER_FOOD_ITEM = 100_000;
+	public static final double MAX_ENERGY = 300_000;
+	public static final double INITIAL_ENERGY = 200_000;
+	private static final double ENERGY_PER_FOOD_ITEM = 200_000;
 	private static final double ENERGY_CONSUMPTION_PER_FORCE_UNIT = 0.001;
 	private static final double NATURAL_ENERGY_DECAY = 5;
 
@@ -109,6 +110,8 @@ public class Narjillo implements Thing {
 
 	public void feed() {
 		energy += ENERGY_PER_FOOD_ITEM;
+		if (energy > MAX_ENERGY)
+			energy = MAX_ENERGY;
 	}
 
 	void decreaseEnergy(double amount) {

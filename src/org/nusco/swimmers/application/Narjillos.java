@@ -113,13 +113,12 @@ public class Narjillos extends Application {
 			private synchronized void handleMouse(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					if (event.getClickCount() == 2)
-						viewport.setCenterSC(Vector.cartesian(event.getSceneX(), event.getSceneY()));
+						viewport.zoomToFit();
 					else
-						toggleMaxSpeed();
+						viewport.setCenterSC(Vector.cartesian(event.getSceneX(), event.getSceneY()));
 				}
-				if (event.getButton() == MouseButton.SECONDARY) {
-					viewport.zoomToFit();
-				}
+				else if (event.getButton() == MouseButton.SECONDARY)
+					toggleMaxSpeed();
 			}
 
 			private void toggleMaxSpeed() {

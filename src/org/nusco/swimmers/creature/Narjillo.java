@@ -14,17 +14,17 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Narjillo implements Thing {
 
-	public static final double MAX_ENERGY = 2_000_000;
-	static final double INITIAL_ENERGY = 1_000_000;
-	private static final double ENERGY_PER_FOOD_ITEM = 1_000_000;
+	public static final double MAX_ENERGY = 1_000_000;
+	static final double INITIAL_ENERGY = 700_000;
+	private static final double ENERGY_PER_FOOD_ITEM = 700_000;
 	private static final double MAX_TICKS_TO_DEATH = 100_000;
 	private static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
 
-	private static final double PROPULSION_SCALE = 0.2;
+	private static final double PROPULSION_SCALE = 0.1;
 	
 	// 1 means that every movement is divided by the entire mass. This makes high mass a sure-fire loss.
 	// 0.5 means half as much penalty. This justifies having a high mass, for the extra push it affords.
-	private static final double MASS_PENALTY_DURING_PROPULSION = 0.4;
+	private static final double MASS_PENALTY_DURING_PROPULSION = 0.3;
 	
 	private final Head head;
 	private final double mass;

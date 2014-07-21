@@ -17,9 +17,10 @@ class FoodView extends CircularObjectView {
 		circle = createCircle(food);
 	}
 
-	public Node toNode() {
+	public Node toNode(double zoomLevel) {
 		circle.getTransforms().clear();
 		circle.getTransforms().add(moveToStartPoint());
+		circle.setEffect(getShadow(zoomLevel));
 		return circle;
 	}
 
@@ -27,7 +28,6 @@ class FoodView extends CircularObjectView {
 		Circle result = new Circle(getRadius());
 		Color baseColor = Color.PURPLE;
 		result.setFill(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0.8));
-		result.setEffect(PondView.SHADOW);
 		return result;
 	}
 

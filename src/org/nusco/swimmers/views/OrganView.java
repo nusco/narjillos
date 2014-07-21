@@ -27,7 +27,6 @@ class OrganView extends ThingView {
 
 	private Rectangle createRectangle() {
 		Rectangle result = new Rectangle(0, 0, getLengthIncludingOverlap(), organ.getThickness());
-
 		double arc = (organ.getLength() * organ.getThickness()) % 15 + 15;
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);
@@ -35,35 +34,21 @@ class OrganView extends ThingView {
 		return result;
 	}
 
-	public Node toNode() {
-		return toDetailView();
-	}
-
-	private Node toDetailView() {
+	public Node toNode(double zoomLevel) {
 		rectangle.setFill(getColor());
-
+		
 		rectangle.getTransforms().clear();
 		
 		// overlap slightly and shift to center based on thickness
 		double widthCenter = organ.getThickness() / 2;
 		rectangle.getTransforms().add(new Translate(-OVERLAP, -widthCenter));
 		rectangle.getTransforms().add(moveToStartPoint());
-
+		
 		// rotate in position
 		rectangle.getTransforms().add(new Rotate(organ.getAbsoluteAngle(), OVERLAP, widthCenter));
-
+		
 		return rectangle;
 	}
-
-	// TODO: Level Of Detail
-//	private Node toHighDistanceView() {
-//		if (organ.getLength() < 40 || organ.getThickness() < 20)
-//			return null;
-//		Line result = new Line(organ.getStartPoint().getX(), organ.getStartPoint().getY(), organ.getEndPoint().getX(), organ.getEndPoint().getX());
-//		result.setStroke(Color.LIGHTGRAY);
-//		result.setStrokeWidth(organ.getThickness());
-//		return result;
-//	}
 
 	private Translate moveToStartPoint() {
 		Vector startPoint = organ.getStartPoint();

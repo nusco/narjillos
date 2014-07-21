@@ -8,7 +8,6 @@ import java.util.Map;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
@@ -19,8 +18,6 @@ import org.nusco.swimmers.pond.PondEventListener;
 import org.nusco.swimmers.shared.things.Thing;
 
 public class PondView {
-
-	final static DropShadow SHADOW = new DropShadow(12, 3, 3, Color.DARKSLATEGREY);
 
 	private final Pond pond;
 	private final Viewport viewport;
@@ -112,9 +109,5 @@ public class PondView {
 
 	public void show(Group root) {
 		root.getChildren().add(toNode());
-	}
-
-	public void reportStuff() {
-		// for debugging
 	}
 }

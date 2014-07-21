@@ -15,10 +15,12 @@ public class Segment {
 	}
 	
 	public double getMinimumDistanceFromPoint(Vector point) {
-		if (getLength() < 0.0001)
+		double length = getLength(); // this is actually too slow to do more than once
+		
+		if (length < 0.0001)
 			return startPoint.getDistanceFrom(point);
 
-		double lengthSquared = getLength() * getLength();
+		double lengthSquared = length * length;
 
 		double t = ((point.x - startPoint.x) * (vector.x - startPoint.x) + (point.y - startPoint.y) * (vector.y - startPoint.y)) / lengthSquared;
 

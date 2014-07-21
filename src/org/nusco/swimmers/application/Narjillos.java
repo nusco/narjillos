@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
+import org.nusco.swimmers.pond.Pond;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.utilities.Chronometer;
 import org.nusco.swimmers.shared.utilities.NumberFormat;
@@ -31,6 +32,8 @@ public class Narjillos extends Application {
 
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final Chronometer framesChronometer = new Chronometer();
+
+	private final Pond pond = new Cosmos();
 
 	private PondView pondView;
 	private Viewport viewport;
@@ -199,6 +202,7 @@ public class Narjillos extends Application {
 	};
 
 	private synchronized void tick() {
+		pond.tick();
 		getPondView().tick();
 	}
 
@@ -207,7 +211,7 @@ public class Narjillos extends Application {
 	}
 
 	private synchronized PondView createNewPondView() {
-		return new PondView(new Cosmos());
+		return new PondView(pond );
 	}
 
 	private synchronized void showRoot(final Group root) {

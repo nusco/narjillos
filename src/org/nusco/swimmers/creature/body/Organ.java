@@ -66,7 +66,7 @@ public abstract class Organ {
 
 	public synchronized final Vector getEndPoint() {
 		if (cachedEndPoint == null)
-			cachedEndPoint = getStartPoint().plus(Vector.polar(getAbsoluteAngle(), length));
+			cachedEndPoint = getStartPoint().plus(getVector());
 		return cachedEndPoint;
 	}
 

@@ -17,7 +17,10 @@ public class Pond {
 	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;
-	private final List<Thing> things = new LinkedList<>();
+
+	private final List<Food> food = new LinkedList<>();
+	private final List<Narjillo> narjillos = new LinkedList<>();
+
 	private final List<PondEventListener> pondEvents = new LinkedList<>();
 
 	private int tickCounter = 0;
@@ -25,21 +28,30 @@ public class Pond {
 	public Pond(long size) {
 		this.size = size;
 	}
-	
+
 	public long getSize() {
 		return size;
 	}
 
-	public synchronized List<Thing> getThings() {
-		return new LinkedList<Thing>(things);
+	public List<Thing> getThings() {
+		List<Thing> result = new LinkedList<Thing>();
+		result.addAll(getFood());
+		result.addAll(getNarjillos());
+		return result;
 	}
 
-	public List<Thing> getThings(String label) {
-		List<Thing> result = new LinkedList<>();
-		for (Thing thing : getThings())
-			if (thing.getLabel().equals(label))
-				result.add(thing);
-		return result;
+	// Expensive but safe when invoked from another thread.
+	// optimize
+	private List<Food> getFood() {
+		synchronized (food) {
+			return new LinkedList<Food>(food);
+		}
+	}
+
+	private synchronized List<Narjillo> getNarjillos() {
+		synchronized (narjillos) {
+			return new LinkedList<Narjillo>(narjillos);
+		}
 	}
 
 	public Vector find(String typeOfThing, Vector near) {
@@ -68,27 +80,36 @@ public class Pond {
 	}
 
 	public Food spawnFood(Vector position) {
-		Food food = new Food();
-		addToThings(food, position);
-		return food;
+		Food newFood = new Food();
+		synchronized (food) {
+			food.add(newFood);
+		}
+		placeInPond(newFood, position);
+		return newFood;
 	}
 
 	public final Narjillo spawnSwimmer(Vector position, DNA genes) {
-		final Narjillo swimmer = new Embryo(genes).develop();
-		swimmer.addSwimmerEventListener(new SwimmerEventListener() {
-			
+		final Narjillo narjillo = new Embryo(genes).develop();
+		narjillo.addSwimmerEventListener(new SwimmerEventListener() {
+
 			@Override
 			public void moved(Segment movement) {
-				checkCollisionsWithFood(swimmer, movement);
+				checkCollisionsWithFood(narjillo, movement);
 			}
-		
+
 			@Override
 			public void died() {
-				remove(swimmer);
+				removeFromPond(narjillo);
+				synchronized (narjillos) {
+					narjillos.remove(narjillo);
+				}
 			}
 		});
-		addToThings(swimmer, position);
-		return swimmer;
+		synchronized (narjillos) {
+			narjillos.add(narjillo);
+		}
+		placeInPond(narjillo, position);
+		return narjillo;
 	}
 
 	private void updateTarget(Narjillo swimmer) {
@@ -98,41 +119,59 @@ public class Pond {
 	}
 
 	private void updateTargets() {
-		for (Thing thing : getThings("swimmer"))
-			updateTarget((Narjillo)thing);
+		for (Narjillo narjillo : getNarjillos())
+			updateTarget(narjillo);
 	}
 
-	private void checkCollisionsWithFood(Narjillo swimmer, Segment movement) {
-		// TODO: naive algorithm. replace with space partitioning and finding neighbors
-		List<Thing> foodThings = getThings("food");
-		for (Thing foodThing : foodThings) {
-			if (movement.getMinimumDistanceFromPoint(foodThing.getPosition()) < COLLISION_DISTANCE)
-				consumeFood(swimmer, foodThing);
+	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
+		// TODO: naive algorithm. replace with space partitioning and finding
+		// neighbors
+		for (Thing foodThing : getFood()) {
+			if (isUnderSafeDistance(narjillo, foodThing)
+					&& movement.getMinimumDistanceFromPoint(foodThing.getPosition()) < COLLISION_DISTANCE)
+				consumeFood(narjillo, foodThing);
 		}
 	}
 
-	private void consumeFood(Narjillo swimmer, Thing foodThing) {
-		swimmer.feed();
-		remove(foodThing);
-		reproduce(swimmer);
+	// ugly optimization to avoid getting into the expensive
+	// getMinimumDistanceFromPoint() method.
+	// this will hopefully be redundant once we have a good space partition algorithm,
+	// but it makes quite a difference until then
+	private boolean isUnderSafeDistance(Narjillo narjillo, Thing foodThing) {
+		Vector position = narjillo.getPosition();
+		 // it's unlikely that we need to consider food further away
+		final double safeDistance = 300;
+		if (Math.abs(position.x - foodThing.getPosition().x) < safeDistance)
+			return true;
+		if (Math.abs(position.y - foodThing.getPosition().y) < safeDistance)
+			return true;
+		return false;
+	}
+
+	private void consumeFood(Narjillo narjillo, Thing foodThing) {
+		narjillo.feed();
+		removeFromPond(foodThing);
+		synchronized (food) {
+			food.remove(foodThing);
+		}
+		reproduce(narjillo);
 		updateTargets();
 	}
 
-	private void reproduce(Narjillo swimmer) {
-		DNA childDNA = swimmer.getGenes().mutate();
-		Vector position = swimmer.getPosition().plus(Vector.cartesian(6000 * RanGen.nextDouble() - 3000, 6000 * RanGen.nextDouble() - 3000));
+	private void reproduce(Narjillo narjillo) {
+		DNA childDNA = narjillo.getGenes().mutate();
+		Vector position = narjillo.getPosition().plus(
+				Vector.cartesian(6000 * RanGen.nextDouble() - 3000, 6000 * RanGen.nextDouble() - 3000));
 		spawnSwimmer(position, childDNA);
 	}
 
-	private synchronized final void addToThings(Thing thing, Vector position) {
+	private final void placeInPond(Thing thing, Vector position) {
 		thing.setPosition(position);
-		things.add(thing);
 		for (PondEventListener pondEvent : pondEvents)
 			pondEvent.thingAdded(thing);
 	}
 
-	private synchronized void remove(Thing thing) {
-		things.remove(thing);
+	private void removeFromPond(Thing thing) {
 		for (PondEventListener pondEvent : pondEvents)
 			pondEvent.thingRemoved(thing);
 	}

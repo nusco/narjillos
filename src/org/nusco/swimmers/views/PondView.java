@@ -107,7 +107,6 @@ public class PondView {
 	}
 
 	public void tick() {
-		pond.tick();
 		viewport.tick();
 	}
 

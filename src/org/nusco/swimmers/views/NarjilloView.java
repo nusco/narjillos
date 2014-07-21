@@ -77,6 +77,9 @@ class NarjilloView extends ThingView {
 		for (OrganView organView : organViews)
 			if (organView.isVisible(viewport))
 				return true;
-		return mouthView.isVisible(viewport) || eyeView.isVisible(viewport);
+		OrganView organView = organViews.get(0);
+		organView.isVisible(viewport);
+		return false;
+//		return mouthView.isVisible(viewport) || eyeView.isVisible(viewport);
 	}
 }

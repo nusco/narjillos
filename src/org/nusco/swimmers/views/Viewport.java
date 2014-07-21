@@ -13,7 +13,7 @@ import org.nusco.swimmers.shared.physics.Vector;
  */
 public class Viewport {
 
-	static final long MAX_INITIAL_SIZE_SC = 800;
+	static final double MAX_INITIAL_SIZE_SC = 800;
 	static final double MAX_ZOOM = 2;
 	private static final double ZOOM_VELOCITY = 1.03;
 	
@@ -116,6 +116,6 @@ public class Viewport {
 	}
 	
 	private final Vector toPC(Vector pointSC) {
-		return getPositionPC().plus(pointSC.by(1 / zoomLevel));
+		return getPositionPC().plus(pointSC.by(1.0 / zoomLevel));
 	}
 }

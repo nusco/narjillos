@@ -50,23 +50,31 @@ public class PondView {
 	}
 
 	public Node toNode() {
-		Group group = new Group();
-		group.getChildren().add(getBackground());
-		group.getChildren().addAll(getNodesForThings());
-
-		group.getTransforms().add(new Translate(-viewport.getPositionPC().x, -viewport.getPositionPC().y));
-		group.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
-											viewport.getPositionPC().x, viewport.getPositionPC().y));
-
-		setZoomBlurEffect(group);
-
-		return group;
+		Group result = new Group();
+		result.getChildren().add(getBackground());
+		result.getChildren().add(getThingsGroup());
+		return result;
 	}
 
-	private void setZoomBlurEffect(Group group) {
-		if(viewport.getZoomLevel() <= 1)
+	private Group getThingsGroup() {
+		Group things = new Group();
+		things.getChildren().addAll(getNodesForThings());
+
+		things.getTransforms().add(new Translate(-viewport.getPositionPC().x, -viewport.getPositionPC().y));
+		things.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
+											viewport.getPositionPC().x, viewport.getPositionPC().y));
+
+		setZoomLevelEffects(things);
+		return things;
+	}
+
+	private void setZoomLevelEffects(Group group) {
+		double zoomLevel = viewport.getZoomLevel();
+		
+		if (zoomLevel <= 1)
 			return;
-		int blurAmount = (int)(15 * (viewport.getZoomLevel() - 1));
+		
+		int blurAmount = (int)(15 * (zoomLevel - 1));
 		group.setEffect(new BoxBlur(blurAmount, blurAmount, 3));
 	}
 

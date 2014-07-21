@@ -31,7 +31,7 @@ class EyeView extends CircularObjectView {
 	}
 
 	private double getTransparency(double zoomLevel) {
-		double result = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 5;
+		double result = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 4;
 		
 		if (result < 0)
 			return 0;

@@ -27,6 +27,7 @@ class OrganView extends ThingView {
 
 	private Rectangle createRectangle() {
 		Rectangle result = new Rectangle(0, 0, getLengthIncludingOverlap(), organ.getThickness());
+
 		double arc = (organ.getLength() * organ.getThickness()) % 15 + 15;
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);

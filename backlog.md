@@ -21,7 +21,6 @@
   * Load experiment
   * View creature energy
 ##Speed
-  * Basic Level Of Detail (for things such as shadows and eyes)
   * Buffered pond image (for static elements such as food)
   * Advanced Level Of Detail (probably not worth the effort - performance seems to simply depend on number of nodes)
 ##Viewport

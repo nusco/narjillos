@@ -18,6 +18,15 @@ abstract class ThingView {
 		return thing;
 	}
 
+	public final Node toNode(Viewport viewport) {
+		if (!isVisible(viewport))
+			return null;
+		
+		return toNode();
+	}
+	
+	protected abstract boolean isVisible(Viewport viewport);
+
 	public abstract Node toNode();
 	
 	static ThingView createViewFor(Thing thing) {

@@ -14,8 +14,6 @@ import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class Pond {
 
-	public static final double MAX_THING_SIZE = 1500;
-
 	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;

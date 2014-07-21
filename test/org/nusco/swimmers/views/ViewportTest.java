@@ -75,7 +75,7 @@ public class ViewportTest {
 
 	@Test
 	public void zoomsToViewTheEntirePondAtTheBeginning() {
-		final long pondSize = Viewport.MAX_INITIAL_SIZE_SC * 10;
+		final long pondSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
 		Viewport viewport = new Viewport(new Pond(pondSize));
 
 		assertEquals(0.1, viewport.getZoomLevel(), 0.001);
@@ -83,7 +83,7 @@ public class ViewportTest {
 
 	@Test
 	public void resizingItDoesNotChangeTheZoomLevel() {
-		final long pondSize = Viewport.MAX_INITIAL_SIZE_SC * 10;
+		final long pondSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
 		Viewport viewport = new Viewport(new Pond(pondSize));
 
 		viewport.setSizeSC(Vector.cartesian(100, 10000));

@@ -10,6 +10,7 @@ import org.nusco.swimmers.creature.Narjillo;
 
 class MouthView extends ThingView {
 
+	private static final int LENGTH = 50;
 	private final Group group = new Group();
 	private final Line line1 = createLine();
 	private final Line line2 = createLine();
@@ -29,16 +30,21 @@ class MouthView extends ThingView {
 
 	private void rotate(Line line, int angle) {
 		line.getTransforms().clear();
-		line.getTransforms().add(new Rotate(getSwimmer().getTargetDirection().getAngle() + angle));
+		line.getTransforms().add(new Rotate(getNarjillo().getTargetDirection().getAngle() + angle));
 	}
 
 	private Line createLine() {
-		Line result = new Line(0, 0, 50, 2);
+		Line result = new Line(0, 0, LENGTH, 2);
 		result.setStroke(Color.GREEN);
 		return result;
 	}
 
-	private Narjillo getSwimmer() {
+	private Narjillo getNarjillo() {
 		return (Narjillo)getThing();
+	}
+
+	@Override
+	protected boolean isVisible(Viewport viewport) {
+		return viewport.isVisible(getNarjillo().getPosition(), LENGTH);
 	}
 }

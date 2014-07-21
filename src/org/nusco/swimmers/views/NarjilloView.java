@@ -16,7 +16,7 @@ class NarjilloView extends ThingView {
 	private final Group group = new Group();
 	private final List<OrganView> organViews;
 	private final MouthView mouthView;
-	private final EyeView eyeView;
+	private final CircularObjectView eyeView;
 
 	public NarjilloView(Narjillo swimmer) {
 		super(swimmer);
@@ -28,9 +28,17 @@ class NarjilloView extends ThingView {
 	@Override
 	public Node toNode() {
 		group.getChildren().clear();
-		group.getChildren().add(mouthView.toNode());
+		
+		Node mouthNode = mouthView.toNode();
+		if (mouthNode != null)
+			group.getChildren().add(mouthNode);
+
 		group.getChildren().addAll(getOrganNodes());
-		group.getChildren().add(eyeView.toNode());
+
+		Node eyeNode = eyeView.toNode();
+		if (eyeNode != null)
+			group.getChildren().add(eyeNode);
+
 		Vector position = getSwimmer().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));
@@ -62,5 +70,13 @@ class NarjilloView extends ThingView {
 
 	private Narjillo getSwimmer() {
 		return (Narjillo)getThing();
+	}
+
+	@Override
+	protected boolean isVisible(Viewport viewport) {
+		for (OrganView organView : organViews)
+			if (organView.isVisible(viewport))
+				return true;
+		return mouthView.isVisible(viewport) || eyeView.isVisible(viewport);
 	}
 }

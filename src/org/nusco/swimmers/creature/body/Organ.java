@@ -23,23 +23,23 @@ public abstract class Organ {
 		this.hue = hue;
 	}
 
-	public int getLength() {
+	public synchronized int getLength() {
 		return length;
 	}
 
-	public int getThickness() {
+	public synchronized int getThickness() {
 		return thickness;
 	}
 
-	protected int getHue() {
+	protected synchronized int getHue() {
 		return hue;
 	}
 
-	public double getMass() {
+	public synchronized double getMass() {
 		return getLength() * getThickness() * 0.1;
 	}
 
-	protected void resetAllCaches() {
+	protected synchronized void resetAllCaches() {
 		cachedAbsoluteAngle = null;
 		cachedStartPoint = null;
 		cachedEndPoint = null;
@@ -48,7 +48,7 @@ public abstract class Organ {
 		cachedColor = null;
 	}
 
-	public final double getAbsoluteAngle() {
+	public synchronized final double getAbsoluteAngle() {
 		if (cachedAbsoluteAngle == null)
 			cachedAbsoluteAngle = calculateAbsoluteAngle();
 		return cachedAbsoluteAngle;
@@ -56,7 +56,7 @@ public abstract class Organ {
 
 	protected abstract double calculateAbsoluteAngle();
 
-	public final Vector getStartPoint() {
+	public synchronized final Vector getStartPoint() {
 		if (cachedStartPoint == null)
 			cachedStartPoint = calculateStartPoint();
 		return cachedStartPoint;
@@ -64,13 +64,13 @@ public abstract class Organ {
 
 	protected abstract Vector calculateStartPoint();
 
-	public final Vector getEndPoint() {
+	public synchronized final Vector getEndPoint() {
 		if (cachedEndPoint == null)
 			cachedEndPoint = getStartPoint().plus(Vector.polar(getAbsoluteAngle(), length));
 		return cachedEndPoint;
 	}
 
-	public final Vector getVector() {
+	public synchronized final Vector getVector() {
 		if (cachedVector == null)
 			cachedVector = Vector.polar(getAbsoluteAngle(), getLength());
 		return cachedVector;
@@ -84,7 +84,7 @@ public abstract class Organ {
 
 	protected abstract Vector calculateMainAxis();
 
-	public final int getColor() {
+	public synchronized final int getColor() {
 		if (cachedColor == null)
 			cachedColor = calculateColor();
 		return cachedColor;
@@ -92,7 +92,7 @@ public abstract class Organ {
 
 	protected abstract int calculateColor();
 
-	public Segment getSegment() {
+	public synchronized Segment getSegment() {
 		return new Segment(getStartPoint(), getVector());
 	}
 
@@ -106,5 +106,4 @@ public abstract class Organ {
 		Organ other = (Organ) obj;
 		return hue == other.hue && length == other.length && thickness == other.thickness;
 	}
-
 }

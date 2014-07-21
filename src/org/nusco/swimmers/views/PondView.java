@@ -79,9 +79,11 @@ public class PondView {
 	
 	private synchronized List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
-		for (ThingView view : thingsToViews.values())
-			if (viewport.isVisible(view.getThing().getPosition(), Pond.MAX_THING_SIZE))
-				result.add(view.toNode());
+		for (ThingView view : thingsToViews.values()) {
+			Node node = view.toNode(viewport);
+			if (node != null)
+				result.add(node);
+		}
 		return result;
 	}
 

@@ -1,7 +1,7 @@
 ##Swimming 2.0
-  * Fix energy calculation (consider all forces, not just the resulting force)
   * Real rotation
 ##Eggs
+  * Recalibrate energy calculation
   * Swimmer spends energy to reproduce
   * Eggs
   * "Egg-firing"
@@ -21,7 +21,6 @@
   * Load experiment
   * View creature energy
 ##Speed
-  * New "hidden objects" algorythm (based on segment size)
   * Basic Level Of Detail (for things such as shadows and eyes)
   * Buffered pond image (for static elements such as food)
   * Advanced Level Of Detail (probably not worth the effort - performance seems to simply depend on number of nodes)

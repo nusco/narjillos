@@ -8,7 +8,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.swimmers.pond.Food;
 import org.nusco.swimmers.shared.physics.Vector;
 
-class FoodView extends ThingView {
+class FoodView extends CircularObjectView {
 
 	private final Node circle;
 
@@ -24,7 +24,7 @@ class FoodView extends ThingView {
 	}
 
 	private Node createCircle(Food food) {
-		Circle result = new Circle(10);
+		Circle result = new Circle(getRadius());
 		Color baseColor = Color.PURPLE;
 		result.setFill(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0.8));
 		result.setEffect(PondView.SHADOW);
@@ -34,5 +34,10 @@ class FoodView extends ThingView {
 	private Translate moveToStartPoint() {
 		Vector position = getThing().getPosition();
 		return new Translate(position.x, position.y);
+	}
+
+	@Override
+	protected final double getRadius() {
+		return 7;
 	}
 }

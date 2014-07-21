@@ -8,37 +8,37 @@ import org.nusco.swimmers.creature.body.MovementListener;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
 
-// TODO: replace Organ here with a new superclass or interface describing an organ's geometry
 public class ForceField implements MovementListener {
 
+	private static final double VISCOSITY = 1.7;
+	
 	private final List<Vector> forces = new LinkedList<>();
 	private double energySpent = 0;
 	
 	@Override
 	public void moveEvent(Segment beforeMovement, Organ organ) {
-		Vector force = calculateForceOfMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
+		Vector force = calculateForceUsedForMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
 		addForce(force);
 	}
 
-	private Vector calculateForceOfMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
+	private Vector calculateForceUsedForMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
 		Vector startPointMovement = afterMovement.startPoint.minus(beforeMovement.startPoint);
 		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);
 		Vector averageMovement = startPointMovement.plus(endPointMovement).by(0.5);
 		
 		double normalizedMovementIntensity = averageMovement.getLength() * mass / 1000;
-		double viscousMovement = addViscosity(normalizedMovementIntensity);
+		double movementIntensityInViscousFluid = addViscosity(normalizedMovementIntensity) * 1000;
 
-		energySpent += averageMovement.getLength() * mass;
+		energySpent += movementIntensityInViscousFluid / 1000;
 		
-		return averageMovement.normalize(viscousMovement).getProjectionOn(afterMovement.vector.getNormal()).invert();
+		return averageMovement.normalize(movementIntensityInViscousFluid).getProjectionOn(afterMovement.vector.getNormal()).invert();
 	}
 
-	private double addViscosity(double normalizedMovementLength) {
-		double result;
-		if (normalizedMovementLength < 1)
-			result = normalizedMovementLength;
-		else
-			result = Math.pow(normalizedMovementLength, 1.7);
+	private double addViscosity(double normalizedMovementIntensity) {
+		if (normalizedMovementIntensity < 1)
+			return normalizedMovementIntensity;
+
+		double result = Math.pow(normalizedMovementIntensity, VISCOSITY);
 		result = Math.min(result, 300);
 		return result;
 	}
@@ -55,6 +55,6 @@ public class ForceField implements MovementListener {
 	}
 
 	public double getTotalEnergySpent() {
-		return energySpent;
+		return energySpent / 1000;
 	}
 }

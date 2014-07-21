@@ -35,9 +35,8 @@ public class Cosmos extends Pond {
 	}
 
 	protected Vector randomPosition() {
-		double randomAngle = RanGen.nextDouble() * 360;
-		double radius = getSize() / 2;
-		double randomDistance = RanGen.nextDouble() * radius;
-		return Vector.cartesian(radius, radius).plus(Vector.polar(randomAngle, randomDistance));
+		double randomX = RanGen.nextDouble() * getSize();
+		double randomY = RanGen.nextDouble() * getSize();
+		return Vector.cartesian(randomX, randomY);
 	}
 }

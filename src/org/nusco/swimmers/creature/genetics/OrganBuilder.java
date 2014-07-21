@@ -25,7 +25,7 @@ class OrganBuilder {
 
 	public BodyPart buildSegment(BodyPart parent, int angleSign) {
 		if(getLengthGene() <= MIN_ORGAN_SIZE || getThicknessGene() <= MIN_ORGAN_SIZE)
-			return parent.sproutConnectiveTissue();
+			return parent.sproutAtrophicOrgan();
 		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getRGB(), getDelay());
 	}
 

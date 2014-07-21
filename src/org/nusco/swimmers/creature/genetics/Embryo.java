@@ -1,12 +1,11 @@
 package org.nusco.swimmers.creature.genetics;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.creature.body.Head;
-import org.nusco.swimmers.creature.body.Organ;
 
 public class Embryo {
 

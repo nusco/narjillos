@@ -96,8 +96,8 @@ public abstract class BodyPart extends Organ {
 		return addChild(new BodySegment(nerve));
 	}
 
-	public BodyPart sproutConnectiveTissue() {
-		return addChild(new ConnectiveTissue(this));
+	public BodyPart sproutAtrophicOrgan() {
+		return addChild(new AtrophicOrgan(this));
 	}
 
 	protected BodyPart addChild(BodyPart child) {

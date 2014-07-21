@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class ConnectiveTissueTest {
+public class AtrophicOrganTest {
 
-	protected ConnectiveTissue createConnectiveTissue() {
-		return new ConnectiveTissue(null);
+	protected AtrophicOrgan createConnectiveTissue() {
+		return new AtrophicOrgan(null);
 	}
 
 	@Test

@@ -34,10 +34,6 @@ public class BodySegment extends BodyPart {
 		return getParent().getAbsoluteAngle() + getAngleToParent();
 	}
 
-	private int getOrientationSign() {
-		return (int)Math.signum(angleToParentAtRest);
-	}
-
 	@Override
 	protected void move(Vector signal) {
 		updateAngle(signal);
@@ -51,6 +47,10 @@ public class BodySegment extends BodyPart {
 		Vector rotatedDirection = direction.rotateBy(getAngleToParentAtRest() - mainAxis.getAngle());
 		
 		setAngleToParent(incrementAngleToParentBy(-rotatedDirection.getAngle()));
+	}
+
+	private int getOrientationSign() {
+		return (int)Math.signum(angleToParentAtRest);
 	}
 
 	private double incrementAngleToParentBy(double targetAngleToParent) {

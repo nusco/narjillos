@@ -76,7 +76,7 @@ class OrganView {
 	}
 
 	private double getAlpha() {
-		return Math.min(0.7, narjillo.getEnergy() * 3 / Narjillo.MAX_ENERGY);
+		return Math.min(0.7, narjillo.getEnergy() * 6 / Narjillo.MAX_ENERGY);
 	}
 
 	public static Color toRGBColor(int rgbint) {

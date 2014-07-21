@@ -14,12 +14,17 @@ import org.nusco.swimmers.shared.things.Thing;
 
 public class Narjillo implements Thing {
 
-	public static final double MAX_ENERGY = 500_000_000;
-	static final double INITIAL_ENERGY = 250_000_000;
-	private static final double ENERGY_PER_FOOD_ITEM = 250_000_000;
-	private static final double NATURAL_ENERGY_DECAY = 100;
+	public static final double MAX_ENERGY = 2_000_000;
+	static final double INITIAL_ENERGY = 1_000_000;
+	private static final double ENERGY_PER_FOOD_ITEM = 1_000_000;
+	private static final double MAX_TICKS_TO_DEATH = 100_000;
+	private static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
 
-	private static final double PROPULSION_SCALE = 0.1;
+	private static final double PROPULSION_SCALE = 0.2;
+	
+	// 1 means that every movement is divided by the entire mass. This makes high mass a sure-fire loss.
+	// 0.5 means half as much penalty. This justifies having a high mass, for the extra push it affords.
+	private static final double MASS_PENALTY_DURING_PROPULSION = 0.4;
 	
 	private final Head head;
 	private final double mass;
@@ -68,8 +73,7 @@ public class Narjillo implements Thing {
 		// all body operations (except for construction and visualization).
 		// the entire body should be just a machine that mechanically reacts
 		// to a simple input target vector
-		Vector force = forceField.getTotalForce().by(PROPULSION_SCALE);
-		
+		Vector force = forceField.getTotalForce();
 		Vector movement = calculateMovement(force);
 		
 		Vector newPosition = getPosition().plus(movement);
@@ -86,17 +90,15 @@ public class Narjillo implements Thing {
 	}
 
 	private Vector calculateMovement(Vector force) {
-		return force;
-		
-		// FIXME: as soon as I take mass into account, there is
-		// a double penalty for mass: more energy consumption,
-		// and slower movement. this makes higher mass a sure-fire loss.
-		// It should be either/or, and more balanced.
-		
 		// zero mass can actually happen
-//		if (getMass() == 0)
-//			return force;
-//		return force.by(1.0 / Math.pow(getMass(), 0.8));
+		if (getMass() == 0)
+			return force.by(PROPULSION_SCALE);
+
+		return force.by(PROPULSION_SCALE * getMassPenalty());
+	}
+
+	private double getMassPenalty() {
+		return 1.0 / (getMass() * MASS_PENALTY_DURING_PROPULSION);
 	}
 
 	@Override

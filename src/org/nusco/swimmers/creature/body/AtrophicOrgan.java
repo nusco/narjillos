@@ -7,13 +7,13 @@ import org.nusco.swimmers.shared.physics.Vector;
 /**
  * An Organ that is invisible to the naked eye---but still contains a Nerve.
  */
-class ConnectiveTissue extends BodyPart {
+class AtrophicOrgan extends BodyPart {
 
-	public ConnectiveTissue(BodyPart parent) {
+	public AtrophicOrgan(BodyPart parent) {
 		this(parent, new PassNerve());
 	}
 
-	protected ConnectiveTissue(BodyPart parent, Nerve nerve) {
+	protected AtrophicOrgan(BodyPart parent, Nerve nerve) {
 		super(0, 0, 0, parent, nerve);
 	}
 

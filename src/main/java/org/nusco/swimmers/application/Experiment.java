@@ -40,13 +40,13 @@ public class Experiment {
 
 	private static Narjillo getMostProlificNarjillo(Pond pond) {
 		List<Narjillo> narjillos = pond.getNarjillos();
-		narjillos.sort(new Comparator<Narjillo>() {
-			@Override
-			public int compare(Narjillo n1, Narjillo n2) {
-				return n2.getNumberOfDescendants() - n1.getNumberOfDescendants();
-			}
-		});
-		return narjillos.get(0);
+		// use sort() instead
+		Narjillo result = null;
+		for (Narjillo narjillo : narjillos) {
+			if (narjillo.getNumberOfDescendants() > result.getNumberOfDescendants())
+				result = narjillo;
+		}
+		return result;
 	}
 
 	private static String getStatusString(Pond pond, int tick) {

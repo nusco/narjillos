@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'org.nusco.swimmers.application.Narjillos'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	testCompile 'junit:junit:4.11'
+}
+
+jar {
+    baseName = 'narjillos'
+    version =  '0.0.1'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}

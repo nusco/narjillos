@@ -3,3 +3,6 @@
 .settings/
 bin/
 example/
+.gradle/
+build/
+.DS_Store

@@ -8,24 +8,26 @@
   * Additional cost for long-distance egg-firing
   * Birth animation
 ##Lab Bench
-  * Bench with stats
-  * "Real Time" and "Fast" slider
-  * "Paused" setting in speed slider
-  * "No graphics" setting in speed slider
   * Population counter
   * Food counter
+  * Bench with stats
+  * "Real Time" and "Fast" slider
+  * Light switch
+  * "Paused" setting in speed slider
   * Select creature
   * Export creature DNA
   * "Most Prolific" button
+  * Insert experiment seed
   * Save experiment (as a seed)
-  * Load experiment
   * View creature energy
 ##Speed
-  * Buffered pond image (for static elements such as food)
-  * Advanced Level Of Detail (probably not worth the effort - performance seems to simply depend on number of nodes)
+  * Cached food image?
 ##Viewport
-  * Clip viewport inside pond
+  * Unlimited outzooming
+  * Smooth pond circle
+  * Fade away on extreme zooming
   * Fly to target
+  * Fly to full view
   * Smooth overzooming
   * Smooth scrolling
   * Pan intertia?
@@ -38,7 +40,13 @@
 ##Eye candy
   * Long Narjillos colors don't shift to black
   * Detailed death animation
+##Engine
+  * Add multithread protection to random generator (to avoid bugs)
+  * Multithreading (how?)
+  * Space Partitioning optimization
+  * Server mode?
+  * Save dish
+  * Load dish
 ##...
   * Sexual reproduction
-  * Corner map
-  * Add multithread protection to random generator (to avoid bugs)
+  * Corner map?

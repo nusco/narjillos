@@ -22,7 +22,24 @@ public class BodySegment extends BodyPart {
 
 	@Override
 	public int calculateColor() {
-		return getParent().getColor() & getHue();
+		final int redPosition = 0b00000111;
+		final int greenPosition = 0b00111000;
+		final int bluePosition = 0b11000000;
+
+		int red = (getHue() & redPosition);
+		int green = ((getHue() & greenPosition) >> 3);
+		int blue = ((getHue() & bluePosition) >> 5);
+
+		double parentRed = (getParent().getColor() & redPosition);
+		double parentGreen = ((getParent().getColor() & greenPosition) >> 3);
+		double parentBlue = ((getParent().getColor() & bluePosition) >> 5);
+		
+		final double dampening = 0.3;
+		int newRed = ((int)(parentRed * dampening) + red) & 0b111;
+		int newGreen = ((int)(parentGreen * dampening) + green) & 0b111;
+		int newBlue = ((int)(parentBlue * dampening) + blue) & 0b011;
+		
+		return newRed | (newGreen << 3) | (newBlue << 5);
 	}
 
 	private double getAngleToParentAtRest() {

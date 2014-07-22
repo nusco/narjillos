@@ -10,7 +10,7 @@ import org.nusco.swimmers.creature.Narjillo;
 
 class MouthView extends ThingView {
 
-	private static final double MINIMUM_ZOOM_LEVEL = 0.13;
+	private static final double MINIMUM_ZOOM_LEVEL = 0.1;
 
 	private static final int LENGTH = 50;
 	private final Group group = new Group();
@@ -38,7 +38,7 @@ class MouthView extends ThingView {
 	}
 
 	private double getTransparency(double zoomLevel) {
-		double result = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 6;
+		double result = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 5;
 		
 		if (result < 0)
 			return 0;

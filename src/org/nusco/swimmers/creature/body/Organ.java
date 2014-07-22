@@ -45,7 +45,7 @@ public abstract class Organ {
 		cachedEndPoint = null;
 		cachedMainAxis = null;
 		cachedVector = null;
-		cachedColor = null;
+		// the color never changes, so there is no need to reset it
 	}
 
 	public synchronized final double getAbsoluteAngle() {

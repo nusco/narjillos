@@ -23,6 +23,11 @@ class AtrophicOrgan extends BodyPart {
 	}
 
 	@Override
+	protected synchronized int getHue() {
+		return getParent().getHue();
+	}
+
+	@Override
 	public int calculateColor() {
 		return getParent().getColor();
 	}

@@ -74,7 +74,7 @@ public class Pond {
 			thing.tick();
 
 		if (tickCounter-- < 0) {
-			tickCounter = 10000;
+			tickCounter = 100000;
 			updateTargets();
 		}
 	}

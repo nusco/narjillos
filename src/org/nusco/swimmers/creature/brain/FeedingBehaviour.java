@@ -9,6 +9,6 @@ public class FeedingBehaviour extends Behaviour {
 	}
 	
 	public Vector acquireTarget(Pond pond, Vector self) {
-		return pond.find("food", self);
+		return pond.find("food_piece", self);
 	}
 }

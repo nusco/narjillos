@@ -8,8 +8,6 @@
   * Additional cost for long-distance egg-firing
   * Birth animation
 ##Lab Bench
-  * Population counter
-  * Food counter
   * Bench with stats
   * "Real Time" and "Fast" slider
   * Light switch

@@ -28,11 +28,6 @@ public abstract class BodyPartTest {
 
 	@Test
 	public abstract void hasAnEndPoint();
-
-	@Test
-	public void hasAColorValue() {
-		assertEquals(100, part.getColor());
-	}
 	
 	@Test
 	public void hasAMassProportionalToItsArea() {

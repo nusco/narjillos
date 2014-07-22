@@ -5,7 +5,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 
 import org.nusco.swimmers.creature.Narjillo;
-import org.nusco.swimmers.pond.Food;
+import org.nusco.swimmers.pond.FoodPiece;
 import org.nusco.swimmers.shared.things.Thing;
 
 abstract class ThingView {
@@ -34,8 +34,8 @@ abstract class ThingView {
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("swimmer"))
 			return new NarjilloView((Narjillo) thing);
-		else if (thing.getLabel().equals("food")) {
-			return new FoodView((Food)thing);
+		else if (thing.getLabel().equals("food_piece")) {
+			return new FoodView((FoodPiece)thing);
 		} else
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}

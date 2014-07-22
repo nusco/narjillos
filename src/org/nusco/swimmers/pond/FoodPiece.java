@@ -3,7 +3,7 @@ package org.nusco.swimmers.pond;
 import org.nusco.swimmers.shared.physics.Vector;
 import org.nusco.swimmers.shared.things.Thing;
 
-public class Food implements Thing {
+public class FoodPiece implements Thing {
 
 	public Vector position;
 
@@ -23,6 +23,6 @@ public class Food implements Thing {
 
 	@Override
 	public String getLabel() {
-		return "food";
+		return "food_piece";
 	}
 }

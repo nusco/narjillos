@@ -5,14 +5,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Translate;
 
-import org.nusco.swimmers.pond.Food;
+import org.nusco.swimmers.pond.FoodPiece;
 import org.nusco.swimmers.shared.physics.Vector;
 
 class FoodView extends CircularObjectView {
 
 	private final Node circle;
 
-	public FoodView(Food food) {
+	public FoodView(FoodPiece food) {
 		super(food);
 		circle = createCircle(food);
 	}
@@ -24,7 +24,7 @@ class FoodView extends CircularObjectView {
 		return circle;
 	}
 
-	private Node createCircle(Food food) {
+	private Node createCircle(FoodPiece food) {
 		Circle result = new Circle(getRadius());
 		Color baseColor = Color.PURPLE;
 		result.setFill(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0.8));

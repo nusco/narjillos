@@ -43,7 +43,6 @@ public class OrganBuilderTest {
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
 		assertEquals(angleToParentGene % OrganBuilder.PART_MAX_ANGLE_TO_PARENT, organ.getAbsoluteAngle(), 0);
-		assertEquals(colorGene, organ.getColor(), 0);
 	}
 	
 	@Test

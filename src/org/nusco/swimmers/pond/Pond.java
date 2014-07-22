@@ -18,7 +18,7 @@ public class Pond {
 
 	private final long size;
 
-	private final List<Food> food = new LinkedList<>();
+	private final List<FoodPiece> foodPieces = new LinkedList<>();
 	private final List<Narjillo> narjillos = new LinkedList<>();
 
 	private final List<PondEventListener> pondEvents = new LinkedList<>();
@@ -35,16 +35,16 @@ public class Pond {
 
 	public List<Thing> getThings() {
 		List<Thing> result = new LinkedList<Thing>();
-		result.addAll(getFood());
+		result.addAll(getFoodPieces());
 		result.addAll(getNarjillos());
 		return result;
 	}
 
 	// Expensive but safe when invoked from another thread.
 	// optimize
-	private List<Food> getFood() {
-		synchronized (food) {
-			return new LinkedList<Food>(food);
+	private List<FoodPiece> getFoodPieces() {
+		synchronized (foodPieces) {
+			return new LinkedList<FoodPiece>(foodPieces);
 		}
 	}
 
@@ -79,10 +79,10 @@ public class Pond {
 		}
 	}
 
-	public Food spawnFood(Vector position) {
-		Food newFood = new Food();
-		synchronized (food) {
-			food.add(newFood);
+	public FoodPiece spawnFood(Vector position) {
+		FoodPiece newFood = new FoodPiece();
+		synchronized (foodPieces) {
+			foodPieces.add(newFood);
 		}
 		placeInPond(newFood, position);
 		return newFood;
@@ -114,7 +114,7 @@ public class Pond {
 
 	private void updateTarget(Narjillo swimmer) {
 		Vector position = swimmer.getPosition();
-		Vector locationOfClosestFood = find("food", position);
+		Vector locationOfClosestFood = find("food_piece", position);
 		swimmer.setTarget(locationOfClosestFood);
 	}
 
@@ -126,7 +126,7 @@ public class Pond {
 	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
 		// TODO: naive algorithm. replace with space partitioning and finding
 		// neighbors
-		for (Thing foodThing : getFood()) {
+		for (FoodPiece foodThing : getFoodPieces()) {
 			if (isUnderSafeDistance(narjillo, foodThing)
 					&& movement.getMinimumDistanceFromPoint(foodThing.getPosition()) < COLLISION_DISTANCE)
 				consumeFood(narjillo, foodThing);
@@ -148,11 +148,11 @@ public class Pond {
 		return false;
 	}
 
-	private void consumeFood(Narjillo narjillo, Thing foodThing) {
+	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
 		narjillo.feed();
-		removeFromPond(foodThing);
-		synchronized (food) {
-			food.remove(foodThing);
+		removeFromPond(foodPiece);
+		synchronized (foodPieces) {
+			foodPieces.remove(foodPiece);
 		}
 		reproduce(narjillo);
 		updateTargets();
@@ -178,5 +178,13 @@ public class Pond {
 
 	public void addEventListener(PondEventListener pondEventListener) {
 		pondEvents.add(pondEventListener);
+	}
+
+	public int getNumberOfFoodPieces() {
+		return foodPieces.size();
+	}
+
+	public Object getNumberOfNarjillos() {
+		return narjillos.size();
 	}
 }

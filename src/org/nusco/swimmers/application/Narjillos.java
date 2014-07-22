@@ -227,7 +227,9 @@ public class Narjillos extends Application {
 	private void showChronometers(Group root) {
 		String message = "FPS: " + framesChronometer.getTicksInLastSecond() +
 				" / TPS: " + ticksChronometer.getTicksInLastSecond() +
-				" / TICKS: " + NumberFormat.format(numberOfTicks);
+				" / TICKS: " + NumberFormat.format(numberOfTicks) + 
+				"\nNARJ: " + pond.getNumberOfNarjillos() + 
+				" / FOOD: " + pond.getNumberOfFoodPieces();
 		root.getChildren().add(DataView.toNode(message));
 	}
 

@@ -14,15 +14,26 @@ import org.nusco.swimmers.shared.things.Thing;
 public class PondTest {
 	
 	Pond pond = new Pond(1000);
-	Food food1 = pond.spawnFood(Vector.cartesian(100, 100));
-	Food food2 = pond.spawnFood(Vector.cartesian(1000, 1000));
+	FoodPiece foodPiece1 = pond.spawnFood(Vector.cartesian(100, 100));
+	FoodPiece foodPiece2 = pond.spawnFood(Vector.cartesian(1000, 1000));
+	FoodPiece foodPiece3 = pond.spawnFood(Vector.cartesian(10000, 10000));
 	Narjillo swimmer1 = pond.spawnSwimmer(Vector.cartesian(100, 100), DNA.random());
 	Narjillo swimmer2 = pond.spawnSwimmer(Vector.cartesian(1000, 1000), DNA.random());
 
 	@Test
+	public void countsFoodPiece() {
+		assertEquals(3, pond.getNumberOfFoodPieces());
+	}
+
+	@Test
+	public void countsNarjillos() {
+		assertEquals(2, pond.getNumberOfNarjillos());
+	}
+	
+	@Test
 	public void findsTheClosestFoodToAGivenPosition() {
-		assertEquals(Vector.cartesian(100, 100), pond.find("food", Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(1000, 1000), pond.find("food", Vector.cartesian(900, 900)));
+		assertEquals(Vector.cartesian(100, 100), pond.find("food_piece", Vector.cartesian(150, 150)));
+		assertEquals(Vector.cartesian(1000, 1000), pond.find("food_piece", Vector.cartesian(900, 900)));
 	}
 
 	@Test
@@ -35,7 +46,7 @@ public class PondTest {
 	public void returnsThePondCenterIfLookingForThingsInAThinglessWorld() {
 		Pond pond = new Pond(1000);
 		
-		assertEquals(Vector.cartesian(500, 500), pond.find("food", Vector.cartesian(150, 150)));
+		assertEquals(Vector.cartesian(500, 500), pond.find("food_piece", Vector.cartesian(150, 150)));
 		assertEquals(Vector.cartesian(500, 500), pond.find("swimmer", Vector.cartesian(150, 150)));
 	}
 
@@ -44,7 +55,7 @@ public class PondTest {
 		List<Thing> swimmers = pond.getThings();
 		
 		assertTrue(swimmers.contains(swimmer1));
-		assertTrue(swimmers.contains(food1));
+		assertTrue(swimmers.contains(foodPiece1));
 	}
 	
 	@Test

@@ -9,6 +9,6 @@ public class MatingBehaviour extends Behaviour {
 	}
 	
 	public Vector acquireTarget(Pond pond, Vector self) {
-		return pond.find("swimmer", self);
+		return pond.find("narjillo", self);
 	}
 }

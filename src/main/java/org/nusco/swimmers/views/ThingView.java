@@ -32,7 +32,7 @@ abstract class ThingView {
 	public abstract Node toNode(double zoomLevel);
 	
 	static ThingView createViewFor(Thing thing) {
-		if (thing.getLabel().equals("swimmer"))
+		if (thing.getLabel().equals("narjillo"))
 			return new NarjilloView((Narjillo) thing);
 		else if (thing.getLabel().equals("food_piece")) {
 			return new FoodView((FoodPiece)thing);

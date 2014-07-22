@@ -23,7 +23,7 @@ import org.nusco.swimmers.views.DataView;
 import org.nusco.swimmers.views.PondView;
 import org.nusco.swimmers.views.Viewport;
 
-public class Narjillos extends Application {
+public class NarjillosApp extends Application {
 
 	private static final int TARGET_FRAMES_PER_SECOND = 25;
 	private static final int FRAMES_PERIOD = 1000 / TARGET_FRAMES_PER_SECOND;

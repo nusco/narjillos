@@ -33,6 +33,8 @@ public class Narjillo implements Thing {
 	private Vector target = Vector.ZERO;
 	private double energy = INITIAL_ENERGY;
 
+	private int numberOfDescendants = 0;
+	
 	private final List<SwimmerEventListener> swimmerEventListeners = new LinkedList<>();
 	private final DNA genes;
 
@@ -103,7 +105,7 @@ public class Narjillo implements Thing {
 
 	@Override
 	public String getLabel() {
-		return "swimmer";
+		return "narjillo";
 	}
 	
 	public Head getHead() {
@@ -165,5 +167,14 @@ public class Narjillo implements Thing {
 		result.add(organ);
 		for (BodyPart child : organ.getChildren())
 			addWithChildren(child, result);
+	}
+	
+	public int getNumberOfDescendants() {
+		return numberOfDescendants;
+	}
+
+	public DNA getDescendantDNA() {
+		numberOfDescendants++;
+		return getGenes().mutate();
 	}
 }

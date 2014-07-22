@@ -1,5 +1,7 @@
 package org.nusco.swimmers.creature.genetics;
 
+import java.util.Arrays;
+
 import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class DNA {
@@ -28,7 +30,7 @@ public class DNA {
 				resultGenes[i] = genes[i];
 		}
 		for (int i = genes.length; i < resultGenes.length; i++)
-			resultGenes[i] = randomByte();
+			resultGenes[i] = RanGen.nextByte();
 		return new DNA(resultGenes);
 	}
 
@@ -56,11 +58,12 @@ public class DNA {
 		final int genomeSize = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
 		int[] genes = new int[genomeSize];
 		for (int i = 0; i < genes.length; i++)
-			genes[i] = randomByte();
+			genes[i] = RanGen.nextByte();
 		return new DNA(genes);
 	}
 
-	private static int randomByte() {
-		return Math.abs(RanGen.nextInt()) % 255;
+	@Override
+	public String toString() {
+		return Arrays.toString(genes);
 	}
 }

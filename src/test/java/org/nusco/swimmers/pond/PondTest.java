@@ -38,8 +38,8 @@ public class PondTest {
 
 	@Test
 	public void findsTheClosestSwimmerToAGivenPosition() {
-		assertEquals(Vector.cartesian(100, 100), pond.find("swimmer", Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(1000, 1000), pond.find("swimmer", Vector.cartesian(900, 900)));
+		assertEquals(Vector.cartesian(100, 100), pond.find("narjillo", Vector.cartesian(150, 150)));
+		assertEquals(Vector.cartesian(1000, 1000), pond.find("narjillo", Vector.cartesian(900, 900)));
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class PondTest {
 		Pond pond = new Pond(1000);
 		
 		assertEquals(Vector.cartesian(500, 500), pond.find("food_piece", Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(500, 500), pond.find("swimmer", Vector.cartesian(150, 150)));
+		assertEquals(Vector.cartesian(500, 500), pond.find("narjillo", Vector.cartesian(150, 150)));
 	}
 
 	@Test

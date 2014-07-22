@@ -1,7 +1,7 @@
 ##Swimming 2.0
+  * Recalibrate energy calculation
   * Real rotation
 ##Eggs
-  * Recalibrate energy calculation
   * Swimmer spends energy to reproduce
   * Eggs
   * "Egg-firing"
@@ -36,7 +36,6 @@
   * Swimmer updates food item when not existing anymore
   * Swimmer updates food item when not in range anymore
 ##Eye candy
-  * Long Narjillos colors don't shift to black
   * Detailed death animation
 ##Engine
   * Add multithread protection to random generator (to avoid bugs)

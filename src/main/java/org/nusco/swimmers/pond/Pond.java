@@ -48,7 +48,7 @@ public class Pond {
 		}
 	}
 
-	private synchronized List<Narjillo> getNarjillos() {
+	public synchronized List<Narjillo> getNarjillos() {
 		synchronized (narjillos) {
 			return new LinkedList<Narjillo>(narjillos);
 		}
@@ -159,7 +159,7 @@ public class Pond {
 	}
 
 	private void reproduce(Narjillo narjillo) {
-		DNA childDNA = narjillo.getGenes().mutate();
+		DNA childDNA = narjillo.getDescendantDNA();
 		Vector position = narjillo.getPosition().plus(
 				Vector.cartesian(6000 * RanGen.nextDouble() - 3000, 6000 * RanGen.nextDouble() - 3000));
 		spawnSwimmer(position, childDNA);

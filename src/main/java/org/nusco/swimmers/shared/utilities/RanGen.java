@@ -4,26 +4,34 @@ import java.util.Random;
 
 public class RanGen {
 
-	private final static RanGen INSTANCE = new RanGen();
+	private static Random random;
 	
-	private final Random random;
-	
-	private RanGen() {
-		long seed = (long)(Math.random() * Long.MAX_VALUE);
-//		long seed = 2648718169735535616l;
-		System.out.println("Random seed: " + seed);
+	public static void seed(long seed) {
 		random = new Random(seed);
 	}
 
+	private static Random getRandom() {
+		if (random == null) {
+			long seed = (long)(Math.random() * Long.MAX_VALUE);
+			System.out.println("Random seed: " + seed);
+			random = new Random(seed);
+		}
+		return random;
+	}
+
 	public static double nextDouble() {
-		return INSTANCE.random.nextDouble();
+		return getRandom().nextDouble();
 	}
 
 	public static double nextGaussian() {
-		return INSTANCE.random.nextGaussian();
+		return getRandom().nextGaussian();
 	}
 
 	public static int nextInt() {
-		return INSTANCE.random.nextInt();
+		return getRandom().nextInt();
+	}
+
+	public static int nextByte() {
+		return Math.abs(getRandom().nextInt()) % 255;
 	}
 }

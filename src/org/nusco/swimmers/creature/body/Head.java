@@ -3,6 +3,7 @@ package org.nusco.swimmers.creature.body;
 import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.creature.physics.ForceField;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public class Head extends BodyPart {
 
@@ -11,8 +12,8 @@ public class Head extends BodyPart {
 
 	private final double metabolicRate;
 	
-	public Head(int length, int thickness, int color, double metabolicRate) {
-		super(length, thickness, color, null, new PassNerve());
+	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
+		super(length, thickness, hue, null, new PassNerve());
 		this.metabolicRate = metabolicRate;
 		setAngleToParent(0);
 		tick(Vector.ZERO);
@@ -29,7 +30,7 @@ public class Head extends BodyPart {
 	}
 
 	@Override
-	protected int calculateColor() {
+	protected ColorByte calculateColor() {
 		return getHue();
 	}
 

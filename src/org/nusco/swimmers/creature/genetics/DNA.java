@@ -53,7 +53,7 @@ public class DNA {
 	}
 
 	public static DNA random() {
-		final int genomeSize = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 5 + 2);
+		final int genomeSize = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 15 + 10);
 		int[] genes = new int[genomeSize];
 		for (int i = 0; i < genes.length; i++)
 			genes[i] = randomByte();

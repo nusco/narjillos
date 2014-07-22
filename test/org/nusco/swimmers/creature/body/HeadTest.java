@@ -6,12 +6,13 @@ import org.junit.Test;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public class HeadTest extends OrganTest {
 
 	@Override
 	public Head createConcreteBodyPart(int length, int thickness) {
-		return new Head(length, thickness, 100, 1);
+		return new Head(length, thickness, new ColorByte(100), 1);
 	}
 
 	@Test
@@ -31,7 +32,7 @@ public class HeadTest extends OrganTest {
 
 	@Test
 	public void hasAPassNerve() {
-		Nerve nerve = new Head(0, 0, 0, 1).getNerve();
+		Nerve nerve = new Head(0, 0, new ColorByte(0), 1).getNerve();
 				
 		assertEquals(PassNerve.class, nerve.getClass());
 	}

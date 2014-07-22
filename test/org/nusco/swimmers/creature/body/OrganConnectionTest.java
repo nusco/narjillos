@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public abstract class OrganConnectionTest {
 	
@@ -15,7 +16,7 @@ public abstract class OrganConnectionTest {
 		final ClickNerve nerve3 = new ClickNerve();
 		final ClickNerve nerve4 = new ClickNerve();
 
-		BodyPart head = new Head(0, 0, 0, 1) {
+		BodyPart head = new Head(0, 0, new ColorByte(0), 1) {
 			@Override
 			public Nerve getNerve() {
 				return nerve1;

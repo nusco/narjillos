@@ -6,6 +6,7 @@ import java.util.List;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public abstract class BodyPart extends Organ {
 
@@ -17,7 +18,7 @@ public abstract class BodyPart extends Organ {
 
 	private MovementListener movementListener = MovementListener.NULL;
 
-	protected BodyPart(int length, int thickness, int hue, BodyPart parent, Nerve nerve) {
+	protected BodyPart(int length, int thickness, ColorByte hue, BodyPart parent, Nerve nerve) {
 		super(length, thickness, hue);
 		this.nerve = nerve;
 		this.parent = parent;
@@ -41,8 +42,6 @@ public abstract class BodyPart extends Organ {
 	protected Vector calculateMainAxis() {
 		return getParent().calculateMainAxis();
 	}
-
-	protected abstract int calculateColor();
 
 	protected final BodyPart getParent() {
 		return parent;
@@ -88,8 +87,8 @@ public abstract class BodyPart extends Organ {
 			child.setMovementListener(listener);
 	}
 
-	public BodyPart sproutOrgan(int length, int thickness, int angleToParentAtRest, int rgb, int delay) {
-		return addChild(new BodySegment(length, thickness, angleToParentAtRest, rgb, this, delay));
+	public BodyPart sproutOrgan(int length, int thickness, int angleToParentAtRest, ColorByte hue, int delay) {
+		return addChild(new BodySegment(length, thickness, angleToParentAtRest, hue, this, delay));
 	}
 
 	BodyPart sproutOrgan(Nerve nerve) {

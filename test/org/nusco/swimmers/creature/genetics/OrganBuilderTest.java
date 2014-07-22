@@ -4,8 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.creature.body.BodyPart;
+import org.nusco.swimmers.creature.body.Organ;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public class OrganBuilderTest {
 
@@ -23,7 +24,7 @@ public class OrganBuilderTest {
 
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, head.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, head.getThickness(), 0);
-		assertEquals(colorGene, head.getColor(), 0);
+		assertEquals(new ColorByte(colorGene), head.getColor());
 		assertNotNull(head.getChildren().get(0));
 	}
 

@@ -9,6 +9,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.body.Organ;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 class OrganView extends ThingView {
 
@@ -64,13 +65,8 @@ class OrganView extends ThingView {
 		return Math.min(0.7, getNarjillo().getEnergy() * 6 / Narjillo.MAX_ENERGY);
 	}
 
-	public static Color toRGBColor(int rgbint) {
-		byte rgbByte = (byte)rgbint;
-		double MAX_VALUE_IN_3_BITS = 7.0;
-		double red = (rgbByte & 0b00000111) / MAX_VALUE_IN_3_BITS;
-		double green = ((rgbByte & 0b00111000) >> 3) / MAX_VALUE_IN_3_BITS;
-		double blue = ((rgbByte & 0b11000000) >> 5) / MAX_VALUE_IN_3_BITS;
-		return new Color(red, green, blue, 1);
+	public static Color toRGBColor(ColorByte colorByte) {
+		return new Color(colorByte.getRed(), colorByte.getGreen(), colorByte.getBlue(), 1);
 	}
 
 	@Override

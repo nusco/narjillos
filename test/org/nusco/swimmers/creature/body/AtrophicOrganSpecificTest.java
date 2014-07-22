@@ -6,18 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.swimmers.creature.body.Head;
-import org.nusco.swimmers.creature.body.AtrophicOrgan;
-import org.nusco.swimmers.creature.body.BodyPart;
 import org.nusco.swimmers.creature.body.pns.Nerve;
 import org.nusco.swimmers.creature.body.pns.PassNerve;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public class AtrophicOrganSpecificTest {
 
 	@Test
 	public void isAVectorWithAP() {
-		BodyPart head = new Head(10, 10, 100, 1);
+		BodyPart head = new Head(10, 10, new ColorByte(100), 1);
 		BodyPart connectiveTissue = head.sproutAtrophicOrgan();
 
 		assertEquals(head, connectiveTissue.getParent());
@@ -25,10 +23,10 @@ public class AtrophicOrganSpecificTest {
 
 	@Test
 	public void hasChildren() {
-		BodyPart head = new Head(10, 10, 100, 1);
+		BodyPart head = new Head(10, 10, new ColorByte(100), 1);
 		BodyPart connectiveTissue = head.sproutAtrophicOrgan();
-		BodyPart child1 = connectiveTissue.sproutOrgan(10, 10, 10, 100, 0);
-		BodyPart child2 = connectiveTissue.sproutOrgan(10, 10, -10, 100, 0);
+		BodyPart child1 = connectiveTissue.sproutOrgan(10, 10, 10, new ColorByte(100), 0);
+		BodyPart child2 = connectiveTissue.sproutOrgan(10, 10, -10, new ColorByte(100), 0);
 		
 		List<BodyPart> expected = new LinkedList<>();
 		expected.add(child1);
@@ -39,7 +37,7 @@ public class AtrophicOrganSpecificTest {
 
 	@Test
 	public void itsGeometricDataHasSimpleDefaultValues() {
-		BodyPart head = new Head(10, 10, 100, 1);
+		BodyPart head = new Head(10, 10, new ColorByte(100), 1);
 		Organ connectiveTissue = head.sproutAtrophicOrgan();
 
 		assertEquals(0, connectiveTissue.getLength());
@@ -48,15 +46,15 @@ public class AtrophicOrganSpecificTest {
 
 	@Test
 	public void itsColorIsTheSameAsItsParents() {
-		BodyPart head = new Head(10, 10, 100, 1);
+		BodyPart head = new Head(10, 10, new ColorByte(100), 1);
 		Organ connectiveTissue = head.sproutAtrophicOrgan();
 
-		assertEquals(100, connectiveTissue.getColor(), 0);
+		assertEquals(new ColorByte(100), connectiveTissue.getColor());
 	}
 	
 	@Test
 	public void itBeginsAndEndsWhereItsParentEnds() {
-		Head head = new Head(15, 10, 100, 1);
+		Head head = new Head(15, 10, new ColorByte(100), 1);
 		Organ connectiveTissue = new AtrophicOrgan(head).sproutAtrophicOrgan();
 
 		assertEquals(Vector.cartesian(15, 0), connectiveTissue.getStartPoint());
@@ -65,7 +63,7 @@ public class AtrophicOrganSpecificTest {
 
 	@Test
 	public void canSproutVisibleOrgans() {
-		Organ child = new AtrophicOrgan(new Head(0, 0, 0, 1)).sproutOrgan(20, 12, 45, 100, 0);
+		Organ child = new AtrophicOrgan(new Head(0, 0, new ColorByte(0), 1)).sproutOrgan(20, 12, 45, new ColorByte(100), 0);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

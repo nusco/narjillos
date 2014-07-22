@@ -9,10 +9,11 @@ import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.genetics.DNA;
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public class NarjilloEventsTest {
 
-	Narjillo narjillo = new Narjillo(new Head(10, 10, 10, 1), DNA.random());
+	Narjillo narjillo = new Narjillo(new Head(10, 10, new ColorByte(10), 1), DNA.random());
 
 	class NullSwimmerEventListener implements SwimmerEventListener {
 		@Override

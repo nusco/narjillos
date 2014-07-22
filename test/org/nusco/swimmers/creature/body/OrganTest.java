@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public abstract class OrganTest extends BodyPartTest {
 
@@ -20,8 +21,8 @@ public abstract class OrganTest extends BodyPartTest {
 	
 	@Test
 	public void knowsItsChildren() {
-		BodyPart child1 = part.sproutOrgan(20, 10, 45, 100, 0);
-		BodyPart child2 = part.sproutOrgan(20, 10, -45, 100, 0);
+		BodyPart child1 = part.sproutOrgan(20, 10, 45, new ColorByte(100), 0);
+		BodyPart child2 = part.sproutOrgan(20, 10, -45, new ColorByte(100), 0);
 
 		List<BodyPart> expected = new LinkedList<>();
 		expected.add(child1);
@@ -32,7 +33,7 @@ public abstract class OrganTest extends BodyPartTest {
 
 	@Test
 	public void sproutsVisibleOrgans() {
-		Organ child = part.sproutOrgan(20, 12, 45, 100, 0);
+		Organ child = part.sproutOrgan(20, 12, 45, new ColorByte(100), 0);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

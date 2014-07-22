@@ -1,7 +1,8 @@
 package org.nusco.swimmers.creature.genetics;
 
-import org.nusco.swimmers.creature.body.Head;
 import org.nusco.swimmers.creature.body.BodyPart;
+import org.nusco.swimmers.creature.body.Head;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 class OrganBuilder {
 	
@@ -18,7 +19,7 @@ class OrganBuilder {
 	}
 
 	public Head buildHeadSystem() {
-		Head result = new Head(getLength(), getThickness(), getRGB(), getMetabolicRate());
+		Head result = new Head(getLength(), getThickness(), getHue(), getMetabolicRate());
 		result.sproutNeck();
 		return result;
 	}
@@ -26,7 +27,7 @@ class OrganBuilder {
 	public BodyPart buildSegment(BodyPart parent, int angleSign) {
 		if(getLengthGene() <= MIN_ORGAN_SIZE || getThicknessGene() <= MIN_ORGAN_SIZE)
 			return parent.sproutAtrophicOrgan();
-		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getRGB(), getDelay());
+		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getHue(), getDelay());
 	}
 
 	private int getLengthGene() {
@@ -71,8 +72,7 @@ class OrganBuilder {
 		return result;
 	}
 	
-	private int getRGB() {
-		int rgbGene = genes[5];
-		return rgbGene;
+	private ColorByte getHue() {
+		return new ColorByte(genes[5]);
 	}
 }

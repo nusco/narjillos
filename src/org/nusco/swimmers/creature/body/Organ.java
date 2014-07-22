@@ -2,12 +2,13 @@ package org.nusco.swimmers.creature.body;
 
 import org.nusco.swimmers.shared.physics.Segment;
 import org.nusco.swimmers.shared.physics.Vector;
+import org.nusco.swimmers.shared.utilities.ColorByte;
 
 public abstract class Organ {
 
 	protected final int length;
 	protected final int thickness;
-	protected final int hue;
+	protected final ColorByte hue;
 	
 	// caching - ugly, but huge performance benefits
 	private Vector cachedStartPoint = null;
@@ -15,9 +16,9 @@ public abstract class Organ {
 	private Double cachedAbsoluteAngle = null;
 	private Vector cachedMainAxis = null;
 	private Vector cachedVector = null;
-	private Integer cachedColor = null;
+	private ColorByte cachedColor = null;
 
-	public Organ(int length, int thickness, int hue) {
+	public Organ(int length, int thickness, ColorByte hue) {
 		this.length = length;
 		this.thickness = thickness;
 		this.hue = hue;
@@ -31,7 +32,7 @@ public abstract class Organ {
 		return thickness;
 	}
 
-	protected synchronized int getHue() {
+	protected synchronized ColorByte getHue() {
 		return hue;
 	}
 
@@ -84,13 +85,13 @@ public abstract class Organ {
 
 	protected abstract Vector calculateMainAxis();
 
-	public synchronized final int getColor() {
+	public synchronized final ColorByte getColor() {
 		if (cachedColor == null)
 			cachedColor = calculateColor();
 		return cachedColor;
 	}
 
-	protected abstract int calculateColor();
+	protected abstract ColorByte calculateColor();
 
 	public synchronized Segment getSegment() {
 		return new Segment(getStartPoint(), getVector());
@@ -98,7 +99,7 @@ public abstract class Organ {
 
 	@Override
 	public int hashCode() {
-		return hue ^ length ^ thickness;
+		return hue.toByteSizedInt() ^ length ^ thickness;
 	}
 
 	@Override

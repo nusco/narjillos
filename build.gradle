@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = 'org.nusco.swimmers.application.NarjillosApp'
+mainClassName = 'org.nusco.swimmers.application.Experiment'
 
 repositories {
 	mavenLocal()

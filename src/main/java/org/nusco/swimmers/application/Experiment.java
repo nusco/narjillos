@@ -10,7 +10,7 @@ import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class Experiment {
 
-	private static final int CYCLES = 100_000_000;
+	private static final int CYCLES = 1_000_000_000;
 	private static final long SEED = 2648718169735535616l;
 
 	private static final Chronometer ticksChronometer = new Chronometer();

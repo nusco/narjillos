@@ -184,7 +184,7 @@ public class Pond {
 		return foodPieces.size();
 	}
 
-	public Object getNumberOfNarjillos() {
+	public int getNumberOfNarjillos() {
 		return narjillos.size();
 	}
 }

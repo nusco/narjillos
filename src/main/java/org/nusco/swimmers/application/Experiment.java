@@ -1,6 +1,5 @@
 package org.nusco.swimmers.application;
 
-import java.util.Comparator;
 import java.util.List;
 
 import org.nusco.swimmers.creature.Narjillo;
@@ -10,8 +9,9 @@ import org.nusco.swimmers.shared.utilities.RanGen;
 
 public class Experiment {
 
-	private static final int CYCLES = 1_000_000_000;
 	private static final long SEED = 2648718169735535616l;
+	private static final int CYCLES = 1_000_000_000;
+	private static final int PARSE_INTERVAL = 10_000;
 
 	private static final Chronometer ticksChronometer = new Chronometer();
 
@@ -33,30 +33,33 @@ public class Experiment {
 		for (int i = 0; i < CYCLES; i++) {
 			pond.tick();
 			ticksChronometer.tick();
-			if (i % 10_000 == 0)
+			if (i % PARSE_INTERVAL == 0)
 				System.out.println(getStatusString(pond, i));
 		}
 	}
 
 	private static Narjillo getMostProlificNarjillo(Pond pond) {
 		List<Narjillo> narjillos = pond.getNarjillos();
-		narjillos.sort(new Comparator<Narjillo>() {
-			@Override
-			public int compare(Narjillo n1, Narjillo n2) {
-				return n2.getNumberOfDescendants() - n1.getNumberOfDescendants();
-			}
-		});
-		return narjillos.get(0);
+		Narjillo result = narjillos.get(0);
+		for (Narjillo narjillo : narjillos)
+			if (narjillo.getNumberOfDescendants() > result.getNumberOfDescendants())
+				result = narjillo;
+		return result;
 	}
 
 	private static String getStatusString(Pond pond, int tick) {
-		Narjillo mostProlificNarjillo = getMostProlificNarjillo(pond);
+		if (pond.getNumberOfNarjillos() == 0)
+			return tick + ", " +
+					pond.getNumberOfNarjillos() + ", " +
+					pond.getNumberOfFoodPieces() + ", " +
+					ticksChronometer.getTicksInLastSecond();
 
-		return 	mostProlificNarjillo.getNumberOfDescendants() + ", " +
-				mostProlificNarjillo.getGenes() + ", " +
-				tick + ", " +
+		Narjillo mostProlificNarjillo = getMostProlificNarjillo(pond);
+		return 	tick + ", " +
 				pond.getNumberOfNarjillos() + ", " +
 				pond.getNumberOfFoodPieces() + ", " +
-				ticksChronometer.getTicksInLastSecond();
+				ticksChronometer.getTicksInLastSecond() + ", " +
+				mostProlificNarjillo.getNumberOfDescendants() + ", " +
+				mostProlificNarjillo.getGenes() + ", ";
 	}
 }

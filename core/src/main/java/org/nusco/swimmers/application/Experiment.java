@@ -49,17 +49,17 @@ public class Experiment {
 
 	private static String getStatusString(Pond pond, int tick) {
 		if (pond.getNumberOfNarjillos() == 0)
-			return tick + ", " +
+			return 	tick + ", " +
+					ticksChronometer.getTicksInLastSecond() + ", " +
 					pond.getNumberOfNarjillos() + ", " +
-					pond.getNumberOfFoodPieces() + ", " +
-					ticksChronometer.getTicksInLastSecond();
+					pond.getNumberOfFoodPieces();
 
 		Narjillo mostProlificNarjillo = getMostProlificNarjillo(pond);
 		return 	tick + ", " +
+				ticksChronometer.getTicksInLastSecond() + ", " +
 				pond.getNumberOfNarjillos() + ", " +
 				pond.getNumberOfFoodPieces() + ", " +
-				ticksChronometer.getTicksInLastSecond() + ", " +
 				mostProlificNarjillo.getNumberOfDescendants() + ", " +
-				mostProlificNarjillo.getGenes() + ", ";
+				mostProlificNarjillo.getGenes();
 	}
 }

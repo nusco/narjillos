@@ -1,72 +1,54 @@
 package org.nusco.narjillos.pond;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.nusco.narjillos.shared.things.Thing;
 
 class ParallelTicker {
 
-	private static final int NUMBER_OF_WORKERS = 3;
+	private final TickThread[] workers;
 
-	public void runJobs(List<? extends Thing> list) {
-		TickThread[] workers = createWorkerThreads(list);
-		waitUntilDone(workers);
+	public ParallelTicker(int numberOfWorkers) {
+		workers = new TickThread[numberOfWorkers];
+		for (int i = 0; i < numberOfWorkers; i++) {
+			workers[i] = new TickThread();
+			workers[i].start();
+		}
 	}
 
-	private TickThread[] createWorkerThreads(List<? extends Thing> list) {
-		TickThread[] workers = new TickThread[NUMBER_OF_WORKERS];
-		for (int i = 0; i < workers.length; i++)
-			workers[i] = new TickThread();
-
+	public void tick(Set<? extends Thing> things) {
 		int counter = 0;
-		for (final Thing thing : list) {
-			workers[counter % NUMBER_OF_WORKERS].add(thing);
+		for (Thing thing : things) {
+			workers[counter % workers.length].add(thing);
 			counter++;
 		}
-
-		for (int i = 0; i < workers.length; i++)
-			workers[i].start();
-		return workers;
-	}
-
-	private void waitUntilDone(TickThread[] workers) {
-		while (!allWorkersAreDone(workers));
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-			}
-	}
-
-	private boolean allWorkersAreDone(TickThread[] workers) {
-		for (TickThread thread : workers)
-			if (!thread.isDone())
-				return false;
-		return true;
 	}
 }
 
 class TickThread extends Thread {
 
-	private List<Thing> things = new LinkedList<>();
-	private boolean done = false;
-	
+	private final BlockingQueue<Thing> things = new LinkedBlockingQueue<>();
+
 	public void add(Thing thing) {
-		things.add(thing);
+		try {
+			things.put(thing);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
+	public boolean isPaused() {
+		return things.isEmpty();
+	}
+
 	@Override
 	public void run() {
-		for (Thing thing : things)
-			thing.tick();
-		setDone();
-	}
-	
-	public synchronized boolean isDone() {
-		return done;
-	}
-	
-	public synchronized void setDone() {
-		done = true;
+		while (true)
+			try {
+				things.take().tick();
+			} catch (InterruptedException e) {
+			}
 	}
 }

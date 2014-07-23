@@ -29,7 +29,7 @@ public class Narjillo implements Thing {
 	private final Head head;
 	private final double mass;
 
-	private Vector position;
+	private Vector position = Vector.ZERO;
 	private Vector target = Vector.ZERO;
 	private double energy = INITIAL_ENERGY;
 

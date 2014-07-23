@@ -1,8 +1,11 @@
 package org.nusco.narjillos.pond;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.SwimmerEventListener;
@@ -16,44 +19,33 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class Pond {
 
 	private static final double COLLISION_DISTANCE = 30;
+	private static final int NUMBER_OF_WORKERS = 2;
 
 	private final long size;
-	private final List<FoodPiece> foodPieces = new LinkedList<>();
-	private final List<Narjillo> narjillos = new LinkedList<>();
-	private final ParallelTicker scheduler = new ParallelTicker ();
-	
-	// optimize and conquer
-	private List<FoodPiece> foodPiecesAtFrameStart;
-	private List<Narjillo> narjillosAtFrameStart;
-	private List<Thing> thingsRemovedBeforeFrameEnd;
-	
+	private final Set<FoodPiece> foodPieces = Collections.newSetFromMap(new ConcurrentHashMap<FoodPiece, Boolean>());
+	private final Set<Narjillo> narjillos = Collections.newSetFromMap(new ConcurrentHashMap<Narjillo, Boolean>());
+	private final ParallelTicker scheduler = new ParallelTicker(NUMBER_OF_WORKERS);
+
 	private final List<PondEventListener> pondEvents = new LinkedList<>();
 
 	private int tickCounter = 0;
 
 	public Pond(long size) {
 		this.size = size;
-		resetAllCaches();
 	}
 
 	public long getSize() {
 		return size;
 	}
 
-	private synchronized void resetAllCaches() {
-		foodPiecesAtFrameStart = Collections.unmodifiableList(foodPieces);
-		narjillosAtFrameStart = Collections.unmodifiableList(narjillos);
-		thingsRemovedBeforeFrameEnd = new LinkedList<>();
-	}
-
-	public List<Thing> getThings() {
-		List<Thing> result = new LinkedList<Thing>();
-		result.addAll(foodPiecesAtFrameStart);
-		result.addAll(narjillosAtFrameStart);
+	public synchronized Set<Thing> getThings() {
+		Set<Thing> result = new HashSet<Thing>();
+		result.addAll(foodPieces);
+		result.addAll(narjillos);
 		return result;
 	}
 
-	private Vector find(List<? extends Thing> things, Vector near) {
+	private Vector find(Set<? extends Thing> things, Vector near) {
 		double minDistance = Double.MAX_VALUE;
 		Vector result = Vector.cartesian(getSize() / 2, getSize() / 2);
 		for (Thing thing : things) {
@@ -66,44 +58,32 @@ public class Pond {
 		return result;
 	}
 
-	public Vector findFoodPiece(Vector near) {
-		return find(foodPiecesAtFrameStart, near);
+	public synchronized Vector findFoodPiece(Vector near) {
+		return find(foodPieces, near);
 	}
 
-	public Vector findNarjillo(Vector near) {
-		return find(narjillosAtFrameStart, near);
+	public synchronized Vector findNarjillo(Vector near) {
+		return find(narjillos, near);
 	}
 
-	public void tick() {
-		resetAllCaches();
+	public synchronized void tick() {
+		scheduler.tick(foodPieces);
+		scheduler.tick(narjillos);
 
-		scheduler.runJobs(getThings());
-
-		removeThingsAtFrameEnd();
-		
 		if (tickCounter-- < 0) {
 			tickCounter = 100000;
 			updateTargets();
 		}
 	}
 
-	private void removeThingsAtFrameEnd() {
-		for (Thing thing : thingsRemovedBeforeFrameEnd) {
-			for (PondEventListener pondEvent : pondEvents)
-				pondEvent.thingRemoved(thing);
-			narjillos.remove(thing);
-			foodPieces.remove(thing);
-		}
-	}
-
-	public FoodPiece spawnFood(Vector position) {
+	public synchronized final FoodPiece spawnFood(Vector position) {
 		FoodPiece newFood = new FoodPiece();
-		foodPieces.add(newFood);
 		placeInPond(newFood, position);
+		foodPieces.add(newFood);
 		return newFood;
 	}
 
-	public final Narjillo spawnSwimmer(Vector position, DNA genes) {
+	public synchronized final Narjillo spawnSwimmer(Vector position, DNA genes) {
 		final Narjillo narjillo = new Embryo(genes).develop();
 		narjillo.addSwimmerEventListener(new SwimmerEventListener() {
 
@@ -117,8 +97,8 @@ public class Pond {
 				killNarjillo(narjillo);
 			}
 		});
-		narjillos.add(narjillo);
 		placeInPond(narjillo, position);
+		narjillos.add(narjillo);
 		return narjillo;
 	}
 
@@ -128,33 +108,32 @@ public class Pond {
 		swimmer.setTarget(locationOfClosestFood);
 	}
 
-	private void updateTargets() {
-		for (Narjillo narjillo : narjillosAtFrameStart)
+	private synchronized void updateTargets() {
+		for (Narjillo narjillo : narjillos)
 			updateTarget(narjillo);
 	}
 
-	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
+	private synchronized void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
 		// TODO: naive algorithm. replace with space partitioning and finding
 		// neighbors
-		for (FoodPiece foodThing : foodPiecesAtFrameStart)
+		for (FoodPiece foodThing : foodPieces)
 			checkCollisionWithFood(narjillo, movement, foodThing);
 	}
 
 	private void checkCollisionWithFood(Narjillo narjillo, Segment movement, FoodPiece foodThing) {
+		// Ugly optimization to avoid getting into the expensive
+		// getMinimumDistanceFromPoint() method.
+		// This will hopefully be redundant once we have a good space partition
+		// algorithm, but it makes quite a difference until then
 		if (!isUnderSafeDistance(narjillo, foodThing))
-			return;  // optimization
+			return;
 
 		if (movement.getMinimumDistanceFromPoint(foodThing.getPosition()) > COLLISION_DISTANCE)
 			return;
-		
+
 		consumeFood(narjillo, foodThing);
 	}
 
-	// ugly optimization to avoid getting into the expensive
-	// getMinimumDistanceFromPoint() method.
-	// this will hopefully be redundant once we have a good space partition
-	// algorithm,
-	// but it makes quite a difference until then
 	private boolean isUnderSafeDistance(Narjillo narjillo, Thing foodThing) {
 		Vector position = narjillo.getPosition();
 		// it's unlikely that we need to consider food further away
@@ -167,16 +146,16 @@ public class Pond {
 	}
 
 	private synchronized void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
-		if (thingsRemovedBeforeFrameEnd.contains(foodPiece))
-			return; // already consumed
+		if (!foodPieces.contains(foodPiece))
+			return; // race condition: already consumed
 		narjillo.feed();
-		thingsRemovedBeforeFrameEnd.add(foodPiece);
+		foodPieces.remove(foodPiece);
 		reproduce(narjillo);
 		updateTargets();
 	}
 
 	private synchronized void killNarjillo(final Narjillo narjillo) {
-		thingsRemovedBeforeFrameEnd.add(narjillo);
+		narjillos.remove(narjillo);
 	}
 
 	private void reproduce(Narjillo narjillo) {
@@ -197,20 +176,22 @@ public class Pond {
 		pondEvents.add(pondEventListener);
 	}
 
-	public int getNumberOfFoodPieces() {
-		return foodPiecesAtFrameStart.size();
+	public synchronized int getNumberOfFoodPieces() {
+		return foodPieces.size();
 	}
 
-	public int getNumberOfNarjillos() {
-		return narjillosAtFrameStart.size();
+	public synchronized int getNumberOfNarjillos() {
+		return narjillos.size();
 	}
 
-	public Narjillo getMostProlificNarjillo() {
-		List<Narjillo> narjillos = narjillosAtFrameStart;
-		Narjillo result = narjillos.get(0);
+	public synchronized Narjillo getMostProlificNarjillo() {
+		Narjillo result = null;
+		int maxDescendants = 0;
 		for (Narjillo narjillo : narjillos)
-			if (narjillo.getNumberOfDescendants() > result.getNumberOfDescendants())
+			if (narjillo.getNumberOfDescendants() > maxDescendants) {
 				result = narjillo;
+				maxDescendants = narjillo.getNumberOfDescendants();
+			}
 		return result;
 	}
 }

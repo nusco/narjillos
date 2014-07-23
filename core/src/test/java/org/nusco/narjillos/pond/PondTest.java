@@ -3,7 +3,7 @@ package org.nusco.narjillos.pond;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +38,10 @@ public class PondTest {
 
 	@Test
 	public void returnsAllTheThings() {
-		List<? extends Thing> swimmers = pond.getThings();
+		Set<Thing> things = pond.getThings();
 		
-		assertTrue(swimmers.contains(swimmer1));
-		assertTrue(swimmers.contains(foodPiece1));
+		assertTrue(things.contains(swimmer1));
+		assertTrue(things.contains(foodPiece1));
 	}
 	
 	@Test

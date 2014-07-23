@@ -1,7 +1,5 @@
 package org.nusco.swimmers.application;
 
-import java.util.List;
-
 import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.pond.Pond;
 import org.nusco.swimmers.shared.utilities.Chronometer;
@@ -38,15 +36,6 @@ public class Experiment {
 		}
 	}
 
-	private static Narjillo getMostProlificNarjillo(Pond pond) {
-		List<Narjillo> narjillos = pond.getNarjillos();
-		Narjillo result = narjillos.get(0);
-		for (Narjillo narjillo : narjillos)
-			if (narjillo.getNumberOfDescendants() > result.getNumberOfDescendants())
-				result = narjillo;
-		return result;
-	}
-
 	private static String getStatusString(Pond pond, int tick) {
 		if (pond.getNumberOfNarjillos() == 0)
 			return 	tick + ", " +
@@ -54,7 +43,7 @@ public class Experiment {
 					pond.getNumberOfNarjillos() + ", " +
 					pond.getNumberOfFoodPieces();
 
-		Narjillo mostProlificNarjillo = getMostProlificNarjillo(pond);
+		Narjillo mostProlificNarjillo = pond.getMostProlificNarjillo();
 		return 	tick + ", " +
 				ticksChronometer.getTicksInLastSecond() + ", " +
 				pond.getNumberOfNarjillos() + ", " +

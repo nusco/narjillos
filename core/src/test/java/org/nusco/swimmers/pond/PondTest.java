@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.nusco.swimmers.creature.Narjillo;
 import org.nusco.swimmers.creature.genetics.DNA;
@@ -17,11 +18,16 @@ public class PondTest {
 	FoodPiece foodPiece1 = pond.spawnFood(Vector.cartesian(100, 100));
 	FoodPiece foodPiece2 = pond.spawnFood(Vector.cartesian(1000, 1000));
 	FoodPiece foodPiece3 = pond.spawnFood(Vector.cartesian(10000, 10000));
-	Narjillo swimmer1 = pond.spawnSwimmer(Vector.cartesian(100, 100), DNA.random());
-	Narjillo swimmer2 = pond.spawnSwimmer(Vector.cartesian(1000, 1000), DNA.random());
+	Narjillo swimmer1 = pond.spawnSwimmer(Vector.cartesian(150, 150), DNA.random());
+	Narjillo swimmer2 = pond.spawnSwimmer(Vector.cartesian(1050, 1050), DNA.random());
 
+	@Before
+	public void tickPondOnce() {
+		pond.tick();
+	}
+	
 	@Test
-	public void countsFoodPiece() {
+	public void countsFoodPieces() {
 		assertEquals(3, pond.getNumberOfFoodPieces());
 	}
 
@@ -29,30 +35,10 @@ public class PondTest {
 	public void countsNarjillos() {
 		assertEquals(2, pond.getNumberOfNarjillos());
 	}
-	
-	@Test
-	public void findsTheClosestFoodToAGivenPosition() {
-		assertEquals(Vector.cartesian(100, 100), pond.find("food_piece", Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(1000, 1000), pond.find("food_piece", Vector.cartesian(900, 900)));
-	}
-
-	@Test
-	public void findsTheClosestSwimmerToAGivenPosition() {
-		assertEquals(Vector.cartesian(100, 100), pond.find("narjillo", Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(1000, 1000), pond.find("narjillo", Vector.cartesian(900, 900)));
-	}
-
-	@Test
-	public void returnsThePondCenterIfLookingForThingsInAThinglessWorld() {
-		Pond pond = new Pond(1000);
-		
-		assertEquals(Vector.cartesian(500, 500), pond.find("food_piece", Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(500, 500), pond.find("narjillo", Vector.cartesian(150, 150)));
-	}
 
 	@Test
 	public void returnsAllTheThings() {
-		List<Thing> swimmers = pond.getThings();
+		List<? extends Thing> swimmers = pond.getThings();
 		
 		assertTrue(swimmers.contains(swimmer1));
 		assertTrue(swimmers.contains(foodPiece1));

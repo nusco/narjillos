@@ -27,10 +27,10 @@ public class Cosmos extends Pond {
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
 			spawnFood(randomPosition());
-
-		super.tick();
 	}
 
 	protected Vector randomPosition() {

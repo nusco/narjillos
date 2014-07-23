@@ -1,22 +1,39 @@
-apply plugin: 'java'
-apply plugin: 'application'
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'application'
 
-mainClassName = 'org.nusco.swimmers.application.Experiment'
+	version = '0.0.1'
 
-repositories {
-	mavenLocal()
-	mavenCentral()
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+
+	dependencies {
+		testCompile 'junit:junit:4.11'
+	}
+
+	task wrapper(type: Wrapper) {
+		gradleVersion = '2.0'
+	}
 }
 
-dependencies {
-	testCompile 'junit:junit:4.11'
+project(':core') {
+	jar {
+		baseName = 'narjillos'
+	}
+
+	mainClassName = 'org.nusco.swimmers.application.Experiment'
 }
 
-jar {
-    baseName = 'narjillos'
-    version =  '0.0.1'
-}
+project(':petridish') {
+	dependencies {
+		compile project(':core')
+	}
+	
+	jar {
+		baseName = 'narjillos_petridish'
+	}
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+	mainClassName = 'org.nusco.swimmers.application.NarjillosApp'
 }

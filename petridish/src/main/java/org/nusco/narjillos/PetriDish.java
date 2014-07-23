@@ -1,4 +1,4 @@
-package org.nusco.narjillos.application;
+package org.nusco.narjillos;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
+import org.nusco.narjillos.pond.Cosmos;
 import org.nusco.narjillos.pond.Pond;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
@@ -23,7 +24,7 @@ import org.nusco.narjillos.views.DataView;
 import org.nusco.narjillos.views.PondView;
 import org.nusco.narjillos.views.Viewport;
 
-public class NarjillosApp extends Application {
+public class PetriDish extends Application {
 
 	private static final int TARGET_FRAMES_PER_SECOND = 25;
 	private static final int FRAMES_PERIOD = 1000 / TARGET_FRAMES_PER_SECOND;

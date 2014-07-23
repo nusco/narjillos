@@ -23,7 +23,7 @@ project(':core') {
 		baseName = 'narjillos'
 	}
 
-	mainClassName = 'org.nusco.swimmers.application.Experiment'
+	mainClassName = 'org.nusco.narjillos.Experiment'
 }
 
 project(':petridish') {
@@ -35,5 +35,5 @@ project(':petridish') {
 		baseName = 'narjillos_petridish'
 	}
 
-	mainClassName = 'org.nusco.swimmers.application.NarjillosApp'
+	mainClassName = 'org.nusco.narjillos.PetriDish'
 }

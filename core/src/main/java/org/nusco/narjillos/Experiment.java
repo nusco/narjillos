@@ -1,6 +1,7 @@
-package org.nusco.narjillos.application;
+package org.nusco.narjillos;
 
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.pond.Cosmos;
 import org.nusco.narjillos.pond.Pond;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.RanGen;

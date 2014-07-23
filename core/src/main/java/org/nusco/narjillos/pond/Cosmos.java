@@ -1,7 +1,6 @@
-package org.nusco.narjillos.application;
+package org.nusco.narjillos.pond;
 
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.pond.Pond;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.RanGen;
 

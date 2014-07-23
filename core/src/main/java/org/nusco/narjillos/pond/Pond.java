@@ -114,9 +114,7 @@ public class Pond {
 
 			@Override
 			public void died() {
-				synchronized (thingsRemovedBeforeFrameEnd) {
-					thingsRemovedBeforeFrameEnd.add(narjillo);
-				}
+				killNarjillo(narjillo);
 			}
 		});
 		narjillos.add(narjillo);
@@ -143,10 +141,6 @@ public class Pond {
 	}
 
 	private void checkCollisionWithFood(Narjillo narjillo, Segment movement, FoodPiece foodThing) {
-		synchronized (thingsRemovedBeforeFrameEnd) {
-			if (thingsRemovedBeforeFrameEnd.contains(foodThing))
-				return; // already disappeared
-		}
 		if (!isUnderSafeDistance(narjillo, foodThing))
 			return;  // optimization
 
@@ -172,13 +166,17 @@ public class Pond {
 		return false;
 	}
 
-	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
+	private synchronized void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
+		if (thingsRemovedBeforeFrameEnd.contains(foodPiece))
+			return; // already consumed
 		narjillo.feed();
-		synchronized (thingsRemovedBeforeFrameEnd) {
-			thingsRemovedBeforeFrameEnd.add(foodPiece);
-		}
+		thingsRemovedBeforeFrameEnd.add(foodPiece);
 		reproduce(narjillo);
 		updateTargets();
+	}
+
+	private synchronized void killNarjillo(final Narjillo narjillo) {
+		thingsRemovedBeforeFrameEnd.add(narjillo);
 	}
 
 	private void reproduce(Narjillo narjillo) {

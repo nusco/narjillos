@@ -30,11 +30,6 @@ public class Head extends BodyPart {
 	}
 
 	@Override
-	protected ColorByte calculateColor() {
-		return getHue();
-	}
-
-	@Override
 	protected Vector calculateMainAxis() {
 		return getVector().normalize(1);
 	}

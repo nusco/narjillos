@@ -8,7 +8,7 @@ public abstract class Organ {
 
 	protected final int length;
 	protected final int thickness;
-	protected final ColorByte hue;
+	protected final ColorByte color;
 	
 	// caching - ugly, but huge performance benefits
 	private Vector cachedStartPoint = null;
@@ -16,12 +16,11 @@ public abstract class Organ {
 	private Double cachedAbsoluteAngle = null;
 	private Vector cachedMainAxis = null;
 	private Vector cachedVector = null;
-	private ColorByte cachedColor = null;
 
-	public Organ(int length, int thickness, ColorByte hue) {
+	public Organ(int length, int thickness, ColorByte color) {
 		this.length = length;
 		this.thickness = thickness;
-		this.hue = hue;
+		this.color = color;
 	}
 
 	public synchronized int getLength() {
@@ -32,8 +31,8 @@ public abstract class Organ {
 		return thickness;
 	}
 
-	protected synchronized ColorByte getHue() {
-		return hue;
+	public ColorByte getColor() {
+		return color;
 	}
 
 	public synchronized double getMass() {
@@ -85,26 +84,18 @@ public abstract class Organ {
 
 	protected abstract Vector calculateMainAxis();
 
-	public synchronized final ColorByte getColor() {
-		if (cachedColor == null)
-			cachedColor = calculateColor();
-		return cachedColor;
-	}
-
-	protected abstract ColorByte calculateColor();
-
 	public synchronized Segment getSegment() {
 		return new Segment(getStartPoint(), getVector());
 	}
 
 	@Override
 	public int hashCode() {
-		return hue.toByteSizedInt() ^ length ^ thickness;
+		return length ^ thickness;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		Organ other = (Organ) obj;
-		return hue == other.hue && length == other.length && thickness == other.thickness;
+		return length == other.length && thickness == other.thickness && color == other.color;
 	}
 }

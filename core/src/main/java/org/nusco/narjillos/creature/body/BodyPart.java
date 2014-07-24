@@ -18,8 +18,8 @@ public abstract class BodyPart extends Organ {
 
 	private MovementListener movementListener = MovementListener.NULL;
 
-	protected BodyPart(int length, int thickness, ColorByte hue, BodyPart parent, Nerve nerve) {
-		super(length, thickness, hue);
+	protected BodyPart(int length, int thickness, ColorByte color, BodyPart parent, Nerve nerve) {
+		super(length, thickness, color);
 		this.nerve = nerve;
 		this.parent = parent;
 	}

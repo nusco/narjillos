@@ -11,19 +11,14 @@ public class BodySegment extends BodyPart {
 
 	private final double angleToParentAtRest;
 
-	public BodySegment(int length, int thickness, int angleToParentAtRest, ColorByte hue, BodyPart parent, int delay) {
-		super(length, thickness, hue, parent, new DelayNerve(delay));
+	public BodySegment(int length, int thickness, int angleToParentAtRest, ColorByte color, BodyPart parent, int delay) {
+		super(length, thickness, parent.getColor().mix(color), parent, new DelayNerve(delay));
 		this.angleToParentAtRest = angleToParentAtRest;
 		setAngleToParent(angleToParentAtRest);
 	}
 
 	BodySegment(Nerve nerve) {
 		this(0, 0, 0, new ColorByte(0), null, 13);
-	}
-
-	@Override
-	public ColorByte calculateColor() {
-		return getParent().getColor().mix(getHue());
 	}
 
 	private double getAngleToParentAtRest() {

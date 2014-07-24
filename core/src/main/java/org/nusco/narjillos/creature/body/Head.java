@@ -1,7 +1,6 @@
 package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.creature.body.pns.PassNerve;
-import org.nusco.narjillos.creature.physics.ForceField;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -16,7 +15,11 @@ public class Head extends BodyPart {
 		super(length, thickness, hue, null, new PassNerve());
 		this.metabolicRate = metabolicRate;
 		setAngleToParent(0);
-		tick(Vector.ZERO);
+		tick(Vector.ZERO, MovementRecorder.NULL);
+	}
+
+	public double getMetabolicRate() {
+		return metabolicRate;
 	}
 
 	@Override
@@ -55,15 +58,5 @@ public class Head extends BodyPart {
 
 	public Organ sproutNeck() {
 		return addChild(new Neck(this, getMetabolicRate()));
-	}
-
-	public double getMetabolicRate() {
-		return metabolicRate;
-	}
-
-	public ForceField createForceField() {
-		ForceField result = new ForceField();
-		setMovementListener(result);
-		return result;
 	}
 }

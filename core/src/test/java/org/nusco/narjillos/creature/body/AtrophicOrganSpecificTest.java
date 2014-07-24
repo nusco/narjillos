@@ -70,7 +70,8 @@ public class AtrophicOrganSpecificTest {
 
 	@Test
 	public void hasAPassNerve() {
-		Nerve nerve = new AtrophicOrgan(null).getNerve();
+		Organ parent = new Head(1, 1, new ColorByte(0), 1);
+		Nerve nerve = new AtrophicOrgan(parent).getNerve();
 				
 		assertEquals(PassNerve.class, nerve.getClass());
 	}

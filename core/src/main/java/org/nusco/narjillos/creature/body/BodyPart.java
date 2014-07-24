@@ -11,14 +11,12 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public abstract class BodyPart extends Organ {
 
 	private final Nerve nerve;
-	private final BodyPart parent;
+	private final Organ parent;
 	private final List<BodyPart> children = new LinkedList<>();
 
 	private double angleToParent = 0;
 
-	private MovementListener movementListener = MovementListener.NULL;
-
-	protected BodyPart(int length, int thickness, ColorByte color, BodyPart parent, Nerve nerve) {
+	protected BodyPart(int length, int thickness, ColorByte color, Organ parent, Nerve nerve) {
 		super(length, thickness, color);
 		this.nerve = nerve;
 		this.parent = parent;
@@ -43,7 +41,7 @@ public abstract class BodyPart extends Organ {
 		return getParent().calculateMainAxis();
 	}
 
-	protected final BodyPart getParent() {
+	protected final Organ getParent() {
 		return parent;
 	}
 
@@ -51,40 +49,25 @@ public abstract class BodyPart extends Organ {
 		return children;
 	}
 
-	public Vector tick(Vector inputSignal) {
+	public Vector tick(Vector inputSignal, MovementRecorder movementRecorder) {
 		Segment beforeMovement = getSegment();
-
 		Vector outputSignal = getNerve().tick(inputSignal);
-
 		move(outputSignal);
 		resetAllCaches();
-
-		notifyMovementListener(beforeMovement, this);
-
-		tickChildren(outputSignal);
-
+		movementRecorder.record(beforeMovement, this);
+		tickChildren(outputSignal, movementRecorder);
 		return outputSignal;
 	}
 
 	protected abstract void move(Vector signal);
 
-	private void notifyMovementListener(Segment beforeMovement, Organ organ) {
-		movementListener.moveEvent(beforeMovement, organ);
-	}
-
-	protected void tickChildren(Vector signal) {
+	protected void tickChildren(Vector signal, MovementRecorder movementListener) {
 		for (BodyPart child : getChildren())
-			child.tick(signal);
+			child.tick(signal, movementListener);
 	}
 
-	public Nerve getNerve() {
+	Nerve getNerve() {
 		return nerve;
-	}
-
-	protected void setMovementListener(MovementListener listener) {
-		movementListener = listener;
-		for (BodyPart child : getChildren())
-			child.setMovementListener(listener);
 	}
 
 	public BodyPart sproutOrgan(int length, int thickness, int angleToParentAtRest, ColorByte hue, int delay) {

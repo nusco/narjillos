@@ -1,6 +1,8 @@
 package org.nusco.narjillos.views;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -82,9 +84,9 @@ public class PondView {
 		return background;
 	}
 	
-	private synchronized List<Node> getNodesForThings() {
+	private List<Node> getNodesForThings() {
 		List<Node> result = new LinkedList<>();
-		for (ThingView view : thingsToViews.values()) {
+		for (ThingView view : getThingViews()) {
 			Node node = view.toNode(viewport);
 			if (node != null)
 				result.add(node);
@@ -96,6 +98,10 @@ public class PondView {
 		Rectangle result = new Rectangle(0, 0, pond.getSize(), pond.getSize());
 		result.setFill(Color.ANTIQUEWHITE);
 		return result;
+	}
+
+	private synchronized Collection<ThingView> getThingViews() {
+		return new HashSet<ThingView>(thingsToViews.values());
 	}
 
 	private synchronized ThingView addThingView(Thing thing) {
@@ -112,9 +118,5 @@ public class PondView {
 
 	public Pond getPond() {
 		return pond;
-	}
-
-	public void show(Group root) {
-		root.getChildren().add(toNode());
 	}
 }

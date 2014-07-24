@@ -21,11 +21,11 @@ public class Cosmos extends Pond {
 			spawnFood(randomPosition());
 
 		for (int i = 0; i < INITIAL_NUMBER_OF_SWIMMERS; i++)
-			spawnSwimmer(randomPosition(), DNA.random());
+			spawnNarjilo(randomPosition(), DNA.random());
 	}
 
 	@Override
-	public void tick() {
+	public synchronized void tick() {
 		super.tick();
 
 		if (RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)

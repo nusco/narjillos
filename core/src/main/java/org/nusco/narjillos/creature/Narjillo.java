@@ -27,6 +27,7 @@ public class Narjillo implements Thing {
 	private static final double MASS_PENALTY_DURING_PROPULSION = 0.3;
 	
 	private final Head head;
+	private final DNA genes;
 	private final double mass;
 
 	private Vector position = Vector.ZERO;
@@ -35,8 +36,7 @@ public class Narjillo implements Thing {
 
 	private int numberOfDescendants = 0;
 	
-	private final List<SwimmerEventListener> swimmerEventListeners = new LinkedList<>();
-	private final DNA genes;
+	private final List<NarjilloEventListener> eventListeners = new LinkedList<>();
 
 	public Narjillo(Head head, DNA genes) {
 		this.head = head;
@@ -45,30 +45,21 @@ public class Narjillo implements Thing {
 	}
 
 	@Override
-	public Vector getPosition() {
+	public synchronized Vector getPosition() {
 		return position;
 	}
 
 	@Override
-	public void setPosition(Vector position) {
+	public synchronized void setPosition(Vector position) {
 		this.position = position;
 	}
 	
-	private void updatePosition(Vector position) {
-		Vector start = getPosition();
-		setPosition(position);
-		
-		for (SwimmerEventListener swimmerEventListener : swimmerEventListeners)
-			swimmerEventListener.moved(new Segment(start, getPosition()));
-	}
-
 	@Override
-	public void tick() {
+	public synchronized void tick() {
 		Vector targetDirection = getTargetDirection();
 
-		ForceField forceField = head.createForceField();
-
-		head.tick(targetDirection);
+		ForceField forceField = new ForceField();
+		head.tick(targetDirection, forceField);
 
 		// TODO: physical movement should probably move
 		// outside this class. create a Body class that encapsulates
@@ -83,6 +74,62 @@ public class Narjillo implements Thing {
 
 		double energySpentForMovement = forceField.getTotalEnergySpent() * getMetabolicRate();
 		decreaseEnergy(energySpentForMovement + NATURAL_ENERGY_DECAY);
+	}
+	
+	public Head getHead() {
+		return head;
+	}
+
+	public DNA getGenes() {
+		return genes;
+	}
+
+	public synchronized double getEnergy() {
+		return energy;
+	}
+
+	public double getMass() {
+		return mass;
+	}
+
+	public synchronized Vector getTargetDirection() {
+		return target.minus(position).normalize(1);
+	}
+
+	public synchronized void setTarget(Vector target) {
+		this.target = target;
+	}
+
+	public synchronized void feed() {
+		energy += ENERGY_PER_FOOD_ITEM;
+		if (energy > MAX_ENERGY)
+			energy = MAX_ENERGY;
+	}
+
+	public void addEventListener(NarjilloEventListener eventListener) {
+		eventListeners.add(eventListener);
+	}
+
+	public synchronized int getNumberOfDescendants() {
+		return numberOfDescendants;
+	}
+
+	public synchronized DNA reproduce() {
+		numberOfDescendants++;
+		return getGenes().mutate();
+	}
+
+	@Override
+	public String getLabel() {
+		return "narjillo";
+	}
+
+	private void updatePosition(Vector position) {
+		Vector start = getPosition();
+		setPosition(position);
+		
+		for (NarjilloEventListener eventListener : eventListeners)
+			eventListener.moved(new Segment(start, getPosition()));
 	}
 
 	private double getMetabolicRate() {
@@ -103,52 +150,13 @@ public class Narjillo implements Thing {
 		return 1.0 / (getMass() * MASS_PENALTY_DURING_PROPULSION);
 	}
 
-	@Override
-	public String getLabel() {
-		return "narjillo";
-	}
-	
-	public Head getHead() {
-		return head;
-	}
-
-	public DNA getGenes() {
-		return genes;
-	}
-
-	public double getEnergy() {
-		return energy;
-	}
-
-	public void feed() {
-		energy += ENERGY_PER_FOOD_ITEM;
-		if (energy > MAX_ENERGY)
-			energy = MAX_ENERGY;
-	}
-
 	void decreaseEnergy(double amount) {
 		energy -= amount;
 		if (energy <= 0)
-			for (SwimmerEventListener swimmerEventListener : swimmerEventListeners)
-				swimmerEventListener.died();
+			for (NarjilloEventListener eventListener : eventListeners)
+				eventListener.died();
 	}
-
-	public Vector getTargetDirection() {
-		return target.minus(position).normalize(1);
-	}
-
-	public void setTarget(Vector target) {
-		this.target = target;
-	}
-
-	public void addSwimmerEventListener(SwimmerEventListener lifecycleEventListener) {
-		swimmerEventListeners.add(lifecycleEventListener);
-	}
-
-	public double getMass() {
-		return mass;
-	}
-
+	
 	private double calculateTotalMass() {
 		double result = 0;
 		List<Organ> allOrgans = getAllOrgans();
@@ -167,14 +175,5 @@ public class Narjillo implements Thing {
 		result.add(organ);
 		for (BodyPart child : organ.getChildren())
 			addWithChildren(child, result);
-	}
-	
-	public int getNumberOfDescendants() {
-		return numberOfDescendants;
-	}
-
-	public DNA getDescendantDNA() {
-		numberOfDescendants++;
-		return getGenes().mutate();
 	}
 }

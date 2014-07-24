@@ -217,12 +217,8 @@ public class PetriDish extends Application {
 
 	private synchronized void showRoot(final Group root) {
 		root.getChildren().clear();
-		showPond(root);
+		root.getChildren().add(getPondView().toNode());
 		showChronometers(root);
-	}
-
-	private void showPond(final Group root) {
-		getPondView().show(root);
 	}
 
 	private void showChronometers(Group root) {

@@ -9,26 +9,26 @@ import org.nusco.narjillos.shared.physics.Vector;
  */
 class AtrophicOrgan extends BodyPart {
 
-	public AtrophicOrgan(BodyPart parent) {
+	public AtrophicOrgan(Organ parent) {
 		this(parent, new PassNerve());
 	}
 
-	protected AtrophicOrgan(BodyPart parent, Nerve nerve) {
+	protected AtrophicOrgan(Organ parent, Nerve nerve) {
 		super(0, 0, parent.getColor(), parent, nerve);
 	}
 
 	@Override
-	public double calculateAbsoluteAngle() {
+	protected double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle();
 	}
 
 	// Optimization: ticking is simpler for ConnectiveTissue.
 	// The duplication is ugly, but it does help performance.
 	@Override
-	public Vector tick(Vector inputSignal) {
+	public Vector tick(Vector inputSignal, MovementRecorder movementListener) {
 		resetAllCaches();
 		Vector outputSignal = getNerve().tick(inputSignal);
-		tickChildren(outputSignal);
+		tickChildren(outputSignal, movementListener);
 		return outputSignal;
 	}
 

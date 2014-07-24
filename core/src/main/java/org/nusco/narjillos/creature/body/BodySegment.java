@@ -21,12 +21,8 @@ public class BodySegment extends BodyPart {
 		this(0, 0, 0, new ColorByte(0), null, 13);
 	}
 
-	private double getAngleToParentAtRest() {
-		return angleToParentAtRest;
-	}
-
 	@Override
-	public double calculateAbsoluteAngle() {
+	protected double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle() + getAngleToParent();
 	}
 
@@ -40,7 +36,7 @@ public class BodySegment extends BodyPart {
 
 		Vector mainAxis = getMainAxis();
 		Vector direction = mainAxis.minus(signedScaledSignal);
-		Vector rotatedDirection = direction.rotateBy(getAngleToParentAtRest() - mainAxis.getAngle());
+		Vector rotatedDirection = direction.rotateBy(angleToParentAtRest - mainAxis.getAngle());
 
 		setAngleToParent(incrementAngleToParentBy(-rotatedDirection.getAngle()));
 	}

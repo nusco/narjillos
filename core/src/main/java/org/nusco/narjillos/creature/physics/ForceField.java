@@ -3,12 +3,12 @@ package org.nusco.narjillos.creature.physics;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.body.MovementListener;
+import org.nusco.narjillos.creature.body.MovementRecorder;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
-public class ForceField implements MovementListener {
+public class ForceField implements MovementRecorder {
 
 	private static final double VISCOSITY = 1.7;
 	
@@ -16,7 +16,7 @@ public class ForceField implements MovementListener {
 	private double energySpent = 0;
 	
 	@Override
-	public void moveEvent(Segment beforeMovement, Organ organ) {
+	public void record(Segment beforeMovement, Organ organ) {
 		Vector force = calculateForceUsedForMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
 		addForce(force);
 	}

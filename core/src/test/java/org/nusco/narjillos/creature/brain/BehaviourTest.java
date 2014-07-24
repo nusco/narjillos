@@ -16,8 +16,8 @@ public class BehaviourTest {
 	public void setupPond() {
 		pond.spawnFood(Vector.cartesian(10, 10));
 		pond.spawnFood(Vector.cartesian(100, 100));
-		pond.spawnSwimmer(Vector.cartesian(50, 30), DNA.random());
-		pond.spawnSwimmer(Vector.cartesian(30, 100), DNA.random());
+		pond.spawnNarjilo(Vector.cartesian(50, 30), DNA.random());
+		pond.spawnNarjilo(Vector.cartesian(30, 100), DNA.random());
 	}
 	
 	@Test

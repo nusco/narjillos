@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.SwimmerEventListener;
+import org.nusco.narjillos.creature.NarjilloEventListener;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.creature.genetics.Embryo;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -19,12 +19,10 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class Pond {
 
 	private static final double COLLISION_DISTANCE = 30;
-	private static final int NUMBER_OF_WORKERS = 2;
 
 	private final long size;
 	private final Set<FoodPiece> foodPieces = Collections.newSetFromMap(new ConcurrentHashMap<FoodPiece, Boolean>());
 	private final Set<Narjillo> narjillos = Collections.newSetFromMap(new ConcurrentHashMap<Narjillo, Boolean>());
-	private final ParallelTicker scheduler = new ParallelTicker(NUMBER_OF_WORKERS);
 
 	private final List<PondEventListener> pondEvents = new LinkedList<>();
 
@@ -38,7 +36,7 @@ public class Pond {
 		return size;
 	}
 
-	public synchronized Set<Thing> getThings() {
+	public Set<Thing> getThings() {
 		Set<Thing> result = new HashSet<Thing>();
 		result.addAll(foodPieces);
 		result.addAll(narjillos);
@@ -58,34 +56,36 @@ public class Pond {
 		return result;
 	}
 
-	public synchronized Vector findFoodPiece(Vector near) {
+	public Vector findFoodPiece(Vector near) {
 		return find(foodPieces, near);
 	}
 
-	public synchronized Vector findNarjillo(Vector near) {
+	public Vector findNarjillo(Vector near) {
 		return find(narjillos, near);
 	}
 
-	public synchronized void tick() {
-		scheduler.tick(foodPieces);
-		scheduler.tick(narjillos);
+	public void tick() {
+		for (Narjillo narjillo : narjillos)
+			narjillo.tick();
 
+		// TODO: no need to tick food for now
+		
 		if (tickCounter-- < 0) {
 			tickCounter = 100000;
 			updateTargets();
 		}
 	}
 
-	public synchronized final FoodPiece spawnFood(Vector position) {
+	public final FoodPiece spawnFood(Vector position) {
 		FoodPiece newFood = new FoodPiece();
 		placeInPond(newFood, position);
 		foodPieces.add(newFood);
 		return newFood;
 	}
 
-	public synchronized final Narjillo spawnSwimmer(Vector position, DNA genes) {
+	public final Narjillo spawnNarjilo(Vector position, DNA genes) {
 		final Narjillo narjillo = new Embryo(genes).develop();
-		narjillo.addSwimmerEventListener(new SwimmerEventListener() {
+		narjillo.addEventListener(new NarjilloEventListener() {
 
 			@Override
 			public void moved(Segment movement) {
@@ -108,12 +108,12 @@ public class Pond {
 		swimmer.setTarget(locationOfClosestFood);
 	}
 
-	private synchronized void updateTargets() {
+	private void updateTargets() {
 		for (Narjillo narjillo : narjillos)
 			updateTarget(narjillo);
 	}
 
-	private synchronized void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
+	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
 		// TODO: naive algorithm. replace with space partitioning and finding
 		// neighbors
 		for (FoodPiece foodThing : foodPieces)
@@ -148,22 +148,23 @@ public class Pond {
 	private synchronized void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
 		if (!foodPieces.contains(foodPiece))
 			return; // race condition: already consumed
+
 		narjillo.feed();
 		foodPieces.remove(foodPiece);
 		reproduce(narjillo);
 		updateTargets();
 	}
 
-	private synchronized void killNarjillo(final Narjillo narjillo) {
+	private void killNarjillo(final Narjillo narjillo) {
 		narjillos.remove(narjillo);
 	}
 
 	private void reproduce(Narjillo narjillo) {
-		DNA childDNA = narjillo.getDescendantDNA();
+		DNA childDNA = narjillo.reproduce();
 		Vector position = narjillo.getPosition().plus(
 				Vector.cartesian(6000 * RanGen.nextDouble() - 3000,
 						6000 * RanGen.nextDouble() - 3000));
-		spawnSwimmer(position, childDNA);
+		spawnNarjilo(position, childDNA);
 	}
 
 	private final void placeInPond(Thing thing, Vector position) {
@@ -176,15 +177,15 @@ public class Pond {
 		pondEvents.add(pondEventListener);
 	}
 
-	public synchronized int getNumberOfFoodPieces() {
+	public int getNumberOfFoodPieces() {
 		return foodPieces.size();
 	}
 
-	public synchronized int getNumberOfNarjillos() {
+	public int getNumberOfNarjillos() {
 		return narjillos.size();
 	}
 
-	public synchronized Narjillo getMostProlificNarjillo() {
+	public Narjillo getMostProlificNarjillo() {
 		Narjillo result = null;
 		int maxDescendants = 0;
 		for (Narjillo narjillo : narjillos)

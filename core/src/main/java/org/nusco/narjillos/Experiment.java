@@ -16,8 +16,7 @@ public class Experiment {
 
 	public static void main(String... args) {
 		RanGen.seed(SEED);
-
-		System.out.println("Starting...");
+		System.out.println("Seed: " + SEED);
 		long startTime = System.currentTimeMillis();
 
 		runExperiment();

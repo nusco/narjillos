@@ -15,7 +15,7 @@ public class NarjilloEventsTest {
 
 	Narjillo narjillo = new Narjillo(new Head(10, 10, new ColorByte(10), 1), DNA.random());
 
-	class NullSwimmerEventListener implements SwimmerEventListener {
+	class NullSwimmerEventListener implements NarjilloEventListener {
 		@Override
 		public void moved(Segment movement) {
 		}
@@ -30,7 +30,7 @@ public class NarjilloEventsTest {
 		narjillo.setPosition(Vector.ZERO);
 
 		final Segment[] moved = new Segment[] { null };
-		narjillo.addSwimmerEventListener(new NullSwimmerEventListener() {
+		narjillo.addEventListener(new NullSwimmerEventListener() {
 
 			@Override
 			public void moved(Segment movement) {
@@ -46,7 +46,7 @@ public class NarjilloEventsTest {
 	@Test
 	public void sendsEventsWhenDying() {
 		final boolean[] died = new boolean[] { false };
-		narjillo.addSwimmerEventListener(new NullSwimmerEventListener() {
+		narjillo.addEventListener(new NullSwimmerEventListener() {
 
 			@Override
 			public void died() {

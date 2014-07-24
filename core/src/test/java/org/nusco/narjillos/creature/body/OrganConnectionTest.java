@@ -26,7 +26,7 @@ public abstract class OrganConnectionTest {
 		child1.sproutOrgan(nerve3);
 		head.sproutOrgan(nerve4);
 
-		head.tick(null);
+		head.tick(null, MovementRecorder.NULL);
 		
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);

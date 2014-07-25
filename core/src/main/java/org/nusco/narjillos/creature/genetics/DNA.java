@@ -12,7 +12,36 @@ public class DNA {
 	private final int[] genes;
 
 	public DNA(int... genes) {
-		this.genes = genes;
+		this.genes = clipToByteSize(genes);
+	}
+
+	public DNA(String dnaString) {
+		this(toGenes(dnaString));
+	}
+
+	private static int[] toGenes(String dnaString) {
+		String[] lines = dnaString.split("\n");
+		int geneLine = getIndexOfFirstGeneLine(lines);
+
+		if (geneLine >= lines.length)
+			return new int[0];
+		int[] genes = new int[lines.length - geneLine];
+		
+		for (int i = 0; i < genes.length; i++) {
+			String nextLine = lines[geneLine + i];
+			genes[i] = Integer.parseInt(nextLine);
+		}
+		
+		return genes;
+	}
+
+	private static int getIndexOfFirstGeneLine(String[] lines) {
+		int result = 0;
+		
+		while (result < lines.length && !lines[result].startsWith("#"))
+			result++;
+		
+		return result + 1;
 	}
 
 	public int[] getGenes() {
@@ -43,14 +72,21 @@ public class DNA {
 
 	private int mutate(int[] resultGenes, int i) {
 		int randomFactor = ((int) (RanGen.nextDouble() * 40)) - 20;
-		return clipToByteSize(resultGenes[i] + randomFactor);
+		return resultGenes[i] + randomFactor;
+	}
+
+	private int[] clipToByteSize(int... genes) {
+		int[] result = new int[genes.length];
+		for (int i = 0; i < result.length; i++)
+			result[i] = clipToByteSize(genes[i]);
+		return result;
 	}
 
 	private int clipToByteSize(int number) {
 		if (number < 0)
 			number = 0;
-		if (number > Byte.MAX_VALUE)
-			number = Byte.MAX_VALUE;
+		if (number > 255)
+			number = 255;
 		return number;
 	}
 

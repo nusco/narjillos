@@ -14,8 +14,8 @@ public class PondFinderTest {
 	FoodPiece foodPiece1 = pond.spawnFood(Vector.cartesian(100, 100));
 	FoodPiece foodPiece2 = pond.spawnFood(Vector.cartesian(1000, 1000));
 	FoodPiece foodPiece3 = pond.spawnFood(Vector.cartesian(10000, 10000));
-	Narjillo swimmer1 = pond.spawnNarjilo(Vector.cartesian(150, 150), DNA.random());
-	Narjillo swimmer2 = pond.spawnNarjilo(Vector.cartesian(1050, 1050), DNA.random());
+	Narjillo swimmer1 = pond.spawnNarjillo(Vector.cartesian(150, 150), DNA.random());
+	Narjillo swimmer2 = pond.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random());
 	
 	@Test
 	public void findsTheClosestFoodToAGivenPosition() {

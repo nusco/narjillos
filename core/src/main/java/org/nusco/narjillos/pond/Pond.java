@@ -83,7 +83,7 @@ public class Pond {
 		return newFood;
 	}
 
-	public final Narjillo spawnNarjilo(Vector position, DNA genes) {
+	public final Narjillo spawnNarjillo(Vector position, DNA genes) {
 		final Narjillo narjillo = new Embryo(genes).develop();
 		narjillo.addEventListener(new NarjilloEventListener() {
 
@@ -164,7 +164,7 @@ public class Pond {
 		Vector position = narjillo.getPosition().plus(
 				Vector.cartesian(6000 * RanGen.nextDouble() - 3000,
 						6000 * RanGen.nextDouble() - 3000));
-		spawnNarjilo(position, childDNA);
+		spawnNarjillo(position, childDNA);
 	}
 
 	private final void placeInPond(Thing thing, Vector position) {

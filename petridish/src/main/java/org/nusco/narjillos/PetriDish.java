@@ -1,5 +1,9 @@
 package org.nusco.narjillos;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -15,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
+import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.pond.Cosmos;
 import org.nusco.narjillos.pond.Pond;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -34,17 +39,30 @@ public class PetriDish extends Application {
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final Chronometer framesChronometer = new Chronometer();
 
-	private final Pond pond = new Cosmos();
+	private static Pond pond;
 
 	private PondView pondView;
 	private Viewport viewport;
 	private long numberOfTicks = 0;
 	private volatile int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
 	
-	public static void main(String... args) {
-		launch(args);
+	public static void main(String... args) throws Exception {
+		args = new String[] {"../fridge/dipropellius_nuschi.nrj"};
+		if (args.length == 0)
+			pond = new Cosmos();
+		else
+			pond = new Cosmos(readDNAFromFile(args[0]));
+		launch(new String[0]);
 	}
 
+	private static DNA readDNAFromFile(String file) throws Exception {
+		List<String> lines = Files.readAllLines(Paths.get(file));
+		StringBuffer result = new StringBuffer();
+		for (String line : lines)
+			result.append(line + "\n");
+		return new DNA(result.toString());
+	}
+	
 	// TODO: do we need synchronized in the next two methods? and, does zooming
 	// on the viewport need to be synchronized? And what about other methods
 	// in this class?

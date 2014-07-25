@@ -12,16 +12,16 @@ public class Cosmos extends Pond {
 	private static final int INITIAL_NUMBER_OF_SWIMMERS = 50;
 
 	public Cosmos() {
-		super(SIZE);
-		randomize();
+		this(DNA.random());
 	}
 
-	private void randomize() {
+	public Cosmos(DNA dna) {
+		super(SIZE);
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_THINGS; i++)
 			spawnFood(randomPosition());
-
+		
 		for (int i = 0; i < INITIAL_NUMBER_OF_SWIMMERS; i++)
-			spawnNarjilo(randomPosition(), DNA.random());
+			spawnNarjillo(randomPosition(), dna);
 	}
 
 	@Override

@@ -9,12 +9,35 @@ allprojects {
 	}
 
 	dependencies {
+		compile subprojects
 		testCompile 'junit:junit:4.11'
 	}
 
 	task wrapper(type: Wrapper) {
 		gradleVersion = '2.0'
 	}
+
+	task(experiment, dependsOn: 'classes', type: JavaExec) {
+		main = 'org.nusco.narjillos.Experiment'
+		classpath = sourceSets.main.runtimeClasspath
+		
+		def seed = System.properties['seed']
+		if (seed && seed != "") {
+		  args seed
+		}
+	}
+
+	task(petri, dependsOn: 'classes', type: JavaExec) {
+		main = 'org.nusco.narjillos.PetriDish'
+		classpath = sourceSets.main.runtimeClasspath
+
+		def nrj = System.properties['nrj']
+		if (nrj && nrj != "") {
+		  args nrj
+		}
+	}
+
+	defaultTasks 'petri'
 }
 
 project(':core') {

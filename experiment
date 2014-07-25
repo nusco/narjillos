@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# start an experiment (passing the seed if any)
+gradle -q experiment -Dseed=$1

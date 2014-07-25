@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# start a petri dish (optionally passing a *.nrj file)
+gradle -q petri -Dnrj=$1

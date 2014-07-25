@@ -33,7 +33,7 @@ public class Experiment {
 
 	private static long getSeed(String... args) {
 		if (args.length == 0)
-			return new Random().nextLong();
+			return Math.abs(new Random().nextLong());
 		return Long.parseLong(args[0]);
 	}
 

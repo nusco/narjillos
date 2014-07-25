@@ -8,6 +8,6 @@ Strongly inspired by Jeffrey Ventrella's GenePool (http://www.swimbots.com).
 This is still heavily in development, so I didn't bother to make it user-friendly. However, it's easy to run if you have Java 8:
 
     git clone https://github.com/nusco/narjillos.git
-    cd narjillos
-    ./gradlew run
+    cd narjillos/petridish/
+    ../gradlew run
 

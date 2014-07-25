@@ -1,5 +1,7 @@
 package org.nusco.narjillos;
 
+import java.util.Random;
+
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.genetics.DNA;
@@ -11,7 +13,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class Experiment {
 
-	private static final long SEED = 2648718169735535616l;
+	private static final long SEED = new Random().nextLong();
 	private static final int CYCLES = 1_000_000_000;
 	private static final int PARSE_INTERVAL = 10_000;
 

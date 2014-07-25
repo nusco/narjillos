@@ -21,6 +21,12 @@
   * View creature energy
 ##Speed
   * Cached food image?
+##Environment
+  * Gamma rays (cause mutation)
+  * Beta rays (cause old age and death)
+  * Controllable food rate
+  * Controllable food calories
+  * Plants (food that evolves)
 ##Viewport
   * Unlimited outzooming
   * Smooth pond circle

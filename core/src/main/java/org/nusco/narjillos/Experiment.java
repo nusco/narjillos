@@ -13,17 +13,19 @@ public class Experiment {
 	private static final int PARSE_INTERVAL = 10_000;
 
 	private static final Chronometer ticksChronometer = new Chronometer();
+	private static long startTime = System.currentTimeMillis();
 
 	public static void main(String... args) {
 		RanGen.seed(SEED);
 		System.out.println("Seed: " + SEED);
-		long startTime = System.currentTimeMillis();
-
 		runExperiment();
+		System.out.println("Done (" + getTimeElapsed() + "s)");
+	}
 
-		long endTime = System.currentTimeMillis();
-		double timeInSeconds = ((double) (endTime - startTime)) / 1000;
-		System.out.println("Done (" + timeInSeconds + "s)");
+	private static double getTimeElapsed() {
+		long currentTime = System.currentTimeMillis();
+		double timeInSeconds = ((double) (currentTime - startTime)) / 1000;
+		return timeInSeconds;
 	}
 
 	private static void runExperiment() {
@@ -31,7 +33,8 @@ public class Experiment {
 		for (int i = 0; i < CYCLES; i++) {
 			pond.tick();
 			ticksChronometer.tick();
-			if (i % PARSE_INTERVAL == 0)
+
+			if (i > 0 && (i % PARSE_INTERVAL == 0))
 				System.out.println(getStatusString(pond, i));
 		}
 	}
@@ -39,12 +42,14 @@ public class Experiment {
 	private static String getStatusString(Pond pond, int tick) {
 		Narjillo mostProlificNarjillo = pond.getMostProlificNarjillo();
 		if (mostProlificNarjillo == null)
-			return 	tick + ", " +
+			return 	getTimeElapsed() + ", " +
+					tick + ", " +
 					ticksChronometer.getTicksInLastSecond() + ", " +
 					pond.getNumberOfNarjillos() + ", " +
 					pond.getNumberOfFoodPieces();
 
-		return 	tick + ", " +
+		return 	getTimeElapsed() + ", " +
+				tick + ", " +
 				ticksChronometer.getTicksInLastSecond() + ", " +
 				pond.getNumberOfNarjillos() + ", " +
 				pond.getNumberOfFoodPieces() + ", " +

@@ -47,7 +47,6 @@ public class PetriDish extends Application {
 	private volatile int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
 	
 	public static void main(String... args) throws Exception {
-		args = new String[] {"../fridge/dipropellius_nuschi.nrj"};
 		if (args.length == 0)
 			pond = new Cosmos();
 		else
@@ -63,9 +62,6 @@ public class PetriDish extends Application {
 		return new DNA(result.toString());
 	}
 	
-	// TODO: do we need synchronized in the next two methods? and, does zooming
-	// on the viewport need to be synchronized? And what about other methods
-	// in this class?
 	private synchronized void setPondView(PondView pondView) {
 		this.pondView = pondView;
 		this.viewport = pondView.getViewport();

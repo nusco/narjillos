@@ -13,21 +13,31 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class Experiment {
 
-	private static final long SEED = new Random().nextLong();
-	private static final int CYCLES = 1_000_000_000;
-	private static final int PARSE_INTERVAL = 10_000;
+	private static final int CYCLES = 100_000_000;
+	private static final int PARSE_INTERVAL = 1000;
 
 	private static final Chronometer ticksChronometer = new Chronometer();
 	private static long startTime = System.currentTimeMillis();
 
 	public static void main(String... args) {
-		RanGen.seed(SEED);
-		System.out.println("Seed: " + SEED);
+		seedRandomGenerator(args);
 		runExperiment();
 		System.out.println("Done (" + getTimeElapsed() + "s)");
 	}
 
-	private static long  getTimeElapsed() {
+	private static void seedRandomGenerator(String... args) {
+		long seed = getSeed(args);
+		System.out.println("Seed: " + seed);
+		RanGen.seed(seed);
+	}
+
+	private static long getSeed(String... args) {
+		if (args.length == 0)
+			return new Random().nextLong();
+		return Long.parseLong(args[0]);
+	}
+
+	private static long getTimeElapsed() {
 		long currentTime = System.currentTimeMillis();
 		long timeInSeconds = (currentTime - startTime) / 1000;
 		return timeInSeconds;
@@ -47,15 +57,10 @@ public class Experiment {
 	}
 
 	private static String getHeadersString() {
-		return 	"time_elapsed, " +
-				"ticks_elapsed, " +
-				"ticks_per_second, " +
-				"number_of_narjillos, " +
-				"number_of_food_pieces, " +
-				"most_prolific_narjillo_number_of_descendants, " +
-				"most_prolific_narjillo_dna";
+		return "time_elapsed, " + "ticks_elapsed, " + "ticks_per_second, " + "number_of_narjillos, " + "number_of_food_pieces, "
+				+ "most_prolific_narjillo_number_of_descendants, " + "most_prolific_narjillo_dna";
 	}
-	
+
 	private static String getStatusString(Pond pond, int tick) {
 		Narjillo mostProlificNarjillo = pond.getMostProlificNarjillo();
 		if (mostProlificNarjillo == null)
@@ -69,12 +74,8 @@ public class Experiment {
 	}
 
 	private static String getStatusString(Pond pond, int tick, Narjillo mostProlificNarjillo) {
-		return 	getTimeElapsed() + ", " +
-				tick + ", " +
-				ticksChronometer.getTicksInLastSecond() + ", " +
-				pond.getNumberOfNarjillos() + ", " +
-				pond.getNumberOfFoodPieces() + ", " +
-				mostProlificNarjillo.getNumberOfDescendants() + ", " +
-				mostProlificNarjillo.getGenes();
+		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + pond.getNumberOfNarjillos() + ", "
+				+ pond.getNumberOfFoodPieces() + ", " + mostProlificNarjillo.getNumberOfDescendants() + ", "
+				+ mostProlificNarjillo.getGenes();
 	}
 }

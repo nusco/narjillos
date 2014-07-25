@@ -2,11 +2,12 @@
   * Recalibrate energy calculation
   * Real rotation
 ##Eggs
-  * Swimmer spends energy to reproduce
+  * Narjillos spends energy to reproduce
   * Eggs
   * "Egg-firing"
   * Additional cost for long-distance egg-firing
   * Birth animation
+  * Narjillos decide how much energy to give to descendants
 ##Petri Dish Command Panel
   * Examine Species
   * Bench with stats
@@ -14,10 +15,8 @@
   * Light switch
   * "Paused" setting in speed slider
   * Select creature
-  * Export creature DNA
+  * Export creature
   * "Most Prolific" button
-  * Insert experiment seed
-  * Save experiment (as a seed)
   * View creature energy
 ##Speed
   * Cached food image?
@@ -26,6 +25,7 @@
   * Beta rays (cause old age and death)
   * Controllable food rate
   * Controllable food calories
+  * Narjillos eat each other
   * Plants (food that evolves)
 ##Viewport
   * Unlimited outzooming
@@ -40,8 +40,8 @@
   * Export genome
   * Human-readable genome
 ##Smarter Narjillos
-  * Swimmer updates food item when not existing anymore
-  * Swimmer updates food item when not in range anymore
+  * Narjillo updates food item when not existing anymore
+  * Narjillo updates food item when not in range anymore
 ##Eye candy
   * Detailed death animation
 ##Engine

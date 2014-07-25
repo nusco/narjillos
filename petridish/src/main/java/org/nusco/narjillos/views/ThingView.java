@@ -41,9 +41,10 @@ abstract class ThingView {
 	}
 
 	protected DropShadow getShadow(double zoomLevel) {
-		if (zoomLevel <= 0.5)
+		double minZoomLevel = 0.3;
+		if (zoomLevel <= minZoomLevel)
 			return null;
-		double alpha = Math.min((zoomLevel - 0.5) * 2, 1);
+		double alpha = Math.min((zoomLevel - minZoomLevel) * 2, 1);
 		Color color = new Color(0.1, 0.1, 0.1, alpha );
 		return new DropShadow(12, 3, 3, color);
 	}

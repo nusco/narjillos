@@ -1,6 +1,7 @@
 package org.nusco.narjillos.creature.genetics;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -8,46 +9,82 @@ public class DNATest {
 
 	@Test
 	public void isBasedOnAnArrayOfGenes() {
-		DNA dna = new DNA(new int[] {1, 2, 255});
+		DNA dna = new DNA(new Integer[] {1, 2, 255});
 		
-		assertArrayEquals(new int[] {1, 2, 255}, dna.getGenes());
+		assertArrayEquals(new Integer[] {1, 2, 255}, dna.getGenes());
 	}
 
 	@Test
-	public void clipsGenesToByteSize() {
-		DNA dna = new DNA(new int[] {1, -1, 256});
+	public void convertsToADescriptiveString() {
+		DNA dna = new DNA(new Integer[] {1, 22, 255});
 		
-		assertArrayEquals(new int[] {1, 0, 255}, dna.getGenes());
+		assertEquals("001-022-255", dna.toString());
+	}
+
+	@Test
+	public void clipsGenesToByteSizeWhenCreatedWithAnArray() {
+		DNA dna = new DNA(new Integer[] {1, -1, 256});
+		
+		assertArrayEquals(new Integer[] {1, 0, 255}, dna.getGenes());
 	}
 	
 	@Test
-	public void createsDNAFromAString() {
-		String dnaString = 	"this is a DNA string\n" +
-							"all these lines are comments\n" +
-							"the line that starts with a # terminates the comments section\n" +
-							"# and here it is... from now on, it's data\n" +
-							"1\n" +
-							"0\n" +
-							"255\n";
+	public void createsDNAFromAConventionalString() {
+		String dnaString = 	"1-022-255";
 		DNA dna = new DNA(dnaString);
 
-		assertArrayEquals(new int[] {1, 0, 255}, dna.getGenes());
+		assertArrayEquals(new Integer[] {1, 22, 255}, dna.getGenes());
 	}
-	
+
 	@Test
-	public void acceptsStringsOfEmptyDNA() {
-		String dnaString = 	"this string has an empty DNA\n" +
-							"the separator is the last line in the string\n" +
-							"# ...and here it is\n";
+	public void clipsGenesToByteSizeWhenCreatedWithAString() {
+		DNA dna = new DNA("1-0-256");
+		
+		assertArrayEquals(new Integer[] {1, 0, 255}, dna.getGenes());
+	}
+
+	@Test
+	public void ignoresSignWhenCreatedWithAString() {
+		DNA dna = new DNA("1-0--2");
+		
+		assertArrayEquals(new Integer[] {1, 0, 2}, dna.getGenes());
+	}
+
+	@Test
+	public void ignoresAnythingInTheDNAStringThatDoesntBeginWithANumber() {
+		String dnaString = 	"comment 1\n" +
+							"\n" +
+							"1-0-255\n" +
+							"comment 2\n" +
+							"\n";
 		DNA dna = new DNA(dnaString);
 
-		assertArrayEquals(new int[0], dna.getGenes());
+		assertArrayEquals(new Integer[] {1, 0, 255}, dna.getGenes());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void throwsAnExceptionIfNoLineBeginsWithANumber() {
+		String dnaString = 	"comment\n";
+		DNA dna = new DNA(dnaString);
+
+		assertArrayEquals(new Integer[0], dna.getGenes());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void throwsAnExceptionIfTheLineThatBeginsWithANumberIsMalformed() {
+		String dnaString = 	"12_34";
+		DNA dna = new DNA(dnaString);
+
+		assertArrayEquals(new Integer[0], dna.getGenes());
 	}
 	
 	@Test
-	public void returnsAnEmptyDNAIfTheDNAStringHasNoDataSeparator() {
-		String dnaString = 	"no line begins with #\n" +
-							"so this string is converting to an empty DNA\n";
-		new DNA(dnaString);
+	public void ignoresAnythingAfterTheFirstLineThatBeginsWithANumber() {
+		String dnaString = 	"comment\n" + 
+							"1-2-3\n" + 
+							"4-5-6-ignored_anyway";
+		DNA dna = new DNA(dnaString);
+
+		assertArrayEquals(new Integer[] {1, 2, 3}, dna.getGenes());
 	}
 }

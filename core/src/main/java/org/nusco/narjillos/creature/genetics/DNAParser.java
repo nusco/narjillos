@@ -3,14 +3,14 @@ package org.nusco.narjillos.creature.genetics;
 
 class DNAParser {
 	
-	private final int[] genes;
+	private final Integer[] genes;
 	private int indexInGenes = 0;
 	
 	public DNAParser(DNA dna) {
 		if (dna.getGenes().length > 0)
 			genes = dna.getGenes();
 		else
-			genes = new int[1];
+			genes = new Integer[] { 0 };
 	}
 
 	public int[] nextChromosome() {

@@ -9,7 +9,7 @@ public class DNAParserTest {
 
 	@Test
 	public void iteratesOverChromosomes() {
-		int[] genes =  new int[]{
+		Integer[] genes =  new Integer[]{
 				1, 2, 3, 4, 5, 6,
 				7, 8, 9, 10, 11, 12
 			};
@@ -24,7 +24,7 @@ public class DNAParserTest {
 
 	@Test
 	public void padsUnterminatedLastChromosome() {
-		int[] genes =  new int[]{
+		Integer[] genes =  new Integer[]{
 				1, 2, 3, 4, 5, 6,
 				7, 8
 			};
@@ -39,7 +39,7 @@ public class DNAParserTest {
 
 	@Test
 	public void padsUnterminatedSingleChromosome() {
-		int[] genes =  new int[]{
+		Integer[] genes =  new Integer[]{
 				1, 2, 3
 			};
 
@@ -52,7 +52,7 @@ public class DNAParserTest {
 
 	@Test
 	public void alwaysReturnsAtLeastOneChromosome() {
-		int[] genes =  new int[0];
+		Integer[] genes =  new Integer[0];
 
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);

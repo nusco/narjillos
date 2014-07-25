@@ -70,7 +70,7 @@ public class Experiment {
 	}
 
 	private static Narjillo getNullNarjillo() {
-		return new Narjillo(new Head(0, 0, new ColorByte(0), 0), new DNA(new int[0]));
+		return new Narjillo(new Head(0, 0, new ColorByte(0), 0), new DNA(new Integer[0]));
 	}
 
 	private static String getStatusString(Pond pond, int tick, Narjillo mostProlificNarjillo) {

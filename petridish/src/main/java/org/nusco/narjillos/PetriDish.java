@@ -49,8 +49,10 @@ public class PetriDish extends Application {
 	public static void main(String... args) throws Exception {
 		if (args.length == 0)
 			pond = new Cosmos();
-		else
+		else if(args[0].endsWith(".nrj"))
 			pond = new Cosmos(readDNAFromFile(args[0]));
+		else
+			pond = new Cosmos(new DNA(args[0]));
 		launch(new String[0]);
 	}
 

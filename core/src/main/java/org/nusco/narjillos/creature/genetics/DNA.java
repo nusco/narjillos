@@ -1,6 +1,8 @@
 package org.nusco.narjillos.creature.genetics;
 
-import java.util.Arrays;
+import java.text.DecimalFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.nusco.narjillos.shared.utilities.RanGen;
 
@@ -10,9 +12,9 @@ public class DNA {
 	public static final int CHROMOSOME_SIZE = 6;
 	public static final double MUTATION_RATE = 0.1;
 
-	private final int[] genes;
+	private final Integer[] genes;
 
-	public DNA(int... genes) {
+	public DNA(Integer[] genes) {
 		this.genes = clipToByteSize(genes);
 	}
 
@@ -20,38 +22,34 @@ public class DNA {
 		this(toGenes(dnaString));
 	}
 
-	private static int[] toGenes(String dnaString) {
+	private static Integer[] toGenes(String dnaString) {
 		String[] lines = dnaString.split("\n");
-		int geneLine = getIndexOfFirstGeneLine(lines);
+		for (int i = 0; i < lines.length; i++)
+			if (lines[i].matches("\\d.*"))
+				return parseDNALine(lines[i]);
+		throw new IllegalArgumentException("Illegal DNA syntax. At least one line must begin with a number.");
+	}
 
-		if (geneLine >= lines.length)
-			return new int[0];
-		int[] genes = new int[lines.length - geneLine];
-		
-		for (int i = 0; i < genes.length; i++) {
-			String nextLine = lines[geneLine + i];
-			genes[i] = Integer.parseInt(nextLine);
+	private static Integer[] parseDNALine(String dnaLine) {
+		String[] numbers = dnaLine.split("-");
+		List<Integer> result = new LinkedList<>();
+		try {
+			for (int i = 0; i < numbers.length; i++)
+				if (!numbers[i].isEmpty())
+					result.add(Integer.parseInt(numbers[i]));
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Illegal DNA syntax: " + dnaLine);
 		}
-		
-		return genes;
+		return result.toArray(new Integer[result.size()]);
 	}
 
-	private static int getIndexOfFirstGeneLine(String[] lines) {
-		int result = 0;
-		
-		while (result < lines.length && !lines[result].startsWith("#"))
-			result++;
-		
-		return result + 1;
-	}
-
-	public int[] getGenes() {
+	public Integer[] getGenes() {
 		return genes;
 	}
 
 	public DNA mutate() {
 		int length = Math.max(0, genes.length + getLengthMutation());
-		int[] resultGenes = new int[length];
+		Integer[] resultGenes = new Integer[length];
 		int copyLength = Math.min(resultGenes.length, genes.length);
 		for (int i = 0; i < copyLength; i++) {
 			if (RanGen.nextDouble() < MUTATION_RATE)
@@ -64,7 +62,7 @@ public class DNA {
 		return new DNA(resultGenes);
 	}
 
-	private int mutate(int[] resultGenes, int i) {
+	private int mutate(Integer[] resultGenes, int i) {
 		int randomFactor = ((int) (RanGen.nextDouble() * MUTATION_RANGE * 2)) - MUTATION_RANGE;
 		return resultGenes[i] + randomFactor;
 	}
@@ -76,8 +74,8 @@ public class DNA {
 		return 0;
 	}
 
-	private int[] clipToByteSize(int... genes) {
-		int[] result = new int[genes.length];
+	private Integer[] clipToByteSize(Integer[] genes) {
+		Integer[] result = new Integer[genes.length];
 		for (int i = 0; i < result.length; i++)
 			result[i] = clipToByteSize(genes[i]);
 		return result;
@@ -93,7 +91,7 @@ public class DNA {
 
 	public static DNA random() {
 		final int genomeSize = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
-		int[] genes = new int[genomeSize];
+		Integer[] genes = new Integer[genomeSize];
 		for (int i = 0; i < genes.length; i++)
 			genes[i] = RanGen.nextByte();
 		return new DNA(genes);
@@ -101,6 +99,12 @@ public class DNA {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(genes);
+		final DecimalFormat threeDigits = new DecimalFormat("000");
+		StringBuffer result = new StringBuffer();
+		int i;
+		for (i = 0; i < genes.length - 1; i++)
+			result.append(threeDigits.format(genes[i]) + "-");
+		result.append(threeDigits.format(genes[i]));
+		return result.toString();
 	}
 }

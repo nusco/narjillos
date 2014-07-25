@@ -6,6 +6,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class DNA {
 
+	private static final int MUTATION_RANGE = 30;
 	public static final int CHROMOSOME_SIZE = 6;
 	public static final double MUTATION_RATE = 0.1;
 
@@ -63,16 +64,16 @@ public class DNA {
 		return new DNA(resultGenes);
 	}
 
+	private int mutate(int[] resultGenes, int i) {
+		int randomFactor = ((int) (RanGen.nextDouble() * MUTATION_RANGE * 2)) - MUTATION_RANGE;
+		return resultGenes[i] + randomFactor;
+	}
+
 	private int getLengthMutation() {
 		if (RanGen.nextDouble() < MUTATION_RATE)
 			return (int) (RanGen.nextGaussian() * CHROMOSOME_SIZE);
 
 		return 0;
-	}
-
-	private int mutate(int[] resultGenes, int i) {
-		int randomFactor = ((int) (RanGen.nextDouble() * 40)) - 20;
-		return resultGenes[i] + randomFactor;
 	}
 
 	private int[] clipToByteSize(int... genes) {

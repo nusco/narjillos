@@ -50,6 +50,14 @@ public abstract class BodyPart extends Organ {
 	}
 
 	public Vector tick(Vector inputSignal, MovementRecorder movementRecorder) {
+		if (isAtrophic()) {
+			// optimization
+			resetAllCaches();
+			Vector outputSignal = getNerve().tick(inputSignal);
+			tickChildren(outputSignal, movementRecorder);
+			return outputSignal;
+		}
+		
 		Segment beforeMovement = getSegment();
 		Vector outputSignal = getNerve().tick(inputSignal);
 		move(outputSignal);
@@ -76,10 +84,6 @@ public abstract class BodyPart extends Organ {
 
 	BodyPart sproutOrgan(Nerve nerve) {
 		return addChild(new BodySegment(nerve));
-	}
-
-	public BodyPart sproutAtrophicOrgan() {
-		return addChild(new AtrophicOrgan(this));
 	}
 
 	protected BodyPart addChild(BodyPart child) {

@@ -99,4 +99,8 @@ public abstract class Organ {
 		Organ other = (Organ) obj;
 		return length == other.length && thickness == other.thickness && color == other.color;
 	}
+	
+	protected final boolean isAtrophic() {
+		return length == 0;
+	}
 }

@@ -20,7 +20,7 @@ public class BodySegment extends BodyPart {
 	BodySegment(Nerve nerve) {
 		this(0, 0, 0, new ColorByte(0), null, 13);
 	}
-
+	
 	@Override
 	protected double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle() + getAngleToParent();

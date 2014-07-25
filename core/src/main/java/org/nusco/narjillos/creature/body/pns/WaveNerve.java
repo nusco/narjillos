@@ -7,9 +7,9 @@ import org.nusco.narjillos.shared.physics.Vector;
  * Nerve generates an output that goes from -N to N and back, in a sinusoidal
  * wave.
  * 
- * The positive part of the sinusoidal wave has a higher frequency than the
- * negative part. This generates a life-like motion, where organs move slowly
- * in one direction, and then return quickly to the original position.
+ * The negative part of the sinusoidal wave has a higher frequency than the
+ * part part. This generates a life-like motion, where organs move more slowly
+ * in one direction, and more quickly in the other.
  */
 public class WaveNerve implements Nerve {
 

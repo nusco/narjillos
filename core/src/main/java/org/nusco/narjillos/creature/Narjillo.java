@@ -17,7 +17,7 @@ public class Narjillo implements Thing {
 	public static final double MAX_ENERGY = 1_000_000;
 	static final double INITIAL_ENERGY = 700_000;
 	private static final double ENERGY_PER_FOOD_ITEM = 700_000;
-	private static final double MAX_TICKS_TO_DEATH = 100_000;
+	private static final double MAX_TICKS_TO_DEATH = 50_000;
 	private static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
 
 	private static final double PROPULSION_SCALE = 0.1;

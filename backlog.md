@@ -7,7 +7,8 @@
   * "Egg-firing"
   * Additional cost for long-distance egg-firing
   * Birth animation
-##Lab Bench
+##Petri Dish Command Panel
+  * Examine Species
   * Bench with stats
   * "Real Time" and "Fast" slider
   * Light switch
@@ -46,4 +47,5 @@
   * Load dish
 ##...
   * Sexual reproduction
+  * Sexual reproduction is optional
   * Corner map?

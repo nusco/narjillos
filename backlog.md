@@ -1,23 +1,32 @@
-* check how to stop gradle after launching a java class
+This is my backlog for the Narjillo project. It's divided in sections by "type of user". Inside each sections, features are roughly prioritized.
+I generally work on the high-priority features, but I pick the "user" that I want to be depending on my mood of the day.
 
-###Swimming 2.0
+## Computer Dummy
+
+* Don't require Gradle to start the programs (only to build them)
+* Externalize all configurable parameters to a JSON file
+* DNA analyzer program
+* Save dish
+* Load dish
+
+###Physicist
 
 * Real rotation
 
-###Shape
+###Genetist
 
 * Smooth organ evolution to and from atrophy
 
-###Eggs
+###Ostetrician
 
-* Narjillos spends energy to reproduce
 * Eggs
 * "Egg-firing"
 * Additional cost for long-distance egg-firing
-* Birth animation
+* Distance of firing is determined by genes
+* Narjillos spends energy to reproduce
 * Narjillos decide how much energy to give to descendants
 
-###Petri Dish Command Panel
+###Lab Technician
 
 * Examine Species
 * Bench with stats
@@ -29,11 +38,12 @@
 * "Most Prolific" button
 * View creature energy
 
-###Speed
+###Speed Demon
 
+* Space Partitioning optimization
 * Cached food image?
 
-###Environment
+###Environmentalist
 
 * Narjillos eat each other
 * Plants (food that evolves)
@@ -42,31 +52,21 @@
 * Controllable food rate
 * Controllable food calories
 
-###Analytics
-
-* Export genome
-* Human-readable genome
-
-###Smarter Narjillos
+###Ethologist
 
 * Narjillo updates food item when not existing anymore
 * Narjillo updates food item when not in range anymore
 
-###Eye candy
+###Artist
 
 * Detailed death animation
+* Birth animation
 * Narjillos always overlap food (food is in background)
 * Speckles in liquid (or some other effect)
 
-###Engine
+##Daydreamer
 
-* Multithreading (how?)
-* Space Partitioning optimization
-* Save dish
-* Load dish
-
-###...
-
+* DNA diff program (based on DNA analyzer)
 * Sexual reproduction
 * Sexual reproduction is optional
-* Brains
+* Brains with behaviours

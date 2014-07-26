@@ -98,7 +98,7 @@ public class Narjillo implements Thing, Creature {
 		return "narjillo";
 	}
 
-	void updatePosition(Vector position) {
+	private void updatePosition(Vector position) {
 		Vector start = getPosition();
 		setPosition(position);
 		

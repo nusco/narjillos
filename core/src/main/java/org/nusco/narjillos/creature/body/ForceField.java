@@ -1,21 +1,23 @@
-package org.nusco.narjillos.creature.physics;
+package org.nusco.narjillos.creature.body;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.body.MovementRecorder;
-import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
-public class ForceField implements MovementRecorder {
+class ForceField {
 
 	private static final double VISCOSITY = 1.7;
-	
+
+	public static ForceField NULL = new ForceField() {
+		@Override
+		public void record(Segment beforeMovement, Organ organ) {}
+	};
+
 	private final List<Vector> forces = new LinkedList<>();
 	private double energySpent = 0;
 	
-	@Override
 	public void record(Segment beforeMovement, Organ organ) {
 		Vector force = calculateForceUsedForMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
 		addForce(force);

@@ -3,6 +3,7 @@ package org.nusco.narjillos.creature.body;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -25,7 +26,7 @@ public abstract class BodyPart extends Organ {
 		this.parent = parent;
 	}
 
-	protected final double getAngleToParent() {
+	protected double getAngleToParent() {
 		return angleToParent;
 	}
 
@@ -52,44 +53,51 @@ public abstract class BodyPart extends Organ {
 		return children;
 	}
 
-	public Vector tick(Vector inputSignal, MovementRecorder movementRecorder) {
+	// TODO: break down and push down the stuff that doesn't send the signal to children?
+	public void tick(Vector inputSignal, ForceField forceField) {
 		if (isAtrophic()) {
+			// FIXME: what happens when the head is atrophic?
 			// optimization
 			resetAllCaches();
 			Vector outputSignal = getNerve().tick(inputSignal);
-			tickChildren(outputSignal, movementRecorder);
-			return outputSignal;
+			tickChildren(outputSignal, forceField);
 		}
 		
 		Segment beforeMovement = getSegment();
 		Vector outputSignal = getNerve().tick(inputSignal);
-		move(outputSignal);
+		
+		double updatedAngle = calculateUpdatedAngle(outputSignal);
+		setAngleToParent(updatedAngle);
+		
+		// TODO: should happen in setAngleToParent already
 		resetAllCaches();
-		movementRecorder.record(beforeMovement, this);
-		tickChildren(outputSignal, movementRecorder);
-		return outputSignal;
+		
+		forceField.record(beforeMovement, this);
+		tickChildren(outputSignal, forceField);
 	}
 
-	protected abstract void move(Vector signal);
 
-	protected void tickChildren(Vector signal, MovementRecorder movementListener) {
+	protected abstract double calculateUpdatedAngle(Vector signal);
+
+	protected void tickChildren(Vector signal, ForceField forceField) {
 		for (BodyPart child : getChildren())
-			child.tick(signal, movementListener);
+			child.tick(signal, forceField);
 	}
 
 	Nerve getNerve() {
 		return nerve;
 	}
 
-	public BodyPart sproutOrgan(int length, int thickness, int angleToParentAtRest, ColorByte hue, int delay) {
-		return addChild(new BodySegment(length, thickness, angleToParentAtRest, hue, this, delay));
+	public BodyPart sproutOrgan(int length, int thickness, ColorByte hue, int delay, int angleToParentAtRest) {
+		return addChild(new BodySegment(length, thickness, hue, new DelayNerve(delay), angleToParentAtRest, this));
 	}
 
+	// FIXME: remove and consider pushing down the sproutOrgan group of methods
 	BodyPart sproutOrgan(Nerve nerve) {
 		return addChild(new BodySegment(nerve));
 	}
 
-	protected BodyPart addChild(BodyPart child) {
+	private BodyPart addChild(BodyPart child) {
 		children.add(child);
 		return child;
 	}

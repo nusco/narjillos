@@ -1,7 +1,6 @@
 package org.nusco.narjillos.creature.body.embryology;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.BodyPart;
@@ -11,7 +10,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public class OrganBuilderTest {
 
 	@Test
-	public void createsAHeadWithAnAttachedNeck() {
+	public void createsAHead() {
 		int controlGene = 0b00000000;
 		int lengthGene = 50;
 		int thicknessGene = 60;
@@ -20,12 +19,11 @@ public class OrganBuilderTest {
 		int colorGene = 40;
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene1, ignoredGene2, colorGene});
-		BodyPart head = builder.buildHeadSystem();
+		BodyPart head = builder.buildHead();
 
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, head.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, head.getThickness(), 0);
 		assertEquals(new ColorByte(colorGene), head.getColor());
-		assertNotNull(head.getChildren().get(0));
 	}
 
 	@Test
@@ -38,8 +36,8 @@ public class OrganBuilderTest {
 		int colorGene = 40;
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, delayGene, angleToParentGene, colorGene});
-		BodyPart headSystem = builder.buildHeadSystem();
-		Organ organ = builder.buildBodyPart(headSystem, 1);
+		BodyPart head = builder.buildHead();
+		Organ organ = builder.buildBodyPart(head, 1);
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
@@ -57,8 +55,7 @@ public class OrganBuilderTest {
 
 	private Organ buildSegment(int angleToParentGene, int angleSign) {
 		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, 70, angleToParentGene, 10});
-		BodyPart head = builder.buildHeadSystem();
-		BodyPart neck = head.getChildren().get(0);
-		return builder.buildBodyPart(neck, angleSign);
+		BodyPart head = builder.buildHead();
+		return builder.buildBodyPart(head, angleSign);
 	}
 }

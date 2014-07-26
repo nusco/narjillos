@@ -5,20 +5,26 @@ import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class BodySegment extends BodyPart {
+class BodySegment extends BodyPart {
 	private static final double AMPLITUDE_MULTIPLIER = 1.5;
 	private static final int MAX_ROTATION_SPEED = 5;
 
 	private final double angleToParentAtRest;
 
-	public BodySegment(int length, int thickness, int angleToParentAtRest, ColorByte color, BodyPart parent, int delay) {
-		super(length, thickness, parent.getColor().mix(color), parent, new DelayNerve(delay));
+	public BodySegment(int length, int thickness, ColorByte hue, Nerve nerve, int angleToParentAtRest, BodyPart parent) {
+		super(length, thickness, calculateColorMix(parent, hue), parent, nerve);
 		this.angleToParentAtRest = angleToParentAtRest;
 		setAngleToParent(angleToParentAtRest);
 	}
 
+	private static ColorByte calculateColorMix(BodyPart parent, ColorByte color) {
+		if (parent == null)
+			return color;
+		return parent.getColor().mix(color);
+	}
+
 	BodySegment(Nerve nerve) {
-		this(0, 0, 0, new ColorByte(0), null, 13);
+		this(0, 0, new ColorByte(0), new DelayNerve(13), 0, null);
 	}
 	
 	@Override
@@ -26,19 +32,14 @@ public class BodySegment extends BodyPart {
 		return getParent().getAbsoluteAngle() + getAngleToParent();
 	}
 
-	@Override
-	protected void move(Vector signal) {
-		updateAngle(signal);
-	}
-
-	private void updateAngle(Vector signal) {
+	protected double calculateUpdatedAngle(Vector signal) {
 		Vector signedScaledSignal = signal.by(AMPLITUDE_MULTIPLIER * getOrientationSign());
 
 		Vector mainAxis = getMainAxis();
 		Vector direction = mainAxis.minus(signedScaledSignal);
 		Vector rotatedDirection = direction.rotateBy(angleToParentAtRest - mainAxis.getAngle());
 
-		setAngleToParent(incrementAngleToParentBy(-rotatedDirection.getAngle()));
+		return incrementAngleToParentBy(-rotatedDirection.getAngle());
 	}
 
 	private int getOrientationSign() {

@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Vector;
 
 class NarjilloView extends ThingView {
@@ -39,7 +39,7 @@ class NarjilloView extends ThingView {
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
 
-		Vector position = getSwimmer().getPosition();
+		Vector position = getNarjillo().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));
 		group.setEffect(getShadow(zoomLevel));
@@ -58,17 +58,12 @@ class NarjilloView extends ThingView {
 
 	private List<OrganView> createOrganViews() {
 		List<OrganView> result = new LinkedList<>();
-		addWithChildren(getSwimmer().getHead(), result);
+		for (Organ bodyPart : getNarjillo().getOrgans())
+			result.add(new OrganView(bodyPart, getNarjillo()));
 		return result;
 	}
 
-	private void addWithChildren(BodyPart organ, List<OrganView> result) {
-		result.add(new OrganView(organ, getSwimmer()));
-		for (BodyPart child : organ.getChildren())
-			addWithChildren(child, result);
-	}
-
-	private Narjillo getSwimmer() {
+	private Narjillo getNarjillo() {
 		return (Narjillo)getThing();
 	}
 

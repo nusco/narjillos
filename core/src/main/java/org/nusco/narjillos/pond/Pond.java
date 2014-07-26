@@ -86,7 +86,7 @@ public class Pond {
 	}
 
 	public final Narjillo spawnNarjillo(Vector position, DNA genes) {
-		final Narjillo narjillo = new Embryo(genes).develop();
+		final Narjillo narjillo = new Narjillo(new Embryo(genes).develop(), genes);
 		narjillo.addEventListener(new NarjilloEventListener() {
 
 			@Override

@@ -1,21 +1,25 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.creature.body.pns.PassNerve;
+import org.nusco.narjillos.creature.body.pns.WaveNerve;
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class Head extends BodyPart {
+public class Head extends BodySegment {
 
-	static final double ROTATION_SPEED = 0.5;
-	static final double ROTATION_HISTERESIS = ROTATION_SPEED;
+	private static final double ROTATION_SPEED = 0.5;
+	private static final double ROTATION_HISTERESIS = ROTATION_SPEED;
+	private static final double WAVE_SIGNAL_FREQUENCY = 0.005;
 
 	private final double metabolicRate;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
-		super(length, thickness, hue, null, new PassNerve());
+		super(length, thickness, hue, new WaveNerve(metabolicRate * WAVE_SIGNAL_FREQUENCY), 0, null);
 		this.metabolicRate = metabolicRate;
+		// can be skipped? TODO
 		setAngleToParent(0);
-		tick(Vector.ZERO, MovementRecorder.NULL);
+		// necessary to prevent twitching on the first frame? check
+		tick(Vector.ZERO, ForceField.NULL);
 	}
 
 	public double getMetabolicRate() {
@@ -31,19 +35,28 @@ public class Head extends BodyPart {
 	protected double calculateAbsoluteAngle() {
 		return getAngleToParent();
 	}
-
+	
 	@Override
 	protected Vector calculateMainAxis() {
 		return getVector().normalize(1);
 	}
 
 	@Override
-	protected void move(Vector signal) {
-		setAngleToParent(getAngleToParent() + turnTowards(signal.invert()));
+	public void tick(Vector inputSignal, ForceField forceField) {
+		Segment beforeMovement = getSegment();
+		
+		double updatedAngle = calculateUpdatedAngle(inputSignal);
+		setAngleToParent(getAngleToParent() + updatedAngle);
+		Vector outputSignal = getNerve().tick(inputSignal);
+
+		forceField.record(beforeMovement, this);
+		tickChildren(outputSignal, forceField);
 	}
 
-	private double turnTowards(Vector inputSignal) {
-		double difference = inputSignal.getAngleWith(getVector());
+	@Override
+	protected double calculateUpdatedAngle(Vector signal) {
+		// HACK. will stay in place until I have real physical rotation
+		double difference = signal.invert().getAngleWith(getVector());
 		
 		// special case: in case the main axis is exactly opposite to the target
 		if (Math.abs(difference - 180) < 2)
@@ -55,8 +68,13 @@ public class Head extends BodyPart {
 		double unsignedResult = ROTATION_SPEED * Math.signum(difference);
 		return sign * unsignedResult;
 	}
-
-	public Organ sproutNeck() {
-		return addChild(new Neck(this, getMetabolicRate()));
+	
+	public static void main(String[] args) {
+		Head head = new Head(10, 1, new ColorByte(0), 1);
+		System.out.println(head.getAngleToParent());
+		for (int i = 0; i < 10; i++) {
+			head.tick(Vector.cartesian(0, 10), new ForceField());
+			System.out.println(head.getAngleToParent());
+		}
 	}
 }

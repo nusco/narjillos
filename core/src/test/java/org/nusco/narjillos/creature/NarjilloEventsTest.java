@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -13,7 +14,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class NarjilloEventsTest {
 
-	Narjillo narjillo = new Narjillo(new Head(10, 10, new ColorByte(10), 1), DNA.random());
+	Narjillo narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), DNA.random());
 
 	class NullSwimmerEventListener implements NarjilloEventListener {
 		@Override

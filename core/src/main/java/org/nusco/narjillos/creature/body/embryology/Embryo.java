@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature.body.embryology;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.genetics.DNA;
@@ -17,21 +17,20 @@ public class Embryo {
 		this.genes = genes;
 	}
 	
-	public Narjillo develop() {
+	public Body develop() {
 		DNAParser parser = new DNAParser(genes);
 		
 		Head head = createHeadSystem(parser);
-		
-		BodyPart neck = head.getChildren().get(0);
+
 		List<BodyPart> bodyParts = new LinkedList<>();
-		bodyParts.add(neck);
+		bodyParts.add(head);
 		createDescendants(bodyParts, parser);
 		
-		return new Narjillo(head, genes);
+		return new Body(head);
 	}
 
 	private Head createHeadSystem(DNAParser parser) {
-		return new OrganBuilder(parser.nextChromosome()).buildHeadSystem();
+		return new OrganBuilder(parser.nextChromosome()).buildHead();
 	}
 
 	private void createDescendants(List<BodyPart> bodyParts, DNAParser parser) {

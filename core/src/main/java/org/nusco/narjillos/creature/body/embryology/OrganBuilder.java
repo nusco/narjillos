@@ -19,14 +19,12 @@ class OrganBuilder {
 		this.genes = partGenes;
 	}
 
-	public Head buildHeadSystem() {
-		Head result = new Head(getLength(), getThickness(), getHue(), getMetabolicRate());
-		result.sproutNeck();
-		return result;
+	public Head buildHead() {
+		return new Head(getLength(), getThickness(), getHue(), getMetabolicRate());
 	}
 
 	public BodyPart buildBodyPart(BodyPart parent, int angleSign) {
-		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getHue(), getDelay());
+		return parent.sproutOrgan(getLength(), getThickness(), getHue(), getDelay(), getAngleToParentAtRest(angleSign));
 	}
 
 	private int getLengthGene() {

@@ -7,10 +7,10 @@ import javafx.scene.text.Text;
 
 public class DataView {
 
-	public static Node toNode(String message) {
+	public static Node toNode(String message, Color color) {
 		Text result = new Text(message);
-		result.setFont(Font.font ("Helvetica Light", 10));
-		result.setFill(Color.RED);
+		result.setFont(Font.font("Helvetica-Bold", 10));
+		result.setFill(color);
 		result.setTranslateX(2);
 		result.setTranslateY(10);
 		return result;

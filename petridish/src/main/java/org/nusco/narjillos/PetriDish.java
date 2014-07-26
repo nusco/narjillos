@@ -12,12 +12,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.genetics.DNA;
@@ -32,9 +34,9 @@ import org.nusco.narjillos.views.Viewport;
 
 public class PetriDish extends Application {
 
-	private static final int TARGET_FRAMES_PER_SECOND = 25;
+	private static final int TARGET_FRAMES_PER_SECOND = 60;
 	private static final int FRAMES_PERIOD = 1000 / TARGET_FRAMES_PER_SECOND;
-	private static final int DEFAULT_TARGET_TICKS_PER_SECOND = 25;
+	private static final int DEFAULT_TICKS_PER_SECOND = 25;
 	protected static final long PAN_SPEED = 200;
 
 	private final Chronometer ticksChronometer = new Chronometer();
@@ -45,7 +47,7 @@ public class PetriDish extends Application {
 	private PondView pondView;
 	private Viewport viewport;
 	private long numberOfTicks = 0;
-	private int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+	private int targetTicksPerSecond = DEFAULT_TICKS_PER_SECOND;
 	private volatile boolean initializationDone;
 	
 	private static String[] args;
@@ -204,7 +206,7 @@ public class PetriDish extends Application {
 
 	private synchronized void toggleMaxSpeed() {
 		if (targetTicksPerSecond == 1000)
-			targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+			targetTicksPerSecond = DEFAULT_TICKS_PER_SECOND;
 		else
 			targetTicksPerSecond = 1000;
 	}
@@ -253,16 +255,17 @@ public class PetriDish extends Application {
 	private synchronized void showRoot(final Group root) {
 		root.getChildren().clear();
 		root.getChildren().add(getPondView().toNode());
-		showChronometers(root);
+		root.getChildren().add(getChronometers());
 	}
 
-	private synchronized void showChronometers(Group root) {
+	private synchronized Node getChronometers() {
 		String message = "FPS: " + framesChronometer.getTicksInLastSecond() +
 				" / TPS: " + ticksChronometer.getTicksInLastSecond() +
 				" / TICKS: " + NumberFormat.format(numberOfTicks) + 
 				"\nNARJ: " + pond.getNumberOfNarjillos() + 
 				" / FOOD: " + pond.getNumberOfFoodPieces();
-		root.getChildren().add(DataView.toNode(message));
+		Color color = targetTicksPerSecond == DEFAULT_TICKS_PER_SECOND ? Color.LIGHTGREEN : Color.HOTPINK;
+		return DataView.toNode(message, color);
 	}
 
 	private void waitForAtLeast(int time, long since) {

@@ -27,14 +27,6 @@ public class DNATest {
 		
 		assertArrayEquals(new Integer[] {1, 0, 255}, dna.getGenes());
 	}
-	
-	@Test
-	public void createsDNAFromAConventionalString() {
-		String dnaString = 	"1-022-255";
-		DNA dna = new DNA(dnaString);
-
-		assertArrayEquals(new Integer[] {1, 22, 255}, dna.getGenes());
-	}
 
 	@Test
 	public void clipsGenesToByteSizeWhenCreatedWithAString() {
@@ -44,47 +36,11 @@ public class DNATest {
 	}
 
 	@Test
-	public void ignoresSignWhenCreatedWithAString() {
-		DNA dna = new DNA("1-0--2");
-		
-		assertArrayEquals(new Integer[] {1, 0, 2}, dna.getGenes());
-	}
-
-	@Test
-	public void ignoresAnythingInTheDNAStringThatDoesntBeginWithANumber() {
-		String dnaString = 	"comment 1\n" +
-							"\n" +
-							"1-0-255\n" +
-							"comment 2\n" +
-							"\n";
+	public void createsDNAFromADNADocumentString() {
+		String dnaString = "comment\n" +
+							"1-022-255";
 		DNA dna = new DNA(dnaString);
 
-		assertArrayEquals(new Integer[] {1, 0, 255}, dna.getGenes());
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void throwsAnExceptionIfNoLineBeginsWithANumber() {
-		String dnaString = 	"comment\n";
-		DNA dna = new DNA(dnaString);
-
-		assertArrayEquals(new Integer[0], dna.getGenes());
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void throwsAnExceptionIfTheLineThatBeginsWithANumberIsMalformed() {
-		String dnaString = 	"12_34";
-		DNA dna = new DNA(dnaString);
-
-		assertArrayEquals(new Integer[0], dna.getGenes());
-	}
-	
-	@Test
-	public void ignoresAnythingAfterTheFirstLineThatBeginsWithANumber() {
-		String dnaString = 	"comment\n" + 
-							"1-2-3\n" + 
-							"4-5-6-ignored_anyway";
-		DNA dna = new DNA(dnaString);
-
-		assertArrayEquals(new Integer[] {1, 2, 3}, dna.getGenes());
+		assertArrayEquals(new Integer[] {1, 22, 255}, dna.getGenes());
 	}
 }

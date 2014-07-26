@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.genetics;
 
-
 public class DNAParser {
 	
 	private final Integer[] genes;

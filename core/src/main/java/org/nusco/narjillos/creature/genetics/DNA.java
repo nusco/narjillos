@@ -10,68 +10,66 @@ public class DNA {
 
 	private static final int MUTATION_RANGE = 30;
 	public static final int CHROMOSOME_SIZE = 6;
-	public static final double MUTATION_RATE = 0.1;
+	public static final double MUTATION_RATE = 0.05;
 
 	private final Integer[] genes;
 
-	public DNA(Integer[] genes) {
+	DNA(Integer[] genes) {
 		this.genes = clipToByteSize(genes);
 	}
 
-	public DNA(String dnaString) {
-		this(toGenes(dnaString));
-	}
-
-	private static Integer[] toGenes(String dnaString) {
-		String[] lines = dnaString.split("\n");
-		for (int i = 0; i < lines.length; i++)
-			if (lines[i].matches("\\d.*"))
-				return parseDNALine(lines[i]);
-		throw new IllegalArgumentException("Illegal DNA syntax. At least one line must begin with a number.");
-	}
-
-	private static Integer[] parseDNALine(String dnaLine) {
-		String[] numbers = dnaLine.split("-");
-		List<Integer> result = new LinkedList<>();
-		try {
-			for (int i = 0; i < numbers.length; i++)
-				if (!numbers[i].isEmpty())
-					result.add(Integer.parseInt(numbers[i]));
-		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Illegal DNA syntax: " + dnaLine);
-		}
-		return result.toArray(new Integer[result.size()]);
+	public DNA(String dnaDocument) {
+		this(new DNADocument(dnaDocument).toGenes());
 	}
 
 	public Integer[] getGenes() {
 		return genes;
 	}
 
-	public DNA mutate() {
-		int length = Math.max(0, genes.length + getLengthMutation());
-		Integer[] resultGenes = new Integer[length];
-		int copyLength = Math.min(resultGenes.length, genes.length);
-		for (int i = 0; i < copyLength; i++) {
-			if (RanGen.nextDouble() < MUTATION_RATE)
-				resultGenes[i] = mutate(genes, i);
-			else
-				resultGenes[i] = genes[i];
+	public DNA copy() {
+		List<Integer[]> resultChromosomes = new LinkedList<>();
+
+		DNAParser parser = new DNAParser(this);
+		int[] nextChromosome;
+		while((nextChromosome = parser.nextChromosome()) != null) {
+			// skip a chromosome every now and then
+			if (!mutationHappens())
+				resultChromosomes.add(copy(nextChromosome));
+			// add a chromosome every now and then
+			if (mutationHappens())
+				resultChromosomes.add(random(CHROMOSOME_SIZE));
 		}
-		for (int i = genes.length; i < resultGenes.length; i++)
-			resultGenes[i] = RanGen.nextByte();
+
+		Integer[] resultGenes = flatten(resultChromosomes);
 		return new DNA(resultGenes);
 	}
 
-	private int mutate(Integer[] resultGenes, int i) {
-		int randomFactor = ((int) (RanGen.nextDouble() * MUTATION_RANGE * 2)) - MUTATION_RANGE;
-		return resultGenes[i] + randomFactor;
+	private Integer[] flatten(List<Integer[]> chromosomes) {
+		List<Integer> result = new LinkedList<>();
+		for (Integer[] chromosome : chromosomes)
+			for (Integer gene : chromosome)
+				result.add(gene);
+		return result.toArray(new Integer[result.size()]);
 	}
 
-	private int getLengthMutation() {
-		if (RanGen.nextDouble() < MUTATION_RATE)
-			return (int) (RanGen.nextGaussian() * CHROMOSOME_SIZE);
+	private Integer[] copy(int[] chromosome) {
+		Integer[] result = new Integer[chromosome.length];
+		for (int i = 0; i < result.length; i++)
+			result[i] = copy(chromosome[i]);
+		return result;
+	}
 
-		return 0;
+	private int copy(int gene) {
+		return mutationHappens() ? mutate(gene) : gene;
+	}
+
+	private int mutate(int gene) {
+		int randomFactor = ((int) (RanGen.nextDouble() * MUTATION_RANGE * 2)) - MUTATION_RANGE;
+		return gene + randomFactor;
+	}
+
+	private boolean mutationHappens() {
+		return RanGen.nextDouble() < MUTATION_RATE;
 	}
 
 	private Integer[] clipToByteSize(Integer[] genes) {
@@ -90,30 +88,34 @@ public class DNA {
 	}
 
 	public static DNA random() {
-		final int genomeSize = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
-		Integer[] genes = new Integer[genomeSize];
+		int size = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
+		Integer[] randomGenes = random(size);
+		return new DNA(randomGenes);
+	}
+
+	private static Integer[] random(int size) {
+		Integer[] genes = new Integer[size];
 		for (int i = 0; i < genes.length; i++)
 			genes[i] = RanGen.nextByte();
-		return new DNA(genes);
+		return genes;
 	}
 
 	@Override
 	public String toString() {
 		final DecimalFormat threeDigits = new DecimalFormat("000");
 		StringBuffer result = new StringBuffer();
-		int i;
-		for (i = 0; i < genes.length - 1; i++)
+		for (int i = 0; i < genes.length - 1; i++)
 			result.append(threeDigits.format(genes[i]) + "-");
-		result.append(threeDigits.format(genes[i]));
+		result.append(threeDigits.format(genes[genes.length - 1]));
 		return result.toString();
 	}
 
-	public int getDistanceWith(DNA other) {
+	public int getDistanceFrom(DNA other) {
 		Integer[] theseGenes = getGenes();
 		Integer[] otherGenes = other.getGenes();
 
 		if (theseGenes.length > otherGenes.length)
-			return other.getDistanceWith(this);
+			return other.getDistanceFrom(this);
 			
 		int result = 0;
 		for (int i = 0; i < theseGenes.length; i++)

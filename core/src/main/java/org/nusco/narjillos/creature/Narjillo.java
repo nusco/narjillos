@@ -90,7 +90,7 @@ public class Narjillo implements Thing, Creature {
 
 	public synchronized DNA reproduce() {
 		numberOfDescendants++;
-		return getDNA().mutate();
+		return getDNA().copy();
 	}
 
 	@Override

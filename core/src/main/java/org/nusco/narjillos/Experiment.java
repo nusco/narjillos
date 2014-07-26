@@ -79,7 +79,7 @@ public class Experiment {
 
 			@Override
 			public DNA getDNA() {
-				return new DNA(new Integer[0]);
+				return new DNA("");
 			}
 
 			@Override

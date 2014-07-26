@@ -34,7 +34,7 @@ public class Population {
 		int result = 0;
 		for (Creature otherCreature : creatures)
 			if (otherCreature != creature)
-				result += creature.getDNA().getDistanceWith(otherCreature.getDNA());
+				result += creature.getDNA().getDistanceFrom(otherCreature.getDNA());
 		return result;
 	}
 

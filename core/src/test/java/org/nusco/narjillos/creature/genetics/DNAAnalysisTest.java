@@ -12,16 +12,16 @@ public class DNAAnalysisTest {
 		DNA dna2 = new DNA("001-002-001");
 		DNA dna3 = new DNA("001-002-002");
 
-		assertEquals(0, dna1.getDistanceWith(dna1));
-		assertEquals(1, dna1.getDistanceWith(dna2));
-		assertEquals(2, dna1.getDistanceWith(dna3));
-		assertEquals(1, dna2.getDistanceWith(dna3));
+		assertEquals(0, dna1.getDistanceFrom(dna1));
+		assertEquals(1, dna1.getDistanceFrom(dna2));
+		assertEquals(2, dna1.getDistanceFrom(dna3));
+		assertEquals(1, dna2.getDistanceFrom(dna3));
 
-		assertEquals(dna3.getDistanceWith(dna1), dna1.getDistanceWith(dna3));
+		assertEquals(dna3.getDistanceFrom(dna1), dna1.getDistanceFrom(dna3));
 
 		DNA dna4 = new DNA("001-002");
 
-		assertEquals(2, dna1.getDistanceWith(dna4));
-		assertEquals(2, dna4.getDistanceWith(dna1));
+		assertEquals(2, dna1.getDistanceFrom(dna4));
+		assertEquals(2, dna4.getDistanceFrom(dna1));
 	}
 }

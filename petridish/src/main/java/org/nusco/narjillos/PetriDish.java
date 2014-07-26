@@ -46,6 +46,7 @@ public class PetriDish extends Application {
 	private Viewport viewport;
 	private long numberOfTicks = 0;
 	private int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+	private volatile boolean initializationDone;
 	
 	private static String[] args;
 	
@@ -91,6 +92,9 @@ public class PetriDish extends Application {
 		startModelUpdateThread(root);
 		startViewUpdateThread(root);
 
+		while (!initializationDone)
+			Thread.sleep(10);
+		
 		final Viewport viewport = getPondView().getViewport();
 		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 
@@ -213,7 +217,8 @@ public class PetriDish extends Application {
 
 				setUpNewPond();
 				showRoot(root);
-
+				initializationDone = true;
+				
 				while (true) {
 					long startTime = System.currentTimeMillis();
 					tick();

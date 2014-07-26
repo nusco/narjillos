@@ -14,27 +14,23 @@ public class RanGen {
 		if (getSeed() != NO_SEED)
 			throw new RuntimeException("RanGen seeded more than once. " + getWarningMessage());
 		RanGen.seed = seed;
+		initialize(seed);
 	}
 
 	private static synchronized Random getRandom() {
-		if (random == null)
-			initialize();
+		if (random == null) {
+			int randomSeed = (int)(Math.random() * Integer.MAX_VALUE);
+			System.out.println("Random seed: " + randomSeed);
+			initialize(randomSeed);
+		}
 		if (Thread.currentThread() != authorizedThread)
 			throw new RuntimeException("RanGen accessed from multiple threads. " + getWarningMessage());
 		return random;
 	}
 
-	private static void initialize() {
+	private static void initialize(int seed) {
 		authorizedThread = Thread.currentThread();
-		int seed = calculateSeed();
-		System.out.println("Random seed: " + seed);
 		random = new Random(seed);
-	}
-
-	private static int calculateSeed() {
-		if (getSeed() == NO_SEED)
-			return (int)(Math.random() * Integer.MAX_VALUE);
-		return getSeed();
 	}
 
 	static synchronized int getSeed() {

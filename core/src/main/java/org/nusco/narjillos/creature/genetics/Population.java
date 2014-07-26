@@ -5,55 +5,53 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.nusco.narjillos.creature.Narjillo;
-
 public class Population {
 
-	private final Set<Narjillo> narjillos = Collections.newSetFromMap(new ConcurrentHashMap<Narjillo, Boolean>());
+	private final Set<Creature> creatures = Collections.newSetFromMap(new ConcurrentHashMap<Creature, Boolean>());
 
-	public void add(Narjillo narjillo) {
-		narjillos.add(narjillo);
+	public void add(Creature creature) {
+		creatures.add(creature);
 	}
 
-	public Collection<Narjillo> toCollection() {
-		return narjillos;
+	public Collection<Creature> toCollection() {
+		return creatures;
 	}
 
-	public Narjillo getMostTypicalSpecimen() {
-		Narjillo result = null;
+	public Creature getMostTypicalSpecimen() {
+		Creature result = null;
 		int lowestGeneticDistance = Integer.MAX_VALUE;
-		for (Narjillo narjillo : narjillos) {
-			int currentGeneticDistance = totalGeneticDistanceFromOthers(narjillo);
+		for (Creature creature : creatures) {
+			int currentGeneticDistance = totalGeneticDistanceFromOthers(creature);
 			if (currentGeneticDistance < lowestGeneticDistance) {
-				result = narjillo;
+				result = creature;
 				lowestGeneticDistance = currentGeneticDistance;
 			}
 		}
 		return result;
 	}
 
-	private int totalGeneticDistanceFromOthers(Narjillo narjillo) {
+	private int totalGeneticDistanceFromOthers(Creature creature) {
 		int result = 0;
-		for (Narjillo otherNarjillo : narjillos)
-			if (otherNarjillo != narjillo)
-				result += narjillo.getDNA().getDistanceWith(otherNarjillo.getDNA());
+		for (Creature otherCreature : creatures)
+			if (otherCreature != creature)
+				result += creature.getDNA().getDistanceWith(otherCreature.getDNA());
 		return result;
 	}
 
 	public void tick() {
-		for (Narjillo narjillo : narjillos)
-			narjillo.tick();
+		for (Creature creature : creatures)
+			creature.tick();
 	}
 
-	public Set<Narjillo> getCollection() {
-		return narjillos;
+	public Set<Creature> getCollection() {
+		return creatures;
 	}
 
-	public void remove(Narjillo narjillo) {
-		narjillos.remove(narjillo);
+	public void remove(Creature creature) {
+		creatures.remove(creature);
 	}
 
 	public int size() {
-		return narjillos.size();
+		return creatures.size();
 	}
 }

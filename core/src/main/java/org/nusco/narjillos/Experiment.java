@@ -2,13 +2,12 @@ package org.nusco.narjillos;
 
 import java.util.Random;
 
-import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.pond.Cosmos;
 import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class Experiment {
@@ -64,20 +63,39 @@ public class Experiment {
 	}
 
 	private static String getStatusString(Pond pond, int tick) {
-		Narjillo mostTypicalSpecimen = pond.getPopulation().getMostTypicalSpecimen();
+		Creature mostTypicalSpecimen = pond.getPopulation().getMostTypicalSpecimen();
 		if (mostTypicalSpecimen == null)
-			mostTypicalSpecimen = getNullNarjillo();
+			mostTypicalSpecimen = getNullCreature();
 
 		return getStatusString(pond, tick, mostTypicalSpecimen);
 	}
 
-	private static Narjillo getNullNarjillo() {
-		return new Narjillo(new Head(0, 0, new ColorByte(0), 0), new DNA(new Integer[0]));
+	private static Creature getNullCreature() {
+		return new Creature() {
+
+			@Override
+			public void tick() {
+			}
+
+			@Override
+			public DNA getDNA() {
+				return new DNA(new Integer[0]);
+			}
+
+			@Override
+			public Vector getPosition() {
+				return Vector.ZERO;
+			}
+
+			@Override
+			public String getLabel() {
+				return "nobody";
+			}};
 	}
 
-	private static String getStatusString(Pond pond, int tick, Narjillo mostProlificNarjillo) {
+	private static String getStatusString(Pond pond, int tick, Creature mostTypicalSpecimen) {
 		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + pond.getNumberOfNarjillos() + ", "
 				+ pond.getNumberOfFoodPieces() + ", "
-				+ mostProlificNarjillo.getDNA();
+				+ mostTypicalSpecimen.getDNA();
 	}
 }

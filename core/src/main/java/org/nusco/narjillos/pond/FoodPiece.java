@@ -7,7 +7,6 @@ public class FoodPiece implements Thing {
 
 	public Vector position;
 
-	@Override
 	public void setPosition(Vector position) {
 		this.position = position;
 	}

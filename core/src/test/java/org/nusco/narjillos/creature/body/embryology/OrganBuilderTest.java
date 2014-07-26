@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.genetics;
+package org.nusco.narjillos.creature.body.embryology;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -39,7 +39,7 @@ public class OrganBuilderTest {
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, delayGene, angleToParentGene, colorGene});
 		BodyPart headSystem = builder.buildHeadSystem();
-		Organ organ = builder.buildSegment(headSystem, 1);
+		Organ organ = builder.buildBodyPart(headSystem, 1);
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
@@ -59,6 +59,6 @@ public class OrganBuilderTest {
 		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, 70, angleToParentGene, 10});
 		BodyPart head = builder.buildHeadSystem();
 		BodyPart neck = head.getChildren().get(0);
-		return builder.buildSegment(neck, angleSign);
+		return builder.buildBodyPart(neck, angleSign);
 	}
 }

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.genetics;
+package org.nusco.narjillos.creature.body.embryology;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.creature.genetics.DNAParser;
 
 public class Embryo {
 

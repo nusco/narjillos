@@ -10,8 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.NarjilloEventListener;
+import org.nusco.narjillos.creature.body.embryology.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.creature.genetics.Embryo;
 import org.nusco.narjillos.creature.genetics.Population;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -79,7 +79,8 @@ public class Pond {
 
 	public final FoodPiece spawnFood(Vector position) {
 		FoodPiece newFood = new FoodPiece();
-		placeInPond(newFood, position);
+		newFood.setPosition(position);
+		notifyThingAdded(newFood);
 		foodPieces.add(newFood);
 		return newFood;
 	}
@@ -98,20 +99,21 @@ public class Pond {
 				killNarjillo(narjillo);
 			}
 		});
-		placeInPond(narjillo, position);
+		narjillo.setPosition(position);
+		notifyThingAdded(narjillo);
 		narjillos.add(narjillo);
 		return narjillo;
 	}
 
-	private void updateTarget(Narjillo swimmer) {
-		Vector position = swimmer.getPosition();
+	private void updateTarget(Narjillo narjillo) {
+		Vector position = narjillo.getPosition();
 		Vector locationOfClosestFood = findFoodPiece(position);
-		swimmer.setTarget(locationOfClosestFood);
+		narjillo.setTarget(locationOfClosestFood);
 	}
 
 	private void updateTargets() {
-		for (Narjillo narjillo : narjillos.getCollection())
-			updateTarget(narjillo);
+		for (Thing narjillo : narjillos.getCollection())
+			updateTarget((Narjillo)narjillo);
 	}
 
 	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
@@ -168,8 +170,7 @@ public class Pond {
 		spawnNarjillo(position, childDNA);
 	}
 
-	private final void placeInPond(Thing thing, Vector position) {
-		thing.setPosition(position);
+	private final void notifyThingAdded(Thing thing) {
 		for (PondEventListener pondEvent : pondEvents)
 			pondEvent.thingAdded(thing);
 	}

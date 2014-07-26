@@ -6,13 +6,14 @@ import java.util.List;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.creature.physics.ForceField;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 
-public class Narjillo implements Thing {
+public class Narjillo implements Thing, Creature {
 
 	public static final double MAX_ENERGY = 1_000_000;
 	static final double INITIAL_ENERGY = 700_000;
@@ -49,7 +50,6 @@ public class Narjillo implements Thing {
 		return position;
 	}
 
-	@Override
 	public synchronized void setPosition(Vector position) {
 		this.position = position;
 	}
@@ -141,9 +141,9 @@ public class Narjillo implements Thing {
 	private Vector calculateMovement(Vector force) {
 		// zero mass can actually happen
 		if (getMass() == 0)
-			return force.by(PROPULSION_SCALE);
+			return force.invert().by(PROPULSION_SCALE);
 
-		return force.by(PROPULSION_SCALE * getMassPenalty());
+		return force.invert().by(PROPULSION_SCALE * getMassPenalty());
 	}
 
 	private double getMassPenalty() {

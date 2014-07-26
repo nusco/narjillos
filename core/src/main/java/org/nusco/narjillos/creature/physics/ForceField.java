@@ -31,7 +31,7 @@ public class ForceField implements MovementRecorder {
 
 		energySpent += movementIntensityInViscousFluid / 1000;
 		
-		return averageMovement.normalize(movementIntensityInViscousFluid).getProjectionOn(afterMovement.vector.getNormal()).invert();
+		return averageMovement.normalize(movementIntensityInViscousFluid).getProjectionOn(afterMovement.vector.getNormal());
 	}
 
 	private double addViscosity(double normalizedMovementIntensity) {

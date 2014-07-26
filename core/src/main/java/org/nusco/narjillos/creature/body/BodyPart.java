@@ -8,6 +8,9 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
+/**
+ * Connects Organs in a tree that ultimately becomes a body
+ */
 public abstract class BodyPart extends Organ {
 
 	private final Nerve nerve;

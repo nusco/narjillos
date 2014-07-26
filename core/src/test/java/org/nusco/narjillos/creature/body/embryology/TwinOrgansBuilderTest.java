@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.genetics;
+package org.nusco.narjillos.creature.body.embryology;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,10 +7,12 @@ import java.util.List;
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.embryology.OrganBuilder;
+import org.nusco.narjillos.creature.body.embryology.TwinOrgansBuilder;
 
 public class TwinOrgansBuilderTest {
-	private static final int MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN;
-	private static final int NOT_MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN ^ TwinOrgansBuilder.MIRROR_ORGAN;
+	private static final int MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN_BIT;
+	private static final int NOT_MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN_BIT ^ TwinOrgansBuilder.MIRROR_ORGAN_BIT;
 
 	int[] notMirroringGenes1 = new int[] {NOT_MIRRORING, 60, 70, 80, 90, 100};
 	int[] notMirroringGenes2 = new int[] {NOT_MIRRORING, 61, 71, 81, 91, 101};

@@ -10,12 +10,11 @@ import org.junit.Test;
 public class RanGenTest {
 
 	static {
-		if (RanGen.getSeed() == RanGen.NO_SEED)
-			RanGen.seed(123);
-	}
-
-	@Test
-	public void generatesAPredictableSequenceOfNumbersAfterSeeding() {
+		assertEquals(RanGen.NO_SEED, RanGen.getSeed());
+		
+		RanGen.seed(123);
+		
+		// generates a predictable sequence of numbers after seeding:
 		assertEquals(86, RanGen.nextByte());
 		assertEquals(0.237, RanGen.nextDouble(), 0.01);
 		assertEquals(-1.736, RanGen.nextGaussian(), 0.01);

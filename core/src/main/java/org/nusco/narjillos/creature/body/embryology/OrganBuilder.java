@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.genetics;
+package org.nusco.narjillos.creature.body.embryology;
 
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
@@ -25,7 +25,7 @@ class OrganBuilder {
 		return result;
 	}
 
-	public BodyPart buildSegment(BodyPart parent, int angleSign) {
+	public BodyPart buildBodyPart(BodyPart parent, int angleSign) {
 		return parent.sproutOrgan(getLength(), getThickness(), getAngleToParentAtRest(angleSign), getHue(), getDelay());
 	}
 

@@ -151,7 +151,7 @@ public class PetriDish extends Application {
 				viewport.flyToTargetSC(clickedPoint);
 				
 				if (event.getClickCount() > 1)
-					viewport.flyToCloseUp();
+					viewport.flyToNextZoomCloseupLevel();
 			}
 		};
 	}

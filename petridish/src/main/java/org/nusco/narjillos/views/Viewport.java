@@ -15,7 +15,7 @@ public class Viewport {
 	static final double MAX_INITIAL_SIZE_SC = 800;
 	static final double MAX_ZOOM = 2;
 	private static final double ZOOM_VELOCITY = 1.03;
-	private static final double ZOOM_CLOSEUP = 0.45;
+	private static final double[] ZOOM_CLOSEUP_LEVELS = new double[] { 0.15, 0.6 };
 
 	private final double pondSizePC;
 	private Vector sizeSC;
@@ -25,7 +25,7 @@ public class Viewport {
 	private Vector targetCenterPC;
 	private double targetZoomLevel;
 	private final double minZoomLevel;
-
+	
 	public Viewport(Pond pond) {
 		this.pondSizePC = pond.getSize();
 		setCenterPC(getPondCenterPC());
@@ -130,8 +130,15 @@ public class Viewport {
 		targetCenterPC = toPC(targetSC);
 	}
 
-	public void flyToCloseUp() {
-		targetZoomLevel = ZOOM_CLOSEUP;
+	public void flyToNextZoomCloseupLevel() {
+		targetZoomLevel = nextZoomCloseupLevel();
+	}
+
+	private double nextZoomCloseupLevel() {
+		for (int i = 0; i < ZOOM_CLOSEUP_LEVELS.length; i++)
+			if (ZOOM_CLOSEUP_LEVELS[i] > targetZoomLevel + 0.01)
+				return ZOOM_CLOSEUP_LEVELS[i];
+		return ZOOM_CLOSEUP_LEVELS[0];
 	}
 
 	private void flyToTarget() {

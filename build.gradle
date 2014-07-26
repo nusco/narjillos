@@ -21,8 +21,8 @@ allprojects {
 		main = 'org.nusco.narjillos.Experiment'
 		classpath = sourceSets.main.runtimeClasspath
 		
-		def commit = System.properties['commit']
-		def seed = System.properties['seed']
+		def commit = System.properties.getProperty('commit', null)
+		def seed = System.properties.getProperty('seed', null)
 		if (seed && seed != "") {
 		  args commit, seed
 		} else {
@@ -34,7 +34,7 @@ allprojects {
 		main = 'org.nusco.narjillos.PetriDish'
 		classpath = sourceSets.main.runtimeClasspath
 
-		def nrj = System.properties['nrj']
+		def nrj = System.properties.getProperty('nrj', null)
 		if (nrj && nrj != "") {
 		  args nrj
 		}

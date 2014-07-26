@@ -22,22 +22,22 @@ public class Experiment {
 	public static void main(String... args) {
 		String gitCommit = (args.length > 0) ? args[0] : "UNKNOWN_COMMIT";
 		long seed = seedRandomGenerator(args);
-		System.out.println(gitCommit + ":" + seed);
+		System.out.println("Experiment ID: " + gitCommit + ":" + seed + "\n");
 
 		runExperiment();
 		System.out.println("Done (" + getTimeElapsed() + "s)");
 	}
 
 	private static long seedRandomGenerator(String... args) {
-		long seed = getSeed(args);
+		int seed = getSeed(args);
 		RanGen.seed(seed);
 		return seed;
 	}
 
-	private static long getSeed(String... args) {
+	private static int getSeed(String... args) {
 		if (args.length < 2)
-			return Math.abs(new Random().nextLong());
-		return Long.parseLong(args[1]);
+			return Math.abs(new Random().nextInt());
+		return Integer.parseInt(args[1]);
 	}
 
 	private static long getTimeElapsed() {

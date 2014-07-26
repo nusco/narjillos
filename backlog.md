@@ -1,6 +1,5 @@
 ###Swimming 2.0
 
-* Recalibrate energy calculation
 * Real rotation
 
 ###Shape
@@ -34,12 +33,12 @@
 
 ###Environment
 
+* Narjillos eat each other
+* Plants (food that evolves)
 * Gamma rays (cause mutation)
 * Beta rays (cause old age and death)
 * Controllable food rate
 * Controllable food calories
-* Narjillos eat each other
-* Plants (food that evolves)
 
 ###Analytics
 
@@ -57,7 +56,6 @@
 
 ###Engine
 
-* Add multithread protection to random generator (to avoid bugs)
 * Multithreading (how?)
 * Space Partitioning optimization
 * Server mode?

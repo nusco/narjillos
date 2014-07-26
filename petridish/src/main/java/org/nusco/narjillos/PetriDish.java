@@ -1,5 +1,6 @@
 package org.nusco.narjillos;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -44,24 +45,34 @@ public class PetriDish extends Application {
 	private PondView pondView;
 	private Viewport viewport;
 	private long numberOfTicks = 0;
-	private volatile int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+	private int targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+	
+	private static String[] args;
 	
 	public static void main(String... args) throws Exception {
-		if (args.length == 0)
+		PetriDish.args = args;
+		launch();
+	}
+	
+	private synchronized void createCosmos() {
+		if (PetriDish.args.length == 0)
 			pond = new Cosmos();
-		else if(args[0].endsWith(".nrj"))
-			pond = new Cosmos(readDNAFromFile(args[0]));
+		else if(PetriDish.args[0].endsWith(".nrj"))
+			pond = new Cosmos(readDNAFromFile(PetriDish.args[0]));
 		else
-			pond = new Cosmos(new DNA(args[0]));
-		launch(new String[0]);
+			pond = new Cosmos(new DNA(PetriDish.args[0]));
 	}
 
-	private static DNA readDNAFromFile(String file) throws Exception {
-		List<String> lines = Files.readAllLines(Paths.get(file));
-		StringBuffer result = new StringBuffer();
-		for (String line : lines)
-			result.append(line + "\n");
-		return new DNA(result.toString());
+	private static DNA readDNAFromFile(String file) {
+		try {
+			List<String> lines = Files.readAllLines(Paths.get(file));
+			StringBuffer result = new StringBuffer();
+			for (String line : lines)
+				result.append(line + "\n");
+			return new DNA(result.toString());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	private synchronized void setPondView(PondView pondView) {
@@ -77,11 +88,7 @@ public class PetriDish extends Application {
 	public void start(final Stage primaryStage) throws InterruptedException {
 		final Group root = new Group();
 
-		setUpNewPond();
-
-		showRoot(root);
-
-		startModelUpdateThread();
+		startModelUpdateThread(root);
 		startViewUpdateThread(root);
 
 		final Viewport viewport = getPondView().getViewport();
@@ -142,13 +149,6 @@ public class PetriDish extends Application {
 				if (event.getClickCount() > 1)
 					viewport.flyToCloseUp();
 			}
-
-			private void toggleMaxSpeed() {
-				if (targetTicksPerSecond == 1000)
-					targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
-				else
-					targetTicksPerSecond = 1000;
-			}
 		};
 	}
 
@@ -194,14 +194,26 @@ public class PetriDish extends Application {
 		updateGUI.start();
 	}
 
-	private int getTicksPeriod() {
+	private synchronized int getTicksPeriod() {
 		return 1000 / targetTicksPerSecond;
 	}
 
-	private void startModelUpdateThread() {
+	private synchronized void toggleMaxSpeed() {
+		if (targetTicksPerSecond == 1000)
+			targetTicksPerSecond = DEFAULT_TARGET_TICKS_PER_SECOND;
+		else
+			targetTicksPerSecond = 1000;
+	}
+
+	private void startModelUpdateThread(final Group root) {
 		Thread updateThread = new Thread() {
 			@Override
 			public void run() {
+				createCosmos();
+
+				setUpNewPond();
+				showRoot(root);
+
 				while (true) {
 					long startTime = System.currentTimeMillis();
 					tick();
@@ -230,7 +242,7 @@ public class PetriDish extends Application {
 	}
 
 	private synchronized PondView createNewPondView() {
-		return new PondView(pond );
+		return new PondView(pond);
 	}
 
 	private synchronized void showRoot(final Group root) {
@@ -239,7 +251,7 @@ public class PetriDish extends Application {
 		showChronometers(root);
 	}
 
-	private void showChronometers(Group root) {
+	private synchronized void showChronometers(Group root) {
 		String message = "FPS: " + framesChronometer.getTicksInLastSecond() +
 				" / TPS: " + ticksChronometer.getTicksInLastSecond() +
 				" / TICKS: " + NumberFormat.format(numberOfTicks) + 

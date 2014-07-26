@@ -1,5 +1,6 @@
 package org.nusco.narjillos.pond;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.NarjilloEventListener;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.creature.genetics.Embryo;
+import org.nusco.narjillos.creature.genetics.Population;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
@@ -22,7 +24,7 @@ public class Pond {
 
 	private final long size;
 	private final Set<FoodPiece> foodPieces = Collections.newSetFromMap(new ConcurrentHashMap<FoodPiece, Boolean>());
-	private final Set<Narjillo> narjillos = Collections.newSetFromMap(new ConcurrentHashMap<Narjillo, Boolean>());
+	private final Population narjillos = new Population();
 
 	private final List<PondEventListener> pondEvents = new LinkedList<>();
 
@@ -39,11 +41,11 @@ public class Pond {
 	public Set<Thing> getThings() {
 		Set<Thing> result = new HashSet<Thing>();
 		result.addAll(foodPieces);
-		result.addAll(narjillos);
+		result.addAll(narjillos.toCollection());
 		return result;
 	}
 
-	private Vector find(Set<? extends Thing> things, Vector near) {
+	private Vector find(Collection<? extends Thing> things, Vector near) {
 		double minDistance = Double.MAX_VALUE;
 		Vector result = Vector.cartesian(getSize() / 2, getSize() / 2);
 		for (Thing thing : things) {
@@ -61,13 +63,12 @@ public class Pond {
 	}
 
 	public Vector findNarjillo(Vector near) {
-		return find(narjillos, near);
+		return find(narjillos.toCollection(), near);
 	}
 
 	public void tick() {
-		for (Narjillo narjillo : narjillos)
-			narjillo.tick();
-
+		narjillos.tick();
+		
 		// TODO: no need to tick food for now
 		
 		if (tickCounter-- < 0) {
@@ -109,7 +110,7 @@ public class Pond {
 	}
 
 	private void updateTargets() {
-		for (Narjillo narjillo : narjillos)
+		for (Narjillo narjillo : narjillos.getCollection())
 			updateTarget(narjillo);
 	}
 
@@ -185,14 +186,7 @@ public class Pond {
 		return narjillos.size();
 	}
 
-	public Narjillo getMostProlificNarjillo() {
-		Narjillo result = null;
-		int maxDescendants = 0;
-		for (Narjillo narjillo : narjillos)
-			if (narjillo.getNumberOfDescendants() > maxDescendants) {
-				result = narjillo;
-				maxDescendants = narjillo.getNumberOfDescendants();
-			}
-		return result;
+	public Population getPopulation() {
+		return narjillos;
 	}
 }

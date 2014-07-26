@@ -13,7 +13,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 class OrganView extends ThingView {
 
-	private final static int OVERLAP = 5;
+	private final static int OVERLAP = 7;
 
 	private final Organ organ;
 	private final Color color;

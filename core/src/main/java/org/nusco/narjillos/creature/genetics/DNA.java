@@ -107,4 +107,19 @@ public class DNA {
 		result.append(threeDigits.format(genes[i]));
 		return result.toString();
 	}
+
+	public int getDistanceWith(DNA other) {
+		Integer[] theseGenes = getGenes();
+		Integer[] otherGenes = other.getGenes();
+
+		if (theseGenes.length > otherGenes.length)
+			return other.getDistanceWith(this);
+			
+		int result = 0;
+		for (int i = 0; i < theseGenes.length; i++)
+			if (!theseGenes[i].equals(otherGenes[i]))
+				result++;
+		result += (otherGenes.length - theseGenes.length);
+		return result;
+	}
 }

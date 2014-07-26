@@ -57,16 +57,15 @@ public class Experiment {
 	}
 
 	private static String getHeadersString() {
-		return "time_elapsed, " + "ticks_elapsed, " + "ticks_per_second, " + "number_of_narjillos, " + "number_of_food_pieces, "
-				+ "most_prolific_narjillo_number_of_descendants, " + "most_prolific_narjillo_dna";
+		return "time_elapsed, " + "ticks_elapsed, " + "ticks_per_second, " + "number_of_narjillos, " + "number_of_food_pieces, " + "most_typical_specimen";
 	}
 
 	private static String getStatusString(Pond pond, int tick) {
-		Narjillo mostProlificNarjillo = pond.getMostProlificNarjillo();
-		if (mostProlificNarjillo == null)
-			mostProlificNarjillo = getNullNarjillo();
+		Narjillo mostTypicalSpecimen = pond.getPopulation().getMostTypicalSpecimen();
+		if (mostTypicalSpecimen == null)
+			mostTypicalSpecimen = getNullNarjillo();
 
-		return getStatusString(pond, tick, mostProlificNarjillo);
+		return getStatusString(pond, tick, mostTypicalSpecimen);
 	}
 
 	private static Narjillo getNullNarjillo() {
@@ -75,7 +74,7 @@ public class Experiment {
 
 	private static String getStatusString(Pond pond, int tick, Narjillo mostProlificNarjillo) {
 		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + pond.getNumberOfNarjillos() + ", "
-				+ pond.getNumberOfFoodPieces() + ", " + mostProlificNarjillo.getNumberOfDescendants() + ", "
-				+ mostProlificNarjillo.getGenes();
+				+ pond.getNumberOfFoodPieces() + ", "
+				+ mostProlificNarjillo.getDNA();
 	}
 }

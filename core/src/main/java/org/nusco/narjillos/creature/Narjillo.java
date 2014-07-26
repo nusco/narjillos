@@ -80,7 +80,7 @@ public class Narjillo implements Thing {
 		return head;
 	}
 
-	public DNA getGenes() {
+	public DNA getDNA() {
 		return genes;
 	}
 
@@ -116,7 +116,7 @@ public class Narjillo implements Thing {
 
 	public synchronized DNA reproduce() {
 		numberOfDescendants++;
-		return getGenes().mutate();
+		return getDNA().mutate();
 	}
 
 	@Override

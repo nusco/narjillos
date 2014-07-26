@@ -24,6 +24,7 @@ public class Viewport {
 
 	private Vector targetCenterPC;
 	private double targetZoomLevel;
+	private final double idealZoomLevel;
 	private final double minZoomLevel;
 	
 	public Viewport(Pond pond) {
@@ -32,7 +33,8 @@ public class Viewport {
 
 		double size = Math.min(pond.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
-		minZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / pondSizePC;
+		idealZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / pondSizePC;
+		minZoomLevel = idealZoomLevel / 3;
 		
 		centerOnPond();
 		zoomToFit();
@@ -88,7 +90,7 @@ public class Viewport {
 	}
 
 	public final void zoomToFit() {
-		targetZoomLevel = minZoomLevel;
+		targetZoomLevel = idealZoomLevel;
 		zoomLevel = targetZoomLevel / 10;
 	}
 

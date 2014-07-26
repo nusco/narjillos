@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # start an experiment (passing the seed if any)
-gradle -q experiment -Dseed=$1
+gradle -q experiment -Dcommit=`git rev-parse HEAD` -Dseed=$1

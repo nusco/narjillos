@@ -14,27 +14,30 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class Experiment {
 
 	private static final int CYCLES = 100_000_000;
-	private static final int PARSE_INTERVAL = 1000;
+	private static final int PARSE_INTERVAL = 10000;
 
 	private static final Chronometer ticksChronometer = new Chronometer();
 	private static long startTime = System.currentTimeMillis();
 
 	public static void main(String... args) {
-		seedRandomGenerator(args);
+		String gitCommit = (args.length > 0) ? args[0] : "UNKNOWN_COMMIT";
+		long seed = seedRandomGenerator(args);
+		System.out.println(gitCommit + ":" + seed);
+
 		runExperiment();
 		System.out.println("Done (" + getTimeElapsed() + "s)");
 	}
 
-	private static void seedRandomGenerator(String... args) {
+	private static long seedRandomGenerator(String... args) {
 		long seed = getSeed(args);
-		System.out.println("Seed: " + seed);
 		RanGen.seed(seed);
+		return seed;
 	}
 
 	private static long getSeed(String... args) {
-		if (args.length == 0)
+		if (args.length < 2)
 			return Math.abs(new Random().nextLong());
-		return Long.parseLong(args[0]);
+		return Long.parseLong(args[1]);
 	}
 
 	private static long getTimeElapsed() {

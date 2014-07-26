@@ -21,9 +21,12 @@ allprojects {
 		main = 'org.nusco.narjillos.Experiment'
 		classpath = sourceSets.main.runtimeClasspath
 		
+		def commit = System.properties['commit']
 		def seed = System.properties['seed']
 		if (seed && seed != "") {
-		  args seed
+		  args commit, seed
+		} else {
+		  args commit
 		}
 	}
 

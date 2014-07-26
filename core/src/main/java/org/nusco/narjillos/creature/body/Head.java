@@ -16,10 +16,6 @@ public class Head extends BodySegment {
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
 		super(length, thickness, hue, new WaveNerve(metabolicRate * WAVE_SIGNAL_FREQUENCY), 0, null);
 		this.metabolicRate = metabolicRate;
-		// can be skipped? TODO
-		setAngleToParent(0);
-		// necessary to prevent twitching on the first frame? check
-		tick(Vector.ZERO, ForceField.NULL);
 	}
 
 	public double getMetabolicRate() {
@@ -67,14 +63,5 @@ public class Head extends BodySegment {
 		double sign = Math.signum(180 - Math.abs(difference));
 		double unsignedResult = ROTATION_SPEED * Math.signum(difference);
 		return sign * unsignedResult;
-	}
-	
-	public static void main(String[] args) {
-		Head head = new Head(10, 1, new ColorByte(0), 1);
-		System.out.println(head.getAngleToParent());
-		for (int i = 0; i < 10; i++) {
-			head.tick(Vector.cartesian(0, 10), new ForceField());
-			System.out.println(head.getAngleToParent());
-		}
 	}
 }

@@ -42,8 +42,6 @@ public class Body {
 	}
 
 	private double getMetabolicRate() {
-		// FIXME: the metabolic rate shouldn't be stored in the head.
-		// the entire narjillo/head/neck thing should be rethought
 		return head.getMetabolicRate();
 	}
 

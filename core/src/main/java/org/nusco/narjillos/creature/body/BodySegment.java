@@ -36,10 +36,10 @@ class BodySegment extends BodyPart {
 		Vector signedScaledSignal = signal.by(AMPLITUDE_MULTIPLIER * getOrientationSign());
 
 		Vector mainAxis = getMainAxis();
-		Vector direction = mainAxis.minus(signedScaledSignal);
+		Vector direction = mainAxis.plus(signedScaledSignal);
 		Vector rotatedDirection = direction.rotateBy(angleToParentAtRest - mainAxis.getAngle());
 
-		return incrementAngleToParentBy(-rotatedDirection.getAngle());
+		return incrementAngleToParentBy(rotatedDirection.getAngle());
 	}
 
 	private int getOrientationSign() {

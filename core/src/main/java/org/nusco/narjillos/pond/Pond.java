@@ -154,12 +154,15 @@ public class Pond {
 
 		narjillo.feed();
 		foodPieces.remove(foodPiece);
+		notifyThingRemoved(foodPiece);
+		
 		reproduce(narjillo);
 		updateTargets();
 	}
 
 	private void killNarjillo(final Narjillo narjillo) {
 		narjillos.remove(narjillo);
+		notifyThingRemoved(narjillo);
 	}
 
 	private void reproduce(Narjillo narjillo) {
@@ -173,6 +176,11 @@ public class Pond {
 	private final void notifyThingAdded(Thing thing) {
 		for (PondEventListener pondEvent : pondEvents)
 			pondEvent.thingAdded(thing);
+	}
+
+	private final void notifyThingRemoved(Thing thing) {
+		for (PondEventListener pondEvent : pondEvents)
+			pondEvent.thingRemoved(thing);
 	}
 
 	public void addEventListener(PondEventListener pondEventListener) {

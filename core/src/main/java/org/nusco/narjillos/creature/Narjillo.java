@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Effort;
-import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;

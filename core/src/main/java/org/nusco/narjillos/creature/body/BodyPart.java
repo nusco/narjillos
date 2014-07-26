@@ -10,7 +10,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
- * Connects Organs in a tree that ultimately becomes a body
+ * Connects Organs in a tree.
  */
 public abstract class BodyPart extends Organ {
 
@@ -53,10 +53,13 @@ public abstract class BodyPart extends Organ {
 		return children;
 	}
 
-	// TODO: break down and push down the stuff that doesn't send the signal to children?
+	// TODO: break down and push down the stuff that doesn't manage nerves and children?
+	// Warning in case I restructure this - remember that a head can be atrophic.
+	// Wait to change this after I have real physical rotation, because the head
+	// code is likely to change a lot - I might even stop having any special movement
+	// code in the head
 	public void tick(Vector inputSignal, ForceField forceField) {
 		if (isAtrophic()) {
-			// FIXME: what happens when the head is atrophic?
 			// optimization
 			resetAllCaches();
 			Vector outputSignal = getNerve().tick(inputSignal);
@@ -69,13 +72,9 @@ public abstract class BodyPart extends Organ {
 		double updatedAngle = calculateUpdatedAngle(outputSignal);
 		setAngleToParent(updatedAngle);
 		
-		// TODO: should happen in setAngleToParent already
-		resetAllCaches();
-		
 		forceField.record(beforeMovement, this);
 		tickChildren(outputSignal, forceField);
 	}
-
 
 	protected abstract double calculateUpdatedAngle(Vector signal);
 

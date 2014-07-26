@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # start a petri dish (optionally passing a *.nrj file)
-gradle -q petri -Dcommit=`git rev-parse HEAD` -Dnrj=$1
+gradle --quiet --no-daemon petri -Dcommit=`git rev-parse HEAD` -Dnrj=$1

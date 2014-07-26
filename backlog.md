@@ -1,3 +1,5 @@
+* check how to stop gradle after launching a java class
+
 ###Swimming 2.0
 
 * Real rotation
@@ -53,12 +55,13 @@
 ###Eye candy
 
 * Detailed death animation
+* Narjillos always overlap food (food is in background)
+* Speckles in liquid (or some other effect)
 
 ###Engine
 
 * Multithreading (how?)
 * Space Partitioning optimization
-* Server mode?
 * Save dish
 * Load dish
 
@@ -67,4 +70,3 @@
 * Sexual reproduction
 * Sexual reproduction is optional
 * Brains
-* Corner map?

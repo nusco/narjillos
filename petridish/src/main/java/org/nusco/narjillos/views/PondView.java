@@ -11,12 +11,15 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.pond.Pond;
 import org.nusco.narjillos.pond.PondEventListener;
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class PondView {
@@ -55,6 +58,7 @@ public class PondView {
 		Group result = new Group();
 		result.getChildren().add(getBackground());
 		result.getChildren().add(getThingsGroup());
+		result.getChildren().add(createForeground(pond));
 		return result;
 	}
 
@@ -76,8 +80,7 @@ public class PondView {
 		if (zoomLevel <= 1)
 			return;
 		
-		int blurAmount = (int)(15 * (zoomLevel - 1));
-		group.setEffect(new BoxBlur(blurAmount, blurAmount, 3));
+		group.setEffect(getBlurEffect(zoomLevel));
 	}
 
 	private Node getBackground() {
@@ -98,6 +101,22 @@ public class PondView {
 		Rectangle result = new Rectangle(0, 0, pond.getSize(), pond.getSize());
 		result.setFill(Color.ANTIQUEWHITE);
 		return result;
+	}
+
+	private Node createForeground(Pond pond) {
+		Vector sizeSC = viewport.getSizeSC();
+		double minScreenSize = Math.min(sizeSC.x, sizeSC.y);
+		double maxScreenSize = Math.max(sizeSC.x, sizeSC.y);
+		Rectangle black = new Rectangle(-10, -10, maxScreenSize + 20, maxScreenSize + 20);
+		Circle hole = new Circle(sizeSC.x / 2, sizeSC.y / 2, minScreenSize / 2.03);
+		Shape microscope = Shape.subtract(black, hole);
+		microscope.setEffect(new BoxBlur(5, 5, 1));
+		return microscope;
+	}
+
+	private BoxBlur getBlurEffect(double zoomLevel) {
+		int blurAmount = (int)(15 * (zoomLevel - 1));
+		return new BoxBlur(blurAmount, blurAmount, 3);
 	}
 
 	private synchronized Collection<ThingView> getThingViews() {

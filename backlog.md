@@ -41,17 +41,6 @@
 * Narjillos eat each other
 * Plants (food that evolves)
 
-###Viewport
-
-* Unlimited outzooming
-* Smooth pond circle
-* Fade away on extreme zooming
-* Fly to target
-* Fly to full view
-* Smooth overzooming
-* Smooth scrolling
-* Pan intertia?
-
 ###Analytics
 
 * Export genome

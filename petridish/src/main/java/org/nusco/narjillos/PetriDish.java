@@ -34,7 +34,7 @@ public class PetriDish extends Application {
 	private static final int TARGET_FRAMES_PER_SECOND = 25;
 	private static final int FRAMES_PERIOD = 1000 / TARGET_FRAMES_PER_SECOND;
 	private static final int DEFAULT_TARGET_TICKS_PER_SECOND = 25;
-	protected static final long PAN_SPEED = 10;
+	protected static final long PAN_SPEED = 200;
 
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final Chronometer framesChronometer = new Chronometer();
@@ -87,9 +87,9 @@ public class PetriDish extends Application {
 		final Viewport viewport = getPondView().getViewport();
 		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 
+		scene.setOnKeyPressed(createKeyboardHandler());
 		scene.setOnMouseClicked(createMouseEvent());
 		scene.setOnScroll(createMouseScrollHandler());
-		scene.setOnKeyPressed(createKeyboardHandler());
 		addResizeListeners(scene, viewport);
 		
 		primaryStage.setTitle("Narjillos");
@@ -131,14 +131,16 @@ public class PetriDish extends Application {
 			}
 
 			private synchronized void handleMouse(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
-					if (event.getClickCount() == 2)
-						viewport.zoomToFit();
-					else
-						viewport.setCenterSC(Vector.cartesian(event.getSceneX(), event.getSceneY()));
-				}
-				else if (event.getButton() == MouseButton.SECONDARY)
+				if (event.getButton() == MouseButton.SECONDARY) {
 					toggleMaxSpeed();
+					return;
+				}
+				
+				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
+				viewport.flyToTargetSC(clickedPoint);
+				
+				if (event.getClickCount() > 1)
+					viewport.flyToCloseUp();
 			}
 
 			private void toggleMaxSpeed() {

@@ -20,7 +20,7 @@ class FoodView extends CircularObjectView {
 	public Node toNode(double zoomLevel) {
 		circle.getTransforms().clear();
 		circle.getTransforms().add(moveToStartPoint());
-		circle.setEffect(getShadow(zoomLevel));
+		circle.setEffect(getHaloEffect(zoomLevel));
 		return circle;
 	}
 

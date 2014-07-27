@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -117,9 +118,9 @@ public class PondView {
 		return microscope;
 	}
 
-	private BoxBlur getBlurEffect(double zoomLevel) {
+	private Effect getBlurEffect(double zoomLevel) {
 		int blurAmount = (int)(15 * (zoomLevel - 1));
-		return new BoxBlur(blurAmount, blurAmount, 3);
+		return new BoxBlur(blurAmount, blurAmount, 1);
 	}
 
 	private synchronized Collection<ThingView> getThingViews() {

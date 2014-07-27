@@ -42,7 +42,7 @@ class NarjilloView extends ThingView {
 		Vector position = getNarjillo().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));
-		group.setEffect(getShadow(zoomLevel));
+		group.setEffect(getHaloEffect(zoomLevel));
 		return group;
 	}
 
@@ -75,6 +75,8 @@ class NarjilloView extends ThingView {
 		OrganView organView = organViews.get(0);
 		organView.isVisible(viewport);
 		return false;
+		// TODO: is this useful? what about performance? I never
+		// missed it
 //		return mouthView.isVisible(viewport) || eyeView.isVisible(viewport);
 	}
 }

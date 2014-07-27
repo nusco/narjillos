@@ -2,6 +2,7 @@ package org.nusco.narjillos.views;
 
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.creature.Narjillo;
@@ -40,12 +41,12 @@ abstract class ThingView {
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}
 
-	protected DropShadow getShadow(double zoomLevel) {
-		double minZoomLevel = 0.3;
+	protected Effect getHaloEffect(double zoomLevel) {
+		double minZoomLevel = 0.25;
 		if (zoomLevel <= minZoomLevel)
 			return null;
-		double alpha = Math.min((zoomLevel - minZoomLevel) * 2, 1);
-		Color color = new Color(0.1, 0.1, 0.1, alpha );
-		return new DropShadow(12, 3, 3, color);
+		double alpha = Math.min((zoomLevel - minZoomLevel) * 3, 1);
+		Color color = new Color(0.9, 0.9, 0.9, alpha);
+		return new DropShadow(20, 7, 7, color);
 	}
 }

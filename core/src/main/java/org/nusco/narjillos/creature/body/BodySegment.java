@@ -19,7 +19,7 @@ class BodySegment extends BodyPart {
 	protected double calculateAngleToParent(double targetAngle, ForceField forceField) {
 		double signedTargetAngle = targetAngle * getOrientationSign();
 		double limitedTargetAngle = constrainToPhysicalLimits(signedTargetAngle);
-		return getAngleToParent() + limitedTargetAngle;
+		return getAngleToParent() + limitedTargetAngle + getForcedBend();
 	}
 
 	protected double constrainToPhysicalLimits(double targetAngle) {

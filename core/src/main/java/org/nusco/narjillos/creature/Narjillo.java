@@ -19,6 +19,7 @@ public class Narjillo implements Thing, Creature {
 	public static final double MAX_ENERGY = 200_000;
 	private static final double MAX_TICKS_TO_DEATH = 20_000;
 	static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
+	static final double AGONY_LEVEL = NATURAL_ENERGY_DECAY * 300;
 
 	public final Body body;
 	private final DNA genes;
@@ -36,6 +37,10 @@ public class Narjillo implements Thing, Creature {
 		this.genes = genes;
 	}
 
+	public DNA getDNA() {
+		return genes;
+	}
+
 	@Override
 	public synchronized Vector getPosition() {
 		return position;
@@ -48,6 +53,8 @@ public class Narjillo implements Thing, Creature {
 	@Override
 	public synchronized void tick() {
 		Vector targetDirection = getTargetDirection();
+
+		sendDeathAnimation();
 		
 		Effort effort = body.tick(targetDirection);
 		Vector movement = effort.movement;
@@ -58,8 +65,16 @@ public class Narjillo implements Thing, Creature {
 		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
 	}
 
-	public DNA getDNA() {
-		return genes;
+	private void sendDeathAnimation() {
+		if (getEnergy() > AGONY_LEVEL)
+			return;
+		// TODO: for some reason only 9 works here - 10 is too much (the creatures
+		// spin wildly in agony) and 8 is too little (barely any bending at all).
+		// bending is supposed to be instantaneous, instead it seems to be additive.
+		// Why? Find out what is going on here, and possibly rethink the bending
+		// mechanics. Maybe it should come from the WaveNerve?
+		double bendAngle = ((AGONY_LEVEL - getEnergy()) / (double)AGONY_LEVEL) * 9;
+		body.forceBend(bendAngle);
 	}
 
 	public synchronized double getEnergy() {
@@ -108,9 +123,11 @@ public class Narjillo implements Thing, Creature {
 
 	void decreaseEnergy(double amount) {
 		energy -= amount;
-		if (energy <= 0)
+		if (energy <= 0) {
+			energy = 0;
 			for (NarjilloEventListener eventListener : eventListeners)
 				eventListener.died();
+		}
 	}
 
 	public List<Organ> getOrgans() {

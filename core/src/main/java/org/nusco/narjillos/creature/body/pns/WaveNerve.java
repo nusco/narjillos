@@ -43,11 +43,4 @@ public class WaveNerve implements Nerve {
 	private boolean isInLeftSemiplane(double currentAngle) {
 		return currentAngle >= Math.PI / 2 && currentAngle < Math.PI / 2 * 3;
 	}
-	
-	public static void main(String[] args) {
-		WaveNerve nerve = new WaveNerve(1.0 / 8);
-		for (int i = 0; i < 10; i++) {
-			System.out.println(nerve.tick(0));
-		}
-	}
 }

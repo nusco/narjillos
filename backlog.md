@@ -1,17 +1,22 @@
 This is my backlog for the Narjillo project. It's divided in sections by "type of user". Inside each sections, features are roughly prioritized.
 I generally work on the high-priority features, but I pick the "user" that I want to be depending on my mood of the day.
 
+###Physicist
+
+* Real rotation
+* Tweak energy consumption
+
+###Speed Demon
+
+* Space Partitioning optimization
+:* Cached food image?
+
 ## Computer Dummy
 
 * Don't require Gradle to start the programs (only to build them)
 * Externalize all configurable parameters to a JSON file
 * Save dish
 * Load dish
-
-###Physicist
-
-* Real rotation
-* Tweak energy consumption
 
 ###Genetist
 
@@ -41,13 +46,6 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 * "Most Prolific" button
 * View creature energy
 
-###Speed Demon
-
-* Normalize organ angle during rotation (right now rotations are weird - see comment in BodySegment.java)
-* Change nerves to propagate a scalar instead of a vector (that never really worked, and it lent to duplicated calculations - see BodySegment.java)
-* Space Partitioning optimization
-* Cached food image?
-
 ###Environmentalist
 
 * Narjillos eat each other
@@ -64,8 +62,6 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Artist
 
-* Smooth overzoomed effects (right now they kill visible framerate, not reported one)
-* Detailed death animation
 * Birth animation
 * Narjillos always overlap food (food is in background)
 * Speckles in liquid (or some other effect)

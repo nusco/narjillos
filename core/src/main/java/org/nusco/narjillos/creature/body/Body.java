@@ -97,4 +97,14 @@ public class Body {
 		for (BodyPart child : organ.getChildren())
 			addWithChildren(child, result);
 	}
+	
+	public void forceBend(double bendAngle) {
+		forceBendWithChildren(head, bendAngle);
+	}
+	
+	private void forceBendWithChildren(BodyPart bodyPart, double bendAngle) {
+		bodyPart.forceBend(bendAngle);
+		for (BodyPart child : bodyPart.getChildren())
+			forceBendWithChildren(child, bendAngle);
+	}
 }

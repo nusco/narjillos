@@ -66,4 +66,12 @@ public class Head extends BodySegment {
 			degrees = -(360-degrees);
 		return degrees;
 	}
+	
+	@Override
+	protected double getForcedBend() {
+		// the head never bends. (OK, this hierarchy is starting
+		// to look stupid. TODO: go back to making the head
+		// a sibling of BodySegment rather than a subclass
+		return 0;
+	}
 }

@@ -19,7 +19,8 @@ public abstract class BodyPart extends Organ {
 	private final List<BodyPart> children = new LinkedList<>();
 
 	private double angleToParent = 0;
-
+	public double forcedBend = 0;
+	
 	protected BodyPart(int length, int thickness, ColorByte color, Organ parent, Nerve nerve) {
 		super(length, thickness, color);
 		this.nerve = nerve;
@@ -52,8 +53,11 @@ public abstract class BodyPart extends Organ {
 
 		double processedSignal = getNerve().tick(signal);
 
-		setAngleToParent(calculateAngleToParent(processedSignal, forceField));
-		
+		double newAngleToParent = calculateAngleToParent(processedSignal, forceField);
+		setAngleToParent(newAngleToParent);
+
+		resetForcedBend();
+
 		forceField.record(beforeMovement, this);
 		tickChildren(processedSignal, forceField);
 	}
@@ -81,5 +85,17 @@ public abstract class BodyPart extends Organ {
 	private BodyPart addChild(BodyPart child) {
 		children.add(child);
 		return child;
+	}
+
+	protected double getForcedBend() {
+		return forcedBend;
+	}
+
+	void forceBend(double bendAngle) {
+		forcedBend = bendAngle;
+	}
+	
+	private void resetForcedBend() {
+		forcedBend = 0;
 	}
 }

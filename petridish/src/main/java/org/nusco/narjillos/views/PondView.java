@@ -10,6 +10,7 @@ import java.util.Map;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -84,6 +85,8 @@ public class PondView {
 	}
 
 	private Node getBackground() {
+		double brightnessAdjust = -viewport.getZoomLevel() / 5;
+		background.setEffect(new ColorAdjust(0, 0, brightnessAdjust, 0));
 		return background;
 	}
 	

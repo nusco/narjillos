@@ -26,6 +26,7 @@ public class Viewport {
 	private double targetZoomLevel;
 	private final double idealZoomLevel;
 	private final double minZoomLevel;
+	private volatile boolean userIsZooming = false;
 	
 	public Viewport(Pond pond) {
 		this.pondSizePC = pond.getSize();
@@ -79,17 +80,19 @@ public class Viewport {
 	}
 
 	public void zoomIn() {
+		userIsZooming = true;
 		setZoomLevel(zoomLevel * ZOOM_VELOCITY);
 	}
 
 	public void zoomOut() {
+		userIsZooming = true;
 		if (zoomLevel - minZoomLevel < 0.001) 
 			targetCenterPC = getPondCenterPC();
 
 		setZoomLevel(zoomLevel / ZOOM_VELOCITY);
 	}
 
-	public final void zoomToFit() {
+	private void zoomToFit() {
 		targetZoomLevel = idealZoomLevel;
 		zoomLevel = targetZoomLevel / 10;
 	}
@@ -104,13 +107,19 @@ public class Viewport {
 	}
 
 	public void tick() {
-		correctOverzooming();
-		flyToTarget();
+		if (!userIsZooming) {
+			correctOverzooming();
+			zoomToTarget();
+		}
+		panToTarget();
+		userIsZooming = false;
 	}
 
 	private void correctOverzooming() {
-		if (zoomLevel > 1 && targetZoomLevel > 1)
-			targetZoomLevel = 1;
+		if (zoomLevel > 1) {
+			double highestCloseupLevel = ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
+			targetZoomLevel = highestCloseupLevel;
+		}
 	}
 
 	public boolean isVisible(Vector pointPC, double marginPC) {
@@ -141,11 +150,6 @@ public class Viewport {
 			if (ZOOM_CLOSEUP_LEVELS[i] > targetZoomLevel + 0.01)
 				return ZOOM_CLOSEUP_LEVELS[i];
 		return ZOOM_CLOSEUP_LEVELS[0];
-	}
-
-	private void flyToTarget() {
-		panToTarget();
-		zoomToTarget();
 	}
 
 	private void panToTarget() {

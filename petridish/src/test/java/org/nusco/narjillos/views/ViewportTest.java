@@ -180,16 +180,6 @@ public class ViewportTest {
 		
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 	}
-
-	@Test
-	public void canZoomInToFitEntirePond() {
-		Viewport viewport = createAndStabilizeViewport(100);
-		viewport.setSizeSC(Vector.cartesian(50, 50));
-
-		viewport.zoomToFit();
-		
-		assertEquals(0.05, viewport.getZoomLevel(), 0.001);
-	}
 	
 	@Test
 	public void cannotZoomInOverAMaximum() {

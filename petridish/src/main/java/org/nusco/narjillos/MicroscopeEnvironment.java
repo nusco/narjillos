@@ -9,10 +9,14 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.pond.Pond;
@@ -160,9 +164,24 @@ abstract class MicroscopeEnvironment extends Application {
 		root.getChildren().clear();
 		root.getChildren().add(getPondView().toNode());
 
+		root.getChildren().add(createForeground());
+		
 		Node environmentSpecificOverlay = getEnvironmentSpecificOverlay();
 		if (environmentSpecificOverlay != null)
 			root.getChildren().add(environmentSpecificOverlay);
+	}
+
+	private Node createForeground() {
+		// TODO: if needed, this can be created once and only
+		// updated on screen resizes
+		Vector sizeSC = getViewport().getSizeSC();
+		double minScreenSize = Math.min(sizeSC.x, sizeSC.y);
+		double maxScreenSize = Math.max(sizeSC.x, sizeSC.y);
+		Rectangle black = new Rectangle(-10, -10, maxScreenSize + 20, maxScreenSize + 20);
+		Circle hole = new Circle(sizeSC.x / 2, sizeSC.y / 2, minScreenSize / 2.03);
+		Shape microscope = Shape.subtract(black, hole);
+		microscope.setEffect(new BoxBlur(5, 5, 1));
+		return microscope;
 	}
 
 	private void addListenersToResizeViewportWhenTheUserResizesTheWindow(final Scene scene, final Viewport viewport) {

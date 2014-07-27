@@ -17,6 +17,7 @@ public class Cosmos extends Pond {
 
 	public Cosmos(DNA dna) {
 		super(SIZE);
+
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_THINGS; i++)
 			spawnFood(randomPosition());
 

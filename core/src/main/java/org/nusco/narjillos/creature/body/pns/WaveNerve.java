@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.body.pns;
 
-import org.nusco.narjillos.shared.physics.Vector;
 
 /**
  * Given an input signal V, and its normal vector of the same length N, this
@@ -24,9 +23,8 @@ public class WaveNerve implements Nerve {
 	}
 
 	@Override
-	public Vector tick(Vector inputSignal) {
-		double amplitude = getCurrentAmplitude() * inputSignal.getLength();
-		return inputSignal.getNormal().by(amplitude);
+	public double tick(double skew) {
+		return skew + getCurrentAmplitude();
 	}
 
 	private double getCurrentAmplitude() {

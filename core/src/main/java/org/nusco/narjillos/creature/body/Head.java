@@ -1,7 +1,6 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.creature.body.pns.WaveNerve;
-import org.nusco.narjillos.shared.physics.Segment;
+import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -9,12 +8,11 @@ public class Head extends BodySegment {
 
 	private static final double ROTATION_SPEED = 0.5;
 	private static final double ROTATION_HISTERESIS = ROTATION_SPEED;
-	private static final double WAVE_SIGNAL_FREQUENCY = 0.005;
 
 	private final double metabolicRate;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
-		super(length, thickness, hue, new WaveNerve(metabolicRate * WAVE_SIGNAL_FREQUENCY), 0, null);
+		super(length, thickness, hue, new PassNerve(), 0, null);
 		this.metabolicRate = metabolicRate;
 	}
 
@@ -32,36 +30,40 @@ public class Head extends BodySegment {
 		return getAngleToParent();
 	}
 	
-	@Override
-	protected Vector calculateMainAxis() {
-		return getVector().normalize(1);
+	protected Vector getMainAxis() {
+		return getVector().normalize(1).invert();
 	}
 
 	@Override
-	public void tick(Vector inputSignal, ForceField forceField) {
-		Segment beforeMovement = getSegment();
-		
-		double updatedAngle = calculateUpdatedAngle(inputSignal);
-		setAngleToParent(getAngleToParent() + updatedAngle);
-		Vector outputSignal = getNerve().tick(inputSignal);
-
-		forceField.record(beforeMovement, this);
-		tickChildren(outputSignal, forceField);
+	protected double calculateAngleToParent(double targetAngle, ForceField forceField) {
+		return getAngleToParent(); // don't bother with this now (see below)
 	}
 
-	@Override
-	protected double calculateUpdatedAngle(Vector signal) {
+	public void rotateTowards(Vector direction) {
 		// HACK. will stay in place until I have real physical rotation
-		double difference = signal.invert().getAngleWith(getVector());
+		double difference = direction.invert().getAngleWith(getVector());
 		
 		// special case: in case the main axis is exactly opposite to the target
 		if (Math.abs(difference - 180) < 2)
 			difference = -178;
 
 		if (Math.abs(difference) < ROTATION_HISTERESIS)
-			return 0;
+			return;
+
 		double sign = Math.signum(180 - Math.abs(difference));
 		double unsignedResult = ROTATION_SPEED * Math.signum(difference);
-		return sign * unsignedResult;
+		double targetAngleToParent = getAngleToParent() + sign * unsignedResult;
+		
+		double rotationSpeed = targetAngleToParent - getAngleToParent();
+
+		setAngleToParent(normalize(getAngleToParent() + rotationSpeed));
+	}
+
+	private double normalize(double degrees) {
+		// check that this code makes sense. I probably scrap together with rotateTowards() anyways
+		degrees = ((degrees % 360) + 360) % 360;
+		if (degrees > 180)
+			degrees = -(360-degrees);
+		return degrees;
 	}
 }

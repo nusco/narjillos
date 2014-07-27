@@ -124,7 +124,7 @@ public class Viewport {
 		return lengthSC / zoomLevel;
 	}
 
-	private final Vector toPC(Vector pointSC) {
+	public final Vector toPC(Vector pointSC) {
 		return getPositionPC().plus(pointSC.by(1.0 / zoomLevel));
 	}
 

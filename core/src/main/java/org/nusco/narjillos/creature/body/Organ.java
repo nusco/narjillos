@@ -15,7 +15,6 @@ public abstract class Organ {
 	private Vector cachedStartPoint = null;
 	private Vector cachedEndPoint = null;
 	private Double cachedAbsoluteAngle = null;
-	private Vector cachedMainAxis = null;
 	private Vector cachedVector = null;
 
 	public Organ(int length, int thickness, ColorByte color) {
@@ -45,7 +44,6 @@ public abstract class Organ {
 		cachedAbsoluteAngle = null;
 		cachedStartPoint = null;
 		cachedEndPoint = null;
-		cachedMainAxis = null;
 		cachedVector = null;
 	}
 
@@ -81,14 +79,6 @@ public abstract class Organ {
 		return new Segment(getStartPoint(), getVector());
 	}
 
-	protected final Vector getMainAxis() {
-		if (cachedMainAxis == null)
-			cachedMainAxis = calculateMainAxis();
-		return cachedMainAxis;
-	}
-
-	protected abstract Vector calculateMainAxis();
-
 	@Override
 	public int hashCode() {
 		return length ^ thickness;
@@ -98,9 +88,5 @@ public abstract class Organ {
 	public boolean equals(Object obj) {
 		Organ other = (Organ) obj;
 		return length == other.length && thickness == other.thickness && color == other.color;
-	}
-	
-	protected final boolean isAtrophic() {
-		return length == 0;
 	}
 }

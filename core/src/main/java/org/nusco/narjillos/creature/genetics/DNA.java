@@ -36,7 +36,7 @@ public class DNA {
 				resultChromosomes.add(copy(nextChromosome));
 			// add a chromosome every now and then
 			if (mutationHappens())
-				resultChromosomes.add(random(CHROMOSOME_SIZE));
+				resultChromosomes.add(randomGenes(CHROMOSOME_SIZE));
 		}
 
 		Integer[] resultGenes = flatten(resultChromosomes);
@@ -88,11 +88,15 @@ public class DNA {
 
 	public static DNA random() {
 		int size = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
-		Integer[] randomGenes = random(size);
-		return new DNA(randomGenes);
+		return random(size);
 	}
 
-	private static Integer[] random(int size) {
+	public static DNA random(int size) {
+		Integer[] genes = randomGenes(size);
+		return new DNA(genes);
+	}
+
+	private static Integer[] randomGenes(int size) {
 		Integer[] genes = new Integer[size];
 		for (int i = 0; i < genes.length; i++)
 			genes[i] = RanGen.nextByte();

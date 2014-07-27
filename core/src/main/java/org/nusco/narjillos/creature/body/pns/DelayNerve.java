@@ -2,8 +2,6 @@ package org.nusco.narjillos.creature.body.pns;
 
 import java.util.LinkedList;
 
-import org.nusco.narjillos.shared.physics.Vector;
-
 /**
  * Outputs the same signal it received as an input, but
  * delayed by a given number of ticks.
@@ -11,14 +9,14 @@ import org.nusco.narjillos.shared.physics.Vector;
 public class DelayNerve implements Nerve {
 
 	private final int delay;
-	private final LinkedList<Vector> buffer = new LinkedList<>();
+	private final LinkedList<Double> buffer = new LinkedList<>();
 
 	public DelayNerve(int delay) {
 		this.delay = delay;
 	}
 
 	@Override
-	public Vector tick(Vector inputSignal) {
+	public double tick(double inputSignal) {
 		buffer.add(inputSignal);
 		if(buffer.size() < delay)
 			return buffer.getFirst();

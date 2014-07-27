@@ -19,11 +19,11 @@ class ForceField {
 	private double energySpent = 0;
 	
 	public void record(Segment beforeMovement, Organ organ) {
-		Vector force = calculateForceUsedForMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
+		Vector force = reverseCalculateForceFromMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
 		addForce(force);
 	}
 
-	private Vector calculateForceUsedForMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
+	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
 		Vector startPointMovement = afterMovement.startPoint.minus(beforeMovement.startPoint);
 		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);
 		Vector averageMovement = startPointMovement.plus(endPointMovement).by(0.5);

@@ -39,6 +39,8 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Speed Demon
 
+* Normalize organ angle during rotation (right now rotations are weird - see comment in BodySegment.java)
+* Change nerves to propagate a scalar instead of a vector (that never really worked, and it lent to duplicated calculations - see BodySegment.java)
 * Space Partitioning optimization
 * Cached food image?
 
@@ -58,6 +60,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Artist
 
+* Smooth overzoomed effects (right now they kill visible framerate, not reported one)
 * Detailed death animation
 * Birth animation
 * Narjillos always overlap food (food is in background)
@@ -65,8 +68,8 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ##Daydreamer
 
+* DNA analyzer program
 * DNA diff program (based on DNA analyzer)
 * Sexual reproduction
 * Sexual reproduction is optional
 * Brains with behaviours
-* DNA analyzer program

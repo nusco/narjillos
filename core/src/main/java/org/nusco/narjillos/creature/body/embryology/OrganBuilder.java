@@ -9,6 +9,7 @@ class OrganBuilder {
 	static final double PART_LENGTH_MULTIPLIER = 1.0;
 	static final double PART_THICKNESS_MULTIPLIER = 0.15;
 	static final int PART_MAX_ANGLE_TO_PARENT = 70;
+	static final double MAX_METABOLIC_RATE = 4;
 
 	public static final int MIN_LENGTH = 29;
 	private static final int MIN_THICKNESS = 10;
@@ -57,9 +58,8 @@ class OrganBuilder {
 	}
 
 	private double getMetabolicRate() {
-		double maxMetabolicRate = 4;
 		double maxByteValue = 255.0;
-		double rateScale = maxByteValue / maxMetabolicRate;
+		double rateScale = maxByteValue / MAX_METABOLIC_RATE;
 
 		int metabolicRateGene = genes[3];
 		return metabolicRateGene / rateScale;

@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.body.pns;
 
-import org.nusco.narjillos.shared.physics.Vector;
 
 /**
  * Processes nervous impulses, turning input signals into
@@ -8,5 +7,5 @@ import org.nusco.narjillos.shared.physics.Vector;
  */
 public interface Nerve {
 
-	public Vector tick(Vector inputSignal);
+	public double tick(double inputSignal);
 }

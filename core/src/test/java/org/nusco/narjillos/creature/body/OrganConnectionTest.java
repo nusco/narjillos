@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public abstract class OrganConnectionTest {
@@ -26,7 +25,7 @@ public abstract class OrganConnectionTest {
 		child1.sproutOrgan(nerve3);
 		head.sproutOrgan(nerve4);
 
-		head.tick(null, ForceField.NULL);
+		head.tick(0, ForceField.NULL);
 		
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);
@@ -38,9 +37,9 @@ public abstract class OrganConnectionTest {
 		public boolean clicked = false;
 		
 		@Override
-		public Vector tick(Vector inputSignal) {
+		public double tick(double inputSignal) {
 			clicked = true;
-			return null;
+			return 0;
 		}		
 	}
 }

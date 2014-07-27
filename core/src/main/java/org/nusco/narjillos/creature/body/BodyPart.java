@@ -39,12 +39,6 @@ public abstract class BodyPart extends Organ {
 		return getParent().getEndPoint();
 	}
 
-	protected abstract double calculateAbsoluteAngle();
-
-	protected Vector calculateMainAxis() {
-		return getParent().calculateMainAxis();
-	}
-
 	protected final Organ getParent() {
 		return parent;
 	}
@@ -53,32 +47,20 @@ public abstract class BodyPart extends Organ {
 		return children;
 	}
 
-	// TODO: break down and push down the stuff that doesn't manage nerves and children?
-	// Warning in case I restructure this - remember that a head can be atrophic.
-	// Wait to change this after I have real physical rotation, because the head
-	// code is likely to change a lot - I might even stop having any special movement
-	// code in the head
-	public void tick(Vector inputSignal, ForceField forceField) {
-		if (isAtrophic()) {
-			// optimization
-			resetAllCaches();
-			Vector outputSignal = getNerve().tick(inputSignal);
-			tickChildren(outputSignal, forceField);
-		}
-		
+	public final void tick(double signal, ForceField forceField) {
 		Segment beforeMovement = getSegment();
-		Vector outputSignal = getNerve().tick(inputSignal);
-		
-		double updatedAngle = calculateUpdatedAngle(outputSignal);
-		setAngleToParent(updatedAngle);
+
+		double processedSignal = getNerve().tick(signal);
+
+		setAngleToParent(calculateAngleToParent(processedSignal, forceField));
 		
 		forceField.record(beforeMovement, this);
-		tickChildren(outputSignal, forceField);
+		tickChildren(processedSignal, forceField);
 	}
 
-	protected abstract double calculateUpdatedAngle(Vector signal);
+	protected abstract double calculateAngleToParent(double targetAngle, ForceField forceField);
 
-	protected void tickChildren(Vector signal, ForceField forceField) {
+	protected void tickChildren(double signal, ForceField forceField) {
 		for (BodyPart child : getChildren())
 			child.tick(signal, forceField);
 	}

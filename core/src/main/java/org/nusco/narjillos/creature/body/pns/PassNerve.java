@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.body.pns;
 
-import org.nusco.narjillos.shared.physics.Vector;
 
 /**
  * Always outputs the same vector it receives in input.
@@ -8,7 +7,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 public class PassNerve implements Nerve {
 
 	@Override
-	public Vector tick(Vector inputSignal) {
+	public double tick(double inputSignal) {
 		return inputSignal;
 	}
 }

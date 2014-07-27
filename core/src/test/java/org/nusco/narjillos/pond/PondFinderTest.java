@@ -1,6 +1,7 @@
 package org.nusco.narjillos.pond;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -19,21 +20,21 @@ public class PondFinderTest {
 	
 	@Test
 	public void findsTheClosestFoodToAGivenPosition() {
-		assertEquals(Vector.cartesian(100, 100), pond.findFoodPiece(Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(1000, 1000), pond.findFoodPiece(Vector.cartesian(900, 900)));
+		assertEquals(foodPiece1, pond.findFoodPiece(Vector.cartesian(150, 150)));
+		assertEquals(foodPiece2, pond.findFoodPiece(Vector.cartesian(900, 900)));
 	}
 
 	@Test
 	public void findsTheClosestNarjilloToAGivenPosition() {
-		assertTrue(pond.findNarjillo(Vector.cartesian(100, 100)).almostEquals(Vector.cartesian(150, 150)));
-		assertTrue(pond.findNarjillo(Vector.cartesian(1000, 1000)).almostEquals(Vector.cartesian(1050, 1050)));
+		assertTrue(pond.findNarjillo(Vector.cartesian(100, 100)).getPosition().almostEquals(Vector.cartesian(150, 150)));
+		assertTrue(pond.findNarjillo(Vector.cartesian(1000, 1000)).getPosition().almostEquals(Vector.cartesian(1050, 1050)));
 	}
 
 	@Test
-	public void returnsThePondCenterIfLookingForThingsInAThinglessWorld() {
+	public void returnsNullIfLookingForThingsInAThinglessWorld() {
 		Pond pond = new Pond(1000);
 		
-		assertEquals(Vector.cartesian(500, 500), pond.findFoodPiece(Vector.cartesian(150, 150)));
-		assertEquals(Vector.cartesian(500, 500), pond.findNarjillo(Vector.cartesian(150, 150)));
+		assertNull(pond.findFoodPiece(Vector.cartesian(150, 150)));
+		assertNull(pond.findNarjillo(Vector.cartesian(150, 150)));
 	}
 }

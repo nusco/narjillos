@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.NarjilloEventListener;
 import org.nusco.narjillos.creature.body.embryology.Embryo;
+import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.creature.genetics.Population;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -45,25 +46,25 @@ public class Pond {
 		return result;
 	}
 
-	private Vector find(Collection<? extends Thing> things, Vector near) {
+	private Thing find(Collection<? extends Thing> things, Vector near) {
 		double minDistance = Double.MAX_VALUE;
-		Vector result = Vector.cartesian(getSize() / 2, getSize() / 2);
+		Thing result = null;
 		for (Thing thing : things) {
 			double distance = thing.getPosition().minus(near).getLength();
 			if (distance < minDistance) {
 				minDistance = distance;
-				result = thing.getPosition();
+				result = thing;
 			}
 		}
 		return result;
 	}
 
-	public Vector findFoodPiece(Vector near) {
-		return find(foodPieces, near);
+	public FoodPiece findFoodPiece(Vector near) {
+		return (FoodPiece)find(foodPieces, near);
 	}
 
-	public Vector findNarjillo(Vector near) {
-		return find(narjillos.toCollection(), near);
+	public Creature findNarjillo(Vector near) {
+		return (Creature)find(narjillos.toCollection(), near);
 	}
 
 	public void tick() {
@@ -96,7 +97,7 @@ public class Pond {
 
 			@Override
 			public void died() {
-				killNarjillo(narjillo);
+				remove(narjillo);
 			}
 		});
 		narjillo.setPosition(position);
@@ -107,11 +108,17 @@ public class Pond {
 
 	private void updateTarget(Narjillo narjillo) {
 		Vector position = narjillo.getPosition();
-		Vector locationOfClosestFood = findFoodPiece(position);
+		FoodPiece foodPiece = findFoodPiece(position);
+		Vector locationOfClosestFood = (foodPiece != null) ? foodPiece.getPosition() : getFarawayPoint();
 		narjillo.setTarget(locationOfClosestFood);
 	}
 
-	private void updateTargets() {
+	private Vector getFarawayPoint() {
+		// this should not be necessary once narjillos can think for themselves
+		return Vector.polar(Double.MAX_VALUE, Double.MAX_VALUE);
+	}
+
+	protected void updateTargets() {
 		for (Thing narjillo : narjillos.getCollection())
 			updateTarget((Narjillo)narjillo);
 	}
@@ -153,14 +160,22 @@ public class Pond {
 			return; // race condition: already consumed
 
 		narjillo.feed();
-		foodPieces.remove(foodPiece);
-		notifyThingRemoved(foodPiece);
+		remove(foodPiece);
 		
 		reproduce(narjillo);
 		updateTargets();
 	}
 
-	private void killNarjillo(final Narjillo narjillo) {
+	protected synchronized void remove(FoodPiece foodPiece) {
+		if (!foodPieces.contains(foodPiece))
+			return;
+		foodPieces.remove(foodPiece);
+		notifyThingRemoved(foodPiece);
+	}
+
+	protected synchronized void remove(final Creature narjillo) {
+		if (!narjillos.getCollection().contains(narjillo))
+			return;
 		narjillos.remove(narjillo);
 		notifyThingRemoved(narjillo);
 	}
@@ -197,5 +212,15 @@ public class Pond {
 
 	public Population getPopulation() {
 		return narjillos;
+	}
+
+	protected synchronized void clearFood() {
+		for (FoodPiece foodPiece : foodPieces)
+			remove(foodPiece);
+	}
+
+	protected synchronized void clearCreatures() {
+		for (Creature creature : narjillos.getCollection())
+			remove(creature);
 	}
 }

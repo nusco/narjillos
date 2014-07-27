@@ -26,21 +26,15 @@ class EyeView extends CircularObjectView {
 	}
 
 	private Color toColor(double energy, double zoomLevel) {
-		double intensity = Math.min(0.8, energy / Narjillo.MAX_ENERGY);
-		return new Color(0, intensity, 0, getTransparency(zoomLevel));
+		return new Color(0, getIntensity(energy), 0, getTransparency(zoomLevel));
+	}
+
+	private double getIntensity(double energy) {
+		return clipToRange(energy / Narjillo.MAX_ENERGY, 0, 0.8);
 	}
 
 	private double getTransparency(double zoomLevel) {
-		double result = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 4;
-		
-		if (result < 0)
-			return 0;
-
-		final double maxAlpha = 0.8;
-		if (result > maxAlpha)
-			return maxAlpha;
-		
-		return result;
+		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 4, 0, 0.8);
 	}
 
 	private Circle createCircle() {

@@ -45,8 +45,12 @@ abstract class ThingView {
 		double minZoomLevel = 0.25;
 		if (zoomLevel <= minZoomLevel)
 			return null;
-		double alpha = Math.min((zoomLevel - minZoomLevel) * 2, 1);
+		double alpha = clipToRange((zoomLevel - minZoomLevel) * 2, 0, 1);
 		Color color = new Color(0.9, 0.9, 0.9, alpha);
 		return new DropShadow(20, 7, 7, color);
+	}
+	
+	protected double clipToRange(double result, double min, double max) {
+		return Math.max(min, Math.min(max, result));
 	}
 }

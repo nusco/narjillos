@@ -62,7 +62,8 @@ class OrganView extends ThingView {
 	}
 
 	private double getAlpha() {
-		return Math.min(0.7, getNarjillo().getEnergy() * 6 / Narjillo.MAX_ENERGY);
+		double result = getNarjillo().getEnergy() * 6 / Narjillo.MAX_ENERGY;
+		return clipToRange(result, 0, 0.7);
 	}
 
 	public static Color toRGBColor(ColorByte colorByte) {

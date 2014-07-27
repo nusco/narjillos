@@ -38,15 +38,7 @@ class MouthView extends ThingView {
 	}
 
 	private double getTransparency(double zoomLevel) {
-		double result = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 5;
-		
-		if (result < 0)
-			return 0;
-		
-		if (result > 1)
-			return 1;
-		
-		return result;
+		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 5, 0, 1);
 	}
 	
 	private void rotate(Line line, int angle) {

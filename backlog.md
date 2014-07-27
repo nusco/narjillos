@@ -12,11 +12,13 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 * Think hard about wave doubling - do it on the "going forward / coming back" instead of the "positive/negative"?
 * Real rotation
+* Tweak energy consumption
 
 ###Genetist
 
 * Each body segment's amplitude is genetically determined
 * Whole-body size gene
+* Bullet-proof genome with a Chromosome class (for documentation, tool building and checking min and max values, for avoiding divisions by 0 and other potential issues)
 * Smooth organ evolution to and from atrophy
 
 ###Ostetrician
@@ -76,3 +78,4 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 * Sexual reproduction
 * Sexual reproduction is optional
 * Brains with behaviours
+* Prevent DNA strands that are too different from mixing to favor speciation? (maybe bad idea b/c of deleterious mutations in small population)

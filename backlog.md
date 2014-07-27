@@ -14,6 +14,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Genetist
 
+* Each body segment's amplitude is genetically determined
 * Whole-body size gene
 * Smooth organ evolution to and from atrophy
 

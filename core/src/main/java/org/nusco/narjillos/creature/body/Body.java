@@ -9,7 +9,8 @@ import org.nusco.narjillos.shared.physics.Vector;
 public class Body {
 
 	private static final double PROPULSION_SCALE = 0.1;
-	private static final double WAVE_SIGNAL_FREQUENCY = 0.005;
+	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
+	private static final int FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED = 45;
 
 	// 1 means that every movement is divided by the entire mass. This makes
 	// high mass a sure-fire loss.
@@ -38,7 +39,7 @@ public class Body {
 		// Always a range of two, but shifts -1 to +1
 		// so it can go from -2 to +2
 		double fromMinusTwoToTwo = tickerNerve.tick(skewing);
-		double targetAngle = fromMinusTwoToTwo * 45;
+		double targetAngle = fromMinusTwoToTwo * FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED;
 		
 		ForceField forceField = new ForceField();
 		head.tick(targetAngle, forceField);

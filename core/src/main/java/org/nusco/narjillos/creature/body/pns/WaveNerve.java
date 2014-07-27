@@ -2,9 +2,10 @@ package org.nusco.narjillos.creature.body.pns;
 
 
 /**
- * Given an input signal V, and its normal vector of the same length N, this
- * Nerve generates an output that goes from -N to N and back, in a sinusoidal
- * wave.
+ * Generates an output that goes from -1 to 1 and back, in a sinusoidal
+ * wave. The input signal is a skew value that will be added to the current
+ * output signal. For example, if you input -2 continuously, you will get a
+ * wave from -3 to -1.
  * 
  * The negative part of the sinusoidal wave has a higher frequency than the
  * part part. This generates a life-like motion, where organs move more slowly

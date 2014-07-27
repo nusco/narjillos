@@ -10,7 +10,6 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Physicist
 
-* Think hard about wave doubling - do it on the "going forward / coming back" instead of the "positive/negative"?
 * Real rotation
 * Tweak energy consumption
 

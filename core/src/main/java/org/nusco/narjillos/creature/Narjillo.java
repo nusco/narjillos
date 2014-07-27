@@ -14,10 +14,10 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	static final double INITIAL_ENERGY = 700_000;
-	private static final double ENERGY_PER_FOOD_ITEM = 700_000;
-	public static final double MAX_ENERGY = 1_000_000;
-	private static final double MAX_TICKS_TO_DEATH = 50_000;
+	static final double INITIAL_ENERGY = 100_000;
+	private static final double ENERGY_PER_FOOD_ITEM = 100_000;
+	public static final double MAX_ENERGY = 200_000;
+	private static final double MAX_TICKS_TO_DEATH = 20_000;
 	static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
 
 	public final Body body;

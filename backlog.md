@@ -5,7 +5,6 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 * Don't require Gradle to start the programs (only to build them)
 * Externalize all configurable parameters to a JSON file
-* DNA analyzer program
 * Save dish
 * Load dish
 
@@ -70,3 +69,4 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 * Sexual reproduction
 * Sexual reproduction is optional
 * Brains with behaviours
+* DNA analyzer program

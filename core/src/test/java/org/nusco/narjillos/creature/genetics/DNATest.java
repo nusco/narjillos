@@ -15,10 +15,10 @@ public class DNATest {
 	}
 
 	@Test
-	public void convertsToADescriptiveString() {
-		DNA dna = new DNA(new Integer[] {1, 22, 255});
+	public void convertsToADNADocumentString() {
+		DNA dna = new DNA("1_2_3");
 		
-		assertEquals("001-022-255", dna.toString());
+		assertEquals("{001_002_003_000_000_000}", dna.toString());
 	}
 
 	@Test
@@ -30,7 +30,7 @@ public class DNATest {
 
 	@Test
 	public void clipsGenesToByteSizeWhenCreatedWithAString() {
-		DNA dna = new DNA("1-0-256");
+		DNA dna = new DNA("1_0_256");
 		
 		assertArrayEquals(new Integer[] {1, 0, 255}, dna.getGenes());
 	}
@@ -38,7 +38,7 @@ public class DNATest {
 	@Test
 	public void createsDNAFromADNADocumentString() {
 		String dnaString = "comment\n" +
-							"1-022-255";
+							"1_022_255";
 		DNA dna = new DNA(dnaString);
 
 		assertArrayEquals(new Integer[] {1, 22, 255}, dna.getGenes());

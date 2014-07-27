@@ -19,7 +19,7 @@ public class Cosmos extends Pond {
 		super(SIZE);
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_THINGS; i++)
 			spawnFood(randomPosition());
-		
+
 		for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++) {
 			if (dna == null)
 				spawnNarjillo(randomPosition(), DNA.random());

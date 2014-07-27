@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.genetics;
 
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -100,16 +99,6 @@ public class DNA {
 		return genes;
 	}
 
-	@Override
-	public String toString() {
-		final DecimalFormat threeDigits = new DecimalFormat("000");
-		StringBuffer result = new StringBuffer();
-		for (int i = 0; i < genes.length - 1; i++)
-			result.append(threeDigits.format(genes[i]) + "-");
-		result.append(threeDigits.format(genes[genes.length - 1]));
-		return result.toString();
-	}
-
 	public int getDistanceFrom(DNA other) {
 		Integer[] theseGenes = getGenes();
 		Integer[] otherGenes = other.getGenes();
@@ -123,5 +112,10 @@ public class DNA {
 				result++;
 		result += (otherGenes.length - theseGenes.length);
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return DNADocument.toString(this);
 	}
 }

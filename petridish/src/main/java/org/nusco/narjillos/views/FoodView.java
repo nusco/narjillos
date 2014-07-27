@@ -10,6 +10,8 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 class FoodView extends CircularObjectView {
 
+	private static final double MINIMUM_ZOOM_LEVEL = 0.035;
+
 	private final Node circle;
 
 	public FoodView(FoodPiece food) {
@@ -18,6 +20,9 @@ class FoodView extends CircularObjectView {
 	}
 
 	public Node toNode(double zoomLevel) {
+		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
+			return null;
+
 		circle.getTransforms().clear();
 		circle.getTransforms().add(moveToStartPoint());
 		circle.setEffect(getHaloEffect(zoomLevel));

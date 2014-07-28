@@ -42,7 +42,7 @@ public class ForceFieldTest {
 			}
 		};
 		
-		organ.tick(0, recorder);
+		organ.tick(0, 0, recorder);
 		
 		assertArrayEquals(new int[] {1, 2, 3}, movement);
 	}

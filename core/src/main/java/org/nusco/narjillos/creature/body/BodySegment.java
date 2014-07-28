@@ -16,8 +16,9 @@ class BodySegment extends BodyPart {
 		setAngleToParent(angleToParentAtRest);
 	}
 
-	protected double calculateAngleToParent(double targetAngle, ForceField forceField) {
-		double signedTargetAngle = targetAngle * getOrientationSign();
+	@Override
+	protected double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField) {
+		double signedTargetAngle = targetAngle * getOrientationSign() + skewing;
 		double limitedTargetAngle = constrainToPhysicalLimits(signedTargetAngle);
 		return getAngleToParent() + limitedTargetAngle + getForcedBend();
 	}

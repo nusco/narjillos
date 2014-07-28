@@ -37,7 +37,8 @@ public class Head extends BodySegment {
 	}
 
 	@Override
-	protected double calculateAngleToParent(double targetAngle, ForceField forceField) {
+	protected double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField) {
+		// the head never moves
 		return getAngleToParent();
 	}
 

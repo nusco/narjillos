@@ -53,25 +53,25 @@ public abstract class BodyPart extends Organ {
 		return children;
 	}
 
-	public final void tick(double signal, ForceField forceField) {
+	public final void tick(double signal, double skewing, ForceField forceField) {
 		Segment beforeMovement = getSegment();
 
-		double processedSignal = getNerve().tick(signal);
+		double targetAngle = getNerve().tick(signal);
 
-		double newAngleToParent = calculateAngleToParent(processedSignal, forceField);
+		double newAngleToParent = calculateAngleToParent(targetAngle, skewing, forceField);
 		setAngleToParent(newAngleToParent);
 
 		resetForcedBend();
 
 		forceField.record(beforeMovement, this);
-		tickChildren(processedSignal, forceField);
+		tickChildren(targetAngle, skewing, forceField);
 	}
 
-	protected abstract double calculateAngleToParent(double targetAngle, ForceField forceField);
+	protected abstract double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField);
 
-	protected void tickChildren(double signal, ForceField forceField) {
+	protected void tickChildren(double targetAngle, double skewing, ForceField forceField) {
 		for (BodyPart child : getChildren())
-			child.tick(signal, forceField);
+			child.tick(targetAngle, skewing, forceField);
 	}
 
 	Nerve getNerve() {

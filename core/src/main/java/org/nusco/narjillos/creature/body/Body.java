@@ -16,7 +16,8 @@ public class Body {
 	private static final double ROTATION_SCALE = 0.00008;
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
 	private static final int FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED = 45;
-
+	private static final double SKEWING = 2.5;
+	
 	// 1 means that every movement is divided by the entire mass. This makes
 	// high mass a sure-fire loss.
 	// 0.5 means half as much penalty. This justifies having a high mass, for
@@ -37,17 +38,17 @@ public class Body {
 
 	public Effort tick(Vector targetDirection) {
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
-		double skewing = (angleToTarget % 180) / 180; // from -1 to 1
+		double skewing = (angleToTarget % 180) / 180 * SKEWING; // from -1 to 1
 		// Always a range of two, but shifts -1 to +1
 		// so it can go from -2 to +2
 		double fromMinusTwoToTwo = tickerNerve.tick(skewing);
 		double targetAngle = fromMinusTwoToTwo * FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED;
 		
 		ForceField forceField = new ForceField();
-		head.tick(targetAngle, forceField);
+		head.tick(targetAngle, skewing, forceField);
 
 		double rotationAngle = calculateRotationAngle(forceField, getCenterOfMass());
-		
+		System.out.println(rotationAngle);
 		Vector movement = calculateMovement(forceField.getTotalForce());
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
@@ -96,8 +97,13 @@ public class Body {
 		// is pivoting around its own mouth
 		double rotationalForce = forceField.getRotationalForceAround(getCenterOfMass());
 		double result = -rotationalForce * ROTATION_SCALE * getMassPenalty();
-		
+
+		// this is a bit too constraining
+		// find a better way to avoid crazy vibrations
+		// (velocity?)
 		final double maxRotation = 5;
+		if (Math.abs(result) < 2)
+			result = 0;
 		if (Math.abs(result) > maxRotation)
 			result = Math.signum(result) * maxRotation;
 		

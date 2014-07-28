@@ -24,17 +24,23 @@ class MouthView extends ThingView {
 	}
 
 	@Override
-	public Node toNode(double zoomLevel) {
+	public Node toNode(double zoomLevel, boolean infraredOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 		
-		Color color = new Color(0, 0.6, 0, getTransparency(zoomLevel));
+		Color color = getColor(zoomLevel, infraredOn);
 		line1.setStroke(color);
 		line2.setStroke(color);
 
 		rotate(line1, 10);
 		rotate(line2, -10);
 		return group;
+	}
+
+	private Color getColor(double zoomLevel, boolean infraredOn) {
+		if (infraredOn)
+			return Color.RED;
+		return new Color(0, 0.6, 0, getTransparency(zoomLevel));
 	}
 
 	private double getTransparency(double zoomLevel) {

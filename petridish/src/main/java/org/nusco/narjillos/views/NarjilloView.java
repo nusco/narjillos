@@ -26,30 +26,30 @@ class NarjilloView extends ThingView {
 	}
 
 	@Override
-	public Node toNode(double zoomLevel) {
+	public Node toNode(double zoomLevel, boolean infraredOn) {
 		group.getChildren().clear();
 		
-		Node mouthNode = mouthView.toNode(zoomLevel);
+		Node mouthNode = mouthView.toNode(zoomLevel, infraredOn);
 		if (mouthNode != null)
 			group.getChildren().add(mouthNode);
 
-		group.getChildren().addAll(getOrganNodes(zoomLevel));
+		group.getChildren().addAll(getOrganNodes(zoomLevel, infraredOn));
 
-		Node eyeNode = eyeView.toNode(zoomLevel);
+		Node eyeNode = eyeView.toNode(zoomLevel, infraredOn);
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
 		
 		Vector position = getNarjillo().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));
-		group.setEffect(getHaloEffect(zoomLevel));
+		group.setEffect(getEffects(zoomLevel, infraredOn));
 		return group;
 	}
 
-	private List<Node> getOrganNodes(double zoomLevel) {
+	private List<Node> getOrganNodes(double zoomLevel, boolean infraredOn) {
 		List<Node> result = new LinkedList<>();
 		for (OrganView view : organViews) {
-			Node node = view.toNode(zoomLevel);
+			Node node = view.toNode(zoomLevel, infraredOn);
 			if (node != null)
 				result.add(node);
 		}

@@ -36,8 +36,8 @@ class OrganView extends ThingView {
 		return result;
 	}
 
-	public Node toNode(double zoomLevel) {
-		rectangle.setFill(getColor());
+	public Node toNode(double zoomLevel, boolean infraredOn) {
+		rectangle.setFill(getColor(infraredOn));
 		
 		rectangle.getTransforms().clear();
 		
@@ -57,7 +57,9 @@ class OrganView extends ThingView {
 		return new Translate(startPoint.x, startPoint.y);
 	}
 
-	private Color getColor() {
+	private Color getColor(boolean infraredOn) {
+		if (infraredOn)
+			return Color.RED;
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), getAlpha());
 	}
 

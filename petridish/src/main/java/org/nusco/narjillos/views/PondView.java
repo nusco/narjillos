@@ -14,6 +14,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
@@ -25,13 +26,15 @@ public class PondView {
 
 	private final Pond pond;
 	private final Viewport viewport;
-	private final Node background;
+	private final Shape background;
 	private final Map<Thing, ThingView> thingsToViews = new HashMap<>();
+
+	private boolean infrared = false;
 
 	public PondView(Pond pond) {
 		this.pond = pond;
 		viewport = new Viewport(pond);
-		background = createBackground(pond);
+		background = new Rectangle(0, 0, pond.getSize(), pond.getSize());
 
 		for (Thing thing : pond.getThings())
 			addThingView(thing);
@@ -55,20 +58,21 @@ public class PondView {
 
 	public Node toNode() {
 		Group result = new Group();
-		result.getChildren().add(getBackground());
-		result.getChildren().add(getThingsGroup());
+		result.getChildren().add(getBackground(isInfrared()));
+		result.getChildren().add(getThingsGroup(isInfrared()));
 		return result;
 	}
 
-	private Group getThingsGroup() {
+	private Group getThingsGroup(boolean infraredOn) {
 		Group things = new Group();
-		things.getChildren().addAll(getNodesForThings());
+		things.getChildren().addAll(getNodesForThings(infraredOn));
 
 		things.getTransforms().add(new Translate(-viewport.getPositionPC().x, -viewport.getPositionPC().y));
 		things.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
 											viewport.getPositionPC().x, viewport.getPositionPC().y));
 
 		setZoomLevelEffects(things);
+		
 		return things;
 	}
 
@@ -81,25 +85,25 @@ public class PondView {
 		group.setEffect(getBlurEffect(zoomLevel));
 	}
 
-	private Node getBackground() {
+	private Shape getBackground(boolean infraredOn) {
+		if (infraredOn) {
+			background.setFill(Color.DARKGRAY.darker());
+			return background;
+		}
+
+		background.setFill(Color.ANTIQUEWHITE);
 		double brightnessAdjust = -viewport.getZoomLevel() / 5;
 		background.setEffect(new ColorAdjust(0, 0, brightnessAdjust, 0));
 		return background;
 	}
 	
-	private List<Node> getNodesForThings() {
+	private List<Node> getNodesForThings(boolean infraredOn) {
 		List<Node> result = new LinkedList<>();
 		for (ThingView view : getThingViews()) {
-			Node node = view.toNode(viewport);
+			Node node = view.toNode(viewport, infraredOn);
 			if (node != null)
 				result.add(node);
 		}
-		return result;
-	}
-
-	private Node createBackground(Pond pond) {
-		Rectangle result = new Rectangle(0, 0, pond.getSize(), pond.getSize());
-		result.setFill(Color.ANTIQUEWHITE);
 		return result;
 	}
 
@@ -126,5 +130,13 @@ public class PondView {
 
 	public Pond getPond() {
 		return pond;
+	}
+
+	public synchronized void toggleInfrared() {
+		infrared = !infrared;
+	}
+
+	private synchronized boolean isInfrared() {
+		return infrared;
 	}
 }

@@ -17,7 +17,7 @@ class EyeView extends CircularObjectView {
 	}
 
 	@Override
-	public Node toNode(double zoomLevel) {
+	public Node toNode(double zoomLevel, boolean infraredOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 		double energy = ((Narjillo)getThing()).getEnergy();

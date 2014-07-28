@@ -1,8 +1,11 @@
 package org.nusco.narjillos.views;
 
 import javafx.scene.Node;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.creature.Narjillo;
@@ -21,16 +24,16 @@ abstract class ThingView {
 		return thing;
 	}
 
-	public final Node toNode(Viewport viewport) {
+	public final Node toNode(Viewport viewport, boolean infraredOn) {
 		if (!isVisible(viewport))
 			return null;
 		
-		return toNode(viewport.getZoomLevel());
+		return toNode(viewport.getZoomLevel(), infraredOn);
 	}
 	
 	protected abstract boolean isVisible(Viewport viewport);
 
-	public abstract Node toNode(double zoomLevel);
+	public abstract Node toNode(double zoomLevel, boolean infraredOn);
 	
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("narjillo"))
@@ -41,7 +44,15 @@ abstract class ThingView {
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}
 
-	protected Effect getHaloEffect(double zoomLevel) {
+	protected Effect getEffects(double zoomLevel, boolean infraredOn) {
+		if (infraredOn) {
+			return new Blend(BlendMode.OVERLAY, getHaloEffect(zoomLevel * 2), new Glow(30));
+		}
+		
+		return getHaloEffect(zoomLevel);
+	}
+
+	private Effect getHaloEffect(double zoomLevel) {
 		double minZoomLevel = 0.2;
 		if (zoomLevel <= minZoomLevel)
 			return null;

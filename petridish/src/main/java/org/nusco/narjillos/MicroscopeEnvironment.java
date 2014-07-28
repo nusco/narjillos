@@ -148,6 +148,8 @@ abstract class MicroscopeEnvironment extends Application {
 					moveViewport(0, -PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					moveViewport(0, PAN_SPEED, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.ENTER)
+					getPondView().toggleInfrared();
 			}
 		};
 	}

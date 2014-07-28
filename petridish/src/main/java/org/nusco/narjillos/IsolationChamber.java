@@ -21,7 +21,7 @@ public class IsolationChamber extends MicroscopeEnvironment {
 	
 	protected synchronized Pond createPond(String[] programArguments) {
 		// TODO: maybe make it more flexible, like PetriDish
-		return new PrivatePond(DNA.random());
+		return new PrivatePond(DNA.random(DNA.CHROMOSOME_SIZE * 30));
 	}
 
 	@Override

@@ -28,7 +28,7 @@ class MouthView extends ThingView {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 		
-		Color color = new Color(0, 0.8, 0, getTransparency(zoomLevel));
+		Color color = new Color(0, 0.6, 0, getTransparency(zoomLevel));
 		line1.setStroke(color);
 		line2.setStroke(color);
 
@@ -38,7 +38,7 @@ class MouthView extends ThingView {
 	}
 
 	private double getTransparency(double zoomLevel) {
-		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 5, 0, 1);
+		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 20, 0, 1);
 	}
 	
 	private void rotate(Line line, int angle) {
@@ -48,6 +48,7 @@ class MouthView extends ThingView {
 
 	private Line createLine() {
 		Line result = new Line(0, 0, LENGTH, 2);
+		result.setStrokeWidth(2);
 		return result;
 	}
 

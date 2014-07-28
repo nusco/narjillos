@@ -3,7 +3,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Physicist
 
-* Tweak energy consumption
+* Optimize physics code
 
 ###Speed Demon
 

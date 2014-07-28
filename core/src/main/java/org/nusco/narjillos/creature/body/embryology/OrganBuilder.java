@@ -1,6 +1,6 @@
 package org.nusco.narjillos.creature.body.embryology;
 
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -24,7 +24,7 @@ class OrganBuilder {
 		return new Head(getLength(), getThickness(), getHue(), getMetabolicRate());
 	}
 
-	public BodyPart buildBodyPart(BodyPart parent, int angleSign) {
+	public Organ buildBodyPart(Organ parent, int angleSign) {
 		return parent.sproutOrgan(getLength(), getThickness(), getHue(), getDelay(), getAngleToParentAtRest(angleSign));
 	}
 

@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
-import org.nusco.narjillos.creature.body.Effort;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.physics.Acceleration;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -14,14 +14,16 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	static final double INITIAL_ENERGY = 100_000;
+	private static final double INITIAL_ENERGY = 100_000;
 	private static final double ENERGY_PER_FOOD_ITEM = 100_000;
 	public static final double MAX_ENERGY = 200_000;
-	private static final double MAX_TICKS_TO_DEATH = 10_000;
-	static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
-	static final double AGONY_LEVEL = NATURAL_ENERGY_DECAY * 300;
+	private static final double LIFESPAN_WITHOUT_EATING = 10_000;
+	private static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / LIFESPAN_WITHOUT_EATING;
+	private static final double AGONY_LEVEL = NATURAL_ENERGY_DECAY * 300;
+	private static final double LINEAR_VELOCITY_DECAY = 0.5;
+	private static final double ANGULAR_VELOCITY_DECAY = 0.5;
 
-	public final Body body;
+	private final Body body;
 	private final DNA genes;
 
 	private Vector target = Vector.ZERO;
@@ -54,37 +56,41 @@ public class Narjillo implements Thing, Creature {
 
 	@Override
 	public synchronized void tick() {
+		updatePosition();
+		updateVelocities();
+
+		if (getEnergy() > AGONY_LEVEL)
+			sendDeathAnimation();
+
+		Vector targetDirection = getTargetDirection();
+		Acceleration acceleration = body.tick(targetDirection);
+
+		linearVelocity = linearVelocity.plus(acceleration.getAccelerationAlong(body.getMainAxis()));
+		angularVelocity = angularVelocity + acceleration.angularAcceleration;
+		decreaseEnergy(acceleration.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
+	}
+
+	private void updatePosition() {
 		Vector newPosition = getPosition().plus(linearVelocity);
 		double newAngle = getAngle() + angularVelocity;
 		updatePosition(newPosition, newAngle);
+	}
 
-		sendDeathAnimation();
-		updateVelocities();
+	private void updatePosition(Vector position, double angle) {
+		Vector startingPosition = getPosition();
+		setPosition(position);
 
-		Vector targetDirection = getTargetDirection();
-		Effort effort = body.tick(targetDirection);
+		// FIXME: don't pivot around the mouth - change position depending
+		// on rotation instead
+		body.setAngle(angle);
 
-		// The lateral movement is just ignored. Creatures who
-		// have too much of it are wasting their energy.
-		Vector movementAlongAxis = effort.movement.getProjectionOn(body.getMainAxis());
-		linearVelocity = linearVelocity.plus(movementAlongAxis);
-
-		// clip for now. hopefully I'll come up with something better later
-//		if (linearVelocity.getLength() > 15)
-//			linearVelocity = linearVelocity.normalize(15);
-		
-		angularVelocity = angularVelocity + effort.rotationMovement;
-//		if (Math.abs(angularVelocity) > 10)
-//			angularVelocity = Math.signum(angularVelocity) * 10;
-
-		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
+		for (NarjilloEventListener eventListener : eventListeners)
+			eventListener.moved(new Segment(startingPosition, getPosition()));
 	}
 
 	private void updateVelocities() {
-		double linearVelocityDecay = 0.5;
-		linearVelocity = linearVelocity.by(linearVelocityDecay);
-		double angularVelocityDecay = 0.5;
-		angularVelocity = angularVelocity * angularVelocityDecay;
+		linearVelocity = linearVelocity.by(LINEAR_VELOCITY_DECAY);
+		angularVelocity = angularVelocity * ANGULAR_VELOCITY_DECAY;
 	}
 
 	private double getAngle() {
@@ -92,14 +98,10 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	private void sendDeathAnimation() {
-		if (getEnergy() > AGONY_LEVEL)
-			return;
 		// TODO: for some reason only 9 works here - 10 is too much (the
-		// creatures
-		// spin wildly in agony) and 8 is too little (barely any bending at
-		// all).
-		// bending is supposed to be instantaneous, instead it seems to be
-		// additive.
+		// creatures spin wildly in agony) and 8 is too little (barely
+		// any bending at all). Bending is supposed to be instantaneous,
+		// instead it seems to be additive.
 		// Why? Find out what is going on here, and possibly rethink the bending
 		// mechanics. Maybe it should come from the WaveNerve?
 		double bendAngle = ((AGONY_LEVEL - getEnergy()) / (double) AGONY_LEVEL) * 9;
@@ -142,17 +144,6 @@ public class Narjillo implements Thing, Creature {
 		return "narjillo";
 	}
 
-	private void updatePosition(Vector position, double angle) {
-		Vector startingPosition = getPosition();
-		setPosition(position);
-
-		// FIXME: don't pivot around the mouth - update position instead
-		body.setAngle(angle);
-
-		for (NarjilloEventListener eventListener : eventListeners)
-			eventListener.moved(new Segment(startingPosition, getPosition()));
-	}
-
 	void decreaseEnergy(double amount) {
 		energy -= amount;
 		if (energy <= 0) {
@@ -162,7 +153,7 @@ public class Narjillo implements Thing, Creature {
 		}
 	}
 
-	public List<Organ> getOrgans() {
+	public List<BodyPart> getOrgans() {
 		return body.getOrgans();
 	}
 }

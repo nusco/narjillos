@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature.body.embryology;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 
 class TwinOrgansBuilder {
 
@@ -22,8 +22,8 @@ class TwinOrgansBuilder {
 		return (controlGene & TwinOrgansBuilder.MIRROR_ORGAN_BIT) == TwinOrgansBuilder.MIRROR_ORGAN_BIT;
 	}
 
-	public List<BodyPart> buildBodyPart(BodyPart parent) {
-		List<BodyPart> result = new LinkedList<>();
+	public List<Organ> buildBodyPart(Organ parent) {
+		List<Organ> result = new LinkedList<>();
 		
 		if (organ1Genes == null)
 			return result;
@@ -44,8 +44,8 @@ class TwinOrgansBuilder {
 		return result;
 	}
 
-	private List<BodyPart> buildMirrorSegments(BodyPart parent, int[] genes) {
-		List<BodyPart> result = new LinkedList<>();
+	private List<Organ> buildMirrorSegments(Organ parent, int[] genes) {
+		List<Organ> result = new LinkedList<>();
 		result.add(new OrganBuilder(genes).buildBodyPart(parent, 1));
 		result.add(new OrganBuilder(genes).buildBodyPart(parent, -1));
 		return result;

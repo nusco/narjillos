@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.shared.physics.Vector;
 
 class NarjilloView extends ThingView {
@@ -58,7 +58,7 @@ class NarjilloView extends ThingView {
 
 	private List<OrganView> createOrganViews() {
 		List<OrganView> result = new LinkedList<>();
-		for (Organ bodyPart : getNarjillo().getOrgans())
+		for (BodyPart bodyPart : getNarjillo().getOrgans())
 			result.add(new OrganView(bodyPart, getNarjillo()));
 		return result;
 	}

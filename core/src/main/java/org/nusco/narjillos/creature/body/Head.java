@@ -1,15 +1,16 @@
 package org.nusco.narjillos.creature.body;
 
+import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class Head extends BodySegment {
+public class Head extends Organ {
 
 	private final double metabolicRate;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
-		super(length, thickness, hue, new PassNerve(), 0, null);
+		super(length, thickness, hue, null, new PassNerve());
 		this.metabolicRate = metabolicRate;
 	}
 
@@ -37,16 +38,13 @@ public class Head extends BodySegment {
 	}
 	
 	@Override
-	protected double calculateAngleToParent(double targetAngle, double skewing, PhysicsEngine forceField) {
-		// the head never moves
+	protected double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField) {
+		// the head never moves on its own
 		return getAngleToParent();
 	}
 
 	@Override
 	protected double getForcedBend() {
-		// the head never bends. (OK, this hierarchy is starting
-		// to look stupid. TODO: go back to making the head
-		// a sibling of BodySegment rather than a subclass
 		return 0;
 	}
 }

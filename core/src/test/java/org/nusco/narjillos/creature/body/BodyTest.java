@@ -13,7 +13,6 @@ public class BodyTest {
 		int headThicknessInMm = 4;
 		Head head = new Head(headLengthInMm, headThicknessInMm, new ColorByte(0), 1);
 		
-		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
 		head.sproutOrgan(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), 0, 0);

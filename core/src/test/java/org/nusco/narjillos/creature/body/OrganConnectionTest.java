@@ -13,24 +13,17 @@ public abstract class OrganConnectionTest {
 		final ClickNerve nerve1 = new ClickNerve();
 		final ClickNerve nerve2 = new ClickNerve();
 		final ClickNerve nerve3 = new ClickNerve();
-		final ClickNerve nerve4 = new ClickNerve();
 
-		BodyPart head = new Head(0, 0, new ColorByte(0), 1) {
-			@Override
-			public Nerve getNerve() {
-				return nerve1;
-			}
-		};
-		BodyPart child1 = head.sproutOrgan(nerve2);
-		child1.sproutOrgan(nerve3);
-		head.sproutOrgan(nerve4);
+		BodyPart head = new Head(0, 0, new ColorByte(0), 1);
+		BodyPart child1 = head.sproutOrgan(nerve1);
+		child1.sproutOrgan(nerve2);
+		head.sproutOrgan(nerve3);
 
 		head.tick(0, ForceField.NULL);
 		
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);
 		assertTrue(nerve3.clicked);
-		assertTrue(nerve4.clicked);
 	}
 	
 	class ClickNerve implements Nerve {

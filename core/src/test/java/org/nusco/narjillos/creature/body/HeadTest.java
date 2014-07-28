@@ -8,7 +8,7 @@ import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class HeadTest extends OrganTest {
+public class HeadTest extends BodyPartTest {
 
 	@Override
 	public Head createConcreteBodyPart(int length, int thickness) {

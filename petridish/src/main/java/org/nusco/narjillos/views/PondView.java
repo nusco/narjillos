@@ -65,7 +65,7 @@ public class PondView {
 
 	private Group getThingsGroup(boolean infraredOn) {
 		Group things = new Group();
-		things.getChildren().addAll(getNodesForThings(infraredOn));
+		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn));
 
 		things.getTransforms().add(new Translate(-viewport.getPositionPC().x, -viewport.getPositionPC().y));
 		things.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
@@ -97,14 +97,21 @@ public class PondView {
 		return background;
 	}
 	
-	private List<Node> getNodesForThings(boolean infraredOn) {
+	private List<Node> getNodesForThingsInOrder(boolean infraredOn) {
 		List<Node> result = new LinkedList<>();
+		addNodesFor("food_piece", result, infraredOn);
+		addNodesFor("narjillo", result, infraredOn);
+		return result;
+	}
+
+	private void addNodesFor(String thingLabel, List<Node> result, boolean infraredOn) {
 		for (ThingView view : getThingViews()) {
+			if (view.getThing().getLabel().equals(thingLabel)) {
 			Node node = view.toNode(viewport, infraredOn);
 			if (node != null)
 				result.add(node);
+			}
 		}
-		return result;
 	}
 
 	private Effect getBlurEffect(double zoomLevel) {

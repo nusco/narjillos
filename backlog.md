@@ -63,8 +63,8 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 ###Artist
 
 * Birth animation
-* Narjillos always overlap food (food is in background)
 * Speckles in liquid (or some other effect)
+* Optimize infrared mode
 
 ##Daydreamer
 

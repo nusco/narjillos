@@ -6,14 +6,21 @@ import java.util.List;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
-class ForceField {
+class PhysicsEngine {
+
+	// TODO: shouldn't the scales follow for the units I pick?
+	// If they don't, then maybe I use the wrong units or
+	// physical calculations
+	private static final double PROPULSION_SCALE = 0.05;
+	private static final double ROTATION_SCALE = 0.0001;
 
 	private static final double VISCOSITY = 1.7;
-
-	public static ForceField NULL = new ForceField() {
-		@Override
-		public void record(Segment beforeMovement, Organ organ) {}
-	};
+	
+	// 1 means that every movement is divided by the entire mass. This makes
+	// high mass a sure-fire loss.
+	// 0.5 means half as much penalty. This justifies having a high mass, for
+	// the extra push it affords.
+	private static final double MASS_PENALTY_DURING_PROPULSION = 0.3;
 
 	private final List<Segment> forces = new LinkedList<>();
 	private double energySpent = 0;
@@ -22,6 +29,21 @@ class ForceField {
 		Vector force = reverseCalculateForceFromMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
 		Segment forceSegment = new Segment(organ.getStartPoint(), force);
 		addForce(forceSegment);
+	}
+
+	public Vector calculateMovement(double mass) {
+		return getTotalForce().invert().by(PROPULSION_SCALE * getMassPenalty(mass));
+	}
+
+	public double calculateRotationAngle(double mass, Vector centerOfMass) {
+		// also remember to correct position - right now, the rotating creature
+		// is pivoting around its own mouth
+		double rotationalForce = getRotationalForceAround(centerOfMass);
+		return -rotationalForce * ROTATION_SCALE * getMassPenalty(mass);
+	}
+
+	public double getTotalEnergySpent() {
+		return energySpent / 1000;
 	}
 
 	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
@@ -51,14 +73,14 @@ class ForceField {
 		forces.add(force);
 	}
 
-	public Vector getTotalForce() {
+	private Vector getTotalForce() {
 		Vector result = Vector.ZERO;
 		for (Segment force : forces)
 			result = result.plus(force.vector);
 		return result;
 	}
 
-	public double getRotationalForceAround(Vector center) {
+	private double getRotationalForceAround(Vector center) {
 		double result = 0;
 		for (Segment force : forces)
 			result += getRotationalForceAround(center, force);
@@ -70,7 +92,9 @@ class ForceField {
 		return distance.getVectorProductWith(force.vector);
 	}
 
-	public double getTotalEnergySpent() {
-		return energySpent / 1000;
+	private double getMassPenalty(double mass) {
+		if (mass <= 0)
+			return 1.0;
+		return 1.0 / (mass * MASS_PENALTY_DURING_PROPULSION);
 	}
 }

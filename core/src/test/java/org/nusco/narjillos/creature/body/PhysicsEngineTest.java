@@ -1,29 +1,22 @@
 package org.nusco.narjillos.creature.body;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.ForceField;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class ForceFieldTest {
+public class PhysicsEngineTest {
 
-	ForceField forceField = new ForceField();
+	PhysicsEngine engine = new PhysicsEngine();
 
 	@Before
 	public void setUpForces() {
-		forceField.addForce(new Segment(Vector.ZERO, Vector.cartesian(3, 4)));
-		forceField.addForce(new Segment(Vector.ZERO, Vector.cartesian(6, 0)));
-		forceField.addForce(new Segment(Vector.ZERO, Vector.cartesian(0, 7)));
-	}
-
-	@Test
-	public void collectsTotalForce() {
-		assertTrue(forceField.getTotalForce().almostEquals(Vector.cartesian(9, 11)));
+		engine.addForce(new Segment(Vector.ZERO, Vector.cartesian(3, 4)));
+		engine.addForce(new Segment(Vector.ZERO, Vector.cartesian(6, 0)));
+		engine.addForce(new Segment(Vector.ZERO, Vector.cartesian(0, 7)));
 	}
 	
 	@Test
@@ -33,7 +26,7 @@ public class ForceFieldTest {
 		child1.sproutOrgan(3, 0, new ColorByte(0), 0, 0);
 
 		final int[] movement = new int[3];
-		ForceField recorder = new ForceField() {
+		PhysicsEngine recorder = new PhysicsEngine() {
 			private int counter = 0;
 			
 			@Override

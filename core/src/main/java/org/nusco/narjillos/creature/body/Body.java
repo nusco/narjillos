@@ -9,27 +9,17 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class Body {
 
-	// TODO: shouldn't the scales follow for the units I pick?
-	// If they don't, then maybe I have the wrong units or
-	// physical calculations
-	private static final double PROPULSION_SCALE = 0.1;
-	private static final double ROTATION_SCALE = 0.00008;
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
-	private static final int FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED = 45;
-	private static final double SKEWING = 2.5;
-	
-	// 1 means that every movement is divided by the entire mass. This makes
-	// high mass a sure-fire loss.
-	// 0.5 means half as much penalty. This justifies having a high mass, for
-	// the extra push it affords.
-	private static final double MASS_PENALTY_DURING_PROPULSION = 0.3;
+	private static final double MAX_SKEWING = 45;
+	private static final double MAX_SKEWING_VELOCITY = 1;
 
 	private final Head head;
 	private final List<Organ> parts;
 	private final double mass;
 	private final WaveNerve tickerNerve;
 	private Vector position;
-
+	private double skewing = 0;
+	
 	public Body(Head head) {
 		this.head = head;
 		this.parts = calculateOrgans(head);
@@ -39,24 +29,31 @@ public class Body {
 
 	public Effort tick(Vector targetDirection) {
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
-		double skewing = (angleToTarget % 180) / 180 * SKEWING; // from -1 to 1
-		// Always a range of two, but shifts -1 to +1
-		// so it can go from -2 to +2
-		double fromMinusTwoToTwo = tickerNerve.tick(skewing);
-		double targetAngle = fromMinusTwoToTwo * FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED;
 		
-		ForceField forceField = new ForceField();
-		head.tick(targetAngle, skewing, forceField);
+		double currentSkewing = updateSkewing(angleToTarget);
+		
+		double targetAmplitudePercent = tickerNerve.tick(0);
+		
+		PhysicsEngine forceField = new PhysicsEngine();
+		head.tick(targetAmplitudePercent, currentSkewing, forceField);
 
-		double rotationAngle = calculateRotationAngle(forceField, getCenterOfMass());
-		Vector movement = calculateMovement(forceField.getTotalForce());
+		double rotationAngle = forceField.calculateRotationAngle(getMass(), getCenterOfMass());
+		Vector movement = forceField.calculateMovement(getMass());
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
 		
 		return new Effort(movement, rotationAngle, energySpent);
 	}
 
-	private Vector getMainAxis() {
+	private double updateSkewing(double angleToTarget) {
+		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
+		double skewingVelocity = updatedSkewing - skewing;
+		if (Math.abs(skewingVelocity) > MAX_SKEWING_VELOCITY)
+				skewingVelocity = Math.signum(skewingVelocity) * MAX_SKEWING_VELOCITY;
+		return skewing += skewingVelocity;
+	}
+
+	public Vector getMainAxis() {
 		return head.getMainAxis();
 	}
 
@@ -78,25 +75,6 @@ public class Body {
 		for (Organ organ : allOrgans)
 			result += organ.getMass();
 		return result;
-	}
-
-	private Vector calculateMovement(Vector force) {
-		// zero mass can actually happen
-		if (getMass() == 0)
-			return force.invert().by(PROPULSION_SCALE);
-
-		return force.invert().by(PROPULSION_SCALE * getMassPenalty());
-	}
-
-	private double calculateRotationAngle(ForceField forceField, Vector center) {
-		// also remember to correct position - right now, the rotating creature
-		// is pivoting around its own mouth
-		double rotationalForce = forceField.getRotationalForceAround(getCenterOfMass());
-		return -rotationalForce * ROTATION_SCALE * getMassPenalty();
-	}
-
-	private double getMassPenalty() {
-		return 1.0 / (getMass() * MASS_PENALTY_DURING_PROPULSION);
 	}
 
 	private List<Organ> calculateOrgans(Head head) {
@@ -132,7 +110,7 @@ public class Body {
 		
 		// do it in one swoop instead of calling Vector#plus() a lot
 		// (but check in the end whether this has any effect on performance -
-		// probably not, frankly
+		// probably not, frankly)
 		int totalX = 0;
 		int totalY = 0;
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {

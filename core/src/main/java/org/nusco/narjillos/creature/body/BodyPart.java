@@ -10,7 +10,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
- * Connects Organs in a tree.
+ * Connects Organs in a tree and makes them move.
  */
 public abstract class BodyPart extends Organ {
 
@@ -53,23 +53,23 @@ public abstract class BodyPart extends Organ {
 		return children;
 	}
 
-	public final void tick(double signal, double skewing, ForceField forceField) {
+	public void tick(double targetPercentOfAmplitude, double skewing, PhysicsEngine forceField) {
 		Segment beforeMovement = getSegment();
 
-		double targetAngle = getNerve().tick(signal);
-
-		double newAngleToParent = calculateAngleToParent(targetAngle, skewing, forceField);
-		setAngleToParent(newAngleToParent);
+		double targetAngleToParent = getNerve().tick(targetPercentOfAmplitude);
+		
+		double angleToParent = calculateAngleToParent(targetAngleToParent, skewing, forceField);
+		setAngleToParent(angleToParent);
 
 		resetForcedBend();
 
 		forceField.record(beforeMovement, this);
-		tickChildren(targetAngle, skewing, forceField);
+		tickChildren(targetAngleToParent, skewing, forceField);
 	}
 
-	protected abstract double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField);
+	protected abstract double calculateAngleToParent(double targetAngle, double skewing, PhysicsEngine forceField);
 
-	protected void tickChildren(double targetAngle, double skewing, ForceField forceField) {
+	protected void tickChildren(double targetAngle, double skewing, PhysicsEngine forceField) {
 		for (BodyPart child : getChildren())
 			child.tick(targetAngle, skewing, forceField);
 	}

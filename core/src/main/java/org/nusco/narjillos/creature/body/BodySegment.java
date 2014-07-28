@@ -6,28 +6,22 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 class BodySegment extends BodyPart {
 
-	protected static final double MAX_ANGULAR_VELOCITY = 7;
-	
+	private static final int FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED = 45;
+
 	private final double angleToParentAtRest;
+	private final int orientation; // -1 or 1
 
 	public BodySegment(int length, int thickness, ColorByte hue, Nerve nerve, int angleToParentAtRest, BodyPart parent) {
 		super(length, thickness, calculateColorMix(parent, hue), parent, nerve);
 		this.angleToParentAtRest = angleToParentAtRest;
+		this.orientation = (int) Math.signum(angleToParentAtRest);
 		setAngleToParent(angleToParentAtRest);
 	}
 
 	@Override
-	protected double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField) {
-		double signedTargetAngle = targetAngle * getOrientationSign() + skewing;
-		double limitedTargetAngle = constrainToPhysicalLimits(signedTargetAngle);
-		return getAngleToParent() + limitedTargetAngle + getForcedBend();
-	}
-
-	protected double constrainToPhysicalLimits(double targetAngle) {
-		double angularVelocity = targetAngle - getAngleToParent();
-		if (Math.abs(angularVelocity) < MAX_ANGULAR_VELOCITY)
-			return angularVelocity;
-		return MAX_ANGULAR_VELOCITY * Math.signum(angularVelocity);
+	protected double calculateAngleToParent(double targetAmplitudePercent, double skewing, PhysicsEngine forceField) {
+		double correctedTargetAmplitudePercent = (orientation * targetAmplitudePercent * FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED) + skewing;
+		return angleToParentAtRest + correctedTargetAmplitudePercent + getForcedBend();
 	}
 
 	private static ColorByte calculateColorMix(BodyPart parent, ColorByte color) {
@@ -43,10 +37,6 @@ class BodySegment extends BodyPart {
 	@Override
 	protected double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle() + getAngleToParent();
-	}
-
-	private int getOrientationSign() {
-		return (int) Math.signum(angleToParentAtRest);
 	}
 
 	@Override

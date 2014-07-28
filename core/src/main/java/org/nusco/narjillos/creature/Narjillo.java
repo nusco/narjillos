@@ -64,17 +64,26 @@ public class Narjillo implements Thing, Creature {
 		Vector targetDirection = getTargetDirection();
 		Effort effort = body.tick(targetDirection);
 
-		linearVelocity = linearVelocity.plus(effort.movement);
+		// The lateral movement is just ignored. Creatures who
+		// have too much of it are wasting their energy.
+		Vector movementAlongAxis = effort.movement.getProjectionOn(body.getMainAxis());
+		linearVelocity = linearVelocity.plus(movementAlongAxis);
+
+		// clip for now. hopefully I'll come up with something better later
+//		if (linearVelocity.getLength() > 15)
+//			linearVelocity = linearVelocity.normalize(15);
+		
 		angularVelocity = angularVelocity + effort.rotationMovement;
+//		if (Math.abs(angularVelocity) > 10)
+//			angularVelocity = Math.signum(angularVelocity) * 10;
 
 		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
 	}
 
 	private void updateVelocities() {
-		double linearVelocityDecay = body.getMass() / 30_000;
-		linearVelocityDecay = Math.min(0.9, Math.max(linearVelocityDecay, 0.2));
+		double linearVelocityDecay = 0.5;
 		linearVelocity = linearVelocity.by(linearVelocityDecay);
-		double angularVelocityDecay = linearVelocityDecay;
+		double angularVelocityDecay = 0.5;
 		angularVelocity = angularVelocity * angularVelocityDecay;
 	}
 

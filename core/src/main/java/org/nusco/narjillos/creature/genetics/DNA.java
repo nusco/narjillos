@@ -9,7 +9,7 @@ public class DNA {
 
 	private static final int MUTATION_RANGE = 30;
 	public static final int CHROMOSOME_SIZE = 6;
-	public static final double MUTATION_RATE = 0.05;
+	public static final double MUTATION_RATE = 0.008;
 
 	private final Integer[] genes;
 

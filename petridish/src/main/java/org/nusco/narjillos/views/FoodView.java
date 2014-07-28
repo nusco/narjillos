@@ -31,7 +31,7 @@ class FoodView extends CircularObjectView {
 
 	private Node createCircle(FoodPiece food) {
 		Circle result = new Circle(getRadius());
-		Color baseColor = Color.PURPLE;
+		Color baseColor = Color.BLUE;
 		result.setFill(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0.8));
 		return result;
 	}

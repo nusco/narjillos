@@ -25,17 +25,4 @@ public class WaveNerveTest {
 		assertEquals(-LENGTH_AT_45_DEGREES, nerve.tick(0), 0.01);
 		assertEquals(0, nerve.tick(0), 0.01);
 	}
-
-	@Test
-	public void skewesTheWaveWithANonZeroInput() {
-		int skew = 1;
-
-		WaveNerve nerve = new WaveNerve(1.0 / 8);
-
-		assertEquals(skew, nerve.tick(skew), 0.01);
-		assertEquals(skew + LENGTH_AT_45_DEGREES, nerve.tick(skew), 0.01);
-		assertEquals(skew + LENGTH, nerve.tick(skew), 0.01);
-		assertEquals(skew, nerve.tick(skew), 0.01);
-		assertEquals(skew - LENGTH, nerve.tick(skew), 0.01);
-	}
 }

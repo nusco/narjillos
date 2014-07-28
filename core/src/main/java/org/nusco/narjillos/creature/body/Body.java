@@ -28,6 +28,7 @@ public class Body {
 	private final List<Organ> parts;
 	private final double mass;
 	private final WaveNerve tickerNerve;
+	private Vector position;
 
 	public Body(Head head) {
 		this.head = head;
@@ -48,7 +49,6 @@ public class Body {
 		head.tick(targetAngle, skewing, forceField);
 
 		double rotationAngle = calculateRotationAngle(forceField, getCenterOfMass());
-		System.out.println(rotationAngle);
 		Vector movement = calculateMovement(forceField.getTotalForce());
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
@@ -62,10 +62,6 @@ public class Body {
 
 	public double getMass() {
 		return mass;
-	}
-
-	public double getAngle() {
-		return head.getAbsoluteAngle();
 	}
 
 	public List<Organ> getOrgans() {
@@ -96,18 +92,7 @@ public class Body {
 		// also remember to correct position - right now, the rotating creature
 		// is pivoting around its own mouth
 		double rotationalForce = forceField.getRotationalForceAround(getCenterOfMass());
-		double result = -rotationalForce * ROTATION_SCALE * getMassPenalty();
-
-		// this is a bit too constraining
-		// find a better way to avoid crazy vibrations
-		// (velocity?)
-		final double maxRotation = 5;
-		if (Math.abs(result) < 2)
-			result = 0;
-		if (Math.abs(result) > maxRotation)
-			result = Math.signum(result) * maxRotation;
-		
-		return result;
+		return -rotationalForce * ROTATION_SCALE * getMassPenalty();
 	}
 
 	private double getMassPenalty() {
@@ -158,9 +143,19 @@ public class Body {
 		return Vector.cartesian(totalX / totalMass, totalY / totalMass);
 	}
 
-	// TODO: the position is in the narjillo, but the angle is in the body
-	// This feels wrong. Should the entire body ignore spatial positioning?
+	public double getAngle() {
+		return head.getAbsoluteAngle();
+	}
+
 	public void setAngle(double angle) {
 		head.setAngleToParent(angle);
+	}
+
+	public Vector getPosition() {
+		return position;
+	}
+	
+	public void setPosition(Vector position) {
+		this.position = position;
 	}
 }

@@ -19,7 +19,7 @@ public class RanGen {
 
 	private static synchronized Random getRandom() {
 		if (random == null) {
-			int randomSeed = 1222207158; //(int)(Math.random() * Integer.MAX_VALUE);
+			int randomSeed = (int)(Math.random() * Integer.MAX_VALUE);
 			System.out.println("Random seed: " + randomSeed);
 			initialize(randomSeed);
 		}

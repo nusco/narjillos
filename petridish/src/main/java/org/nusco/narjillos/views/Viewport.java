@@ -35,7 +35,7 @@ public class Viewport {
 		double size = Math.min(pond.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
 		idealZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / pondSizePC;
-		minZoomLevel = idealZoomLevel / 3;
+		minZoomLevel = idealZoomLevel / 2.5;
 		
 		centerOnPond();
 		zoomToFit();

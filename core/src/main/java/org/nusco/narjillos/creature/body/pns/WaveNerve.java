@@ -3,9 +3,7 @@ package org.nusco.narjillos.creature.body.pns;
 
 /**
  * Generates an output that goes from -1 to 1 and back, in a sinusoidal
- * wave. The input signal is a skew value that will be added to the current
- * output signal. For example, if you input -2 continuously, you will get a
- * wave from -3 to -1.
+ * wave. The input signal is ignored.
  * 
  * The left semiplane of the sinusoidal wave (from +90 to -90 degrees) has a
  * higher frequency than the right semiplane (from -90 to 90). This generates
@@ -25,8 +23,8 @@ public class WaveNerve implements Nerve {
 	}
 
 	@Override
-	public double tick(double skew) {
-		return skew + getCurrentAmplitude();
+	public double tick(double ignored) {
+		return getCurrentAmplitude();
 	}
 
 	private double getCurrentAmplitude() {

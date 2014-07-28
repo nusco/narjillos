@@ -3,13 +3,12 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Physicist
 
-* Real rotation
 * Tweak energy consumption
 
 ###Speed Demon
 
 * Space Partitioning optimization
-:* Cached food image?
+* Cached food image?
 
 ## Computer Dummy
 
@@ -21,6 +20,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 ###Genetist
 
 * Each body segment's amplitude is genetically determined
+* Narjillo's skewing is genetically determined
 * Whole-body size gene
 * Bullet-proof genome with a Chromosome class (for documentation, tool building and checking min and max values, for avoiding divisions by 0 and other potential issues)
 * Smooth organ evolution to and from atrophy

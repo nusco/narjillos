@@ -21,7 +21,9 @@ public class IsolationChamber extends MicroscopeEnvironment {
 	
 	protected synchronized Pond createPond(String[] programArguments) {
 		// TODO: maybe make it more flexible, like PetriDish
-		return new PrivatePond(DNA.random(DNA.CHROMOSOME_SIZE * 30));
+		DNA randomDNA = DNA.random(DNA.CHROMOSOME_SIZE * 10);
+		System.out.println(randomDNA);
+		return new PrivatePond(randomDNA);
 	}
 
 	@Override
@@ -33,12 +35,21 @@ public class IsolationChamber extends MicroscopeEnvironment {
 		return "Narjillos - Isolation Chamber";
 	}
 
-	protected EventHandler<? super KeyEvent> createKeyboardHandler() {
-		return null;
+	protected EventHandler<KeyEvent> createKeyboardHandler() {
+		return new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+			}
+		};
 	}
 
 	protected EventHandler<ScrollEvent> createMouseScrollHandler() {
-		return null;
+		return new EventHandler<ScrollEvent>() {
+
+			@Override
+			public void handle(ScrollEvent event) {
+			}};
 	}
 
 	protected EventHandler<MouseEvent> createMouseEvent() {

@@ -42,10 +42,10 @@ abstract class ThingView {
 	}
 
 	protected Effect getHaloEffect(double zoomLevel) {
-		double minZoomLevel = 0.25;
+		double minZoomLevel = 0.2;
 		if (zoomLevel <= minZoomLevel)
 			return null;
-		double alpha = clipToRange((zoomLevel - minZoomLevel) * 2, 0, 1);
+		double alpha = clipToRange((zoomLevel - minZoomLevel) * 2.5, 0, 1);
 		Color color = new Color(0.9, 0.9, 0.9, alpha);
 		return new DropShadow(20, 7, 7, color);
 	}

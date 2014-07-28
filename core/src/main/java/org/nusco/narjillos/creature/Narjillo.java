@@ -24,12 +24,14 @@ public class Narjillo implements Thing, Creature {
 	public final Body body;
 	private final DNA genes;
 
-	private Vector position = Vector.ZERO;
 	private Vector target = Vector.ZERO;
 	private double energy = INITIAL_ENERGY;
 
+	private Vector linearVelocity = Vector.ZERO;
+	private double angularVelocity = 0;
+
 	private int numberOfDescendants = 0;
-	
+
 	private final List<NarjilloEventListener> eventListeners = new LinkedList<>();
 
 	public Narjillo(Body body, DNA genes) {
@@ -43,27 +45,37 @@ public class Narjillo implements Thing, Creature {
 
 	@Override
 	public synchronized Vector getPosition() {
-		return position;
+		return body.getPosition();
 	}
 
 	public synchronized void setPosition(Vector position) {
-		this.position = position;
+		body.setPosition(position);
 	}
-	
+
 	@Override
 	public synchronized void tick() {
-		Vector targetDirection = getTargetDirection();
+		Vector newPosition = getPosition().plus(linearVelocity);
+		double newAngle = getAngle() + angularVelocity;
+		updatePosition(newPosition, newAngle);
 
 		sendDeathAnimation();
-		
+		updateVelocities();
+
+		Vector targetDirection = getTargetDirection();
 		Effort effort = body.tick(targetDirection);
-		Vector movement = effort.movement;
-		
-		Vector newPosition = getPosition().plus(movement);
-		double newAngle = getAngle() + effort.rotationMovement;
-		updatePosition(newPosition, newAngle);
-	
+
+		linearVelocity = linearVelocity.plus(effort.movement);
+		angularVelocity = angularVelocity + effort.rotationMovement;
+
 		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
+	}
+
+	private void updateVelocities() {
+		double linearVelocityDecay = body.getMass() / 30_000;
+		linearVelocityDecay = Math.min(0.9, Math.max(linearVelocityDecay, 0.2));
+		linearVelocity = linearVelocity.by(linearVelocityDecay);
+		double angularVelocityDecay = linearVelocityDecay;
+		angularVelocity = angularVelocity * angularVelocityDecay;
 	}
 
 	private double getAngle() {
@@ -73,12 +85,15 @@ public class Narjillo implements Thing, Creature {
 	private void sendDeathAnimation() {
 		if (getEnergy() > AGONY_LEVEL)
 			return;
-		// TODO: for some reason only 9 works here - 10 is too much (the creatures
-		// spin wildly in agony) and 8 is too little (barely any bending at all).
-		// bending is supposed to be instantaneous, instead it seems to be additive.
+		// TODO: for some reason only 9 works here - 10 is too much (the
+		// creatures
+		// spin wildly in agony) and 8 is too little (barely any bending at
+		// all).
+		// bending is supposed to be instantaneous, instead it seems to be
+		// additive.
 		// Why? Find out what is going on here, and possibly rethink the bending
 		// mechanics. Maybe it should come from the WaveNerve?
-		double bendAngle = ((AGONY_LEVEL - getEnergy()) / (double)AGONY_LEVEL) * 9;
+		double bendAngle = ((AGONY_LEVEL - getEnergy()) / (double) AGONY_LEVEL) * 9;
 		body.forceBend(bendAngle);
 	}
 
@@ -87,7 +102,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	public synchronized Vector getTargetDirection() {
-		return target.minus(position).normalize(1);
+		return target.minus(getPosition()).normalize(1);
 	}
 
 	public synchronized void setTarget(Vector target) {
@@ -118,15 +133,15 @@ public class Narjillo implements Thing, Creature {
 		return "narjillo";
 	}
 
-	private void updatePosition(Vector position, double newAngle) {
-		Vector start = getPosition();
+	private void updatePosition(Vector position, double angle) {
+		Vector startingPosition = getPosition();
 		setPosition(position);
 
 		// FIXME: don't pivot around the mouth - update position instead
-		body.setAngle(newAngle);
+		body.setAngle(angle);
 
 		for (NarjilloEventListener eventListener : eventListeners)
-			eventListener.moved(new Segment(start, getPosition()));
+			eventListener.moved(new Segment(startingPosition, getPosition()));
 	}
 
 	void decreaseEnergy(double amount) {

@@ -13,11 +13,11 @@ public class PrivatePond extends Pond {
 	private final static int SIZE = 3000;
 	private final static Vector CENTER = Vector.cartesian(SIZE / 5, SIZE / 2);
 	
-	private final static ConcurrentLinkedQueue<DNA> mutations = new ConcurrentLinkedQueue<DNA>();
+	private final static ConcurrentLinkedQueue<DNA> narjillos = new ConcurrentLinkedQueue<DNA>();
 
 	public PrivatePond(DNA dna) {
 		super(SIZE);
-		calculateMutations(dna);
+		createManyNarjillos(dna);
 
 		spawnFood(CENTER);
 		spawnNextMutation();
@@ -27,17 +27,14 @@ public class PrivatePond extends Pond {
 	// random number generation - and RanGen doesn't work from a separate
 	// thread. A private pond must be called from multiple threads, so
 	// we need to do all the random stuff during initialization.
-	private void calculateMutations(DNA dna) {
-		mutations.add(dna);
-		DNA mutation = dna;
-		for (int i = 0; i < 1000; i++) {
-			mutation = mutation.copy();
-			mutations.add(mutation);
-		}
+	private void createManyNarjillos(DNA dna) {
+		narjillos.add(dna);
+		for (int i = 0; i < 1000; i++)
+			narjillos.add(DNA.random());
 	}
 
 	private void spawnNextMutation() {
-		spawnNarjillo(Vector.cartesian(SIZE / 3 * 2, SIZE / 2), mutations.poll());
+		spawnNarjillo(Vector.cartesian(SIZE / 3 * 2, SIZE / 2), narjillos.poll());
 		updateTargets();
 	}
 
@@ -48,7 +45,7 @@ public class PrivatePond extends Pond {
 	}
 
 	public synchronized void replaceNarjillo() {
-		if (mutations.isEmpty())
+		if (narjillos.isEmpty())
 			return;
 		clearCreatures();
 		spawnNextMutation();

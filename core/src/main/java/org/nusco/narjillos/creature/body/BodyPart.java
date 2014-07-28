@@ -40,6 +40,11 @@ public abstract class BodyPart extends Organ {
 		return getParent().getEndPoint();
 	}
 
+	@Override
+	protected Vector calculateCenterOfMass() {
+		return getParent().getCenterOfMass().plus(getVector().by(0.5));
+	}
+
 	protected final Organ getParent() {
 		return parent;
 	}

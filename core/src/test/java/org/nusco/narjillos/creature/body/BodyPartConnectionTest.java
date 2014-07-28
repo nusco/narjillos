@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public abstract class OrganConnectionTest {
+public abstract class BodyPartConnectionTest {
 	
 	@Test
 	public void sendsNerveSignalsToItsChildren() {

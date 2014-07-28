@@ -16,6 +16,8 @@ public abstract class Organ {
 	private Vector cachedEndPoint = null;
 	private Double cachedAbsoluteAngle = null;
 	private Vector cachedVector = null;
+	private Vector cachedCenterOfMass = null;
+	private Segment cachedSegment = null;
 
 	public Organ(int length, int thickness, ColorByte color) {
 		this.length = length;
@@ -45,6 +47,8 @@ public abstract class Organ {
 		cachedStartPoint = null;
 		cachedEndPoint = null;
 		cachedVector = null;
+		cachedCenterOfMass = null;
+		cachedSegment = null;
 	}
 
 	public synchronized final double getAbsoluteAngle() {
@@ -75,7 +79,21 @@ public abstract class Organ {
 		return cachedVector;
 	}
 
+	synchronized final Vector getCenterOfMass() {
+		if (cachedCenterOfMass  == null)
+			cachedCenterOfMass = calculateCenterOfMass();
+		return cachedCenterOfMass;
+	}
+
+	protected abstract Vector calculateCenterOfMass();
+
 	public synchronized Segment getSegment() {
+		if (cachedSegment  == null)
+			cachedSegment = calculateSegment();
+		return cachedSegment;
+	}
+
+	private Segment calculateSegment() {
 		return new Segment(getStartPoint(), getVector());
 	}
 

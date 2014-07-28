@@ -35,6 +35,11 @@ public class Head extends BodySegment {
 	}
 
 	@Override
+	protected Vector calculateCenterOfMass() {
+		return getVector().by(0.5);
+	}
+
+	@Override
 	protected double calculateAngleToParent(double targetAngle, ForceField forceField) {
 		return getAngleToParent(); // don't bother with this now (see below)
 	}

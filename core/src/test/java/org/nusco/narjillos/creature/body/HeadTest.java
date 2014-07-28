@@ -1,6 +1,7 @@
 package org.nusco.narjillos.creature.body;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
@@ -11,23 +12,23 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public class HeadTest extends BodyPartTest {
 
 	@Override
-	public Head createConcreteBodyPart(int length, int thickness) {
+	public Head createConcreteOrgan(int length, int thickness) {
 		return new Head(length, thickness, new ColorByte(100), 1);
 	}
 
 	@Test
 	public void startsAtPointZeroByDefault() {
-		assertEquals(Vector.ZERO, part.getStartPoint());
+		assertEquals(Vector.ZERO, organ.getStartPoint());
 	}
 
 	@Override
 	public void hasAnEndPoint() {
-		assertEquals(Vector.cartesian(20, 0), part.getEndPoint());
+		assertEquals(Vector.cartesian(20, 0), getBodyPart().getEndPoint());
 	}
 
 	@Override
 	public void hasAParent() {
-		assertEquals(null, part.getParent());
+		assertEquals(null, getBodyPart().getParent());
 	}
 
 	@Test
@@ -35,5 +36,13 @@ public class HeadTest extends BodyPartTest {
 		Nerve nerve = new Head(0, 0, new ColorByte(0), 1).getNerve();
 				
 		assertEquals(PassNerve.class, nerve.getClass());
+	}
+	
+	@Test
+	public void hasACenterOfMass() {
+		Head head = new Head(10, 6, new ColorByte(100), 1);
+		head.setAngleToParent(90);
+		
+		assertTrue(head.getCenterOfMass().almostEquals(Vector.cartesian(0, 5)));
 	}
 }

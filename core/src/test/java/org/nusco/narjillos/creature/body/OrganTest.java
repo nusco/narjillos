@@ -5,25 +5,25 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-public abstract class BodyPartAbstractTest {
+public abstract class OrganTest {
 	
-	protected BodyPart part;
+	protected Organ organ;
 
 	@Before
 	public void setUpPart() {
-		part = createConcreteBodyPart(20, 10);
+		organ = createConcreteOrgan(20, 10);
 	}
 
-	public abstract BodyPart createConcreteBodyPart(int length, int thickness);
+	public abstract Organ createConcreteOrgan(int length, int thickness);
 
 	@Test
 	public void hasALength() {
-		assertEquals(20, part.getLength());
+		assertEquals(20, organ.getLength());
 	}
 
 	@Test
 	public void hasAThickness() {
-		assertEquals(10, part.getThickness());
+		assertEquals(10, organ.getThickness());
 	}
 
 	@Test
@@ -31,6 +31,6 @@ public abstract class BodyPartAbstractTest {
 	
 	@Test
 	public void hasAMassProportionalToItsArea() {
-		assertEquals(20, part.getMass(), 0.01);
+		assertEquals(20, organ.getMass(), 0.01);
 	}
 }

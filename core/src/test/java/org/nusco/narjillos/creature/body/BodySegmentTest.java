@@ -1,6 +1,7 @@
 package org.nusco.narjillos.creature.body;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.DelayNerve;
@@ -12,19 +13,19 @@ public class BodySegmentTest extends BodyPartTest {
 	private BodyPart parent;
 	
 	@Override
-	public BodyPart createConcreteBodyPart(int length, int thickness) {
+	public BodyPart createConcreteOrgan(int length, int thickness) {
 		parent = new Head(10, 5, new ColorByte(100), 1);
 		return new BodySegment(20, 10, new ColorByte(100), new DelayNerve(10), 0, parent);
 	}
 
 	@Override
 	public void hasAParent() {
-		assertEquals(parent, part.getParent());
+		assertEquals(parent, getBodyPart().getParent());
 	}
 
 	@Test
 	public void startsAtItsParentsEndPoint() {
-		assertEquals(parent.getEndPoint(), part.getStartPoint());
+		assertEquals(parent.getEndPoint(), getBodyPart().getStartPoint());
 	}
 	
 	@Test
@@ -41,5 +42,20 @@ public class BodySegmentTest extends BodyPartTest {
 		BodyPart organ1 = head.sproutOrgan(10, 0, new ColorByte(100), 0, 90);
 		Organ organ2 = organ1.sproutOrgan(10, 0, new ColorByte(100), 0, -90);
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
+	}
+	
+	@Test
+	public void hasACenterOfMass() {
+		Head head = new Head(10, 0, new ColorByte(100), 1);
+		BodyPart organ = head.sproutOrgan(10, 0, new ColorByte(100), 0, 20);
+		// uses the current angle, not the angle at rest
+		organ.setAngleToParent(45);
+		
+		Vector headCenter = Vector.cartesian(5,  0);
+		final double lengthAt45Degrees = 7.07106;
+		double expectedX = headCenter.x + lengthAt45Degrees / 2;
+		double expectedY = headCenter.y + lengthAt45Degrees / 2;
+		Vector expected = Vector.cartesian(expectedX, expectedY);
+		assertTrue(organ.getCenterOfMass().almostEquals(expected));
 	}
 }

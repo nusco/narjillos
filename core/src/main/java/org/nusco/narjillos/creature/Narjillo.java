@@ -17,7 +17,7 @@ public class Narjillo implements Thing, Creature {
 	static final double INITIAL_ENERGY = 100_000;
 	private static final double ENERGY_PER_FOOD_ITEM = 100_000;
 	public static final double MAX_ENERGY = 200_000;
-	private static final double MAX_TICKS_TO_DEATH = 20_000;
+	private static final double MAX_TICKS_TO_DEATH = 10_000;
 	static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
 	static final double AGONY_LEVEL = NATURAL_ENERGY_DECAY * 300;
 

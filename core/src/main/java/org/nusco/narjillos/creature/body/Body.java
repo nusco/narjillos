@@ -1,5 +1,6 @@
 package org.nusco.narjillos.creature.body;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,7 +9,11 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class Body {
 
+	// TODO: shouldn't the scales follow for the units I pick?
+	// If they don't, then maybe I have the wrong units or
+	// physical calculations
 	private static final double PROPULSION_SCALE = 0.1;
+	private static final double ROTATION_SCALE = 0.00008;
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
 	private static final int FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED = 45;
 
@@ -31,9 +36,6 @@ public class Body {
 	}
 
 	public Effort tick(Vector targetDirection) {
-		// HACK: remove once I have real rotation
-		head.rotateTowards(targetDirection);
-
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
 		double skewing = (angleToTarget % 180) / 180; // from -1 to 1
 		// Always a range of two, but shifts -1 to +1
@@ -44,10 +46,13 @@ public class Body {
 		ForceField forceField = new ForceField();
 		head.tick(targetAngle, forceField);
 
+		double rotationAngle = calculateRotationAngle(forceField, getCenterOfMass());
+		
 		Vector movement = calculateMovement(forceField.getTotalForce());
+		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
 		
-		return new Effort(movement, energySpent);
+		return new Effort(movement, rotationAngle, energySpent);
 	}
 
 	private Vector getMainAxis() {
@@ -56,6 +61,10 @@ public class Body {
 
 	public double getMass() {
 		return mass;
+	}
+
+	public double getAngle() {
+		return head.getAbsoluteAngle();
 	}
 
 	public List<Organ> getOrgans() {
@@ -82,6 +91,19 @@ public class Body {
 		return force.invert().by(PROPULSION_SCALE * getMassPenalty());
 	}
 
+	private double calculateRotationAngle(ForceField forceField, Vector center) {
+		// also remember to correct position - right now, the rotating creature
+		// is pivoting around its own mouth
+		double rotationalForce = forceField.getRotationalForceAround(getCenterOfMass());
+		double result = -rotationalForce * ROTATION_SCALE * getMassPenalty();
+		
+		final double maxRotation = 5;
+		if (Math.abs(result) > maxRotation)
+			result = Math.signum(result) * maxRotation;
+		
+		return result;
+	}
+
 	private double getMassPenalty() {
 		return 1.0 / (getMass() * MASS_PENALTY_DURING_PROPULSION);
 	}
@@ -106,5 +128,33 @@ public class Body {
 		bodyPart.forceBend(bendAngle);
 		for (BodyPart child : bodyPart.getChildren())
 			forceBendWithChildren(child, bendAngle);
+	}
+	
+	public Vector getCenterOfMass() {
+		List<Organ> organs = getOrgans();
+		Vector[] weightedCentersOfMass = new Vector[organs.size()];
+		Iterator<Organ> iterator = getOrgans().iterator();
+		for (int i = 0; i < weightedCentersOfMass.length; i++) {
+			Organ organ = iterator.next();
+			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
+		}
+		
+		// do it in one swoop instead of calling Vector#plus() a lot
+		// (but check in the end whether this has any effect on performance -
+		// probably not, frankly
+		int totalX = 0;
+		int totalY = 0;
+		for (int i = 0; i < weightedCentersOfMass.length; i++) {
+			totalX += weightedCentersOfMass[i].x;
+			totalY += weightedCentersOfMass[i].y;
+		}
+		double totalMass = getMass();
+		return Vector.cartesian(totalX / totalMass, totalY / totalMass);
+	}
+
+	// TODO: the position is in the narjillo, but the angle is in the body
+	// This feels wrong. Should the entire body ignore spatial positioning?
+	public void setAngle(double angle) {
+		head.setAngleToParent(angle);
 	}
 }

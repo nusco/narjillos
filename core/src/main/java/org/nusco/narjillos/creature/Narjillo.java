@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,9 +60,14 @@ public class Narjillo implements Thing, Creature {
 		Vector movement = effort.movement;
 		
 		Vector newPosition = getPosition().plus(movement);
-		updatePosition(newPosition);
+		double newAngle = getAngle() + effort.rotationMovement;
+		updatePosition(newPosition, newAngle);
 	
 		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
+	}
+
+	private double getAngle() {
+		return body.getAngle();
 	}
 
 	private void sendDeathAnimation() {
@@ -114,10 +118,13 @@ public class Narjillo implements Thing, Creature {
 		return "narjillo";
 	}
 
-	private void updatePosition(Vector position) {
+	private void updatePosition(Vector position, double newAngle) {
 		Vector start = getPosition();
 		setPosition(position);
-		
+
+		// FIXME: don't pivot around the mouth - update position instead
+		body.setAngle(newAngle);
+
 		for (NarjilloEventListener eventListener : eventListeners)
 			eventListener.moved(new Segment(start, getPosition()));
 	}
@@ -133,27 +140,5 @@ public class Narjillo implements Thing, Creature {
 
 	public List<Organ> getOrgans() {
 		return body.getOrgans();
-	}
-	
-	public Vector getCenterOfMass() {
-		List<Organ> organs = getOrgans();
-		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<Organ> iterator = getOrgans().iterator();
-		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			Organ organ = iterator.next();
-			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
-		}
-		
-		// do it in one swoop instead of calling Vector#plus() a lot
-		// (but check in the end whether this has any effect on performance -
-		// probably not, frankly
-		int totalX = 0;
-		int totalY = 0;
-		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			totalX += weightedCentersOfMass[i].x;
-			totalY += weightedCentersOfMass[i].y;
-		}
-		double totalMass = body.getMass();
-		return Vector.cartesian(totalX / totalMass, totalY / totalMass);
 	}
 }

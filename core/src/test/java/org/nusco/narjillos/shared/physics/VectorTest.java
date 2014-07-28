@@ -178,6 +178,20 @@ public class VectorTest {
 		assertEquals(148.66, vector1.getDistanceFrom(vector2), 0.001);
 		assertEquals(148.66, vector2.getDistanceFrom(vector1), 0.001);
 	}
+
+	@Test
+	public void hasAVectorProductWithAnotherVector() {
+		Vector vector1 = Vector.polar(0, 10);
+		Vector vector2 = Vector.polar(90, 10);
+		Vector vector3 = Vector.polar(180, 10);
+		Vector vector4 = Vector.polar(-90, 10);
+
+		assertEquals(0, vector1.getVectorProductWith(vector1), 0.001);
+		assertEquals(100, vector1.getVectorProductWith(vector2), 0.001);
+		assertEquals(-100, vector2.getVectorProductWith(vector1), 0.001);
+		assertEquals(0, vector1.getVectorProductWith(vector3), 0.001);
+		assertEquals(-100, vector1.getVectorProductWith(vector4), 0.001);
+	}
 	
 	private void assertEqualsVector(Vector v1, Vector v2) {
 		assertEquals(v1.x, v2.x, 0.001);

@@ -116,4 +116,9 @@ public class Vector {
 		final double decimals = 100.0;
 		return (Math.round(n * decimals)) / decimals;
 	}
+
+	public double getVectorProductWith(Vector other) {
+		double angleDifferenceInRadians = Math.toRadians(other.getAngle() - getAngle());
+		return Math.sin(angleDifferenceInRadians) * getLength() * other.getLength();
+	}
 }

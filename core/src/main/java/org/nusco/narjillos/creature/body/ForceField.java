@@ -25,6 +25,7 @@ class ForceField {
 	}
 
 	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
+		// TODO: this is all made-up stuff. try some real physics
 		Vector startPointMovement = afterMovement.startPoint.minus(beforeMovement.startPoint);
 		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);
 		Vector averageMovement = startPointMovement.plus(endPointMovement).by(0.5);
@@ -58,9 +59,17 @@ class ForceField {
 	}
 
 	public double getRotationalForceAround(Vector center) {
-		return 0;
+		double result = 0;
+		for (Segment force : forces)
+			result += getRotationalForceAround(center, force);
+		return result;
 	}
 	
+	private double getRotationalForceAround(Vector center, Segment force) {
+		Vector distance = force.startPoint.minus(center);
+		return distance.getVectorProductWith(force.vector);
+	}
+
 	public double getTotalEnergySpent() {
 		return energySpent / 1000;
 	}

@@ -6,9 +6,6 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class Head extends BodySegment {
 
-	private static final double ROTATION_SPEED = 0.5;
-	private static final double ROTATION_HISTERESIS = ROTATION_SPEED;
-
 	private final double metabolicRate;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
@@ -41,37 +38,9 @@ public class Head extends BodySegment {
 
 	@Override
 	protected double calculateAngleToParent(double targetAngle, ForceField forceField) {
-		return getAngleToParent(); // don't bother with this now (see below)
+		return getAngleToParent();
 	}
 
-	public void rotateTowards(Vector direction) {
-		// HACK. will stay in place until I have real physical rotation
-		double difference = direction.invert().getAngleWith(getVector());
-		
-		// special case: in case the main axis is exactly opposite to the target
-		if (Math.abs(difference - 180) < 2)
-			difference = -178;
-
-		if (Math.abs(difference) < ROTATION_HISTERESIS)
-			return;
-
-		double sign = Math.signum(180 - Math.abs(difference));
-		double unsignedResult = ROTATION_SPEED * Math.signum(difference);
-		double targetAngleToParent = getAngleToParent() + sign * unsignedResult;
-		
-		double rotationSpeed = targetAngleToParent - getAngleToParent();
-
-		setAngleToParent(normalize(getAngleToParent() + rotationSpeed));
-	}
-
-	private double normalize(double degrees) {
-		// check that this code makes sense. I probably scrap together with rotateTowards() anyways
-		degrees = ((degrees % 360) + 360) % 360;
-		if (degrees > 180)
-			degrees = -(360-degrees);
-		return degrees;
-	}
-	
 	@Override
 	protected double getForcedBend() {
 		// the head never bends. (OK, this hierarchy is starting

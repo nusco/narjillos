@@ -1,5 +1,6 @@
 package org.nusco.narjillos.creature;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -132,5 +133,27 @@ public class Narjillo implements Thing, Creature {
 
 	public List<Organ> getOrgans() {
 		return body.getOrgans();
+	}
+	
+	public Vector getCenterOfMass() {
+		List<Organ> organs = getOrgans();
+		Vector[] weightedCentersOfMass = new Vector[organs.size()];
+		Iterator<Organ> iterator = getOrgans().iterator();
+		for (int i = 0; i < weightedCentersOfMass.length; i++) {
+			Organ organ = iterator.next();
+			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
+		}
+		
+		// do it in one swoop instead of calling Vector#plus() a lot
+		// (but check in the end whether this has any effect on performance -
+		// probably not, frankly
+		int totalX = 0;
+		int totalY = 0;
+		for (int i = 0; i < weightedCentersOfMass.length; i++) {
+			totalX += weightedCentersOfMass[i].x;
+			totalY += weightedCentersOfMass[i].y;
+		}
+		double totalMass = body.getMass();
+		return Vector.cartesian(totalX / totalMass, totalY / totalMass);
 	}
 }

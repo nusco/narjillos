@@ -5,6 +5,8 @@ import java.util.List;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
@@ -18,11 +20,11 @@ class NarjilloView extends ThingView {
 	private final MouthView mouthView;
 	private final CircularObjectView eyeView;
 
-	public NarjilloView(Narjillo swimmer) {
-		super(swimmer);
+	public NarjilloView(Narjillo narjillo) {
+		super(narjillo);
 		organViews = createOrganViews();
-		mouthView = new MouthView(swimmer);
-		eyeView = new EyeView(swimmer);
+		mouthView = new MouthView(narjillo);
+		eyeView = new EyeView(narjillo);
 	}
 
 	@Override
@@ -39,6 +41,10 @@ class NarjilloView extends ThingView {
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
 
+		// DEBUG: to view the center of mass
+		Vector centerOfMass = getNarjillo().getCenterOfMass();
+		group.getChildren().add(new Circle(centerOfMass.x, centerOfMass.y, 10, Color.RED));
+		
 		Vector position = getNarjillo().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));

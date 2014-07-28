@@ -15,12 +15,13 @@ class ForceField {
 		public void record(Segment beforeMovement, Organ organ) {}
 	};
 
-	private final List<Vector> forces = new LinkedList<>();
+	private final List<Segment> forces = new LinkedList<>();
 	private double energySpent = 0;
 	
 	public void record(Segment beforeMovement, Organ organ) {
 		Vector force = reverseCalculateForceFromMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
-		addForce(force);
+		Segment forceSegment = new Segment(organ.getStartPoint(), force);
+		addForce(forceSegment);
 	}
 
 	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
@@ -28,10 +29,10 @@ class ForceField {
 		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);
 		Vector averageMovement = startPointMovement.plus(endPointMovement).by(0.5);
 		
-		double normalizedMovementIntensity = averageMovement.getLength() * mass / 1000;
-		double movementIntensityInViscousFluid = addViscosity(normalizedMovementIntensity) * 1000;
+		double normalizedMovementIntensity = averageMovement.getLength() * mass / 10000;
+		double movementIntensityInViscousFluid = addViscosity(normalizedMovementIntensity) * 10000;
 
-		energySpent += movementIntensityInViscousFluid / 1000;
+		energySpent += movementIntensityInViscousFluid / 10000;
 		
 		return averageMovement.normalize(movementIntensityInViscousFluid).getProjectionOn(afterMovement.vector.getNormal());
 	}
@@ -45,17 +46,21 @@ class ForceField {
 		return result;
 	}
 
-	void addForce(Vector force) {
+	void addForce(Segment force) {
 		forces.add(force);
 	}
 
 	public Vector getTotalForce() {
 		Vector result = Vector.ZERO;
-		for (Vector force : forces)
-			result = result.plus(force);
+		for (Segment force : forces)
+			result = result.plus(force.vector);
 		return result;
 	}
 
+	public double getRotationalForceAround(Vector center) {
+		return 0;
+	}
+	
 	public double getTotalEnergySpent() {
 		return energySpent / 1000;
 	}

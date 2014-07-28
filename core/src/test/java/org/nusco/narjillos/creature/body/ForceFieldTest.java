@@ -16,9 +16,9 @@ public class ForceFieldTest {
 
 	@Before
 	public void setUpForces() {
-		forceField.addForce(Vector.cartesian(3, 4));
-		forceField.addForce(Vector.cartesian(6, 0));
-		forceField.addForce(Vector.cartesian(0, 7));
+		forceField.addForce(new Segment(Vector.ZERO, Vector.cartesian(3, 4)));
+		forceField.addForce(new Segment(Vector.ZERO, Vector.cartesian(6, 0)));
+		forceField.addForce(new Segment(Vector.ZERO, Vector.cartesian(0, 7)));
 	}
 
 	@Test

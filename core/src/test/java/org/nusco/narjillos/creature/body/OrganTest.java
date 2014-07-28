@@ -31,6 +31,6 @@ public abstract class OrganTest {
 	
 	@Test
 	public void hasAMassProportionalToItsArea() {
-		assertEquals(20, organ.getMass(), 0.01);
+		assertEquals(200, organ.getMass(), 0.01);
 	}
 }

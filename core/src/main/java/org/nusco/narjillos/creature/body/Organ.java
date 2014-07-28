@@ -22,7 +22,7 @@ public abstract class Organ {
 	public Organ(int length, int thickness, ColorByte color) {
 		this.length = length;
 		this.thickness = thickness;
-		this.mass = length * thickness * 0.1;
+		this.mass = length * thickness;
 		this.color = color;
 	}
 
@@ -79,7 +79,7 @@ public abstract class Organ {
 		return cachedVector;
 	}
 
-	synchronized final Vector getCenterOfMass() {
+	public synchronized final Vector getCenterOfMass() {
 		if (cachedCenterOfMass  == null)
 			cachedCenterOfMass = calculateCenterOfMass();
 		return cachedCenterOfMass;

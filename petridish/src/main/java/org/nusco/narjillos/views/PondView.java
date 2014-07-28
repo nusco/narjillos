@@ -108,7 +108,7 @@ public class PondView {
 	}
 
 	private Effect getBlurEffect(double zoomLevel) {
-		int blurAmount = (int)(15 * (zoomLevel - 1));
+		int blurAmount = (int)(15 * (zoomLevel - 0.7));
 		return new BoxBlur(blurAmount, blurAmount, 1);
 	}
 

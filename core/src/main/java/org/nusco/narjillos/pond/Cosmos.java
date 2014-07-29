@@ -7,9 +7,9 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class Cosmos extends Pond {
 
 	public final static int SIZE = 20_000;
-	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 100;
+	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 300;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 60;
-	private static final int INITIAL_NUMBER_OF_NARJILLOS = 100;
+	private static final int INITIAL_NUMBER_OF_NARJILLOS = 300;
 
 	public Cosmos() {
 		this(null);

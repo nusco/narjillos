@@ -7,14 +7,14 @@ import org.junit.Test;
 
 public abstract class OrganTest {
 	
-	protected BodyPart organ;
+	protected Organ organ;
 
 	@Before
 	public void setUpPart() {
 		organ = createConcreteOrgan(20, 10);
 	}
 
-	public abstract BodyPart createConcreteOrgan(int length, int thickness);
+	public abstract Organ createConcreteOrgan(int length, int thickness);
 
 	@Test
 	public void hasALength() {

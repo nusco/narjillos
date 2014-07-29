@@ -7,7 +7,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -15,11 +15,11 @@ class OrganView extends ThingView {
 
 	private final static int OVERLAP = 7;
 
-	private final BodyPart organ;
+	private final Organ organ;
 	private final Color color;
 	private final Rectangle rectangle;
 	
-	public OrganView(BodyPart organ, Narjillo narjillo) {
+	public OrganView(Organ organ, Narjillo narjillo) {
 		super(narjillo);
 		this.organ = organ;
 		color = toRGBColor(organ.getColor());

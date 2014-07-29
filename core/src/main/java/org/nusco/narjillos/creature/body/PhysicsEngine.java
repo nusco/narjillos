@@ -1,14 +1,12 @@
-package org.nusco.narjillos.creature.body.physics;
+package org.nusco.narjillos.creature.body;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
-// TODO: this really needs a good refactoring, and some partial rewriting
-public class ForceField {
+class PhysicsEngine {
 
 	// TODO: shouldn't the scales follow for the units I pick?
 	// If they don't, then maybe I use the wrong units or
@@ -27,7 +25,7 @@ public class ForceField {
 	private final List<Segment> forces = new LinkedList<>();
 	private double energySpent = 0;
 	
-	public void record(Segment beforeMovement, BodyPart organ) {
+	public void record(Segment beforeMovement, Organ organ) {
 		Vector force = reverseCalculateForceFromMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
 		Segment forceSegment = new Segment(organ.getStartPoint(), force);
 		addForce(forceSegment);

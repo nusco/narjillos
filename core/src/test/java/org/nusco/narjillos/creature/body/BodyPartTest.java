@@ -19,16 +19,16 @@ public abstract class BodyPartTest extends OrganTest {
 		assertEquals(Collections.EMPTY_LIST, getBodyPart().getChildren());
 	}
 
-	protected Organ getBodyPart() {
-		return (Organ)organ;
+	protected BodyPart getBodyPart() {
+		return (BodyPart)organ;
 	}
 	
 	@Test
 	public void knowsItsChildren() {
-		Organ child1 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, 45);
-		Organ child2 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, -45);
+		BodyPart child1 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, 45);
+		BodyPart child2 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, -45);
 
-		List<Organ> expected = new LinkedList<>();
+		List<BodyPart> expected = new LinkedList<>();
 		expected.add(child1);
 		expected.add(child2);
 		
@@ -37,7 +37,7 @@ public abstract class BodyPartTest extends OrganTest {
 
 	@Test
 	public void sproutsVisibleOrgans() {
-		BodyPart child = getBodyPart().sproutOrgan(20, 12, new ColorByte(100), 0, 45);
+		Organ child = getBodyPart().sproutOrgan(20, 12, new ColorByte(100), 0, 45);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

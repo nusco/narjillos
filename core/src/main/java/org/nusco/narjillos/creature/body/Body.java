@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.body.physics.Acceleration;
-import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 
@@ -16,7 +14,7 @@ public class Body {
 	private static final double MAX_SKEWING_VELOCITY = 1;
 
 	private final Head head;
-	private final List<BodyPart> parts;
+	private final List<Organ> parts;
 	private final double mass;
 	private final WaveNerve tickerNerve;
 	private Vector position;
@@ -29,14 +27,14 @@ public class Body {
 		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
 	}
 
-	public Acceleration tick(Vector targetDirection) {
+	public Effort tick(Vector targetDirection) {
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
 		
 		double currentSkewing = updateSkewing(angleToTarget);
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
 		
-		ForceField forceField = new ForceField();
+		PhysicsEngine forceField = new PhysicsEngine();
 		head.tick(targetAmplitudePercent, currentSkewing, forceField);
 
 		double rotationAngle = forceField.calculateRotationAngle(getMass(), getCenterOfMass());
@@ -44,7 +42,7 @@ public class Body {
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
 		
-		return new Acceleration(movement, rotationAngle, energySpent);
+		return new Effort(movement, rotationAngle, energySpent);
 	}
 
 	private double updateSkewing(double angleToTarget) {
@@ -63,7 +61,7 @@ public class Body {
 		return mass;
 	}
 
-	public List<BodyPart> getOrgans() {
+	public List<Organ> getOrgans() {
 		return parts;
 	}
 
@@ -73,21 +71,21 @@ public class Body {
 
 	private double calculateTotalMass() {
 		double result = 0;
-		List<BodyPart> allOrgans = getOrgans();
-		for (BodyPart organ : allOrgans)
+		List<Organ> allOrgans = getOrgans();
+		for (Organ organ : allOrgans)
 			result += organ.getMass();
 		return result;
 	}
 
-	private List<BodyPart> calculateOrgans(Head head) {
-		List<BodyPart> result = new LinkedList<>();
+	private List<Organ> calculateOrgans(Head head) {
+		List<Organ> result = new LinkedList<>();
 		addWithChildren(head, result);
 		return result;
 	}
 
-	private void addWithChildren(Organ organ, List<BodyPart> result) {
+	private void addWithChildren(BodyPart organ, List<Organ> result) {
 		result.add(organ);
-		for (Organ child : organ.getChildren())
+		for (BodyPart child : organ.getChildren())
 			addWithChildren(child, result);
 	}
 	
@@ -95,18 +93,18 @@ public class Body {
 		forceBendWithChildren(head, bendAngle);
 	}
 	
-	private void forceBendWithChildren(Organ bodyPart, double bendAngle) {
+	private void forceBendWithChildren(BodyPart bodyPart, double bendAngle) {
 		bodyPart.forceBend(bendAngle);
-		for (Organ child : bodyPart.getChildren())
+		for (BodyPart child : bodyPart.getChildren())
 			forceBendWithChildren(child, bendAngle);
 	}
 	
 	public Vector getCenterOfMass() {
-		List<BodyPart> organs = getOrgans();
+		List<Organ> organs = getOrgans();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<BodyPart> iterator = getOrgans().iterator();
+		Iterator<Organ> iterator = getOrgans().iterator();
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			BodyPart organ = iterator.next();
+			Organ organ = iterator.next();
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
 		}
 		

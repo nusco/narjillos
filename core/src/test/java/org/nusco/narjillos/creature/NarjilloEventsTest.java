@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Head;
@@ -15,8 +14,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class NarjilloEventsTest {
 
-	private Narjillo narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), DNA.random());
-	private double initialEnergy;
+	Narjillo narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), DNA.random());
 
 	class NullSwimmerEventListener implements NarjilloEventListener {
 		@Override
@@ -28,14 +26,8 @@ public class NarjilloEventsTest {
 		}
 	}
 	
-	@Before
-	public void setupInitialEnergy() {
-		initialEnergy = narjillo.getEnergy();
-	}
-	
 	@Test
 	public void sendsEventsWhenMoving() {
-		
 		narjillo.setPosition(Vector.ZERO);
 
 		final Segment[] moved = new Segment[] { null };
@@ -63,14 +55,14 @@ public class NarjilloEventsTest {
 			}
 		});
 
-		narjillo.decreaseEnergy(initialEnergy);
+		narjillo.decreaseEnergy(Narjillo.INITIAL_ENERGY);
 		
 		assertTrue(died[0]);
 	}
 	
 	@Test
 	public void hasLimitedEnergy() {
-		narjillo.decreaseEnergy(initialEnergy);
+		narjillo.decreaseEnergy(Narjillo.INITIAL_ENERGY);
 		
 		assertEquals(0, narjillo.getEnergy(), 0.001);
 	}
@@ -78,7 +70,7 @@ public class NarjilloEventsTest {
 	@Test
 	public void increasesEnergyByFeeding() {
 		narjillo.feed();
-		narjillo.decreaseEnergy(initialEnergy);
+		narjillo.decreaseEnergy(Narjillo.INITIAL_ENERGY);
 		
 		assertTrue(narjillo.getEnergy() > 0);
 	}

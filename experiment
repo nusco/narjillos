@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # start an experiment (passing the seed if any)
-gradle --quiet --no-daemon experiment -Dcommit=`git rev-parse HEAD` -Dseed=$1
+java -cp core/build/libs/narjillos-0.0.1.jar org.nusco.narjillos.Experiment `git rev-parse HEAD` $1

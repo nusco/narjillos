@@ -16,36 +16,12 @@ allprojects {
 	task wrapper(type: Wrapper) {
 		gradleVersion = '2.0'
 	}
-
-	task(experiment, dependsOn: 'classes', type: JavaExec) {
-		main = 'org.nusco.narjillos.Experiment'
-		classpath = sourceSets.main.runtimeClasspath
-		
-		def commit = System.properties.getProperty('commit', "")
-		def seed = System.properties.getProperty('seed', "")
-		if (seed != "") {
-		  args commit, seed
-		} else {
-		  args commit
-		}
-	}
-
-	task(petri, dependsOn: 'classes', type: JavaExec) {
-		main = 'org.nusco.narjillos.PetriDish'
-		classpath = sourceSets.main.runtimeClasspath
-
-		def nrj = System.properties.getProperty('nrj', "")
-		if (nrj != "") {
-		  args nrj
-		}
-	}
-
-	defaultTasks 'petri'
 }
 
 project(':core') {
 	jar {
 		baseName = 'narjillos'
+		mainClassName = 'org.nusco.narjillos.Experiment'
 	}
 
 	mainClassName = 'org.nusco.narjillos.Experiment'
@@ -58,6 +34,7 @@ project(':petridish') {
 	
 	jar {
 		baseName = 'narjillos_petridish'
+		mainClassName = 'org.nusco.narjillos.PetriDish'
 	}
 
 	mainClassName = 'org.nusco.narjillos.PetriDish'

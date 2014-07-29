@@ -4,6 +4,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 ###Physicist
 
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place)
+* Fix bug with immortal creatures (sometimes a small number of creatures is left who never seem to die. see experiment edcd96054e5d9dfe0a099ad67e8367c39d75f2d4:1431004451 around tick 340K)
 
 ###Speed Demon
 
@@ -13,7 +14,6 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ## Computer Dummy
 
-* Don't require Gradle to start the programs (only to build them)
 * Externalize all configurable parameters to a JSON file
 * Save Petri dish
 * Load Petri dish

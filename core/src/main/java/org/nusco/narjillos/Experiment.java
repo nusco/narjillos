@@ -8,6 +8,7 @@ import org.nusco.narjillos.pond.Cosmos;
 import org.nusco.narjillos.pond.Pond;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
+import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class Experiment {
@@ -21,12 +22,10 @@ public class Experiment {
 	public static void main(String... args) {
 		String gitCommit = (args.length > 0) ? args[0] : "UNKNOWN_COMMIT";
 		int seed = getSeed(args);
-		System.out.print("Experiment ID: " + gitCommit + ":" + seed);
+		System.out.println("Experiment ID: " + gitCommit + ":" + seed);
 
 		RanGen.seed(seed);
 		runExperiment();
-
-		System.out.println("*** The experiment is over (" + getTimeElapsed() + "s) ***");
 	}
 
 	private static int getSeed(String... args) {
@@ -45,25 +44,45 @@ public class Experiment {
 		System.out.println(getHeadersString());
 
 		Pond pond = new Cosmos();
-		for (int i = 0; i < CYCLES; i++) {
+		for (long tick = 0; tick < CYCLES; tick++) {
 			pond.tick();
+			checkForMassExtinction(pond, tick);
 			ticksChronometer.tick();
 
-			if (i > 0 && (i % PARSE_INTERVAL == 0))
-				System.out.println(getStatusString(pond, i));
+			if (tick > 0 && (tick % PARSE_INTERVAL == 0))
+				System.out.println(getStatusString(pond, tick));
 		}
+
+		System.out.println("*** The experiment is over at tick " + formatTick(CYCLES) + " (" + getTimeElapsed() + "s) ***");
+	}
+
+	private static void checkForMassExtinction(Pond pond, long tick) {
+		if (pond.getNumberOfNarjillos() > 0)
+			return;
+		System.out.println("*** Extinction happens. (tick " + tick + ") ***");
+		System.exit(0);
 	}
 
 	private static String getHeadersString() {
 		return "\ntime_elapsed, " + "ticks_elapsed, " + "ticks_per_second, " + "number_of_narjillos, " + "number_of_food_pieces, " + "most_typical_specimen";
 	}
 
-	private static String getStatusString(Pond pond, int tick) {
+	private static String getStatusString(Pond pond, long tick) {
 		Creature mostTypicalSpecimen = pond.getPopulation().getMostTypicalSpecimen();
 		if (mostTypicalSpecimen == null)
 			mostTypicalSpecimen = getNullCreature();
 
 		return getStatusString(pond, tick, mostTypicalSpecimen);
+	}
+
+	private static String getStatusString(Pond pond, long tick, Creature mostTypicalSpecimen) {
+		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + pond.getNumberOfNarjillos() + ", "
+				+ pond.getNumberOfFoodPieces() + ", "
+				+ mostTypicalSpecimen.getDNA();
+	}
+
+	private static String formatTick(long tick) {
+		return NumberFormat.format(tick);
 	}
 
 	private static Creature getNullCreature() {
@@ -87,11 +106,5 @@ public class Experiment {
 			public String getLabel() {
 				return "nobody";
 			}};
-	}
-
-	private static String getStatusString(Pond pond, int tick, Creature mostTypicalSpecimen) {
-		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + pond.getNumberOfNarjillos() + ", "
-				+ pond.getNumberOfFoodPieces() + ", "
-				+ mostTypicalSpecimen.getDNA();
 	}
 }

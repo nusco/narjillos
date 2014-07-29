@@ -16,7 +16,7 @@ public class Body {
 	private static final double MAX_SKEWING_VELOCITY = 1;
 
 	private final Head head;
-	private final List<Organ> parts;
+	private final List<BodyPart> parts;
 	private final double mass;
 	private final WaveNerve tickerNerve;
 	private Vector position;
@@ -63,7 +63,7 @@ public class Body {
 		return mass;
 	}
 
-	public List<Organ> getOrgans() {
+	public List<BodyPart> getOrgans() {
 		return parts;
 	}
 
@@ -73,21 +73,21 @@ public class Body {
 
 	private double calculateTotalMass() {
 		double result = 0;
-		List<Organ> allOrgans = getOrgans();
-		for (Organ organ : allOrgans)
+		List<BodyPart> allOrgans = getOrgans();
+		for (BodyPart organ : allOrgans)
 			result += organ.getMass();
 		return result;
 	}
 
-	private List<Organ> calculateOrgans(Head head) {
-		List<Organ> result = new LinkedList<>();
+	private List<BodyPart> calculateOrgans(Head head) {
+		List<BodyPart> result = new LinkedList<>();
 		addWithChildren(head, result);
 		return result;
 	}
 
-	private void addWithChildren(BodyPart organ, List<Organ> result) {
+	private void addWithChildren(Organ organ, List<BodyPart> result) {
 		result.add(organ);
-		for (BodyPart child : organ.getChildren())
+		for (Organ child : organ.getChildren())
 			addWithChildren(child, result);
 	}
 	
@@ -95,18 +95,18 @@ public class Body {
 		forceBendWithChildren(head, bendAngle);
 	}
 	
-	private void forceBendWithChildren(BodyPart bodyPart, double bendAngle) {
+	private void forceBendWithChildren(Organ bodyPart, double bendAngle) {
 		bodyPart.forceBend(bendAngle);
-		for (BodyPart child : bodyPart.getChildren())
+		for (Organ child : bodyPart.getChildren())
 			forceBendWithChildren(child, bendAngle);
 	}
 	
 	public Vector getCenterOfMass() {
-		List<Organ> organs = getOrgans();
+		List<BodyPart> organs = getOrgans();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<Organ> iterator = getOrgans().iterator();
+		Iterator<BodyPart> iterator = getOrgans().iterator();
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			Organ organ = iterator.next();
+			BodyPart organ = iterator.next();
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
 		}
 		

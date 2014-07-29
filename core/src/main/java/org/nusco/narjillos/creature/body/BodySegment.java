@@ -5,14 +5,14 @@ import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-class BodySegment extends BodyPart {
+class BodySegment extends Organ {
 
 	private static final int FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED = 45;
 
 	private final double angleToParentAtRest;
 	private final int orientation; // -1 or 1
 
-	public BodySegment(int length, int thickness, ColorByte hue, Nerve nerve, int angleToParentAtRest, BodyPart parent) {
+	public BodySegment(int length, int thickness, ColorByte hue, Organ parent, Nerve nerve, int angleToParentAtRest) {
 		super(length, thickness, calculateColorMix(parent, hue), parent, nerve);
 		this.angleToParentAtRest = angleToParentAtRest;
 		this.orientation = (int) Math.signum(angleToParentAtRest);
@@ -25,14 +25,14 @@ class BodySegment extends BodyPart {
 		return angleToParentAtRest + correctedTargetAmplitudePercent + getForcedBend();
 	}
 
-	private static ColorByte calculateColorMix(BodyPart parent, ColorByte color) {
+	private static ColorByte calculateColorMix(Organ parent, ColorByte color) {
 		if (parent == null)
 			return color;
 		return parent.getColor().mix(color);
 	}
 
 	BodySegment(Nerve nerve) {
-		this(0, 0, new ColorByte(0), new DelayNerve(13), 0, null);
+		this(0, 0, new ColorByte(0), null, new DelayNerve(13), 0);
 	}
 	
 	@Override

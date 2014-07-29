@@ -4,9 +4,9 @@ import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -25,8 +25,8 @@ public class ForceFieldTest {
 	
 	@Test
 	public void recordsMovements() {
-		BodyPart organ = new Head(1, 0, new ColorByte(0), 1);
-		BodyPart child1 = organ.sproutOrgan(2, 0, new ColorByte(0), 0, 0);
+		Organ organ = new Head(1, 0, new ColorByte(0), 1);
+		Organ child1 = organ.sproutOrgan(2, 0, new ColorByte(0), 0, 0);
 		child1.sproutOrgan(3, 0, new ColorByte(0), 0, 0);
 
 		final int[] movement = new int[3];
@@ -34,7 +34,7 @@ public class ForceFieldTest {
 			private int counter = 0;
 			
 			@Override
-			public void record(Segment beforeMovement, Organ organ) {
+			public void record(Segment beforeMovement, BodyPart organ) {
 				movement[counter++] = (int)organ.getLength();
 			}
 		};

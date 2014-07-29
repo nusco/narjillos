@@ -9,7 +9,7 @@ import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class HeadTest extends BodyPartTest {
+public class HeadTest extends OrganTest {
 
 	@Override
 	public Head createConcreteOrgan(int length, int thickness) {
@@ -18,7 +18,7 @@ public class HeadTest extends BodyPartTest {
 
 	@Test
 	public void startsAtPointZeroByDefault() {
-		assertEquals(Vector.ZERO, organ.getStartPoint());
+		assertEquals(Vector.ZERO, bodyPart.getStartPoint());
 	}
 
 	@Override

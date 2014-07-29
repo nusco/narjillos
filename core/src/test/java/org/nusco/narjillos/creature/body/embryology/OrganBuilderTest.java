@@ -3,8 +3,8 @@ package org.nusco.narjillos.creature.body.embryology;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class OrganBuilderTest {
@@ -19,7 +19,7 @@ public class OrganBuilderTest {
 		int colorGene = 40;
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene1, ignoredGene2, colorGene});
-		BodyPart head = builder.buildHead();
+		Organ head = builder.buildHead();
 
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, head.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, head.getThickness(), 0);
@@ -36,8 +36,8 @@ public class OrganBuilderTest {
 		int colorGene = 40;
 		
 		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, delayGene, angleToParentGene, colorGene});
-		BodyPart head = builder.buildHead();
-		Organ organ = builder.buildBodyPart(head, 1);
+		Organ head = builder.buildHead();
+		BodyPart organ = builder.buildBodyPart(head, 1);
 		
 		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
 		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
@@ -48,14 +48,14 @@ public class OrganBuilderTest {
 	public void generateAMirroredOrgan() {
 		int angleToParentGene = 80;
 		
-		Organ organ = buildSegment(angleToParentGene, -1);
+		BodyPart organ = buildSegment(angleToParentGene, -1);
 		
 		assertEquals(-10, organ.getAbsoluteAngle(), 0);
 	}
 
-	private Organ buildSegment(int angleToParentGene, int angleSign) {
+	private BodyPart buildSegment(int angleToParentGene, int angleSign) {
 		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, 70, angleToParentGene, 10});
-		BodyPart head = builder.buildHead();
+		Organ head = builder.buildHead();
 		return builder.buildBodyPart(head, angleSign);
 	}
 }

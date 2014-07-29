@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.physics.Acceleration;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
@@ -155,7 +155,7 @@ public class Narjillo implements Thing, Creature {
 		}
 	}
 
-	public List<Organ> getOrgans() {
+	public List<BodyPart> getOrgans() {
 		return body.getOrgans();
 	}
 }

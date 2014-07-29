@@ -20,17 +20,13 @@ public class Experiment {
 
 	public static void main(String... args) {
 		String gitCommit = (args.length > 0) ? args[0] : "UNKNOWN_COMMIT";
-		long seed = seedRandomGenerator(args);
-		System.out.println("Experiment ID: " + gitCommit + ":" + seed + "\n");
-
-		runExperiment();
-		System.out.println("Done (" + getTimeElapsed() + "s)");
-	}
-
-	private static long seedRandomGenerator(String... args) {
 		int seed = getSeed(args);
+		System.out.print("Experiment ID: " + gitCommit + ":" + seed);
+
 		RanGen.seed(seed);
-		return seed;
+		runExperiment();
+
+		System.out.println("*** The experiment is over (" + getTimeElapsed() + "s) ***");
 	}
 
 	private static int getSeed(String... args) {
@@ -59,7 +55,7 @@ public class Experiment {
 	}
 
 	private static String getHeadersString() {
-		return "time_elapsed, " + "ticks_elapsed, " + "ticks_per_second, " + "number_of_narjillos, " + "number_of_food_pieces, " + "most_typical_specimen";
+		return "\ntime_elapsed, " + "ticks_elapsed, " + "ticks_per_second, " + "number_of_narjillos, " + "number_of_food_pieces, " + "most_typical_specimen";
 	}
 
 	private static String getStatusString(Pond pond, int tick) {

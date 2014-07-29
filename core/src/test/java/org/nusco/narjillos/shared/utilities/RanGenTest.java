@@ -5,29 +5,42 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class RanGenTest {
 
-	static {
+	@Before
+	public void resetRanGen() {
+		try {
+			RanGen.reset();
+			throw new RuntimeException("Excepted an exception from RanGen.reset(), got nothing");
+		} catch (RuntimeException e) {
+			// RanGen.reset() always throws an exception, to
+			// protect ourselves from mistakenly using it in
+			// production code. In tests, it's OK to ignore it.
+		}
+		
 		assertEquals(RanGen.NO_SEED, RanGen.getSeed());
 		
 		RanGen.seed(123);
-		
-		// generates a predictable sequence of numbers after seeding:
+	}
+
+	@Test
+	public void generatesADeterministicSequenceOfNumbers() {
 		assertEquals(86, RanGen.nextByte());
 		assertEquals(0.237, RanGen.nextDouble(), 0.01);
 		assertEquals(-1.736, RanGen.nextGaussian(), 0.01);
 		assertEquals(1111887674, RanGen.nextInt());
 	}
-
+	
 	@Test(expected=RuntimeException.class)
 	public void cannotBeSeededTwice() {
 		RanGen.seed(245);
 	}
 	
 	@Test
-	public void throwsAnExceptionIfAccessedByMultipleThreads() throws InterruptedException {
+	public void throwsAnExceptionIfYouGenerateNumbersFromMultipleThreads() throws InterruptedException {
 		RanGen.nextByte();
 
 		final ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();

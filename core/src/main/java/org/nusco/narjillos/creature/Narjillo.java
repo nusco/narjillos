@@ -54,12 +54,11 @@ public class Narjillo implements Thing, Creature {
 
 	@Override
 	public synchronized void tick() {
-		Vector newPosition = getPosition().plus(linearVelocity);
-		double newAngle = getAngle() + angularVelocity;
-		updatePosition(newPosition, newAngle);
-
-		sendDeathAnimation();
+		updatePosition();
 		updateVelocities();
+
+		if (getEnergy() <= AGONY_LEVEL)
+			sendDeathAnimation();
 
 		Vector targetDirection = getTargetDirection();
 		Acceleration effort = body.tick(targetDirection);
@@ -71,6 +70,23 @@ public class Narjillo implements Thing, Creature {
 		angularVelocity = angularVelocity + effort.angular;
 
 		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
+	}
+
+	private void updatePosition() {
+		Vector newPosition = getPosition().plus(linearVelocity);
+		double newAngle = getAngle() + angularVelocity;
+		updatePosition(newPosition, newAngle);
+	}
+
+	private void updatePosition(Vector position, double angle) {
+		Vector startingPosition = getPosition();
+		setPosition(position);
+
+		// FIXME: don't pivot around the mouth - update position instead
+		body.setAngle(angle);
+
+		for (NarjilloEventListener eventListener : eventListeners)
+			eventListener.moved(new Segment(startingPosition, getPosition()));
 	}
 
 	private void updateVelocities() {
@@ -85,8 +101,6 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	private void sendDeathAnimation() {
-		if (getEnergy() > AGONY_LEVEL)
-			return;
 		// TODO: for some reason only 9 works here - 10 is too much (the
 		// creatures
 		// spin wildly in agony) and 8 is too little (barely any bending at
@@ -133,17 +147,6 @@ public class Narjillo implements Thing, Creature {
 	@Override
 	public String getLabel() {
 		return "narjillo";
-	}
-
-	private void updatePosition(Vector position, double angle) {
-		Vector startingPosition = getPosition();
-		setPosition(position);
-
-		// FIXME: don't pivot around the mouth - update position instead
-		body.setAngle(angle);
-
-		for (NarjilloEventListener eventListener : eventListeners)
-			eventListener.moved(new Segment(startingPosition, getPosition()));
 	}
 
 	void decreaseEnergy(double amount) {

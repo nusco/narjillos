@@ -3,27 +3,28 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Physicist
 
-* Tweak energy consumption
+* Uniform measure units (instead of had-hoc clipping and multiplying all over the place)
 
 ###Speed Demon
 
 * Space Partitioning optimization
-* Cached food image?
+* Optimize physics engine
+* Optimize infrared mode
 
 ## Computer Dummy
 
 * Don't require Gradle to start the programs (only to build them)
 * Externalize all configurable parameters to a JSON file
-* Save dish
-* Load dish
+* Save Petri dish
+* Load Petri dish
 
 ###Genetist
 
 * Each body segment's amplitude is genetically determined
 * Narjillo's skewing is genetically determined
+* View Narjillo's evolutionary path
 * Whole-body size gene
 * Bullet-proof genome with a Chromosome class (for documentation, tool building and checking min and max values, for avoiding divisions by 0 and other potential issues)
-* Smooth organ evolution to and from atrophy
 
 ###Ostetrician
 
@@ -36,7 +37,6 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Lab Technician
 
-* Examine Species
 * Bench with stats
 * "Real Time" and "Fast" slider
 * Light switch
@@ -57,14 +57,12 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Ethologist
 
-* Narjillo updates food item when not existing anymore
 * Narjillo updates food item when not in range anymore
 
 ###Artist
 
 * Birth animation
 * Speckles in liquid (or some other effect)
-* Optimize infrared mode
 
 ##Daydreamer
 

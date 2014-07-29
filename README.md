@@ -3,7 +3,7 @@
 Narjillos are artificial creatures that mutate and evolve in a virtual pond, under the pressure of natural selection.
 You can observe them through a microscope:
 
-![Go, creature, go!](/nusco/narjillos/master/docs/title.jpg&raw=true)
+![Go, creature, go!](/docs/title.jpg&raw=true)
 
 This project owes essentially all of its good ideas to Jeffrey Ventrella's GenePool (see credits).
 

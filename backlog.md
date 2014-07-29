@@ -7,7 +7,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Speed Demon
 
-* Space Partitioning optimization
+* Space Partitioning for fast searches of pond
 * Optimize physics engine
 * Optimize infrared mode
 
@@ -22,9 +22,14 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 * Each body segment's amplitude is genetically determined
 * Narjillo's skewing is genetically determined
-* View Narjillo's evolutionary path
 * Whole-body size gene
+* View Narjillo's evolutionary path
 * Bullet-proof genome with a Chromosome class (for documentation, tool building and checking min and max values, for avoiding divisions by 0 and other potential issues)
+* DNA analyzer program
+* DNA diff program (based on DNA analyzer)
+* Sexual reproduction
+* Sexual reproduction is optional
+* Prevent DNA strands that are too different from mixing to favor speciation? (maybe bad idea b/c of deleterious mutations in small population)
 
 ###Ostetrician
 
@@ -37,6 +42,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Lab Technician
 
+* Lock on single Narjillo
 * Bench with stats
 * "Real Time" and "Fast" slider
 * Light switch
@@ -61,14 +67,14 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Artist
 
+* Give a sense of movement when following a locked-on Narjillo
 * Birth animation
 * Speckles in liquid (or some other effect)
 
+##Neurologist
+
+* Brains with behaviours
+
 ##Daydreamer
 
-* DNA analyzer program
-* DNA diff program (based on DNA analyzer)
-* Sexual reproduction
-* Sexual reproduction is optional
-* Brains with behaviours
-* Prevent DNA strands that are too different from mixing to favor speciation? (maybe bad idea b/c of deleterious mutations in small population)
+* Trigger evolutionary arms race

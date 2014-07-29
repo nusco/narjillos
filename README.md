@@ -1,6 +1,9 @@
 #Narjillos
 
 Narjillos are artificial creatures that mutate and evolve in a virtual pond, under the pressure of natural selection.
+You can observe them through a microscope:
+
+![Go, creature, go!](https://raw.github.com/nusco/narjillos/master/docs/title.jpg)
 
 This project owes essentially all of its good ideas to Jeffrey Ventrella's GenePool (see credits).
 
@@ -21,7 +24,7 @@ Move the microscope around with your mouse and cursor keys.
 
 ## Credits
 
-Narjillos is strongly inspired by Jeffrey Ventrella's beautiful GenePool (http://www.swimbots.com). "Strongly inspired" is an understatement here---Narjillos started its life as a feeble attempt to clone GenePool and bask in its greatness.
+Narjillos is strongly inspired by Jeffrey Ventrella's beautiful [GenePool](http://www.swimbots.com). "Strongly inspired" is an understatement here---Narjillos started its life as a feeble attempt to clone GenePool and bask in its greatness.
 
 Narjillos has a different goal than GenePool (exploring arms races rather than exploring sexual selection), and a different strategy (eventually I want to give Narjillos simple neural networks for brains). GenePool is not open source, so I wrote my own code to toy with. However, you should definitely check out GenePool and Ventrella's other works if you like the concept.
 

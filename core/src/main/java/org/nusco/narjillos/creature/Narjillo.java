@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
-import org.nusco.narjillos.creature.body.Effort;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.physics.Acceleration;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -62,20 +62,13 @@ public class Narjillo implements Thing, Creature {
 		updateVelocities();
 
 		Vector targetDirection = getTargetDirection();
-		Effort effort = body.tick(targetDirection);
+		Acceleration effort = body.tick(targetDirection);
 
 		// The lateral movement is just ignored. Creatures who
 		// have too much of it are wasting their energy.
-		Vector movementAlongAxis = effort.movement.getProjectionOn(body.getMainAxis());
-		linearVelocity = linearVelocity.plus(movementAlongAxis);
-
-		// clip for now. hopefully I'll come up with something better later
-//		if (linearVelocity.getLength() > 15)
-//			linearVelocity = linearVelocity.normalize(15);
-		
-		angularVelocity = angularVelocity + effort.rotationMovement;
-//		if (Math.abs(angularVelocity) > 10)
-//			angularVelocity = Math.signum(angularVelocity) * 10;
+		Vector axis = body.getMainAxis();
+		linearVelocity = linearVelocity.plus(effort.getLinearAccelerationAlong(axis));
+		angularVelocity = angularVelocity + effort.angular;
 
 		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
 	}

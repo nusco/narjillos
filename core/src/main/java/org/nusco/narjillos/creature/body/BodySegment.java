@@ -1,5 +1,6 @@
 package org.nusco.narjillos.creature.body;
 
+import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
@@ -19,7 +20,7 @@ class BodySegment extends BodyPart {
 	}
 
 	@Override
-	protected double calculateAngleToParent(double targetAmplitudePercent, double skewing, PhysicsEngine forceField) {
+	protected double calculateAngleToParent(double targetAmplitudePercent, double skewing, ForceField forceField) {
 		double correctedTargetAmplitudePercent = (orientation * targetAmplitudePercent * FIXED_MAX_AMPLITUDE_THAT_SHOULD_ACTUALLY_BE_GENETICALLY_DETERMINED) + skewing;
 		return angleToParentAtRest + correctedTargetAmplitudePercent + getForcedBend();
 	}

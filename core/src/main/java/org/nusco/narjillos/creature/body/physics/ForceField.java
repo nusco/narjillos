@@ -1,12 +1,13 @@
-package org.nusco.narjillos.creature.body;
+package org.nusco.narjillos.creature.body.physics;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
-class PhysicsEngine {
+public class ForceField {
 
 	// TODO: shouldn't the scales follow for the units I pick?
 	// If they don't, then maybe I use the wrong units or

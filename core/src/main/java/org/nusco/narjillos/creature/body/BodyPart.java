@@ -3,6 +3,7 @@ package org.nusco.narjillos.creature.body;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -53,7 +54,7 @@ public abstract class BodyPart extends Organ {
 		return children;
 	}
 
-	public void tick(double targetPercentOfAmplitude, double skewing, PhysicsEngine forceField) {
+	public void tick(double targetPercentOfAmplitude, double skewing, ForceField forceField) {
 		Segment beforeMovement = getSegment();
 
 		double targetAngleToParent = getNerve().tick(targetPercentOfAmplitude);
@@ -67,9 +68,9 @@ public abstract class BodyPart extends Organ {
 		tickChildren(targetAngleToParent, skewing, forceField);
 	}
 
-	protected abstract double calculateAngleToParent(double targetAngle, double skewing, PhysicsEngine forceField);
+	protected abstract double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField);
 
-	protected void tickChildren(double targetAngle, double skewing, PhysicsEngine forceField) {
+	protected void tickChildren(double targetAngle, double skewing, ForceField forceField) {
 		for (BodyPart child : getChildren())
 			child.tick(targetAngle, skewing, forceField);
 	}

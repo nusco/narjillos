@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.narjillos.creature.body.physics.Acceleration;
+import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 
@@ -27,14 +29,14 @@ public class Body {
 		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
 	}
 
-	public Effort tick(Vector targetDirection) {
+	public Acceleration tick(Vector targetDirection) {
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
 		
 		double currentSkewing = updateSkewing(angleToTarget);
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
 		
-		PhysicsEngine forceField = new PhysicsEngine();
+		ForceField forceField = new ForceField();
 		head.tick(targetAmplitudePercent, currentSkewing, forceField);
 
 		double rotationAngle = forceField.calculateRotationAngle(getMass(), getCenterOfMass());
@@ -42,7 +44,7 @@ public class Body {
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
 		
-		return new Effort(movement, rotationAngle, energySpent);
+		return new Acceleration(movement, rotationAngle, energySpent);
 	}
 
 	private double updateSkewing(double angleToTarget) {

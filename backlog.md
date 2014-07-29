@@ -4,13 +4,13 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 ###Physicist
 
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place)
-* Fix bug with immortal creatures (sometimes a small number of creatures is left who never seem to die. see experiment edcd96054e5d9dfe0a099ad67e8367c39d75f2d4:1431004451 around tick 340K)
 
 ###Speed Demon
 
 * Space Partitioning for fast searches of pond
 * Optimize physics engine
 * Optimize infrared mode
+* Use fast math library
 
 ## Computer Dummy
 
@@ -42,6 +42,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Lab Technician
 
+* Fix bug with non-repeatable experiments
 * Lock on single Narjillo
 * Bench with stats
 * "Real Time" and "Fast" slider

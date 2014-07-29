@@ -56,7 +56,7 @@ public class VectorTest {
 	
 	@Test
 	public void hasALength() {
-		assertEquals(0, Vector.cartesian(0, 0).getLength(), 0);
+		assertEquals(0, Vector.ZERO.getLength(), 0);
 		assertEquals(1, Vector.cartesian(1, 0).getLength(), 0);
 		assertEquals(1, Vector.cartesian(0, -1).getLength(), 0);
 		assertEquals(5, Vector.cartesian(3, 4).getLength(), 0.001);

@@ -31,7 +31,7 @@ public class Body {
 
 	public Acceleration tick(Vector targetDirection) {
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
-		
+
 		double currentSkewing = updateSkewing(angleToTarget);
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
@@ -120,6 +120,10 @@ public class Body {
 			totalY += weightedCentersOfMass[i].y;
 		}
 		double totalMass = getMass();
+		
+		if (totalMass <= 0)
+			return Vector.ZERO;
+		
 		return Vector.cartesian(totalX / totalMass, totalY / totalMass);
 	}
 

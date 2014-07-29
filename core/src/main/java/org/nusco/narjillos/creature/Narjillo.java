@@ -81,7 +81,7 @@ public class Narjillo implements Thing, Creature {
 	private void updatePosition(Vector position, double angle) {
 		Vector startingPosition = getPosition();
 		setPosition(position);
-
+		
 		// FIXME: don't pivot around the mouth - update position instead
 		body.setAngle(angle);
 
@@ -92,6 +92,7 @@ public class Narjillo implements Thing, Creature {
 	private void updateVelocities() {
 		double linearVelocityDecay = 0.5;
 		linearVelocity = linearVelocity.by(linearVelocityDecay);
+
 		double angularVelocityDecay = 0.5;
 		angularVelocity = angularVelocity * angularVelocityDecay;
 	}

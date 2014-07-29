@@ -61,6 +61,7 @@ public abstract class Organ extends BodyPart {
 		double targetAngleToParent = getNerve().tick(targetPercentOfAmplitude);
 		
 		double angleToParent = calculateAngleToParent(targetAngleToParent, skewing, forceField);
+		
 		setAngleToParent(angleToParent);
 
 		resetForcedBend();

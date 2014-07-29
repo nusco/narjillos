@@ -10,7 +10,6 @@ public class Vector {
 	public static Vector polar(double degrees, double length) {
 		double sin = Math.sin(Math.toRadians(degrees));
 		double cos = Math.cos(Math.toRadians(degrees));
-		
 		return Vector.cartesian(cos * length, sin * length);
 	}
 

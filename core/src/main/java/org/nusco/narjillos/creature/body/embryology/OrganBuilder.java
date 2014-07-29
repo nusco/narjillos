@@ -58,8 +58,8 @@ class OrganBuilder {
 	}
 
 	private double getMetabolicRate() {
-		double maxByteValue = 255.0;
-		double rateScale = maxByteValue / MAX_METABOLIC_RATE;
+		final double MAX_BYTE_VALUE = 255.0;
+		double rateScale = MAX_BYTE_VALUE / MAX_METABOLIC_RATE;
 
 		int metabolicRateGene = genes[3];
 		return metabolicRateGene / rateScale;

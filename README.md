@@ -1,7 +1,9 @@
 #Narjillos
 
 Narjillos are artificial creatures that mutate and evolve in a virtual pond, under the pressure of natural selection.
-You can observe them through a microscope. ![Take a peek](/doc/narjillos.jpg).
+You can observe them through a microscope.
+
+![Take a peek](/doc/narjillos.jpg).
 
 This project owes essentially all of its good ideas to Jeffrey Ventrella's GenePool (see credits).
 
@@ -22,8 +24,8 @@ Move the microscope around with your mouse and cursor keys.
 
 ## Credits
 
-Narjillos is strongly inspired by Jeffrey Ventrella's beautiful [GenePool](http://www.swimbots.com). "Strongly inspired" is an understatement here---Narjillos started its life as a feeble attempt to clone GenePool and bask in its greatness.
+Narjillos is strongly inspired by [Jeffrey Ventrella](http://en.wikipedia.org/wiki/Jeffrey_Ventrella)'s beautiful [GenePool](http://www.swimbots.com). "Strongly inspired" is an understatement here---Narjillos started its life as a feeble attempt to clone GenePool and bask in its greatness.
 
-Narjillos has a different goal than GenePool (exploring arms races rather than exploring sexual selection), and a different strategy (eventually I want to give Narjillos simple neural networks for brains). GenePool is not open source, so I wrote my own code to toy with. However, you should definitely check out GenePool and Ventrella's other works if you like the concept.
+Narjillos has a different goal than GenePool (exploring arms races rather than exploring sexual selection), and a different strategy (eventually I want to give Narjillos simple neural networks for brains). GenePool is not open source, so I wrote my own code to toy with. However, you should definitely check out GenePool and Ventrella's [other works](http://www.ventrella.com/) if you like the concept.
 
-And of course, I'd never have thought of anything like this if I hadn't been an avid reader of Richard Dawkins' books. "The Selfish Gene" is a life changer. If you haven't read it, stop whatever you're doing and buy a copy now.
+And of course, I'd never have thought of anything like this if I hadn't been an avid reader of [Richard Dawkins](http://en.wikipedia.org/wiki/Richard_Dawkins)' books. [The Selfish Gene](http://www.amazon.com/The-Selfish-Gene-Richard-Dawkins/dp/0192860925) can be a life-changing book. If you haven't read it, stop whatever you're doing and buy a copy now.

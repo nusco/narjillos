@@ -46,6 +46,18 @@ public class NarjilloTest {
 	}
 	
 	@Test
+	public void hasADefaultAmountOfEnergyWhenItsBorn() {
+		assertEquals(Narjillo.INITIAL_ENERGY, narjillo.getEnergy(), 0.001);
+	}
+	
+	@Test
+	public void diesWhenItsEnergyReachesZero() {
+		narjillo.updateEnergyBy(-Narjillo.INITIAL_ENERGY);
+		
+		assertTrue(narjillo.isDead());
+	}
+
+	@Test
 	public void sendsEventWhenDying() {
 		final boolean[] died = new boolean[] { false };
 		narjillo.addEventListener(new NullSwimmerEventListener() {
@@ -78,7 +90,6 @@ public class NarjilloTest {
 	@Test
 	public void cannotDecreaseItsEnergyAfterDeath() {
 		narjillo.updateEnergyBy(-Narjillo.INITIAL_ENERGY);
-		
 		assertEquals(0, narjillo.getEnergy(), 0.001);
 
 		narjillo.updateEnergyBy(-10);
@@ -89,7 +100,6 @@ public class NarjilloTest {
 	@Test
 	public void cannotIncreaseItsEnergyAfterDeath() {
 		narjillo.updateEnergyBy(-Narjillo.INITIAL_ENERGY);
-		
 		assertEquals(0, narjillo.getEnergy(), 0.001);
 
 		narjillo.updateEnergyBy(10);
@@ -160,5 +170,31 @@ public class NarjilloTest {
 		narjillo.updateEnergyBy(Narjillo.INITIAL_ENERGY);
 		
 		assertEquals(fullEnergyWhenSlightlyOlder, narjillo.getEnergy(), 0.001);
+	}
+
+	@Test
+	public void itsEnergyNaturallyDecreasesWithAgeEvenWhenNotMoving() {
+		DNA dna = new DNA("{1_1_1_1_1_1}");
+		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), dna);
+
+		while (!narjilloThatCannotMove.isDead())
+			narjilloThatCannotMove.tick();
+
+		// This test will never terminate unless the Narjillo eventually dies.
+		// (Ugly, but easier to read than alternative tests I tried).
+	}
+	
+	@Test
+	public void itsEnergyDecreasesFasterIfItMoves() {
+		DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
+		Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), dna);
+
+		narjillo.setTarget(Vector.cartesian(-10, 10));
+		narjillo.tick();
+
+		biggerNarjillo.setTarget(Vector.cartesian(-10, 10));
+		biggerNarjillo.tick();
+
+		assertTrue(narjillo.getEnergy() > biggerNarjillo.getEnergy());
 	}
 }

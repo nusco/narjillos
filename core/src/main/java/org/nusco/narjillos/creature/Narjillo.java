@@ -15,20 +15,21 @@ import org.nusco.narjillos.shared.things.Thing;
 public class Narjillo implements Thing, Creature {
 
 	static final double INITIAL_ENERGY = 100_000;
-	private static final double ENERGY_PER_FOOD_ITEM = 100_000;
 	public static final double MAX_ENERGY = 200_000;
-	private static final double MAX_TICKS_TO_DEATH = 25_000;
-	static final double NATURAL_ENERGY_DECAY = MAX_ENERGY / MAX_TICKS_TO_DEATH;
-	static final double AGONY_LEVEL = NATURAL_ENERGY_DECAY * 300;
+	static final double ENERGY_PER_FOOD_ITEM = 100_000;
+	static final double LIFESPAN = 25_000;
+	static final double ENERGY_DECAY = MAX_ENERGY / LIFESPAN;
+	static final double AGONY_LEVEL = ENERGY_DECAY * 300;
 
 	public final Body body;
 	private final DNA genes;
 
 	private Vector target = Vector.ZERO;
-	private double energy = INITIAL_ENERGY;
-
 	private Vector linearVelocity = Vector.ZERO;
 	private double angularVelocity = 0;
+
+	private double energy = INITIAL_ENERGY;
+	private double maxEnergyForAge = MAX_ENERGY;
 
 	private int numberOfDescendants = 0;
 
@@ -69,7 +70,8 @@ public class Narjillo implements Thing, Creature {
 		linearVelocity = linearVelocity.plus(effort.getLinearAccelerationAlong(axis));
 		angularVelocity = angularVelocity + effort.angular;
 
-		decreaseEnergy(effort.energySpent + Narjillo.NATURAL_ENERGY_DECAY);
+		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
+		updateEnergyBy(-effort.energySpent);
 	}
 
 	private void updatePosition() {
@@ -127,9 +129,10 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	public synchronized void feed() {
-		energy += ENERGY_PER_FOOD_ITEM;
-		if (energy > MAX_ENERGY)
-			energy = MAX_ENERGY;
+		double energyBoost = ENERGY_PER_FOOD_ITEM;
+		energy += energyBoost;
+		if (energy > maxEnergyForAge)
+			energy = maxEnergyForAge;
 	}
 
 	public void addEventListener(NarjilloEventListener eventListener) {
@@ -150,13 +153,23 @@ public class Narjillo implements Thing, Creature {
 		return "narjillo";
 	}
 
-	void decreaseEnergy(double amount) {
-		energy -= amount;
+	void updateEnergyBy(double amount) {
+		if (isDead())
+			return;
+		
+		energy += amount;
+		if (energy > maxEnergyForAge)
+			energy = maxEnergyForAge;
+		
 		if (energy <= 0) {
 			energy = 0;
 			for (NarjilloEventListener eventListener : eventListeners)
 				eventListener.died();
 		}
+	}
+
+	boolean isDead() {
+		return energy <= 0;
 	}
 
 	public List<BodyPart> getOrgans() {

@@ -3,10 +3,26 @@ package org.nusco.narjillos.creature.body;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class BodyTest {
 
+	@Test
+	public void isPositionedAtZeroByDefault() {
+		Body body = new Body(new Head(1, 1, new ColorByte(1), 1));
+		assertEquals(Vector.ZERO, body.getPosition());
+	}
+
+	@Test
+	public void canBePositioned() {
+		Body body = new Body(new Head(1, 1, new ColorByte(1), 1));
+		
+		body.setPosition(Vector.cartesian(10, -10));
+
+		assertEquals(Vector.cartesian(10, -10), body.getPosition());
+	}
+	
 	@Test
 	public void hasAMassProportionalToItsSize() {
 		int headLengthInMm = 3;

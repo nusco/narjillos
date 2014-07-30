@@ -19,7 +19,7 @@ public class Body {
 	private final List<BodyPart> parts;
 	private final double mass;
 	private final WaveNerve tickerNerve;
-	private Vector position;
+	private Vector position = Vector.ZERO;
 	private double skewing = 0;
 	
 	public Body(Head head) {

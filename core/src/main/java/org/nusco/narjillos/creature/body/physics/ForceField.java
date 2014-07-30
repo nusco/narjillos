@@ -44,7 +44,7 @@ public class ForceField {
 	}
 
 	public double getTotalEnergySpent() {
-		return energySpent / 1000;
+		return energySpent / 100;
 	}
 
 	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {

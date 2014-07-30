@@ -85,7 +85,6 @@ after this, take a tour through TODOs and FIXMEs and clean up
 
 ###Ethologist
 
-* Force death of old age (right now they can live forever if they keep eating)
 * Narjillo updates food item when not in range anymore
 * Narjillos eat each other
 * "Attracted to" gene (uses other Narjillo's colors to select most desirable mate)

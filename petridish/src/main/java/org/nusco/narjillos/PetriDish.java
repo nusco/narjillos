@@ -18,6 +18,7 @@ import org.nusco.narjillos.pond.Pond;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
+import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.views.DataView;
 
 public class PetriDish extends MicroscopeEnvironment {
@@ -36,10 +37,32 @@ public class PetriDish extends MicroscopeEnvironment {
 	protected synchronized Pond createPond(String[] programArguments) {
 		if (programArguments.length == 0)
 			return new Cosmos();
-		else if(programArguments[0].endsWith(".nrj"))
-			return new Cosmos(readDNAFromFile(programArguments[0]));
-		else
-			return new Cosmos(new DNA(programArguments[0]));
+		
+		String argument = programArguments[0];
+
+		boolean isInteger = isInteger(argument);
+		if(isInteger) {
+			int seed = Integer.parseInt(argument);
+			RanGen.seed(seed);
+			return new Cosmos();
+		}
+		
+		if(argument.equals(".nrj"))
+			return new Cosmos(readDNAFromFile(argument));
+		
+		if(argument.endsWith(".nrj"))
+			return new Cosmos(readDNAFromFile(argument));
+		
+		return new Cosmos(new DNA(argument));
+	}
+
+	private boolean isInteger(String argument) {
+		try {
+			Integer.parseInt(argument);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	private static DNA readDNAFromFile(String file) {

@@ -9,7 +9,9 @@ public class DNAParser {
 		if (dna.getGenes().length > 0)
 			genes = dna.getGenes();
 		else
-			// FIXME: throw an exception for now
+			// FIXME: throw an exception for now, but this is not enough.
+			// I should probably abort any creature that doesn't have two
+			// chromosomes min.
 			throw new RuntimeException("Empty DNA");
 //			genes = new Integer[] { 0 };
 	}

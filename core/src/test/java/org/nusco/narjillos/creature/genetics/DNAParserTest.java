@@ -50,14 +50,8 @@ public class DNAParserTest {
 		assertNull(parser.nextChromosome());
 	}
 
-	@Test
-	public void alwaysReturnsAtLeastOneChromosome() {
-		Integer[] genes =  new Integer[0];
-
-		DNA dna = new DNA(genes);
-		DNAParser parser = new DNAParser(dna);
-		
-		assertArrayEquals(new int[]{0, 0, 0, 0, 0, 0}, parser.nextChromosome());
-		assertNull(parser.nextChromosome());
+	@Test(expected=RuntimeException.class)
+	public void throwsAnExceptionIfTheDNASequenceIsEmpty() {
+		new DNA("{}");
 	}
 }

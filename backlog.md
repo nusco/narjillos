@@ -17,7 +17,6 @@ these seem to be the 0-length, 0-mass creatures. constrain length and mass to 0.
 
 ###Speed Demon
 
-* Return Vector.ZERO when constructing a vector just like it (if worth it -measure!)
 * Space Partitioning for fast searches of pond
 * Optimize physics engine
 * Optimize infrared mode

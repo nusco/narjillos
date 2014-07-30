@@ -22,7 +22,7 @@ after this, take a tour through TODOs and FIXMEs and clean up
 ###Physicist
 
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place)
-* Fix "shaking" of limbs in some Narjillos
+* Fix "shaking" of limbs in some Narjillos?
 
 ###Speed Demon
 
@@ -56,7 +56,7 @@ after this, take a tour through TODOs and FIXMEs and clean up
 
 * Eggs
 * "Egg-firing"
-* Additional cost for long-distance egg-firing
+* Additional cost for long-distance egg-flinging
 * Distance of firing is determined by genes
 * Narjillos spends energy to reproduce
 * Narjillos decide how much energy to give to descendants

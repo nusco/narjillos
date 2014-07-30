@@ -81,13 +81,6 @@ public class NarjilloTest {
 	}
 	
 	@Test
-	public void diesWhenItsEnergyReachesZero() {
-		narjillo.updateEnergyBy(-Narjillo.INITIAL_ENERGY);
-		
-		assertTrue(narjillo.isDead());
-	}
-	
-	@Test
 	public void cannotDecreaseItsEnergyAfterDeath() {
 		narjillo.updateEnergyBy(-Narjillo.INITIAL_ENERGY);
 		assertEquals(0, narjillo.getEnergy(), 0.001);
@@ -182,19 +175,5 @@ public class NarjilloTest {
 
 		// This test will never terminate unless the Narjillo eventually dies.
 		// (Ugly, but easier to read than alternative tests I tried).
-	}
-	
-	@Test
-	public void itsEnergyDecreasesFasterIfItMoves() {
-		DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
-		Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), dna);
-
-		narjillo.setTarget(Vector.cartesian(-10, 10));
-		narjillo.tick();
-
-		biggerNarjillo.setTarget(Vector.cartesian(-10, 10));
-		biggerNarjillo.tick();
-
-		assertTrue(narjillo.getEnergy() > biggerNarjillo.getEnergy());
 	}
 }

@@ -12,15 +12,17 @@ same with {230_003_090_211_124_158}, in experiment 6f157d39f3f048c86460073004898
 
 this might be related to an experiment with narjillos with a single all-zeroes chromosome. in this case, the mouths are not visualized (nor anything else). Why?
 
-these seem to be the 0-length, 0-mass creatures. constrain length and mass to 0.1 or less?
+these seem to be the 0-length, 0-mass creatures. constrain length and mass to 0.1 or less? (I did it in one of the Organ hierarchy constructors, but maybe it should be done in OrganBuilder, or a new Chromosome class?
 
 after this, take a tour through TODOs and FIXMEs and clean up
+
 ===
 
 
 ###Physicist
 
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place)
+* Fix "shaking" of limbs in some Narjillos
 
 ###Speed Demon
 
@@ -40,6 +42,7 @@ after this, take a tour through TODOs and FIXMEs and clean up
 * Fix all-zeros DNA - it just causes problems. Instead, just abort Narjillos without a body.
 * Each body segment's amplitude is genetically determined
 * Narjillo's skewing is genetically determined
+* Narjillo's color is an expression of its behaviour (amplitude, phase, etc)
 * Whole-body size gene
 * View Narjillo's evolutionary path
 * Bullet-proof genome with a Chromosome class (for documentation, tool building and checking min and max values, for avoiding divisions by 0 and other potential issues)
@@ -82,7 +85,12 @@ after this, take a tour through TODOs and FIXMEs and clean up
 
 ###Ethologist
 
+* Force death of old age (right now they can live forever if they keep eating)
 * Narjillo updates food item when not in range anymore
+* Narjillos eat each other
+* "Attracted to" gene (uses other Narjillo's colors to select most desirable mate)
+* "Fears" gene (like "attracted to")
+* "Wants to eat" gene (like "attracted to")
 
 ###Artist
 

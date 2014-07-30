@@ -67,7 +67,7 @@ public class Experiment {
 	}
 
 	private static String getHeadersString() {
-		return "\ntime_elapsed, " + "ticks_elapsed, " + "ticks_per_second, " + "number_of_narjillos, " + "number_of_food_pieces, " + "most_typical_specimen";
+		return "\ntime, " + "ticks, " + "ticks_per_second, " + "narjillos, " + "food_pieces, " + "most_typical_dna";
 	}
 
 	private static String getStatusString(Pond pond, long tick) {

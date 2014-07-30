@@ -9,7 +9,9 @@ public class DNAParser {
 		if (dna.getGenes().length > 0)
 			genes = dna.getGenes();
 		else
-			genes = new Integer[] { 0 };
+			// FIXME: throw an exception for now
+			throw new RuntimeException("Empty DNA");
+//			genes = new Integer[] { 0 };
 	}
 
 	public int[] nextChromosome() {

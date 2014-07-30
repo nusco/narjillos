@@ -20,8 +20,10 @@ public abstract class BodyPart {
 	private Segment cachedSegment = null;
 
 	public BodyPart(int length, int thickness, ColorByte color) {
-		this.length = length;
-		this.thickness = thickness;
+		// FIXME: consider moving this to the OrganBuilder (or a new Chromosome class). Also, test it.
+		this.length = (length == 0) ? 1 : length;
+		this.thickness = (thickness == 0) ? 1 : thickness;
+
 		this.mass = length * thickness;
 		this.color = color;
 	}

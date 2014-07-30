@@ -45,7 +45,9 @@ abstract class MicroscopeEnvironment extends Application {
 	private Pond pond;
 	private PondView pondView;
 	
-	private volatile boolean modelThreadIsRunning;
+    private Node foreground;
+
+    private volatile boolean modelThreadIsRunning;
 
 	@Override
 	public void start(final Stage primaryStage) throws InterruptedException {
@@ -54,6 +56,7 @@ abstract class MicroscopeEnvironment extends Application {
 		startModelThread(programArguments);
 		waitUntilModelThreadIsRunning();
 		
+		updateForeground();
 		startViewThread(root);
 
 		showRoot(root);
@@ -75,11 +78,11 @@ abstract class MicroscopeEnvironment extends Application {
 		return pond;
 	}
 
-	protected Viewport getViewport() {
+	protected synchronized Viewport getViewport() {
 		return getPondView().getViewport();
 	}
 
-	private void setPond(Pond pond) {
+	private synchronized void setPond(Pond pond) {
 		this.pond = pond;
 		this.pondView = new PondView(pond);
 	}
@@ -166,35 +169,24 @@ abstract class MicroscopeEnvironment extends Application {
 		root.getChildren().clear();
 		root.getChildren().add(getPondView().toNode());
 
-		root.getChildren().add(createForeground());
+		root.getChildren().add(foreground);
 		
 		Node environmentSpecificOverlay = getEnvironmentSpecificOverlay();
 		if (environmentSpecificOverlay != null)
 			root.getChildren().add(environmentSpecificOverlay);
 	}
 
-	private Node createForeground() {
-		// TODO: if needed, this can be created once and only
-		// updated on screen resizes
-		Vector sizeSC = getViewport().getSizeSC();
-		double minScreenSize = Math.min(sizeSC.x, sizeSC.y);
-		double maxScreenSize = Math.max(sizeSC.x, sizeSC.y);
-		Rectangle black = new Rectangle(-10, -10, maxScreenSize + 20, maxScreenSize + 20);
-		Circle hole = new Circle(sizeSC.x / 2, sizeSC.y / 2, minScreenSize / 2.03);
-		Shape microscope = Shape.subtract(black, hole);
-		microscope.setEffect(new BoxBlur(5, 5, 1));
-		return microscope;
-	}
-
 	private void addListenersToResizeViewportWhenTheUserResizesTheWindow(final Scene scene, final Viewport viewport) {
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
 		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-		        viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
+		    	viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
+		    	updateForeground();
 		    }
 		});
 		scene.heightProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
 		        viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
+		        updateForeground();
 		    }
 		});
 	}
@@ -216,6 +208,21 @@ abstract class MicroscopeEnvironment extends Application {
 	private void waitUntilModelThreadIsRunning() throws InterruptedException {
 		while (!modelThreadIsRunning)
 			Thread.sleep(10);
+	}
+
+	private synchronized void updateForeground() {
+		foreground = createForeground();
+	}
+
+	private Node createForeground() {
+		Vector sizeSC = getViewport().getSizeSC();
+		double minScreenSize = Math.min(sizeSC.x, sizeSC.y);
+		double maxScreenSize = Math.max(sizeSC.x, sizeSC.y);
+		Rectangle black = new Rectangle(-10, -10, maxScreenSize + 20, maxScreenSize + 20);
+		Circle hole = new Circle(sizeSC.x / 2, sizeSC.y / 2, minScreenSize / 2.03);
+		Shape microscope = Shape.subtract(black, hole);
+		microscope.setEffect(new BoxBlur(5, 5, 1));
+		return microscope;
 	}
 
 	protected int getTicksPeriod() {

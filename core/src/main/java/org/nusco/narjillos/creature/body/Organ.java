@@ -85,7 +85,7 @@ public abstract class Organ extends BodyPart {
 		return addChild(new BodySegment(length, thickness, hue, this, new DelayNerve(delay), angleToParentAtRest));
 	}
 
-	// FIXME: remove and consider pushing down the sproutOrgan group of methods
+	// TODO: remove and consider pushing down the sproutOrgan group of methods
 	Organ sproutOrgan(Nerve nerve) {
 		return addChild(new BodySegment(nerve));
 	}

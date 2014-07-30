@@ -47,6 +47,8 @@ public class Vector {
 	}
 
 	public Vector normalize(double length) {
+		if (getLength() == 0)
+			return Vector.ZERO; // the zero vector cannot be normalized
 		return Vector.polar(getAngle(), length);
 	}
 

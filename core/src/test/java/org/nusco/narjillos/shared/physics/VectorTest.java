@@ -55,6 +55,11 @@ public class VectorTest {
 	}
 	
 	@Test
+	public void vectorZeroHasAnAngleOfZeroByDefinition() {
+		assertEquals(0, Vector.ZERO.getAngle(), 0);
+	}
+
+	@Test
 	public void hasALength() {
 		assertEquals(0, Vector.ZERO.getLength(), 0);
 		assertEquals(1, Vector.cartesian(1, 0).getLength(), 0);
@@ -122,6 +127,11 @@ public class VectorTest {
 	}
 
 	@Test
+	public void vectorZeroStaysZeroWhenNormalized() {
+		assertEquals(Vector.ZERO, Vector.ZERO.normalize(10));
+	}
+
+	@Test
 	public void hasANormalVector() {
 		assertEqualsVector(Vector.polar(-50, 1), Vector.polar(40, 1234).getNormal());
 		assertEqualsVector(Vector.polar(0, 1), Vector.polar(90, 1234).getNormal());
@@ -139,6 +149,13 @@ public class VectorTest {
 		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(-135, 1)));
 	}
 
+	@Test
+	public void projectionAcceptsVectorZero() {
+		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.ZERO));
+		assertEqualsVector(Vector.ZERO, Vector.ZERO.getProjectionOn(Vector.polar(180, 10)));
+		assertEqualsVector(Vector.ZERO, Vector.ZERO.getProjectionOn(Vector.ZERO));
+	}
+	
 	@Test
 	public void hasANormalComponentOnAnotherVector() {
 		assertEqualsVector(Vector.ZERO, Vector.polar(90, 10).getNormalComponentOn(Vector.polar(90, 1)));
@@ -159,6 +176,7 @@ public class VectorTest {
 		assertEquals(-90, ninetyDegrees.getAngleWith(Vector.polar(180, 1)), 0.001);
 		assertEquals(-179, ninetyDegrees.getAngleWith(Vector.polar(-91, 1)), 0.001);
 		assertEquals(179, Vector.polar(-91, 1).getAngleWith(ninetyDegrees), 0.001);
+		assertEquals(0, Vector.ZERO.getAngleWith(Vector.ZERO), 0.001);
 	}
 
 	@Test

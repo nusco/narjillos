@@ -39,7 +39,8 @@ public class Body {
 		ForceField forceField = new ForceField();
 		head.tick(targetAmplitudePercent, currentSkewing, forceField);
 
-		double rotationAngle = forceField.calculateRotationAngle(getMass(), getCenterOfMass());
+		Vector centerOfMass = getCenterOfMass();
+		double rotationAngle = forceField.calculateRotationAngle(getMass(), centerOfMass);
 		Vector movement = forceField.calculateMovement(getMass());
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();

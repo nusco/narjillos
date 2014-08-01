@@ -21,6 +21,7 @@ after this, take a tour through TODOs and FIXMEs and clean up
 
 ###Physicist
 
+* Narjillos rotate around their center of mass, not around their mouths
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place)
 * Fix "shaking" of limbs in some Narjillos?
 

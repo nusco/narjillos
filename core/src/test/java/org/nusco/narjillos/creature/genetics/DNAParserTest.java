@@ -1,6 +1,6 @@
 package org.nusco.narjillos.creature.genetics;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
@@ -17,8 +17,8 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextChromosome());
-		assertArrayEquals(new int[]{7, 8, 9, 10, 11, 12}, parser.nextChromosome());
+		assertEquals(new Chromosome(1, 2, 3, 4, 5, 6), parser.nextChromosome());
+		assertEquals(new Chromosome(7, 8, 9, 10, 11, 12), parser.nextChromosome());
 		assertNull(parser.nextChromosome());
 	}
 
@@ -32,8 +32,8 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 4, 5, 6}, parser.nextChromosome());
-		assertArrayEquals(new int[]{7, 8, 0, 0, 0, 0}, parser.nextChromosome());
+		assertEquals(new Chromosome(1, 2, 3, 4, 5, 6), parser.nextChromosome());
+		assertEquals(new Chromosome(7, 8, 0, 0, 0, 0), parser.nextChromosome());
 		assertNull(parser.nextChromosome());
 	}
 
@@ -46,7 +46,7 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertArrayEquals(new int[]{1, 2, 3, 0, 0, 0}, parser.nextChromosome());
+		assertEquals(new Chromosome(new int[]{1, 2, 3, 0, 0, 0}), parser.nextChromosome());
 		assertNull(parser.nextChromosome());
 	}
 

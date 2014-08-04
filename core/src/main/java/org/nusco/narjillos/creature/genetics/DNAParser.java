@@ -16,7 +16,7 @@ public class DNAParser {
 //			genes = new Integer[] { 0 };
 	}
 
-	public int[] nextChromosome() {
+	public Chromosome nextChromosome() {
 		if (indexInGenes > 0 && indexInGenes >= genes.length)
 			return null;
 		
@@ -27,6 +27,6 @@ public class DNAParser {
 			index_in_result++;
 			indexInGenes++;
 		}
-		return result;
+		return new Chromosome(result);
 	}
 }

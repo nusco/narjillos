@@ -29,7 +29,7 @@ public class DNA {
 		List<Integer[]> resultChromosomes = new LinkedList<>();
 
 		DNAParser parser = new DNAParser(this);
-		int[] nextChromosome;
+		Chromosome nextChromosome;
 		while((nextChromosome = parser.nextChromosome()) != null) {
 			// skip a chromosome every now and then
 			if (!mutationHappens())
@@ -51,10 +51,10 @@ public class DNA {
 		return result.toArray(new Integer[result.size()]);
 	}
 
-	private Integer[] copy(int[] chromosome) {
-		Integer[] result = new Integer[chromosome.length];
+	private Integer[] copy(Chromosome chromosome) {
+		Integer[] result = new Integer[Chromosome.SIZE];
 		for (int i = 0; i < result.length; i++)
-			result[i] = copy(chromosome[i]);
+			result[i] = copy(chromosome.getGene(i));
 		return result;
 	}
 

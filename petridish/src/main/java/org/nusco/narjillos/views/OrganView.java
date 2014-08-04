@@ -37,6 +37,9 @@ class OrganView extends ThingView {
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn) {
+		if (organ.getLength() == 0)
+			return null; // atrophy
+		
 		rectangle.setFill(getColor(infraredOn));
 		
 		rectangle.getTransforms().clear();

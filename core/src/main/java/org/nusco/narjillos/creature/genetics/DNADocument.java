@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.genetics;
 
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,18 +41,9 @@ class DNADocument {
 	public static String toString(DNA dna) {
 		StringBuffer result = new StringBuffer();
 		DNAParser parser = new DNAParser(dna);
-		int[] nextChromosome;
+		Chromosome nextChromosome;
 		while ((nextChromosome = parser.nextChromosome()) != null)
-			result.append("{" + toString(nextChromosome) + "}");
-		return result.toString();
-	}
-
-	private static String toString(int[] genes) {
-		final DecimalFormat threeDigits = new DecimalFormat("000");
-		StringBuffer result = new StringBuffer();
-		for (int i = 0; i < genes.length - 1; i++)
-			result.append(threeDigits.format(genes[i]) + "_");
-		result.append(threeDigits.format(genes[genes.length - 1]));
+			result.append(nextChromosome.toString());
 		return result.toString();
 	}
 }

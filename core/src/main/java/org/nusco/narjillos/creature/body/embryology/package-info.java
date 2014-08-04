@@ -3,6 +3,6 @@
  * {@link org.nusco.narjillos.creature.body.embriology.Embryo} with a
  * {@link org.nusco.narjillos.creature.genetics.DNA},
  * and then call {@link org.nusco.narjillos.creature.body.embriology.Embryo#develop} to
- * get a fully formed {@link org.nusco.narjillos.creature.Narjillo}.
+ * get a fully formed {@link org.nusco.narjillos.creature.body.Body}.
  */
 package org.nusco.narjillos.creature.body.embryology;

@@ -3,59 +3,47 @@ package org.nusco.narjillos.creature.body.embryology;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.genetics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class OrganBuilderTest {
+public abstract class OrganBuilderTest {
+
+	protected abstract OrganBuilder createConcreteOrganBuilder(Chromosome chromosome);
 
 	@Test
-	public void createsAHead() {
-		int controlGene = 0b00000000;
-		int lengthGene = 50;
-		int thicknessGene = 60;
-		int ignoredGene1 = 0;
-		int ignoredGene2 = 0;
-		int colorGene = 40;
-		
-		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, ignoredGene1, ignoredGene2, colorGene});
-		Organ head = builder.buildHead();
-
-		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, head.getLength(), 0);
-		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, head.getThickness(), 0);
-		assertEquals(new ColorByte(colorGene), head.getColor());
+	public void decodesALengthBetween1And255() {
+		assertEquals(0, createConcreteOrganBuilder(new Chromosome(0, 10)).getLength());
+		assertEquals(30, createConcreteOrganBuilder(new Chromosome(0, 30)).getLength());
+		assertEquals(42, createConcreteOrganBuilder(new Chromosome(0, 42)).getLength());
+		assertEquals(255, createConcreteOrganBuilder(new Chromosome(0, 255)).getLength());
 	}
 
 	@Test
-	public void createsAnOrgan() {
-		int controlGene = 0b00000000;
-		int lengthGene = 50;
-		int thicknessGene = 60;
-		int delayGene = 90;
-		int angleToParentGene = 80;
-		int colorGene = 40;
-		
-		OrganBuilder builder = new OrganBuilder(new int[] {controlGene, lengthGene, thicknessGene, delayGene, angleToParentGene, colorGene});
-		Organ head = builder.buildHead();
-		BodyPart organ = builder.buildBodyPart(head, 1);
-		
-		assertEquals(lengthGene * OrganBuilder.PART_LENGTH_MULTIPLIER, organ.getLength(), 0);
-		assertEquals(thicknessGene * OrganBuilder.PART_THICKNESS_MULTIPLIER, organ.getThickness(), 0);
-		assertEquals(angleToParentGene % OrganBuilder.PART_MAX_ANGLE_TO_PARENT, organ.getAbsoluteAngle(), 0);
-	}
-	
-	@Test
-	public void generateAMirroredOrgan() {
-		int angleToParentGene = 80;
-		
-		BodyPart organ = buildSegment(angleToParentGene, -1);
-		
-		assertEquals(-10, organ.getAbsoluteAngle(), 0);
+	public void veryShortLengthsAtrophyTo0() {
+		assertEquals(0, createConcreteOrganBuilder(new Chromosome(0, 29)).getLength());
 	}
 
-	private BodyPart buildSegment(int angleToParentGene, int angleSign) {
-		OrganBuilder builder = new OrganBuilder(new int[] {0, 50, 60, 70, angleToParentGene, 10});
-		Organ head = builder.buildHead();
-		return builder.buildBodyPart(head, angleSign);
+	@Test
+	public void decodesAThicknessBetween1And50() {
+		assertEquals(1, createConcreteOrganBuilder(new Chromosome(0, 0, 0)).getThickness());
+		assertEquals(1, createConcreteOrganBuilder(new Chromosome(0, 0, 1)).getThickness());
+		assertEquals(2, createConcreteOrganBuilder(new Chromosome(0, 0, 6)).getThickness());
+		assertEquals(10, createConcreteOrganBuilder(new Chromosome(0, 0, 50)).getThickness());
+		assertEquals(50, createConcreteOrganBuilder(new Chromosome(0, 0, 255)).getThickness());
+	}
+
+	@Test
+	public void decodesADelayBetween0And30() {
+		assertEquals(0, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0)).getDelay());
+		assertEquals(0, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 8)).getDelay());
+		assertEquals(1, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 9)).getDelay());
+		assertEquals(30, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 255)).getDelay());
+	}
+
+	@Test
+	public void decodesAHueBetween0And255() {
+		assertEquals(new ColorByte(0), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0)).getHue());
+		assertEquals(new ColorByte(1), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 1)).getHue());
+		assertEquals(new ColorByte(255), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 255)).getHue());
 	}
 }

@@ -20,7 +20,7 @@ public class Embryo {
 	public Body develop() {
 		DNAParser parser = new DNAParser(genes);
 		
-		Head head = createHeadSystem(parser);
+		Head head = createHead(parser);
 
 		List<Organ> bodyParts = new LinkedList<>();
 		bodyParts.add(head);
@@ -29,8 +29,8 @@ public class Embryo {
 		return new Body(head);
 	}
 
-	private Head createHeadSystem(DNAParser parser) {
-		return new OrganBuilder(parser.nextChromosome()).buildHead();
+	private Head createHead(DNAParser parser) {
+		return new HeadBuilder(parser.nextChromosome()).build();
 	}
 
 	private void createDescendants(List<Organ> bodyParts, DNAParser parser) {
@@ -43,6 +43,6 @@ public class Embryo {
 	}
 
 	private List<Organ> createDirectDescendants(Organ parent, DNAParser parser) {
-		return new TwinOrgansBuilder(parser.nextChromosome(), parser.nextChromosome()).buildBodyPart(parent);
+		return new TwinOrgansBuilder(parser.nextChromosome(), parser.nextChromosome()).buildChildren(parent);
 	}
 }

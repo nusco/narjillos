@@ -4,50 +4,54 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.genetics.Chromosome;
 
 class TwinOrgansBuilder {
 
 	static final int MIRROR_ORGAN_BIT = 0b00000001;
 
-	private final int[] organ1Genes;
-	private final int[] organ2Genes;
+	private final Chromosome chromosome1;
+	private final Chromosome chromosome2;
 
-	public TwinOrgansBuilder(int[] organ1Genes, int[] organ2Genes) {
-		this.organ1Genes = organ1Genes;
-		this.organ2Genes = organ2Genes;
+	public TwinOrgansBuilder(Chromosome chromosome1, Chromosome chromosome2) {
+		this.chromosome1 = chromosome1;
+		this.chromosome2 = chromosome2;
 	}
 
-	private boolean isMirrorSegment(int[] genes) {
-		int controlGene = genes[0];
+	/**
+	 * Once in twice, organs are mirrored.
+	 */
+	private boolean isMirrorSegment(Chromosome chromosome) {
+		int controlGene = chromosome.getGene(0);
 		return (controlGene & TwinOrgansBuilder.MIRROR_ORGAN_BIT) == TwinOrgansBuilder.MIRROR_ORGAN_BIT;
 	}
 
-	public List<Organ> buildBodyPart(Organ parent) {
+	public List<Organ> buildChildren(Organ parent) {
 		List<Organ> result = new LinkedList<>();
 		
-		if (organ1Genes == null)
+		if (chromosome1 == null)
 			return result;
 
-		if (organ2Genes == null) {
-			result.add(new OrganBuilder(organ1Genes).buildBodyPart(parent, 1));
+		if (chromosome2 == null) {
+			result.add(new BodySegmentBuilder(chromosome1).build(parent, 1));
 			return result;
 		}
 		
-		if(isMirrorSegment(organ1Genes))
-			return buildMirrorSegments(parent, organ2Genes);
+		if(isMirrorSegment(chromosome1))
+			return buildMirrorSegments(parent, chromosome2);
 		
-		if(isMirrorSegment(organ2Genes))
-			return buildMirrorSegments(parent, organ1Genes);
+		if(isMirrorSegment(chromosome2))
+			return buildMirrorSegments(parent, chromosome1);
 		
-		result.add(new OrganBuilder(organ1Genes).buildBodyPart(parent, 1));
-		result.add(new OrganBuilder(organ2Genes).buildBodyPart(parent, -1));
+		result.add(new BodySegmentBuilder(chromosome1).build(parent, 1));
+		result.add(new BodySegmentBuilder(chromosome2).build(parent, -1));
 		return result;
 	}
 
-	private List<Organ> buildMirrorSegments(Organ parent, int[] genes) {
+	private List<Organ> buildMirrorSegments(Organ parent, Chromosome chromosome) {
 		List<Organ> result = new LinkedList<>();
-		result.add(new OrganBuilder(genes).buildBodyPart(parent, 1));
-		result.add(new OrganBuilder(genes).buildBodyPart(parent, -1));
+		result.add(new BodySegmentBuilder(chromosome).build(parent, 1));
+		result.add(new BodySegmentBuilder(chromosome).build(parent, -1));
 		return result;
 	}
 }

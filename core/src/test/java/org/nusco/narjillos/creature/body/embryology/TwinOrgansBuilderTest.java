@@ -5,25 +5,27 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.creature.body.embryology.OrganBuilder;
-import org.nusco.narjillos.creature.body.embryology.TwinOrgansBuilder;
+import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.genetics.Chromosome;
+import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class TwinOrgansBuilderTest {
+	
 	private static final int MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN_BIT;
 	private static final int NOT_MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN_BIT ^ TwinOrgansBuilder.MIRROR_ORGAN_BIT;
 
-	int[] notMirroringGenes1 = new int[] {NOT_MIRRORING, 60, 70, 80, 90, 100};
-	int[] notMirroringGenes2 = new int[] {NOT_MIRRORING, 61, 71, 81, 91, 101};
-	int[] mirroringGenes1 = new int[] {MIRRORING, 62, 72, 82, 92, 102};
-	int[] mirroringGenes2 = new int[] {MIRRORING, 63, 73, 83, 93, 103};
+	Chromosome notMirroring1 = new Chromosome(NOT_MIRRORING, 60, 70, 80, 90, 100);
+	Chromosome notMirroring2 = new Chromosome(NOT_MIRRORING, 61, 71, 81, 91, 101);
+	Chromosome mirroring1 = new Chromosome(MIRRORING, 62, 72, 82, 92, 102);
+	Chromosome mirroring2 = new Chromosome(MIRRORING, 63, 73, 83, 93, 103);
 
-	Organ parent = new OrganBuilder(new int[]{0, 7, 7, 7, 7, 7}).buildHead();
+	Organ parent = new Head(10, 10, new ColorByte(0), 10);
 
 	@Test
 	public void buildsRegularSegmentIfNeitherGenesIsMirroring() {
-		List<Organ> bodyParts = new TwinOrgansBuilder(notMirroringGenes1, notMirroringGenes2).buildBodyPart(parent);
+		List<Organ> bodyParts = new TwinOrgansBuilder(notMirroring1, notMirroring2).buildChildren(parent);
 		
 		assertEquals(60, bodyParts.get(0).getLength());
 		assertEquals(61, bodyParts.get(1).getLength());
@@ -31,7 +33,7 @@ public class TwinOrgansBuilderTest {
 
 	@Test
 	public void buildsMirrorSegmentOfSecondSegmentIfBothGenesAreMirroring() {
-		List<Organ> bodyParts = new TwinOrgansBuilder(mirroringGenes1, mirroringGenes2).buildBodyPart(parent);
+		List<Organ> bodyParts = new TwinOrgansBuilder(mirroring1, mirroring2).buildChildren(parent);
 		
 		assertEquals(63, bodyParts.get(0).getLength());
 		assertEqualOrgans(bodyParts.get(0), bodyParts.get(1));
@@ -39,16 +41,16 @@ public class TwinOrgansBuilderTest {
 
 	@Test
 	public void buildsMirrorSegmentIfFirstSegmentGenesAreMirroring() {
-		TwinOrgansBuilder builder = new TwinOrgansBuilder(mirroringGenes1, notMirroringGenes2);
-		List<Organ> bodyParts = builder.buildBodyPart(parent);
+		TwinOrgansBuilder builder = new TwinOrgansBuilder(mirroring1, notMirroring2);
+		List<Organ> bodyParts = builder.buildChildren(parent);
 		
 		assertEqualOrgans(bodyParts.get(0), bodyParts.get(1));
 	}
 
 	@Test
 	public void buildsMirrorSegmentIfSecondSegmentGenesAreMirroring() {
-		TwinOrgansBuilder builder = new TwinOrgansBuilder(notMirroringGenes1, mirroringGenes2);
-		List<Organ> bodyParts = builder.buildBodyPart(parent);
+		TwinOrgansBuilder builder = new TwinOrgansBuilder(notMirroring1, mirroring2);
+		List<Organ> bodyParts = builder.buildChildren(parent);
 		
 		assertEqualOrgans(bodyParts.get(0), bodyParts.get(1));
 	}

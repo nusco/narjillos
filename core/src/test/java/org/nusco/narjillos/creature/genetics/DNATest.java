@@ -9,7 +9,7 @@ public class DNATest {
 
 	@Test
 	public void isBasedOnAnArrayOfGenes() {
-		DNA dna = new DNA(new Integer[] {1, 2, 255});
+		DNA dna = new DNA(1, 2, 255);
 		
 		assertArrayEquals(new Integer[] {1, 2, 255}, dna.getGenes());
 	}
@@ -19,6 +19,13 @@ public class DNATest {
 		DNA dna = new DNA("1_2_3");
 		
 		assertEquals("{001_002_003_000_000_000}", dna.toString());
+	}
+
+	@Test
+	public void alwaysContainsAtLeastOneGene() {
+		DNA dna = new DNA(new Integer[0]);
+		
+		assertArrayEquals(new Integer[] {0}, dna.getGenes());
 	}
 
 	@Test

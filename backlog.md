@@ -13,20 +13,19 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 * Optimize physics engine °°
 * Optimize infrared mode °
 * Space Partitioning uses a separate thread
-* Make FPS parametric to improve TPS on slower machines 
+* Make FPS parametric to improve TPS on slower machines
 * Switch to fast math library
 
 ###Computer Dummy
 
 * Try scrolling/panning commands and speeds under Linux °°°
-* Parameterize scroll/pan speeds °°
+* Parameterize scroll/pan speeds °
 * Externalize all configurable parameters to JSON files
 * Save Petri dish
 * Load Petri dish
 
 ###Genetist
 
-* Abort all-zeros DNA? (maybe not necessary now that there are minimum length/thickness) °°°
 * Each body segment's amplitude is genetically determined °°
 * Narjillo's skewing is genetically determined °°
 * Narjillo's color is an expression of its behaviour (amplitude, phase, etc)
@@ -50,7 +49,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Lab Technician
 
-* Fix bug with non-repeatable experiments °°°
+* Fix bug with non-repeatable experiments (is it still there?) °
 * Lock on single Narjillo °
 * Bench with stats
 * "Real Time" and "Fast" slider

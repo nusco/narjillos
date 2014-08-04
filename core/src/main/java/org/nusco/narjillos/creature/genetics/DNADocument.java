@@ -18,7 +18,7 @@ class DNADocument {
 			if (cleanedUpLine.matches("_*\\d.*"))
 				return parseDNAString(cleanedUpLine);
 		}
-		throw new IllegalArgumentException("Illegal DNA syntax. At least one line must begin with a number.");
+		throw new IllegalArgumentException("Illegal DNA syntax: no genes found.");
 	}
 
 	private String stripBraces(String line) {

@@ -13,8 +13,8 @@ public class DNA {
 
 	private final Integer[] genes;
 
-	DNA(Integer[] genes) {
-		this.genes = clipToByteSize(genes);
+	DNA(Integer... genes) {
+		this.genes = (genes.length > 0) ? clipToByteSize(genes) : new Integer[] {0};
 	}
 
 	public DNA(String dnaDocument) {

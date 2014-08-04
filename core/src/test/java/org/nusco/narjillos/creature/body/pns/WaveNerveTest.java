@@ -6,11 +6,11 @@ import org.junit.Test;
 
 public class WaveNerveTest {
 
-	final int LENGTH = 1;
-	final double LENGTH_AT_45_DEGREES = 0.707;
-
 	@Test
 	public void generatesASinusWave() {
+		final int LENGTH = 1;
+		final double LENGTH_AT_45_DEGREES = 0.707;
+
 		WaveNerve nerve = new WaveNerve(1.0 / 8);
 		
 		assertEquals(0, nerve.tick(0), 0.01);

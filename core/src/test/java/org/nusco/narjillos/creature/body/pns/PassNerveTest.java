@@ -7,7 +7,7 @@ import org.junit.Test;
 public class PassNerveTest {
 
 	@Test
-	public void passesASignalWithoutChangingIt() {
+	public void outputsTheSameSignalItGetsAsAnInput() {
 		PassNerve nerve = new PassNerve();
 
 		assertEquals(42, nerve.tick(42), 0);

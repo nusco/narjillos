@@ -2,13 +2,13 @@ package org.nusco.narjillos.creature.body.pns;
 
 
 /**
- * Generates an output that goes from -1 to 1 and back, in a sinusoidal
- * wave. The input signal is ignored.
+ * Ignores the input signal. Instead, it generates an output that goes from
+ * -1 to 1 and back, in a sinusoidal wave.
  * 
  * The left semiplane of the sinusoidal wave (from +90 to -90 degrees) has a
  * higher frequency than the right semiplane (from -90 to 90). This generates
- * a life-like motion, where organs move more slowly in one direction, and
- * more quickly in the other.
+ * an organic-like motion, where organs move more slower in one direction and
+ * quicker in the other.
  */
 public class WaveNerve implements Nerve {
 
@@ -16,7 +16,7 @@ public class WaveNerve implements Nerve {
 
 	private final double frequency;
 
-	private double currentAngle = 0;
+	private double angle = 0;
 
 	public WaveNerve(double frequency) {
 		this.frequency = frequency;
@@ -24,13 +24,9 @@ public class WaveNerve implements Nerve {
 
 	@Override
 	public double tick(double ignored) {
-		return getCurrentAmplitude();
-	}
-
-	private double getCurrentAmplitude() {
-		double amplitude = Math.sin(currentAngle);
-		currentAngle = update(currentAngle);
-		return amplitude;
+		double result = Math.sin(angle);
+		angle = update(angle);
+		return result;
 	}
 
 	private double update(double currentAngle) {

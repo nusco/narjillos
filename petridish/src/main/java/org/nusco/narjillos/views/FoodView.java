@@ -9,20 +9,14 @@ import javafx.scene.transform.Translate;
 import org.nusco.narjillos.pond.FoodPiece;
 import org.nusco.narjillos.shared.physics.Vector;
 
-class FoodView extends CircularObjectView {
+class FoodView extends RoundObjectView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.035;
 
 	private final Shape circle;
 
-	private Color color;
-
 	public FoodView(FoodPiece food) {
-		super(food);
-
-		Color baseColor = Color.BLUE;
-		color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0.8);
-		
+		super(food, 7);
 		circle = new Circle(getRadius());
 	}
 
@@ -30,10 +24,7 @@ class FoodView extends CircularObjectView {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 
-		if (infraredOn)
-			circle.setFill(Color.RED);
-		else
-			circle.setFill(color);
+		circle.setFill(getColor(infraredOn));
 		
 		circle.getTransforms().clear();
 		circle.getTransforms().add(moveToStartPoint());
@@ -41,13 +32,14 @@ class FoodView extends CircularObjectView {
 		return circle;
 	}
 
+	private Color getColor(boolean infraredOn) {
+		if (infraredOn)
+			return Color.RED;
+		return Color.BLUE;
+	}
+
 	private Translate moveToStartPoint() {
 		Vector position = getThing().getPosition();
 		return new Translate(position.x, position.y);
-	}
-
-	@Override
-	protected final double getRadius() {
-		return 7;
 	}
 }

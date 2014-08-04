@@ -6,13 +6,13 @@ import javafx.scene.shape.Circle;
 
 import org.nusco.narjillos.creature.Narjillo;
 
-class EyeView extends CircularObjectView {
+class EyeView extends RoundObjectView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.12;
 	private final Circle circle;
 
 	public EyeView(Narjillo swimmer) {
-		super(swimmer);
+		super(swimmer, 6);
 		circle = createCircle();
 	}
 
@@ -39,10 +39,5 @@ class EyeView extends CircularObjectView {
 
 	private Circle createCircle() {
 		return new Circle(getRadius());
-	}
-
-	@Override
-	protected final double getRadius() {
-		return 6;
 	}
 }

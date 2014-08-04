@@ -2,10 +2,13 @@ package org.nusco.narjillos.views;
 
 import org.nusco.narjillos.shared.things.Thing;
 
-public abstract class CircularObjectView extends ThingView {
+public abstract class RoundObjectView extends ThingView {
 
-	public CircularObjectView(Thing thing) {
+	private final int radius;
+
+	public RoundObjectView(Thing thing, int radius) {
 		super(thing);
+		this.radius = radius;
 	}
 
 	@Override
@@ -13,5 +16,7 @@ public abstract class CircularObjectView extends ThingView {
 		return viewport.isVisible(getThing().getPosition(), getRadius());
 	}
 
-	protected abstract double getRadius();
+	protected final double getRadius() {
+		return radius;
+	}
 }

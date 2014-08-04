@@ -16,7 +16,7 @@ class NarjilloView extends ThingView {
 	private final Group group = new Group();
 	private final List<OrganView> organViews;
 	private final MouthView mouthView;
-	private final CircularObjectView eyeView;
+	private final RoundObjectView eyeView;
 
 	public NarjilloView(Narjillo narjillo) {
 		super(narjillo);

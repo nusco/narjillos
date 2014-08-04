@@ -133,12 +133,25 @@ public class PetriDish extends MicroscopeEnvironment {
 	}
 
 	private synchronized Node getChronometers() {
-		String message = "FPS: " + framesChronometer.getTicksInLastSecond() +
-				" / TPS: " + ticksChronometer.getTicksInLastSecond() +
-				" / TICKS: " + NumberFormat.format(numberOfTicks) + 
-				"\nNARJ: " + getPond().getNumberOfNarjillos() + 
-				" / FOOD: " + getPond().getNumberOfFoodPieces();
-		Color color = targetTicksPerSecond == DEFAULT_TICKS_PER_SECOND ? Color.LIGHTGREEN : Color.HOTPINK;
-		return DataView.toNode(message, color);
+		Color color = isRealTime() ? Color.LIGHTGREEN : Color.HOTPINK;
+		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage(), color);
+	}
+
+	private String getStatisticsMessage() {
+		return "NARJ: " + getPond().getNumberOfNarjillos() + " / FOOD: " + getPond().getNumberOfFoodPieces();
+	}
+
+	private String getPerformanceMessage() {
+		String result = "FPS: " + framesChronometer.getTicksInLastSecond() +
+						" / TPS: " + ticksChronometer.getTicksInLastSecond() +
+						" / TICKS: " + NumberFormat.format(numberOfTicks);
+		if (isRealTime())
+			return result + " (realtime)";
+		else
+			return result + " (hi-speed)";
+	}
+
+	private boolean isRealTime() {
+		return targetTicksPerSecond == DEFAULT_TICKS_PER_SECOND;
 	}
 }

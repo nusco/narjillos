@@ -30,11 +30,12 @@ after this, take a tour through TODOs and FIXMEs and clean up
 * Space Partitioning for fast searches of pond
 * Optimize physics engine
 * Optimize infrared mode
-* Use fast math library
+* Switch to fast math library
 
 ## Computer Dummy
 
-* Externalize all configurable parameters to a JSON file
+* Parameterize scroll/pan speeds
+* Externalize all configurable parameters to JSON files
 * Save Petri dish
 * Load Petri dish
 
@@ -47,6 +48,7 @@ after this, take a tour through TODOs and FIXMEs and clean up
 * Whole-body size gene
 * View Narjillo's evolutionary path
 * Bullet-proof genome with a Chromosome class (for documentation, tool building and checking min and max values, for avoiding divisions by 0 and other potential issues)
+* Mutation rate is controlled by genes (this is what happens in nature)
 * DNA analyzer program
 * DNA diff program (based on DNA analyzer)
 * Sexual reproduction

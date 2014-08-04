@@ -47,9 +47,6 @@ public class PetriDish extends MicroscopeEnvironment {
 			return new Cosmos();
 		}
 		
-		if(argument.equals(".nrj"))
-			return new Cosmos(readDNAFromFile(argument));
-		
 		if(argument.endsWith(".nrj"))
 			return new Cosmos(readDNAFromFile(argument));
 		

@@ -22,11 +22,7 @@ public class Experiment {
 	public static void main(String... args) {
 		String gitCommit = (args.length > 0) ? args[0] : "UNKNOWN_COMMIT";
 		int seed = getSeed(args);
-		
-		seed = 834852975;
-		
 		System.out.println("Experiment ID: " + gitCommit + ":" + seed);
-
 		RanGen.seed(seed);
 		runExperiment();
 	}

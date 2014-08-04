@@ -18,28 +18,28 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
-import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.pond.Ecosystem;
 import org.nusco.narjillos.pond.PondEventListener;
 import org.nusco.narjillos.shared.things.Thing;
 
-public class PondView {
+public class EcosystemView {
 
-	private final Pond pond;
+	private final Ecosystem ecosystem;
 	private final Viewport viewport;
 	private final Shape background;
 	private final Map<Thing, ThingView> thingsToViews = new HashMap<>();
 
 	private boolean infrared = false;
 
-	public PondView(Pond pond) {
-		this.pond = pond;
-		viewport = new Viewport(pond);
-		background = new Rectangle(0, 0, pond.getSize(), pond.getSize());
+	public EcosystemView(Ecosystem ecosystem) {
+		this.ecosystem = ecosystem;
+		viewport = new Viewport(ecosystem);
+		background = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
 
-		for (Thing thing : pond.getThings())
+		for (Thing thing : ecosystem.getThings())
 			addThingView(thing);
 
-		pond.addEventListener(new PondEventListener() {
+		ecosystem.addEventListener(new PondEventListener() {
 			@Override
 			public void thingAdded(Thing thing) {
 				addThingView(thing);
@@ -135,8 +135,8 @@ public class PondView {
 		viewport.tick();
 	}
 
-	public Pond getPond() {
-		return pond;
+	public Ecosystem getPond() {
+		return ecosystem;
 	}
 
 	public synchronized void toggleInfrared() {

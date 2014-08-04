@@ -4,21 +4,22 @@ import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-public class Cosmos extends Pond {
+public class Drop extends Ecosystem {
 
 	public final static int SIZE = 20_000;
-	private static final int INITIAL_NUMBER_OF_FOOD_THINGS = 300;
+	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 300;
+	private static final int MAX_NUMBER_OF_FOOD_PIECES = 1500;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 50;
 	private static final int INITIAL_NUMBER_OF_NARJILLOS = 150;
 
-	public Cosmos() {
+	public Drop() {
 		this(null);
 	}
 
-	public Cosmos(DNA dna) {
+	public Drop(DNA dna) {
 		super(SIZE);
 
-		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_THINGS; i++)
+		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_PIECES; i++)
 			spawnFood(randomPosition());
 
 		for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++) {
@@ -33,7 +34,8 @@ public class Cosmos extends Pond {
 	public synchronized void tick() {
 		super.tick();
 
-		if (RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
+		if (getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES &&
+				RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
 			spawnFood(randomPosition());
 	}
 

@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class PondFinderTest {
 	
-	Pond pond = new Pond(1000);
+	Ecosystem pond = new Ecosystem(1000);
 	FoodPiece foodPiece1 = pond.spawnFood(Vector.cartesian(100, 100));
 	FoodPiece foodPiece2 = pond.spawnFood(Vector.cartesian(1000, 1000));
 	FoodPiece foodPiece3 = pond.spawnFood(Vector.cartesian(10000, 10000));
@@ -32,7 +32,7 @@ public class PondFinderTest {
 
 	@Test
 	public void returnsNullIfLookingForThingsInAThinglessWorld() {
-		Pond pond = new Pond(1000);
+		Ecosystem pond = new Ecosystem(1000);
 		
 		assertNull(pond.findFoodPiece(Vector.cartesian(150, 150)));
 		assertNull(pond.findNarjillo(Vector.cartesian(150, 150)));

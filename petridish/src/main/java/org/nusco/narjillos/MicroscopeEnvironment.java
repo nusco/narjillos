@@ -19,9 +19,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
-import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.pond.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.views.PondView;
+import org.nusco.narjillos.views.EcosystemView;
 import org.nusco.narjillos.views.Viewport;
 
 abstract class MicroscopeEnvironment extends Application {
@@ -42,8 +42,8 @@ abstract class MicroscopeEnvironment extends Application {
 	// possible to retrieve the args from JavaFX. Check how.
 	protected static String[] programArguments = new String[0];
 
-	private Pond pond;
-	private PondView pondView;
+	private Ecosystem ecosystem;
+	private EcosystemView ecosystemView;
 	
     private Node foreground;
 
@@ -61,7 +61,7 @@ abstract class MicroscopeEnvironment extends Application {
 
 		showRoot(root);
 
-		final Viewport viewport = getPondView().getViewport();
+		final Viewport viewport = getEcosystemView().getViewport();
 		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 
 		scene.setOnKeyPressed(createKeyboardHandler());
@@ -74,28 +74,28 @@ abstract class MicroscopeEnvironment extends Application {
 		primaryStage.show();
 	}
 
-	protected Pond getPond() {
-		return pond;
+	protected Ecosystem getEcosystem() {
+		return ecosystem;
 	}
 
 	protected synchronized Viewport getViewport() {
-		return getPondView().getViewport();
+		return getEcosystemView().getViewport();
 	}
 
-	private synchronized void setPond(Pond pond) {
-		this.pond = pond;
-		this.pondView = new PondView(pond);
+	private synchronized void setEcosystem(Ecosystem ecosystem) {
+		this.ecosystem = ecosystem;
+		this.ecosystemView = new EcosystemView(ecosystem);
 	}
 
-	private synchronized PondView getPondView() {
-		return pondView;
+	private synchronized EcosystemView getEcosystemView() {
+		return ecosystemView;
 	}
 	
 	private void startModelThread(final String[] programArguments) {
 		Thread updateThread = new Thread() {
 			@Override
 			public void run() {
-				setPond(createPond(programArguments));
+				setEcosystem(createEcosystem(programArguments));
 
 				modelThreadIsRunning = true;
 				
@@ -152,13 +152,13 @@ abstract class MicroscopeEnvironment extends Application {
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					moveViewport(0, PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.ENTER)
-					getPondView().toggleInfrared();
+					getEcosystemView().toggleInfrared();
 			}
 		};
 	}
 
 	protected abstract String getTitle();
-	protected abstract Pond createPond(String[] programArguments);
+	protected abstract Ecosystem createEcosystem(String[] programArguments);
 	protected abstract void afterModelTick();
 	protected abstract void afterViewTick();
 	protected abstract Node getEnvironmentSpecificOverlay();
@@ -167,7 +167,7 @@ abstract class MicroscopeEnvironment extends Application {
 
 	private synchronized void showRoot(final Group root) {
 		root.getChildren().clear();
-		root.getChildren().add(getPondView().toNode());
+		root.getChildren().add(getEcosystemView().toNode());
 
 		root.getChildren().add(foreground);
 		
@@ -192,8 +192,8 @@ abstract class MicroscopeEnvironment extends Application {
 	}
 
 	private void tick() {
-		getPond().tick();
-		getPondView().tick();
+		getEcosystem().tick();
+		getEcosystemView().tick();
 	}
 
 	void waitForAtLeast(int time, long since) {

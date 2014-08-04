@@ -8,8 +8,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.pond.Pond;
-import org.nusco.narjillos.pond.PrivatePond;
+import org.nusco.narjillos.pond.Ecosystem;
+import org.nusco.narjillos.pond.SmallDrop;
 import org.nusco.narjillos.shared.physics.Vector;
 
 public class IsolationChamber extends MicroscopeEnvironment {
@@ -19,16 +19,16 @@ public class IsolationChamber extends MicroscopeEnvironment {
 		launch(args);
 	}
 	
-	protected synchronized Pond createPond(String[] programArguments) {
+	protected synchronized Ecosystem createEcosystem(String[] programArguments) {
 		// TODO: maybe make it more flexible, like PetriDish
 		DNA randomDNA = DNA.random(DNA.CHROMOSOME_SIZE * 10);
 		System.out.println(randomDNA);
-		return new PrivatePond(randomDNA);
+		return new SmallDrop(randomDNA);
 	}
 
 	@Override
-	protected PrivatePond getPond() {
-		return (PrivatePond)super.getPond();
+	protected SmallDrop getEcosystem() {
+		return (SmallDrop)super.getEcosystem();
 	}
 	
 	protected String getTitle() {
@@ -56,13 +56,13 @@ public class IsolationChamber extends MicroscopeEnvironment {
 		return new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.SECONDARY) {
-					getPond().replaceNarjillo();
+					getEcosystem().replaceNarjillo();
 					return;
 				}
 				
 				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
 				Vector locationInPond = getViewport().toPC(clickedPoint);
-				getPond().replaceFood(locationInPond);
+				getEcosystem().replaceFood(locationInPond);
 			}
 		};
 	}

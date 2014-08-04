@@ -1,6 +1,6 @@
 package org.nusco.narjillos.views;
 
-import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.pond.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**
@@ -28,7 +28,7 @@ public class Viewport {
 	private final double minZoomLevel;
 	private volatile boolean userIsZooming = false;
 	
-	public Viewport(Pond pond) {
+	public Viewport(Ecosystem pond) {
 		this.pondSizePC = pond.getSize();
 		setCenterPC(getPondCenterPC());
 

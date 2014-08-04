@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.pond.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 
 //needs to be rethought if I want to test it. I should move all
@@ -14,21 +14,21 @@ public class ViewportTest {
 
 	@Test
 	public void hasTheSameSizeAsThePondByDefault() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 
 		assertMoreOrLessEquals(Vector.cartesian(100, 100), viewport.getSizeSC());
 	}
 
 	@Test
 	public void hasAMaximumInitialSize() {
-		Viewport viewport = new Viewport(new Pond(100000));
+		Viewport viewport = new Viewport(new Ecosystem(100000));
 
 		assertMoreOrLessEquals(Vector.cartesian(Viewport.MAX_INITIAL_SIZE_SC, Viewport.MAX_INITIAL_SIZE_SC), viewport.getSizeSC());
 	}
 
 	@Test
 	public void canBeResized() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		viewport.setSizeSC(Vector.cartesian(1000, 900));
 		
 		assertMoreOrLessEquals(Vector.cartesian(1000, 900), viewport.getSizeSC());
@@ -36,7 +36,7 @@ public class ViewportTest {
 
 	@Test
 	public void isCenteredOnTheCenterOfThePondByDefault() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 	}
@@ -97,7 +97,7 @@ public class ViewportTest {
 
 	@Test
 	public void zoomingItDoesNotChangeItsCenter() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 
 		viewport.zoomIn();
@@ -111,7 +111,7 @@ public class ViewportTest {
 
 	@Test
 	public void resizingItDoesNotChangeItsCenter() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
 
 		viewport.setSizeSC(Vector.cartesian(20, 1000));
@@ -183,7 +183,7 @@ public class ViewportTest {
 	
 	@Test
 	public void cannotZoomInOverAMaximum() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		for (int i = 0; i < 50; i++)
 			viewport.zoomIn();
 		
@@ -192,7 +192,7 @@ public class ViewportTest {
 
 	@Test
 	public void zoomsOverTheMaxRegressToTheMax() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		viewport.setSizeSC(Vector.cartesian(50, 50));
 		viewport.setZoomLevel(Viewport.MAX_ZOOM + 0.2);
 
@@ -204,7 +204,7 @@ public class ViewportTest {
 
 	@Test
 	public void cannotZoomOutToSeeMoreThanTheEntirePond() {
-		Viewport viewport = new Viewport(new Pond(100));
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		for (int i = 0; i < 100; i++)
 			viewport.zoomOut();
 		
@@ -212,7 +212,7 @@ public class ViewportTest {
 	}
 
 	private Viewport createAndStabilizeViewport(long size) {
-		Viewport viewport = new Viewport(new Pond(size));
+		Viewport viewport = new Viewport(new Ecosystem(size));
 		for (int i = 0; i < 1000; i++)
 			viewport.tick();
 		return viewport;

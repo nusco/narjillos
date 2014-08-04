@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.pond.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 
 // needs to be rethought if I want to test it. I should move all
@@ -44,7 +44,7 @@ public class ViewportVisibilityTest {
 		//    ____________________________________________________________
 		// (0, 200)                                                  (200, 200)      
 
-		viewport = new Viewport(new Pond(200));
+		viewport = new Viewport(new Ecosystem(200));
 		stabilizeViewport();
 		viewport.setSizeSC(Vector.cartesian(100, 40));
 		assertTrue(viewport.getCenterPC().almostEquals(Vector.cartesian(100, 100)));

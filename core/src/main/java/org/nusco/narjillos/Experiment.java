@@ -4,8 +4,8 @@ import java.util.Random;
 
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.pond.Cosmos;
-import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.pond.Drop;
+import org.nusco.narjillos.pond.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
@@ -42,7 +42,7 @@ public class Experiment {
 	private static void runExperiment() {
 		System.out.println(getHeadersString());
 
-		Pond pond = new Cosmos();
+		Ecosystem pond = new Drop();
 		for (long tick = 0; tick < CYCLES; tick++) {
 			pond.tick();
 			checkForMassExtinction(pond, tick);
@@ -55,7 +55,7 @@ public class Experiment {
 		System.out.println("*** The experiment is over at tick " + formatTick(CYCLES) + " (" + getTimeElapsed() + "s) ***");
 	}
 
-	private static void checkForMassExtinction(Pond pond, long tick) {
+	private static void checkForMassExtinction(Ecosystem pond, long tick) {
 		if (pond.getNumberOfNarjillos() > 0)
 			return;
 		System.out.println("*** Extinction happens. (tick " + tick + ") ***");
@@ -66,7 +66,7 @@ public class Experiment {
 		return "\ntime, " + "ticks, " + "ticks_per_second, " + "narjillos, " + "food_pieces, " + "most_typical_dna";
 	}
 
-	private static String getStatusString(Pond pond, long tick) {
+	private static String getStatusString(Ecosystem pond, long tick) {
 		Creature mostTypicalSpecimen = pond.getPopulation().getMostTypicalSpecimen();
 		if (mostTypicalSpecimen == null)
 			mostTypicalSpecimen = getNullCreature();
@@ -74,7 +74,7 @@ public class Experiment {
 		return getStatusString(pond, tick, mostTypicalSpecimen);
 	}
 
-	private static String getStatusString(Pond pond, long tick, Creature mostTypicalSpecimen) {
+	private static String getStatusString(Ecosystem pond, long tick, Creature mostTypicalSpecimen) {
 		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + pond.getNumberOfNarjillos() + ", "
 				+ pond.getNumberOfFoodPieces() + ", "
 				+ mostTypicalSpecimen.getDNA();

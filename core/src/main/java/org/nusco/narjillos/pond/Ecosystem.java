@@ -19,7 +19,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-public class Pond {
+public class Ecosystem {
 
 	private static final double COLLISION_DISTANCE = 30;
 
@@ -31,7 +31,7 @@ public class Pond {
 
 	private int tickCounter = 0;
 
-	public Pond(long size) {
+	public Ecosystem(long size) {
 		this.size = size;
 	}
 

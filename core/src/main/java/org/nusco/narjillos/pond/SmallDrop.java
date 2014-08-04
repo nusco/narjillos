@@ -8,14 +8,14 @@ import org.nusco.narjillos.shared.physics.Vector;
 // TODO: I should really make everything in Pond and its subclasses
 // more thread-safe. Right now many external interventions from
 // another thread have the potential to break it.
-public class PrivatePond extends Pond {
+public class SmallDrop extends Ecosystem {
 
 	private final static int SIZE = 3000;
 	private final static Vector CENTER = Vector.cartesian(SIZE / 5, SIZE / 2);
 	
 	private final static ConcurrentLinkedQueue<DNA> narjillos = new ConcurrentLinkedQueue<DNA>();
 
-	public PrivatePond(DNA dna) {
+	public SmallDrop(DNA dna) {
 		super(SIZE);
 		createManyNarjillos(dna);
 

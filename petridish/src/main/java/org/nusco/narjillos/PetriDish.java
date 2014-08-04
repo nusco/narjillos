@@ -13,8 +13,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.pond.Cosmos;
-import org.nusco.narjillos.pond.Pond;
+import org.nusco.narjillos.pond.Drop;
+import org.nusco.narjillos.pond.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
@@ -34,9 +34,9 @@ public class PetriDish extends MicroscopeEnvironment {
 		launch(args);
 	}
 	
-	protected synchronized Pond createPond(String[] programArguments) {
+	protected synchronized Ecosystem createEcosystem(String[] programArguments) {
 		if (programArguments.length == 0)
-			return new Cosmos();
+			return new Drop();
 		
 		String argument = programArguments[0];
 
@@ -44,13 +44,13 @@ public class PetriDish extends MicroscopeEnvironment {
 		if(isInteger) {
 			int seed = Integer.parseInt(argument);
 			RanGen.seed(seed);
-			return new Cosmos();
+			return new Drop();
 		}
 		
 		if(argument.endsWith(".nrj"))
-			return new Cosmos(readDNAFromFile(argument));
+			return new Drop(readDNAFromFile(argument));
 		
-		return new Cosmos(new DNA(argument));
+		return new Drop(new DNA(argument));
 	}
 
 	private boolean isInteger(String argument) {
@@ -138,7 +138,7 @@ public class PetriDish extends MicroscopeEnvironment {
 	}
 
 	private String getStatisticsMessage() {
-		return "NARJ: " + getPond().getNumberOfNarjillos() + " / FOOD: " + getPond().getNumberOfFoodPieces();
+		return "NARJ: " + getEcosystem().getNumberOfNarjillos() + " / FOOD: " + getEcosystem().getNumberOfFoodPieces();
 	}
 
 	private String getPerformanceMessage() {

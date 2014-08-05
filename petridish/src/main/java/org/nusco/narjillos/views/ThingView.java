@@ -38,16 +38,15 @@ abstract class ThingView {
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("narjillo"))
 			return new NarjilloView((Narjillo) thing);
-		else if (thing.getLabel().equals("food_piece")) {
+		else if (thing.getLabel().equals("food_piece"))
 			return new FoodView((FoodPiece)thing);
-		} else
+		else
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}
 
 	protected Effect getEffects(double zoomLevel, boolean infraredOn) {
-		if (infraredOn) {
-			return new Blend(BlendMode.OVERLAY, getHaloEffect(zoomLevel * 2), new Glow(30));
-		}
+		if (infraredOn)
+			return getHaloEffect(zoomLevel * 2);
 		
 		return getHaloEffect(zoomLevel);
 	}

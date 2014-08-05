@@ -1,7 +1,0 @@
-This is the typical creature that emerges during this period of commits. This one in particular comes out of experiment 5f26b47e2a3472df3f0abe6332013ab0b6bc5c40:834852975. They usually keep mutating slightly, but they keep their basic shape until they get extinct.
-
-This one took a very long time to corner itself into exinction - around tick 13370000. There was no death of old age on this commit, so a single individual could go on living forever as long as it had food.
-
-These "swarmers" consume little energy and spread like crazy, consuming all the food on their path and quickly getting rid of all competitors. Once they own the pond, they go on consuming food until eventually the hit a lull and go extinct. I need to find a way to steer evolution away from these pests.
-
-{095_084_133_164_013_139}{042_230_237_156_116_166}{076_023_115_000_024_049}{121_080_255_081_177_238}{081_180_046_173_149_027}

@@ -18,7 +18,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Computer Dummy
 
-* Try scrolling/panning commands and speeds under Linux °°°
+* Try scrolling/panning commands and speeds under Linux °°
 * Parameterize scroll/pan speeds °
 * Externalize all configurable parameters to JSON files
 * Save Petri dish
@@ -49,8 +49,6 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Lab Technician
 
-* Show same information as running _experiment_ when running _petri_ °°°
-* Fix bug with non-repeatable experiments (is it still there?) °°°
 * Lock on single Narjillo °
 * Bench with stats
 * "Real Time" and "Fast" slider

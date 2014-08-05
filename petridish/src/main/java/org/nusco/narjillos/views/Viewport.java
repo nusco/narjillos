@@ -4,11 +4,11 @@ import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**
- * A Viewport is a zoomable, rectangular view over a pond.
+ * A Viewport is a zoomable, rectangular view over an ecosystem.
  * 
  * It uses two systems of coordinates: SC are "screen coordinates" - the
- * position in the application window. PC are "pond coordinates" - the
- * position in the pond.
+ * position in the application window. EC are "ecosystem coordinates" - the
+ * position in the ecosystem.
  */
 public class Viewport {
 
@@ -17,32 +17,32 @@ public class Viewport {
 	private static final double ZOOM_VELOCITY = 1.03;
 	private static final double[] ZOOM_CLOSEUP_LEVELS = new double[] { 0.15, 0.6 };
 
-	private final double pondSizePC;
+	private final double ecosystemSizeEC;
 	private Vector sizeSC;
-	private Vector centerPC;
+	private Vector centerEC;
 	private double zoomLevel;
 
-	private Vector targetCenterPC;
+	private Vector targetCenterEC;
 	private double targetZoomLevel;
 	private final double idealZoomLevel;
 	private final double minZoomLevel;
 	private volatile boolean userIsZooming = false;
 	
-	public Viewport(Ecosystem pond) {
-		this.pondSizePC = pond.getSize();
-		setCenterPC(getPondCenterPC());
+	public Viewport(Ecosystem ecosystem) {
+		this.ecosystemSizeEC = ecosystem.getSize();
+		setCenterEC(getEcosystemCenterEC());
 
-		double size = Math.min(pond.getSize(), MAX_INITIAL_SIZE_SC);
+		double size = Math.min(ecosystem.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
-		idealZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / pondSizePC;
+		idealZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / ecosystemSizeEC;
 		minZoomLevel = idealZoomLevel / 2.5;
 		
-		centerOnPond();
+		centerOnEcosystem();
 		zoomToFit();
 	}
 
-	private Vector getPondCenterPC() {
-		return Vector.cartesian(pondSizePC / 2, pondSizePC / 2);
+	private Vector getEcosystemCenterEC() {
+		return Vector.cartesian(ecosystemSizeEC / 2, ecosystemSizeEC / 2);
 	}
 
 	public Vector getSizeSC() {
@@ -53,26 +53,26 @@ public class Viewport {
 		this.sizeSC = sizeSC;
 	}
 
-	public Vector getPositionPC() {
-		Vector offset = Vector.cartesian(toLengthPC(sizeSC.x), toLengthPC(sizeSC.y)).by(0.5);
-		return centerPC.minus(offset);
+	public Vector getPositionEC() {
+		Vector offset = Vector.cartesian(toLengthEC(sizeSC.x), toLengthEC(sizeSC.y)).by(0.5);
+		return centerEC.minus(offset);
 	}
 
-	public Vector getCenterPC() {
-		return centerPC;
+	public Vector getCenterEC() {
+		return centerEC;
 	}
 
 	public void setCenterSC(Vector centerSC) {
-		centerPC = toPC(centerSC);
+		centerEC = toEC(centerSC);
 	}
 
-	final void setCenterPC(Vector centerPC) {
-		this.centerPC = centerPC;
-		this.targetCenterPC = centerPC;
+	final void setCenterEC(Vector centerEC) {
+		this.centerEC = centerEC;
+		this.targetCenterEC = centerEC;
 	}
 
 	public void moveBy(Vector velocitySC) {
-		targetCenterPC = centerPC.plus(Vector.cartesian(toLengthPC(velocitySC.x), toLengthPC(velocitySC.y)));
+		targetCenterEC = centerEC.plus(Vector.cartesian(toLengthEC(velocitySC.x), toLengthEC(velocitySC.y)));
 	}
 
 	public double getZoomLevel() {
@@ -87,7 +87,7 @@ public class Viewport {
 	public void zoomOut() {
 		userIsZooming = true;
 		if (zoomLevel - minZoomLevel < 0.001) 
-			targetCenterPC = getPondCenterPC();
+			targetCenterEC = getEcosystemCenterEC();
 
 		setZoomLevel(zoomLevel / ZOOM_VELOCITY);
 	}
@@ -97,8 +97,8 @@ public class Viewport {
 		zoomLevel = targetZoomLevel / 10;
 	}
 
-	private void centerOnPond() {
-		centerPC = getPondCenterPC();
+	private void centerOnEcosystem() {
+		centerEC = getEcosystemCenterEC();
 	}
 
 	final void setZoomLevel(double zoomLevel) {
@@ -122,23 +122,23 @@ public class Viewport {
 		}
 	}
 
-	public boolean isVisible(Vector pointPC, double marginPC) {
-		Vector distance = centerPC.minus(pointPC);
+	public boolean isVisible(Vector pointEC, double marginEC) {
+		Vector distance = centerEC.minus(pointEC);
 		double maxAxialDistancePC = Math.max(Math.abs(distance.x), Math.abs(distance.y));
-		double maxVisibleAxialDistance = Math.max(toLengthPC(sizeSC.x), toLengthPC(sizeSC.y)) / 2;
-		return (maxAxialDistancePC <= maxVisibleAxialDistance + marginPC);
+		double maxVisibleAxialDistance = Math.max(toLengthEC(sizeSC.x), toLengthEC(sizeSC.y)) / 2;
+		return (maxAxialDistancePC <= maxVisibleAxialDistance + marginEC);
 	}
 
-	private double toLengthPC(double lengthSC) {
+	private double toLengthEC(double lengthSC) {
 		return lengthSC / zoomLevel;
 	}
 
-	public final Vector toPC(Vector pointSC) {
-		return getPositionPC().plus(pointSC.by(1.0 / zoomLevel));
+	public final Vector toEC(Vector pointSC) {
+		return getPositionEC().plus(pointSC.by(1.0 / zoomLevel));
 	}
 
 	public void flyToTargetSC(Vector targetSC) {
-		targetCenterPC = toPC(targetSC);
+		targetCenterEC = toEC(targetSC);
 	}
 
 	public void flyToNextZoomCloseupLevel() {
@@ -153,11 +153,11 @@ public class Viewport {
 	}
 
 	private void panToTarget() {
-		if (targetCenterPC.almostEquals(centerPC))
+		if (targetCenterEC.almostEquals(centerEC))
 			return;
 
-		Vector distanceToTarget = targetCenterPC.minus(centerPC);
-		centerPC = centerPC.plus(distanceToTarget.by(0.1));
+		Vector distanceToTarget = targetCenterEC.minus(centerEC);
+		centerEC = centerEC.plus(distanceToTarget.by(0.1));
 	}
 
 	private void zoomToTarget() {

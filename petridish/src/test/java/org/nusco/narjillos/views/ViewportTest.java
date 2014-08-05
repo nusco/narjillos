@@ -13,7 +13,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 public class ViewportTest {
 
 	@Test
-	public void hasTheSameSizeAsThePondByDefault() {
+	public void hasTheSameSizeAsTheEcosystemByDefault() {
 		Viewport viewport = new Viewport(new Ecosystem(100));
 
 		assertMoreOrLessEquals(Vector.cartesian(100, 100), viewport.getSizeSC());
@@ -35,10 +35,10 @@ public class ViewportTest {
 	}
 
 	@Test
-	public void isCenteredOnTheCenterOfThePondByDefault() {
+	public void isCenteredOnTheCenterOfTheEcosystemByDefault() {
 		Viewport viewport = new Viewport(new Ecosystem(100));
 
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 	}
 
 	@Test
@@ -46,29 +46,29 @@ public class ViewportTest {
 		Viewport viewport = createAndStabilizeViewport(100);
 		viewport.setCenterSC(Vector.cartesian(100, 200));
 		
-		assertMoreOrLessEquals(Vector.cartesian(100, 200), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(100, 200), viewport.getCenterEC());
 	}
 
 	@Test
 	public void hasAnUpperAngleInTheOriginByDefault() {
 		Viewport viewport = createAndStabilizeViewport(100);
 		
-		System.out.println(viewport.getPositionPC());
-		assertMoreOrLessEquals(Vector.ZERO, viewport.getPositionPC());
+		System.out.println(viewport.getPositionEC());
+		assertMoreOrLessEquals(Vector.ZERO, viewport.getPositionEC());
 	}
 
 	@Test
 	public void canBeRecentered() {
 		Viewport viewport = createAndStabilizeViewport(800);
 		viewport.setSizeSC(Vector.cartesian(100, 400));
-		assertMoreOrLessEquals(Vector.cartesian(350, 200), viewport.getPositionPC());
-		assertMoreOrLessEquals(Vector.cartesian(400, 400), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(350, 200), viewport.getPositionEC());
+		assertMoreOrLessEquals(Vector.cartesian(400, 400), viewport.getCenterEC());
 		assertEquals(1, viewport.getZoomLevel(), 0.001);
 
 		viewport.setCenterSC(Vector.cartesian(300, 500));
 
-		assertMoreOrLessEquals(Vector.cartesian(650, 700), viewport.getCenterPC());
-		assertMoreOrLessEquals(Vector.cartesian(600, 500), viewport.getPositionPC());
+		assertMoreOrLessEquals(Vector.cartesian(650, 700), viewport.getCenterEC());
+		assertMoreOrLessEquals(Vector.cartesian(600, 500), viewport.getPositionEC());
 	}
 
 	@Test
@@ -79,17 +79,17 @@ public class ViewportTest {
 	}
 
 	@Test
-	public void zoomsToViewTheEntirePondAtTheBeginning() {
-		final long pondSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
-		Viewport viewport = createAndStabilizeViewport(pondSize);
+	public void zoomsToViewTheEntireEcosystemAtTheBeginning() {
+		final long ecosystemSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
+		Viewport viewport = createAndStabilizeViewport(ecosystemSize);
 
 		assertEquals(0.1, viewport.getZoomLevel(), 0.001);
 	}
 
 	@Test
 	public void resizingItDoesNotChangeTheZoomLevel() {
-		final long pondSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
-		Viewport viewport = createAndStabilizeViewport(pondSize);
+		final long ecosystemSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
+		Viewport viewport = createAndStabilizeViewport(ecosystemSize);
 
 		viewport.setSizeSC(Vector.cartesian(100, 10000));
 		assertEquals(0.1, viewport.getZoomLevel(), 0.001);
@@ -98,38 +98,38 @@ public class ViewportTest {
 	@Test
 	public void zoomingItDoesNotChangeItsCenter() {
 		Viewport viewport = new Viewport(new Ecosystem(100));
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 
 		viewport.zoomIn();
 
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 
 		viewport.zoomOut();
 
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 	}
 
 	@Test
 	public void resizingItDoesNotChangeItsCenter() {
 		Viewport viewport = new Viewport(new Ecosystem(100));
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 
 		viewport.setSizeSC(Vector.cartesian(20, 1000));
 
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 	}
 
 	@Test
 	public void resizingChangesItsPosition() {
 		Viewport viewport = createAndStabilizeViewport(300);
 		viewport.setSizeSC(Vector.cartesian(50, 60));
-		viewport.setCenterPC(Vector.cartesian(100, 200));
-		assertMoreOrLessEquals(Vector.cartesian(75, 170), viewport.getPositionPC());
+		viewport.setCenterEC(Vector.cartesian(100, 200));
+		assertMoreOrLessEquals(Vector.cartesian(75, 170), viewport.getPositionEC());
 		
 		viewport.setSizeSC(Vector.cartesian(40, 90));
 
-		assertMoreOrLessEquals(Vector.cartesian(100, 200), viewport.getCenterPC());
-		assertMoreOrLessEquals(Vector.cartesian(80, 155), viewport.getPositionPC());
+		assertMoreOrLessEquals(Vector.cartesian(100, 200), viewport.getCenterEC());
+		assertMoreOrLessEquals(Vector.cartesian(80, 155), viewport.getPositionEC());
 	}
 
 	@Test
@@ -172,13 +172,13 @@ public class ViewportTest {
 		viewport.setZoomLevel(1);
 		for (int i = 0; i < 100; i++)
 			viewport.tick();
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 
 		viewport.zoomOut();
 		for (int i = 0; i < 100; i++)
 			viewport.tick();
 		
-		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterPC());
+		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 	}
 	
 	@Test
@@ -203,7 +203,7 @@ public class ViewportTest {
 	}
 
 	@Test
-	public void cannotZoomOutToSeeMoreThanTheEntirePond() {
+	public void cannotZoomOutToSeeMoreThanTheEntireEcosystem() {
 		Viewport viewport = new Viewport(new Ecosystem(100));
 		for (int i = 0; i < 100; i++)
 			viewport.zoomOut();

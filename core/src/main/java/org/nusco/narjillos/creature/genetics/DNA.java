@@ -79,11 +79,7 @@ public class DNA {
 	}
 
 	private int clipToByteSize(int number) {
-		if (number < 0)
-			number = 0;
-		if (number > 255)
-			number = 255;
-		return number;
+		return Math.max(0, Math.min(255, number));
 	}
 
 	public static DNA random() {

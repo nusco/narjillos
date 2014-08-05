@@ -19,6 +19,9 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
+//TODO: I should really make everything in here and its subclasses
+//more thread-safe. Right now many external interventions from
+//another thread have the potential to break it.
 public class Ecosystem {
 
 	private static final double COLLISION_DISTANCE = 30;
@@ -27,7 +30,7 @@ public class Ecosystem {
 	private final Set<FoodPiece> foodPieces = Collections.newSetFromMap(new ConcurrentHashMap<FoodPiece, Boolean>());
 	private final Population narjillos = new Population();
 
-	private final List<PondEventListener> pondEvents = new LinkedList<>();
+	private final List<EcosystemEventListener> ecosystemEvents = new LinkedList<>();
 
 	private int tickCounter = 0;
 
@@ -189,17 +192,17 @@ public class Ecosystem {
 	}
 
 	private final void notifyThingAdded(Thing thing) {
-		for (PondEventListener pondEvent : pondEvents)
-			pondEvent.thingAdded(thing);
+		for (EcosystemEventListener ecosystemEvent : ecosystemEvents)
+			ecosystemEvent.thingAdded(thing);
 	}
 
 	private final void notifyThingRemoved(Thing thing) {
-		for (PondEventListener pondEvent : pondEvents)
-			pondEvent.thingRemoved(thing);
+		for (EcosystemEventListener ecosystemEvent : ecosystemEvents)
+			ecosystemEvent.thingRemoved(thing);
 	}
 
-	public void addEventListener(PondEventListener pondEventListener) {
-		pondEvents.add(pondEventListener);
+	public void addEventListener(EcosystemEventListener ecosystemEventListener) {
+		ecosystemEvents.add(ecosystemEventListener);
 	}
 
 	public int getNumberOfFoodPieces() {

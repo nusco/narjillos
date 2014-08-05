@@ -52,7 +52,6 @@ public class RanGen {
 	}
 
 	private static void setSeed(int seed) {
-		System.out.println("RanGen seed: " + seed);
 		RanGen.seed = seed;
 	}
 
@@ -65,7 +64,6 @@ public class RanGen {
 	}
 
 	private static void seedRandomly() {
-		System.out.println("RanGen: seeding randomly");
 		setSeed((int)(Math.random() * Integer.MAX_VALUE));
 	}
 

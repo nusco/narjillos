@@ -4,7 +4,7 @@ import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-public class Drop extends Ecosystem {
+public class WaterDrop extends Ecosystem {
 
 	public final static int SIZE = 20_000;
 	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 300;
@@ -12,11 +12,11 @@ public class Drop extends Ecosystem {
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 50;
 	private static final int INITIAL_NUMBER_OF_NARJILLOS = 150;
 
-	public Drop() {
+	public WaterDrop() {
 		this(null);
 	}
 
-	public Drop(DNA dna) {
+	public WaterDrop(DNA dna) {
 		super(SIZE);
 
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_PIECES; i++)

@@ -11,37 +11,37 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.FoodPiece;
-import org.nusco.narjillos.ecosystem.PondEventListener;
+import org.nusco.narjillos.ecosystem.EcosystemEventListener;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 
-public class PondTest {
+public class WaterDropTest {
 	
-	Ecosystem pond = new Ecosystem(1000);
-	FoodPiece foodPiece1 = pond.spawnFood(Vector.cartesian(100, 100));
-	FoodPiece foodPiece2 = pond.spawnFood(Vector.cartesian(1000, 1000));
-	FoodPiece foodPiece3 = pond.spawnFood(Vector.cartesian(10000, 10000));
-	Narjillo swimmer1 = pond.spawnNarjillo(Vector.cartesian(150, 150), DNA.random());
-	Narjillo swimmer2 = pond.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random());
+	Ecosystem drop = new Ecosystem(1000);
+	FoodPiece foodPiece1 = drop.spawnFood(Vector.cartesian(100, 100));
+	FoodPiece foodPiece2 = drop.spawnFood(Vector.cartesian(1000, 1000));
+	FoodPiece foodPiece3 = drop.spawnFood(Vector.cartesian(10000, 10000));
+	Narjillo swimmer1 = drop.spawnNarjillo(Vector.cartesian(150, 150), DNA.random());
+	Narjillo swimmer2 = drop.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random());
 
 	@Before
-	public void tickPondOnce() {
-		pond.tick();
+	public void tickEcosystemOnce() {
+		drop.tick();
 	}
 	
 	@Test
 	public void countsFoodPieces() {
-		assertEquals(3, pond.getNumberOfFoodPieces());
+		assertEquals(3, drop.getNumberOfFoodPieces());
 	}
 
 	@Test
 	public void countsNarjillos() {
-		assertEquals(2, pond.getNumberOfNarjillos());
+		assertEquals(2, drop.getNumberOfNarjillos());
 	}
 
 	@Test
 	public void returnsAllTheThings() {
-		Set<Thing> things = pond.getThings();
+		Set<Thing> things = drop.getThings();
 		
 		assertTrue(things.contains(swimmer1));
 		assertTrue(things.contains(foodPiece1));
@@ -50,7 +50,7 @@ public class PondTest {
 	@Test
 	public void sendsEventsWhenAddingThings() {
 		final boolean[] eventFired = {false};
-		pond.addEventListener(new PondEventListener() {
+		drop.addEventListener(new EcosystemEventListener() {
 
 			@Override
 			public void thingAdded(Thing thing) {
@@ -62,7 +62,7 @@ public class PondTest {
 			}
 		});
 		
-		pond.spawnFood(Vector.ZERO);
+		drop.spawnFood(Vector.ZERO);
 		assertTrue(eventFired[0]);
 	}
 }

@@ -9,7 +9,7 @@ import java.util.Random;
 
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.ecosystem.Drop;
+import org.nusco.narjillos.ecosystem.WaterDrop;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
@@ -57,12 +57,12 @@ public class Experiment {
 
 	private Ecosystem extractEcosystem(LinkedList<String> argumentsList) {
 		if (argumentsList.isEmpty())
-			return new Drop();
+			return new WaterDrop();
 		
 		if(argumentsList.getFirst().endsWith(".nrj"))
-			return new Drop(readDNAFromFile(argumentsList.removeFirst()));
+			return new WaterDrop(readDNAFromFile(argumentsList.removeFirst()));
 		
-		return new Drop(new DNA(argumentsList.removeFirst()));
+		return new WaterDrop(new DNA(argumentsList.removeFirst()));
 	}
 
 	private boolean isInteger(String argument) {
@@ -130,8 +130,8 @@ public class Experiment {
 		return "\ntime, " + "ticks, " + "ticks_per_second, " + "narjillos, " + "food_pieces, " + "most_typical_dna";
 	}
 
-	private String getStatusString(Ecosystem pond, long tick) {
-		return getStatusString(pond, tick, getMostTypicalSpecimen(pond));
+	private String getStatusString(Ecosystem ecosystem, long tick) {
+		return getStatusString(ecosystem, tick, getMostTypicalSpecimen(ecosystem));
 	}
 
 	private Creature getMostTypicalSpecimen(Ecosystem ecosystem) {
@@ -143,9 +143,9 @@ public class Experiment {
 		return mostTypicalSpecimen;
 	}
 
-	private String getStatusString(Ecosystem pond, long tick, Creature mostTypicalSpecimen) {
-		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + pond.getNumberOfNarjillos() + ", "
-				+ pond.getNumberOfFoodPieces() + ", "
+	private String getStatusString(Ecosystem ecosystem, long tick, Creature mostTypicalSpecimen) {
+		return getTimeElapsed() + ", " + tick + ", " + ticksChronometer.getTicksInLastSecond() + ", " + ecosystem.getNumberOfNarjillos() + ", "
+				+ ecosystem.getNumberOfFoodPieces() + ", "
 				+ mostTypicalSpecimen.getDNA();
 	}
 

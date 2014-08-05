@@ -1,5 +1,7 @@
 /**
- * This package turns a genotype into a phenotype. In other words, you can create an
+ * This package adds semantics to the DNA, turning a genotype into a phenotype.
+ * 
+ * In other words, you can create an
  * {@link org.nusco.narjillos.creature.body.embriology.Embryo} with a
  * {@link org.nusco.narjillos.creature.genetics.DNA},
  * and then call {@link org.nusco.narjillos.creature.body.embriology.Embryo#develop} to

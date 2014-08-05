@@ -19,7 +19,7 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.PondEventListener;
+import org.nusco.narjillos.ecosystem.EcosystemEventListener;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class EcosystemView {
@@ -39,7 +39,7 @@ public class EcosystemView {
 		for (Thing thing : ecosystem.getThings())
 			addThingView(thing);
 
-		ecosystem.addEventListener(new PondEventListener() {
+		ecosystem.addEventListener(new EcosystemEventListener() {
 			@Override
 			public void thingAdded(Thing thing) {
 				addThingView(thing);
@@ -67,9 +67,9 @@ public class EcosystemView {
 		Group things = new Group();
 		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn));
 
-		things.getTransforms().add(new Translate(-viewport.getPositionPC().x, -viewport.getPositionPC().y));
+		things.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
 		things.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
-											viewport.getPositionPC().x, viewport.getPositionPC().y));
+											viewport.getPositionEC().x, viewport.getPositionEC().y));
 
 		setZoomLevelEffects(things);
 		
@@ -135,7 +135,7 @@ public class EcosystemView {
 		viewport.tick();
 	}
 
-	public Ecosystem getPond() {
+	public Ecosystem getEcosystem() {
 		return ecosystem;
 	}
 

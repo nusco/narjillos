@@ -22,7 +22,7 @@ public class ViewportVisibilityTest {
 		// (0, 0)                                                    (200, 0)      
 		//    ____________________________________________________________
 		//    |                                                          |
-		//    |                     POND (200 x 200)                     |
+		//    |                   ECOSYSTEM (200 x 200)                  |
 		//    |                                                          |
 		//    |                                                          |
 		//    |                                                          |
@@ -47,7 +47,7 @@ public class ViewportVisibilityTest {
 		viewport = new Viewport(new Ecosystem(200));
 		stabilizeViewport();
 		viewport.setSizeSC(Vector.cartesian(100, 40));
-		assertTrue(viewport.getCenterPC().almostEquals(Vector.cartesian(100, 100)));
+		assertTrue(viewport.getCenterEC().almostEquals(Vector.cartesian(100, 100)));
 	}
 
 	@Test

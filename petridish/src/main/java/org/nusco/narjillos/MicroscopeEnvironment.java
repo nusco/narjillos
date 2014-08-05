@@ -19,7 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
-import org.nusco.narjillos.pond.Ecosystem;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.views.EcosystemView;
 import org.nusco.narjillos.views.Viewport;
@@ -48,6 +48,7 @@ abstract class MicroscopeEnvironment extends Application {
     private Node foreground;
 
     private volatile boolean modelThreadIsRunning;
+	private int ticks = 0;
 
 	@Override
 	public void start(final Stage primaryStage) throws InterruptedException {
@@ -194,6 +195,13 @@ abstract class MicroscopeEnvironment extends Application {
 	private void tick() {
 		getEcosystem().tick();
 		getEcosystemView().tick();
+
+		reportMostTypicalSpecimen();
+	}
+
+	private void reportMostTypicalSpecimen() {
+		if(++ticks % 10000 == 0)
+			System.out.println(">" + ticks + ": " + getEcosystem().getPopulation().getMostTypicalSpecimen().getDNA());
 	}
 
 	void waitForAtLeast(int time, long since) {

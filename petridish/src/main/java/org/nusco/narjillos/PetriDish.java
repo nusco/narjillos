@@ -13,8 +13,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.pond.Drop;
-import org.nusco.narjillos.pond.Ecosystem;
+import org.nusco.narjillos.ecosystem.Drop;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;

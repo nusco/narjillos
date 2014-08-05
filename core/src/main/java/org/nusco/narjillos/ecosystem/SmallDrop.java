@@ -1,4 +1,4 @@
-package org.nusco.narjillos.pond;
+package org.nusco.narjillos.ecosystem;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,7 +25,7 @@ public class SmallDrop extends Ecosystem {
 
 	// This must be done at the very beginning, because mutations imply
 	// random number generation - and RanGen doesn't work from a separate
-	// thread. A private pond must be called from multiple threads, so
+	// thread. A SmallDrop must be called from multiple threads, so
 	// we need to do all the random stuff during initialization.
 	private void createManyNarjillos(DNA dna) {
 		narjillos.add(dna);

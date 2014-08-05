@@ -1,4 +1,4 @@
-package org.nusco.narjillos.pond;
+package org.nusco.narjillos.ecosystem;
 
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;

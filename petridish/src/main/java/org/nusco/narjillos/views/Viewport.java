@@ -1,6 +1,6 @@
 package org.nusco.narjillos.views;
 
-import org.nusco.narjillos.pond.Ecosystem;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**

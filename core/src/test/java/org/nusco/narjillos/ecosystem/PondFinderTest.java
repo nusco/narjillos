@@ -1,4 +1,4 @@
-package org.nusco.narjillos.pond;
+package org.nusco.narjillos.ecosystem;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.FoodPiece;
 import org.nusco.narjillos.shared.physics.Vector;
 
 public class PondFinderTest {

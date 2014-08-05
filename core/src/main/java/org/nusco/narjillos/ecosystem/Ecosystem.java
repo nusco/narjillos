@@ -1,4 +1,4 @@
-package org.nusco.narjillos.pond;
+package org.nusco.narjillos.ecosystem;
 
 import java.util.Collection;
 import java.util.Collections;

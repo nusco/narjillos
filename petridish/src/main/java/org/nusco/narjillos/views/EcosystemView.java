@@ -18,8 +18,8 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
-import org.nusco.narjillos.pond.Ecosystem;
-import org.nusco.narjillos.pond.PondEventListener;
+import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.PondEventListener;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class EcosystemView {

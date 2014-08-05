@@ -49,7 +49,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Lab Technician
 
-* Fix bug with non-repeatable experiments (is it still there?) °
+* Fix bug with non-repeatable experiments (is it still there?) °°°
 * Lock on single Narjillo °
 * Bench with stats
 * "Real Time" and "Fast" slider

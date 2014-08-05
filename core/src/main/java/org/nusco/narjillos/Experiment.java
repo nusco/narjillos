@@ -4,8 +4,8 @@ import java.util.Random;
 
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.pond.Drop;
-import org.nusco.narjillos.pond.Ecosystem;
+import org.nusco.narjillos.ecosystem.Drop;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
@@ -104,6 +104,7 @@ public class Experiment {
 			@Override
 			public String getLabel() {
 				return "nobody";
-			}};
+			}
+		};
 	}
 }

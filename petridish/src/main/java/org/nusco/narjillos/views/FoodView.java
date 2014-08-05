@@ -6,7 +6,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Translate;
 
-import org.nusco.narjillos.pond.FoodPiece;
+import org.nusco.narjillos.ecosystem.FoodPiece;
 import org.nusco.narjillos.shared.physics.Vector;
 
 class FoodView extends RoundObjectView {

@@ -9,7 +9,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.pond.FoodPiece;
+import org.nusco.narjillos.ecosystem.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 
 abstract class ThingView {

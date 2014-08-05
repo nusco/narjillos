@@ -8,8 +8,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.pond.Ecosystem;
-import org.nusco.narjillos.pond.SmallDrop;
+import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.SmallDrop;
 import org.nusco.narjillos.shared.physics.Vector;
 
 public class IsolationChamber extends MicroscopeEnvironment {

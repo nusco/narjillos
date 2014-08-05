@@ -17,7 +17,7 @@ public class DelayNerve implements Nerve {
 	@Override
 	public double tick(double inputSignal) {
 		buffer.add(inputSignal);
-		if(buffer.size() < delay)
+		if(buffer.size() < delay + 1)
 			return buffer.getFirst();
 		return buffer.pop();
 	}

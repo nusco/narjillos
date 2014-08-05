@@ -1,11 +1,8 @@
 package org.nusco.narjillos.views;
 
 import javafx.scene.Node;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
-import javafx.scene.effect.Glow;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.creature.Narjillo;

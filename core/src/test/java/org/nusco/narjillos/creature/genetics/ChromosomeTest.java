@@ -8,7 +8,7 @@ public class ChromosomeTest {
 
 	@Test
 	public void returnsASingleGene() {
-		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6);
+		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7);
 
 		assertEquals(4, chromosome.getGene(3));
 	}
@@ -17,25 +17,25 @@ public class ChromosomeTest {
 	public void padsMissingGenesWithZeroes() {
 		Chromosome chromosome = new Chromosome(1, 2, 3, 4);
 
-		Chromosome expected = new Chromosome(1, 2, 3, 4, 0, 0);
+		Chromosome expected = new Chromosome(1, 2, 3, 4, 0, 0, 0);
 		
 		assertEquals(expected, chromosome);
 	}
 
 	@Test(expected=RuntimeException.class)
 	public void chokesOnNegativeGenes() {
-		new Chromosome(-1, -2, -3, -4, -5, -6);
+		new Chromosome(-1, -2, -3, -4, -5, -6, -7);
 	}
 
 	@Test(expected=RuntimeException.class)
 	public void chokesOnGenesOver255() {
-		new Chromosome(1, 2, 3, 4, 5, 256);
+		new Chromosome(1, 2, 3, 4, 5, 6, 256);
 	}
 
 	@Test
 	public void convertsToAString() {
-		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6);
+		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7);
 		
-		assertEquals("{001_002_003_004_005_006}", chromosome.toString());
+		assertEquals("{001_002_003_004_005_006_007}", chromosome.toString());
 	}
 }

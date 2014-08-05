@@ -10,7 +10,7 @@ public abstract class BodyPart {
 	private final int thickness;
 	private final double mass;
 	private final ColorByte color;
-	
+
 	// caching - ugly, but has huge performance benefits
 	private Vector cachedStartPoint = null;
 	private Vector cachedEndPoint = null;

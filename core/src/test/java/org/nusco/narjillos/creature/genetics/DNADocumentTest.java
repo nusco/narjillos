@@ -62,7 +62,7 @@ public class DNADocumentTest {
 	public void ignoresAnythingAfterTheGenesLine() {
 		String dnaString = 	"comment\n" + 
 							" {1_2_3}\n" + 
-							"4_5_6_ignored_anyway";
+							"4_5_6_7_ignored_anyway";
 		DNADocument dnaDocument = new DNADocument(dnaString);
 
 		assertArrayEquals(new Integer[] {1, 2, 3}, dnaDocument.toGenes());
@@ -70,8 +70,8 @@ public class DNADocumentTest {
 
 	@Test
 	public void convertsDNAToADocumentString() {
-		DNA dna = new DNA("1_2_3_4_5_6_7_8_9_10_11_12_255");
+		DNA dna = new DNA("1_2_3_4_5_6_7_8_9_10_11_12_13_14_255");
 		
-		assertEquals("{001_002_003_004_005_006}{007_008_009_010_011_012}{255_000_000_000_000_000}", dna.toString());
+		assertEquals("{001_002_003_004_005_006_007}{008_009_010_011_012_013_014}{255_000_000_000_000_000_000}", dna.toString());
 	}
 }

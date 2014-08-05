@@ -81,8 +81,8 @@ public abstract class Organ extends BodyPart {
 		return nerve;
 	}
 
-	public Organ sproutOrgan(int length, int thickness, ColorByte hue, int delay, int angleToParentAtRest) {
-		return addChild(new BodySegment(length, thickness, hue, this, new DelayNerve(delay), angleToParentAtRest));
+	public BodySegment sproutOrgan(int length, int thickness, ColorByte hue, int delay, int angleToParentAtRest, int amplitude) {
+		return addChild(new BodySegment(length, thickness, hue, this, new DelayNerve(delay), angleToParentAtRest, amplitude));
 	}
 
 	// TODO: remove and consider pushing down the sproutOrgan group of methods
@@ -90,7 +90,7 @@ public abstract class Organ extends BodyPart {
 		return addChild(new BodySegment(nerve));
 	}
 
-	private Organ addChild(Organ child) {
+	private BodySegment addChild(BodySegment child) {
 		children.add(child);
 		return child;
 	}

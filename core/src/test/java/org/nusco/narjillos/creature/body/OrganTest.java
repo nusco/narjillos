@@ -25,8 +25,8 @@ public abstract class OrganTest extends BodyPartTest {
 	
 	@Test
 	public void knowsItsChildren() {
-		Organ child1 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, 45);
-		Organ child2 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, -45);
+		Organ child1 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, 45, 0);
+		Organ child2 = getBodyPart().sproutOrgan(20, 10, new ColorByte(100), 0, -45, 0);
 
 		List<Organ> expected = new LinkedList<>();
 		expected.add(child1);
@@ -37,7 +37,7 @@ public abstract class OrganTest extends BodyPartTest {
 
 	@Test
 	public void sproutsOrgans() {
-		BodyPart child = getBodyPart().sproutOrgan(20, 12, new ColorByte(100), 0, 45);
+		BodyPart child = getBodyPart().sproutOrgan(20, 12, new ColorByte(100), 0, 45, 0);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());
 	}

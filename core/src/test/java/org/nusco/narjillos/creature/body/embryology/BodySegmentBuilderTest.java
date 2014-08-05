@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature.body.embryology;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.BodySegment;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.genetics.Chromosome;
@@ -37,6 +37,13 @@ public class BodySegmentBuilderTest extends OrganBuilderTest {
 	}
 
 	@Test
+	public void decodesAnAmplitudeBetween1And100() {
+		assertEquals(1, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 1)).getAmplitude());
+		assertEquals(2, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 5)).getAmplitude());
+		assertEquals(80, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 255)).getAmplitude());
+	}
+
+	@Test
 	public void buildsABodySegment() {
 		int controlGene = 0b00000000;
 		int lengthGene = 40;
@@ -44,15 +51,17 @@ public class BodySegmentBuilderTest extends OrganBuilderTest {
 		int delayGene = 90;
 		int colorGene = 40;
 		int angleToParentGene = 81;
+		int amplitudeGene = 107;
 
-		Chromosome chromosome = new Chromosome(controlGene, lengthGene, thicknessGene, delayGene, colorGene, angleToParentGene);
+		Chromosome chromosome = new Chromosome(controlGene, lengthGene, thicknessGene, delayGene, colorGene, angleToParentGene, amplitudeGene);
 		BodySegmentBuilder builder = createConcreteOrganBuilder(chromosome);
 		Organ head = new Head(10, 10, new ColorByte(40), 10);
-		BodyPart bodyPart = builder.build(head, 1);
+		BodySegment bodySegment = builder.build(head, 1);
 		
-		assertEquals(40, bodyPart.getLength(), 0);
-		assertEquals(50, bodyPart.getThickness(), 0);
-		assertEquals(new ColorByte(40), bodyPart.getColor());
-		assertEquals(-25, bodyPart.getAbsoluteAngle(), 0);
+		assertEquals(40, bodySegment.getLength(), 0);
+		assertEquals(50, bodySegment.getThickness(), 0);
+		assertEquals(new ColorByte(40), bodySegment.getColor());
+		assertEquals(-25, bodySegment.getAbsoluteAngle(), 0);
+		assertEquals(34, bodySegment.getAmplitude(), 0);
 	}
 }

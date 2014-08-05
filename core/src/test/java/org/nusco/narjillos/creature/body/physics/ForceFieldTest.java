@@ -26,8 +26,8 @@ public class ForceFieldTest {
 	@Test
 	public void recordsMovements() {
 		Organ organ = new Head(1, 0, new ColorByte(0), 1);
-		Organ child1 = organ.sproutOrgan(2, 0, new ColorByte(0), 0, 0);
-		child1.sproutOrgan(3, 0, new ColorByte(0), 0, 0);
+		Organ child1 = organ.sproutOrgan(2, 0, new ColorByte(0), 0, 0, 0);
+		child1.sproutOrgan(3, 0, new ColorByte(0), 0, 0, 0);
 
 		final int[] movement = new int[3];
 		ForceField recorder = new ForceField() {

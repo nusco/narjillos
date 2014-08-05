@@ -31,7 +31,7 @@ public class BodyTest {
 		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
-		head.sproutOrgan(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), 0, 0);
+		head.sproutOrgan(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), 0, 0, 0);
 		Body body = new Body(head);
 		
 		double expectedMassInGrams = 212;

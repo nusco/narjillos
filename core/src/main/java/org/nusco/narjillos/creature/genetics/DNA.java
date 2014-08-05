@@ -8,7 +8,6 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class DNA {
 
 	private static final int MUTATION_RANGE = 30;
-	public static final int CHROMOSOME_SIZE = 6;
 	public static final double MUTATION_RATE = 0.008;
 
 	private final Integer[] genes;
@@ -36,7 +35,7 @@ public class DNA {
 				resultChromosomes.add(copy(nextChromosome));
 			// add a chromosome every now and then
 			if (mutationHappens())
-				resultChromosomes.add(randomGenes(CHROMOSOME_SIZE));
+				resultChromosomes.add(randomGenes(Chromosome.SIZE));
 		}
 
 		Integer[] resultGenes = flatten(resultChromosomes);
@@ -83,7 +82,7 @@ public class DNA {
 	}
 
 	public static DNA random() {
-		int size = CHROMOSOME_SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
+		int size = Chromosome.SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
 		return random(size);
 	}
 

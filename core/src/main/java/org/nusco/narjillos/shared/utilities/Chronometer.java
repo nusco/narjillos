@@ -3,17 +3,17 @@ package org.nusco.narjillos.shared.utilities;
 public class Chronometer {
 
 	private int totalTicks = 0;
-	private int ticksInThisSecond = 0;
+	private int ticks = 0;
 	private long startTime = 0;
 	private int ticksInLastSecond = 0;
 	
 	public synchronized void tick() {
 		if (System.currentTimeMillis() - startTime > 1000) {
 			startTime = System.currentTimeMillis();
-			ticksInLastSecond = ticksInThisSecond;
-			ticksInThisSecond = 0;
+			ticksInLastSecond = ticks;
+			ticks = 0;
 		}
-		ticksInThisSecond++;
+		ticks++;
 		totalTicks++;
 	}
 

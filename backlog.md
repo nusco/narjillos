@@ -1,22 +1,23 @@
-This is my backlog for the Narjillo project. It's divided in sections by "type of user". Inside each sections, features are roughly prioritized.
-I generally work on the high-priority features, but I pick the "user" that I want to be depending on my mood of the day.
+This is my backlog for the Narjillo project.
+It's divided in sections by "type of user". Inside each sections, features are roughly prioritized.
+I generally work on the high-priority features, but I pick the "user" that tickles my fancy each day.
 
 ###Physicist
 
-* Narjillos rotate around their center of mass, not around their mouths °°°
+* Narjillos pivot round their center of mass, not around their mouths °°°
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place) °
-* Fix "shaking" of limbs in some Narjillos?
+* Fix "shaking" of limbs in some Narjillos
 
 ###Speed Demon
 
 * Space Partitioning for fast thing searches °°
 * Optimize physics engine °°
 * Optimize infrared mode °
-* Space Partitioning uses a separate thread
-* Make FPS parametric to improve TPS on slower machines
+* Space Partitioning runs in a separate thread
 * Switch to fast math library
+* Make FPS parametric to improve TPS on slower machines
 
-###Computer Dummy
+###Gamer
 
 * Try scrolling/panning commands and speeds under Linux °°
 * Parameterize scroll/pan speeds °
@@ -26,9 +27,8 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Genetist
 
-* Each body segment's amplitude is genetically determined °°
+* Narjillo's color is an expression of its behaviour (amplitude, phase, etc) °°
 * Narjillo's skewing is genetically determined °°
-* Narjillo's color is an expression of its behaviour (amplitude, phase, etc)
 * Whole-body size gene
 * View Narjillo's evolutionary path
 * Mutation rate is controlled by genes (this is what happens in nature)
@@ -78,8 +78,8 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Artist
 
+* Birth animation °
 * Give a sense of movement when following a locked-on Narjillo
-* Birth animation
 * Speckles in liquid (or some other effect)
 
 ##Neurologist

@@ -18,7 +18,7 @@ public class DNATest {
 	public void convertsToADNADocumentString() {
 		DNA dna = new DNA("1_2_3");
 		
-		assertEquals("{001_002_003_000_000_000}", dna.toString());
+		assertEquals("{001_002_003_000_000_000_000}", dna.toString());
 	}
 
 	@Test

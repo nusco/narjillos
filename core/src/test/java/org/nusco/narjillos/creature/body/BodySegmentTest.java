@@ -15,7 +15,7 @@ public class BodySegmentTest extends OrganTest {
 	@Override
 	public Organ createConcreteOrgan(int length, int thickness) {
 		parent = new Head(10, 5, new ColorByte(100), 1);
-		return new BodySegment(20, 10, new ColorByte(100), parent, new DelayNerve(10), 0);
+		return new BodySegment(20, 10, new ColorByte(100), parent, new DelayNerve(10), 0, 1);
 	}
 
 	@Override
@@ -31,23 +31,30 @@ public class BodySegmentTest extends OrganTest {
 	@Test
 	public void hasAnAbsoluteAngle() {
 		Head head = new Head(0, 0, new ColorByte(100), 1);
-		Organ organ1 = new BodySegment(0, 0, new ColorByte(100), head, new PassNerve(), 30);
-		BodyPart organ2 = new BodySegment(0, 0, new ColorByte(100), organ1, new PassNerve(), -10);
+		Organ organ1 = new BodySegment(0, 0, new ColorByte(100), head, new PassNerve(), 30, 1);
+		BodyPart organ2 = new BodySegment(0, 0, new ColorByte(100), organ1, new PassNerve(), -10, 1);
 		assertEquals(20, organ2.getAbsoluteAngle(), 0);
+	}
+	
+	@Test
+	public void hasAnAmplitude() {
+		Head head = new Head(0, 0, new ColorByte(100), 1);
+		BodySegment organ = new BodySegment(0, 0, new ColorByte(100), head, new PassNerve(), -10, 42);
+		assertEquals(42, organ.getAmplitude(), 0);
 	}
 
 	@Override
 	public void hasAnEndPoint() {
 		Head head = new Head(10, 0, new ColorByte(100), 1);
-		Organ organ1 = head.sproutOrgan(10, 0, new ColorByte(100), 0, 90);
-		BodyPart organ2 = organ1.sproutOrgan(10, 0, new ColorByte(100), 0, -90);
+		Organ organ1 = head.sproutOrgan(10, 0, new ColorByte(100), 0, 90, 1);
+		BodyPart organ2 = organ1.sproutOrgan(10, 0, new ColorByte(100), 0, -90, 1);
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
 	
 	@Test
 	public void hasACenterOfMass() {
 		Head head = new Head(10, 0, new ColorByte(100), 1);
-		Organ organ = head.sproutOrgan(10, 0, new ColorByte(100), 0, 20);
+		Organ organ = head.sproutOrgan(10, 0, new ColorByte(100), 0, 20, 1);
 		// uses the current angle, not the angle at rest
 		organ.setAngleToParent(45);
 		

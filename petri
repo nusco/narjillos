@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# ensure that the code is up to date
-./gradlew build
+./prepare
 
 # start a petri dish (optionally passing a *.nrj file)
 java -cp petridish/build/libs/narjillos_petridish-0.0.1.jar:core/build/libs/narjillos-0.0.1.jar org.nusco.narjillos.PetriDish $1

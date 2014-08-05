@@ -49,6 +49,7 @@ I generally work on the high-priority features, but I pick the "user" that I wan
 
 ###Lab Technician
 
+* Show same information as running _experiment_ when running _petri_ °°°
 * Fix bug with non-repeatable experiments (is it still there?) °°°
 * Lock on single Narjillo °
 * Bench with stats

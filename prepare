@@ -1,0 +1,11 @@
+# ensure that the code is up to date
+./gradlew --quiet build
+
+# check for uncommitted files
+if ! git diff --quiet HEAD --
+then
+  echo
+  echo -e "\e[0;31mWarning: uncommitted files in git."
+  echo -e "You might get a nonrepeatable result from this experiment.\e[0m"
+  echo
+fi

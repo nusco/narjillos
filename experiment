@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# ensure that the code is up to date
-./gradlew build
+./prepare
 
 # start an experiment (passing the seed if any)
 java -cp core/build/libs/narjillos-0.0.1.jar org.nusco.narjillos.Experiment `git rev-parse HEAD` $1

@@ -36,7 +36,7 @@ public abstract class OrganTest extends BodyPartTest {
 	}
 
 	@Test
-	public void sproutsVisibleOrgans() {
+	public void sproutsOrgans() {
 		BodyPart child = getBodyPart().sproutOrgan(20, 12, new ColorByte(100), 0, 45);
 		assertEquals(20, child.getLength());
 		assertEquals(12, child.getThickness());

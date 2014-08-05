@@ -19,5 +19,5 @@ public class NumberFormatTest {
 		assertEquals("999.99M", NumberFormat.format(999_994_000));
 		assertEquals("1000M", NumberFormat.format(999_995_000));
 		assertEquals("1234.11M", NumberFormat.format(1_234_111_000));
-}
+	}
 }

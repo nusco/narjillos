@@ -8,8 +8,6 @@ import org.nusco.narjillos.creature.genetics.Chromosome;
 
 class TwinOrgansBuilder {
 
-	static final int MIRROR_ORGAN_BIT = 0b00000001;
-
 	private final Chromosome chromosome1;
 	private final Chromosome chromosome2;
 
@@ -18,12 +16,11 @@ class TwinOrgansBuilder {
 		this.chromosome2 = chromosome2;
 	}
 
-	/**
-	 * Once in twice, organs are mirrored.
-	 */
+	// Once in twice, organs are mirrored.
 	private boolean isMirrorSegment(Chromosome chromosome) {
 		int controlGene = chromosome.getGene(0);
-		return (controlGene & TwinOrgansBuilder.MIRROR_ORGAN_BIT) == TwinOrgansBuilder.MIRROR_ORGAN_BIT;
+		final int MIRROR_ORGAN_BIT = 0b00000001;
+		return (controlGene & MIRROR_ORGAN_BIT) == MIRROR_ORGAN_BIT;
 	}
 
 	public List<Organ> buildChildren(Organ parent) {

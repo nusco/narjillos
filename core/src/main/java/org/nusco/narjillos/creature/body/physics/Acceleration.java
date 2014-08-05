@@ -5,17 +5,16 @@ import org.nusco.narjillos.shared.physics.Vector;
 public class Acceleration {
 
 	private final Vector linear;
-	public double angular;
+	public final double angular;
 	public final double energySpent;
 
-	public Acceleration(Vector movement, double rotationAngle, double energySpent) {
-		this.linear = movement;
-		this.angular = rotationAngle;
+	public Acceleration(Vector linear, double angular, double energySpent) {
+		this.linear = linear;
+		this.angular = angular;
 		this.energySpent = energySpent;
 	}
 
 	public Vector getLinearAccelerationAlong(Vector axis) {
 		return linear.getProjectionOn(axis);
 	}
-
 }

@@ -13,8 +13,8 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class TwinOrgansBuilderTest {
 	
-	private static final int MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN_BIT;
-	private static final int NOT_MIRRORING = TwinOrgansBuilder.MIRROR_ORGAN_BIT ^ TwinOrgansBuilder.MIRROR_ORGAN_BIT;
+	private static final int MIRRORING = 1;
+	private static final int NOT_MIRRORING = 0;
 
 	Chromosome notMirroring1 = new Chromosome(NOT_MIRRORING, 60, 70, 80, 90, 100);
 	Chromosome notMirroring2 = new Chromosome(NOT_MIRRORING, 61, 71, 81, 91, 101);

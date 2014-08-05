@@ -11,7 +11,7 @@ import org.nusco.narjillos.creature.genetics.DNAParser;
 
 public class Embryo {
 
-	private DNA genes;
+	private final DNA genes;
 
 	public Embryo(DNA genes) {
 		this.genes = genes;

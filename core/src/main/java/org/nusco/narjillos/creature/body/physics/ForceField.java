@@ -9,9 +9,6 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class ForceField {
 
-	// TODO: shouldn't the scales follow for the units I pick?
-	// If they don't, then maybe I use the wrong units or
-	// physical calculations
 	private static final double PROPULSION_SCALE = 0.05;
 	private static final double ROTATION_SCALE = 0.0001;
 
@@ -20,7 +17,7 @@ public class ForceField {
 	// 1 means that every movement is divided by the entire mass. This makes
 	// high mass a sure-fire loss.
 	// 0.5 means half as much penalty. This justifies having a high mass, for
-	// the extra push it affords.
+	// the extra push it gives you.
 	private static final double MASS_PENALTY_DURING_PROPULSION = 0.3;
 
 	private final List<Segment> forces = new LinkedList<>();

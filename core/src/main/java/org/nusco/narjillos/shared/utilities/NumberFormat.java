@@ -19,5 +19,4 @@ public class NumberFormat {
 		double millions = (double) number / 1_000_000;
 		return MILLIONS_FORMAT.format(millions);
 	}
-
 }

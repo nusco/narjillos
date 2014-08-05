@@ -11,8 +11,8 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
- * Connects with othr BodyParts in a tree. Also moves through the calculateAngleToParent()
- * method, that it delegates to subclasses.
+ * Connects with other BodyParts in a tree. Also moves, thanks to the calculateAngleToParent()
+ * abstract method.
  */
 public abstract class Organ extends BodyPart {
 

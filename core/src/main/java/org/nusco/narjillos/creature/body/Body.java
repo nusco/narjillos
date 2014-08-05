@@ -64,7 +64,7 @@ public class Body {
 		return mass;
 	}
 
-	public List<BodyPart> getOrgans() {
+	public List<BodyPart> getBodyParts() {
 		return parts;
 	}
 
@@ -74,7 +74,7 @@ public class Body {
 
 	private double calculateTotalMass() {
 		double result = 0;
-		List<BodyPart> allOrgans = getOrgans();
+		List<BodyPart> allOrgans = getBodyParts();
 		for (BodyPart organ : allOrgans)
 			result += organ.getMass();
 		return result;
@@ -103,17 +103,16 @@ public class Body {
 	}
 	
 	public Vector getCenterOfMass() {
-		List<BodyPart> organs = getOrgans();
+		List<BodyPart> organs = getBodyParts();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<BodyPart> iterator = getOrgans().iterator();
+		Iterator<BodyPart> iterator = getBodyParts().iterator();
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
 			BodyPart organ = iterator.next();
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
 		}
 		
 		// do it in one swoop instead of calling Vector#plus() a lot
-		// (but check in the end whether this has any effect on performance -
-		// probably not, frankly)
+		// TODO: does this have any visible effect on performance?
 		int totalX = 0;
 		int totalY = 0;
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {

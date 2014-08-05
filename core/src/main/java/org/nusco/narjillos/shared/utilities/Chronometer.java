@@ -1,5 +1,8 @@
 package org.nusco.narjillos.shared.utilities;
 
+/**
+ * Counts ticks.
+ */
 public class Chronometer {
 
 	private int totalTicks = 0;

@@ -1,5 +1,8 @@
 package org.nusco.narjillos.shared.physics;
 
+/**
+ * A vector that has a specific origin in the plane.
+ */
 public class Segment {
 
 	public final Vector startPoint;

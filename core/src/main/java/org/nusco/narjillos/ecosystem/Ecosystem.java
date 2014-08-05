@@ -22,6 +22,11 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 //TODO: I should really make everything in here and its subclasses
 //more thread-safe. Right now many external interventions from
 //another thread have the potential to break it.
+/**
+ * The place that Narjillos live in.
+ * 
+ * Can find things and detecting collisions.
+ */
 public class Ecosystem {
 
 	private static final double COLLISION_DISTANCE = 30;

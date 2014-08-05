@@ -173,6 +173,6 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	public List<BodyPart> getOrgans() {
-		return body.getOrgans();
+		return body.getBodyParts();
 	}
 }

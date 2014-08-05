@@ -1,5 +1,5 @@
 /**
- * The main classes that represent a narjillo.
+ * The main classes for Narjillos.
  */
 package org.nusco.narjillos.creature;
 

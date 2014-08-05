@@ -24,6 +24,7 @@ public class Embryo {
 
 		List<Organ> bodyParts = new LinkedList<>();
 		bodyParts.add(head);
+		
 		createDescendants(bodyParts, parser);
 		
 		return new Body(head);

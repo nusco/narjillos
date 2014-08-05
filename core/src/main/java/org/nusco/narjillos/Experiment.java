@@ -92,7 +92,7 @@ public class Experiment {
 		
 		reportStatus();
 		
-		return checkForMassExtinction();
+		return areThereSurvivors();
 	}
 
 	public Ecosystem getEcosystem() {
@@ -118,7 +118,7 @@ public class Experiment {
 		return timeInSeconds;
 	}
 
-	private boolean checkForMassExtinction() {
+	private boolean areThereSurvivors() {
 		if (getEcosystem().getNumberOfNarjillos() > 0)
 			return true;
 		

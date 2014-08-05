@@ -15,33 +15,33 @@ import org.nusco.narjillos.ecosystem.EcosystemEventListener;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 
-public class WaterDropTest {
+public class EcosystemTest {
 	
-	Ecosystem drop = new Ecosystem(1000);
-	FoodPiece foodPiece1 = drop.spawnFood(Vector.cartesian(100, 100));
-	FoodPiece foodPiece2 = drop.spawnFood(Vector.cartesian(1000, 1000));
-	FoodPiece foodPiece3 = drop.spawnFood(Vector.cartesian(10000, 10000));
-	Narjillo swimmer1 = drop.spawnNarjillo(Vector.cartesian(150, 150), DNA.random());
-	Narjillo swimmer2 = drop.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random());
+	Ecosystem ecosystem = new Ecosystem(1000);
+	FoodPiece foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
+	FoodPiece foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
+	FoodPiece foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
+	Narjillo swimmer1 = ecosystem.spawnNarjillo(Vector.cartesian(150, 150), DNA.random());
+	Narjillo swimmer2 = ecosystem.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random());
 
 	@Before
 	public void tickEcosystemOnce() {
-		drop.tick();
+		ecosystem.tick();
 	}
 	
 	@Test
 	public void countsFoodPieces() {
-		assertEquals(3, drop.getNumberOfFoodPieces());
+		assertEquals(3, ecosystem.getNumberOfFoodPieces());
 	}
 
 	@Test
 	public void countsNarjillos() {
-		assertEquals(2, drop.getNumberOfNarjillos());
+		assertEquals(2, ecosystem.getNumberOfNarjillos());
 	}
 
 	@Test
 	public void returnsAllTheThings() {
-		Set<Thing> things = drop.getThings();
+		Set<Thing> things = ecosystem.getThings();
 		
 		assertTrue(things.contains(swimmer1));
 		assertTrue(things.contains(foodPiece1));
@@ -50,7 +50,7 @@ public class WaterDropTest {
 	@Test
 	public void sendsEventsWhenAddingThings() {
 		final boolean[] eventFired = {false};
-		drop.addEventListener(new EcosystemEventListener() {
+		ecosystem.addEventListener(new EcosystemEventListener() {
 
 			@Override
 			public void thingAdded(Thing thing) {
@@ -62,7 +62,7 @@ public class WaterDropTest {
 			}
 		});
 		
-		drop.spawnFood(Vector.ZERO);
+		ecosystem.spawnFood(Vector.ZERO);
 		assertTrue(eventFired[0]);
 	}
 }

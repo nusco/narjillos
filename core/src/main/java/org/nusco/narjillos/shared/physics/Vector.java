@@ -1,5 +1,8 @@
 package org.nusco.narjillos.shared.physics;
 
+/**
+ * A point on a plane, in either cartesian or polar coordinates.
+ */
 public class Vector {
 
 	public static final Vector ZERO = Vector.cartesian(0, 0);

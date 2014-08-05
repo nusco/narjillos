@@ -45,30 +45,27 @@ public class PetriDish extends Application {
 	private final Chronometer framesChronometer = new Chronometer();
 	private int targetTicksPerSecond = DEFAULT_TICKS_PER_SECOND;
 
-	private volatile boolean modelThreadIsRunning;
+	private volatile boolean isModelThreadReady;
 	
 	public PetriDish() {
 	}
 
 	@Override
-	public void start(final Stage primaryStage) throws InterruptedException {
+	public void start(final Stage primaryStage) {
 		final Group root = new Group();
 
 		startModelThread(programArguments);
-		waitUntilModelThreadIsRunning();
 		
 		updateForeground();
+		update(root);
 		startViewThread(root);
 
-		showRoot(root);
-
-		final Viewport viewport = getEcosystemView().getViewport();
-		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
-
+		Viewport viewport = getEcosystemView().getViewport();
+		Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 		scene.setOnKeyPressed(createKeyboardHandler());
 		scene.setOnMouseClicked(createMouseEvent());
 		scene.setOnScroll(createMouseScrollHandler());
-		addListenersToResizeViewportWhenTheUserResizesTheWindow(scene, viewport);
+		bindViewportSizeToWindowSize(scene, viewport);
 		
 		primaryStage.setTitle("Narjillos - Petri Dish");
 		primaryStage.setScene(scene);
@@ -93,18 +90,19 @@ public class PetriDish extends Application {
 			public void run() {
 				experiment = new Experiment(experimentArguments);
 				ecosystemView = new EcosystemView(getEcosystem());
-
-				modelThreadIsRunning = true;
+				isModelThreadReady = true;
 				
 				while (true) {
 					long startTime = System.currentTimeMillis();
-					tick();
-					waitForAtLeast(getTicksPeriod(), startTime);
+					if (!tick())
+						return;
+					waitUntilTimePassed(getTicksPeriod(), startTime);
 				}
 			}
 		};
 		updateThread.setDaemon(true);
 		updateThread.start();
+		waitUntilModelThreadIsReady();
 	}
 
 	private void startViewThread(final Group root) {
@@ -120,11 +118,11 @@ public class PetriDish extends Application {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							showRoot(root);
+							update(root);
 							renderingFinished = true;
 						}
 					});
-					waitForAtLeast(getFramesPeriod(), startTime);
+					waitUntilTimePassed(getFramesPeriod(), startTime);
 					while (!renderingFinished)
 						Thread.sleep(getFramesPeriod() * 2);
 					framesChronometer.tick();
@@ -153,7 +151,7 @@ public class PetriDish extends Application {
 		};
 	}
 
-	private synchronized void showRoot(final Group root) {
+	private synchronized void update(final Group root) {
 		root.getChildren().clear();
 		root.getChildren().add(getEcosystemView().toNode());
 
@@ -164,7 +162,7 @@ public class PetriDish extends Application {
 			root.getChildren().add(environmentSpecificOverlay);
 	}
 
-	private void addListenersToResizeViewportWhenTheUserResizesTheWindow(final Scene scene, final Viewport viewport) {
+	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
 		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
 		    	viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
@@ -179,12 +177,12 @@ public class PetriDish extends Application {
 		});
 	}
 
-	private void tick() {
-		experiment.tick();
+	private boolean tick() {
 		getEcosystemView().tick();
+		return experiment.tick();
 	}
 
-	void waitForAtLeast(int time, long since) {
+	void waitUntilTimePassed(int time, long since) {
 		long timeTaken = System.currentTimeMillis() - since;
 		long waitTime = Math.max(time - timeTaken, 1);
 		try {
@@ -193,9 +191,12 @@ public class PetriDish extends Application {
 		}
 	}
 
-	private void waitUntilModelThreadIsRunning() throws InterruptedException {
-		while (!modelThreadIsRunning)
-			Thread.sleep(10);
+	private void waitUntilModelThreadIsReady() {
+		while (!isModelThreadReady)
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+			}
 	}
 
 	private synchronized void updateForeground() {
@@ -248,10 +249,10 @@ public class PetriDish extends Application {
 	}
 
 	private synchronized void toggleMaxSpeed() {
-		if (targetTicksPerSecond == 1000)
+		if (targetTicksPerSecond == Integer.MAX_VALUE)
 			targetTicksPerSecond = DEFAULT_TICKS_PER_SECOND;
 		else
-			targetTicksPerSecond = 1000;
+			targetTicksPerSecond = Integer.MAX_VALUE;
 	}
 
 	private synchronized int getTicksPeriod() {

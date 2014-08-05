@@ -28,6 +28,7 @@ class FoodView extends RoundObjectView {
 		
 		circle.getTransforms().clear();
 		circle.getTransforms().add(moveToStartPoint());
+		
 		circle.setEffect(getEffects(zoomLevel, infraredOn));
 		return circle;
 	}

@@ -13,7 +13,7 @@ class EyeView extends RoundObjectView {
 
 	public EyeView(Narjillo swimmer) {
 		super(swimmer, 6);
-		circle = createCircle();
+		circle = new Circle(getRadius());
 	}
 
 	@Override
@@ -35,9 +35,5 @@ class EyeView extends RoundObjectView {
 
 	private double getTransparency(double zoomLevel) {
 		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 4, 0, 0.8);
-	}
-
-	private Circle createCircle() {
-		return new Circle(getRadius());
 	}
 }

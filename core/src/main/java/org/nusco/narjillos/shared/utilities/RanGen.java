@@ -2,6 +2,13 @@ package org.nusco.narjillos.shared.utilities;
 
 import java.util.Random;
 
+/**
+ * Generates pseudo-random numbers.
+ * 
+ * It's meant to be seeded to generate a predictable sequence. All the randomness
+ * in the system should come from this class after seeding, to get repeatable
+ * results from experiments.
+ */
 public class RanGen {
 
 	static final int NO_SEED = -1;
@@ -55,14 +62,6 @@ public class RanGen {
 		RanGen.seed = seed;
 	}
 
-	static synchronized void reset() {
-		random = null;
-		seed = NO_SEED;
-		// Don't use in production code - this is just for testing.
-		// So it always throws an exception, just in case somebody uses it by mistake.
-		throw new RuntimeException("RanGen.reset() called. " + getExplanation());
-	}
-
 	private static void seedRandomly() {
 		setSeed((int)(Math.random() * Integer.MAX_VALUE));
 	}
@@ -70,5 +69,13 @@ public class RanGen {
 	private static String getExplanation() {
 		return "(Don't do that, or else there is no guarantee that the same " + 
 				"seed will generate the same sequence of numbers.)";
+	}
+
+	// Don't use in production code - this is just for testing.
+	// So it always throws an exception, just in case somebody uses it by mistake.
+	static synchronized void reset() {
+		random = null;
+		seed = NO_SEED;
+		throw new RuntimeException("RanGen.reset() called. " + getExplanation());
 	}
 }

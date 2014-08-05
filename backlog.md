@@ -12,7 +12,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Space Partitioning for fast thing searches °°
 * Optimize physics engine °°
-* Optimize infrared mode °
+* Find out why even a petri dish of {0} creatures slows down (apparently creatures become "heavier" to tick)
 * Space Partitioning runs in a separate thread
 * Switch to fast math library
 * Make FPS parametric to improve TPS on slower machines
@@ -61,6 +61,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ecologist
 
+* Distribute things in a circle instead of a square
 * Multiple environments in multiple processes (with migration, still deterministic - but how?)
 * Plants (food that evolves)
 * Gamma rays (cause mutation)

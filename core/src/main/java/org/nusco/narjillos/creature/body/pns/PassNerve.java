@@ -1,8 +1,7 @@
 package org.nusco.narjillos.creature.body.pns;
 
-
 /**
- * Outputs the same vector it receives in input.
+ * Outputs the same vector it receives as input.
  */
 public class PassNerve implements Nerve {
 

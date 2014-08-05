@@ -74,9 +74,7 @@ class NarjilloView extends ThingView {
 				return true;
 		OrganView organView = organViews.get(0);
 		organView.isVisible(viewport);
+		// ignore the mouth and eye, too small to make a visible difference
 		return false;
-		// TODO: is this useful? what about performance? I never
-		// missed it
-//		return mouthView.isVisible(viewport) || eyeView.isVisible(viewport);
 	}
 }

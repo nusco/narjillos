@@ -37,7 +37,6 @@ public class Experiment {
 		ecosystem = extractEcosystem(argumentsList);
 
 		System.out.println(getHeadersString());
-		System.out.println(getStatusString(ecosystem, 0));
 	}
 
 	private LinkedList<String> toList(String... args) {
@@ -88,11 +87,9 @@ public class Experiment {
 	}
 	
 	public boolean tick() {
+		reportStatus();
 		getEcosystem().tick();
 		ticksChronometer.tick();
-		
-		reportStatus();
-		
 		return areThereSurvivors();
 	}
 
@@ -107,7 +104,7 @@ public class Experiment {
 	private void reportStatus() {
 		long ticks = ticksChronometer.getTotalTicks();
 		
-		if (ticks == 0 || (ticks % PARSE_INTERVAL != 0))
+		if (ticks % PARSE_INTERVAL != 0)
 			return;
 
 		System.out.println(getStatusString(ecosystem, ticks));

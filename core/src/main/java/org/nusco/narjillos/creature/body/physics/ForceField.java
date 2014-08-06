@@ -24,7 +24,7 @@ public class ForceField {
 	private double energySpent = 0;
 	
 	public void record(Segment beforeMovement, BodyPart organ) {
-		Vector force = reverseCalculateForceFromMovement(beforeMovement, organ.getSegment(), organ.getLength(), organ.getMass());
+		Vector force = reverseCalculateForceFromMovement(beforeMovement, organ.getSegment(), organ.getMass());
 		Segment forceSegment = new Segment(organ.getStartPoint(), force);
 		addForce(forceSegment);
 	}
@@ -44,7 +44,7 @@ public class ForceField {
 		return energySpent / 1000;
 	}
 
-	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double length, double mass) {
+	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double mass) {
 		// TODO: this is all made-up stuff. try some real physics
 		Vector startPointMovement = afterMovement.startPoint.minus(beforeMovement.startPoint);
 		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);

@@ -21,6 +21,7 @@ public class Body {
 	private final WaveNerve tickerNerve;
 	private Vector position = Vector.ZERO;
 	private double skewing = 0;
+	private Vector centerOfMass = null;
 	
 	public Body(Head head) {
 		this.head = head;
@@ -39,8 +40,8 @@ public class Body {
 		ForceField forceField = new ForceField();
 		head.tick(targetAmplitudePercent, currentSkewing, forceField);
 
-		Vector centerOfMass = getCenterOfMass();
-		double rotationAngle = forceField.calculateRotationAngle(getMass(), centerOfMass);
+		centerOfMass = null; // reset cached value
+		double rotationAngle = forceField.calculateRotationAngle(getMass(), getCenterOfMass());
 		Vector movement = forceField.calculateMovement(getMass());
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
@@ -103,6 +104,13 @@ public class Body {
 	}
 	
 	public Vector getCenterOfMass() {
+		if (centerOfMass == null)
+			centerOfMass = calculateCenterOfMass();
+		
+		return centerOfMass;
+	}
+
+	private Vector calculateCenterOfMass() {
 		List<BodyPart> organs = getBodyParts();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
 		Iterator<BodyPart> iterator = getBodyParts().iterator();
@@ -132,6 +140,7 @@ public class Body {
 	}
 
 	public void setAngle(double angle) {
+		centerOfMass = null; // clear cache
 		head.setAngleToParent(angle);
 	}
 
@@ -140,6 +149,7 @@ public class Body {
 	}
 	
 	public void setPosition(Vector position) {
+		centerOfMass = null; // clear cache
 		this.position = position;
 	}
 }

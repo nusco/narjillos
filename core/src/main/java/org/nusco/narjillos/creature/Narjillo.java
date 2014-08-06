@@ -31,8 +31,6 @@ public class Narjillo implements Thing, Creature {
 	private double energy = INITIAL_ENERGY;
 	private double maxEnergyForAge = MAX_ENERGY;
 
-	private int numberOfDescendants = 0;
-
 	private final List<NarjilloEventListener> eventListeners = new LinkedList<>();
 
 	public Narjillo(Body body, DNA genes) {
@@ -49,13 +47,8 @@ public class Narjillo implements Thing, Creature {
 		return body.getPosition();
 	}
 
-	public synchronized void setPosition(Vector position) {
-		body.setPosition(position);
-	}
-
 	@Override
 	public synchronized void tick() {
-		updatePosition();
 		updateVelocities();
 
 		if (getEnergy() <= AGONY_LEVEL)
@@ -64,14 +57,24 @@ public class Narjillo implements Thing, Creature {
 		Vector targetDirection = getTargetDirection();
 		Acceleration effort = body.tick(targetDirection);
 
-		// The lateral movement is just ignored. Creatures who
+		// The lateral movement is ignored. Creatures who
 		// have too much of it are wasting their energy.
 		Vector axis = body.getMainAxis();
 		linearVelocity = linearVelocity.plus(effort.getLinearAccelerationAlong(axis));
 		angularVelocity = angularVelocity + effort.angular;
 
+		updatePosition();
+
 		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
 		updateEnergyBy(-effort.energySpent);
+	}
+
+	public synchronized void setPosition(Vector position) {
+		body.setPosition(position);
+	}
+
+	private void setAngle(double angle) {
+		body.setAngle(angle);
 	}
 
 	private void updatePosition() {
@@ -82,13 +85,24 @@ public class Narjillo implements Thing, Creature {
 
 	private void updatePosition(Vector position, double angle) {
 		Vector startingPosition = getPosition();
-		setPosition(position);
-		
-		// FIXME: don't pivot around the mouth - update position instead
-		body.setAngle(angle);
 
+		Vector shiftedPosition = position.plus(getPivotingTranslation(angle));
+		setPosition(shiftedPosition);
+		setAngle(angle);
+		
 		for (NarjilloEventListener eventListener : eventListeners)
 			eventListener.moved(new Segment(startingPosition, getPosition()));
+	}
+
+	private Vector getPivotingTranslation(double angle) {
+		double rotation = Math.toRadians(angle - body.getAngle());
+		
+		// pivot around the center of mass
+		Vector centerOfMass = body.getCenterOfMass();
+		double shiftX = centerOfMass.x * (1 - Math.cos(rotation));
+		double shiftY = centerOfMass.y * Math.sin(rotation);
+		
+		return Vector.cartesian(-shiftX, -shiftY);
 	}
 
 	private void updateVelocities() {
@@ -105,13 +119,12 @@ public class Narjillo implements Thing, Creature {
 
 	private void sendDeathAnimation() {
 		// TODO: for some reason only 9 works here - 10 is too much (the
-		// creatures
-		// spin wildly in agony) and 8 is too little (barely any bending at
-		// all).
-		// bending is supposed to be instantaneous, instead it seems to be
+		// creatures spin wildly in agony) and 8 is too little (barely
+		// any bending at all).
+		// Bending is supposed to be instantaneous, instead it seems to be
 		// additive.
-		// Why? Find out what is going on here, and possibly rethink the bending
-		// mechanics. Maybe it should come from the WaveNerve?
+		// Why? Find out what is going on here, and possibly rethink the
+		// bending mechanics. Maybe it should come from the WaveNerve?
 		double bendAngle = ((AGONY_LEVEL - getEnergy()) / (double) AGONY_LEVEL) * 9;
 		body.forceBend(bendAngle);
 	}
@@ -139,12 +152,7 @@ public class Narjillo implements Thing, Creature {
 		eventListeners.add(eventListener);
 	}
 
-	public synchronized int getNumberOfDescendants() {
-		return numberOfDescendants;
-	}
-
 	public synchronized DNA reproduce() {
-		numberOfDescendants++;
 		return getDNA().copy();
 	}
 

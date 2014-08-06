@@ -4,7 +4,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Narjillos pivot round their center of mass, not around their mouths °°°
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place) °
 * Fix "shaking" of limbs in some Narjillos
 

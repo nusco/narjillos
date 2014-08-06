@@ -4,5 +4,5 @@
 # check for uncommitted files
 if ! git diff --quiet HEAD --
 then
-  echo -e "\e[0;31mWarning: uncommitted files. This experiment might be non-repeatable.\e[0m\n"
+  echo -e "\e[0;31mWarning: uncommitted files. This experiment might be non-repeatable.\e[0m"
 fi

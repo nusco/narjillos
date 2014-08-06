@@ -27,11 +27,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Genetist
 
-* Narjillo's color is an expression of its behaviour (amplitude, phase, etc) °°
 * Narjillo's skewing is genetically determined °°
 * Whole-body size gene
 * View Narjillo's evolutionary path
-* Mutation rate is controlled by genes (this is what happens in nature)
+* Mutation rate is controlled by genes (this is what happens in nature. tends to freeze evolution?)
+* Narjillo's color is an expression of its behaviour (amplitude, phase, etc)
 * DNA analyzer program
 * DNA diff program (based on DNA analyzer)
 * Sexual reproduction

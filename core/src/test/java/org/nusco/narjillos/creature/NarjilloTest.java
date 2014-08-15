@@ -148,17 +148,18 @@ public class NarjilloTest {
 	public void itsEnergyNeverRaisesHigherThanItsMaxEnergyGivenItsAge() {
 		while (narjillo.getEnergy() < Narjillo.MAX_ENERGY)
 			narjillo.feed();
-		
+
 		narjillo.feed();
-		double fullEnergyWhenYounger = narjillo.getEnergy();
+		double fullEnergyWhenStillYoung = narjillo.getEnergy();
 		
+		// get older
 		narjillo.tick();
+
 		narjillo.feed();
 		double fullEnergyWhenSlightlyOlder = narjillo.getEnergy();
 		
-		assertTrue(fullEnergyWhenYounger > fullEnergyWhenSlightlyOlder);
+		assertTrue(fullEnergyWhenStillYoung > fullEnergyWhenSlightlyOlder);
 
-		
 		narjillo.feed();
 		narjillo.updateEnergyBy(Narjillo.INITIAL_ENERGY);
 		

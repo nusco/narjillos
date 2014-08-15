@@ -25,7 +25,7 @@ public class Body {
 	
 	public Body(Head head) {
 		this.head = head;
-		this.parts = calculateOrgans(head);
+		this.parts = getOrgans(head);
 		this.mass = calculateTotalMass();
 		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
 	}
@@ -81,7 +81,7 @@ public class Body {
 		return result;
 	}
 
-	private List<BodyPart> calculateOrgans(Head head) {
+	private List<BodyPart> getOrgans(Head head) {
 		List<BodyPart> result = new LinkedList<>();
 		addWithChildren(head, result);
 		return result;

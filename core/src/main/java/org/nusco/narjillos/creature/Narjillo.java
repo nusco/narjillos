@@ -20,6 +20,8 @@ public class Narjillo implements Thing, Creature {
 	static final double LIFESPAN = 30_000;
 	static final double ENERGY_DECAY = MAX_ENERGY / LIFESPAN;
 	static final double AGONY_LEVEL = ENERGY_DECAY * 300;
+	static final double LINEAR_VELOCITY_DECAY = 0.5;
+	static final double ANGULAR_VELOCITY_DECAY = 0.5;
 
 	public final Body body;
 	private final DNA genes;
@@ -49,24 +51,34 @@ public class Narjillo implements Thing, Creature {
 
 	@Override
 	public synchronized void tick() {
-		updateVelocities();
+		applyLifecycleAnimations();
 
-		if (getEnergy() <= AGONY_LEVEL)
-			sendDeathAnimation();
+		letVelocitiesDecayWithAttrition();
 
-		Vector targetDirection = getTargetDirection();
-		Acceleration effort = body.tick(targetDirection);
+		Acceleration effort = body.tick(getTargetDirection());
 
+		updateVelocitiesBasedOn(effort);
+		updatePositionBasedOnVelocities();
+
+		updateEnergyBasedOn(effort);
+	}
+
+	private void updateEnergyBasedOn(Acceleration effort) {
+		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
+		updateEnergyBy(-effort.energySpent);
+	}
+
+	private void updateVelocitiesBasedOn(Acceleration effort) {
 		// The lateral movement is ignored. Creatures who
 		// have too much of it are wasting their energy.
 		Vector axis = body.getMainAxis();
 		linearVelocity = linearVelocity.plus(effort.getLinearAccelerationAlong(axis));
 		angularVelocity = angularVelocity + effort.angular;
+	}
 
-		updatePosition();
-
-		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
-		updateEnergyBy(-effort.energySpent);
+	private void applyLifecycleAnimations() {
+		if (getEnergy() <= AGONY_LEVEL)
+			applyDeathAnimation();
 	}
 
 	public synchronized void setPosition(Vector position) {
@@ -77,7 +89,7 @@ public class Narjillo implements Thing, Creature {
 		body.setAngle(angle);
 	}
 
-	private void updatePosition() {
+	private void updatePositionBasedOnVelocities() {
 		Vector newPosition = getPosition().plus(linearVelocity);
 		double newAngle = getAngle() + angularVelocity;
 		updatePosition(newPosition, newAngle);
@@ -105,19 +117,17 @@ public class Narjillo implements Thing, Creature {
 		return Vector.cartesian(-shiftX, -shiftY);
 	}
 
-	private void updateVelocities() {
-		double linearVelocityDecay = 0.5;
-		linearVelocity = linearVelocity.by(linearVelocityDecay);
-
-		double angularVelocityDecay = 0.5;
-		angularVelocity = angularVelocity * angularVelocityDecay;
+	private void letVelocitiesDecayWithAttrition() {
+		// we keep things simple: "attrition" is just a constant
+		linearVelocity = linearVelocity.by(LINEAR_VELOCITY_DECAY);
+		angularVelocity = angularVelocity * ANGULAR_VELOCITY_DECAY;
 	}
 
 	private double getAngle() {
 		return body.getAngle();
 	}
 
-	private void sendDeathAnimation() {
+	private void applyDeathAnimation() {
 		// TODO: for some reason only 9 works here - 10 is too much (the
 		// creatures spin wildly in agony) and 8 is too little (barely
 		// any bending at all).

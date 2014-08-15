@@ -79,6 +79,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Artist
 
 * Birth animation °
+* Better death animation (right now the bending is barely noticeable)
 * Give a sense of movement when following a locked-on Narjillo
 * Speckles in liquid (or some other effect)
 

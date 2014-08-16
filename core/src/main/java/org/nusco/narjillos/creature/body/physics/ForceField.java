@@ -29,13 +29,11 @@ public class ForceField {
 		addForce(forceSegment);
 	}
 
-	public Vector calculateMovement(double mass) {
+	public Vector calculateTranslation(double mass) {
 		return getTotalForce().invert().by(PROPULSION_SCALE * getMassPenalty(mass));
 	}
 
-	public double calculateRotationAngle(double mass, Vector centerOfMass) {
-		// also remember to correct position - right now, the rotating creature
-		// is pivoting around its own mouth
+	public double calculateRotation(double mass, Vector centerOfMass) {
 		double rotationalForce = getRotationalForceAround(centerOfMass);
 		return -rotationalForce * ROTATION_SCALE * getMassPenalty(mass);
 	}
@@ -87,7 +85,7 @@ public class ForceField {
 	
 	private double getRotationalForceAround(Vector center, Segment force) {
 		Vector distance = force.startPoint.minus(center);
-		return distance.getVectorProductWith(force.vector);
+		return distance.getLengthOfProductWith(force.vector);
 	}
 
 	private double getMassPenalty(double mass) {

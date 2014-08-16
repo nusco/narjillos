@@ -204,11 +204,11 @@ public class VectorTest {
 		Vector vector3 = Vector.polar(180, 10);
 		Vector vector4 = Vector.polar(-90, 10);
 
-		assertEquals(0, vector1.getVectorProductWith(vector1), 0.001);
-		assertEquals(100, vector1.getVectorProductWith(vector2), 0.001);
-		assertEquals(-100, vector2.getVectorProductWith(vector1), 0.001);
-		assertEquals(0, vector1.getVectorProductWith(vector3), 0.001);
-		assertEquals(-100, vector1.getVectorProductWith(vector4), 0.001);
+		assertEquals(0, vector1.getLengthOfProductWith(vector1), 0.001);
+		assertEquals(100, vector1.getLengthOfProductWith(vector2), 0.001);
+		assertEquals(-100, vector2.getLengthOfProductWith(vector1), 0.001);
+		assertEquals(0, vector1.getLengthOfProductWith(vector3), 0.001);
+		assertEquals(-100, vector1.getLengthOfProductWith(vector4), 0.001);
 	}
 	
 	private void assertEqualsVector(Vector v1, Vector v2) {

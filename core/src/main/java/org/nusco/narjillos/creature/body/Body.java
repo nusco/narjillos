@@ -41,12 +41,12 @@ public class Body {
 		head.tick(targetAmplitudePercent, currentSkewing, forceField);
 
 		centerOfMass = null; // reset cached value
-		double rotationAngle = forceField.calculateRotationAngle(getMass(), getCenterOfMass());
-		Vector movement = forceField.calculateMovement(getMass());
+		double rotation = forceField.calculateRotation(getMass(), getCenterOfMass());
+		Vector translation = forceField.calculateTranslation(getMass());
 		
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
 		
-		return new Acceleration(movement, rotationAngle, energySpent);
+		return new Acceleration(translation, rotation, energySpent);
 	}
 
 	private double updateSkewing(double angleToTarget) {

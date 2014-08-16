@@ -123,7 +123,7 @@ public class Vector {
 
 	// TODO: should I make this a real mathematical cross product of vectors?
 	// or maybe have a separate method for that, to avoid unnecessary calculations?
-	public double getVectorProductWith(Vector other) {
+	public double getLengthOfProductWith(Vector other) {
 		double angleDifferenceInRadians = Math.toRadians(other.getAngle() - getAngle());
 		return Math.sin(angleDifferenceInRadians) * getLength() * other.getLength();
 	}

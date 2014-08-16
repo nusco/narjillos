@@ -52,7 +52,6 @@ public class Narjillo implements Thing, Creature {
 	@Override
 	public synchronized void tick() {
 		applyLifecycleAnimations();
-
 		letVelocitiesDecayWithAttrition();
 
 		Acceleration effort = body.tick(getTargetDirection());
@@ -63,9 +62,9 @@ public class Narjillo implements Thing, Creature {
 		updateEnergyBasedOn(effort);
 	}
 
-	private void updateEnergyBasedOn(Acceleration effort) {
-		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
-		updateEnergyBy(-effort.energySpent);
+	private void applyLifecycleAnimations() {
+		if (getEnergy() <= AGONY_LEVEL)
+			applyDeathAnimation();
 	}
 
 	private void updateVelocitiesBasedOn(Acceleration effort) {
@@ -76,9 +75,9 @@ public class Narjillo implements Thing, Creature {
 		angularVelocity = angularVelocity + effort.angular;
 	}
 
-	private void applyLifecycleAnimations() {
-		if (getEnergy() <= AGONY_LEVEL)
-			applyDeathAnimation();
+	private void updateEnergyBasedOn(Acceleration effort) {
+		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
+		updateEnergyBy(-effort.energySpent);
 	}
 
 	public synchronized void setPosition(Vector position) {

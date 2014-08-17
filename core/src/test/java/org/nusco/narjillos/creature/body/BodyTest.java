@@ -3,6 +3,7 @@ package org.nusco.narjillos.creature.body;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -31,7 +32,7 @@ public class BodyTest {
 		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
-		head.sproutOrgan(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), 0, 0, 0);
+		head.addChild(new BodySegment(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), head, new DelayNerve(0), 0, 0));
 		Body body = new Body(head);
 		
 		double expectedMassInGrams = 212;

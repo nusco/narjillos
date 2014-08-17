@@ -9,7 +9,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 public class ForceField {
 
 	private static final double PROPULSION_SCALE = 0.05;
-	private static final double ROTATION_SCALE = 0.000002;
+	private static final double ROTATION_SCALE = 0.000001;
 
 	private static final double VISCOSITY = 1.7;
 	

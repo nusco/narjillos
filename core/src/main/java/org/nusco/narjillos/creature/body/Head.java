@@ -27,9 +27,11 @@ public class Head extends Organ {
 		return startPoint;
 	}
 
-	void setStartPoint(Vector startPoint) {
+	synchronized void setPosition(Vector startPoint, double angle) {
+		// we already reset the cache in setAngleToParent(), so
+		// no need to do it twice here
 		this.startPoint  = startPoint;
-		resetAllCaches();
+		setAngleToParent(angle);
 	}
 
 	@Override

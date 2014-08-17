@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.physics.ForceField;
-import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -90,16 +89,7 @@ public abstract class Organ extends BodyPart {
 		return nerve;
 	}
 
-	public BodySegment sproutOrgan(int length, int thickness, ColorByte hue, int delay, int angleToParentAtRest, int amplitude) {
-		return addChild(new BodySegment(length, thickness, hue, this, new DelayNerve(delay), angleToParentAtRest, amplitude));
-	}
-
-	// TODO: remove and consider pushing down the sproutOrgan group of methods
-	Organ sproutOrgan(Nerve nerve) {
-		return addChild(new BodySegment(nerve));
-	}
-
-	private BodySegment addChild(BodySegment child) {
+	public Organ addChild(Organ child) {
 		children.add(child);
 		return child;
 	}

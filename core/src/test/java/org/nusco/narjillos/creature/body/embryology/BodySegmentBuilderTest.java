@@ -56,7 +56,7 @@ public class BodySegmentBuilderTest extends OrganBuilderTest {
 		Chromosome chromosome = new Chromosome(controlGene, lengthGene, thicknessGene, delayGene, colorGene, angleToParentGene, amplitudeGene);
 		BodySegmentBuilder builder = createConcreteOrganBuilder(chromosome);
 		Organ head = new Head(10, 10, new ColorByte(40), 10);
-		BodySegment bodySegment = builder.build(head, 1);
+		BodySegment bodySegment = (BodySegment) builder.build(head, 1);
 		
 		assertEquals(40, bodySegment.getLength(), 0);
 		assertEquals(50, bodySegment.getThickness(), 0);

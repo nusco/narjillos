@@ -20,7 +20,8 @@ public class Body {
 	private final double mass;
 	private final WaveNerve tickerNerve;
 	private double skewing = 0;
-	private Vector centerOfMass = null;
+	
+	private Vector cachedCenterOfMass = null;
 	
 	public Body(Head head) {
 		this.head = head;
@@ -30,7 +31,7 @@ public class Body {
 	}
 
 	public Acceleration tick(Vector targetDirection) {
-		centerOfMass = null; // reset cached value
+		cachedCenterOfMass = null; // reset cached value
 		updateAngles(targetDirection);
 		return calculateAcceleration();
 	}
@@ -110,9 +111,9 @@ public class Body {
 	}
 	
 	public Vector getCenterOfMass() {
-		if (centerOfMass == null)
-			centerOfMass = calculateCenterOfMass();
-		return centerOfMass;
+		if (cachedCenterOfMass == null)
+			cachedCenterOfMass = calculateCenterOfMass();
+		return cachedCenterOfMass;
 	}
 
 	private Vector calculateCenterOfMass() {
@@ -149,8 +150,7 @@ public class Body {
 	}
 	
 	public void setPosition(Vector position, double angle) {
-		centerOfMass = null; // clear cache
-		head.setStartPoint(position);
-		head.setAngleToParent(angle);
+		cachedCenterOfMass = null; // clear cache
+		head.setPosition(position,angle);
 	}
 }

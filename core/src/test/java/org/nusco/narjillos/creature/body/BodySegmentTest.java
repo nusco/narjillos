@@ -46,15 +46,15 @@ public class BodySegmentTest extends OrganTest {
 	@Override
 	public void hasAnEndPoint() {
 		Head head = new Head(10, 0, new ColorByte(100), 1);
-		Organ organ1 = head.sproutOrgan(10, 0, new ColorByte(100), 0, 90, 1);
-		BodyPart organ2 = organ1.sproutOrgan(10, 0, new ColorByte(100), 0, -90, 1);
+		Organ organ1 = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, new DelayNerve(0), 90, 1));
+		BodyPart organ2 = organ1.addChild(new BodySegment(10, 0, new ColorByte(100), organ1, new DelayNerve(0), -90, 1));
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
 	
 	@Test
 	public void hasACenterOfMass() {
 		Head head = new Head(10, 0, new ColorByte(100), 1);
-		Organ organ = head.sproutOrgan(10, 0, new ColorByte(100), 0, 20, 1);
+		Organ organ = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, new DelayNerve(0), 20, 1));
 		// uses the current angle, not the angle at rest
 		organ.setAngleToParent(45);
 		

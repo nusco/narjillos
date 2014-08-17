@@ -84,7 +84,7 @@ public class ForceField {
 	
 	private double getRotationalForceAround(Vector center, Segment force) {
 		Vector distance = force.startPoint.minus(center);
-		return distance.getLengthOfProductWith(force.vector);
+		return distance.getCrossProductWith(force.vector);
 	}
 
 	private double getMassPenalty(double mass) {

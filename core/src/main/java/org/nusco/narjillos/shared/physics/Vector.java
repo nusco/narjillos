@@ -121,10 +121,8 @@ public class Vector {
 		return (Math.round(n * decimals)) / decimals;
 	}
 
-	// TODO: should I make this a real mathematical cross product of vectors?
-	// or maybe have a separate method for that, to avoid unnecessary calculations?
-	public double getLengthOfProductWith(Vector other) {
-		double angleDifferenceInRadians = Math.toRadians(other.getAngle() - getAngle());
-		return Math.sin(angleDifferenceInRadians) * getLength() * other.getLength();
+	public double getCrossProductWith(Vector other) {
+		double angleDifferenceInRadians = Math.toRadians(getAngleWith(other));
+		return getLength() * other.getLength() * Math.cos(angleDifferenceInRadians);
 	}
 }

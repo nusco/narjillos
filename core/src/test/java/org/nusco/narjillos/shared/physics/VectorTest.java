@@ -198,17 +198,17 @@ public class VectorTest {
 	}
 
 	@Test
-	public void hasAVectorProductWithAnotherVector() {
+	public void hasACrossProductWithAnotherVector() {
 		Vector vector1 = Vector.polar(0, 10);
 		Vector vector2 = Vector.polar(90, 10);
 		Vector vector3 = Vector.polar(180, 10);
 		Vector vector4 = Vector.polar(-90, 10);
 
-		assertEquals(0, vector1.getLengthOfProductWith(vector1), 0.001);
-		assertEquals(100, vector1.getLengthOfProductWith(vector2), 0.001);
-		assertEquals(-100, vector2.getLengthOfProductWith(vector1), 0.001);
-		assertEquals(0, vector1.getLengthOfProductWith(vector3), 0.001);
-		assertEquals(-100, vector1.getLengthOfProductWith(vector4), 0.001);
+		assertEquals(100, vector1.getCrossProductWith(vector1), 0.001);
+		assertEquals(0, vector1.getCrossProductWith(vector2), 0.001);
+		assertEquals(0, vector2.getCrossProductWith(vector1), 0.001);
+		assertEquals(-100, vector1.getCrossProductWith(vector3), 0.001);
+		assertEquals(0, vector1.getCrossProductWith(vector4), 0.001);
 	}
 	
 	private void assertEqualsVector(Vector v1, Vector v2) {

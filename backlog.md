@@ -4,10 +4,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* First-pass angle calculation keeps center of mass fixed °°°
-* First-pass angle calculation minimizes moment of inertia °°°
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place) °
 * Fix "shaking" of limbs in some Narjillos
+* Remove "tail wiggling dog" effect? (probably too expensive to bother)
 
 ###Speed Demon
 

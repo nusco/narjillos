@@ -19,27 +19,19 @@ public class FastMath {
 	}
 
 	private static void initialize() {
-		synchronized (sin) {
-			for (int i = 0; i < sin.length; i++) {
-				double angleRadians = Math.toRadians(i * STEP);
-				sin[i] = Math.sin(angleRadians);
-				cos[i] = Math.cos(angleRadians);
-			}
+		for (int i = 0; i < sin.length; i++) {
+			double angleRadians = Math.toRadians(i * STEP);
+			sin[i] = Math.sin(angleRadians);
+			cos[i] = Math.cos(angleRadians);
 		}
 	}
 
-	public synchronized static double sin(double angle) {
-		int index = toIndex(angle);
-		synchronized (sin) {
-			return sin[index];
-		}
+	public static double sin(double angle) {
+		return sin[toIndex(angle)];
 	}
 
 	public static double cos(double angle) {
-		int index = toIndex(angle);
-		synchronized (sin) {
-			return cos[index];
-		}
+		return cos[toIndex(angle)];
 	}
 
 	private static double normalize(double angle) {

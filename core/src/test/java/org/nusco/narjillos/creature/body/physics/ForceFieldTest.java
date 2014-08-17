@@ -1,13 +1,11 @@
 package org.nusco.narjillos.creature.body.physics;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.creature.body.physics.ForceField;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
@@ -25,22 +23,24 @@ public class ForceFieldTest {
 	
 	@Test
 	public void recordsMovements() {
-		Organ organ = new Head(1, 0, new ColorByte(0), 1);
-		Organ child1 = organ.sproutOrgan(2, 0, new ColorByte(0), 0, 0, 0);
-		child1.sproutOrgan(3, 0, new ColorByte(0), 0, 0, 0);
+		Organ organ = new Head(1, 1, new ColorByte(0), 1);
+		Organ child1 = organ.sproutOrgan(2, 2, new ColorByte(0), 0, 0, 0);
+		child1.sproutOrgan(3, 3, new ColorByte(0), 0, 0, 0);
 
-		final int[] movement = new int[3];
+		final double[] masses = new double[3];
 		ForceField recorder = new ForceField() {
 			private int counter = 0;
 			
 			@Override
-			public void record(Segment beforeMovement, BodyPart organ) {
-				movement[counter++] = (int)organ.getLength();
+			public void calculateForce(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
+				masses[counter++] = mass;
 			}
 		};
 		
-		organ.recordForce(recorder);
+		organ.calculateForces(recorder);
 		
-		assertArrayEquals(new int[] {1, 2, 3}, movement);
+		assertEquals(1, masses[0], 0.0);
+		assertEquals(4, masses[1], 0.0);
+		assertEquals(9, masses[2], 0.0);
 	}
 }

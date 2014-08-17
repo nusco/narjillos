@@ -5,8 +5,10 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.shared.physics.Vector;
 
 class MouthView extends ThingView {
 
@@ -17,8 +19,8 @@ class MouthView extends ThingView {
 	private final Line line1 = createLine();
 	private final Line line2 = createLine();
 
-	public MouthView(Narjillo swimmer) {
-		super(swimmer);
+	public MouthView(Narjillo narjillo) {
+		super(narjillo);
 		group.getChildren().add(line1);
 		group.getChildren().add(line2);
 	}
@@ -34,6 +36,11 @@ class MouthView extends ThingView {
 
 		rotate(line1, 10);
 		rotate(line2, -10);
+		
+		Vector position = getNarjillo().getPosition();
+		group.getTransforms().clear();
+		group.getTransforms().add(new Translate(position.x, position.y));
+		
 		return group;
 	}
 

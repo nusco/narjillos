@@ -7,6 +7,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public class Head extends Organ {
 
 	private final double metabolicRate;
+	private Vector position = Vector.ZERO;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
 		super(length, thickness, hue, null, new PassNerve());
@@ -23,9 +24,14 @@ public class Head extends Organ {
 
 	@Override
 	protected Vector calculateStartPoint() {
-		return Vector.ZERO;
+		return position;
 	}
-	
+
+	void setPosition(Vector position) {
+		this.position  = position;
+		resetAllCaches();
+	}
+
 	@Override
 	protected double calculateAbsoluteAngle() {
 		return getAngleToParent();
@@ -37,7 +43,7 @@ public class Head extends Organ {
 	}
 	
 	@Override
-	protected double calculateAngleToParent(double targetAngle, double skewing) {
+	protected double calculateNewAngleToParent(double targetAngle, double skewing) {
 		// the head never moves on its own
 		return getAngleToParent();
 	}

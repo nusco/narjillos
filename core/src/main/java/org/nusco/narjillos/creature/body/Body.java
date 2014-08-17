@@ -19,7 +19,6 @@ public class Body {
 	private final List<BodyPart> parts;
 	private final double mass;
 	private final WaveNerve tickerNerve;
-	private Vector position = Vector.ZERO;
 	private double skewing = 0;
 	private Vector centerOfMass = null;
 	
@@ -32,16 +31,21 @@ public class Body {
 
 	public Acceleration tick(Vector targetDirection) {
 		centerOfMass = null; // reset cached value
+		updateAngles(targetDirection);
+		return calculateAcceleration();
+	}
 
+	private void updateAngles(Vector targetDirection) {
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
-
 		double currentSkewing = updateSkewing(angleToTarget);
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
 		head.updateAngleToParent(targetAmplitudePercent, currentSkewing);
+	}
 
+	private Acceleration calculateAcceleration() {
 		ForceField forceField = new ForceField();
-		head.recordForce(forceField);
+		head.calculateForces(forceField);
 
 		double rotation = forceField.calculateRotation(getMass(), getCenterOfMass());
 		Vector translation = forceField.calculateTranslation(getMass());
@@ -108,7 +112,6 @@ public class Body {
 	public Vector getCenterOfMass() {
 		if (centerOfMass == null)
 			centerOfMass = calculateCenterOfMass();
-		
 		return centerOfMass;
 	}
 
@@ -122,7 +125,7 @@ public class Body {
 		}
 		
 		// do it in one swoop instead of calling Vector#plus() a lot
-		// TODO: does this have any visible effect on performance?
+		// TODO: profile. does this have any visible effect on performance?
 		int totalX = 0;
 		int totalY = 0;
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
@@ -147,11 +150,11 @@ public class Body {
 	}
 
 	public Vector getPosition() {
-		return position;
+		return head.getStartPoint();
 	}
 	
 	public void setPosition(Vector position) {
 		centerOfMass = null; // clear cache
-		this.position = position;
+		head.setPosition(position);
 	}
 }

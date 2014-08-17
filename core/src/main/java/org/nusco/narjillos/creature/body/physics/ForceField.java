@@ -3,14 +3,13 @@ package org.nusco.narjillos.creature.body.physics;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
 public class ForceField {
 
 	private static final double PROPULSION_SCALE = 0.05;
-	private static final double ROTATION_SCALE = 0.0001;
+	private static final double ROTATION_SCALE = 0.000002;
 
 	private static final double VISCOSITY = 1.7;
 	
@@ -23,9 +22,9 @@ public class ForceField {
 	private final List<Segment> forces = new LinkedList<>();
 	private double energySpent = 0;
 	
-	public void record(Segment beforeMovement, BodyPart organ) {
-		Vector force = reverseCalculateForceFromMovement(beforeMovement, organ.getSegment(), organ.getMass());
-		Segment forceSegment = new Segment(organ.getStartPoint(), force);
+	public void calculateForce(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
+		Vector force = reverseCalculateForceFromMovement(initialPositionInSpace, finalPositionInSpace, mass);
+		Segment forceSegment = new Segment(finalPositionInSpace.startPoint, force);
 		addForce(forceSegment);
 	}
 

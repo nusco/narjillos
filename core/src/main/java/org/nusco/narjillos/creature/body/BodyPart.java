@@ -17,7 +17,7 @@ public abstract class BodyPart {
 	private Double cachedAbsoluteAngle = null;
 	private Vector cachedVector = null;
 	private Vector cachedCenterOfMass = null;
-	private Segment cachedSegment = null;
+	private Segment cachedPositionInSpace = null;
 
 	public BodyPart(int length, int thickness, ColorByte color) {
 		this.length = length;
@@ -48,7 +48,7 @@ public abstract class BodyPart {
 		cachedEndPoint = null;
 		cachedVector = null;
 		cachedCenterOfMass = null;
-		cachedSegment = null;
+		cachedPositionInSpace = null;
 	}
 
 	public synchronized final double getAbsoluteAngle() {
@@ -87,13 +87,13 @@ public abstract class BodyPart {
 
 	protected abstract Vector calculateCenterOfMass();
 
-	public synchronized Segment getSegment() {
-		if (cachedSegment  == null)
-			cachedSegment = calculateSegment();
-		return cachedSegment;
+	public synchronized Segment getPositionInSpace() {
+		if (cachedPositionInSpace  == null)
+			cachedPositionInSpace = calculatePositionInSpace();
+		return cachedPositionInSpace;
 	}
 
-	private Segment calculateSegment() {
+	private Segment calculatePositionInSpace() {
 		return new Segment(getStartPoint(), getVector());
 	}
 

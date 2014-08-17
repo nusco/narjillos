@@ -78,7 +78,7 @@ class OrganView extends ThingView {
 	@Override
 	protected boolean isVisible(Viewport viewport) {
 		double margin = Math.max(organ.getThickness() / 2, getLengthIncludingOverlap());
-		return viewport.isVisible(getNarjillo().getPosition().plus(organ.getStartPoint()), margin);
+		return viewport.isVisible(organ.getStartPoint(), margin);
 	}
 
 	private int getLengthIncludingOverlap() {

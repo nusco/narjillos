@@ -23,7 +23,7 @@ public class BodySegment extends Organ {
 	}
 
 	@Override
-	protected double calculateAngleToParent(double targetAmplitudePercent, double skewing) {
+	protected double calculateNewAngleToParent(double targetAmplitudePercent, double skewing) {
 		double correctedTargetAmplitudePercent = (orientation * targetAmplitudePercent * amplitude) + skewing;
 		return angleToParentAtRest + correctedTargetAmplitudePercent + getForcedBend();
 	}

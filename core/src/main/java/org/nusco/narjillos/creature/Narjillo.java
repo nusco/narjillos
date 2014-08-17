@@ -45,11 +45,6 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	@Override
-	public synchronized Vector getPosition() {
-		return body.getPosition();
-	}
-
-	@Override
 	public synchronized void tick() {
 		applyLifecycleAnimations();
 		letVelocitiesDecayWithAttrition();
@@ -82,6 +77,11 @@ public class Narjillo implements Thing, Creature {
 
 	public synchronized void setPosition(Vector position) {
 		body.setPosition(position);
+	}
+
+	@Override
+	public synchronized Vector getPosition() {
+		return body.getPosition();
 	}
 
 	private void setAngle(double angle) {
@@ -191,5 +191,9 @@ public class Narjillo implements Thing, Creature {
 
 	public List<BodyPart> getOrgans() {
 		return body.getBodyParts();
+	}
+
+	public Vector getCenterOfMass() {
+		return body.getCenterOfMass();
 	}
 }

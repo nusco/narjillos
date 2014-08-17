@@ -22,7 +22,6 @@ public abstract class Organ extends BodyPart {
 
 	private double angleToParent = 0;
 	public double forcedBend = 0;
-	
 	private Segment previousPosition;
 	
 	protected Organ(int length, int thickness, ColorByte color, BodyPart parent, Nerve nerve) {
@@ -36,8 +35,17 @@ public abstract class Organ extends BodyPart {
 	}
 
 	protected final void setAngleToParent(double angleToParent) {
+		previousPosition = getPositionInSpace();
 		this.angleToParent = angleToParent;
 		resetAllCaches();
+	}
+
+	@Override
+	protected void resetAllCaches() {
+		super.resetAllCaches();
+
+		for (Organ child : getChildren())
+			child.resetAllCaches();
 	}
 
 	protected Vector calculateStartPoint() {
@@ -58,13 +66,10 @@ public abstract class Organ extends BodyPart {
 	}
 
 	public void updateAngleToParent(double targetPercentOfAmplitude, double skewing) {
-		previousPosition = getSegment();
-
 		double targetAngleToParent = getNerve().tick(targetPercentOfAmplitude);
 		
-		double angleToParent = calculateAngleToParent(targetAngleToParent, skewing);
-		
-		setAngleToParent(angleToParent);
+		double newAngleToParent = calculateNewAngleToParent(targetAngleToParent, skewing);
+		setAngleToParent(newAngleToParent);
 
 		resetForcedBend();
 
@@ -72,14 +77,14 @@ public abstract class Organ extends BodyPart {
 			child.updateAngleToParent(targetAngleToParent, skewing);
 	}
 
-	public void recordForce(ForceField forceField) {
-		forceField.record(previousPosition, this);
+	public void calculateForces(ForceField forceField) {
+		forceField.calculateForce(previousPosition, getPositionInSpace(), getMass());
 
 		for (Organ child : getChildren())
-			child.recordForce(forceField);
+			child.calculateForces(forceField);
 	}
 
-	protected abstract double calculateAngleToParent(double targetAngle, double skewing);
+	protected abstract double calculateNewAngleToParent(double targetAngle, double skewing);
 
 	Nerve getNerve() {
 		return nerve;

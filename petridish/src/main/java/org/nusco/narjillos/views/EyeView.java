@@ -3,16 +3,18 @@ package org.nusco.narjillos.views;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.shared.physics.Vector;
 
 class EyeView extends RoundObjectView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.12;
 	private final Circle circle;
 
-	public EyeView(Narjillo swimmer) {
-		super(swimmer, 6);
+	public EyeView(Narjillo narjillo) {
+		super(narjillo, 6);
 		circle = new Circle(getRadius());
 	}
 
@@ -22,6 +24,11 @@ class EyeView extends RoundObjectView {
 			return null;
 		double energy = ((Narjillo)getThing()).getEnergy();
 		circle.setFill(toColor(energy, zoomLevel));
+
+		Vector position = getThing().getPosition();
+		circle.getTransforms().clear();
+		circle.getTransforms().add(new Translate(position.x, position.y));
+
 		return circle;
 	}
 

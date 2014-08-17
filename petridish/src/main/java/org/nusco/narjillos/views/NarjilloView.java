@@ -5,11 +5,9 @@ import java.util.List;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.shared.physics.Vector;
 
 class NarjilloView extends ThingView {
 	
@@ -38,10 +36,7 @@ class NarjilloView extends ThingView {
 		Node eyeNode = eyeView.toNode(zoomLevel, infraredOn);
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
-		
-		Vector position = getNarjillo().getPosition();
-		group.getTransforms().clear();
-		group.getTransforms().add(new Translate(position.x, position.y));
+
 		group.setEffect(getEffects(zoomLevel, infraredOn));
 		return group;
 	}

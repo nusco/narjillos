@@ -3,7 +3,6 @@ package org.nusco.narjillos.creature.body;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -19,9 +18,8 @@ public abstract class BodyPartConnectionTest {
 		Organ child1 = head.sproutOrgan(nerve1);
 		child1.sproutOrgan(nerve2);
 		head.sproutOrgan(nerve3);
-		ForceField forceField = new ForceField();
 
-		head.updateAngleToParent(0, 0, forceField);
+		head.updateAngleToParent(0, 0);
 		
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);

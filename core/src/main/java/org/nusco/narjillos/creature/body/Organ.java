@@ -60,7 +60,7 @@ public abstract class Organ extends BodyPart {
 
 		double targetAngleToParent = getNerve().tick(targetPercentOfAmplitude);
 		
-		double angleToParent = calculateAngleToParent(targetAngleToParent, skewing, forceField);
+		double angleToParent = calculateAngleToParent(targetAngleToParent, skewing);
 		
 		setAngleToParent(angleToParent);
 
@@ -70,7 +70,7 @@ public abstract class Organ extends BodyPart {
 		tickChildren(targetAngleToParent, skewing, forceField);
 	}
 
-	protected abstract double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField);
+	protected abstract double calculateAngleToParent(double targetAngle, double skewing);
 
 	protected void tickChildren(double targetAngle, double skewing, ForceField forceField) {
 		for (Organ child : getChildren())

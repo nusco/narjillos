@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
@@ -38,7 +37,7 @@ public class Head extends Organ {
 	}
 	
 	@Override
-	protected double calculateAngleToParent(double targetAngle, double skewing, ForceField forceField) {
+	protected double calculateAngleToParent(double targetAngle, double skewing) {
 		// the head never moves on its own
 		return getAngleToParent();
 	}

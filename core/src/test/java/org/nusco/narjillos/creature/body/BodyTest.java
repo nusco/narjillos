@@ -18,7 +18,7 @@ public class BodyTest {
 	public void canBePositioned() {
 		Body body = new Body(new Head(1, 1, new ColorByte(1), 1));
 		
-		body.setPosition(Vector.cartesian(10, -10));
+		body.setPosition(Vector.cartesian(10, -10), 0);
 
 		assertEquals(Vector.cartesian(10, -10), body.getPosition());
 	}

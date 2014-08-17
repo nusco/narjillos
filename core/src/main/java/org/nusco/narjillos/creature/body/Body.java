@@ -144,17 +144,13 @@ public class Body {
 		return head.getAbsoluteAngle();
 	}
 
-	public void setAngle(double angle) {
-		centerOfMass = null; // clear cache
-		head.setAngleToParent(angle);
-	}
-
 	public Vector getPosition() {
 		return head.getStartPoint();
 	}
 	
-	public void setPosition(Vector position) {
+	public void setPosition(Vector position, double angle) {
 		centerOfMass = null; // clear cache
-		head.setPosition(position);
+		head.setStartPoint(position);
+		head.setAngleToParent(angle);
 	}
 }

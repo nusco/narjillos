@@ -29,7 +29,7 @@ public class NarjilloTest {
 	
 	@Test
 	public void sendsEventWhenMoving() {
-		narjillo.setPosition(Vector.ZERO);
+		narjillo.setPosition(Vector.ZERO, 0);
 
 		final Segment[] moved = new Segment[] { null };
 		narjillo.addEventListener(new NullSwimmerEventListener() {

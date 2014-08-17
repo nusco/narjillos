@@ -63,10 +63,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	private void updateVelocitiesBasedOn(Acceleration effort) {
-		// The lateral movement is ignored. Creatures who
-		// have too much of it are wasting their energy.
-		Vector axis = body.getMainAxis();
-		linearVelocity = linearVelocity.plus(effort.getLinearAccelerationAlong(axis));
+		linearVelocity = linearVelocity.plus(effort.linear);
 		angularVelocity = angularVelocity + effort.angular;
 	}
 
@@ -75,17 +72,13 @@ public class Narjillo implements Thing, Creature {
 		updateEnergyBy(-effort.energySpent);
 	}
 
-	public synchronized void setPosition(Vector position) {
-		body.setPosition(position);
+	public synchronized void setPosition(Vector position, double angle) {
+		body.setPosition(position, angle);
 	}
 
 	@Override
 	public synchronized Vector getPosition() {
 		return body.getPosition();
-	}
-
-	private void setAngle(double angle) {
-		body.setAngle(angle);
 	}
 
 	private void updatePositionBasedOnVelocities() {
@@ -98,8 +91,7 @@ public class Narjillo implements Thing, Creature {
 		Vector startingPosition = getPosition();
 
 		Vector shiftedPosition = position.plus(getPivotingTranslation(angle));
-		setPosition(shiftedPosition);
-		setAngle(angle);
+		setPosition(shiftedPosition, angle);
 		
 		for (NarjilloEventListener eventListener : eventListeners)
 			eventListener.moved(new Segment(startingPosition, getPosition()));

@@ -7,7 +7,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public class Head extends Organ {
 
 	private final double metabolicRate;
-	private Vector position = Vector.ZERO;
+	private Vector startPoint = Vector.ZERO;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
 		super(length, thickness, hue, null, new PassNerve());
@@ -24,11 +24,11 @@ public class Head extends Organ {
 
 	@Override
 	protected Vector calculateStartPoint() {
-		return position;
+		return startPoint;
 	}
 
-	void setPosition(Vector position) {
-		this.position  = position;
+	void setStartPoint(Vector startPoint) {
+		this.startPoint  = startPoint;
 		resetAllCaches();
 	}
 

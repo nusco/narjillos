@@ -108,7 +108,7 @@ public class Ecosystem {
 				remove(narjillo);
 			}
 		});
-		narjillo.setPosition(position);
+		narjillo.setPosition(position, 0);
 		notifyThingAdded(narjillo);
 		narjillos.add(narjillo);
 		return narjillo;

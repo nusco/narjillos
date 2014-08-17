@@ -8,6 +8,7 @@ import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.physics.Acceleration;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
@@ -98,12 +99,12 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	private Vector getPivotingTranslation(double angle) {
-		double rotation = Math.toRadians(angle - body.getAngle());
+		double rotation = angle - body.getAngle();
 		
 		// pivot around the center of mass
 		Vector centerOfMass = body.getCenterOfMass();
-		double shiftX = centerOfMass.x * (1 - Math.cos(rotation));
-		double shiftY = centerOfMass.y * Math.sin(rotation);
+		double shiftX = centerOfMass.x * (1 - FastMath.cos(rotation));
+		double shiftY = centerOfMass.y * FastMath.sin(rotation);
 		
 		return Vector.cartesian(-shiftX, -shiftY);
 	}

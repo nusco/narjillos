@@ -11,8 +11,8 @@ public class Vector {
 	public final double y;
 
 	public static Vector polar(double degrees, double length) {
-		double sin = Math.sin(Math.toRadians(degrees));
-		double cos = Math.cos(Math.toRadians(degrees));
+		double sin = FastMath.sin(degrees);
+		double cos = FastMath.cos(degrees);
 		return Vector.cartesian(cos * length, sin * length);
 	}
 
@@ -62,7 +62,7 @@ public class Vector {
 	public Vector getProjectionOn(Vector other) {
 		Vector direction = pointsInSameDirectionAs(other) ? other : other.invert();
 		double relativeAngle = direction.getAngle() - getAngle();
-		double resultLength = Math.cos(Math.toRadians(relativeAngle)) * getLength();
+		double resultLength = FastMath.cos(relativeAngle) * getLength();
 		return Vector.polar(direction.getAngle(), resultLength);
 	}
 
@@ -122,7 +122,6 @@ public class Vector {
 	}
 
 	public double getCrossProductWith(Vector other) {
-		double angleDifferenceInRadians = Math.toRadians(getAngleWith(other));
-		return getLength() * other.getLength() * Math.cos(angleDifferenceInRadians);
+		return getLength() * other.getLength() * FastMath.cos(getAngleWith(other));
 	}
 }

@@ -27,7 +27,7 @@ public class Head extends Organ {
 		return startPoint;
 	}
 
-	synchronized void setPosition(Vector startPoint, double angle) {
+	void setPosition(Vector startPoint, double angle) {
 		// we already reset the cache in setAngleToParent(), so
 		// no need to do it twice here
 		this.startPoint  = startPoint;

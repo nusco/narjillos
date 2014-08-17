@@ -11,13 +11,14 @@ public abstract class BodyPart {
 	private final double mass;
 	private final ColorByte color;
 
-	// caching - ugly, but has huge performance benefits
-	private Vector cachedStartPoint = null;
-	private Vector cachedEndPoint = null;
-	private Double cachedAbsoluteAngle = null;
-	private Vector cachedVector = null;
-	private Vector cachedCenterOfMass = null;
-	private Segment cachedPositionInSpace = null;
+	// Caching - ugly, but has huge performance benefits.
+	// All volatile, to avoid too much synchronization
+	private volatile Vector cachedStartPoint = Vector.ZERO;
+	private volatile Vector cachedEndPoint = Vector.ZERO;
+	private volatile double cachedAbsoluteAngle = 0;
+	private volatile Vector cachedVector = Vector.ZERO;
+	private volatile Vector cachedCenterOfMass = Vector.ZERO;
+	private volatile Segment cachedPositionInSpace = new Segment(Vector.ZERO, Vector.ZERO);
 
 	public BodyPart(int length, int thickness, ColorByte color) {
 		this.length = length;
@@ -42,54 +43,46 @@ public abstract class BodyPart {
 		return color;
 	}
 
-	protected synchronized void resetAllCaches() {
-		cachedAbsoluteAngle = null;
-		cachedStartPoint = null;
-		cachedEndPoint = null;
-		cachedVector = null;
-		cachedCenterOfMass = null;
-		cachedPositionInSpace = null;
+	protected final void updateCaches() {
+		cachedAbsoluteAngle = calculateAbsoluteAngle();
+		cachedVector = Vector.polar(getAbsoluteAngle(), getLength());
+		cachedStartPoint = calculateStartPoint();
+		cachedEndPoint = calculateEndPoint();
+		cachedPositionInSpace = calculatePositionInSpace();
+		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
-	public synchronized final double getAbsoluteAngle() {
-		if (cachedAbsoluteAngle == null)
-			cachedAbsoluteAngle = calculateAbsoluteAngle();
+	public final double getAbsoluteAngle() {
 		return cachedAbsoluteAngle;
 	}
 
 	protected abstract double calculateAbsoluteAngle();
 
-	public synchronized final Vector getStartPoint() {
-		if (cachedStartPoint == null)
-			cachedStartPoint = calculateStartPoint();
+	public final Vector getStartPoint() {
 		return cachedStartPoint;
 	}
 
 	protected abstract Vector calculateStartPoint();
 
-	public synchronized final Vector getEndPoint() {
-		if (cachedEndPoint == null)
-			cachedEndPoint = getStartPoint().plus(getVector());
+	private Vector calculateEndPoint() {
+		return getStartPoint().plus(getVector());
+	}
+
+	public final Vector getEndPoint() {
 		return cachedEndPoint;
 	}
 
-	synchronized final Vector getVector() {
-		if (cachedVector == null)
-			cachedVector = Vector.polar(getAbsoluteAngle(), getLength());
+	final Vector getVector() {
 		return cachedVector;
 	}
 
-	public synchronized final Vector getCenterOfMass() {
-		if (cachedCenterOfMass  == null)
-			cachedCenterOfMass = calculateCenterOfMass();
+	public final Vector getCenterOfMass() {
 		return cachedCenterOfMass;
 	}
 
 	protected abstract Vector calculateCenterOfMass();
 
-	public synchronized Segment getPositionInSpace() {
-		if (cachedPositionInSpace  == null)
-			cachedPositionInSpace = calculatePositionInSpace();
+	public Segment getPositionInSpace() {
 		return cachedPositionInSpace;
 	}
 

@@ -49,6 +49,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
+* Fix non-repeatable experiments (also check across "experiment" and "petri")
+* Slow motion setting °°
 * Lock on single Narjillo °
 * Bench with stats
 * "Real Time" and "Fast" slider
@@ -80,6 +82,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Check multithreading for reactive animations and maximum reactivity
 * Birth animation °
 * Better death animation (right now the bending is barely noticeable)
 * Give a sense of movement when following a locked-on Narjillo

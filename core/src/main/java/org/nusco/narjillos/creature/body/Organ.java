@@ -19,7 +19,7 @@ public abstract class Organ extends BodyPart {
 	private final BodyPart parent;
 	private final List<Organ> children = new LinkedList<>();
 
-	private double angleToParent = 0;
+	private volatile double angleToParent = 0;
 	public double forcedBend = 0;
 	private Segment previousPosition;
 	
@@ -29,22 +29,21 @@ public abstract class Organ extends BodyPart {
 		this.parent = parent;
 	}
 
-	protected synchronized double getAngleToParent() {
+	protected double getAngleToParent() {
 		return angleToParent;
 	}
 
-	protected synchronized final void setAngleToParent(double angleToParent) {
+	protected final void setAngleToParent(double angleToParent) {
 		previousPosition = getPositionInSpace();
 		this.angleToParent = angleToParent;
-		resetAllCaches();
+		recalculateCaches();
 	}
 
-	@Override
-	protected void resetAllCaches() {
-		super.resetAllCaches();
+	protected void recalculateCaches() {
+		super.updateCaches();
 
 		for (Organ child : getChildren())
-			child.resetAllCaches();
+			child.recalculateCaches();
 	}
 
 	protected Vector calculateStartPoint() {

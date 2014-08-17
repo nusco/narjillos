@@ -9,9 +9,8 @@ import java.util.Random;
 
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.ecosystem.WaterDrop;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.shared.physics.FastMath;
+import org.nusco.narjillos.ecosystem.WaterDrop;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;

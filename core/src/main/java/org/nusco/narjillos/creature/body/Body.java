@@ -21,13 +21,14 @@ public class Body {
 	private final WaveNerve tickerNerve;
 	private double skewing = 0;
 	
-	private Vector cachedCenterOfMass = null;
+	private volatile Vector cachedCenterOfMass;
 	
 	public Body(Head head) {
 		this.head = head;
 		this.parts = getOrgans(head);
 		this.mass = calculateTotalMass();
 		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
+		this.cachedCenterOfMass = calculateCenterOfMass();
 	}
 
 	public Acceleration tick(Vector targetDirection) {

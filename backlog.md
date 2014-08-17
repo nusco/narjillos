@@ -58,6 +58,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Export creature
 * "Most Prolific" button
 * View creature energy
+* Make food shine at a distance? or in infrared view?
 
 ###Ecologist
 

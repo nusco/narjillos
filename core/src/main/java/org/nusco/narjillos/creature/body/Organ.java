@@ -29,11 +29,11 @@ public abstract class Organ extends BodyPart {
 		this.parent = parent;
 	}
 
-	protected double getAngleToParent() {
+	protected synchronized double getAngleToParent() {
 		return angleToParent;
 	}
 
-	protected final void setAngleToParent(double angleToParent) {
+	protected synchronized final void setAngleToParent(double angleToParent) {
 		previousPosition = getPositionInSpace();
 		this.angleToParent = angleToParent;
 		resetAllCaches();

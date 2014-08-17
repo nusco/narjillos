@@ -19,8 +19,9 @@ public abstract class BodyPartConnectionTest {
 		Organ child1 = head.sproutOrgan(nerve1);
 		child1.sproutOrgan(nerve2);
 		head.sproutOrgan(nerve3);
+		ForceField forceField = new ForceField();
 
-		head.tick(0, 0, new ForceField());
+		head.updateAngleToParent(0, 0, forceField);
 		
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);

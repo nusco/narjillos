@@ -31,16 +31,18 @@ public class Body {
 	}
 
 	public Acceleration tick(Vector targetDirection) {
+		centerOfMass = null; // reset cached value
+
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
 
 		double currentSkewing = updateSkewing(angleToTarget);
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
-		
-		ForceField forceField = new ForceField();
-		head.tick(targetAmplitudePercent, currentSkewing, forceField);
+		head.updateAngleToParent(targetAmplitudePercent, currentSkewing);
 
-		centerOfMass = null; // reset cached value
+		ForceField forceField = new ForceField();
+		head.recordForce(forceField);
+
 		double rotation = forceField.calculateRotation(getMass(), getCenterOfMass());
 		Vector translation = forceField.calculateTranslation(getMass());
 		
@@ -53,7 +55,7 @@ public class Body {
 		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
 		double skewingVelocity = updatedSkewing - skewing;
 		if (Math.abs(skewingVelocity) > MAX_SKEWING_VELOCITY)
-				skewingVelocity = Math.signum(skewingVelocity) * MAX_SKEWING_VELOCITY;
+			skewingVelocity = Math.signum(skewingVelocity) * MAX_SKEWING_VELOCITY;
 		return skewing += skewingVelocity;
 	}
 

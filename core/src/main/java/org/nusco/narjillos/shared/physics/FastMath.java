@@ -27,13 +27,11 @@ public class FastMath {
 	}
 
 	public static double sin(double angle) {
-		return Math.sin(Math.toRadians(angle));
-//		return sin[toIndex(angle)];
+		return sin[toIndex(angle)];
 	}
 
 	public static double cos(double angle) {
-		return Math.cos(Math.toRadians(angle));
-//		return cos[toIndex(angle)];
+		return cos[toIndex(angle)];
 	}
 
 	private static double normalize(double angle) {

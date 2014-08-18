@@ -46,6 +46,7 @@ public abstract class Organ extends BodyPart {
 			child.recalculateCaches();
 	}
 
+	@Override
 	protected Vector calculateStartPoint() {
 		return getParent().getEndPoint();
 	}

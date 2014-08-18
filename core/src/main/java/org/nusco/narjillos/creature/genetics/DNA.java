@@ -31,10 +31,10 @@ public class DNA {
 		Chromosome nextChromosome;
 		while((nextChromosome = parser.nextChromosome()) != null) {
 			// skip a chromosome every now and then
-			if (!mutationHappens())
+			if (!isMutating())
 				resultChromosomes.add(copy(nextChromosome));
 			// add a chromosome every now and then
-			if (mutationHappens())
+			if (isMutating())
 				resultChromosomes.add(randomGenes(Chromosome.SIZE));
 		}
 
@@ -58,7 +58,7 @@ public class DNA {
 	}
 
 	private int copy(int gene) {
-		return mutationHappens() ? mutate(gene) : gene;
+		return isMutating() ? mutate(gene) : gene;
 	}
 
 	private int mutate(int gene) {
@@ -66,7 +66,7 @@ public class DNA {
 		return gene + randomFactor;
 	}
 
-	private boolean mutationHappens() {
+	private boolean isMutating() {
 		return RanGen.nextDouble() < MUTATION_RATE;
 	}
 

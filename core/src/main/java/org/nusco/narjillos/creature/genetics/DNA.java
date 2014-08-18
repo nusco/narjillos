@@ -7,8 +7,8 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class DNA {
 
-	private static final int MUTATION_RANGE = 30;
-	public static final double MUTATION_RATE = 0.008;
+	public static final double MUTATION_RATE = 0.02;
+	private static final int GENE_MUTATION_RANGE = 30;
 
 	private final Integer[] genes;
 
@@ -62,7 +62,7 @@ public class DNA {
 	}
 
 	private int mutate(int gene) {
-		int randomFactor = ((int) (RanGen.nextDouble() * MUTATION_RANGE * 2)) - MUTATION_RANGE;
+		int randomFactor = ((int) (RanGen.nextDouble() * GENE_MUTATION_RANGE * 2)) - GENE_MUTATION_RANGE;
 		return gene + randomFactor;
 	}
 

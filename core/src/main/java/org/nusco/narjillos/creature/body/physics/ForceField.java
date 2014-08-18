@@ -6,91 +6,97 @@ import java.util.List;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
+/**
+ * This class contains most of the physics engine.
+ * 
+ * Here are a few formulas. To understand them, consider that we don't use
+ * inertia - so we can safely replace velocities with positions in space. (In
+ * other words, we assume that after each movement of each body, the body's
+ * velocity drops down to zero).
+ * 
+ * Linear Momentum (for the body segments):
+ * linear_momentum = mass * linear_velocity (in [pixelgrams points / tick])
+ * 
+ * Linear Momentum (for the whole body):
+ * linear_velocity = linear_momentum / mass (in [points / tick])
+ * 
+ * Angular Momentum (for the body segments, approximated as thin rods):
+ * angular_momentum = moment_of_inertia * angular_velocity
+ * moment_of_inertia_around_far_end = mass * length^2 * 16 / 48
+ * 
+ * Also, by the parallel axis theorem:
+ * moment_of_inertia_around_center_of_mass = moment_of_inertia_around_far_end +
+ *                                           mass * distance_between_far_end_and_center_of_mass^2 
+ *                                         = mass * (length^2 * 16 / 48 + distance_between_far_end_and_center_of_mass^2)
+ * So the angular_momentum is the same as the above, multiplied by the angular_velocity.
+ * 
+ * Angular Momentum (for the whole body, approximated as a thin disk):
+ * angular_velocity = angular_momentum / moment_of_inertia
+ *                  = angular_momentum / (mass * radius^2 / 4)
+ */
 public class ForceField {
 
-	private static final double PROPULSION_SCALE = 0.05;
-	private static final double ROTATION_SCALE = 0.000001;
+	private static final double PROPULSION_SCALE = 1 / 100_000_000;
+	private static final double ROTATION_SCALE = 10000;
 
-	private static final double VISCOSITY = 1.7;
-	
-	// 1 means that every movement is divided by the entire mass. This makes
-	// high mass a sure-fire loss.
-	// 0.5 means half as much penalty. This justifies having a high mass, for
-	// the extra push it gives you.
-	private static final double MASS_PENALTY_DURING_PROPULSION = 0.3;
+	private final double bodyMass;
+	private final double bodyRadius;
+	private final List<Vector> linearMomenta = new LinkedList<>();
+	private final List<Double> angularMomenta = new LinkedList<>();
+	private Vector centerOfMass;
 
-	private final List<Segment> forces = new LinkedList<>();
-	private double energySpent = 0;
-	
-	public void calculateForce(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
-		Vector force = reverseCalculateForceFromMovement(initialPositionInSpace, finalPositionInSpace, mass);
-		Segment forceSegment = new Segment(initialPositionInSpace.getMidPoint(), force);
-		addForce(forceSegment);
+	public ForceField(double bodyMass, double bodyRadius, Vector centerOfMass) {
+		this.bodyMass = bodyMass;
+		this.bodyRadius = bodyRadius;
+		this.centerOfMass = centerOfMass;
 	}
 
-	public Vector calculateTranslation(double mass) {
-		return getTotalForce().invert().by(PROPULSION_SCALE * getMassPenalty(mass));
+	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
+		linearMomenta.add(calculateLinearMomentum(initialPositionInSpace, finalPositionInSpace, mass));
+		angularMomenta.add(calculateAngularMomentum(initialPositionInSpace, finalPositionInSpace, mass));
 	}
 
-	public double calculateRotation(double mass, Vector centerOfMass) {
-		double rotationalForce = getRotationalForceAround(centerOfMass);
-		return rotationalForce * ROTATION_SCALE * getMassPenalty(mass);
+	private Vector calculateLinearMomentum(Segment beforeMovement, Segment afterMovement, double mass) {
+		Vector startPoint = beforeMovement.getMidPoint();
+		Vector endPoint = afterMovement.getMidPoint();
+		Vector velocity = endPoint.minus(startPoint);
+		return velocity.by(mass);
+	}
+
+	private double calculateAngularMomentum(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
+		double length = initialPositionInSpace.vector.getLength();
+		double distance = initialPositionInSpace.startPoint.minus(centerOfMass).getLength();
+		double angular_velocity = finalPositionInSpace.vector.getAngle() - initialPositionInSpace.vector.getAngle();
+		
+		return angular_velocity * (length * length * 16 / 48 + distance * distance);
+	}
+
+	public Vector getTranslation() {
+		return getTotalLinearMomentum().invert().by(bodyMass * PROPULSION_SCALE);
+	}
+
+	private Vector getTotalLinearMomentum() {
+		Vector result = Vector.ZERO;
+		for (Vector linearMomentum : linearMomenta)
+			result = result.plus(linearMomentum);
+		return result;
+	}
+
+	public double getRotation() {
+		double result = -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4) * ROTATION_SCALE;
+		System.out.println(result);
+		return result;
+	}
+
+	private double getTotalAngularMomentum() {
+		double result = 0;
+		for (double angularMomentum : angularMomenta)
+			result += angularMomentum;
+		return result;
 	}
 
 	public double getTotalEnergySpent() {
-		return energySpent / 1000;
-	}
-
-	private Vector reverseCalculateForceFromMovement(Segment beforeMovement, Segment afterMovement, double mass) {
-		// TODO: this is all made-up stuff. try some real physics
-		Vector startPointMovement = afterMovement.startPoint.minus(beforeMovement.startPoint);
-		Vector endPointMovement = afterMovement.vector.minus(beforeMovement.vector);
-		Vector averageMovement = startPointMovement.plus(endPointMovement).by(0.5);
-		
-		double normalizedMovementIntensity = averageMovement.getLength() * mass / 10000;
-		double movementIntensityInViscousFluid = addViscosity(normalizedMovementIntensity) * 10000;
-
-		energySpent += movementIntensityInViscousFluid / 10000;
-		
-		return averageMovement.normalize(movementIntensityInViscousFluid).getProjectionOn(afterMovement.vector.getNormal());
-	}
-
-	private double addViscosity(double normalizedMovementIntensity) {
-		if (normalizedMovementIntensity < 1)
-			return normalizedMovementIntensity;
-
-		double result = Math.pow(normalizedMovementIntensity, VISCOSITY);
-		result = Math.min(result, 300);
-		return result;
-	}
-
-	void addForce(Segment force) {
-		forces.add(force);
-	}
-
-	private Vector getTotalForce() {
-		Vector result = Vector.ZERO;
-		for (Segment force : forces)
-			result = result.plus(force.vector);
-		return result;
-	}
-
-	private double getRotationalForceAround(Vector center) {
-		double result = 0;
-		for (Segment force : forces)
-			result += getRotationalForceAround(center, force);
-		return result;
-	}
-	
-	// TODO: apply some real physics here
-	private double getRotationalForceAround(Vector center, Segment force) {
-		Vector distance = force.startPoint.minus(center);
-		return distance.getCrossProductWith(force.vector);
-	}
-
-	private double getMassPenalty(double mass) {
-		if (mass <= 0)
-			return 1.0;
-		return 1.0 / (mass * MASS_PENALTY_DURING_PROPULSION);
+		// FIXME
+		return 0;
 	}
 }

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.nusco.narjillos.creature.body.physics.Acceleration;
+import org.nusco.narjillos.creature.body.physics.Impulse;
 import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -41,7 +41,7 @@ public class Body {
 	 * Take a target direction. Change the body's geometry based on the target
 	 * direction. Return the resulting set of translational/linear forces.
 	 */
-	public Acceleration tick(Vector targetDirection) {
+	public Impulse tick(Vector targetDirection) {
 		// Before any movement, store away the current body positions
 		// and center of mass. These will come useful later.
 		Vector centerOfMassBeforeReshaping = calculateCenterOfMass();
@@ -60,7 +60,7 @@ public class Body {
 
 		// Now we move out of the "vacuum" metaphor: the body's movement
 		// generates translational and rotation forces.
-		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions);
+		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMassBeforeReshaping);
 		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
 		return tick_CalculateAccelerationForWholeBody(forceField, centerOfMassAfterReshaping);
 	}
@@ -94,20 +94,25 @@ public class Body {
 		head.recursivelyUpdateAngleToParent(targetAmplitudePercent, currentSkewing);
 	}
 
-	private ForceField tick_CalculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions) {
-		ForceField forceField = new ForceField();
+	private ForceField tick_CalculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
+		ForceField forceField = new ForceField(getMass(), getRadius(), centerOfMass);
 		for (BodyPart bodyPart : bodyParts)
-			forceField.calculateForce(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
+			forceField.registerMovement(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		return forceField;
 	}
 
-	private Acceleration tick_CalculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {
-		double rotation = forceField.calculateRotation(getMass(), centerOfMass);
-		Vector translation = forceField.calculateTranslation(getMass());
+	private double getRadius() {
+		// FIXME: simplify for now. fix later.
+		return 1500;
+	}
+
+	private Impulse tick_CalculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {
+		Vector translation = forceField.getTranslation();
+		double rotation = forceField.getRotation();
 
 		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
 		
-		return new Acceleration(translation, rotation, energySpent);
+		return new Impulse(translation, rotation, energySpent);
 	}
 
 	private double tick_UpdateSkewing(double angleToTarget) {

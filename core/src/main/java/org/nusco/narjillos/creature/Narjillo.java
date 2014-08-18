@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.creature.body.physics.Acceleration;
+import org.nusco.narjillos.creature.body.physics.Impulse;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -20,16 +20,11 @@ public class Narjillo implements Thing, Creature {
 	static final double LIFESPAN = 30_000;
 	static final double ENERGY_DECAY = MAX_ENERGY / LIFESPAN;
 	static final double AGONY_LEVEL = ENERGY_DECAY * 300;
-	static final double LINEAR_VELOCITY_DECAY = 0.5;
-	static final double ANGULAR_VELOCITY_DECAY = 0.5;
 
 	public final Body body;
 	private final DNA genes;
 
 	private Vector target = Vector.ZERO;
-	private Vector linearVelocity = Vector.ZERO;
-	private double angularVelocity = 0;
-
 	private double energy = INITIAL_ENERGY;
 	private double maxEnergyForAge = MAX_ENERGY;
 
@@ -48,13 +43,16 @@ public class Narjillo implements Thing, Creature {
 	@Override
 	public void tick() {
 		applyLifecycleAnimations();
-		letVelocitiesDecayWithAttrition();
 
-		Acceleration effort = body.tick(getTargetDirection());
+		Impulse impulse = body.tick(getTargetDirection());
+		moveBy(impulse);
+		updateEnergyBasedOn(impulse);
+	}
 
-		updateVelocitiesBasedOn(effort);
-		updatePositionBasedOnVelocities();
-		updateEnergyBasedOn(effort);
+	private void moveBy(Impulse impulse) {
+		Vector newPosition = getPosition().plus(impulse.linearComponent);
+		double newAngle = getAngle() + impulse.angularComponent;
+		move(newPosition, newAngle);
 	}
 
 	private void applyLifecycleAnimations() {
@@ -62,25 +60,14 @@ public class Narjillo implements Thing, Creature {
 			applyDeathAnimation();
 	}
 
-	private void updateVelocitiesBasedOn(Acceleration effort) {
-		linearVelocity = linearVelocity.plus(effort.linear);
-		angularVelocity = angularVelocity + effort.angular;
-	}
-
-	private void updateEnergyBasedOn(Acceleration effort) {
+	private void updateEnergyBasedOn(Impulse impulse) {
 		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
-		updateEnergyBy(-effort.energySpent);
+		updateEnergyBy(-impulse.energySpent);
 	}
 
 	@Override
 	public Vector getPosition() {
 		return body.getStartPoint();
-	}
-
-	private void updatePositionBasedOnVelocities() {
-		Vector newPosition = getPosition().plus(linearVelocity);
-		double newAngle = getAngle() + angularVelocity;
-		move(newPosition, newAngle);
 	}
 
 	private void move(Vector position, double angle) {
@@ -90,12 +77,6 @@ public class Narjillo implements Thing, Creature {
 		
 		for (NarjilloEventListener eventListener : eventListeners)
 			eventListener.moved(new Segment(startingPosition, getPosition()));
-	}
-
-	private void letVelocitiesDecayWithAttrition() {
-		// we keep things simple: "attrition" is just a constant
-		linearVelocity = linearVelocity.by(LINEAR_VELOCITY_DECAY);
-		angularVelocity = angularVelocity * ANGULAR_VELOCITY_DECAY;
 	}
 
 	private double getAngle() {

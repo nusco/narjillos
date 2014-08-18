@@ -46,7 +46,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	@Override
-	public synchronized void tick() {
+	public void tick() {
 		applyLifecycleAnimations();
 		letVelocitiesDecayWithAttrition();
 
@@ -73,12 +73,12 @@ public class Narjillo implements Thing, Creature {
 		updateEnergyBy(-effort.energySpent);
 	}
 
-	public synchronized void setPosition(Vector position, double angle) {
+	public void setPosition(Vector position, double angle) {
 		body.setPosition(position, angle);
 	}
 
 	@Override
-	public synchronized Vector getPosition() {
+	public Vector getPosition() {
 		return body.getPosition();
 	}
 
@@ -131,19 +131,19 @@ public class Narjillo implements Thing, Creature {
 		body.forceBend(bendAngle);
 	}
 
-	public synchronized double getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 
-	public synchronized Vector getTargetDirection() {
+	public Vector getTargetDirection() {
 		return target.minus(getPosition()).normalize(1);
 	}
 
-	public synchronized void setTarget(Vector target) {
+	public void setTarget(Vector target) {
 		this.target = target;
 	}
 
-	public synchronized void feed() {
+	public void feed() {
 		double energyBoost = ENERGY_PER_FOOD_ITEM;
 		energy += energyBoost;
 		if (energy > maxEnergyForAge)
@@ -154,7 +154,7 @@ public class Narjillo implements Thing, Creature {
 		eventListeners.add(eventListener);
 	}
 
-	public synchronized DNA reproduce() {
+	public DNA reproduce() {
 		return getDNA().copy();
 	}
 

@@ -25,16 +25,19 @@ public abstract class BodyPart {
 		this.thickness = thickness;
 		this.mass = Math.max(length * thickness, 1);
 		this.color = color;
-		
+		initCaches();
+	}
+
+	private void initCaches() {
 		this.cachedAbsoluteAngle = 0;
 		this.cachedStartPoint = Vector.ZERO;
-		this.cachedVector = Vector.polar(0, length);
+		this.cachedVector = Vector.polar(0, getLength());
 		this.cachedEndPoint = cachedVector;
 		this.cachedCenterOfMass = cachedVector.by(0.5);
 		this.cachedPositionInSpace = new Segment(Vector.ZERO, cachedVector);
 	}
 
-	public int getLength() {
+	public final int getLength() {
 		return length;
 	}
 

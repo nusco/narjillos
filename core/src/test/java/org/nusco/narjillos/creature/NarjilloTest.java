@@ -15,7 +15,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class NarjilloTest {
 
-	Narjillo narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), DNA.random());
+	Narjillo narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), Vector.ZERO, DNA.random());
 
 	class NullSwimmerEventListener implements NarjilloEventListener {
 		@Override
@@ -29,8 +29,6 @@ public class NarjilloTest {
 	
 	@Test
 	public void sendsEventWhenMoving() {
-		narjillo.setPosition(Vector.ZERO, 0);
-
 		final Segment[] moved = new Segment[] { null };
 		narjillo.addEventListener(new NullSwimmerEventListener() {
 
@@ -103,7 +101,7 @@ public class NarjilloTest {
 	@Test
 	public void itsEnergyNaturallyDecreasesWithOldAgeEvenWithoutMoving() {
 		DNA dna = new DNA("{1_1_1_1_1_1");
-		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), dna);
+		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
 
 		while (!narjilloThatCannotMove.isDead())
 			narjilloThatCannotMove.tick();
@@ -112,7 +110,7 @@ public class NarjilloTest {
 	@Test
 	public void itsEnergyDecreasesFasterIfItMoves() {
 		DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
-		Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), dna);
+		Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
 
 		narjillo.setTarget(Vector.cartesian(-10, 10));
 		for (int i = 0; i < 10; i++)
@@ -169,7 +167,7 @@ public class NarjilloTest {
 	@Test
 	public void itsEnergyNaturallyDecreasesWithAgeEvenWhenNotMoving() {
 		DNA dna = new DNA("{1_1_1_1_1_1}");
-		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), dna);
+		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
 
 		while (!narjilloThatCannotMove.isDead())
 			narjilloThatCannotMove.tick();

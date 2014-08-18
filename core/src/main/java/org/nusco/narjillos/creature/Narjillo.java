@@ -35,8 +35,9 @@ public class Narjillo implements Thing, Creature {
 
 	private final List<NarjilloEventListener> eventListeners = new LinkedList<>();
 
-	public Narjillo(Body body, DNA genes) {
+	public Narjillo(Body body, Vector position, DNA genes) {
 		this.body = body;
+		this.body.updatePosition(position, 0);
 		this.genes = genes;
 	}
 
@@ -72,10 +73,6 @@ public class Narjillo implements Thing, Creature {
 		updateEnergyBy(-effort.energySpent);
 	}
 
-	public void setPosition(Vector position, double angle) {
-		body.setPosition(position, angle);
-	}
-
 	@Override
 	public Vector getPosition() {
 		return body.getPosition();
@@ -90,22 +87,10 @@ public class Narjillo implements Thing, Creature {
 	private void updatePosition(Vector position, double angle) {
 		Vector startingPosition = getPosition();
 
-		Vector shiftedPosition = position.plus(getPivotingTranslation(angle));
-		setPosition(shiftedPosition, angle);
+		body.updatePosition(position, angle);
 		
 		for (NarjilloEventListener eventListener : eventListeners)
 			eventListener.moved(new Segment(startingPosition, getPosition()));
-	}
-
-	private Vector getPivotingTranslation(double angle) {
-		double rotation = angle - body.getAngle();
-		
-		// pivot around the center of mass
-		Vector centerOfMass = body.getCenterOfMass();
-		double shiftX = centerOfMass.x * (1 - Math.cos(Math.toRadians(rotation)));
-		double shiftY = centerOfMass.y * Math.sin(Math.toRadians(rotation));
-		
-		return Vector.cartesian(-shiftX, -shiftY);
 	}
 
 	private void letVelocitiesDecayWithAttrition() {

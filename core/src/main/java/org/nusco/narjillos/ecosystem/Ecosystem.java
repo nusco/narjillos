@@ -95,7 +95,7 @@ public class Ecosystem {
 	}
 
 	public final Narjillo spawnNarjillo(Vector position, DNA genes) {
-		final Narjillo narjillo = new Narjillo(new Embryo(genes).develop(), genes);
+		final Narjillo narjillo = new Narjillo(new Embryo(genes).develop(), position, genes);
 		narjillo.addEventListener(new NarjilloEventListener() {
 
 			@Override
@@ -108,7 +108,6 @@ public class Ecosystem {
 				remove(narjillo);
 			}
 		});
-		narjillo.setPosition(position, 0);
 		notifyThingAdded(narjillo);
 		narjillos.add(narjillo);
 		return narjillo;

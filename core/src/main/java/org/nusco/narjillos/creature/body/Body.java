@@ -21,18 +21,18 @@ public class Body {
 	private final WaveNerve tickerNerve;
 	private double skewing = 0;
 	
-	private volatile Vector cachedCenterOfMass;
+	private volatile Vector centerOfMass;
 	
 	public Body(Head head) {
 		this.head = head;
 		this.parts = getOrgans(head);
 		this.mass = calculateTotalMass();
 		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
-		this.cachedCenterOfMass = calculateCenterOfMass();
+		this.centerOfMass = calculateCenterOfMass();
 	}
 
 	public Acceleration tick(Vector targetDirection) {
-		cachedCenterOfMass = null; // reset cached value
+		centerOfMass = calculateCenterOfMass();
 		updateAngles(targetDirection);
 		return calculateAcceleration();
 	}
@@ -112,9 +112,7 @@ public class Body {
 	}
 	
 	public Vector getCenterOfMass() {
-		if (cachedCenterOfMass == null)
-			cachedCenterOfMass = calculateCenterOfMass();
-		return cachedCenterOfMass;
+		return centerOfMass;
 	}
 
 	private Vector calculateCenterOfMass() {
@@ -150,8 +148,17 @@ public class Body {
 		return head.getStartPoint();
 	}
 	
-	public void setPosition(Vector position, double angle) {
-		cachedCenterOfMass = null; // clear cache
-		head.setPosition(position,angle);
+	public void updatePosition(Vector position, double rotation) {
+		Vector shiftedPosition = position.plus(rotateAround(getCenterOfMass(), rotation));
+		head.setPosition(shiftedPosition,rotation);
+	}
+
+	private Vector rotateAround(Vector pivot, double angle) {
+		double rotation = angle - getAngle();
+		
+		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));
+		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
+		
+		return Vector.cartesian(-shiftX, -shiftY);
 	}
 }

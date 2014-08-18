@@ -47,7 +47,7 @@ public class BodySegmentTest extends OrganTest {
 	public void hasAnEndPoint() {
 		Head head = new Head(10, 0, new ColorByte(100), 1);
 		Organ organ1 = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, new DelayNerve(0), 90, 1));
-		BodyPart organ2 = organ1.addChild(new BodySegment(10, 0, new ColorByte(100), organ1, new DelayNerve(0), -90, 1));
+		Organ organ2 = organ1.addChild(new BodySegment(10, 0, new ColorByte(100), organ1, new DelayNerve(0), -90, 1));
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
 	

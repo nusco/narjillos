@@ -13,18 +13,25 @@ public abstract class BodyPart {
 
 	// Caching - ugly, but has huge performance benefits.
 	// All volatile, to avoid too much synchronization
-	private volatile Vector cachedStartPoint = Vector.ZERO;
-	private volatile Vector cachedEndPoint = Vector.ZERO;
-	private volatile double cachedAbsoluteAngle = 0;
-	private volatile Vector cachedVector = Vector.ZERO;
-	private volatile Vector cachedCenterOfMass = Vector.ZERO;
-	private volatile Segment cachedPositionInSpace = new Segment(Vector.ZERO, Vector.ZERO);
+	private volatile double cachedAbsoluteAngle;
+	private volatile Vector cachedStartPoint;
+	private volatile Vector cachedVector;
+	private volatile Vector cachedEndPoint;
+	private volatile Vector cachedCenterOfMass;
+	private volatile Segment cachedPositionInSpace;
 
 	public BodyPart(int length, int thickness, ColorByte color) {
 		this.length = length;
 		this.thickness = thickness;
 		this.mass = Math.max(length * thickness, 1);
 		this.color = color;
+		
+		this.cachedAbsoluteAngle = 0;
+		this.cachedStartPoint = Vector.ZERO;
+		this.cachedVector = Vector.polar(0, length);
+		this.cachedEndPoint = cachedVector;
+		this.cachedCenterOfMass = cachedVector.by(0.5);
+		this.cachedPositionInSpace = new Segment(Vector.ZERO, cachedVector);
 	}
 
 	public int getLength() {

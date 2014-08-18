@@ -35,6 +35,6 @@ public class WaveNerve implements Nerve {
 	}
 
 	private boolean isInLeftSemiplane(double currentAngle) {
-		return currentAngle >= Math.PI && currentAngle < Math.PI / 2 * 3;
+		return currentAngle >= Math.PI / 2 && currentAngle < Math.PI / 2 * 3;
 	}
 }

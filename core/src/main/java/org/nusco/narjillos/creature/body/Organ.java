@@ -3,9 +3,7 @@ package org.nusco.narjillos.creature.body;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -21,7 +19,6 @@ public abstract class Organ extends BodyPart {
 
 	private volatile double angleToParent = 0;
 	public double forcedBend = 0;
-	private Segment previousPosition;
 	
 	protected Organ(int length, int thickness, ColorByte color, BodyPart parent, Nerve nerve) {
 		super(length, thickness, color);
@@ -34,7 +31,6 @@ public abstract class Organ extends BodyPart {
 	}
 
 	protected final void setAngleToParent(double angleToParent) {
-		previousPosition = getPositionInSpace();
 		this.angleToParent = angleToParent;
 		recalculateCaches();
 	}
@@ -64,7 +60,7 @@ public abstract class Organ extends BodyPart {
 		return children;
 	}
 
-	public void updateAngleToParent(double targetPercentOfAmplitude, double skewing) {
+	public void recursivelyUpdateAngleToParent(double targetPercentOfAmplitude, double skewing) {
 		double targetAngleToParent = getNerve().tick(targetPercentOfAmplitude);
 		
 		double newAngleToParent = calculateNewAngleToParent(targetAngleToParent, skewing);
@@ -73,14 +69,7 @@ public abstract class Organ extends BodyPart {
 		resetForcedBend();
 
 		for (Organ child : getChildren())
-			child.updateAngleToParent(targetAngleToParent, skewing);
-	}
-
-	public void calculateForces(ForceField forceField) {
-		forceField.calculateForce(previousPosition, getPositionInSpace(), getMass());
-
-		for (Organ child : getChildren())
-			child.calculateForces(forceField);
+			child.recursivelyUpdateAngleToParent(targetAngleToParent, skewing);
 	}
 
 	protected abstract double calculateNewAngleToParent(double targetAngle, double skewing);

@@ -101,15 +101,4 @@ public abstract class BodyPart {
 	private Segment calculatePositionInSpace() {
 		return new Segment(getStartPoint(), getVector());
 	}
-
-	@Override
-	public int hashCode() {
-		return length ^ thickness;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		BodyPart other = (BodyPart) obj;
-		return length == other.length && thickness == other.thickness && color == other.color;
-	}
 }

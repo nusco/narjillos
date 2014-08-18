@@ -42,11 +42,4 @@ public class BodySegment extends Organ {
 	protected double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle() + getAngleToParent();
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (angleToParentAtRest != ((BodySegment) obj).angleToParentAtRest)
-			return false;
-		return super.equals(obj);
-	}
 }

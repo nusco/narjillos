@@ -37,7 +37,7 @@ public class Narjillo implements Thing, Creature {
 
 	public Narjillo(Body body, Vector position, DNA genes) {
 		this.body = body;
-		this.body.updatePosition(position, 0);
+		this.body.move(position, 0);
 		this.genes = genes;
 	}
 
@@ -54,7 +54,6 @@ public class Narjillo implements Thing, Creature {
 
 		updateVelocitiesBasedOn(effort);
 		updatePositionBasedOnVelocities();
-
 		updateEnergyBasedOn(effort);
 	}
 
@@ -81,13 +80,13 @@ public class Narjillo implements Thing, Creature {
 	private void updatePositionBasedOnVelocities() {
 		Vector newPosition = getPosition().plus(linearVelocity);
 		double newAngle = getAngle() + angularVelocity;
-		updatePosition(newPosition, newAngle);
+		move(newPosition, newAngle);
 	}
 
-	private void updatePosition(Vector position, double angle) {
+	private void move(Vector position, double angle) {
 		Vector startingPosition = getPosition();
 
-		body.updatePosition(position, angle);
+		body.move(position, angle);
 		
 		for (NarjilloEventListener eventListener : eventListeners)
 			eventListener.moved(new Segment(startingPosition, getPosition()));
@@ -166,11 +165,7 @@ public class Narjillo implements Thing, Creature {
 		return energy <= 0;
 	}
 
-	public List<BodyPart> getOrgans() {
+	public List<BodyPart> getBodyParts() {
 		return body.getBodyParts();
-	}
-
-	public Vector getCenterOfMass() {
-		return body.getCenterOfMass();
 	}
 }

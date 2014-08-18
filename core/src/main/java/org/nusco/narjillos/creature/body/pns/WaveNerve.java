@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature.body.pns;
 
-import org.nusco.narjillos.shared.physics.FastMath;
 
 /**
  * Ignores the input signal and generates an output that goes from
@@ -25,17 +24,17 @@ public class WaveNerve implements Nerve {
 
 	@Override
 	public double tick(double ignored) {
-		double result = FastMath.sin(angle);
+		double result = Math.sin(angle);
 		angle = update(angle);
 		return result;
 	}
 
 	private double update(double currentAngle) {
 		double multiplicationFactor = isInLeftSemiplane(currentAngle) ? BEAT_RATIO : 1;
-		return (currentAngle + 360  * frequency * multiplicationFactor) % 360;
+		return (currentAngle + Math.PI * 2  * frequency * multiplicationFactor) % (Math.PI * 2);
 	}
 
 	private boolean isInLeftSemiplane(double currentAngle) {
-		return currentAngle >= 90 && currentAngle < 270;
+		return currentAngle >= Math.PI && currentAngle < Math.PI / 2 * 3;
 	}
 }

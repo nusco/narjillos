@@ -32,14 +32,14 @@ public abstract class Organ extends BodyPart {
 
 	protected final void setAngleToParent(double angleToParent) {
 		this.angleToParent = angleToParent;
-		recalculateCaches();
+		recursivelyRalculateCachedFields();  // TODO: this is done at least twice per tick. is that necessary?
 	}
 
-	protected void recalculateCaches() {
+	protected void recursivelyRalculateCachedFields() {
 		super.updateCaches();
 
 		for (Organ child : getChildren())
-			child.recalculateCaches();
+			child.recursivelyRalculateCachedFields();
 	}
 
 	@Override

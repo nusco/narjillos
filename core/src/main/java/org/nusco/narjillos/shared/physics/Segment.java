@@ -36,4 +36,8 @@ public class Segment {
 		Vector projection = startPoint.plus(vector.minus(startPoint).by(t));
 		return projection.minus(point).getLength();
 	}
+
+	public Vector getMidPoint() {
+		return vector.minus(startPoint).by(0.5);
+	}
 }

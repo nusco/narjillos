@@ -24,7 +24,7 @@ public class ForceField {
 	
 	public void calculateForce(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
 		Vector force = reverseCalculateForceFromMovement(initialPositionInSpace, finalPositionInSpace, mass);
-		Segment forceSegment = new Segment(finalPositionInSpace.startPoint, force);
+		Segment forceSegment = new Segment(initialPositionInSpace.getMidPoint(), force);
 		addForce(forceSegment);
 	}
 
@@ -34,7 +34,7 @@ public class ForceField {
 
 	public double calculateRotation(double mass, Vector centerOfMass) {
 		double rotationalForce = getRotationalForceAround(centerOfMass);
-		return -rotationalForce * ROTATION_SCALE * getMassPenalty(mass);
+		return rotationalForce * ROTATION_SCALE * getMassPenalty(mass);
 	}
 
 	public double getTotalEnergySpent() {
@@ -82,6 +82,7 @@ public class ForceField {
 		return result;
 	}
 	
+	// TODO: apply some real physics here
 	private double getRotationalForceAround(Vector center, Segment force) {
 		Vector distance = force.startPoint.minus(center);
 		return distance.getCrossProductWith(force.vector);

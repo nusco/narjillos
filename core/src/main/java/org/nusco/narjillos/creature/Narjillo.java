@@ -74,7 +74,7 @@ public class Narjillo implements Thing, Creature {
 
 	@Override
 	public Vector getPosition() {
-		return body.getPosition();
+		return body.getStartPoint();
 	}
 
 	private void updatePositionBasedOnVelocities() {

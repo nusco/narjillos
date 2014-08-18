@@ -12,7 +12,7 @@ public class BodyTest {
 	@Test
 	public void isPositionedAtZeroByDefault() {
 		Body body = new Body(new Head(1, 1, new ColorByte(1), 1));
-		assertEquals(Vector.ZERO, body.getPosition());
+		assertEquals(Vector.ZERO, body.getStartPoint());
 	}
 
 	@Test
@@ -21,7 +21,7 @@ public class BodyTest {
 		
 		body.move(Vector.cartesian(10, -10), 0);
 
-		assertEquals(Vector.cartesian(10, -10), body.getPosition());
+		assertEquals(Vector.cartesian(10, -10), body.getStartPoint());
 	}
 	
 	@Test

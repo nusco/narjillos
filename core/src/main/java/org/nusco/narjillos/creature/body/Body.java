@@ -12,6 +12,12 @@ import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
+/**
+ * The physical body of a Narjillo, with all its organs and their position in space.
+ * 
+ * This class contains the all-important Body.tick() method. Look at its comments
+ * for details.
+ */
 public class Body {
 
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
@@ -24,26 +30,53 @@ public class Body {
 	private final WaveNerve tickerNerve;
 	private double skewing = 0;
 	
-	private volatile Vector centerOfMass;
-	
 	public Body(Head head) {
 		this.head = head;
 		addWithChildren(this.bodyParts, head);
-
 		this.mass = calculateTotalMass();
 		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
-		this.centerOfMass = calculateCenterOfMass();
 	}
 
+	/**
+	 * Take a target direction. Change the body's geometry based on the target
+	 * direction. Return the resulting set of translational/linear forces.
+	 */
 	public Acceleration tick(Vector targetDirection) {
-		// TODO: find a way to calculate this only once per tick.
-		// It should be local to this method, not a field.
-		centerOfMass = calculateCenterOfMass();
+		// Before any movement, store away the current body positions
+		// and center of mass. These will come useful later.
+		Vector centerOfMassBeforeReshaping = calculateCenterOfMass();
+		Map<BodyPart, Segment> initialPositions = tick_SnapshotBodyPartPositions();
+		
+		// The body reactively changes its geometry in response to the
+		// target's direction. It doesn't "think" were to go - it just
+		// changes its geometry *somehow*. Natural selection will favor
+		// movements that result in getting closer to the target.
+		// 
+		// The key concept here is that the body changes its shape as
+		// if it were in a vacuum: the center of mass stays in the same
+		// position, and the moment of inertia stays zero. (This last
+		// quality is not yet implemented.)
+		tick_UpdateBodyShapeInVacuum(targetDirection, centerOfMassBeforeReshaping);
 
-		Map<BodyPart, Segment> previousPositions = tick_SnapshotBodyPartPositions();
-		tick_UpdateAnglesForWholeBody(targetDirection);
-		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), previousPositions);
-		return tick_CalculateAccelerationForWholeBody(forceField, centerOfMass);
+		// Now we move out of the "vacuum" metaphor: the body's movement
+		// generates translational and rotation forces.
+		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions);
+		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
+		return tick_CalculateAccelerationForWholeBody(forceField, centerOfMassAfterReshaping);
+	}
+
+	private void tick_UpdateBodyShapeInVacuum(Vector targetDirection, Vector centerOfMassBeforeReshaping) {
+		// TODO: this is the place where I should change rotation and translation to keep
+		// moment of inertia at zero and center of mass constant.
+		// The creature changed the shape of its body but it changed neither its
+		// center of mass, nor its moment of inertia. Instead, I only keep the center
+		// of mass constant, and I let the moment of inertia float. The result is
+		// the "tail wiggling dog" effect.
+		tick_UpdateBodyAngles(targetDirection);
+
+		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
+		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterReshaping);
+		head.move(centerOfMassOffset, 0);
 	}
 
 	private Map<BodyPart, Segment> tick_SnapshotBodyPartPositions() {
@@ -53,9 +86,9 @@ public class Body {
 		return result;
 	}
 
-	private void tick_UpdateAnglesForWholeBody(Vector targetDirection) {
+	private void tick_UpdateBodyAngles(Vector targetDirection) {
 		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
-		double currentSkewing = updateSkewing(angleToTarget);
+		double currentSkewing = tick_UpdateSkewing(angleToTarget);
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
 		head.recursivelyUpdateAngleToParent(targetAmplitudePercent, currentSkewing);
@@ -77,7 +110,7 @@ public class Body {
 		return new Acceleration(translation, rotation, energySpent);
 	}
 
-	private double updateSkewing(double angleToTarget) {
+	private double tick_UpdateSkewing(double angleToTarget) {
 		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
 		double skewingVelocity = updatedSkewing - skewing;
 		if (Math.abs(skewingVelocity) > MAX_SKEWING_VELOCITY)
@@ -85,12 +118,18 @@ public class Body {
 		return skewing += skewingVelocity;
 	}
 
-	public Vector getMainAxis() {
-		return head.getMainAxis();
+	public Vector getStartPoint() {
+		// TODO: consider moving the reference startPoint to the center of mass and
+		// having a separate method for mouth position
+		return head.getStartPoint();
 	}
 
 	public double getMass() {
 		return mass;
+	}
+
+	public Vector getMainAxis() {
+		return head.getMainAxis();
 	}
 
 	public List<BodyPart> getBodyParts() {
@@ -125,6 +164,12 @@ public class Body {
 			forceBendWithChildren(child, bendAngle);
 	}
 
+	// TODO: find a way to calculate this as few times per tick as possible.
+	// Right now it's called multiple times, and it's unclear to me
+	// when I can cache it and when I can't.
+	// Also, the center of mass should be absolute, not relative to the head.
+	// This would make some calculations easier in tick(), but it would also
+	// require some rewriting in other places.
 	private Vector calculateCenterOfMass() {
 		List<BodyPart> organs = getBodyParts();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
@@ -153,17 +198,15 @@ public class Body {
 	public double getAngle() {
 		return head.getAbsoluteAngle();
 	}
-
-	public Vector getPosition() {
-		return head.getStartPoint();
-	}
 	
 	public void move(Vector position, double rotation) {
-		Vector shiftedPosition = position.plus(rotateAround(centerOfMass, rotation));
-		head.setPosition(shiftedPosition,rotation);
+		Vector shiftedPosition = position.plus(rotateAround(calculateCenterOfMass(), rotation));
+		head.setPosition(shiftedPosition, rotation);
 	}
 
-	private Vector rotateAround(Vector pivot, double angle) {
+	private Vector rotateAround(Vector center, double angle) {
+		Vector pivot = center.minus(getStartPoint());
+		
 		double rotation = angle - getAngle();
 		
 		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));

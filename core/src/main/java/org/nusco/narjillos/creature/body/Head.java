@@ -34,6 +34,12 @@ public class Head extends Organ {
 		setAngleToParent(angle);
 	}
 
+	public void move(Vector translation, int rotation) {
+		Vector newStartPoint = getStartPoint().plus(translation);
+		double newAngleToParent = getAngleToParent() + rotation;
+		setPosition(newStartPoint, newAngleToParent);
+	}
+
 	@Override
 	protected double calculateAbsoluteAngle() {
 		return getAngleToParent();
@@ -41,7 +47,7 @@ public class Head extends Organ {
 
 	@Override
 	protected Vector calculateCenterOfMass() {
-		return getVector().by(0.5);
+		return getStartPoint().plus(getVector().by(0.5));
 	}
 	
 	@Override

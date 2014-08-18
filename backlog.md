@@ -10,6 +10,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
+* Only update Organ cache when necessary °°°
 * Space Partitioning for fast thing searches °°
 * Optimize physics engine °°
 * Find out why even a petri dish of {0} creatures slows down (apparently creatures become "heavier" to tick)
@@ -49,7 +50,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Fix non-repeatable experiments (also check across "experiment" and "petri")
+* Fix non-repeatable experiments (also check across "experiment" and "petri") °°°
 * Slow motion setting °°
 * Lock on single Narjillo °
 * Bench with stats

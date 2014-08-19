@@ -1,12 +1,14 @@
 package org.nusco.narjillos.shared.physics;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 public class VectorTest {
 	@Test
-	public void canBeCreatedFromItCartesianCoordinates() {
+	public void canBeCreatedFromItCartesianCoordinates() throws ZeroVectorException {
 		double x = 10.1;
 		double y = 20.1;
 		Vector v = Vector.cartesian(x, y);
@@ -18,7 +20,7 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void canBeCreatedFromItsPolarCoordinates() {
+	public void canBeCreatedFromItsPolarCoordinates() throws ZeroVectorException {
 		double degrees = 30;
 		double length = 10;
 		Vector v = Vector.polar(degrees, length);
@@ -30,7 +32,15 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void normalizesAnglesWhenUsingPolarCoordinates() {
+	public void canBeZero() {
+		assertTrue(Vector.ZERO.isZero());
+		assertTrue(Vector.polar(10, 0).isZero());
+		assertTrue(Vector.cartesian(0, 0).isZero());
+		assertFalse(Vector.cartesian(0.001, 0).isZero());
+	}
+	
+	@Test
+	public void normalizesAnglesWhenUsingPolarCoordinates() throws ZeroVectorException {
 		assertEquals(0, Vector.polar(0, 1).getAngle(), 0.001);
 		assertEquals(180, Vector.polar(180, 1).getAngle(), 0.001);
 		assertEquals(0, Vector.polar(360, 1).getAngle(), 0.001);
@@ -43,7 +53,7 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void normalizesAnglesWhenUsingCartesianCoordinates() {
+	public void normalizesAnglesWhenUsingCartesianCoordinates() throws ZeroVectorException {
 		assertEquals(0, Vector.cartesian(1, 0).getAngle(), 0);
 		assertEquals(45, Vector.cartesian(1, 1).getAngle(), 0);
 		assertEquals(90, Vector.cartesian(0, 1).getAngle(), 0);
@@ -54,8 +64,8 @@ public class VectorTest {
 		assertEquals(135, Vector.cartesian(-1, 1).getAngle(), 0);
 	}
 	
-	@Test
-	public void vectorZeroHasAnAngleOfZeroByDefinition() {
+	@Test(expected = ZeroVectorException.class)
+	public void vectorZeroHasNoAngle() throws ZeroVectorException {
 		assertEquals(0, Vector.ZERO.getAngle(), 0);
 	}
 
@@ -76,7 +86,7 @@ public class VectorTest {
 	}
 
 	@Test
-	public void itsAngleIsCorrectedForNegativeLengths() {
+	public void itsAngleIsCorrectedForNegativeLengths() throws ZeroVectorException {
 		assertEquals(-180, Vector.polar(0, -1).getAngle(), 0.001);
 		assertEquals(0, Vector.polar(180, -1).getAngle(), 0.001);
 		assertEquals(-90, Vector.polar(90, -1).getAngle(), 0.001);
@@ -120,27 +130,32 @@ public class VectorTest {
 	}
 
 	@Test
-	public void canBeNormalizedToAnArbitraryLength() {
+	public void canBeNormalizedToAnArbitraryLength() throws ZeroVectorException {
 		Vector original = Vector.polar(42, 1234);
 		
 		assertEquals(Vector.polar(42, 10), original.normalize(10));
 	}
 
-	@Test
-	public void vectorZeroStaysZeroWhenNormalized() {
-		assertEquals(Vector.ZERO, Vector.ZERO.normalize(10));
+	@Test(expected = ZeroVectorException.class)
+	public void vectorZeroCannotBeNormalized() throws ZeroVectorException {
+		Vector.ZERO.normalize(10);
 	}
 
 	@Test
-	public void hasANormalVector() {
+	public void hasANormalVector() throws ZeroVectorException {
 		assertEqualsVector(Vector.polar(-50, 1), Vector.polar(40, 1234).getNormal());
 		assertEqualsVector(Vector.polar(0, 1), Vector.polar(90, 1234).getNormal());
 		assertEqualsVector(Vector.polar(90, 1), Vector.polar(180, 1234).getNormal());
 		assertEqualsVector(Vector.polar(180, 1), Vector.polar(-90, 1234).getNormal());
 	}
 
+	@Test(expected = ZeroVectorException.class)
+	public void vectorZeroHasNoNormalVector() throws ZeroVectorException {
+		Vector.ZERO.getNormal();
+	}
+
 	@Test
-	public void hasAProjectionOnAnotherVector() {
+	public void hasAProjectionOnAnotherVector() throws ZeroVectorException {
 		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 1)));
 		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(0, 1)));
 		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 10)));
@@ -149,15 +164,18 @@ public class VectorTest {
 		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(-135, 1)));
 	}
 
-	@Test
-	public void projectionAcceptsVectorZero() {
-		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.ZERO));
-		assertEqualsVector(Vector.ZERO, Vector.ZERO.getProjectionOn(Vector.polar(180, 10)));
-		assertEqualsVector(Vector.ZERO, Vector.ZERO.getProjectionOn(Vector.ZERO));
+	@Test(expected = ZeroVectorException.class)
+	public void vectorZeroHasNoProjection() throws ZeroVectorException {
+		Vector.ZERO.getProjectionOn(Vector.cartesian(0.1, 0));
+	}
+
+	@Test(expected = ZeroVectorException.class)
+	public void aVectorHasNoProjectionOnZero() throws ZeroVectorException {
+		Vector.cartesian(0, 1).getProjectionOn(Vector.ZERO);
 	}
 	
 	@Test
-	public void hasANormalComponentOnAnotherVector() {
+	public void hasANormalComponentOnAnotherVector() throws ZeroVectorException {
 		assertEqualsVector(Vector.ZERO, Vector.polar(90, 10).getNormalComponentOn(Vector.polar(90, 1)));
 		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 1)));
 		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 10)));
@@ -166,21 +184,44 @@ public class VectorTest {
 		assertEqualsVector(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(0, 10)));
 		assertEqualsVector(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(180, 10)));
 	}
+	
+	@Test(expected = ZeroVectorException.class)
+	public void vectorZeroHasNoNormalComponentOnOtherVectors() throws ZeroVectorException {
+		Vector.ZERO.getNormalComponentOn(Vector.polar(90, 1));
+	}
+	
+	@Test(expected = ZeroVectorException.class)
+	public void aVectorsHasNoNormalComponentOnVectorZero() throws ZeroVectorException {
+		Vector.polar(90, 1).getNormalComponentOn(Vector.ZERO);
+	}
+	
+	@Test(expected = ZeroVectorException.class)
+	public void vectorZeroHasNoNormal() throws ZeroVectorException {
+		Vector.ZERO.getNormal();
+	}
 
 	@Test
-	public void hasAnAngleWithAnotherVector() {
+	public void hasAnAngleWithAnotherVector() throws ZeroVectorException {
 		Vector ninetyDegrees = Vector.polar(90, 10);
 		assertEquals(0, ninetyDegrees.getAngleWith(ninetyDegrees), 0.001);
-		assertEquals(90, ninetyDegrees.getAngleWith(Vector.ZERO), 0.001);
 		assertEquals(180, ninetyDegrees.getAngleWith(Vector.polar(-90, 1)), 0.001);
 		assertEquals(-90, ninetyDegrees.getAngleWith(Vector.polar(180, 1)), 0.001);
 		assertEquals(-179, ninetyDegrees.getAngleWith(Vector.polar(-91, 1)), 0.001);
 		assertEquals(179, Vector.polar(-91, 1).getAngleWith(ninetyDegrees), 0.001);
-		assertEquals(0, Vector.ZERO.getAngleWith(Vector.ZERO), 0.001);
+	}
+
+	@Test(expected=ZeroVectorException.class)
+	public void getsAnExceptionWhenFindingAnAngleWithVectorZero() throws ZeroVectorException {
+		assertEquals(90, Vector.polar(90, 10).getAngleWith(Vector.ZERO), 0.001);
+	}
+
+	@Test(expected=ZeroVectorException.class)
+	public void getsAnExceptionWhenFindingAnAngleWithAnotherVectorOnVectorZero() throws ZeroVectorException {
+		assertEquals(0, Vector.ZERO.getAngleWith(Vector.polar(90, 10)), 0.001);
 	}
 
 	@Test
-	public void canBeRotated() {
+	public void canBeRotated() throws ZeroVectorException {
 		Vector ninetyDegrees = Vector.polar(90, 10);
 		assertEqualsVector(Vector.polar(180, 10), ninetyDegrees.rotateBy(90));
 		assertEqualsVector(Vector.polar(-179, 10), ninetyDegrees.rotateBy(91));
@@ -198,7 +239,7 @@ public class VectorTest {
 	}
 
 	@Test
-	public void hasACrossProductWithAnotherVector() {
+	public void hasACrossProductWithAnotherVector() throws ZeroVectorException {
 		Vector vector1 = Vector.polar(0, 10);
 		Vector vector2 = Vector.polar(90, 10);
 		Vector vector3 = Vector.polar(180, 10);

@@ -25,7 +25,9 @@ public class Vector {
 		this.y = y;
 	}
 
-	public double getAngle() {
+	public double getAngle() throws ZeroVectorException {
+		if (x == 0 && y == 0)
+			throw new ZeroVectorException();
 	    return Math.toDegrees(Math.atan2(y, x));
 	}
 
@@ -49,32 +51,30 @@ public class Vector {
 		return this.by(-1);
 	}
 
-	public Vector normalize(double length) {
-		if (getLength() == 0)
-			return Vector.ZERO; // the zero vector cannot be normalized
+	public Vector normalize(double length) throws ZeroVectorException {
 		return Vector.polar(getAngle(), length);
 	}
 
-	public Vector getNormal() {
+	Vector getNormal() throws ZeroVectorException {
 		return Vector.polar(getAngle() - 90, 1);
 	}
 
-	public Vector getProjectionOn(Vector other) {
+	public Vector getProjectionOn(Vector other) throws ZeroVectorException {
 		Vector direction = pointsInSameDirectionAs(other) ? other : other.invert();
 		double relativeAngle = Math.toRadians(direction.getAngle() - getAngle());
 		double resultLength = Math.cos(relativeAngle) * getLength();
 		return Vector.polar(direction.getAngle(), resultLength);
 	}
 
-	private boolean pointsInSameDirectionAs(Vector other) {
+	private boolean pointsInSameDirectionAs(Vector other) throws ZeroVectorException {
 		return other.getAngle() - getAngle() < 90;
 	}
 
-	public Vector getNormalComponentOn(Vector other) {
+	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {
 		return getProjectionOn(other.getNormal());
 	}
 
-	public double getAngleWith(Vector other) {
+	public double getAngleWith(Vector other) throws ZeroVectorException {
 		double result = getAngle() - other.getAngle();
 		if(result < -180)
 			return result + 360;
@@ -83,7 +83,7 @@ public class Vector {
 		return result;
 	}
 
-	public Vector rotateBy(double degrees) {
+	public Vector rotateBy(double degrees) throws ZeroVectorException {
 		return Vector.polar(getAngle() + degrees, getLength());
 	}
 
@@ -121,7 +121,11 @@ public class Vector {
 		return (Math.round(n * decimals)) / decimals;
 	}
 
-	public double getCrossProductWith(Vector other) {
+	public double getCrossProductWith(Vector other) throws ZeroVectorException {
 		return getLength() * other.getLength() * Math.cos(Math.toRadians(getAngleWith(other)));
+	}
+
+	public boolean isZero() {
+		return x == 0 && y == 0;
 	}
 }

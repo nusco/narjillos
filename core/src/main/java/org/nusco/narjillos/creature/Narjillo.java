@@ -10,6 +10,7 @@ import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
@@ -100,7 +101,11 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	public Vector getTargetDirection() {
-		return target.minus(getPosition()).normalize(1);
+		try {
+			return target.minus(getPosition()).normalize(1);
+		} catch (ZeroVectorException e) {
+			return Vector.ZERO;
+		}
 	}
 
 	public void setTarget(Vector target) {

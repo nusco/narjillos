@@ -2,6 +2,7 @@ package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class Head extends Organ {
@@ -18,7 +19,7 @@ public class Head extends Organ {
 		return metabolicRate;
 	}
 	
-	Vector getMainAxis() {
+	Vector getMainAxis() throws ZeroVectorException {
 		return getVector().normalize(1).invert();
 	}
 

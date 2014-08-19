@@ -9,6 +9,7 @@ import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 class MouthView extends ThingView {
 
@@ -56,7 +57,15 @@ class MouthView extends ThingView {
 	
 	private void rotate(Line line, int angle) {
 		line.getTransforms().clear();
-		line.getTransforms().add(new Rotate(getNarjillo().getTargetDirection().getAngle() + angle));
+		line.getTransforms().add(new Rotate(getMouthAngle() + angle));
+	}
+
+	private double getMouthAngle() {
+		try {
+			return getNarjillo().getTargetDirection().getAngle();
+		} catch (ZeroVectorException e) {
+			return 0;
+		}
 	}
 
 	private Line createLine() {

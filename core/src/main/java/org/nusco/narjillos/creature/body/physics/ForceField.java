@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
  * This class contains most of the physics engine.
@@ -53,6 +54,10 @@ public class ForceField {
 	}
 
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
+		// this is actually necessary to prevent random flickering with zero-length organs
+		if (initialPositionInSpace.vector.isZero())
+			return;
+
 		linearMomenta.add(calculateLinearMomentum(initialPositionInSpace, finalPositionInSpace, mass));
 		angularMomenta.add(calculateAngularMomentum(initialPositionInSpace, finalPositionInSpace, mass));
 	}
@@ -67,9 +72,16 @@ public class ForceField {
 	private double calculateAngularMomentum(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
 		double length = initialPositionInSpace.vector.getLength();
 		double distance = initialPositionInSpace.startPoint.minus(centerOfMass).getLength();
-		double angular_velocity = finalPositionInSpace.vector.getAngle() - initialPositionInSpace.vector.getAngle();
-		
+		double angular_velocity = getAngularVelocity(initialPositionInSpace, finalPositionInSpace);		
 		return angular_velocity * (length * length * 16 / 48 + distance * distance);
+	}
+
+	private double getAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {
+		try {
+			return finalPositionInSpace.vector.getAngle() - initialPositionInSpace.vector.getAngle();
+		} catch (ZeroVectorException e) {
+			return 0;
+		}
 	}
 
 	public Vector getTranslation() {

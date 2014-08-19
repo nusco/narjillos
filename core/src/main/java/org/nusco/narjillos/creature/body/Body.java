@@ -11,6 +11,7 @@ import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
  * The physical body of a Narjillo, with all its organs and their position in space.
@@ -87,7 +88,14 @@ public class Body {
 	}
 
 	private void tick_UpdateBodyAngles(Vector targetDirection) {
-		double angleToTarget = getMainAxis().getAngleWith(targetDirection);
+		double angleToTarget;
+		try {
+			Vector mainAxis = getMainAxis();
+			angleToTarget = mainAxis.getAngleWith(targetDirection);
+		} catch (ZeroVectorException e) {
+			return;
+		}
+		
 		double currentSkewing = tick_UpdateSkewing(angleToTarget);
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
@@ -133,7 +141,7 @@ public class Body {
 		return mass;
 	}
 
-	public Vector getMainAxis() {
+	public Vector getMainAxis() throws ZeroVectorException {
 		return head.getMainAxis();
 	}
 

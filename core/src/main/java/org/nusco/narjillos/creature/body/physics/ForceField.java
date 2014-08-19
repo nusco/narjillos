@@ -21,6 +21,8 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * Linear Momentum (for the whole body):
  * linear_velocity = linear_momentum / mass (in [points / tick])
  * 
+ * translation_energy = mass * linear_velocity^2 / 2;
+ * 
  * Angular Momentum (for the body segments, approximated as thin rods):
  * angular_momentum = moment_of_inertia * angular_velocity
  * moment_of_inertia_around_far_end = mass * length^2 * 16 / 48
@@ -29,7 +31,11 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * moment_of_inertia_around_center_of_mass = moment_of_inertia_around_far_end +
  *                                           mass * distance_between_far_end_and_center_of_mass^2 
  *                                         = mass * (length^2 * 16 / 48 + distance_between_far_end_and_center_of_mass^2)
- * So the angular_momentum is the same as the above, multiplied by the angular_velocity.
+ * 
+ * So the angular_momentum is the same as the moment_of_inertia_around_center_of_mass,
+ * multiplied by the angular_velocity.
+ *
+ * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  * 
  * Angular Momentum (for the whole body, approximated as a thin disk):
  * angular_velocity = angular_momentum / moment_of_inertia
@@ -37,16 +43,17 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class ForceField {
 
-	private static final double PROPULSION_SCALE = 1 / 100_000_000;
+	private static final double PROPULSION_SCALE = 1.0 / 1_000_000_000;
 	private static final double ROTATION_SCALE = 10000;
-//	private static final double MAX_ROTATION = 10;
+	private static final double ENERGY_SCALE = 1.0 / 100_000_000;
 
 	private final double bodyMass;
 	private final double bodyRadius;
+	private final Vector centerOfMass;
 	private final List<Vector> linearMomenta = new LinkedList<>();
 	private final List<Double> angularMomenta = new LinkedList<>();
-	private Vector centerOfMass;
-
+	private double energySpent = 0;
+	
 	public ForceField(double bodyMass, double bodyRadius, Vector centerOfMass) {
 		this.bodyMass = bodyMass;
 		this.bodyRadius = bodyRadius;
@@ -54,30 +61,45 @@ public class ForceField {
 	}
 
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
-		linearMomenta.add(calculateLinearMomentum(initialPositionInSpace, finalPositionInSpace, mass));
-		angularMomenta.add(calculateAngularMomentum(initialPositionInSpace, finalPositionInSpace, mass));
+		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
+		Vector linearMomentum = linearVelocity.by(mass);
+		linearMomenta.add(linearMomentum);
+		energySpent += calculateTranslationEnergy(mass, linearVelocity);
+
+		double angularVelocity = calculateAngularVelocity(initialPositionInSpace, finalPositionInSpace);
+		double momentOfInertia = calculateMomentOfInertia(initialPositionInSpace);
+		double angularMomentum = momentOfInertia * angularVelocity;
+		angularMomenta.add(angularMomentum);
+		energySpent += calculateRotationEnergy(momentOfInertia, angularVelocity);
 	}
 
-	private Vector calculateLinearMomentum(Segment beforeMovement, Segment afterMovement, double mass) {
+	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {
+		double linearVelocityLength = linearVelocity.getLength();
+		return calculateRotationEnergy(mass, linearVelocityLength);
+	}
+
+	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {
 		Vector startPoint = beforeMovement.getMidPoint();
 		Vector endPoint = afterMovement.getMidPoint();
-		Vector velocity = endPoint.minus(startPoint);
-		return velocity.by(mass);
+		return endPoint.minus(startPoint);
 	}
 
-	private double calculateAngularMomentum(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
-		double length = initialPositionInSpace.vector.getLength();
-		double distance = initialPositionInSpace.startPoint.minus(centerOfMass).getLength();
-		double angular_velocity = getAngularVelocity(initialPositionInSpace, finalPositionInSpace);		
-		return angular_velocity * (length * length * 16 / 48 + distance * distance);
-	}
-
-	private double getAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {
+	private double calculateAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {
 		try {
 			return finalPositionInSpace.vector.getAngleWith(initialPositionInSpace.vector);
 		} catch (ZeroVectorException e) {
 			return 0;
 		}
+	}
+
+	private double calculateMomentOfInertia(Segment initialPositionInSpace) {
+		double length = initialPositionInSpace.vector.getLength();
+		double distance = initialPositionInSpace.startPoint.minus(centerOfMass).getLength();
+		return length * length * 16 / 48 + distance * distance;
+	}
+
+	private double calculateRotationEnergy(double momentOfInertia, double angularVelocity) {
+		return momentOfInertia * angularVelocity * angularVelocity / 2;
 	}
 
 	public Vector getTranslation() {
@@ -92,14 +114,8 @@ public class ForceField {
 	}
 
 	public double getRotation() {
-		double result = -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4) * ROTATION_SCALE;
-
-		// TODO: is there any way to avoid this arbitrary clipping?
-		// Without it, some creatures perform crazy, non-natural-looking rotations.
-//		if (Math.abs(result) > MAX_ROTATION)
-//			return Math.signum(result) * MAX_ROTATION;
-
-		return result;
+		double unscaledResult = -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4);
+		return unscaledResult * ROTATION_SCALE;
 	}
 
 	private double getTotalAngularMomentum() {
@@ -110,7 +126,6 @@ public class ForceField {
 	}
 
 	public double getTotalEnergySpent() {
-		// FIXME
-		return 0;
+		return energySpent * ENERGY_SCALE;
 	}
 }

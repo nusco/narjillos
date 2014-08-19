@@ -15,9 +15,9 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	static final double INITIAL_ENERGY = 100_000;
-	public static final double MAX_ENERGY = 200_000;
-	static final double ENERGY_PER_FOOD_ITEM = 100_000;
+	static final double INITIAL_ENERGY = 1000;
+	public static final double MAX_ENERGY = 2000;
+	static final double ENERGY_PER_FOOD_ITEM = 1000;
 	static final double LIFESPAN = 30_000;
 	static final double ENERGY_DECAY = MAX_ENERGY / LIFESPAN;
 	static final double AGONY_LEVEL = ENERGY_DECAY * 300;

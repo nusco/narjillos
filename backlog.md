@@ -4,7 +4,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Fix corner cases with zero vectors (when looking for angle, angle diff, projection...) °°°
+* Bug: a Narjillo that consumes its energy on the first tick might skip the "dying" event and never be removed from the pond
 * Uniform measure units (instead of had-hoc clipping and multiplying all over the place) °
 * Fix "shaking" of limbs in some Narjillos
 * Remove "tail wiggling dog" effect? (probably too expensive to bother)

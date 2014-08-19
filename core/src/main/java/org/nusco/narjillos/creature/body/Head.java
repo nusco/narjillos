@@ -52,14 +52,9 @@ public class Head extends Organ {
 	}
 	
 	@Override
-	protected double calculateNewAngleToParent(double targetAngle, double skewing) {
+	protected double calculateNewAngleToParent(double targetAngle) {
 		// The head never rotates on its own. It must be
 		// explicitly repositioned by its client.
 		return getAngleToParent();
-	}
-
-	@Override
-	protected double getForcedBend() {
-		return 0;
 	}
 }

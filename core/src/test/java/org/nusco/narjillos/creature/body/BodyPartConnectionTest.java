@@ -19,7 +19,7 @@ public abstract class BodyPartConnectionTest {
 		child1.addChild(new BodySegment(nerve2));
 		head.addChild(new BodySegment(nerve3));
 
-		head.recursivelyUpdateAngleToParent(0, 0);
+		head.recursivelyUpdateAngleToParent(0);
 		
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);

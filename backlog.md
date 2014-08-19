@@ -5,6 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Physicist
 
 * Introduce viscosity (to improve the poor creatures' mobility) °°°
+* Energy spent for linear and rotational movement should be weighted against energy rations (right now rotation is essentially free) °°
 * Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
 * Check measure units: why do rotations/translations/energy require such wildly different multipliers? °
 * Remove "tail wiggling dog" effect? (probably too expensive to bother - requires conservation of MoI during update in vacuum)

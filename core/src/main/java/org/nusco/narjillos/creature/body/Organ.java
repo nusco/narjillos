@@ -18,7 +18,7 @@ public abstract class Organ extends BodyPart {
 	private final List<Organ> children = new LinkedList<>();
 
 	private volatile double angleToParent = 0;
-	public double forcedBend = 0;
+	public double skewing = 0;
 	
 	protected Organ(int length, int thickness, ColorByte color, BodyPart parent, Nerve nerve) {
 		super(length, thickness, color);
@@ -60,19 +60,17 @@ public abstract class Organ extends BodyPart {
 		return children;
 	}
 
-	public void recursivelyUpdateAngleToParent(double targetPercentOfAmplitude, double skewing) {
+	public void recursivelyUpdateAngleToParent(double targetPercentOfAmplitude) {
 		double targetAngleToParent = getNerve().tick(targetPercentOfAmplitude);
 		
-		double newAngleToParent = calculateNewAngleToParent(targetAngleToParent, skewing);
+		double newAngleToParent = calculateNewAngleToParent(targetAngleToParent);
 		setAngleToParent(newAngleToParent);
 
-		resetForcedBend();
-
 		for (Organ child : getChildren())
-			child.recursivelyUpdateAngleToParent(targetAngleToParent, skewing);
+			child.recursivelyUpdateAngleToParent(targetAngleToParent);
 	}
 
-	protected abstract double calculateNewAngleToParent(double targetAngle, double skewing);
+	protected abstract double calculateNewAngleToParent(double targetAngle);
 
 	Nerve getNerve() {
 		return nerve;
@@ -83,16 +81,19 @@ public abstract class Organ extends BodyPart {
 		return child;
 	}
 
-	protected double getForcedBend() {
-		return forcedBend;
+	protected double getSkewing() {
+		return skewing;
 	}
 
-	// FIXME: ugly - replace with skewing?
-	void forceBend(double bendAngle) {
-		forcedBend = bendAngle;
+	void skew(double angle) {
+		skewing = skewing + angle;
+		for (Organ child : getChildren()) {
+			child.resetSkewing();
+			child.skew(skewing);
+		}
 	}
-	
-	private void resetForcedBend() {
-		forcedBend = 0;
+
+	public void resetSkewing() {
+		skewing = 0;
 	}
 }

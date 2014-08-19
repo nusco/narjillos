@@ -23,9 +23,9 @@ public class BodySegment extends Organ {
 	}
 
 	@Override
-	protected double calculateNewAngleToParent(double targetAmplitudePercent, double skewing) {
-		double correctedTargetAmplitudePercent = (orientation * targetAmplitudePercent * amplitude) + skewing;
-		return angleToParentAtRest + correctedTargetAmplitudePercent + getForcedBend();
+	protected double calculateNewAngleToParent(double targetAmplitudePercent) {
+		double unbentAmplitude = orientation * targetAmplitudePercent * amplitude;
+		return angleToParentAtRest + unbentAmplitude + getSkewing();
 	}
 
 	private static ColorByte calculateColorMix(Organ parent, ColorByte color) {

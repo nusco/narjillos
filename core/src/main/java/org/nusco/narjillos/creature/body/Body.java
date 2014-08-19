@@ -22,14 +22,14 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
 public class Body {
 
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
-	private static final double MAX_SKEWING = 45;
+	private static final double MAX_SKEWING = 70;
 	private static final double MAX_SKEWING_VELOCITY = 1;
 
 	private final Head head;
 	private final List<BodyPart> bodyParts = new LinkedList<>();
 	private final double mass;
 	private final WaveNerve tickerNerve;
-	private double skewing = 0;
+	private double currentDirectionSkewing = 0;
 	
 	public Body(Head head) {
 		this.head = head;
@@ -96,10 +96,11 @@ public class Body {
 			return;
 		}
 		
-		double currentSkewing = tick_UpdateSkewing(angleToTarget);
+		head.skew(tick_CalculateDirectionSkewing(angleToTarget));
 		
 		double targetAmplitudePercent = tickerNerve.tick(0);
-		head.recursivelyUpdateAngleToParent(targetAmplitudePercent, currentSkewing);
+		head.recursivelyUpdateAngleToParent(targetAmplitudePercent);
+		head.resetSkewing();
 	}
 
 	private ForceField tick_CalculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
@@ -123,12 +124,12 @@ public class Body {
 		return new Impulse(translation, rotation, energySpent);
 	}
 
-	private double tick_UpdateSkewing(double angleToTarget) {
+	private double tick_CalculateDirectionSkewing(double angleToTarget) {
 		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
-		double skewingVelocity = updatedSkewing - skewing;
+		double skewingVelocity = updatedSkewing - currentDirectionSkewing;
 		if (Math.abs(skewingVelocity) > MAX_SKEWING_VELOCITY)
 			skewingVelocity = Math.signum(skewingVelocity) * MAX_SKEWING_VELOCITY;
-		return skewing += skewingVelocity;
+		return currentDirectionSkewing += skewingVelocity;
 	}
 
 	public Vector getStartPoint() {
@@ -168,13 +169,7 @@ public class Body {
 	}
 	
 	public void forceBend(double bendAngle) {
-		forceBendWithChildren(head, bendAngle);
-	}
-	
-	private void forceBendWithChildren(Organ bodyPart, double bendAngle) {
-		bodyPart.forceBend(bendAngle);
-		for (Organ child : bodyPart.getChildren())
-			forceBendWithChildren(child, bendAngle);
+		head.skew(bendAngle);
 	}
 
 	// TODO: find a way to calculate this as few times per tick as possible.

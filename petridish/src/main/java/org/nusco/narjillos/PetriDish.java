@@ -240,10 +240,19 @@ public class PetriDish extends Application {
 				}
 				
 				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
+
+				if (event.getClickCount() == 3)
+					printOutIsolatedNarjillo(clickedPoint);
+				
 				getViewport().flyToTargetSC(clickedPoint);
 				
 				if (event.getClickCount() > 1)
 					getViewport().flyToNextZoomCloseupLevel();
+			}
+
+			private void printOutIsolatedNarjillo(Vector clickedPoint) {
+				Vector clickedPointEC = getViewport().toEC(clickedPoint);
+				System.out.println("Isolating: " + getEcosystem().findNarjillo(clickedPointEC).getDNA());
 			}
 		};
 	}

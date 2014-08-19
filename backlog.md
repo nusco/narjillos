@@ -4,6 +4,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
+* Introduce viscosity (to improve the poor creatures' mobility) °°°
 * Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
 * Check measure units: why do rotations/translations/energy require such wildly different multipliers? °
 * Remove "tail wiggling dog" effect? (probably too expensive to bother - requires conservation of MoI during update in vacuum)
@@ -82,9 +83,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
-* Check multithreading for reactive animations and maximum reactivity
+* Better death animation (right now the bending is not visible) °
 * Birth animation °
-* Better death animation (right now the bending is barely noticeable)
+* Check multithreading for reactive animations and maximum reactivity
 * Give a sense of movement when following a locked-on Narjillo
 * Speckles in liquid (or some other effect)
 

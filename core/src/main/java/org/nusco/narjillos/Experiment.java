@@ -31,6 +31,10 @@ public class Experiment {
 
 		String gitCommit = (argumentsList.isEmpty()) ? "UNKNOWN_COMMIT" : argumentsList.removeFirst();
 		int seed = extractSeed(argumentsList);
+		
+		// to isolate the weird pink one in the middle of the drop
+		seed = 1019297059; // FIXME
+
 		System.out.println("Experiment " + gitCommit + ":" + seed);
 		RanGen.seed(seed);
 

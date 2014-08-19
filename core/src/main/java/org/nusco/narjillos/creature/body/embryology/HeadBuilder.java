@@ -10,7 +10,7 @@ class HeadBuilder extends OrganBuilder {
 	}
 
 	public double getMetabolicRate() {
-		final double MAX_METABOLIC_RATE = 4;
+		final double MAX_METABOLIC_RATE = 3;
 		return getChromosome().getGene(3) * (MAX_METABOLIC_RATE / 255);
 	}
 

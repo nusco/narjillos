@@ -22,12 +22,14 @@ public class WaterDrop extends Ecosystem {
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_PIECES; i++)
 			spawnFood(randomPosition());
 
-		for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++) {
-			if (dna == null)
-				spawnNarjillo(randomPosition(), DNA.random());
-			else
-				spawnNarjillo(randomPosition(), dna);
-		}
+		// FIXME: while debugging physics
+		spawnNarjillo(randomPosition(), new DNA("{254_241_220_223_134_048_157}{223_236_228_068_164_073_077}{010_209_061_103_141_100_137}{093_027_191_069_194_067_150}{073_014_028_204_215_108_254}"));
+//		for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++) {
+//			if (dna == null)
+//				spawnNarjillo(randomPosition(), DNA.random());
+//			else
+//				spawnNarjillo(randomPosition(), dna);
+//		}
 	}
 
 	@Override

@@ -238,7 +238,7 @@ public class PetriDish extends Application {
 					toggleMaxSpeed();
 					return;
 				}
-				
+
 				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
 
 				if (event.getClickCount() == 3)

@@ -38,6 +38,7 @@ public class ForceField {
 
 	private static final double PROPULSION_SCALE = 1 / 100_000_000;
 	private static final double ROTATION_SCALE = 10000;
+//	private static final double MAX_ROTATION = 10;
 
 	private final double bodyMass;
 	private final double bodyRadius;
@@ -84,7 +85,12 @@ public class ForceField {
 
 	public double getRotation() {
 		double result = -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4) * ROTATION_SCALE;
-		System.out.println(result);
+
+		// TODO: is there any way to avoid this arbitrary clipping?
+		// Without it, some creatures perform crazy, non-natural-looking rotations.
+//		if (Math.abs(result) > MAX_ROTATION)
+//			return Math.signum(result) * MAX_ROTATION;
+
 		return result;
 	}
 

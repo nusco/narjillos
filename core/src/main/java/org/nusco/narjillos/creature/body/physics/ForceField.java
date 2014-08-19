@@ -74,7 +74,7 @@ public class ForceField {
 
 	private double getAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {
 		try {
-			return finalPositionInSpace.vector.getAngle() - initialPositionInSpace.vector.getAngle();
+			return finalPositionInSpace.vector.getAngleWith(initialPositionInSpace.vector);
 		} catch (ZeroVectorException e) {
 			return 0;
 		}

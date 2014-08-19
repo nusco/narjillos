@@ -67,7 +67,7 @@ public class Vector {
 	}
 
 	private boolean pointsInSameDirectionAs(Vector other) throws ZeroVectorException {
-		return other.getAngle() - getAngle() < 90;
+		return Math.abs(getAngleWith(other)) < 90;
 	}
 
 	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {

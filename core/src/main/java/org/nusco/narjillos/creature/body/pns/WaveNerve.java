@@ -1,9 +1,8 @@
 package org.nusco.narjillos.creature.body.pns;
 
-
 /**
- * Ignores the input signal and generates an output that goes from
- * -1 to 1 and back, in a sinusoidal wave.
+ * Generates an output that goes from -1 to 1 and back, in a sinusoidal wave.
+ * Ignores the input signal.
  * 
  * The left semiplane of the sinusoidal wave (from +90 to -90 degrees) has a
  * higher frequency than the right semiplane (from -90 to 90). This generates

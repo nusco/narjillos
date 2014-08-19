@@ -87,6 +87,7 @@ public abstract class Organ extends BodyPart {
 		return forcedBend;
 	}
 
+	// FIXME: ugly - replace with skewing?
 	void forceBend(double bendAngle) {
 		forcedBend = bendAngle;
 	}

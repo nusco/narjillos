@@ -4,19 +4,17 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Bug: a Narjillo that consumes its energy on the first tick might skip the "dying" event and never be removed from the pond
-* Uniform measure units (instead of had-hoc clipping and multiplying all over the place) °
-* Fix "shaking" of limbs in some Narjillos
-* Remove "tail wiggling dog" effect? (probably too expensive to bother)
+* Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
+* Check measure units: why do rotations/translations/energy require such wildly different multipliers? °
+* Remove "tail wiggling dog" effect? (probably too expensive to bother - requires conservation of MoI during update in vacuum)
 
 ###Speed Demon
 
+* Optimize physics engine (in particular look at calculation of center of mass) °°°
 * Only update Organ cache when necessary °°°
 * Space Partitioning for fast thing searches °°
-* Optimize physics engine °°
 * Find out why even a petri dish of {0} creatures slows down (apparently creatures become "heavier" to tick)
 * Space Partitioning runs in a separate thread
-* Switch to fast math library
 * Make FPS parametric to improve TPS on slower machines
 
 ###Gamer

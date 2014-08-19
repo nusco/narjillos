@@ -54,10 +54,6 @@ public class ForceField {
 	}
 
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
-		// this is actually necessary to prevent random flickering with zero-length organs
-		if (initialPositionInSpace.vector.isZero())
-			return;
-
 		linearMomenta.add(calculateLinearMomentum(initialPositionInSpace, finalPositionInSpace, mass));
 		angularMomenta.add(calculateAngularMomentum(initialPositionInSpace, finalPositionInSpace, mass));
 	}

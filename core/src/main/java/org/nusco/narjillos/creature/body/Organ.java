@@ -33,14 +33,14 @@ public abstract class Organ extends BodyPart {
 
 	protected final void setAngleToParent(double angleToParent) {
 		this.angleToParent = angleToParent;
-		recursivelyRalculateCachedFields();  // TODO: this is done at least twice per tick. is that necessary?
+		recursivelyCalculateCachedFields();  // TODO: this is done at least twice per tick. is that necessary?
 	}
 
-	protected void recursivelyRalculateCachedFields() {
+	protected void recursivelyCalculateCachedFields() {
 		super.updateCaches();
 
 		for (Organ child : getChildren())
-			child.recursivelyRalculateCachedFields();
+			child.recursivelyCalculateCachedFields();
 	}
 
 	@Override

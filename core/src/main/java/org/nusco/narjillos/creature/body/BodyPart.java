@@ -56,11 +56,15 @@ public abstract class BodyPart {
 
 	protected final void updateCaches() {
 		cachedAbsoluteAngle = calculateAbsoluteAngle();
-		cachedVector = Vector.polar(getAbsoluteAngle(), getLength());
+		cachedVector = calculateVector();
 		cachedStartPoint = calculateStartPoint();
 		cachedEndPoint = calculateEndPoint();
 		cachedPositionInSpace = calculatePositionInSpace();
 		cachedCenterOfMass = calculateCenterOfMass();
+	}
+
+	private Vector calculateVector() {
+		return Vector.polar(getAbsoluteAngle(), getLength());
 	}
 
 	public final double getAbsoluteAngle() {

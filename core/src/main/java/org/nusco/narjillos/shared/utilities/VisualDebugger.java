@@ -20,15 +20,14 @@ public class VisualDebugger {
 	private static final List<Segment> segments = new LinkedList<>();
 	
 	public synchronized static void clear() {
-		// keep the full list of segments around in case
-		// the reading thread peeks in during an update
+		// The reading thread might peek in during an update,
+		// so we always return a backup of the previous update
 		previousSegments.clear();
 		previousSegments.addAll(segments);
 		segments.clear();
 	}
 	
 	public synchronized static void add(Segment s) {
-		System.out.println("Global peeker -> added " + s);
 		segments.add(s);
 	}
 

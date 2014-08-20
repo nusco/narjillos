@@ -5,12 +5,20 @@ package org.nusco.narjillos.shared.physics;
  */
 public class Segment {
 
-	public final Vector startPoint;
-	public final Vector vector;
+	private final Vector startPoint;
+	private final Vector vector;
 
 	public Segment(Vector startPoint, Vector vector) {
 		this.startPoint = startPoint;
 		this.vector = vector;
+	}
+
+	public Vector getStartPoint() {
+		return startPoint;
+	}
+
+	public Vector getVector() {
+		return vector;
 	}
 
 	private double getLength() {

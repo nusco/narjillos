@@ -18,6 +18,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
+import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 //TODO: I should really make everything in here and its subclasses
 //more thread-safe. Right now many external interventions from
@@ -84,6 +85,9 @@ public class Ecosystem {
 			tickCounter = 100000;
 			updateTargets();
 		}
+		
+		if (VisualDebugger.DEBUG)
+			VisualDebugger.clear();
 	}
 
 	public final FoodPiece spawnFood(Vector position) {

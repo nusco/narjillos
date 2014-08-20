@@ -55,7 +55,7 @@ public class Vector {
 		return Vector.polar(getAngle(), length);
 	}
 
-	Vector getNormal() throws ZeroVectorException {
+	public Vector getNormal() throws ZeroVectorException {
 		return Vector.polar(getAngle() - 90, 1);
 	}
 

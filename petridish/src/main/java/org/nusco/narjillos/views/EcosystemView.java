@@ -71,7 +71,7 @@ public class EcosystemView {
 		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn));
 		
 		if (VisualDebugger.DEBUG)
-			things.getChildren().add(getVisualDebuggingLines());
+			things.getChildren().add(getVisualDebuggingSegments());
 		
 		things.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
 		things.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
@@ -82,7 +82,7 @@ public class EcosystemView {
 		return things;
 	}
 
-	private Group getVisualDebuggingLines() {
+	private Group getVisualDebuggingSegments() {
 		Group result = new Group();
 		List<Segment> segments = VisualDebugger.getSegments();
 		
@@ -90,8 +90,7 @@ public class EcosystemView {
 			return result;
 		
 		for (Segment segment : segments) {
-			System.out.println(segment);
-			Line line = new Line(segment.startPoint.x, segment.startPoint.y, segment.getEndPoint().x, segment.getEndPoint().y);
+			Line line = new Line(segment.getStartPoint().x, segment.getStartPoint().y, segment.getEndPoint().x, segment.getEndPoint().y);
 			line.setStrokeWidth(2);
 			line.setStroke(Color.RED);
 			result.getChildren().add(line);

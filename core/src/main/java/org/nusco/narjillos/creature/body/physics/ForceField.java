@@ -59,15 +59,11 @@ public class ForceField {
 		this.bodyMass = bodyMass;
 		this.bodyRadius = bodyRadius;
 		this.centerOfMass = centerOfMass;
-		VisualDebugger.clear();
 	}
 
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
 		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
 		Vector linearMomentum = linearVelocity.by(mass);
-		//
-		VisualDebugger.add(new Segment(finalPositionInSpace.getMidPoint(), linearVelocity.by(-20)));
-		//
 		linearMomenta.add(linearMomentum);
 		energySpent += calculateTranslationEnergy(mass, linearVelocity);
 
@@ -79,22 +75,27 @@ public class ForceField {
 	}
 
 	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {
-		if (beforeMovement.vector.isZero())
+		if (beforeMovement.getVector().isZero())
 			return Vector.ZERO;
-		
-		Vector startPoint = beforeMovement.getMidPoint();
-		Vector endPoint = afterMovement.getMidPoint();
-		Vector movement = endPoint.minus(startPoint);
+
+		Vector movement = getMovement(beforeMovement, afterMovement);
 
 		if (movement.isZero())
 			return Vector.ZERO;
 
 		try {
-			return movement.getNormalComponentOn(afterMovement.vector);
+			return movement.getNormalComponentOn(afterMovement.getVector());
 		} catch (ZeroVectorException e) {
 			// should never happen with the previous checks
 			return null;
 		}
+	}
+
+	private Vector getMovement(Segment beforeMovement, Segment afterMovement) {
+		Vector startPointMovement = afterMovement.getStartPoint().minus(beforeMovement.getStartPoint());
+		Vector endPointMovement = afterMovement.getEndPoint().minus(beforeMovement.getEndPoint());
+		Vector movement = startPointMovement.plus(endPointMovement).by(0.5);
+		return movement;
 	}
 
 	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {
@@ -104,15 +105,15 @@ public class ForceField {
 
 	private double calculateAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {
 		try {
-			return finalPositionInSpace.vector.getAngleWith(initialPositionInSpace.vector);
+			return finalPositionInSpace.getVector().getAngleWith(initialPositionInSpace.getVector());
 		} catch (ZeroVectorException e) {
 			return 0;
 		}
 	}
 
  	private double calculateMomentOfInertia(Segment positionInSpace, double mass) {
-		double length = positionInSpace.vector.getLength();
-		double distance = positionInSpace.startPoint.minus(centerOfMass).getLength();
+		double length = positionInSpace.getVector().getLength();
+		double distance = positionInSpace.getStartPoint().minus(centerOfMass).getLength();
 		return mass * length * length * 16 / 48 + distance * distance;
 	}
 

@@ -4,8 +4,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
+* Fix flickering (it's the cause of exhaggerated movements and the relative weird shifts in position) °°°
+  creature to check: {090_065_154_010_089_080_141}{067_085_239_111_061_007_013}{139_098_147_209_088_160_176}{115_115_132_022_062_227_036}{224_247_251_216_231_232_137}{067_117_115_107_223_148_243}{018_017_212_069_242_128_180}{076_036_057_179_008_130_025}{219_245_210_188_115_122_020}
 * Smooth, inertial targeting or target hysteresis (to avoid vibration when target is on opposite side) °°°
-* Fix rotation-related flickering °°°
 * Introduce viscosity (to improve the poor creatures' mobility) °°°
 * Tweak rotation vs. translation °°°
 * Find a good way to deal with atrophy (see FIXME) °°

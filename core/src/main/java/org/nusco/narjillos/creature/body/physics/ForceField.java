@@ -43,9 +43,10 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class ForceField {
 
-	private static final double PROPULSION_SCALE = 1.0 / 10_000_000;
-	private static final double ROTATION_SCALE = 360;
+	private static final double PROPULSION_SCALE = 1;
+	private static final double ROTATION_SCALE = 1000;
 	private static final double ENERGY_SCALE = 1.0 / 100_000_000;
+	private static final double VISCOSITY = 1; //.01;
 
 	private final double bodyMass;
 	private final double bodyRadius;
@@ -74,9 +75,22 @@ public class ForceField {
 	}
 
 	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {
+		if (beforeMovement.vector.isZero())
+			return Vector.ZERO;
+		
 		Vector startPoint = beforeMovement.getMidPoint();
 		Vector endPoint = afterMovement.getMidPoint();
-		return endPoint.minus(startPoint);
+		Vector movement = endPoint.minus(startPoint);
+
+		if (movement.isZero())
+			return Vector.ZERO;
+
+		try {
+			return movement.getNormalComponentOn(beforeMovement.vector);
+		} catch (ZeroVectorException e) {
+			// should never happen with the previous checks
+			return null;
+		}
 	}
 
 	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {
@@ -110,6 +124,11 @@ public class ForceField {
 		Vector result = Vector.ZERO;
 		for (Vector linearMomentum : linearMomenta)
 			result = result.plus(linearMomentum);
+		try {
+			result = result.normalize(Math.pow(result.getLength(), VISCOSITY));
+		} catch (ZeroVectorException e) {
+			return Vector.ZERO;
+		}
 		return result;
 	}
 

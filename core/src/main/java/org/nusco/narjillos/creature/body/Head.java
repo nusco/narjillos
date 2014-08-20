@@ -1,6 +1,7 @@
 package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.creature.body.pns.PassNerve;
+import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.shared.utilities.ColorByte;
@@ -37,7 +38,7 @@ public class Head extends Organ {
 
 	public void move(Vector translation, double rotation) {
 		Vector newStartPoint = getStartPoint().plus(translation);
-		double newAngleToParent = getAngleToParent() + rotation;
+		double newAngleToParent = Angle.normalize(getAngleToParent() + rotation);
 		setPosition(newStartPoint, newAngleToParent);
 	}
 

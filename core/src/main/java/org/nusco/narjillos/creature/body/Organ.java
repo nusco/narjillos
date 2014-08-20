@@ -16,6 +16,7 @@ public abstract class Organ extends BodyPart {
 	private final Nerve nerve;
 	private final BodyPart parent;
 	private final List<Organ> children = new LinkedList<>();
+	public double cachedLongestPathToLeaf = -1;
 
 	private volatile double angleToParent = 0;
 	public double skewing = 0;
@@ -95,5 +96,15 @@ public abstract class Organ extends BodyPart {
 
 	public void resetSkewing() {
 		skewing = 0;
+	}
+
+	public double calculateLongestPathToLeaf() {
+		double longestRemainingPathToLeaf = 0;
+		for (Organ child : children) {
+			double longestPathThroughChild = child.calculateLongestPathToLeaf();
+			if (longestPathThroughChild > longestRemainingPathToLeaf)
+				longestRemainingPathToLeaf = longestPathThroughChild;
+		}
+		return getLength() + longestRemainingPathToLeaf;
 	}
 }

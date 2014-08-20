@@ -44,7 +44,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
 public class ForceField {
 
 	private static final double PROPULSION_SCALE = 1.0 / 1_000_000_000;
-	private static final double ROTATION_SCALE = 20000;
+	private static final double ROTATION_SCALE = 500;
 	private static final double ENERGY_SCALE = 1.0 / 100_000_000;
 
 	private final double bodyMass;
@@ -75,7 +75,7 @@ public class ForceField {
 
 	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {
 		double linearVelocityLength = linearVelocity.getLength();
-		return calculateRotationEnergy(mass, linearVelocityLength);
+		return mass * linearVelocityLength * linearVelocityLength / 2;
 	}
 
 	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {

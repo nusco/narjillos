@@ -29,6 +29,7 @@ public class Body {
 	private final List<BodyPart> bodyParts = new LinkedList<>();
 	private final double mass;
 	private final WaveNerve tickerNerve;
+	private final double maxRadius;
 	private double currentDirectionSkewing = 0;
 	
 	public Body(Head head) {
@@ -36,6 +37,7 @@ public class Body {
 		addWithChildren(this.bodyParts, head);
 		this.mass = calculateTotalMass();
 		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
+		this.maxRadius = Math.max(1, head.calculateLongestPathToLeaf() / 2);
 	}
 
 	/**
@@ -104,15 +106,14 @@ public class Body {
 	}
 
 	private ForceField tick_CalculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
-		ForceField forceField = new ForceField(getMass(), getRadius(), centerOfMass);
+		ForceField forceField = new ForceField(getMass(), getMaxRadius(), centerOfMass);
 		for (BodyPart bodyPart : bodyParts)
 			forceField.registerMovement(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		return forceField;
 	}
 
-	private double getRadius() {
-		// FIXME: simplify for now. fix later.
-		return 1500;
+	double getMaxRadius() {
+		return maxRadius;
 	}
 
 	private Impulse tick_CalculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {

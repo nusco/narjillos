@@ -43,7 +43,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class ForceField {
 
-	private static final double PROPULSION_SCALE = 1.0 / 1_000_000_000;
+	private static final double PROPULSION_SCALE = 1.0 / 10_000_000;
 	private static final double ROTATION_SCALE = 360;
 	private static final double ENERGY_SCALE = 1.0 / 100_000_000;
 
@@ -64,7 +64,7 @@ public class ForceField {
 		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
 		Vector linearMomentum = linearVelocity.by(mass * PROPULSION_SCALE);
 		linearMomenta.add(linearMomentum);
-		energySpent += calculateTranslationEnergy(mass, linearVelocity);
+		energySpent += calculateTranslationEnergy(mass * PROPULSION_SCALE, linearVelocity);
 
 		double angularVelocity = calculateAngularVelocity(initialPositionInSpace, finalPositionInSpace);
 		double momentOfInertia = calculateMomentOfInertia(initialPositionInSpace);
@@ -73,15 +73,15 @@ public class ForceField {
 		energySpent += calculateRotationEnergy(momentOfInertia, angularVelocity);
 	}
 
-	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {
-		double linearVelocityLength = linearVelocity.getLength();
-		return mass * linearVelocityLength * linearVelocityLength / 2;
-	}
-
 	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {
 		Vector startPoint = beforeMovement.getMidPoint();
 		Vector endPoint = afterMovement.getMidPoint();
 		return endPoint.minus(startPoint);
+	}
+
+	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {
+		double linearVelocityLength = linearVelocity.getLength();
+		return mass * linearVelocityLength * linearVelocityLength / 2;
 	}
 
 	private double calculateAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {

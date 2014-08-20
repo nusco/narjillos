@@ -63,17 +63,15 @@ public class Body {
 		// quality is not yet implemented.)
 		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
 		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
-//		ForceField reshapingForces = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMassAfterUpdatingAngles);
-//		head.move(reshapingForces.getTranslation(), -reshapingForces.getRotation());
 		head.move(centerOfMassOffset, 0);
-
+		
 		// Now we move out of the "vacuum" metaphor: thanks to the fluid's viscosity,
 		// the body's movement generates translational and rotation forces.
 		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMassBeforeReshaping);
 		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
 		Impulse impulse = tick_CalculateAccelerationForWholeBody(forceField, centerOfMassAfterReshaping);
 		
-//		moveBy(impulse);
+		moveBy(impulse);
 		return impulse.energySpent;
 	}
 

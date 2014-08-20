@@ -16,7 +16,6 @@ public abstract class Organ extends BodyPart {
 	private final Nerve nerve;
 	private final BodyPart parent;
 	private final List<Organ> children = new LinkedList<>();
-	public double cachedLongestPathToLeaf = -1;
 
 	private volatile double angleToParent = 0;
 	public double skewing = 0;

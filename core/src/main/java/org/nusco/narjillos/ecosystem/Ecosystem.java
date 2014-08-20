@@ -157,7 +157,7 @@ public class Ecosystem {
 
 	private boolean isUnderSafeDistance(Narjillo narjillo, Thing foodThing) {
 		Vector position = narjillo.getPosition();
-		// it's unlikely that we need to consider food further away
+		// it's unlikely that we need to consider food farther away
 		final double safeDistance = 300;
 		if (Math.abs(position.x - foodThing.getPosition().x) < safeDistance)
 			return true;

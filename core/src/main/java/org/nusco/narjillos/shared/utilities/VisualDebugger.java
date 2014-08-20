@@ -16,6 +16,8 @@ import org.nusco.narjillos.shared.physics.Segment;
  */
 public class VisualDebugger {
 
+	public static final boolean DEBUG = false;
+
 	private static final List<Segment> previousSegments = new LinkedList<>();
 	private static final List<Segment> segments = new LinkedList<>();
 	
@@ -36,6 +38,4 @@ public class VisualDebugger {
 		result.addAll(previousSegments);
 		return result;
 	}
-
-	public static final boolean DEBUG = true;
 }

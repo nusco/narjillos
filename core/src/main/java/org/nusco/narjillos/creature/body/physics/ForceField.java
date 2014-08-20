@@ -103,7 +103,7 @@ public class ForceField {
 	}
 
 	public Vector getTranslation() {
-		return getTotalLinearMomentum().invert().by(bodyMass);
+		return getTotalLinearMomentum().invert().by(1.0 / bodyMass);
 	}
 
 	private Vector getTotalLinearMomentum() {

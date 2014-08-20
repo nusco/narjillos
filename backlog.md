@@ -70,6 +70,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ecologist
 
+* Conservation of energy in entire pond (with sun to give more energy)
 * Distribute things in a circle instead of a square
 * Multiple environments in multiple processes (with migration, still deterministic - but how?)
 * Plants (food that evolves)

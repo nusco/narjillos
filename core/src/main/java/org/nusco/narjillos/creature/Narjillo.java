@@ -14,9 +14,11 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	public static final double MAX_ENERGY_RATIO = 2;
+	private static final double MASS_TO_ENERGY_RATIO = 0.1;
+	private static final double MAX_ENERGY_RATIO = 2;
 	static final double ENERGY_PER_FOOD_ITEM_RATIO = 1;
-	static final double LIFESPAN = 30_000;
+	
+	private static final double LIFESPAN = 40_000;
 
 	public final Body body;
 	private final DNA genes;
@@ -35,7 +37,7 @@ public class Narjillo implements Thing, Creature {
 		body.teleportTo(position);
 		this.genes = genes;
 		
-		energy = body.getMass();
+		energy = body.getMass() * MASS_TO_ENERGY_RATIO;
 		maxEnergyForAge = energy * MAX_ENERGY_RATIO;
 		energyDecay = maxEnergyForAge / LIFESPAN;
 		energyPerFoodItem = maxEnergyForAge * ENERGY_PER_FOOD_ITEM_RATIO;

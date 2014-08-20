@@ -45,8 +45,8 @@ public class NarjilloTest {
 	}
 	
 	@Test
-	public void hasTheSameEnergyAsItsMassWhenItsBorn() {
-		assertEquals(mass, narjillo.getEnergy(), 0.001);
+	public void hasTheSameEnergyAsOneTenthItsMassWhenItsBorn() {
+		assertEquals(mass / 10, narjillo.getEnergy(), 0.001);
 	}
 	
 	@Test
@@ -130,7 +130,7 @@ public class NarjilloTest {
 		narjillo.feed();
 		narjillo.updateEnergyBy(mass);
 		
-		double expected = mass + mass * Narjillo.ENERGY_PER_FOOD_ITEM_RATIO;
+		double expected = (mass + mass * Narjillo.ENERGY_PER_FOOD_ITEM_RATIO) / 10;
 		assertEquals(expected, narjillo.getEnergy(), 0.001);
 	}
 

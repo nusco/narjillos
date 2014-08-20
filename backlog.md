@@ -4,16 +4,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Fix flickering (it's the cause of exhaggerated movements and the relative weird shifts in position) °°°
+* Fix flickering (it's the cause of exaggerated movements and the relative weird shifts in position) °°°
   creature to check: {090_065_154_010_089_080_141}{067_085_239_111_061_007_013}{139_098_147_209_088_160_176}{115_115_132_022_062_227_036}{224_247_251_216_231_232_137}{067_117_115_107_223_148_243}{018_017_212_069_242_128_180}{076_036_057_179_008_130_025}{219_245_210_188_115_122_020}
-* Smooth, inertial targeting or target hysteresis (to avoid vibration when target is on opposite side) °°°
-* Introduce viscosity (to improve the poor creatures' mobility) °°°
-* Tweak rotation vs. translation °°°
-* Find a good way to deal with atrophy (see FIXME) °°
-* Tweakable mass constant °
-* Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
-* Check measure units: why do rotations/translations/energy require such wildly different multipliers? °
-* Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum)
+* Smooth, inertial targeting or target hysteresis (to avoid skewing vibration when target is on opposite side) °°
+* Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum) °°
+* Introduce viscosity (to improve the poor creatures' mobility)
 
 ###Speed Demon
 
@@ -21,24 +16,24 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Only update Organ cache when necessary °°°
 * Space Partitioning for fast thing searches °°
 * Find out why even a petri dish of {0} creatures slows down (apparently creatures become "heavier" to tick)
-* Space Partitioning runs in a separate thread
 * Make FPS parametric to improve TPS on slower machines
 
 ###Gamer
 
 * Try scrolling/panning commands and speeds under Linux °°
-* Parameterize scroll/pan speeds °
 * Externalize all configurable parameters to JSON files
+* Parameterize scroll/pan speeds °
 * Save Petri dish
 * Load Petri dish
 
 ###Genetist
 
+* Narjillo's color is an expression of its behaviour (amplitude, phase, etc) °
+* Find a good way to deal with atrophy (see FIXME) °°
 * Narjillo's skewing is genetically determined °°
 * Whole-body size gene
 * View Narjillo's evolutionary path
 * Mutation rate is controlled by genes (this is what happens in nature. tends to freeze evolution?)
-* Narjillo's color is an expression of its behaviour (amplitude, phase, etc)
 * DNA analyzer program
 * DNA diff program (based on DNA analyzer)
 * Sexual reproduction
@@ -51,7 +46,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °
 * Distance of firing is determined by genes °
-* Narjillos spends energy to reproduce
+* Narjillos spend energy to reproduce
 * Narjillos decide how much energy to give to descendants
 
 ###Lab Technician
@@ -71,6 +66,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ecologist
 
+* Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
 * Spawn Narjillos with random direction (to avoid "swarming in same direction" effect on some races - or, do I want to keep it?)
 * Conservation of energy in entire pond (with sun to give more energy)
 * Distribute things in a circle instead of a square
@@ -84,7 +80,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Ethologist
 
 * Narjillos eat each other °°
-* Narjillo updates food item when not in range anymore
+* Narjillo only updates food item when not in range anymore or when food is no longer there
 * "Attracted to" gene (uses other Narjillo's colors to select most desirable mate)
 * "Fears" gene (like "attracted to")
 * "Wants to eat" gene (like "attracted to")

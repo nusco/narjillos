@@ -6,7 +6,6 @@ import java.util.List;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
-import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 /**
  * This class contains most of the physics engine.

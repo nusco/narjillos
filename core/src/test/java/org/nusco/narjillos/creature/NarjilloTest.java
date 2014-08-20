@@ -109,7 +109,6 @@ public class NarjilloTest {
 	}
 	
 	//@Test
-	// FIXME: this is pointing at a problem with energy calculations
 	public void itsEnergyDecreasesFasterIfItMoves() {
 		DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
 		Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);

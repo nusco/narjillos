@@ -24,7 +24,7 @@ public class Body {
 
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
 	private static final double MAX_SKEWING = 70;
-	private static final double MAX_SKEWING_VELOCITY = 1;
+	private static final double MAX_SKEWING_VELOCITY = 0.1;
 
 	private final Head head;
 	private final List<BodyPart> bodyParts = new LinkedList<>();
@@ -176,6 +176,9 @@ public class Body {
 		if (getMass() <= 0)
 			return getStartPoint();
 
+		// do it in one swoop instead of creating a lot of
+		// intermediate vectors
+
 		List<BodyPart> organs = getBodyParts();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
 		Iterator<BodyPart> iterator = getBodyParts().iterator();
@@ -184,8 +187,6 @@ public class Body {
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
 		}
 		
-		// do it in one swoop instead of calling Vector#plus() a lot
-		// TODO: profile. does this have any visible effect on performance?
 		double totalX = 0;
 		double totalY = 0;
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {

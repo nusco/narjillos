@@ -40,7 +40,7 @@ class NarjilloView extends ThingView {
 			group.getChildren().add(eyeNode);
 
 		// only active while debugging
-		group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn));
+		//group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn));
 		
 		group.setEffect(getEffects(zoomLevel, infraredOn));
 		return group;

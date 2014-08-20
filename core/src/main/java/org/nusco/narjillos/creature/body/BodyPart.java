@@ -87,8 +87,6 @@ public abstract class BodyPart {
 		return cachedVector;
 	}
 
-	// TODO: now relative to the startpoint. Probably make absolute later,
-	// as I make the physics more sophisticated.
 	public final Vector getCenterOfMass() {
 		return cachedCenterOfMass;
 	}

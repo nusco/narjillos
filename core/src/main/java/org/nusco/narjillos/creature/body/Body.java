@@ -180,6 +180,9 @@ public class Body {
 	// This would make some calculations easier in tick(), but it would also
 	// require some rewriting in other places.
 	private Vector calculateCenterOfMass() {
+		if (getMass() <= 0)
+			return getStartPoint();
+
 		List<BodyPart> organs = getBodyParts();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
 		Iterator<BodyPart> iterator = getBodyParts().iterator();
@@ -190,18 +193,14 @@ public class Body {
 		
 		// do it in one swoop instead of calling Vector#plus() a lot
 		// TODO: profile. does this have any visible effect on performance?
-		int totalX = 0;
-		int totalY = 0;
+		double totalX = 0;
+		double totalY = 0;
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
 			totalX += weightedCentersOfMass[i].x;
 			totalY += weightedCentersOfMass[i].y;
 		}
-		double totalMass = getMass();
 		
-		if (totalMass <= 0)
-			return Vector.ZERO;
-		
-		return Vector.cartesian(totalX / totalMass, totalY / totalMass);
+		return Vector.cartesian(totalX / getMass(), totalY / getMass());
 	}
 
 	public double getAngle() {

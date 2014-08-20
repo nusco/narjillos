@@ -4,12 +4,12 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Smooth, inertial targeting or target hysteris (to avoid vibration when target is on opposite side) °°°
+* Smooth, inertial targeting or target hysteresis (to avoid vibration when target is on opposite side) °°°
 * Fix rotation-related flickering °°°
 * Introduce viscosity (to improve the poor creatures' mobility) °°°
 * Tweak rotation vs. translation °°°
+* Find a good way to deal with atrophy (see FIXME) °°
 * Tweakable mass constant °
-* Energy spent for linear and rotational movement should be weighted against energy rations (right now one of the two is essentially free) °°
 * Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
 * Check measure units: why do rotations/translations/energy require such wildly different multipliers? °
 * Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum)
@@ -57,11 +57,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Fix non-repeatable experiments (also check across "experiment" and "petri") °°°
 * Slow motion setting °°
+* "Paused" setting °°
 * Lock on single Narjillo °
 * Bench with stats
 * "Real Time" and "Fast" slider
 * Light switch
-* "Paused" setting in speed slider
 * Select creature
 * Export creature
 * "Most Prolific" button
@@ -89,6 +89,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Artist
 
 * Better death animation (right now the bending is not visible) °
+* Don't make eye transparent (it makes it hard to gauge energy; make it opaque or give it a white background) °
 * Fade out mouth/eye during death °
 * Birth animation °
 * Smooth out body during death in infrared

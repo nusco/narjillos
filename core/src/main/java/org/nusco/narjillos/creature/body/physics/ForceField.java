@@ -62,13 +62,13 @@ public class ForceField {
 
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
 		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
-		Vector linearMomentum = linearVelocity.by(mass);
+		Vector linearMomentum = linearVelocity.by(mass * PROPULSION_SCALE);
 		linearMomenta.add(linearMomentum);
 		energySpent += calculateTranslationEnergy(mass, linearVelocity);
 
 		double angularVelocity = calculateAngularVelocity(initialPositionInSpace, finalPositionInSpace);
 		double momentOfInertia = calculateMomentOfInertia(initialPositionInSpace);
-		double angularMomentum = momentOfInertia * angularVelocity;
+		double angularMomentum = momentOfInertia * angularVelocity * ROTATION_SCALE;
 		angularMomenta.add(angularMomentum);
 		energySpent += calculateRotationEnergy(momentOfInertia, angularVelocity);
 	}
@@ -103,7 +103,7 @@ public class ForceField {
 	}
 
 	public Vector getTranslation() {
-		return getTotalLinearMomentum().invert().by(bodyMass * PROPULSION_SCALE);
+		return getTotalLinearMomentum().invert().by(bodyMass);
 	}
 
 	private Vector getTotalLinearMomentum() {
@@ -114,8 +114,7 @@ public class ForceField {
 	}
 
 	public double getRotation() {
-		double unscaledResult = -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4);
-		return unscaledResult * ROTATION_SCALE;
+		return -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4);
 	}
 
 	private double getTotalAngularMomentum() {

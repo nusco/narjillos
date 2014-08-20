@@ -14,26 +14,32 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	static final double INITIAL_ENERGY = 1000;
-	public static final double MAX_ENERGY = 2000;
-	static final double ENERGY_PER_FOOD_ITEM = 1000;
+	public static final double MAX_ENERGY_RATIO = 2;
+	static final double ENERGY_PER_FOOD_ITEM_RATIO = 1;
 	static final double LIFESPAN = 30_000;
-	static final double ENERGY_DECAY = MAX_ENERGY / LIFESPAN;
-	static final double AGONY_LEVEL = ENERGY_DECAY * 300;
 
 	public final Body body;
 	private final DNA genes;
 
 	private Vector target = Vector.ZERO;
-	private double energy = INITIAL_ENERGY;
-	private double maxEnergyForAge = MAX_ENERGY;
-
+	private double energy;
+	private double maxEnergyForAge;
+	private final double energyDecay;
+	private final double energyPerFoodItem;
+	private final double agonyLevel;
+	
 	public final List<NarjilloEventListener> eventListeners = new LinkedList<>();
 
 	public Narjillo(Body body, Vector position, DNA genes) {
 		this.body = body;
 		body.teleportTo(position);
 		this.genes = genes;
+		
+		energy = body.getMass();
+		maxEnergyForAge = energy * MAX_ENERGY_RATIO;
+		energyDecay = maxEnergyForAge / LIFESPAN;
+		energyPerFoodItem = maxEnergyForAge * ENERGY_PER_FOOD_ITEM_RATIO;
+		agonyLevel = energyDecay * 300; // TODO: tweak
 	}
 
 	public DNA getDNA() {
@@ -54,12 +60,12 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	private void applyLifecycleAnimations() {
-		if (getEnergy() <= AGONY_LEVEL)
+		if (getEnergy() <= agonyLevel)
 			applyDeathAnimation();
 	}
 
 	private void decreareEnergyBy(double energySpent) {
-		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
+		maxEnergyForAge -= energyDecay;
 		updateEnergyBy(-energySpent);
 	}
 
@@ -76,7 +82,7 @@ public class Narjillo implements Thing, Creature {
 		// additive.
 		// Why? Find out what is going on here, and possibly rethink the
 		// bending mechanics. Maybe it should come from the WaveNerve?
-		double bendAngle = ((AGONY_LEVEL - getEnergy()) / (double) AGONY_LEVEL) * 9;
+		double bendAngle = ((agonyLevel - getEnergy()) / agonyLevel) * 9;
 		body.forceBend(bendAngle);
 	}
 
@@ -97,8 +103,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	public void feed() {
-		double energyBoost = ENERGY_PER_FOOD_ITEM;
-		energy += energyBoost;
+		energy += energyPerFoodItem;
 		if (energy > maxEnergyForAge)
 			energy = maxEnergyForAge;
 	}
@@ -141,5 +146,13 @@ public class Narjillo implements Thing, Creature {
 
 	public Vector getCenterOfMass() {
 		return body.calculateCenterOfMass();
+	}
+
+	public double getMaxEnergy() {
+		return maxEnergyForAge;
+	}
+
+	double getMass() {
+		return body.getMass();
 	}
 }

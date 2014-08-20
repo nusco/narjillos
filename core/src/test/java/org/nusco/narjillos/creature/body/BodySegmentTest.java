@@ -58,10 +58,9 @@ public class BodySegmentTest extends OrganTest {
 		// uses the current angle, not the angle at rest
 		organ.setAngleToParent(45);
 		
-		Vector headCenter = Vector.cartesian(5,  0);
 		final double lengthAt45Degrees = 7.07106;
-		double expectedX = headCenter.x + lengthAt45Degrees / 2;
-		double expectedY = headCenter.y + lengthAt45Degrees / 2;
+		double expectedX = head.getEndPoint().x + lengthAt45Degrees / 2;
+		double expectedY = head.getEndPoint().y + lengthAt45Degrees / 2;
 		Vector expected = Vector.cartesian(expectedX, expectedY);
 		assertTrue(organ.getCenterOfMass().almostEquals(expected));
 	}

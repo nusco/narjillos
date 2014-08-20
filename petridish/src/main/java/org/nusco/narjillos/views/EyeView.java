@@ -37,7 +37,7 @@ class EyeView extends RoundObjectView {
 	}
 
 	private double getIntensity(double energy) {
-		return clipToRange(energy / Narjillo.MAX_ENERGY, 0, 0.8);
+		return clipToRange(energy / ((Narjillo) getThing()).getMaxEnergy(), 0, 0.8);
 	}
 
 	private double getTransparency(double zoomLevel) {

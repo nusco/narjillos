@@ -67,7 +67,7 @@ class OrganView extends ThingView {
 	}
 
 	private double getAlpha() {
-		double result = getNarjillo().getEnergy() * 10 / Narjillo.MAX_ENERGY;
+		double result = getNarjillo().getEnergy() * 10 / getNarjillo().getMaxEnergy();
 		return clipToRange(result, 0, 0.7);
 	}
 

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.creature.body.physics.Impulse;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -29,11 +28,11 @@ public class Narjillo implements Thing, Creature {
 	private double energy = INITIAL_ENERGY;
 	private double maxEnergyForAge = MAX_ENERGY;
 
-	private final List<NarjilloEventListener> eventListeners = new LinkedList<>();
+	public final List<NarjilloEventListener> eventListeners = new LinkedList<>();
 
 	public Narjillo(Body body, Vector position, DNA genes) {
 		this.body = body;
-		this.body.move(position, 0);
+		body.teleportTo(position);
 		this.genes = genes;
 	}
 
@@ -45,15 +44,13 @@ public class Narjillo implements Thing, Creature {
 	public void tick() {
 		applyLifecycleAnimations();
 
-		Impulse impulse = body.tick(getTargetDirection());
-		moveBy(impulse);
-		updateEnergyBasedOn(impulse);
-	}
+		Vector startingPosition = body.getStartPoint();
 
-	private void moveBy(Impulse impulse) {
-		Vector newPosition = getPosition().plus(impulse.linearComponent);
-		double newAngle = getAngle() + impulse.angularComponent;
-		move(newPosition, newAngle);
+		double energySpent = body.tick(getTargetDirection());
+		decreareEnergyBy(energySpent);
+		
+		for (NarjilloEventListener eventListener : this.eventListeners)
+			eventListener.moved(new Segment(startingPosition, body.getStartPoint()));
 	}
 
 	private void applyLifecycleAnimations() {
@@ -61,27 +58,14 @@ public class Narjillo implements Thing, Creature {
 			applyDeathAnimation();
 	}
 
-	private void updateEnergyBasedOn(Impulse impulse) {
+	private void decreareEnergyBy(double energySpent) {
 		maxEnergyForAge -= Narjillo.ENERGY_DECAY;
-		updateEnergyBy(-impulse.energySpent);
+		updateEnergyBy(-energySpent);
 	}
 
 	@Override
 	public Vector getPosition() {
 		return body.getStartPoint();
-	}
-
-	private void move(Vector position, double angle) {
-		Vector startingPosition = getPosition();
-
-		body.move(position, angle);
-		
-		for (NarjilloEventListener eventListener : eventListeners)
-			eventListener.moved(new Segment(startingPosition, getPosition()));
-	}
-
-	private double getAngle() {
-		return body.getAngle();
 	}
 
 	private void applyDeathAnimation() {

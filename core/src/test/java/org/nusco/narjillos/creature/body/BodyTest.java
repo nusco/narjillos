@@ -16,10 +16,10 @@ public class BodyTest {
 	}
 
 	@Test
-	public void canBePositioned() {
+	public void canBeTeleportedToAGivenPosition() {
 		Body body = new Body(new Head(1, 1, new ColorByte(1), 1));
 		
-		body.move(Vector.cartesian(10, -10), 0);
+		body.teleportTo(Vector.cartesian(10, -10));
 
 		assertEquals(Vector.cartesian(10, -10), body.getStartPoint());
 	}

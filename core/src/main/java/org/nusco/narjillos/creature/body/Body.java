@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.nusco.narjillos.creature.body.physics.Impulse;
 import org.nusco.narjillos.creature.body.physics.ForceField;
+import org.nusco.narjillos.creature.body.physics.Impulse;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -42,9 +42,9 @@ public class Body {
 
 	/**
 	 * Take a target direction. Change the body's geometry based on the target
-	 * direction. Return the resulting set of translational/linear forces.
+	 * direction. Move the body. Return the energy spent on the entire operation.
 	 */
-	public Impulse tick(Vector targetDirection) {
+	public double tick(Vector targetDirection) {
 		// Before any movement, store away the current body positions
 		// and center of mass. These will come useful later.
 		Vector centerOfMassBeforeReshaping = calculateCenterOfMass();
@@ -65,7 +65,10 @@ public class Body {
 		// generates translational and rotation forces.
 		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMassBeforeReshaping);
 		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
-		return tick_CalculateAccelerationForWholeBody(forceField, centerOfMassAfterReshaping);
+		Impulse impulse = tick_CalculateAccelerationForWholeBody(forceField, centerOfMassAfterReshaping);
+		
+		moveBy(impulse);
+		return impulse.energySpent;
 	}
 
 	private void tick_UpdateBodyShapeInVacuum(Vector targetDirection, Vector centerOfMassBeforeReshaping) {
@@ -207,11 +210,6 @@ public class Body {
 		return head.getAbsoluteAngle();
 	}
 	
-	public void move(Vector position, double rotation) {
-		Vector shiftedPosition = position.plus(rotateAround(calculateCenterOfMass(), rotation));
-		head.setPosition(shiftedPosition, rotation);
-	}
-
 	private Vector rotateAround(Vector center, double angle) {
 		Vector pivot = center.minus(getStartPoint());
 		
@@ -221,5 +219,20 @@ public class Body {
 		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
 		
 		return Vector.cartesian(-shiftX, -shiftY);
+	}
+
+	public void moveBy(Impulse impulse) {
+		Vector newPosition = getStartPoint().plus(impulse.linearComponent);
+		double newAngle = getAngle() + impulse.angularComponent;
+		move(newPosition, newAngle);
+	}
+
+	private void move(Vector position, double rotation) {
+		Vector shiftedPosition = position.plus(rotateAround(calculateCenterOfMass(), rotation));
+		head.setPosition(shiftedPosition, rotation);
+	}
+
+	public void teleportTo(Vector position) {
+		head.setPosition(position, 0);
 	}
 }

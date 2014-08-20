@@ -9,6 +9,7 @@ import java.util.Map;
 import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.physics.Impulse;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
+import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
@@ -54,35 +55,26 @@ public class Body {
 		// target's direction. It doesn't "think" were to go - it just
 		// changes its geometry *somehow*. Natural selection will favor
 		// movements that result in getting closer to the target.
-		// 
-		// The key concept here is that the body changes its shape as
+		tick_UpdateBodyAngles(targetDirection);
+		
+		// The key concept here is that the body changed its shape as
 		// if it were in a vacuum: the center of mass stays in the same
 		// position, and the moment of inertia stays zero. (This last
 		// quality is not yet implemented.)
-		tick_UpdateBodyShapeInVacuum(targetDirection, centerOfMassBeforeReshaping);
+		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
+		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
+//		ForceField reshapingForces = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMassAfterUpdatingAngles);
+//		head.move(reshapingForces.getTranslation(), -reshapingForces.getRotation());
+		head.move(centerOfMassOffset, 0);
 
-		// Now we move out of the "vacuum" metaphor: the body's movement
-		// generates translational and rotation forces.
+		// Now we move out of the "vacuum" metaphor: thanks to the fluid's viscosity,
+		// the body's movement generates translational and rotation forces.
 		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMassBeforeReshaping);
 		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
 		Impulse impulse = tick_CalculateAccelerationForWholeBody(forceField, centerOfMassAfterReshaping);
 		
-		moveBy(impulse);
+//		moveBy(impulse);
 		return impulse.energySpent;
-	}
-
-	private void tick_UpdateBodyShapeInVacuum(Vector targetDirection, Vector centerOfMassBeforeReshaping) {
-		// TODO: this is the place where I should change rotation and translation to keep
-		// moment of inertia at zero and center of mass constant.
-		// The creature changed the shape of its body but it changed neither its
-		// center of mass, nor its moment of inertia. Instead, I only keep the center
-		// of mass constant, and I let the moment of inertia float. The result is
-		// the "tail wiggling dog" effect.
-		tick_UpdateBodyAngles(targetDirection);
-
-		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
-		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterReshaping);
-		head.move(centerOfMassOffset, 0);
 	}
 
 	private Map<BodyPart, Segment> tick_SnapshotBodyPartPositions() {
@@ -182,7 +174,7 @@ public class Body {
 	// Also, the center of mass should be absolute, not relative to the head.
 	// This would make some calculations easier in tick(), but it would also
 	// require some rewriting in other places.
-	private Vector calculateCenterOfMass() {
+	public Vector calculateCenterOfMass() {
 		if (getMass() <= 0)
 			return getStartPoint();
 
@@ -210,26 +202,18 @@ public class Body {
 		return head.getAbsoluteAngle();
 	}
 	
-	private Vector rotateAround(Vector center, double angle) {
-		Vector pivot = center.minus(getStartPoint());
-		
-		double rotation = angle - getAngle();
-		
-		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));
-		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
-		
-		return Vector.cartesian(-shiftX, -shiftY);
-	}
-
 	public void moveBy(Impulse impulse) {
 		Vector newPosition = getStartPoint().plus(impulse.linearComponent);
-		double newAngle = getAngle() + impulse.angularComponent;
-		move(newPosition, newAngle);
+		Vector pivotedPosition = newPosition.plus(rotateAround(calculateCenterOfMass(), impulse.angularComponent));
+		double newAngle = Angle.normalize(getAngle() + impulse.angularComponent);
+		head.setPosition(pivotedPosition, newAngle);
 	}
 
-	private void move(Vector position, double rotation) {
-		Vector shiftedPosition = position.plus(rotateAround(calculateCenterOfMass(), rotation));
-		head.setPosition(shiftedPosition, rotation);
+	private Vector rotateAround(Vector center, double rotation) {
+		Vector pivot = center.minus(getStartPoint());
+		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));
+		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
+		return Vector.cartesian(-shiftX, -shiftY);
 	}
 
 	public void teleportTo(Vector position) {

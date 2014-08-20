@@ -44,7 +44,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
 public class ForceField {
 
 	private static final double PROPULSION_SCALE = 1.0 / 1_000_000_000;
-	private static final double ROTATION_SCALE = 500;
+	private static final double ROTATION_SCALE = 360;
 	private static final double ENERGY_SCALE = 1.0 / 100_000_000;
 
 	private final double bodyMass;

@@ -15,12 +15,14 @@ class NarjilloView extends ThingView {
 	private final List<OrganView> organViews;
 	private final MouthView mouthView;
 	private final RoundObjectView eyeView;
+	private final CenterOfMassView centerOfMassView;
 
 	public NarjilloView(Narjillo narjillo) {
 		super(narjillo);
 		organViews = createOrganViews();
 		mouthView = new MouthView(narjillo);
 		eyeView = new EyeView(narjillo);
+		centerOfMassView = new CenterOfMassView(narjillo);
 	}
 
 	@Override
@@ -37,6 +39,9 @@ class NarjilloView extends ThingView {
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
 
+		// only active while debugging
+		group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn));
+		
 		group.setEffect(getEffects(zoomLevel, infraredOn));
 		return group;
 	}

@@ -75,12 +75,7 @@ public class Vector {
 	}
 
 	public double getAngleWith(Vector other) throws ZeroVectorException {
-		double result = getAngle() - other.getAngle();
-		if(result < -180)
-			return result + 360;
-		if(result > 180)
-			return result - 360;
-		return result;
+		return Angle.normalize(getAngle() - other.getAngle());
 	}
 
 	public Vector rotateBy(double degrees) throws ZeroVectorException {

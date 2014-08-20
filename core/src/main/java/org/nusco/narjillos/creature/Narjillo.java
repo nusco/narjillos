@@ -138,4 +138,8 @@ public class Narjillo implements Thing, Creature {
 	public List<BodyPart> getBodyParts() {
 		return body.getBodyParts();
 	}
+
+	public Vector getCenterOfMass() {
+		return body.calculateCenterOfMass();
+	}
 }

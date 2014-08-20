@@ -37,7 +37,16 @@ public class Segment {
 		return projection.minus(point).getLength();
 	}
 
+	public Vector getEndPoint() {
+		return startPoint.plus(vector);
+	}
+
 	public Vector getMidPoint() {
-		return vector.minus(startPoint).by(0.5);
+		return startPoint.plus(vector.by(0.5));
+	}
+	
+	@Override
+	public String toString() {
+		return "[" + startPoint + ", " + vector + "]";
 	}
 }

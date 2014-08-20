@@ -30,4 +30,25 @@ public class SegmentTest {
 		
 		assertEquals(40, segment.getMinimumDistanceFromPoint(Vector.cartesian(50, 0)), 0.001);
 	}
+
+	@Test
+	public void hasAnEndPoint() {
+		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(4, 6));
+
+		assertEquals(Vector.cartesian(5, 8), segment.getEndPoint());
+	}
+
+	@Test
+	public void hasAMidPoint() {
+		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(4, 6));
+
+		assertEquals(Vector.cartesian(3, 5), segment.getMidPoint());
+	}
+	
+	@Test
+	public void convertsToAString() {
+		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(3, 4));
+		
+		assertEquals("[(1.0, 2.0), (3.0, 4.0)]", segment.toString());
+	}
 }

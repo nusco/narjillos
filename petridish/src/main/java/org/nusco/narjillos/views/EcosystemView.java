@@ -13,6 +13,7 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
@@ -20,7 +21,9 @@ import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.EcosystemEventListener;
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 public class EcosystemView {
 
@@ -66,7 +69,10 @@ public class EcosystemView {
 	private Group getThingsGroup(boolean infraredOn) {
 		Group things = new Group();
 		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn));
-
+		
+		if (VisualDebugger.DEBUG)
+			things.getChildren().add(getVisualDebuggingLines());
+		
 		things.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
 		things.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
 											viewport.getPositionEC().x, viewport.getPositionEC().y));
@@ -74,6 +80,24 @@ public class EcosystemView {
 		setZoomLevelEffects(things);
 		
 		return things;
+	}
+
+	private Group getVisualDebuggingLines() {
+		Group result = new Group();
+		List<Segment> segments = VisualDebugger.getSegments();
+		
+		if (segments.isEmpty())
+			return result;
+		
+		for (Segment segment : segments) {
+			System.out.println(segment);
+			Line line = new Line(segment.startPoint.x, segment.startPoint.y, segment.getEndPoint().x, segment.getEndPoint().y);
+			line.setStrokeWidth(2);
+			line.setStroke(Color.RED);
+			result.getChildren().add(line);
+		}
+		
+		return result;
 	}
 
 	private void setZoomLevelEffects(Group group) {

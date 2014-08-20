@@ -7,10 +7,10 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class WaterDrop extends Ecosystem {
 
 	private final static int SIZE = 20_000;
-	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 300;
-	private static final int MAX_NUMBER_OF_FOOD_PIECES = 1500;
+	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 1; //300;
+	private static final int MAX_NUMBER_OF_FOOD_PIECES = 1; //1500;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 50;
-	private static final int INITIAL_NUMBER_OF_NARJILLOS = 150;
+	private static final int INITIAL_NUMBER_OF_NARJILLOS = 1; //150;
 
 	public WaterDrop() {
 		this(null);

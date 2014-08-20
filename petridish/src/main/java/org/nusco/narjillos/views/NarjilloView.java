@@ -8,6 +8,7 @@ import javafx.scene.Node;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 class NarjilloView extends ThingView {
 	
@@ -39,8 +40,8 @@ class NarjilloView extends ThingView {
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
 
-		// only active while debugging
-		//group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn));
+		if (VisualDebugger.DEBUG)
+			group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn));
 		
 		group.setEffect(getEffects(zoomLevel, infraredOn));
 		return group;

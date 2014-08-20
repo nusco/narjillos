@@ -6,6 +6,7 @@ import java.util.List;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
+import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 /**
  * This class contains most of the physics engine.
@@ -58,11 +59,15 @@ public class ForceField {
 		this.bodyMass = bodyMass;
 		this.bodyRadius = bodyRadius;
 		this.centerOfMass = centerOfMass;
+		VisualDebugger.clear();
 	}
 
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
 		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
 		Vector linearMomentum = linearVelocity.by(mass);
+		//
+		VisualDebugger.add(new Segment(finalPositionInSpace.getMidPoint(), linearVelocity.by(-20)));
+		//
 		linearMomenta.add(linearMomentum);
 		energySpent += calculateTranslationEnergy(mass, linearVelocity);
 
@@ -85,7 +90,7 @@ public class ForceField {
 			return Vector.ZERO;
 
 		try {
-			return movement.getNormalComponentOn(beforeMovement.vector);
+			return movement.getNormalComponentOn(afterMovement.vector);
 		} catch (ZeroVectorException e) {
 			// should never happen with the previous checks
 			return null;

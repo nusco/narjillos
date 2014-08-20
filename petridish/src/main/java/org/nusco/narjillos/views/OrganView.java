@@ -42,6 +42,13 @@ class OrganView extends ThingView {
 		
 		rectangle.setFill(getColor(infraredOn));
 		
+		if (infraredOn) {
+			rectangle.setStroke(Color.WHITE);
+			rectangle.setStrokeWidth(3);
+		} else {
+			rectangle.setStrokeWidth(0);
+		}
+		
 		rectangle.getTransforms().clear();
 		
 		// overlap slightly and shift to center based on thickness

@@ -19,33 +19,32 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * linear_momentum = mass * linear_velocity (in [pixelgrams points / tick])
  * 
  * Linear Momentum (for the whole body):
- * linear_velocity = linear_momentum / mass (in [points / tick])
- * 
- * translation_energy = mass * linear_velocity^2 / 2;
+ * total_linear_velocity = total_linear_momentum / mass (in [points / tick])
  * 
  * Angular Momentum (for the body segments, approximated as thin rods):
  * angular_momentum = moment_of_inertia * angular_velocity
  * moment_of_inertia_around_far_end = mass * length^2 * 16 / 48
  * 
  * Also, by the parallel axis theorem:
- * moment_of_inertia_around_center_of_mass = moment_of_inertia_around_far_end +
- *                                           mass * distance_between_far_end_and_center_of_mass^2 
- *                                         = mass * (length^2 * 16 / 48 + distance_between_far_end_and_center_of_mass^2)
+ * moment_of_inertia_around_body_center = moment_of_inertia_around_far_end +
+ *                                        mass * distance_between_far_end_and_body_center^2 
+ *                                       = mass * (length^2 * 16 / 48 + distance_between_far_end_and_body_center^2)
  * 
- * So the angular_momentum is the same as the moment_of_inertia_around_center_of_mass,
+ * So the angular_momentum is the same as the moment_of_inertia_around_body_center,
  * multiplied by the angular_velocity.
- *
- * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  * 
  * Angular Momentum (for the whole body, approximated as a thin disk):
- * angular_velocity = angular_momentum / moment_of_inertia
- *                  = angular_momentum / (mass * radius^2 / 4)
+ * total_angular_velocity = total_angular_momentum / total_moment_of_inertia
+ *                        = total_angular_momentum / (mass * radius^2 / 4)
+ *                  
+ * Energies:
+ * 
+ * translation_energy = mass * linear_velocity^2 / 2;
+ * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  */
 public class ForceField {
 
-	private static final double PROPULSION_SCALE = 1;
-	private static final double ROTATION_SCALE = 1000;
-	private static final double ENERGY_SCALE = 1.0 / 100_000_000;
+	private static final double ENERGY_SCALE = 1.0 / 100_000_000_000L;
 	private static final double VISCOSITY = 1; //.01;
 
 	private final double bodyMass;
@@ -63,13 +62,13 @@ public class ForceField {
 
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
 		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
-		Vector linearMomentum = linearVelocity.by(mass * PROPULSION_SCALE);
+		Vector linearMomentum = linearVelocity.by(mass);
 		linearMomenta.add(linearMomentum);
-		energySpent += calculateTranslationEnergy(mass * PROPULSION_SCALE, linearVelocity);
+		energySpent += calculateTranslationEnergy(mass, linearVelocity);
 
 		double angularVelocity = calculateAngularVelocity(initialPositionInSpace, finalPositionInSpace);
-		double momentOfInertia = calculateMomentOfInertia(initialPositionInSpace);
-		double angularMomentum = momentOfInertia * angularVelocity * ROTATION_SCALE;
+		double momentOfInertia = calculateMomentOfInertia(finalPositionInSpace, mass);
+		double angularMomentum = momentOfInertia * angularVelocity;
 		angularMomenta.add(angularMomentum);
 		energySpent += calculateRotationEnergy(momentOfInertia, angularVelocity);
 	}
@@ -106,10 +105,10 @@ public class ForceField {
 		}
 	}
 
-	private double calculateMomentOfInertia(Segment initialPositionInSpace) {
-		double length = initialPositionInSpace.vector.getLength();
-		double distance = initialPositionInSpace.startPoint.minus(centerOfMass).getLength();
-		return length * length * 16 / 48 + distance * distance;
+ 	private double calculateMomentOfInertia(Segment positionInSpace, double mass) {
+		double length = positionInSpace.vector.getLength();
+		double distance = positionInSpace.startPoint.minus(centerOfMass).getLength();
+		return mass * length * length * 16 / 48 + distance * distance;
 	}
 
 	private double calculateRotationEnergy(double momentOfInertia, double angularVelocity) {
@@ -117,7 +116,7 @@ public class ForceField {
 	}
 
 	public Vector getTranslation() {
-		return getTotalLinearMomentum().invert().by(1.0 / bodyMass);
+		return getTotalLinearMomentum().by(-1.0 / bodyMass);
 	}
 
 	private Vector getTotalLinearMomentum() {

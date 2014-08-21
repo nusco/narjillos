@@ -43,7 +43,7 @@ abstract class ThingView {
 
 	protected Effect getEffects(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
-			return getHaloEffect(zoomLevel * 2);
+			return getHaloEffect(zoomLevel * 1.5);
 		
 		return getHaloEffect(zoomLevel);
 	}

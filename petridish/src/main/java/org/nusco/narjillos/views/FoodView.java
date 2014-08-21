@@ -26,6 +26,13 @@ class FoodView extends RoundObjectView {
 
 		circle.setFill(getColor(infraredOn));
 		
+		if (infraredOn) {
+			circle.setStroke(Color.WHITE);
+			circle.setStrokeWidth(3);
+		} else {
+			circle.setStrokeWidth(0);
+		}
+
 		circle.getTransforms().clear();
 		circle.getTransforms().add(moveToStartPoint());
 		

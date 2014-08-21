@@ -11,25 +11,25 @@ import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-class OrganView extends ThingView {
+class BodyPartView extends ThingView {
 
 	private final static int OVERLAP = 7;
 
-	private final BodyPart organ;
+	private final BodyPart bodyPart;
 	private final Color color;
 	private final Rectangle rectangle;
 	
-	public OrganView(BodyPart organ, Narjillo narjillo) {
+	public BodyPartView(BodyPart bodyPart, Narjillo narjillo) {
 		super(narjillo);
-		this.organ = organ;
-		color = toRGBColor(organ.getColor());
+		this.bodyPart = bodyPart;
+		color = toRGBColor(bodyPart.getColor());
 		rectangle = createRectangle();
 	}
 
 	private Rectangle createRectangle() {
-		Rectangle result = new Rectangle(0, 0, getLengthIncludingOverlap(), organ.getThickness());
+		Rectangle result = new Rectangle(0, 0, getLengthIncludingOverlap(), bodyPart.getThickness());
 
-		double arc = (organ.getLength() * organ.getThickness()) % 15 + 15;
+		double arc = (bodyPart.getLength() * bodyPart.getThickness()) % 15 + 15;
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);
 
@@ -37,7 +37,7 @@ class OrganView extends ThingView {
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn) {
-		if (organ.getLength() == 0)
+		if (bodyPart.getLength() == 0)
 			return null; // atrophy
 		
 		rectangle.setFill(getColor(infraredOn));
@@ -52,18 +52,18 @@ class OrganView extends ThingView {
 		rectangle.getTransforms().clear();
 		
 		// overlap slightly and shift to center based on thickness
-		double widthCenter = organ.getThickness() / 2;
+		double widthCenter = bodyPart.getThickness() / 2;
 		rectangle.getTransforms().add(new Translate(-OVERLAP, -widthCenter));
 		rectangle.getTransforms().add(moveToStartPoint());
 		
 		// rotate in position
-		rectangle.getTransforms().add(new Rotate(organ.getAbsoluteAngle(), OVERLAP, widthCenter));
+		rectangle.getTransforms().add(new Rotate(bodyPart.getAbsoluteAngle(), OVERLAP, widthCenter));
 		
 		return rectangle;
 	}
 
 	private Translate moveToStartPoint() {
-		Vector startPoint = organ.getStartPoint();
+		Vector startPoint = bodyPart.getStartPoint();
 		return new Translate(startPoint.x, startPoint.y);
 	}
 
@@ -84,12 +84,12 @@ class OrganView extends ThingView {
 
 	@Override
 	protected boolean isVisible(Viewport viewport) {
-		double margin = Math.max(organ.getThickness() / 2, getLengthIncludingOverlap());
-		return viewport.isVisible(organ.getStartPoint(), margin);
+		double margin = Math.max(bodyPart.getThickness() / 2, getLengthIncludingOverlap());
+		return viewport.isVisible(bodyPart.getStartPoint(), margin);
 	}
 
 	private int getLengthIncludingOverlap() {
-		return organ.getLength() + (OVERLAP * 2);
+		return bodyPart.getLength() + (OVERLAP * 2);
 	}
 
 	private Narjillo getNarjillo() {

@@ -13,7 +13,7 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
 class NarjilloView extends ThingView {
 	
 	private final Group group = new Group();
-	private final List<OrganView> organViews;
+	private final List<BodyPartView> organViews;
 	private final MouthView mouthView;
 	private final RoundObjectView eyeView;
 	private final CenterOfMassView centerOfMassView;
@@ -49,7 +49,7 @@ class NarjilloView extends ThingView {
 
 	private List<Node> getOrganNodes(double zoomLevel, boolean infraredOn) {
 		List<Node> result = new LinkedList<>();
-		for (OrganView view : organViews) {
+		for (BodyPartView view : organViews) {
 			Node node = view.toNode(zoomLevel, infraredOn);
 			if (node != null)
 				result.add(node);
@@ -57,10 +57,10 @@ class NarjilloView extends ThingView {
 		return result;
 	}
 
-	private List<OrganView> createOrganViews() {
-		List<OrganView> result = new LinkedList<>();
+	private List<BodyPartView> createOrganViews() {
+		List<BodyPartView> result = new LinkedList<>();
 		for (BodyPart bodyPart : getNarjillo().getBodyParts())
-			result.add(new OrganView(bodyPart, getNarjillo()));
+			result.add(new BodyPartView(bodyPart, getNarjillo()));
 		return result;
 	}
 
@@ -70,10 +70,10 @@ class NarjilloView extends ThingView {
 
 	@Override
 	protected boolean isVisible(Viewport viewport) {
-		for (OrganView organView : organViews)
+		for (BodyPartView organView : organViews)
 			if (organView.isVisible(viewport))
 				return true;
-		OrganView organView = organViews.get(0);
+		BodyPartView organView = organViews.get(0);
 		organView.isVisible(viewport);
 		// ignore the mouth and eye, too small to make a visible difference
 		return false;

@@ -9,6 +9,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Smooth, inertial targeting or target hysteresis (to avoid skewing vibration when target is on opposite side) °°
 * Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum) °°
 * Fix problem with energy calculation (see broken test with FIXME) °°
+* Realistic radius calculation (for better moment of inertia)
 * Introduce viscosity (to improve the poor creatures' mobility)
 
 ###Speed Demon
@@ -16,6 +17,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Optimize physics engine (in particular look at calculation of center of mass) °°°
 * Only update Organ cache when necessary °°°
 * Space Partitioning for fast thing searches °°
+* Fade out white infrared outline at a distance
 * Find out why even a petri dish of {0} creatures slows down (apparently creatures become "heavier" to tick)
 * Make FPS parametric to improve TPS on slower machines
 

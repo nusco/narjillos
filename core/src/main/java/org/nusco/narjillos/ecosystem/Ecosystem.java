@@ -38,8 +38,6 @@ public class Ecosystem {
 
 	private final List<EcosystemEventListener> ecosystemEvents = new LinkedList<>();
 
-	private int tickCounter = 0;
-
 	public Ecosystem(long size) {
 		this.size = size;
 	}
@@ -81,11 +79,6 @@ public class Ecosystem {
 		
 		// TODO: no need to tick food for now
 		
-		if (tickCounter-- < 0) {
-			tickCounter = 100000;
-			updateTargets();
-		}
-		
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
 	}
@@ -120,18 +113,19 @@ public class Ecosystem {
 	private void updateTarget(Narjillo narjillo) {
 		Vector position = narjillo.getPosition();
 		FoodPiece foodPiece = findFoodPiece(position);
-		Vector locationOfClosestFood = (foodPiece != null) ? foodPiece.getPosition() : getFarawayPoint();
-		narjillo.setTarget(locationOfClosestFood);
-	}
-
-	private Vector getFarawayPoint() {
-		// this should not be necessary once narjillos can think for themselves
-		return Vector.polar(Double.MAX_VALUE, Double.MAX_VALUE);
+		narjillo.setTarget(foodPiece);
 	}
 
 	protected void updateTargets() {
 		for (Thing narjillo : narjillos.getCollection())
 			updateTarget((Narjillo)narjillo);
+	}
+
+	protected void updateTargets(Thing food) {
+		for (Thing narjillo : narjillos.getCollection()) {
+			if (((Narjillo)narjillo).getTarget() == food)
+				updateTarget((Narjillo)narjillo);
+		}
 	}
 
 	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
@@ -170,7 +164,7 @@ public class Ecosystem {
 		if (!foodPieces.contains(foodPiece))
 			return; // race condition: already consumed
 
-		narjillo.feed();
+		narjillo.feedOn(foodPiece);
 		remove(foodPiece);
 		
 		reproduce(narjillo);

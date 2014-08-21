@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 
 public class PopulationTest {
 	
@@ -44,6 +45,11 @@ public class PopulationTest {
 
 			@Override
 			public String getLabel() {
+				return null;
+			}
+
+			@Override
+			public Energy getEnergy() {
 				return null;
 			}
 		};

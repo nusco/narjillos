@@ -12,6 +12,7 @@ import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.WaterDrop;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -176,6 +177,11 @@ public class Experiment {
 			@Override
 			public String getLabel() {
 				return "nobody";
+			}
+
+			@Override
+			public Energy getEnergy() {
+				return null;
 			}
 		};
 	}

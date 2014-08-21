@@ -1,10 +1,12 @@
-package org.nusco.narjillos.creature;
+package org.nusco.narjillos.shared.things;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 
 public class EnergyTest {
 
@@ -12,6 +14,26 @@ public class EnergyTest {
 	final double lifespan = 100;
 	Energy energy = new Energy(mass, lifespan);
 	Energy biggerMassEnergy = new Energy(mass * 2, lifespan);
+	private Thing nutrient = new Thing() {
+
+		@Override
+		public Vector getPosition() {
+			return null;
+		}
+
+		@Override
+		public void tick() {
+		}
+
+		@Override
+		public String getLabel() {
+			return null;
+		}
+
+		@Override
+		public Energy getEnergy() {
+			return new Energy(1000, Double.MAX_VALUE);
+		}};
 			
 	@Test
 	public void itIsInitiallyProportionalToTheMass() {
@@ -46,8 +68,8 @@ public class EnergyTest {
 	}
 	
 	@Test
-	public void increasesByFeeding() {
-		energy.increaseByFeeding();
+	public void increasesByConsumingThings() {
+		energy.consume(nutrient);
 		
 		double expected = (mass + mass * Energy.ENERGY_PER_FOOD_ITEM_RATIO) / 10;
 		assertEquals(expected, energy.getValue(), 0.001);
@@ -55,12 +77,13 @@ public class EnergyTest {
 
 	@Test
 	public void neverRaisesHigherThanAMax() {
-		feedUntilFull();
+		fillToTheMax();
 		double initialEnergy = energy.getValue();
 		
-		energy.increaseByFeeding();
+		energy.consume(nutrient);
 		
 		assertEquals(initialEnergy, energy.getValue(), 0.00001);
+		assertEquals(energy.getMax(), energy.getValue(), 0.00001);
 	}
 	
 	@Test
@@ -77,28 +100,28 @@ public class EnergyTest {
 
 	@Test
 	public void neverRaisesHigherThanAMaximumConditionedByAge() {
-		feedUntilFull();
+		fillToTheMax();
 
 		double fullEnergyWhenStillYoung = energy.getValue();
 		
 		// get older
 		energy.tick(0);
 
-		energy.increaseByFeeding();
+		energy.consume(nutrient);
 		double fullEnergyWhenSlightlyOlder = energy.getValue();
 		
 		assertTrue(fullEnergyWhenStillYoung > fullEnergyWhenSlightlyOlder);
 
-		energy.increaseByFeeding();
+		energy.consume(nutrient);
 		
 		assertEquals(fullEnergyWhenSlightlyOlder, energy.getValue(), 0.001);
 	}
 
-	private void feedUntilFull() {
+	private void fillToTheMax() {
 		double energyValue;
 		do {
 			energyValue = energy.getValue();
-			energy.increaseByFeeding();
+			energy.consume(nutrient);
 		} while (energy.getValue() > energyValue);
 	}
 }

@@ -10,4 +10,5 @@ public interface Thing {
 	Vector getPosition();
 	void tick();
 	String getLabel();
+	Energy getEnergy();
 }

@@ -82,7 +82,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Ethologist
 
 * Narjillos eat each other °°
-* Narjillo only updates food item when not in range anymore or when food is no longer there
+* Narjillo updates food item when not in range anymore
 * "Attracted to" gene (uses other Narjillo's colors to select most desirable mate)
 * "Fears" gene (like "attracted to")
 * "Wants to eat" gene (like "attracted to")

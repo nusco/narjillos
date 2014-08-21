@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature;
+package org.nusco.narjillos.shared.things;
 
 public class Energy {
 	static final double MASS_TO_ENERGY_RATIO = 0.1;
@@ -9,14 +9,12 @@ public class Energy {
 	private double maxForAge;
 	
 	private final double decay;
-	private final double energyPerFoodItem;
 	private final double agonyLevel;
 
 	public Energy(double mass, double maxLifespan) {
 		value = mass * MASS_TO_ENERGY_RATIO;
 		maxForAge = value * Energy.MAX_ENERGY_RATIO;
 		decay = maxForAge / maxLifespan;
-		energyPerFoodItem = maxForAge * Energy.ENERGY_PER_FOOD_ITEM_RATIO;
 		agonyLevel = decay * 300; // TODO: tweak
 	}
 	
@@ -28,7 +26,7 @@ public class Energy {
 		return value <= 0;
 	}
 
-	double getMax() {
+	public double getMax() {
 		return maxForAge;
 	}
 
@@ -40,11 +38,11 @@ public class Energy {
 		return maxForAge;
 	}
 
-	double getAgonyLevel() {
+	public double getAgonyLevel() {
 		return agonyLevel;
 	}
 
-	void tick(double additionalEnergy) {
+	public void tick(double additionalEnergy) {
 		maxForAge -= decay;
 
 		if (isDead())
@@ -53,15 +51,12 @@ public class Energy {
 		increase(additionalEnergy);
 	}
 
-	void increaseByFeeding() {
-		increase(energyPerFoodItem);
+	public void consume(Thing thing) {
+		increase(thing.getEnergy().getValue());
 	}
 
 	private void increase(double additionalEnergy) {
 		value += additionalEnergy;
-		if (value > maxForAge)
-			value = maxForAge;
-		if (value < 0)
-			value = 0;
+		value = Math.min(maxForAge, Math.max(0, value));
 	}
 }

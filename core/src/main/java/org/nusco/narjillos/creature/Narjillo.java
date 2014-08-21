@@ -10,6 +10,7 @@ import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
@@ -19,7 +20,27 @@ public class Narjillo implements Thing, Creature {
 	public final Body body;
 	private final DNA genes;
 
-	private Vector target = Vector.ZERO;
+	private Thing target = new Thing() {
+		
+		@Override
+		public void tick() {
+		}
+		
+		@Override
+		public Vector getPosition() {
+			return Vector.ZERO;
+		}
+		
+		@Override
+		public String getLabel() {
+			return "null_thing";
+		}
+		
+		@Override
+		public Energy getEnergy() {
+			return null;
+		}
+	};
 	private Energy energy;
 	
 	public final List<NarjilloEventListener> eventListeners = new LinkedList<>();
@@ -87,18 +108,18 @@ public class Narjillo implements Thing, Creature {
 
 	public Vector getTargetDirection() {
 		try {
-			return target.minus(getPosition()).normalize(1);
+			return target.getPosition().minus(getPosition()).normalize(1);
 		} catch (ZeroVectorException e) {
 			return Vector.ZERO;
 		}
 	}
 
-	public void setTarget(Vector target) {
+	public void setTarget(Thing target) {
 		this.target = target;
 	}
 
-	public void feed() {
-		energy.increaseByFeeding();
+	public void feedOn(Thing thing) {
+		energy.consume(thing);
 	}
 
 	public void addEventListener(NarjilloEventListener eventListener) {
@@ -132,5 +153,9 @@ public class Narjillo implements Thing, Creature {
 
 	public double getEnergyPercent() {
 		return energy.getValue() / energy.getMax();
+	}
+
+	public Thing getTarget() {
+		return target;
 	}
 }

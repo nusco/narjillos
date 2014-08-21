@@ -14,21 +14,13 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	private static final double MASS_TO_ENERGY_RATIO = 0.1;
-	private static final double MAX_ENERGY_RATIO = 2;
-	static final double ENERGY_PER_FOOD_ITEM_RATIO = 1;
-	
-	private static final double LIFESPAN = 40_000;
+	static final double MAX_LIFESPAN = 40_000;
 
 	public final Body body;
 	private final DNA genes;
 
 	private Vector target = Vector.ZERO;
-	private double energy;
-	private double maxEnergyForAge;
-	private final double energyDecay;
-	private final double energyPerFoodItem;
-	private final double agonyLevel;
+	private Energy energy;
 	
 	public final List<NarjilloEventListener> eventListeners = new LinkedList<>();
 
@@ -36,39 +28,44 @@ public class Narjillo implements Thing, Creature {
 		this.body = body;
 		body.teleportTo(position);
 		this.genes = genes;
-		
-		energy = body.getMass() * MASS_TO_ENERGY_RATIO;
-		maxEnergyForAge = energy * MAX_ENERGY_RATIO;
-		energyDecay = maxEnergyForAge / LIFESPAN;
-		energyPerFoodItem = maxEnergyForAge * ENERGY_PER_FOOD_ITEM_RATIO;
-		agonyLevel = energyDecay * 300; // TODO: tweak
+		energy = new Energy(body.getMass(), MAX_LIFESPAN);
 	}
 
 	public DNA getDNA() {
 		return genes;
 	}
 
+	public Energy getEnergy() {
+		return energy;
+	}
+
+	double getEnergyValue() {
+		return energy.getValue();
+	}
+	
 	@Override
 	public void tick() {
+		if (isDead())
+			return;
+
 		applyLifecycleAnimations();
 
 		Vector startingPosition = body.getStartPoint();
 
 		double energySpent = body.tick(getTargetDirection());
-		decreareEnergyBy(energySpent);
-		
+		energy.tick(-energySpent);
+
 		for (NarjilloEventListener eventListener : this.eventListeners)
 			eventListener.moved(new Segment(startingPosition, body.getStartPoint()));
+
+		if (isDead())
+			for (NarjilloEventListener eventListener : eventListeners)
+				eventListener.died();
 	}
 
 	private void applyLifecycleAnimations() {
-		if (getEnergy() <= agonyLevel)
+		if (energy.isInAgony())
 			applyDeathAnimation();
-	}
-
-	private void decreareEnergyBy(double energySpent) {
-		maxEnergyForAge -= energyDecay;
-		updateEnergyBy(-energySpent);
 	}
 
 	@Override
@@ -84,12 +81,8 @@ public class Narjillo implements Thing, Creature {
 		// additive.
 		// Why? Find out what is going on here, and possibly rethink the
 		// bending mechanics. Maybe it should come from the WaveNerve?
-		double bendAngle = ((agonyLevel - getEnergy()) / agonyLevel) * 9;
+		double bendAngle = ((energy.getAgonyLevel() - getEnergy().getValue()) / energy.getAgonyLevel()) * 9;
 		body.forceBend(bendAngle);
-	}
-
-	public double getEnergy() {
-		return energy;
 	}
 
 	public Vector getTargetDirection() {
@@ -105,9 +98,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	public void feed() {
-		energy += energyPerFoodItem;
-		if (energy > maxEnergyForAge)
-			energy = maxEnergyForAge;
+		energy.increaseByFeeding();
 	}
 
 	public void addEventListener(NarjilloEventListener eventListener) {
@@ -123,23 +114,8 @@ public class Narjillo implements Thing, Creature {
 		return "narjillo";
 	}
 
-	void updateEnergyBy(double amount) {
-		if (isDead())
-			return;
-		
-		energy += amount;
-		if (energy > maxEnergyForAge)
-			energy = maxEnergyForAge;
-		
-		if (energy <= 0) {
-			energy = 0;
-			for (NarjilloEventListener eventListener : eventListeners)
-				eventListener.died();
-		}
-	}
-
 	boolean isDead() {
-		return energy <= 0;
+		return energy.isDead();
 	}
 
 	public List<BodyPart> getBodyParts() {
@@ -150,11 +126,11 @@ public class Narjillo implements Thing, Creature {
 		return body.calculateCenterOfMass();
 	}
 
-	public double getMaxEnergy() {
-		return maxEnergyForAge;
-	}
-
 	double getMass() {
 		return body.getMass();
+	}
+
+	public double getEnergyPercent() {
+		return energy.getValue() / energy.getMax();
 	}
 }

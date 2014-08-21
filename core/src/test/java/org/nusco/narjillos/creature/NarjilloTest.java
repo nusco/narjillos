@@ -16,9 +16,11 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public class NarjilloTest {
 
 	Narjillo narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), Vector.ZERO, DNA.random());
-	double mass = narjillo.getMass();
 	
-	class NullSwimmerEventListener implements NarjilloEventListener {
+	DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
+	Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
+	
+	class NullNarjilloEventListener implements NarjilloEventListener {
 		@Override
 		public void moved(Segment movement) {
 		}
@@ -31,7 +33,7 @@ public class NarjilloTest {
 	@Test
 	public void sendsEventWhenMoving() {
 		final Segment[] moved = new Segment[] { null };
-		narjillo.addEventListener(new NullSwimmerEventListener() {
+		narjillo.addEventListener(new NullNarjilloEventListener() {
 
 			@Override
 			public void moved(Segment movement) {
@@ -45,21 +47,16 @@ public class NarjilloTest {
 	}
 	
 	@Test
-	public void hasTheSameEnergyAsOneTenthItsMassWhenItsBorn() {
-		assertEquals(mass / 10, narjillo.getEnergy(), 0.001);
-	}
-	
-	@Test
-	public void diesWhenItsEnergyReachesZero() {
-		narjillo.updateEnergyBy(-mass);
-		
-		assertTrue(narjillo.isDead());
+	public void itsInitialEnergyIsProportionalToItsMass() {
+		double energyRatio = narjillo.getEnergy().getValue() / biggerNarjillo.getEnergy().getValue();
+		double massRatio = narjillo.getMass() / biggerNarjillo.getMass();
+		assertEquals(energyRatio, massRatio, 0.001);
 	}
 
 	@Test
 	public void sendsEventWhenDying() {
 		final boolean[] died = new boolean[] { false };
-		narjillo.addEventListener(new NullSwimmerEventListener() {
+		narjillo.addEventListener(new NullNarjilloEventListener() {
 
 			@Override
 			public void died() {
@@ -67,122 +64,36 @@ public class NarjilloTest {
 			}
 		});
 
-		narjillo.updateEnergyBy(-narjillo.getMass());
+		for (int i = 0; i <= Narjillo.MAX_LIFESPAN; i++)
+			narjillo.tick();
 		
 		assertTrue(died[0]);
 	}
 	
 	@Test
-	public void hasLimitedEnergy() {
-		narjillo.updateEnergyBy(-mass);
-		
-		assertEquals(0, narjillo.getEnergy(), 0.001);
-	}
-	
-	@Test
-	public void cannotDecreaseItsEnergyAfterDeath() {
-		narjillo.updateEnergyBy(-mass);
-		assertEquals(0, narjillo.getEnergy(), 0.001);
+	public void itLosesEnergyFasterWhileMovingIfItIsBigger() {
+		double smallerNarjilloEnergyLoss = getEnergyLossWithMovement(narjillo);
+		double biggerNarjilloEnergyLoss = getEnergyLossWithMovement(biggerNarjillo);
 
-		narjillo.updateEnergyBy(-10);
-		
-		assertEquals(0, narjillo.getEnergy(), 0.001);
+		assertTrue(biggerNarjilloEnergyLoss > smallerNarjilloEnergyLoss);
 	}
-	
-	@Test
-	public void cannotIncreaseItsEnergyAfterDeath() {
-		narjillo.updateEnergyBy(-mass);
-		assertEquals(0, narjillo.getEnergy(), 0.001);
 
-		narjillo.updateEnergyBy(10);
-		
-		assertEquals(0, narjillo.getEnergy(), 0.001);
-	}
-	
-	@Test
-	public void itsEnergyNaturallyDecreasesWithOldAgeEvenWithoutMoving() {
-		DNA dna = new DNA("{1_1_1_1_1_1");
-		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
-
-		while (!narjilloThatCannotMove.isDead())
-			narjilloThatCannotMove.tick();
-	}
-	
-	//@Test
-	// FIXME: this is pointing at a problem with energy calculations
-	public void itsEnergyDecreasesFasterIfItMoves() {
-		DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
-		Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
-
+	private double getEnergyLossWithMovement(Narjillo narjillo) {
+		double startingEnergy = narjillo.getEnergy().getValue();
 		narjillo.setTarget(Vector.cartesian(-10, 10));
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();
-
-		biggerNarjillo.setTarget(Vector.cartesian(-10, 10));
-		for (int i = 0; i < 10; i++)
-			biggerNarjillo.tick();
-
-		assertTrue(narjillo.getEnergy() > biggerNarjillo.getEnergy());
-	}
-	
-	@Test
-	public void increasesEnergyByFeeding() {
-		narjillo.feed();
-		narjillo.updateEnergyBy(mass);
-		
-		double expected = (mass + mass * Narjillo.ENERGY_PER_FOOD_ITEM_RATIO) / 10;
-		assertEquals(expected, narjillo.getEnergy(), 0.001);
+		return startingEnergy - narjillo.getEnergy().getValue();
 	}
 
 	@Test
-	public void itsEnergyNeverRaisesHigherThanAMax() {
-		feedUntilFull();
-		double energy = narjillo.getEnergy();
-		
-		narjillo.feed();
-		
-		assertEquals(energy, narjillo.getEnergy(), 0.00001);
-	}
-
-	@Test
-	public void itsEnergyNeverRaisesHigherThanItsMaxEnergyGivenItsAge() {
-		feedUntilFull();
-
-		double fullEnergyWhenStillYoung = narjillo.getEnergy();
-		
-		// get older
-		narjillo.tick();
-
-		narjillo.feed();
-		double fullEnergyWhenSlightlyOlder = narjillo.getEnergy();
-		
-		assertTrue(fullEnergyWhenStillYoung > fullEnergyWhenSlightlyOlder);
-
-		narjillo.feed();
-		narjillo.updateEnergyBy(narjillo.getMass());
-		
-		assertEquals(fullEnergyWhenSlightlyOlder, narjillo.getEnergy(), 0.001);
-	}
-
-	private void feedUntilFull() {
-		double energy = narjillo.getEnergy();
-		narjillo.feed();
-		
-		while (narjillo.getEnergy() > energy) {
-			energy = narjillo.getEnergy();
-			narjillo.feed();
-		}
-	}
-
-	@Test
-	public void itsEnergyNaturallyDecreasesWithAgeEvenWhenNotMoving() {
-		DNA dna = new DNA("{1_1_1_1_1_1}");
+	public void itsEnergyNaturallyDecreasesWithOldAgeEvenWhenItDoesntMove() {
+		DNA dna = new DNA("{1_1_1_1_1_1");
 		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
 
-		while (!narjilloThatCannotMove.isDead())
+		for (int i = 0; i < Narjillo.MAX_LIFESPAN; i++)
 			narjilloThatCannotMove.tick();
 
-		// This test will never terminate unless the Narjillo eventually dies.
-		// (Ugly, but easier to read than alternative tests I tried).
+		assertTrue(narjilloThatCannotMove.isDead());
 	}
 }

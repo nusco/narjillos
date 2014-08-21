@@ -74,8 +74,7 @@ class BodyPartView extends ThingView {
 	}
 
 	private double getAlpha() {
-		double result = getNarjillo().getEnergy() * 10 / getNarjillo().getMaxEnergy();
-		return clipToRange(result, 0, 0.7);
+		return clipToRange(getNarjillo().getEnergyPercent() * 10, 0, 0.7);
 	}
 
 	public static Color toRGBColor(ColorByte colorByte) {

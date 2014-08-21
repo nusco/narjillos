@@ -22,8 +22,7 @@ class EyeView extends RoundObjectView {
 	public Node toNode(double zoomLevel, boolean infraredOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
-		double energy = ((Narjillo)getThing()).getEnergy();
-		circle.setFill(toColor(energy, zoomLevel));
+		circle.setFill(toColor(zoomLevel));
 
 		Vector position = getThing().getPosition();
 		circle.getTransforms().clear();
@@ -32,12 +31,12 @@ class EyeView extends RoundObjectView {
 		return circle;
 	}
 
-	private Color toColor(double energy, double zoomLevel) {
-		return new Color(0, getIntensity(energy), 0, getTransparency(zoomLevel));
+	private Color toColor(double zoomLevel) {
+		return new Color(0, getIntensity(), 0, getTransparency(zoomLevel));
 	}
 
-	private double getIntensity(double energy) {
-		return clipToRange(energy / ((Narjillo) getThing()).getMaxEnergy(), 0, 0.8);
+	private double getIntensity() {
+		return clipToRange(((Narjillo) getThing()).getEnergyPercent(), 0, 0.8);
 	}
 
 	private double getTransparency(double zoomLevel) {

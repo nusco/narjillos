@@ -195,6 +195,7 @@ public class Experiment {
 		while (!finished && experiment.getTicksChronometer().getTotalTicks() < CYCLES)
 			finished = !experiment.tick();
 		
-		System.out.println("*** The experiment is over at tick " + NumberFormat.format(CYCLES) + " (" + experiment.getTimeElapsed() + "s) ***");
+		System.out.println("*** The experiment is over at tick " + experiment.getTicksChronometer().getTotalTicks() +
+				" (" + experiment.getTimeElapsed() + "s) ***");
 	}
 }

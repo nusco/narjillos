@@ -15,7 +15,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	static final double MAX_LIFESPAN = 40_000;
+	static final double MAX_LIFESPAN = 50_000;
 
 	public final Body body;
 	private final DNA genes;
@@ -50,6 +50,7 @@ public class Narjillo implements Thing, Creature {
 		body.teleportTo(position);
 		this.genes = genes;
 		energy = new Energy(body.getMass(), MAX_LIFESPAN);
+		System.out.println(energy.getValue());
 	}
 
 	public DNA getDNA() {

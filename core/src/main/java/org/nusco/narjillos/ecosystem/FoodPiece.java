@@ -6,7 +6,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class FoodPiece implements Thing {
 
-	private static final double ENERGY = 30_000;
+	private static final double ENERGY = 3000;
 	
 	public Vector position;
 

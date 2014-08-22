@@ -20,7 +20,7 @@ public class Chronometer {
 		totalTicks++;
 	}
 
-	public long getTotalTicks() {
+	public synchronized long getTotalTicks() {
 		return totalTicks;
 	}
 

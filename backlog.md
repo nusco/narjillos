@@ -1,48 +1,44 @@
-This is my backlog for the Narjillo project.
-It's divided in sections by "type of user". Inside each sections, features are roughly prioritized.
+##Backlog
+
+This backlog is organized by "type of user". Inside each sections, features are roughly prioritized.
 I generally work on the high-priority features, but I pick the "user" that tickles my fancy each day.
 
 ###Physicist
 
-* Fix flickering °°°
-  creature to check: {090_065_154_010_089_080_141}{067_085_239_111_061_007_013}{139_098_147_209_088_160_176}{115_115_132_022_062_227_036}{224_247_251_216_231_232_137}{067_117_115_107_223_148_243}{018_017_212_069_242_128_180}{076_036_057_179_008_130_025}{219_245_210_188_115_122_020}
-* Smooth, inertial targeting or target hysteresis (to avoid skewing vibration when target is on opposite side) °°
+* Fix flickering °°
+
+  _creature to check: {090_065_154_010_089_080_141}{067_085_239_111_061_007_013}{139_098_147_209_088_160_176}{115_115_132_022_062_227_036}{224_247_251_216_231_232_137}{067_117_115_107_223_148_243}{018_017_212_069_242_128_180}{076_036_057_179_008_130_025}{219_245_210_188_115_122_020}_
+
+* Smooth, inertial targeting or target hysteresis (to avoid skewing flickering when target is on opposite side) °°
 * Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum) °°
-* Realistic radius calculation (for better moment of inertia)
-* Introduce viscosity (to improve the poor creatures' mobility)
+* Realistic radius calculation (for better moment of inertia) °°
 
 ###Speed Demon
 
 * Optimize physics engine (in particular look at calculation of center of mass) °°°
 * Only update Organ cache when necessary °°°
 * Space Partitioning for fast thing searches °°
-* Fade out white infrared outline at a distance
-* Find out why even a petri dish of {0} creatures slows down (apparently creatures become "heavier" to tick)
 * Make FPS parametric to improve TPS on slower machines
 
 ###Gamer
 
-* Try scrolling/panning commands and speeds under Linux °°
+* Update documentation
+* Try scrolling/panning commands and speeds under Linux
 * Externalize all configurable parameters to JSON files
-* Parameterize scroll/pan speeds °
+* Parameterize scroll/pan speeds
 * Save Petri dish
 * Load Petri dish
 
 ###Genetist
 
-* Narjillo's color is an expression of its behaviour (amplitude, phase, etc) °
+* View Narjillo's evolutionary path °°
 * Find a good way to deal with atrophy (see FIXME) °°
 * Narjillo's skewing is genetically determined °°
 * Whole-body size gene
-* View Narjillo's evolutionary path
 * Mutation rate is controlled by genes (this is what happens in nature. tends to freeze evolution?)
-* DNA analyzer program
-* DNA diff program (based on DNA analyzer)
-* Sexual reproduction
-* Sexual reproduction is optional
-* Prevent DNA strands that are too different from mixing to favor speciation? (maybe bad idea b/c of deleterious mutations in small population)
+* DNA diff during ancestry analysis
 
-###Ostetrician
+###Etologisty
 
 * Eggs °°
 * "Egg-firing" °
@@ -54,17 +50,17 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Fix non-repeatable experiments (also check across "experiment" and "petri") °°°
+* Unify experiment and petri (make it easy to turn graphics on off with a "light switch) °°°
 * Slow motion setting °°
-* "Paused" setting °°
+* "Pause" setting °°
 * Lock on single Narjillo °
 * Bench with stats
 * "Real Time" and "Fast" slider
-* Light switch
 * Select creature
 * Export creature
 * "Most Prolific" button
 * View creature energy
-* Make food shine at a distance? or in infrared view?
+* Make food visible in normal and/or infrared view
 
 ###Ecologist
 
@@ -83,20 +79,16 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Narjillos eat each other °°
 * Narjillo updates food item when not in range anymore
-* "Attracted to" gene (uses other Narjillo's colors to select most desirable mate)
-* "Fears" gene (like "attracted to")
-* "Wants to eat" gene (like "attracted to")
+* "Fears" gene
+* "Wants to eat" gene
 
 ###Artist
 
 * Better death animation (right now the bending is not visible) °
-* Don't make eye transparent (it makes it hard to gauge energy; make it opaque or give it a white background) °
 * Fade out mouth/eye during death °
 * Birth animation °
 * Smooth out body during death in infrared
-* Check multithreading for reactive animations and maximum reactivity
-* Give a sense of movement when following a locked-on Narjillo
-* Speckles in liquid (or some other effect)
+* Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)
 
 ##Neurologist
 

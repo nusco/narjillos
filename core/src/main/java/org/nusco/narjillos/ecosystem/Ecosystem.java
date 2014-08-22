@@ -131,6 +131,9 @@ public class Ecosystem {
 	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
 		// TODO: naive algorithm. replace with space partitioning and finding
 		// neighbors
+		if (movement.getVector().isZero())
+			return;
+		
 		for (FoodPiece foodThing : foodPieces)
 			checkCollisionWithFood(narjillo, movement, foodThing);
 	}

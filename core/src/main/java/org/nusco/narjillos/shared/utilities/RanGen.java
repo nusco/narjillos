@@ -54,7 +54,7 @@ public class RanGen {
 		random = new Random(getSeed());
 	}
 
-	static synchronized int getSeed() {
+	static int getSeed() {
 		return seed;
 	}
 

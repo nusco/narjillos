@@ -29,7 +29,7 @@ public class Body {
 	private final Head head;
 	private final List<BodyPart> bodyParts = new LinkedList<>();
 	private final double mass;
-	private final WaveNerve tickerNerve;
+	private final WaveNerve tickerNerve; // TODO: move to head?
 	private final double maxRadius;
 	private double currentDirectionSkewing = 0;
 	
@@ -85,7 +85,7 @@ public class Body {
 	private void tick_UpdateBodyAngles(Vector targetDirection) {
 		double angleToTarget;
 		try {
-			Vector mainAxis = getMainAxis();
+			Vector mainAxis = head.getVector().normalize(1).invert();
 			angleToTarget = mainAxis.getAngleWith(targetDirection);
 		} catch (ZeroVectorException e) {
 			return;
@@ -134,10 +134,6 @@ public class Body {
 
 	public double getMass() {
 		return mass;
-	}
-
-	public Vector getMainAxis() throws ZeroVectorException {
-		return head.getMainAxis();
 	}
 
 	public List<BodyPart> getBodyParts() {

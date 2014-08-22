@@ -16,41 +16,19 @@ import org.nusco.narjillos.shared.things.Thing;
 public class Narjillo implements Thing, Creature {
 
 	static final double MAX_LIFESPAN = 50_000;
-
-	public final Body body;
-	private final DNA genes;
-
-	private Thing target = new Thing() {
-		
-		@Override
-		public void tick() {
-		}
-		
-		@Override
-		public Vector getPosition() {
-			return Vector.ZERO;
-		}
-		
-		@Override
-		public String getLabel() {
-			return "null_thing";
-		}
-		
-		@Override
-		public Energy getEnergy() {
-			return null;
-		}
-	};
-	private Energy energy;
 	
-	public final List<NarjilloEventListener> eventListeners = new LinkedList<>();
+	private final Body body;
+	private final DNA genes;
+	private final List<NarjilloEventListener> eventListeners = new LinkedList<>();
+
+	private Thing target = Thing.NULL;
+	private Energy energy;
 
 	public Narjillo(Body body, Vector position, DNA genes) {
 		this.body = body;
 		body.teleportTo(position);
 		this.genes = genes;
 		energy = new Energy(body.getMass(), MAX_LIFESPAN);
-		System.out.println(energy.getValue());
 	}
 
 	public DNA getDNA() {
@@ -86,7 +64,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	private void applyLifecycleAnimations() {
-		if (energy.isInAgony())
+		if (energy.getValue() <= energy.getAgonyLevel())
 			applyDeathAnimation();
 	}
 
@@ -137,7 +115,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	boolean isDead() {
-		return energy.isDead();
+		return energy.isDepleted();
 	}
 
 	public List<BodyPart> getBodyParts() {

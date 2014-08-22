@@ -61,13 +61,13 @@ public class DNA {
 		return isMutating() ? mutate(gene) : gene;
 	}
 
+	private boolean isMutating() {
+		return RanGen.nextDouble() < MUTATION_RATE;
+	}
+
 	private int mutate(int gene) {
 		int randomFactor = ((int) (RanGen.nextDouble() * GENE_MUTATION_RANGE * 2)) - GENE_MUTATION_RANGE;
 		return gene + randomFactor;
-	}
-
-	private boolean isMutating() {
-		return RanGen.nextDouble() < MUTATION_RATE;
 	}
 
 	private Integer[] clipToByteSize(Integer[] genes) {

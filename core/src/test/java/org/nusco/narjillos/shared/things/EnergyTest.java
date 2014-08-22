@@ -41,16 +41,16 @@ public class EnergyTest {
 	}
 	
 	@Test
-	public void diesWhenItReachesZero() {
-		assertFalse(energy.isDead());
+	public void canBeDepleted() {
+		assertFalse(energy.isDepleted());
 
 		energy.tick(-mass);
 		
-		assertTrue(energy.isDead());
+		assertTrue(energy.isDepleted());
 	}
 	
 	@Test
-	public void cannotBeLessThanZero() {
+	public void cannotFallBelowZero() {
 		energy.tick(-mass);
 		assertEquals(0, energy.getValue(), 0.001);
 
@@ -59,7 +59,7 @@ public class EnergyTest {
 	}
 	
 	@Test
-	public void cannotIncreaseAfterDeath() {
+	public void cannotIncreaseAgainAfterBeingDepleted() {
 		energy.tick(-mass);
 		assertEquals(0, energy.getValue(), 0.001);
 
@@ -85,21 +85,9 @@ public class EnergyTest {
 		assertEquals(initialEnergy, energy.getValue(), 0.00001);
 		assertEquals(energy.getMax(), energy.getValue(), 0.00001);
 	}
-	
-	@Test
-	public void diesNaturallyWhenItsLifespanIsOver() {
-		for (int i = 0; i < lifespan - 1; i++)
-			energy.tick(0);
-
-		assertFalse(energy.isDead());
-
-		energy.tick(0);
-		
-		assertTrue(energy.isDead());
-	}
 
 	@Test
-	public void neverRaisesHigherThanAMaximumConditionedByAge() {
+	public void itsMaximumValueDecreasesWithAge() {
 		fillToTheMax();
 
 		double fullEnergyWhenStillYoung = energy.getValue();
@@ -115,6 +103,18 @@ public class EnergyTest {
 		energy.consume(nutrient);
 		
 		assertEquals(fullEnergyWhenSlightlyOlder, energy.getValue(), 0.001);
+	}
+
+	@Test
+	public void depletedNaturallyDuringItsLifespan() {
+		for (int i = 0; i < lifespan - 1; i++)
+			energy.tick(0);
+
+		assertFalse(energy.isDepleted());
+
+		energy.tick(0);
+		
+		assertTrue(energy.isDepleted());
 	}
 
 	private void fillToTheMax() {

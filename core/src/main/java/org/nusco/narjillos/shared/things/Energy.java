@@ -22,19 +22,11 @@ public class Energy {
 		return value;
 	}
 
-	public boolean isDead() {
+	public boolean isDepleted() {
 		return value <= 0;
 	}
 
 	public double getMax() {
-		return maxForAge;
-	}
-
-	public boolean isInAgony() {
-		return value <= agonyLevel;
-	}
-
-	public double getMaxEnergy() {
 		return maxForAge;
 	}
 
@@ -45,7 +37,7 @@ public class Energy {
 	public void tick(double additionalEnergy) {
 		maxForAge -= decay;
 
-		if (isDead())
+		if (isDepleted())
 			return;
 		
 		increase(additionalEnergy);

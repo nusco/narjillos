@@ -1,7 +1,7 @@
 package org.nusco.narjillos.creature.body;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +76,7 @@ public class Body {
 	}
 
 	private Map<BodyPart, Segment> tick_SnapshotBodyPartPositions() {
-		Map<BodyPart, Segment> result = new HashMap<>();
+		Map<BodyPart, Segment> result = new LinkedHashMap<>();
 		for (BodyPart bodyPart : getBodyParts())
 			result.put(bodyPart, bodyPart.getPositionInSpace());
 		return result;

@@ -1,27 +1,37 @@
 package org.nusco.narjillos.creature.genetics;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Population {
 
-	private final Set<Creature> creatures = Collections.newSetFromMap(new ConcurrentHashMap<Creature, Boolean>());
+	private final Set<Creature> creatures = new LinkedHashSet<Creature>();
+	private Set<Creature> unmodifiableCreatures = new LinkedHashSet<Creature>();
 
-	public void add(Creature creature) {
+	public synchronized void add(Creature creature) {
 		creatures.add(creature);
+		unmodifiableCreatures = null;
 	}
 
-	public Collection<Creature> toCollection() {
-		return creatures;
+	public synchronized void remove(Creature creature) {
+		creatures.remove(creature);
+		unmodifiableCreatures = null;
+	}
+
+	public synchronized Set<Creature> getCreatures() {
+		if (unmodifiableCreatures == null) {
+			unmodifiableCreatures = new LinkedHashSet<Creature>();
+			unmodifiableCreatures.addAll(creatures);
+		}
+		return unmodifiableCreatures;
 	}
 
 	public Creature getMostTypicalSpecimen() {
 		Creature result = null;
 		int lowestGeneticDistance = Integer.MAX_VALUE;
-		for (Creature creature : creatures) {
-			int currentGeneticDistance = totalGeneticDistanceFromOthers(creature);
+		Set<Creature> allCreatures = getCreatures();
+		for (Creature creature : allCreatures) {
+			int currentGeneticDistance = totalGeneticDistanceFromOthers(creature, allCreatures);
 			if (currentGeneticDistance < lowestGeneticDistance) {
 				result = creature;
 				lowestGeneticDistance = currentGeneticDistance;
@@ -30,28 +40,25 @@ public class Population {
 		return result;
 	}
 
-	private int totalGeneticDistanceFromOthers(Creature creature) {
+	private int totalGeneticDistanceFromOthers(Creature creature, Set<Creature> allCreatures) {
 		int result = 0;
-		for (Creature otherCreature : creatures)
+		for (Creature otherCreature : getCreatures())
 			if (otherCreature != creature)
 				result += creature.getDNA().getDistanceFrom(otherCreature.getDNA());
 		return result;
 	}
 
 	public void tick() {
-		for (Creature creature : creatures)
+		Set<Creature> copyOfCreatures = new LinkedHashSet<Creature>();
+		synchronized (this) {
+			copyOfCreatures.addAll(creatures);
+		}
+
+		for (Creature creature : copyOfCreatures)
 			creature.tick();
 	}
 
-	public Set<Creature> getCollection() {
-		return creatures;
-	}
-
-	public void remove(Creature creature) {
-		creatures.remove(creature);
-	}
-
-	public int size() {
+	public synchronized int size() {
 		return creatures.size();
 	}
 }

@@ -49,7 +49,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Fix non-repeatable experiments (also check across "experiment" and "petri") °°°
 * Unify experiment and petri (make it easy to turn graphics on off with a "light switch) °°°
 * Slow motion setting °°
 * "Pause" setting °°

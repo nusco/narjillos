@@ -3,10 +3,10 @@ package org.nusco.narjillos.ecosystem;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.NarjilloEventListener;
@@ -33,7 +33,7 @@ public class Ecosystem {
 	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;
-	private final Set<FoodPiece> foodPieces = Collections.newSetFromMap(new ConcurrentHashMap<FoodPiece, Boolean>());
+	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
 	private final Population narjillos = new Population();
 
 	private final List<EcosystemEventListener> ecosystemEvents = new LinkedList<>();
@@ -47,9 +47,11 @@ public class Ecosystem {
 	}
 
 	public Set<Thing> getThings() {
-		Set<Thing> result = new HashSet<Thing>();
-		result.addAll(foodPieces);
-		result.addAll(narjillos.toCollection());
+		Set<Thing> result = new LinkedHashSet<Thing>();
+		synchronized (this) {
+			result.addAll(foodPieces);
+		}
+		result.addAll(narjillos.getCreatures());
 		return result;
 	}
 
@@ -71,7 +73,7 @@ public class Ecosystem {
 	}
 
 	public Creature findNarjillo(Vector near) {
-		return (Creature)find(narjillos.toCollection(), near);
+		return (Creature)find(narjillos.getCreatures(), near);
 	}
 
 	public void tick() {
@@ -87,7 +89,9 @@ public class Ecosystem {
 		FoodPiece newFood = new FoodPiece();
 		newFood.setPosition(position);
 		notifyThingAdded(newFood);
-		foodPieces.add(newFood);
+		synchronized (this) {
+			foodPieces.add(newFood);
+		}
 		return newFood;
 	}
 
@@ -117,12 +121,12 @@ public class Ecosystem {
 	}
 
 	protected void updateTargets() {
-		for (Thing narjillo : narjillos.getCollection())
+		for (Thing narjillo : narjillos.getCreatures())
 			updateTarget((Narjillo)narjillo);
 	}
 
 	protected void updateTargets(Thing food) {
-		for (Thing narjillo : narjillos.getCollection()) {
+		for (Thing narjillo : narjillos.getCreatures()) {
 			if (((Narjillo)narjillo).getTarget() == food)
 				updateTarget((Narjillo)narjillo);
 		}
@@ -134,7 +138,11 @@ public class Ecosystem {
 		if (movement.getVector().isZero())
 			return;
 		
-		for (FoodPiece foodThing : foodPieces)
+		Set<FoodPiece> foodPiecesCopy = new LinkedHashSet<>();
+		synchronized (this) {
+			foodPiecesCopy.addAll(foodPieces);
+		}
+		for (FoodPiece foodThing : foodPiecesCopy)
 			checkCollisionWithFood(narjillo, movement, foodThing);
 	}
 
@@ -163,9 +171,11 @@ public class Ecosystem {
 		return false;
 	}
 
-	private synchronized void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
-		if (!foodPieces.contains(foodPiece))
-			return; // race condition: already consumed
+	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
+		synchronized (this) {
+			if (!foodPieces.contains(foodPiece))
+				return; // race condition: already consumed
+		}
 
 		narjillo.feedOn(foodPiece);
 		remove(foodPiece);
@@ -174,15 +184,17 @@ public class Ecosystem {
 		updateTargets();
 	}
 
-	protected synchronized void remove(FoodPiece foodPiece) {
-		if (!foodPieces.contains(foodPiece))
-			return;
-		foodPieces.remove(foodPiece);
+	private void remove(FoodPiece foodPiece) {
+		synchronized (this) {
+			if (!foodPieces.contains(foodPiece))
+				return;
+			foodPieces.remove(foodPiece);
+		}
 		notifyThingRemoved(foodPiece);
 	}
 
-	protected synchronized void remove(final Creature narjillo) {
-		if (!narjillos.getCollection().contains(narjillo))
+	private void remove(final Creature narjillo) {
+		if (!narjillos.getCreatures().contains(narjillo))
 			return;
 		narjillos.remove(narjillo);
 		notifyThingRemoved(narjillo);
@@ -210,7 +222,7 @@ public class Ecosystem {
 		ecosystemEvents.add(ecosystemEventListener);
 	}
 
-	public int getNumberOfFoodPieces() {
+	public synchronized int getNumberOfFoodPieces() {
 		return foodPieces.size();
 	}
 
@@ -220,15 +232,5 @@ public class Ecosystem {
 
 	public Population getPopulation() {
 		return narjillos;
-	}
-
-	protected synchronized void clearFood() {
-		for (FoodPiece foodPiece : foodPieces)
-			remove(foodPiece);
-	}
-
-	protected synchronized void clearCreatures() {
-		for (Creature creature : narjillos.getCollection())
-			remove(creature);
 	}
 }

@@ -83,6 +83,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Light on/off visual and sound effects °
 * Better death animation (right now the bending is not visible) °
 * Fade out mouth/eye during death °
 * Birth animation °

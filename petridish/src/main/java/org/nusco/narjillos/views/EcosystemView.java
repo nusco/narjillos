@@ -30,14 +30,17 @@ public class EcosystemView {
 	private final Ecosystem ecosystem;
 	private final Viewport viewport;
 	private final Shape background;
+	private final Shape darkness;
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
 
 	private boolean infrared = false;
+	private boolean lamp = true;
 
 	public EcosystemView(Ecosystem ecosystem) {
 		this.ecosystem = ecosystem;
 		viewport = new Viewport(ecosystem);
 		background = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
+		darkness = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
 
 		for (Thing thing : ecosystem.getThings())
 			addThingView(thing);
@@ -60,9 +63,12 @@ public class EcosystemView {
 	}
 
 	public Node toNode() {
+		if (!isLampOn())
+			return darkness;
+		
 		Group result = new Group();
-		result.getChildren().add(getBackground(isInfrared()));
-		result.getChildren().add(getThingsGroup(isInfrared()));
+		result.getChildren().add(getBackground(isInfraredOn()));
+		result.getChildren().add(getThingsGroup(isInfraredOn()));
 		return result;
 	}
 
@@ -166,7 +172,15 @@ public class EcosystemView {
 		infrared = !infrared;
 	}
 
-	private synchronized boolean isInfrared() {
+	private synchronized boolean isInfraredOn() {
 		return infrared;
+	}
+
+	public void toggleLamp() {
+		lamp = !lamp;
+	}
+
+	private synchronized boolean isLampOn() {
+		return lamp;
 	}
 }

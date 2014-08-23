@@ -145,8 +145,10 @@ public class PetriDish extends Application {
 					moveViewport(0, -PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					moveViewport(0, PAN_SPEED, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.ENTER)
+				else if (keyEvent.getCode() == KeyCode.I)
 					getEcosystemView().toggleInfrared();
+				else if (keyEvent.getCode() == KeyCode.L)
+					getEcosystemView().toggleLamp();
 			}
 		};
 	}

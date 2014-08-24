@@ -1,6 +1,5 @@
 package org.nusco.narjillos.ecosystem;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -15,6 +14,7 @@ import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.creature.genetics.Population;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
@@ -32,11 +32,33 @@ public class Ecosystem {
 	private final long size;
 	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
 	private final Population narjillos = new Population();
-
+	private final Space foodSpace;
 	private final List<EcosystemEventListener> ecosystemEvents = new LinkedList<>();
+	private final Thing center;
 
-	public Ecosystem(long size) {
+	public Ecosystem(final long size) {
 		this.size = size;
+		this.foodSpace = new Space(size);
+		this.center = new Thing() {
+
+			@Override
+			public void tick() {
+			}
+
+			@Override
+			public Vector getPosition() {
+				return Vector.cartesian(size, size).by(0.5);
+			}
+
+			@Override
+			public Energy getEnergy() {
+				return null;
+			}
+
+			@Override
+			public String getLabel() {
+				return "center_of_ecosystem";
+			}};
 	}
 
 	public long getSize() {
@@ -52,25 +74,41 @@ public class Ecosystem {
 		return result;
 	}
 
-	private Thing find(Collection<? extends Thing> things, Vector near) {
+	public Thing findClosestFoodPiece(Narjillo narjillo) {
 		double minDistance = Double.MAX_VALUE;
-		Thing result = null;
-		for (Thing thing : things) {
-			double distance = thing.getPosition().minus(near).getLength();
+		Thing closestFood = null;
+
+		Set<Thing> allFood = new LinkedHashSet<>();
+		synchronized (this) {
+			if (foodPieces.isEmpty())
+				return center;
+
+			allFood.addAll(foodPieces);
+		}
+		
+		// TODO: replace with spiral search in partitioned space? (after checking that food exists)
+		for (Thing foodPiece : allFood) {
+			double distance = foodPiece.getPosition().minus(narjillo.getPosition()).getLength();
 			if (distance < minDistance) {
 				minDistance = distance;
-				result = thing;
+				closestFood = foodPiece;
 			}
 		}
-		return result;
-	}
-
-	public FoodPiece findFoodPiece(Vector near) {
-		return (FoodPiece)find(foodPieces, near);
+		
+		return closestFood;
 	}
 
 	public Creature findNarjillo(Vector near) {
-		return (Creature)find(narjillos.getCreatures(), near);
+		double minDistance = Double.MAX_VALUE;
+		Creature result = null;
+		for (Creature narjillo : narjillos.getCreatures()) {
+			double distance = narjillo.getPosition().minus(near).getLength();
+			if (distance < minDistance) {
+				minDistance = distance;
+				result = narjillo;
+			}
+		}
+		return result;
 	}
 
 	public void tick() {
@@ -89,6 +127,7 @@ public class Ecosystem {
 		synchronized (this) {
 			foodPieces.add(newFood);
 		}
+		foodSpace.add(newFood);
 		return newFood;
 	}
 
@@ -98,7 +137,7 @@ public class Ecosystem {
 
 			@Override
 			public void moved(Segment movement) {
-				checkCollisionsWithFood(narjillo, movement);
+				consumeCollidedFood(narjillo, movement);
 			}
 
 			@Override
@@ -112,9 +151,11 @@ public class Ecosystem {
 	}
 
 	private void updateTarget(Narjillo narjillo) {
-		Vector position = narjillo.getPosition();
-		FoodPiece foodPiece = findFoodPiece(position);
-		narjillo.setTarget(foodPiece);
+		Thing foodPiece = findClosestFoodPiece(narjillo);
+		if (foodPiece == null)
+			narjillo.setTarget(center);
+		else
+			narjillo.setTarget(foodPiece);
 	}
 
 	protected void updateTargets() {
@@ -129,64 +170,40 @@ public class Ecosystem {
 		}
 	}
 
-	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
+	private void consumeCollidedFood(Narjillo narjillo, Segment movement) {
 		// TODO: naive algorithm. replace with space partitioning
 		if (movement.getVector().isZero())
 			return;
+
+		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
 		
-		Set<FoodPiece> foodPiecesCopy = new LinkedHashSet<>();
+		for (Set<Thing> nearbyFood: foodSpace.getNeighbors(narjillo))
+			for (Thing foodPiece : nearbyFood)
+				if (checkCollisionWithFood(narjillo, movement, foodPiece))
+					collidedFoodPieces.add(foodPiece);
+
+		for (Thing collidedFoodPiece : collidedFoodPieces)
+			consumeFood(narjillo, collidedFoodPiece);
+	}
+
+	private boolean checkCollisionWithFood(Narjillo narjillo, Segment movement, Thing foodPiece) {
+		return movement.getMinimumDistanceFromPoint(foodPiece.getPosition()) <= COLLISION_DISTANCE;
+	}
+
+	private void consumeFood(Narjillo narjillo, Thing foodPiece) {
 		synchronized (this) {
-			foodPiecesCopy.addAll(foodPieces);
-		}
-		for (FoodPiece foodThing : foodPiecesCopy)
-			checkCollisionWithFood(narjillo, movement, foodThing);
-	}
-
-	private void checkCollisionWithFood(Narjillo narjillo, Segment movement, FoodPiece foodThing) {
-		// Ugly optimization to avoid getting into the expensive
-		// getMinimumDistanceFromPoint() method.
-		// This will hopefully be redundant once we have a good space partition
-		// algorithm, but it makes quite a difference until then
-		if (!isUnderSafeDistance(narjillo, foodThing))
-			return;
-
-		if (movement.getMinimumDistanceFromPoint(foodThing.getPosition()) > COLLISION_DISTANCE)
-			return;
-
-		consumeFood(narjillo, foodThing);
-	}
-
-	private boolean isUnderSafeDistance(Narjillo narjillo, Thing foodThing) {
-		Vector position = narjillo.getPosition();
-		// it's unlikely that we need to consider food farther away
-		final double safeDistance = 300;
-		if (Math.abs(position.x - foodThing.getPosition().x) < safeDistance)
-			return true;
-		if (Math.abs(position.y - foodThing.getPosition().y) < safeDistance)
-			return true;
-		return false;
-	}
-
-	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece) {
-		synchronized (this) {
+			// TODO: replace with space.contains()
 			if (!foodPieces.contains(foodPiece))
 				return; // race condition: already consumed
-		}
-
-		narjillo.feedOn(foodPiece);
-		remove(foodPiece);
-		
-		reproduce(narjillo);
-		updateTargets();
-	}
-
-	private void remove(FoodPiece foodPiece) {
-		synchronized (this) {
-			if (!foodPieces.contains(foodPiece))
-				return;
 			foodPieces.remove(foodPiece);
 		}
 		notifyThingRemoved(foodPiece);
+		foodSpace.remove(foodPiece);
+
+		narjillo.feedOn(foodPiece);
+
+		reproduce(narjillo);
+		updateTargets();
 	}
 
 	private void remove(final Creature narjillo) {

@@ -13,30 +13,35 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class EcosystemFinderTest {
 	
-	Ecosystem ecosystem = new Ecosystem(1000);
-	FoodPiece foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
-	FoodPiece foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
-	FoodPiece foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
-	Narjillo swimmer1 = ecosystem.spawnNarjillo(Vector.cartesian(150, 150), DNA.random());
-	Narjillo swimmer2 = ecosystem.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random());
+	private Ecosystem ecosystem = new Ecosystem(1000);
+	private FoodPiece foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
+	private FoodPiece foodPiece2 = ecosystem.spawnFood(Vector.cartesian(999, 999));
+	private Narjillo narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(101, 101), DNA.random());
+	private Narjillo narjillo2 = ecosystem.spawnNarjillo(Vector.cartesian(998, 998), DNA.random());
 	
 	@Test
-	public void findsTheClosestFoodToAGivenPosition() {
-		assertEquals(foodPiece1, ecosystem.findFoodPiece(Vector.cartesian(150, 150)));
-		assertEquals(foodPiece2, ecosystem.findFoodPiece(Vector.cartesian(900, 900)));
+	public void findsTheClosestFoodToAGivenNarjillo() {
+		assertEquals(foodPiece1, ecosystem.findClosestFoodPiece(narjillo1));
+		assertEquals(foodPiece2, ecosystem.findClosestFoodPiece(narjillo2));
+	}
+	
+	@Test
+	public void pointsAtCenterOfEcosystemForNarjillosInOuterSpace() {
+		// TODO: search in space by adding a Space.getAll() method
+//		Narjillo narjilloInOuterSpace = ecosystem.spawnNarjillo(Vector.cartesian(-1, -1), DNA.random());
+//		assertEquals("center_of_ecosystem", ecosystem.findClosestFoodPiece(narjilloInOuterSpace).getLabel());
 	}
 
 	@Test
 	public void findsTheClosestNarjilloToAGivenPosition() {
-		assertTrue(ecosystem.findNarjillo(Vector.cartesian(100, 100)).getPosition().almostEquals(Vector.cartesian(150, 150)));
-		assertTrue(ecosystem.findNarjillo(Vector.cartesian(1000, 1000)).getPosition().almostEquals(Vector.cartesian(1050, 1050)));
+		assertTrue(ecosystem.findNarjillo(Vector.cartesian(100, 100)).getPosition().almostEquals(Vector.cartesian(101, 101)));
+		assertTrue(ecosystem.findNarjillo(Vector.cartesian(950, 980)).getPosition().almostEquals(Vector.cartesian(998, 998)));
 	}
 
 	@Test
-	public void returnsNullIfLookingForThingsInAThinglessWorld() {
+	public void returnsNullIfLookingForNarjillosInAWorldWithoutThem() {
 		Ecosystem ecosystem = new Ecosystem(1000) {};
 		
-		assertNull(ecosystem.findFoodPiece(Vector.cartesian(150, 150)));
 		assertNull(ecosystem.findNarjillo(Vector.cartesian(150, 150)));
 	}
 }

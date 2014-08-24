@@ -79,6 +79,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Better death animation (right now the bending is not visible) °
 * Fade out mouth/eye during death °
 * Birth animation °
+* Optimize halo effect in close-up view to be more visible but never get so large it makes rendering jerky °
 * Smooth out body during death in infrared
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)
 

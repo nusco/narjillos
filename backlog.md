@@ -16,7 +16,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Review controls (light on/off relative to hi-speed, keys, etc.) °°°
 * Update documentation °°°
 * Try scrolling/panning commands and speeds under Linux
 * Externalize all configurable parameters to JSON files

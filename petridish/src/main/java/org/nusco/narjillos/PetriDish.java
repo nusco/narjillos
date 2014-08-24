@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
@@ -66,7 +65,7 @@ public class PetriDish extends Application {
 		Viewport viewport = getEcosystemView().getViewport();
 		Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 		scene.setOnKeyPressed(createKeyboardHandler());
-		scene.setOnMouseClicked(createMouseEvent());
+		scene.setOnMouseClicked(createMouseHandler());
 		scene.setOnScroll(createMouseScrollHandler());
 		bindViewportSizeToWindowSize(scene, viewport);
 		
@@ -150,6 +149,8 @@ public class PetriDish extends Application {
 					moveViewport(0, PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.I)
 					getEcosystemView().toggleInfrared();
+				else if (keyEvent.getCode() == KeyCode.S)
+					toggleMaxSpeed();
 				else if (keyEvent.getCode() == KeyCode.L)
 					isLightOn = getEcosystemView().toggleLamp();
 			}
@@ -239,23 +240,18 @@ public class PetriDish extends Application {
 		};
 	}
 
-	protected EventHandler<MouseEvent> createMouseEvent() {
+	protected EventHandler<MouseEvent> createMouseHandler() {
 		return new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.SECONDARY) {
-					toggleMaxSpeed();
-					return;
-				}
-
 				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
-
-				if (event.getClickCount() == 3)
-					printOutIsolatedNarjillo(clickedPoint);
 				
 				getViewport().flyToTargetSC(clickedPoint);
 				
 				if (event.getClickCount() > 1)
 					getViewport().flyToNextZoomCloseupLevel();
+
+				if (event.getClickCount() == 2)
+					printOutIsolatedNarjillo(clickedPoint);
 			}
 
 			private void printOutIsolatedNarjillo(Vector clickedPoint) {

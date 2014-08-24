@@ -33,8 +33,8 @@ public class EcosystemView {
 	private final Shape darkness;
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
 
-	private boolean infrared = false;
-	private boolean lamp = true;
+	private boolean infraredOn = false;
+	private boolean lampOn = true;
 
 	public EcosystemView(Ecosystem ecosystem) {
 		this.ecosystem = ecosystem;
@@ -169,19 +169,27 @@ public class EcosystemView {
 	}
 
 	public synchronized void toggleInfrared() {
-		infrared = !infrared;
+		infraredOn = !infraredOn;
+	}
+
+	public void turnOffInfrared() {
+		infraredOn = false;
 	}
 
 	private synchronized boolean isInfraredOn() {
-		return infrared;
+		return infraredOn;
 	}
 
 	public boolean toggleLamp() {
-		lamp = !lamp;
-		return lamp;
+		lampOn = !lampOn;
+		return lampOn;
 	}
 
 	private synchronized boolean isLampOn() {
-		return lamp;
+		return lampOn;
+	}
+
+	public void turnOnLamp() {
+		lampOn = true;
 	}
 }

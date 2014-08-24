@@ -13,16 +13,20 @@ The ultimate goal of Narjillos is to trigger an evolutionary arms race: two or m
 
 ##How to run it
 
-To put a Petri dish full of Narjillos under your microscope, you need Java 8 and git:
+To put a Petri dish full of Narjillos under your microscope, you need Java 8 and git. To install Narjillos:
 
     git clone https://github.com/nusco/narjillos.git
     cd narjillos
-    ./gradlew build
+  
+  Then run with the _petri_ command:
+  
     petri
+
+The first run will also build and test the system, so it will take some time.
 
 ##How to control it
 
-Move around with your mouse: **click anywhere** to center, **double-click** to auto-zoom. Zoom in/out by **scrolling**. You can also move the microscope around with your **cursor keys**.
+Move around with your mouse: **click anywhere** to center, **double-click** to auto-zoom. Zoom in/out by **scrolling**. You can also move the microscope with your **cursor keys**.
 
 To turn from high speed to real time and back, press **S**.
 

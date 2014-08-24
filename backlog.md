@@ -11,11 +11,13 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
+* Make "petri" with light off (almost) as fast as "experiment"
 * Make FPS parametric to improve TPS on slower machines
 
 ###Gamer
 
-* Update documentation
+* Review controls (light on/off relative to hi-speed, keys, etc.) °°°
+* Update documentation °°°
 * Try scrolling/panning commands and speeds under Linux
 * Externalize all configurable parameters to JSON files
 * Parameterize scroll/pan speeds

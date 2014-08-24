@@ -176,8 +176,9 @@ public class EcosystemView {
 		return infrared;
 	}
 
-	public void toggleLamp() {
+	public boolean toggleLamp() {
 		lamp = !lamp;
+		return lamp;
 	}
 
 	private synchronized boolean isLampOn() {

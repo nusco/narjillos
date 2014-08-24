@@ -31,8 +31,10 @@ import org.nusco.narjillos.views.Viewport;
 
 public class PetriDish extends Application {
 
-	private static final int FRAMES_PER_SECOND = 25;
-	private static final int FRAMES_PERIOD = 1000 / FRAMES_PER_SECOND;
+	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 25;
+	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
+	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
+	private static final int FRAMES_PERIOD_WITH_LIGHT_OFF = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_OFF;
 	private static final int DEFAULT_TICKS_PER_SECOND = 25;
 	private static final long PAN_SPEED = 200;
 
@@ -46,6 +48,7 @@ public class PetriDish extends Application {
 	private int targetTicksPerSecond = DEFAULT_TICKS_PER_SECOND;
 
 	private volatile boolean isModelThreadReady;
+	private volatile boolean isLightOn = true;
 	
 	public PetriDish() {
 	}
@@ -148,7 +151,7 @@ public class PetriDish extends Application {
 				else if (keyEvent.getCode() == KeyCode.I)
 					getEcosystemView().toggleInfrared();
 				else if (keyEvent.getCode() == KeyCode.L)
-					getEcosystemView().toggleLamp();
+					isLightOn = getEcosystemView().toggleLamp();
 			}
 		};
 	}
@@ -218,7 +221,10 @@ public class PetriDish extends Application {
 
 
 	private int getFramesPeriod() {
-		return FRAMES_PERIOD;
+		if (isLightOn)
+			return FRAMES_PERIOD_WITH_LIGHT_ON;
+		else
+			return FRAMES_PERIOD_WITH_LIGHT_OFF;
 	}
 
 	protected EventHandler<ScrollEvent> createMouseScrollHandler() {

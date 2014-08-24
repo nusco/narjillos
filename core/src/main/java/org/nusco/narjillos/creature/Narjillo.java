@@ -122,10 +122,6 @@ public class Narjillo implements Thing, Creature {
 		return body.getBodyParts();
 	}
 
-	public Vector getCenterOfMass() {
-		return body.calculateCenterOfMass();
-	}
-
 	double getMass() {
 		return body.getMass();
 	}
@@ -136,5 +132,9 @@ public class Narjillo implements Thing, Creature {
 
 	public Thing getTarget() {
 		return target;
+	}
+
+	public Vector getCenterOfMass() {
+		return body.calculateCenterOfMass();
 	}
 }

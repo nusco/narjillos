@@ -31,7 +31,7 @@ public class Head extends Organ {
 		setAngleToParent(angle);
 	}
 
-	public void move(Vector translation, double rotation) {
+	public void moveBy(Vector translation, double rotation) {
 		Vector newStartPoint = getStartPoint().plus(translation);
 		double newAngleToParent = Angle.normalize(getAngleToParent() + rotation);
 		setPosition(newStartPoint, newAngleToParent);

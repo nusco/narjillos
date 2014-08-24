@@ -15,9 +15,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Optimize physics engine (in particular look at calculation of center of mass) °°°
-* Only update Organ cache when necessary °°°
-* Space Partitioning for fast thing searches °°
+* Optimize physics engine °°°
+* Space Partitioning for fast thing searches °°°
 * Make FPS parametric to improve TPS on slower machines
 
 ###Gamer
@@ -38,8 +37,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Mutation rate is controlled by genes (this is what happens in nature. tends to freeze evolution?)
 * DNA diff during ancestry analysis
 
-###Etologisty
+###Etologist
 
+* Skimming speed depends on metabolic rate
 * Eggs °°
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °

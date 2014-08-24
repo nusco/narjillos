@@ -41,89 +41,20 @@ public class Body {
 		this.maxRadius = Math.max(1, head.calculateLongestPathToLeaf() / 2);
 	}
 
-	/**
-	 * Take a target direction. Change the body's geometry based on the target
-	 * direction. Move the body. Return the energy spent on the entire operation.
-	 */
-	public double tick(Vector targetDirection) {
-		// Before any movement, store away the current body positions
-		// and center of mass. These will come useful later.
-		Vector centerOfMassBeforeReshaping = calculateCenterOfMass();
-		Map<BodyPart, Segment> initialPositions = tick_SnapshotBodyPartPositions();
-		
-		// The body reactively changes its geometry in response to the
-		// target's direction. It doesn't "think" were to go - it just
-		// changes its geometry *somehow*. Natural selection will favor
-		// movements that result in getting closer to the target.
-		tick_UpdateBodyAngles(targetDirection);
-		
-		// The key concept here is that the body changed its shape as
-		// if it were in a vacuum: the center of mass stays in the same
-		// position, and the moment of inertia stays zero. (This last
-		// quality is not yet implemented.)
-		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
-		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
-		head.move(centerOfMassOffset, 0);
-		
-		// Now we move out of the "vacuum" metaphor: thanks to the fluid's viscosity,
-		// the body's movement generates translational and rotation forces.
-		ForceField forceField = tick_CalculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMassBeforeReshaping);
-		Vector centerOfMassAfterReshaping = calculateCenterOfMass();
-		Impulse impulse = tick_CalculateAccelerationForWholeBody(forceField, centerOfMassAfterReshaping);
-		
-		moveBy(impulse);
-		return impulse.energySpent;
+	public double getMass() {
+		return mass;
 	}
 
-	private Map<BodyPart, Segment> tick_SnapshotBodyPartPositions() {
-		Map<BodyPart, Segment> result = new LinkedHashMap<>();
-		for (BodyPart bodyPart : getBodyParts())
-			result.put(bodyPart, bodyPart.getPositionInSpace());
-		return result;
+	public List<BodyPart> getBodyParts() {
+		return bodyParts;
+	}
+	
+	public void forceBend(double bendAngle) {
+		head.skew(bendAngle);
 	}
 
-	private void tick_UpdateBodyAngles(Vector targetDirection) {
-		double angleToTarget;
-		try {
-			Vector mainAxis = head.getVector().normalize(1).invert();
-			angleToTarget = mainAxis.getAngleWith(targetDirection);
-		} catch (ZeroVectorException e) {
-			return;
-		}
-		
-		head.skew(tick_CalculateDirectionSkewing(angleToTarget));
-		
-		double targetAmplitudePercent = tickerNerve.tick(0);
-		head.recursivelyUpdateAngleToParent(targetAmplitudePercent);
-		head.resetSkewing();
-	}
-
-	private ForceField tick_CalculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
-		ForceField forceField = new ForceField(getMass(), getMaxRadius(), centerOfMass);
-		for (BodyPart bodyPart : bodyParts)
-			forceField.registerMovement(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
-		return forceField;
-	}
-
-	double getMaxRadius() {
-		return maxRadius;
-	}
-
-	private Impulse tick_CalculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {
-		Vector translation = forceField.getTranslation();
-		double rotation = forceField.getRotation();
-
-		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
-		
-		return new Impulse(translation, rotation, energySpent);
-	}
-
-	private double tick_CalculateDirectionSkewing(double angleToTarget) {
-		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
-		double skewingVelocity = updatedSkewing - currentDirectionSkewing;
-		if (Math.abs(skewingVelocity) > MAX_SKEWING_VELOCITY)
-			skewingVelocity = Math.signum(skewingVelocity) * MAX_SKEWING_VELOCITY;
-		return currentDirectionSkewing += skewingVelocity;
+	public void teleportTo(Vector position) {
+		head.setPosition(position, 0);
 	}
 
 	public Vector getStartPoint() {
@@ -132,42 +63,6 @@ public class Body {
 		return head.getStartPoint();
 	}
 
-	public double getMass() {
-		return mass;
-	}
-
-	public List<BodyPart> getBodyParts() {
-		return bodyParts;
-	}
-
-	private void addWithChildren(List<BodyPart> result, Organ organ) {
-		result.add(organ);
-		for (Organ child : organ.getChildren())
-			addWithChildren(result, child);
-	}
-
-	private double getMetabolicRate() {
-		return head.getMetabolicRate();
-	}
-
-	private double calculateTotalMass() {
-		double result = 0;
-		List<BodyPart> allOrgans = getBodyParts();
-		for (BodyPart organ : allOrgans)
-			result += organ.getMass();
-		return result;
-	}
-	
-	public void forceBend(double bendAngle) {
-		head.skew(bendAngle);
-	}
-
-	// TODO: find a way to calculate this as few times per tick as possible.
-	// Right now it's called multiple times, and it's unclear to me
-	// when I can cache it and when I can't.
-	// Also, the center of mass should be absolute, not relative to the head.
-	// This would make some calculations easier in tick(), but it would also
-	// require some rewriting in other places.
 	public Vector calculateCenterOfMass() {
 		if (getMass() <= 0)
 			return getStartPoint();
@@ -193,13 +88,124 @@ public class Body {
 		return Vector.cartesian(totalX / getMass(), totalY / getMass());
 	}
 
-	public double getAngle() {
+	/**
+	 * Take a target direction. Change the body's geometry based on the target
+	 * direction. Move the body. Return the energy spent on the entire operation.
+	 */
+	public double tick(Vector targetDirection) {
+		// Before any movement, store away the current body positions
+		// and center of mass. These will come useful later.
+		Vector initialCenterOfMass = calculateCenterOfMass();
+		Map<BodyPart, Segment> initialPositions = calculateBodyPartPositions();
+		
+		// The body reactively changes its geometry in response to the
+		// target's direction. It doesn't "think" were to go - it just
+		// changes its geometry *somehow*. Natural selection will favor
+		// movements that result in getting closer to the target.
+		tick_step1_UpdateBodyAngles(targetDirection);
+		
+		// The key concept here is that the body changed its shape as
+		// if it were in a vacuum: the center of mass stays in the same
+		// position, and the moment of inertia stays zero. (This last
+		// quality is not yet implemented.)
+		tick_step2_reposition(initialCenterOfMass);
+		
+		// Now we move out of the "vacuum" metaphor: thanks to the fluid's viscosity,
+		// the body's movement generates translational and rotation forces.
+		Impulse impulse = tick_step3_move(initialCenterOfMass, initialPositions);
+
+		return impulse.energySpent;
+	}
+
+	private Impulse tick_step3_move(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
+		ForceField forceField = calculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMass);
+		Impulse impulse = calculateAccelerationForWholeBody(forceField, centerOfMass);
+		moveBy(impulse, centerOfMass);
+		return impulse;
+	}
+
+	private void tick_step2_reposition(Vector centerOfMassBeforeReshaping) {
+		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
+		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
+		head.moveBy(centerOfMassOffset, 0);
+	}
+
+	private Map<BodyPart, Segment> calculateBodyPartPositions() {
+		Map<BodyPart, Segment> result = new LinkedHashMap<>();
+		for (BodyPart bodyPart : getBodyParts())
+			result.put(bodyPart, bodyPart.getPositionInSpace());
+		return result;
+	}
+
+	private void tick_step1_UpdateBodyAngles(Vector targetDirection) {
+		double angleToTarget;
+		try {
+			Vector mainAxis = head.getVector().normalize(1).invert();
+			angleToTarget = mainAxis.getAngleWith(targetDirection);
+		} catch (ZeroVectorException e) {
+			return;
+		}
+		
+		head.skew(calculateDirectionSkewing(angleToTarget));
+		
+		double targetAmplitudePercent = tickerNerve.tick(0);
+		head.recursivelyUpdateAngleToParent(targetAmplitudePercent);
+		head.resetSkewing();
+	}
+
+	private ForceField calculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
+		ForceField forceField = new ForceField(getMass(), getMaxRadius(), centerOfMass);
+		for (BodyPart bodyPart : bodyParts)
+			forceField.registerMovement(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
+		return forceField;
+	}
+
+	double getMaxRadius() {
+		return maxRadius;
+	}
+
+	private Impulse calculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {
+		Vector translation = forceField.getTranslation();
+		double rotation = forceField.getRotation();
+
+		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
+		
+		return new Impulse(translation, rotation, energySpent);
+	}
+
+	private double calculateDirectionSkewing(double angleToTarget) {
+		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
+		double skewingVelocity = updatedSkewing - currentDirectionSkewing;
+		if (Math.abs(skewingVelocity) > MAX_SKEWING_VELOCITY)
+			skewingVelocity = Math.signum(skewingVelocity) * MAX_SKEWING_VELOCITY;
+		return currentDirectionSkewing += skewingVelocity;
+	}
+
+	private void addWithChildren(List<BodyPart> result, Organ organ) {
+		result.add(organ);
+		for (Organ child : organ.getChildren())
+			addWithChildren(result, child);
+	}
+
+	private double getMetabolicRate() {
+		return head.getMetabolicRate();
+	}
+
+	private double calculateTotalMass() {
+		double result = 0;
+		List<BodyPart> allOrgans = getBodyParts();
+		for (BodyPart organ : allOrgans)
+			result += organ.getMass();
+		return result;
+	}
+
+	private double getAngle() {
 		return head.getAbsoluteAngle();
 	}
 	
-	public void moveBy(Impulse impulse) {
+	private void moveBy(Impulse impulse, Vector centerOfMass) {
 		Vector newPosition = getStartPoint().plus(impulse.linearComponent);
-		Vector pivotedPosition = newPosition.plus(rotateAround(calculateCenterOfMass(), impulse.angularComponent));
+		Vector pivotedPosition = newPosition.plus(rotateAround(centerOfMass, impulse.angularComponent));
 		double newAngle = Angle.normalize(getAngle() + impulse.angularComponent);
 		head.setPosition(pivotedPosition, newAngle);
 	}
@@ -209,9 +215,5 @@ public class Body {
 		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));
 		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
 		return Vector.cartesian(-shiftX, -shiftY);
-	}
-
-	public void teleportTo(Vector position) {
-		head.setPosition(position, 0);
 	}
 }

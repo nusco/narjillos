@@ -1,17 +1,19 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.creature.body.pns.PassNerve;
+import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class Head extends Organ {
 
+	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
+
 	private final double metabolicRate;
 	private Vector startPoint = Vector.ZERO;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
-		super(length, thickness, hue, null, new PassNerve());
+		super(length, thickness, hue, null, new WaveNerve(WAVE_SIGNAL_FREQUENCY * metabolicRate));
 		this.metabolicRate = metabolicRate;
 	}
 

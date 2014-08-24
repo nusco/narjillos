@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.nusco.narjillos.creature.body.physics.ForceField;
 import org.nusco.narjillos.creature.body.physics.Impulse;
-import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -22,14 +21,12 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class Body {
 
-	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
 	private static final double MAX_SKEWING = 70;
 	private static final double MAX_SKEWING_VELOCITY = 0.1;
 
 	private final Head head;
 	private final List<BodyPart> bodyParts = new LinkedList<>();
 	private final double mass;
-	private final WaveNerve tickerNerve; // TODO: move to head
 	private final double maxRadius;
 	private double currentDirectionSkewing = 0;
 	
@@ -37,7 +34,6 @@ public class Body {
 		this.head = head;
 		addWithChildren(this.bodyParts, head);
 		this.mass = calculateTotalMass();
-		this.tickerNerve = new WaveNerve(WAVE_SIGNAL_FREQUENCY * getMetabolicRate());
 		this.maxRadius = Math.max(1, head.calculateLongestPathToLeaf() / 2);
 	}
 
@@ -58,7 +54,6 @@ public class Body {
 	}
 
 	public Vector getStartPoint() {
-		// TODO: consider moving the reference startPoint to the center of mass and having a separate method for mouth position
 		return head.getStartPoint();
 	}
 
@@ -147,8 +142,7 @@ public class Body {
 		
 		head.skew(calculateDirectionSkewing(angleToTarget));
 		
-		double targetAmplitudePercent = tickerNerve.tick(0);
-		head.recursivelyUpdateAngleToParent(targetAmplitudePercent);
+		head.recursivelyUpdateAngleToParent(0);
 		head.resetSkewing();
 	}
 

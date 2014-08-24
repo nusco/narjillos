@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.creature.body.pns.PassNerve;
+import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -32,10 +32,10 @@ public class HeadTest extends OrganTest {
 	}
 
 	@Test
-	public void hasAPassNerve() {
+	public void hasAWaveNerve() {
 		Nerve nerve = new Head(0, 0, new ColorByte(0), 1).getNerve();
 				
-		assertEquals(PassNerve.class, nerve.getClass());
+		assertEquals(WaveNerve.class, nerve.getClass());
 	}
 	
 	@Test

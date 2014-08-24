@@ -57,6 +57,10 @@ public class Body {
 		return head.getStartPoint();
 	}
 
+	double getMaxRadius() {
+		return maxRadius;
+	}
+
 	public Vector calculateCenterOfMass() {
 		if (getMass() <= 0)
 			return getStartPoint();
@@ -111,26 +115,6 @@ public class Body {
 		return impulse.energySpent;
 	}
 
-	private Impulse tick_step3_move(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
-		ForceField forceField = calculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMass);
-		Impulse impulse = calculateAccelerationForWholeBody(forceField, centerOfMass);
-		moveBy(impulse, centerOfMass);
-		return impulse;
-	}
-
-	private void tick_step2_reposition(Vector centerOfMassBeforeReshaping) {
-		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
-		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
-		head.moveBy(centerOfMassOffset, 0);
-	}
-
-	private Map<BodyPart, Segment> calculateBodyPartPositions() {
-		Map<BodyPart, Segment> result = new LinkedHashMap<>();
-		for (BodyPart bodyPart : getBodyParts())
-			result.put(bodyPart, bodyPart.getPositionInSpace());
-		return result;
-	}
-
 	private void tick_step1_UpdateBodyAngles(Vector targetDirection) {
 		double angleToTarget;
 		try {
@@ -146,15 +130,31 @@ public class Body {
 		head.resetSkewing();
 	}
 
+	private void tick_step2_reposition(Vector centerOfMassBeforeReshaping) {
+		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
+		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
+		head.moveBy(centerOfMassOffset, 0);
+	}
+
+	private Impulse tick_step3_move(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
+		ForceField forceField = calculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMass);
+		Impulse impulse = calculateAccelerationForWholeBody(forceField, centerOfMass);
+		moveBy(impulse, centerOfMass);
+		return impulse;
+	}
+
+	private Map<BodyPart, Segment> calculateBodyPartPositions() {
+		Map<BodyPart, Segment> result = new LinkedHashMap<>();
+		for (BodyPart bodyPart : getBodyParts())
+			result.put(bodyPart, bodyPart.getPositionInSpace());
+		return result;
+	}
+
 	private ForceField calculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
 		ForceField forceField = new ForceField(getMass(), getMaxRadius(), centerOfMass);
 		for (BodyPart bodyPart : bodyParts)
 			forceField.registerMovement(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		return forceField;
-	}
-
-	double getMaxRadius() {
-		return maxRadius;
 	}
 
 	private Impulse calculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {

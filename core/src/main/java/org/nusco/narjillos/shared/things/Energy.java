@@ -15,7 +15,7 @@ public class Energy {
 		value = mass * MASS_TO_ENERGY_RATIO;
 		maxForAge = value * Energy.MAX_ENERGY_RATIO;
 		decay = maxForAge / maxLifespan;
-		agonyLevel = decay * 300; // TODO: tweak
+		agonyLevel = decay * 300;
 	}
 	
 	public double getValue() {

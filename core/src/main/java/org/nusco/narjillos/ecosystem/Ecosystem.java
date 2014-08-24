@@ -19,9 +19,7 @@ import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
-//TODO: I should really make everything in here and its subclasses
-//more thread-safe. Right now many external interventions from
-//another thread have the potential to break it.
+//TODO: check thread-safety (too complicated and fragile right now).
 /**
  * The place that Narjillos live in.
  * 
@@ -78,7 +76,7 @@ public class Ecosystem {
 	public void tick() {
 		narjillos.tick();
 		
-		// TODO: no need to tick food for now
+		// no need to tick food
 		
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
@@ -132,8 +130,7 @@ public class Ecosystem {
 	}
 
 	private void checkCollisionsWithFood(Narjillo narjillo, Segment movement) {
-		// TODO: naive algorithm. replace with space partitioning and finding
-		// neighbors
+		// TODO: naive algorithm. replace with space partitioning
 		if (movement.getVector().isZero())
 			return;
 		

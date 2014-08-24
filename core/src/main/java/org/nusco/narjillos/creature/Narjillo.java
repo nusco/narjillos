@@ -74,13 +74,7 @@ public class Narjillo implements Thing, Creature {
 	}
 
 	private void applyDeathAnimation() {
-		// TODO: for some reason only 9 works here - 10 is too much (the
-		// creatures spin wildly in agony) and 8 is too little (barely
-		// any bending at all).
-		// Bending is supposed to be instantaneous, instead it seems to be
-		// additive.
-		// Why? Find out what is going on here, and possibly rethink the
-		// bending mechanics. Maybe it should come from the WaveNerve?
+		// TODO: needs tweaking. the effect became invisible across commits
 		double bendAngle = ((energy.getAgonyLevel() - getEnergy().getValue()) / energy.getAgonyLevel()) * 9;
 		body.forceBend(bendAngle);
 	}

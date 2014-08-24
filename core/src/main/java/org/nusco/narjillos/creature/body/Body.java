@@ -29,7 +29,7 @@ public class Body {
 	private final Head head;
 	private final List<BodyPart> bodyParts = new LinkedList<>();
 	private final double mass;
-	private final WaveNerve tickerNerve; // TODO: move to head?
+	private final WaveNerve tickerNerve; // TODO: move to head
 	private final double maxRadius;
 	private double currentDirectionSkewing = 0;
 	
@@ -58,8 +58,7 @@ public class Body {
 	}
 
 	public Vector getStartPoint() {
-		// TODO: consider moving the reference startPoint to the center of mass and
-		// having a separate method for mouth position
+		// TODO: consider moving the reference startPoint to the center of mass and having a separate method for mouth position
 		return head.getStartPoint();
 	}
 

@@ -5,17 +5,12 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Fix flickering °°
-
-  _creature to check: {090_065_154_010_089_080_141}{067_085_239_111_061_007_013}{139_098_147_209_088_160_176}{115_115_132_022_062_227_036}{224_247_251_216_231_232_137}{067_117_115_107_223_148_243}{018_017_212_069_242_128_180}{076_036_057_179_008_130_025}{219_245_210_188_115_122_020}_
-
 * Smooth, inertial targeting or target hysteresis (to avoid skewing flickering when target is on opposite side) °°
 * Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum) °°
 * Realistic radius calculation (for better moment of inertia) °°
 
 ###Speed Demon
 
-* Optimize physics engine °°°
 * Space Partitioning for fast thing searches °°°
 * Make FPS parametric to improve TPS on slower machines
 
@@ -31,7 +26,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Genetist
 
 * View Narjillo's evolutionary path °°
-* Find a good way to deal with atrophy (see FIXME) °°
+* Find a good way to deal with atrophy °°
 * Narjillo's skewing is genetically determined °°
 * Whole-body size gene
 * Mutation rate is controlled by genes (this is what happens in nature. tends to freeze evolution?)
@@ -49,9 +44,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Unify experiment and petri (make it easy to turn graphics on off with a "light switch) °°°
-* Slow motion setting °°
-* "Pause" setting °°
+* Slow motion setting °
+* "Pause" setting °
 * Lock on single Narjillo °
 * Bench with stats
 * "Real Time" and "Fast" slider

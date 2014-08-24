@@ -22,13 +22,13 @@ To put a Petri dish full of Narjillos under your microscope, you need Java 8 and
 
 ##How to control it
 
-Move around with your mouse: click anywhere to center, double-click to auto-zoom. Zoom in/out by scrolling. You can also move the microscope around with your cursor keys.
+Move around with your mouse: **click anywhere** to center, **double-click** to auto-zoom. Zoom in/out by **scrolling**. You can also move the microscope around with your **cursor keys**.
 
-To turn from high speed to real time and back, press *S*.
+To turn from high speed to real time and back, press **S**.
 
-To turn the lamp on/off, press *L*. With the lamp off, high speed is much faster (because the program doesn't need to render the creatures).
+To turn the lamp on/off, press **L**. With the lamp off, high speed is much faster (because the program doesn't need to render the creatures).
 
-If you have trouble distinguishing the shapes of Narjillos, try infrared light. You can toggle it by pressing *I*.
+If you have trouble distinguishing the shapes of Narjillos, try infrared light. You can toggle it by pressing **I**.
 
 ## Credits
 

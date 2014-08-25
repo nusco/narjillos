@@ -16,7 +16,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Update documentation °°°
 * Try scrolling/panning commands and speeds under Linux
 * Externalize all configurable parameters to JSON files
 * Parameterize scroll/pan speeds

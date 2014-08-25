@@ -71,7 +71,7 @@ public class EnergyTest {
 	public void increasesByConsumingThings() {
 		energy.consume(nutrient);
 		
-		double expected = (mass + mass * Energy.ENERGY_PER_FOOD_ITEM_RATIO) / 10;
+		double expected = mass * 2 / 20;
 		assertEquals(expected, energy.getValue(), 0.001);
 	}
 

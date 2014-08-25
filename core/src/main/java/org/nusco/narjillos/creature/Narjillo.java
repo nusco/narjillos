@@ -15,7 +15,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Narjillo implements Thing, Creature {
 
-	static final double MAX_LIFESPAN = 50_000;
+	static final double MAX_LIFESPAN = 40_000;
 	
 	private final Body body;
 	private final DNA genes;

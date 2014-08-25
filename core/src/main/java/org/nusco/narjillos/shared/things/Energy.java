@@ -1,23 +1,22 @@
 package org.nusco.narjillos.shared.things;
 
 public class Energy {
-	static final double MASS_TO_ENERGY_RATIO = 0.1;
-	static final double ENERGY_PER_FOOD_ITEM_RATIO = 1;
-	static final double MAX_ENERGY_RATIO = 2;
+	static final double INITIAL_ENERGY_TO_MASS = 0.05;
+	static final double MAX_ENERGY_TO_INITIAL_ENERGY = 2;
 
 	private double value;
 	private double maxForAge;
-	
+
 	private final double decay;
 	private final double agonyLevel;
 
 	public Energy(double mass, double maxLifespan) {
-		value = mass * MASS_TO_ENERGY_RATIO;
-		maxForAge = value * Energy.MAX_ENERGY_RATIO;
+		value = mass * INITIAL_ENERGY_TO_MASS;
+		maxForAge = value * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
 		decay = maxForAge / maxLifespan;
 		agonyLevel = decay * 300;
 	}
-	
+
 	public double getValue() {
 		return value;
 	}
@@ -39,7 +38,7 @@ public class Energy {
 
 		if (isDepleted())
 			return;
-		
+
 		increase(additionalEnergy);
 	}
 

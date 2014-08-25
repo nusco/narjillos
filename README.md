@@ -39,13 +39,13 @@ When you start an experiment, the program generates a few hundreds different str
 
 Each DNA strand goes through a process called "embryology", which generates the physical body of a narjillo. Each chromosome roughly generates a segment in the narjillo's body, and the genes in the chromosome dictate that segment's appearance and behavior: its color, size, angle, and so on.
 
-The DNA is also called the _genotype_, and the physical body is also called the _phenotype_---so you can say that "the genotype generates the phenotype". Identical genotypes always generate identical phenotypes. Similar genotypes tend to generate similar phenotypes. Very different genotypes tend to generate very different phenotypes.
+The DNA is also called the _genotype_, and the physical body is also called the _phenotype_ --- so you can say that "the genotype generates the phenotype". Identical genotypes always generate identical phenotypes. Similar genotypes tend to generate similar phenotypes. Very different genotypes tend to generate very different phenotypes.
 
-All the narjillos generated in the beginning are collected in a dish under your microscope. The dish is also filled with food---the blue dots. More food keeps spawning slowly as the experiment goes on.
+All the narjillos generated in the beginning are collected in a dish under your microscope. The dish is also filled with food --- the blue dots. More food keeps spawning slowly as the experiment goes on.
 
 ####Selection
 
-Narjillos try to reach the food by swimming. You can look at their "mouths" (the thin green lines) to see which direction they're trying to go. Narjillos don't think, and they don't have any sophisticated states---they just oscillate mechanically in response to the direction of their target. These oscillations push them around in the dish.
+Narjillos try to reach the food by swimming. You can look at their "mouths" (the thin green lines) to see which direction they're trying to go. Narjillos don't think, and they don't have any sophisticated states --- they just oscillate mechanically in response to the direction of their target. These oscillations push them around in the dish.
 
 Some narjillos are decent swimmers, but most are not. You'll see many who cannot even move, or tend to move in the opposite direction they're aiming at. Those who cannot reach food will eventually get exhausted and die.
 
@@ -59,7 +59,7 @@ Look at a narjillo's eye color to get a clue about its energy level. Fully healt
 
 Each time a narjillo eats a piece of food, it spawns a "child" nearby. To do that, it makes a copy of its own genotype, and then generates a new phenotype out of it.
 
-However, here is a twist: when the narjillo copies its genotype, it introduces random errors (called "mutations") in the copy. These errors mean that, while the copy probably resembles the original, it also has a few different genes---which result in a slightly different body shape, movement style, or color.
+However, here is a twist: when the narjillo copies its genotype, it introduces random errors (called "mutations") in the copy. These errors mean that, while the copy probably resembles the original, it also has a few different genes --- which typically result in a slightly different body shape, movement style, or color.
 
 A child can also have entirely new (random) chromosomes, or lose some of the chromosomes of its parent. This generally results in more, or less, segments in the child's body compared to its parent. However, the same old rule applies: the child's genotype is similar to the parent's genotype, so the child is going to resemble the parent. As grandma used to say, "the apple doesn't fall far from the tree".
 
@@ -67,11 +67,11 @@ Phenotypic variation, Selection, Mutation... done! Now that you know about the t
 
 ###The Circle of Life
 
-Over time, narjillos who happen to be good at swimming tend to survive longer and reproduce more often than narjillos who are not as good. Because they reproduce, they generate offspring that are themselves good swimmers---but because of mutations, the offspring can be a little better, or a little worse, than their parents. The better offspring tend to survive longer and reproduce faster than the worse offspring, and the cycle continues: bad swimmers tend to go extinct, while better swimmers tend to prosper, and go on to generate even better swimmers.
+Over time, narjillos who happen to be good at swimming tend to survive longer and reproduce more often than narjillos who are not as good. Because they reproduce, they generate offspring that are themselves good swimmers --- but because of mutations, the offspring can be a little better, or a little worse, than their parents. The better offspring tend to survive longer and reproduce faster than the worse offspring, and the cycle continues: bad swimmers tend to go extinct, while better swimmers tend to prosper, and go on to generate children that are even better than themselves.
 
 We have a single word to describe this entire process: _evolution_.
 
-After a few tens of minutes of running an experiment (at high speed), you'll likely see one "family" of related narjillos emerge and slowly take over the pond, while less successful genotypes go extinct. As you keep the program running, possibly for a few hours or days, this dominating DNA strand will subtly mutate to generate bodies that are better and better at swimming---sometimes in ways that I myself wasn't expecting.
+After a few tens of minutes of running an experiment (at high speed), you'll likely see one "family" of related narjillos emerge and slowly take over the pond, while less successful genotypes go extinct. As you keep the program running, possibly for a few hours or days, this dominating DNA strand will subtly mutate to generate bodies that are better and better at swimming --- sometimes by using movement strategies that I myself wouldn't have expected when I wrote this program.
 
 The resulting creatures will look like they've been designed by a human intelligence intent on creating good swimmers. That's not the case. On the other hand, the more successfull narjillos are very unlikely to appear by just generating random genes from scratch: there are billions of possible genotypes, and only a few of those genotypes generate good swimmer phenotypes. This is neither a case of intelligent design, nor a case of blind luck. The narjillos are _evolving_ their ability to swim well.
 
@@ -79,7 +79,7 @@ The resulting creatures will look like they've been designed by a human intellig
 
 The ultimate goal of Narjillos is to trigger an _evolutionary arms race_: two or more distinct "species" of creatures becoming more and more complex by leapfrogging over each other.
 
-That's a long way to go. In the current version, narjillos do not interact with other narjillos, apart from stealing food from each other---so an arms race can hardly happen. However, I'm having a lot of fun along the way.
+That's a long way to go. In the current version, narjillos do not interact with other narjillos, apart from stealing food from each other --- so an arms race can hardly happen. However, I'm having a lot of fun along the way.
 
 ## Credits
 

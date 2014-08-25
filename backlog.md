@@ -7,7 +7,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Smooth, inertial targeting or target hysteresis (to avoid skewing flickering when target is on opposite side) °°
 * Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum) °°
-* Realistic radius calculation (for better moment of inertia) °°
 
 ###Speed Demon
 

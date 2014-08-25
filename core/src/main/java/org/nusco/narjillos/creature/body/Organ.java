@@ -96,14 +96,4 @@ public abstract class Organ extends BodyPart {
 	public void resetSkewing() {
 		skewing = 0;
 	}
-
-	public double calculateLongestPathToLeaf() {
-		double longestRemainingPathToLeaf = 0;
-		for (Organ child : children) {
-			double longestPathThroughChild = child.calculateLongestPathToLeaf();
-			if (longestPathThroughChild > longestRemainingPathToLeaf)
-				longestRemainingPathToLeaf = longestPathThroughChild;
-		}
-		return getLength() + longestRemainingPathToLeaf;
-	}
 }

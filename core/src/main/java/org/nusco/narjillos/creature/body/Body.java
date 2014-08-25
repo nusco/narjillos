@@ -27,14 +27,12 @@ public class Body {
 	private final Head head;
 	private final List<BodyPart> bodyParts = new LinkedList<>();
 	private final double mass;
-	private final double maxRadius;
 	private double currentDirectionSkewing = 0;
 	
 	public Body(Head head) {
 		this.head = head;
 		addWithChildren(this.bodyParts, head);
 		this.mass = calculateTotalMass();
-		this.maxRadius = Math.max(1, head.calculateLongestPathToLeaf() / 2);
 	}
 
 	public double getMass() {
@@ -55,10 +53,6 @@ public class Body {
 
 	public Vector getStartPoint() {
 		return head.getStartPoint();
-	}
-
-	double getMaxRadius() {
-		return maxRadius;
 	}
 
 	public Vector calculateCenterOfMass() {
@@ -151,10 +145,23 @@ public class Body {
 	}
 
 	private ForceField calculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
-		ForceField forceField = new ForceField(getMass(), getMaxRadius(), centerOfMass);
+		ForceField forceField = new ForceField(getMass(), calculateRadius(centerOfMass), centerOfMass);
 		for (BodyPart bodyPart : bodyParts)
 			forceField.registerMovement(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		return forceField;
+	}
+
+	double calculateRadius(Vector centerOfMass) {
+		final double MIN_RADIUS = 1;
+		double result = MIN_RADIUS;
+		for (BodyPart bodyPart : getBodyParts()) {
+			double startPointDistance = bodyPart.getStartPoint().minus(centerOfMass).getLength();
+			double endPointDistance = bodyPart.getEndPoint().minus(centerOfMass).getLength();
+			double distance = Math.max(startPointDistance, endPointDistance);
+			if (distance > result)
+				result = distance;
+		}
+		return result;
 	}
 
 	private Impulse calculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {

@@ -40,32 +40,25 @@ public class BodyTest {
 	}
 	
 	@Test
-	public void hasHalfItsMaximumLengthAsARadius() {
-		Head head = new Head(1, 1, new ColorByte(1), 1);
+	public void hasACenterOfMassAndARadius() {
+		Head head = new Head(10, 10, new ColorByte(1), 1);
 		
-		BodySegment longFirstLevelChild = new BodySegment(5, 0, new ColorByte(0), head, null, 0, 0);
-		head.addChild(longFirstLevelChild);
-		
-		BodySegment shortFirstLevelChild = new BodySegment(3, 0, new ColorByte(0), head, null, 0, 0);
-		head.addChild(shortFirstLevelChild);
-		
-		BodySegment veryShortSecondLevelChild = new BodySegment(1, 0, new ColorByte(0), longFirstLevelChild, null, 0, 0);
-		longFirstLevelChild.addChild(veryShortSecondLevelChild);
-		
-		BodySegment anotherVeryShortSecondLevelChild = new BodySegment(1, 0, new ColorByte(0), shortFirstLevelChild, null, 0, 0);
-		shortFirstLevelChild.addChild(anotherVeryShortSecondLevelChild);
-		
-		BodySegment veryLongSecondLevelChild = new BodySegment(10, 0, new ColorByte(0), shortFirstLevelChild, null, 0, 0);
-		shortFirstLevelChild.addChild(veryLongSecondLevelChild);
+		BodySegment child = new BodySegment(20, 5, new ColorByte(0), head, null, 0, 0);
+		head.addChild(child);
 
 		Body body = new Body(head);
-		assertEquals(7, body.getMaxRadius(), 0.0);
+
+		// calculateRadius() needs an explicit center of mass, because of optimizations.
+		// So these two are better tested together: 
+		Vector centerOfMass = body.calculateCenterOfMass();
+		assertEquals(Vector.cartesian(12.5, 0), centerOfMass);
+		assertEquals(17.5, body.calculateRadius(body.calculateCenterOfMass()), 0.0);
 	}	
 	
 	@Test
 	public void itsMinimumRadiusIsOne() {
 		Head head = new Head(0, 1, new ColorByte(1), 1);
 		Body body = new Body(head);
-		assertEquals(1, body.getMaxRadius(), 0.0);
-	}	
+		assertEquals(1, body.calculateRadius(head.getCenterOfMass()), 0.0);
+	}
 }

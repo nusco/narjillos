@@ -175,9 +175,10 @@ public class Body {
 	}
 
 	private void addWithChildren(List<BodyPart> result, Organ organ) {
-		result.add(organ);
+		// children first
 		for (Organ child : organ.getChildren())
 			addWithChildren(result, child);
+		result.add(organ);
 	}
 
 	private double getMetabolicRate() {

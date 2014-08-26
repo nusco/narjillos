@@ -1,9 +1,10 @@
-package org.nusco.narjillos.creature.body.embryology;
+package org.nusco.narjillos.creature.body.embryogenesis;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.body.embryogenesis.HeadBuilder;
 import org.nusco.narjillos.creature.genetics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 

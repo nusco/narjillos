@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.body.embryology;
+package org.nusco.narjillos.creature.body.embryogenesis;
 
 import java.util.LinkedList;
 import java.util.List;

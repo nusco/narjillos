@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.body.embryology.Embryo;
+import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.FoodPiece;
 import org.nusco.narjillos.shared.physics.Segment;

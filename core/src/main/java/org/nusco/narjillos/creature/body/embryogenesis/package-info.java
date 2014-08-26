@@ -7,4 +7,4 @@
  * and then call {@link org.nusco.narjillos.creature.body.embriology.Embryo#develop} to
  * get a fully formed {@link org.nusco.narjillos.creature.body.Body}.
  */
-package org.nusco.narjillos.creature.body.embryology;
+package org.nusco.narjillos.creature.body.embryogenesis;

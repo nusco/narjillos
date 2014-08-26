@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.NarjilloEventListener;
-import org.nusco.narjillos.creature.body.embryology.Embryo;
+import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.creature.genetics.Population;

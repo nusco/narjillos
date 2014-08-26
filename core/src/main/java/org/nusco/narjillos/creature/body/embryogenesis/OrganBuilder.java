@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.body.embryology;
+package org.nusco.narjillos.creature.body.embryogenesis;
 
 import org.nusco.narjillos.creature.genetics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;

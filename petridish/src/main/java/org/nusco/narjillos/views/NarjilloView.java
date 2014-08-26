@@ -29,12 +29,12 @@ class NarjilloView extends ThingView {
 	@Override
 	public Node toNode(double zoomLevel, boolean infraredOn) {
 		group.getChildren().clear();
+
+		group.getChildren().addAll(getOrganNodes(zoomLevel, infraredOn));
 		
 		Node mouthNode = mouthView.toNode(zoomLevel, infraredOn);
 		if (mouthNode != null)
 			group.getChildren().add(mouthNode);
-
-		group.getChildren().addAll(getOrganNodes(zoomLevel, infraredOn));
 
 		Node eyeNode = eyeView.toNode(zoomLevel, infraredOn);
 		if (eyeNode != null)

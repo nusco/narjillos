@@ -47,7 +47,7 @@ class MouthView extends ThingView {
 
 	private Color getColor(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
-			return Color.RED;
+			return Color.WHITE;
 		return new Color(0, 0.6, 0, getTransparency(zoomLevel));
 	}
 

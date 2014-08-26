@@ -255,7 +255,7 @@ public class PetriDish extends Application {
 				if (event.getClickCount() > 1)
 					getViewport().flyToNextZoomCloseupLevel();
 
-				if (event.getClickCount() == 2)
+				if (event.getClickCount() > 2)
 					printOutIsolatedNarjillo(clickedPoint);
 			}
 

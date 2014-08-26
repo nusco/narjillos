@@ -1,7 +1,7 @@
 package org.nusco.narjillos.shared.things;
 
 public class Energy {
-	static final double INITIAL_ENERGY_TO_MASS = 0.05;
+	static final double INITIAL_ENERGY_TO_MASS = 0.08;
 	static final double MAX_ENERGY_TO_INITIAL_ENERGY = 2;
 
 	private double value;

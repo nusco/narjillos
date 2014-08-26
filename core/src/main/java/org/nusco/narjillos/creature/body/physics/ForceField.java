@@ -44,7 +44,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class ForceField {
 
-	private static final double ENERGY_SCALE = 1.0 / 100_000_000_000L;
+	private static final double ENERGY_SCALE = 1.0 / 75_000_000_000L;
 	private static final double VISCOSITY = 1; //.01;
 
 	private final double bodyMass;

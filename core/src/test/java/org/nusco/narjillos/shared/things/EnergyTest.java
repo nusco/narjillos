@@ -71,7 +71,7 @@ public class EnergyTest {
 	public void increasesByConsumingThings() {
 		energy.consume(nutrient);
 		
-		double expected = mass * 2 / 20;
+		double expected = mass * Energy.INITIAL_ENERGY_TO_MASS * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
 		assertEquals(expected, energy.getValue(), 0.001);
 	}
 

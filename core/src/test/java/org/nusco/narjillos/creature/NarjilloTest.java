@@ -94,7 +94,7 @@ public class NarjilloTest {
 		DNA dna = new DNA("{1_1_1_1_1_1");
 		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
 
-		for (int i = 0; i < Narjillo.MAX_LIFESPAN; i++)
+		for (int i = 0; i < Narjillo.MAX_LIFESPAN + 1; i++)
 			narjilloThatCannotMove.tick();
 
 		assertTrue(narjilloThatCannotMove.isDead());

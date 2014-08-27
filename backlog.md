@@ -56,7 +56,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Ecologist
 
 * Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
-* Spawn Narjillos with random direction (to avoid "swarming in same direction" effect on some races - or, do I want to keep it?)
 * Conservation of energy in entire pond (with sun to give more energy)
 * Multiple environments in multiple processes (with migration, still deterministic - but how?)
 * Plants (food that evolves)

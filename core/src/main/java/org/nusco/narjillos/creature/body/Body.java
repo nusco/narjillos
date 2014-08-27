@@ -48,7 +48,8 @@ public class Body {
 	}
 
 	public void teleportTo(Vector position) {
-		head.setPosition(position, 0);
+		final int northDirection = 90;
+		head.setPosition(position, northDirection);
 	}
 
 	public Vector getStartPoint() {

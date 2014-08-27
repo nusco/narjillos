@@ -44,7 +44,7 @@ public class Population {
 		int result = 0;
 		for (Creature otherCreature : getCreatures())
 			if (otherCreature != creature)
-				result += creature.getDNA().getDistanceFrom(otherCreature.getDNA());
+				result += creature.getDNA().getLevenshteinDistanceFrom(otherCreature.getDNA());
 		return result;
 	}
 

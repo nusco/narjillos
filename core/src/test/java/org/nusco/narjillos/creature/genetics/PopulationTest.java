@@ -13,18 +13,18 @@ public class PopulationTest {
 	
 	@Before
 	public void setupPopulation() {
-		population.add(createCreature("111_111_111_222_111_000_000")); // genetic distance: 8
-		population.add(createCreature("111_111_111_111_111_000_000")); // genetic distance: 9
-		population.add(createCreature("111_111_111_222_222_000_000")); // genetic distance: 7
-		population.add(createCreature("111_111_222_111_222_000_000")); // genetic distance: 9
-		population.add(createCreature("111_222_222_222_222_000_000")); // genetic distance: 11
+		population.add(createCreature("111_111_111_222_111_000_000"));
+		population.add(createCreature("111_111_111_111_111_000_000"));
+		population.add(createCreature("111_111_111_222_222_000_000"));
+		population.add(createCreature("111_111_222_111_222_000_000"));
+		population.add(createCreature("111_222_222_222_222_000_000"));
 	}
 	
 	@Test
 	public void getsMostTypicalSpecimen() {
 		Creature creature = population.getMostTypicalSpecimen();
 		
-		assertEquals("{111_111_111_222_222_000_000}", creature.getDNA().toString());
+		assertEquals("{111_111_111_111_111_000_000}", creature.getDNA().toString());
 	}
 
 	private Creature createCreature(final String genes) {

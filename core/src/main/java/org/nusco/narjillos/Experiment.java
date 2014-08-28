@@ -26,13 +26,16 @@ public class Experiment {
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final long startTime = System.currentTimeMillis();
 
+	private final String id;
+
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document>]
 	public Experiment(String... args) {
 		LinkedList<String> argumentsList = toList(args);
 
 		String gitCommit = (argumentsList.isEmpty()) ? "UNKNOWN_COMMIT" : argumentsList.removeFirst();
 		int seed = extractSeed(argumentsList);
-		System.out.println("Experiment " + gitCommit + ":" + seed);
+		id = gitCommit + "-" + seed;
+		System.out.println("Experiment " + id);
 		RanGen.seed(seed);
 
 		ecosystem = extractEcosystem(argumentsList);

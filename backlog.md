@@ -5,29 +5,29 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Smooth, inertial targeting (to avoid skewing flickering when target is on opposite side) °°
-* Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum) °°
+* Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °°
+* Smooth, inertial targeting °
 
 ###Speed Demon
 
-* Make "petri" with light off (almost) as fast as "experiment"
+* Make "petri" with light off (almost) as fast as "experiment" °
 * Make FPS parametric to improve TPS on slower machines
+* Try speed under Linux
 
 ###Gamer
 
-* Try scrolling/panning commands and speeds under Linux
-* Externalize all configurable parameters to JSON files
+* Externalize all configurable parameters to JSON files °
+* Try scrolling/panning commands under Linux
 * Parameterize scroll/pan speeds
-* Save Petri dish
-* Load Petri dish
+* Save/load entire dish mid-experiment
 
 ###Genetist
 
 * View Narjillo's evolutionary path °°
+* Ancestry browser °°
 * Find a good way to deal with atrophy °°
-* Narjillo's skewing is genetically determined °°
+* Narjillo's skewing is genetically determined °
 * Whole-body size gene
-* Mutation rate is controlled by genes (this is what happens in nature. tends to freeze evolution?)
 * DNA diff during ancestry analysis
 
 ###Etologist
@@ -42,31 +42,25 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
+* Set hi-speed when light goes off °
 * Slow motion setting °
 * "Pause" setting °
-* Lock on single Narjillo °
-* Bench with stats
-* "Real Time" and "Fast" slider
-* Select creature
-* Export creature
-* "Most Prolific" button
-* View creature energy
-* Make food visible in normal and/or infrared view
+* Lock on single narjillo °
+* Export narjillo
+* View narjillo stats (age, energy, times eaten...)
+* Make food visible in normal view
+* Make food visible in infrared view
 
 ###Ecologist
 
 * Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
 * Conservation of energy in entire pond (with sun to give more energy)
 * Multiple environments in multiple processes (with migration, still deterministic - but how?)
-* Plants (food that evolves)
-* Gamma rays (cause mutation)
-* Beta rays (cause old age and death)
-* Controllable food rate
-* Controllable food calories
+* Plant-like creatures instead of food (minimal energy expenditure? photosyntesis?)
 
 ###Ethologist
 
-* Narjillos eat each other °°
+* Narjillos eat each other °
 * "Fears" gene
 * "Wants to eat" gene
 
@@ -76,7 +70,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Better death animation (right now the bending is not visible) °
 * Fade out mouth/eye during death °
 * Birth animation °
-* Optimize halo effect in close-up view to be more visible but never get so large it makes rendering jerky °
+* Optimize halo effect in close-up view to be more visible, but never get so large it makes rendering jerky °
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)
 
 ##Neurologist

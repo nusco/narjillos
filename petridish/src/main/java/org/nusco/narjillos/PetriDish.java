@@ -26,7 +26,10 @@ import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.views.DataView;
 import org.nusco.narjillos.views.EcosystemView;
-import org.nusco.narjillos.views.Viewport;
+import org.nusco.narjillos.views.utilities.Light;
+import org.nusco.narjillos.views.utilities.Speed;
+import org.nusco.narjillos.views.utilities.ViewMode;
+import org.nusco.narjillos.views.utilities.Viewport;
 
 public class PetriDish extends Application {
 
@@ -44,10 +47,9 @@ public class PetriDish extends Application {
 	
     private Node foreground;
 	private final Chronometer framesChronometer = new Chronometer();
-	private int targetTicksPerSecond = DEFAULT_TICKS_PER_SECOND;
-
+	
 	private volatile boolean isModelThreadReady;
-	private volatile boolean isLightOn = true;
+	private final ViewMode viewMode = new ViewMode();
 	
 	public PetriDish() {
 	}
@@ -148,15 +150,14 @@ public class PetriDish extends Application {
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					moveViewport(0, PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.S)
-					toggleMaxSpeed();
+					viewMode.toggleSpeed();
 				else if (keyEvent.getCode() == KeyCode.L) {
-					isLightOn = getEcosystemView().toggleLamp();
-					getEcosystemView().turnOffInfrared();
+					viewMode.toggleLight();
+					getEcosystemView().setLight(viewMode.getLight());
 				}
 				else if (keyEvent.getCode() == KeyCode.I) {
-					getEcosystemView().toggleInfrared();
-					getEcosystemView().turnOnLamp();
-					isLightOn = true;
+					viewMode.toggleInfrared();
+					getEcosystemView().setLight(viewMode.getLight());
 				}
 			}
 		};
@@ -227,7 +228,7 @@ public class PetriDish extends Application {
 
 
 	private int getFramesPeriod() {
-		if (isLightOn)
+		if (viewMode.getLight() == Light.ON)
 			return FRAMES_PERIOD_WITH_LIGHT_ON;
 		else
 			return FRAMES_PERIOD_WITH_LIGHT_OFF;
@@ -266,19 +267,15 @@ public class PetriDish extends Application {
 		};
 	}
 
-	private synchronized void toggleMaxSpeed() {
-		if (targetTicksPerSecond == Integer.MAX_VALUE)
-			targetTicksPerSecond = DEFAULT_TICKS_PER_SECOND;
-		else
-			targetTicksPerSecond = Integer.MAX_VALUE;
-	}
-
 	private synchronized int getTicksPeriod() {
-		return 1000 / targetTicksPerSecond;
+		if (viewMode.getSpeed() == Speed.REALTIME)
+			return 1000 / DEFAULT_TICKS_PER_SECOND;
+		else
+			return 1000 / Integer.MAX_VALUE;
 	}
 
 	private synchronized Node getChronometers() {
-		Color color = isRealTime() ? Color.LIGHTGREEN : Color.HOTPINK;
+		Color color = viewMode.getSpeed() == Speed.REALTIME ? Color.LIGHTGREEN : Color.HOTPINK;
 		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage(), color);
 	}
 
@@ -287,17 +284,10 @@ public class PetriDish extends Application {
 	}
 
 	private String getPerformanceMessage() {
-		String result = "FPS: " + framesChronometer.getTicksInLastSecond() +
-						" / TPS: " + experiment.getTicksChronometer().getTicksInLastSecond() +
-						" / TICKS: " + NumberFormat.format(experiment.getTicksChronometer().getTotalTicks());
-		if (isRealTime())
-			return result + " (realtime)";
-		else
-			return result + " (hi-speed)";
-	}
-
-	private boolean isRealTime() {
-		return targetTicksPerSecond == DEFAULT_TICKS_PER_SECOND;
+		return	"FPS: " + framesChronometer.getTicksInLastSecond() +
+				" / TPS: " + experiment.getTicksChronometer().getTicksInLastSecond() +
+				" / TICKS: " + NumberFormat.format(experiment.getTicksChronometer().getTotalTicks()) +
+				" (" + viewMode.getSpeed().toString() + ")";
 	}
 
 	private void moveViewport(long velocityX, long velocityY, KeyEvent event) {

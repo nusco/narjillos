@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
+import org.nusco.narjillos.views.utilities.Viewport;
 
 class NarjilloView extends ThingView {
 	

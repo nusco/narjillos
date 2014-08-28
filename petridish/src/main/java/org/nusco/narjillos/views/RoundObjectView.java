@@ -1,6 +1,7 @@
 package org.nusco.narjillos.views;
 
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.views.utilities.Viewport;
 
 public abstract class RoundObjectView extends ThingView {
 

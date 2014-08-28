@@ -24,6 +24,8 @@ import org.nusco.narjillos.ecosystem.EcosystemEventListener;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
+import org.nusco.narjillos.views.utilities.Light;
+import org.nusco.narjillos.views.utilities.Viewport;
 
 public class EcosystemView {
 
@@ -33,8 +35,7 @@ public class EcosystemView {
 	private final Shape darkness;
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
 
-	private boolean infraredOn = false;
-	private boolean lampOn = true;
+	private Light light = Light.ON;
 
 	public EcosystemView(Ecosystem ecosystem) {
 		this.ecosystem = ecosystem;
@@ -63,12 +64,12 @@ public class EcosystemView {
 	}
 
 	public Node toNode() {
-		if (!isLampOn())
+		if (light == Light.OFF)
 			return darkness;
 		
 		Group result = new Group();
-		result.getChildren().add(getBackground(isInfraredOn()));
-		result.getChildren().add(getThingsGroup(isInfraredOn()));
+		result.getChildren().add(getBackground(light == Light.INFRARED));
+		result.getChildren().add(getThingsGroup(light == Light.INFRARED));
 		return result;
 	}
 
@@ -168,28 +169,7 @@ public class EcosystemView {
 		return ecosystem;
 	}
 
-	public synchronized void toggleInfrared() {
-		infraredOn = !infraredOn;
-	}
-
-	public void turnOffInfrared() {
-		infraredOn = false;
-	}
-
-	private synchronized boolean isInfraredOn() {
-		return infraredOn;
-	}
-
-	public boolean toggleLamp() {
-		lampOn = !lampOn;
-		return lampOn;
-	}
-
-	private synchronized boolean isLampOn() {
-		return lampOn;
-	}
-
-	public void turnOnLamp() {
-		lampOn = true;
+	public void setLight(Light light) {
+		this.light = light;
 	}
 }

@@ -8,8 +8,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.views.utilities.Viewport;
 
-// needs to be rethought if I want to test it. I should move all
+// TODO: needs to be rethought if I want to test it. I should move all
 // the "flyto" behaviour to a subclass of Viewport
 @Ignore
 public class ViewportVisibilityTest {

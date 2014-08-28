@@ -1,4 +1,4 @@
-package org.nusco.narjillos.views;
+package org.nusco.narjillos.views.utilities;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;

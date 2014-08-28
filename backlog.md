@@ -42,7 +42,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Set hi-speed when light goes off °
+* Dump isolated narjillos to file (instead of the console) °
 * Slow motion setting °
 * "Pause" setting °
 * Lock on single narjillo °

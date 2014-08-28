@@ -10,6 +10,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
+import org.nusco.narjillos.views.utilities.Viewport;
 
 class MouthView extends ThingView {
 

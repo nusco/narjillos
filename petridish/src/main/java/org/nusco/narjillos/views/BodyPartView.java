@@ -10,6 +10,7 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
+import org.nusco.narjillos.views.utilities.Viewport;
 
 class BodyPartView extends ThingView {
 

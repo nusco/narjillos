@@ -40,10 +40,11 @@ class BodyPartView extends ThingView {
 		if (bodyPart.getLength() == 0)
 			return null; // atrophy
 		
-		rectangle.setFill(getColor(infraredOn));
+		double alpha = getAlpha();
+		rectangle.setFill(getColor(infraredOn, alpha));
 		
 		if (infraredOn) {
-			rectangle.setStroke(Color.WHITE);
+			rectangle.setStroke(new Color(1, 1, 1, alpha));
 			rectangle.setStrokeWidth(3);
 		} else {
 			rectangle.setStrokeWidth(0);
@@ -67,10 +68,10 @@ class BodyPartView extends ThingView {
 		return new Translate(startPoint.x, startPoint.y);
 	}
 
-	private Color getColor(boolean infraredOn) {
+	private Color getColor(boolean infraredOn, double alpha) {
 		if (infraredOn)
-			return Color.RED;
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(), getAlpha());
+			return new Color(1, 0, 0, alpha);
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 	}
 
 	private double getAlpha() {

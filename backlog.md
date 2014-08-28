@@ -5,7 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Smooth, inertial targeting or target hysteresis (to avoid skewing flickering when target is on opposite side) °°
+* Smooth, inertial targeting (to avoid skewing flickering when target is on opposite side) °°
 * Remove "tail wiggling dog" effect (requires conservation of MoI during update in vacuum) °°
 
 ###Speed Demon
@@ -77,7 +77,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Fade out mouth/eye during death °
 * Birth animation °
 * Optimize halo effect in close-up view to be more visible but never get so large it makes rendering jerky °
-* Smooth out body during death in infrared
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)
 
 ##Neurologist

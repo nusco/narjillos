@@ -95,7 +95,7 @@ public class Body {
 		// target's direction. It doesn't "think" were to go - it just
 		// changes its geometry *somehow*. Natural selection will favor
 		// movements that result in getting closer to the target.
-		tick_step1_UpdateBodyAngles(targetDirection);
+		tick_step1_updateAngles(targetDirection);
 		
 		// The key concept here is that the body changed its shape as
 		// if it were in a vacuum: the center of mass stays in the same
@@ -110,7 +110,7 @@ public class Body {
 		return impulse.energySpent;
 	}
 
-	private void tick_step1_UpdateBodyAngles(Vector targetDirection) {
+	private void tick_step1_updateAngles(Vector targetDirection) {
 		double angleToTarget;
 		try {
 			Vector mainAxis = head.getVector().normalize(1).invert();

@@ -16,6 +16,7 @@ public class RanGen {
 	private static int seed = NO_SEED;
 	private static Random random;
 	private static Thread authorizedThread;
+	private static long position;
 	
 	public synchronized static void seed(int seed) {
 		if (getSeed() != NO_SEED)
@@ -24,19 +25,17 @@ public class RanGen {
 	}
 
 	public static double nextDouble() {
-		return getRandom().nextDouble();
-	}
-
-	public static double nextGaussian() {
-		return getRandom().nextGaussian();
+		double result = getRandom().nextDouble();
+		position++;
+		return result;
 	}
 
 	public static int nextInt() {
-		return getRandom().nextInt();
+		return (int)Math.round(nextDouble() * Integer.MAX_VALUE);
 	}
 
 	public static int nextByte() {
-		return Math.abs(getRandom().nextInt()) % 255;
+		return Math.abs(nextInt()) % 255;
 	}
 
 	private static synchronized Random getRandom() {
@@ -50,8 +49,9 @@ public class RanGen {
 	private static void initialize() {
 		if (getSeed() == NO_SEED)
 			seedRandomly();
-		authorizedThread = Thread.currentThread();
 		random = new Random(getSeed());
+		authorizedThread = Thread.currentThread();
+		position = 0;
 	}
 
 	static int getSeed() {
@@ -71,11 +71,21 @@ public class RanGen {
 				"seed will generate the same sequence of numbers.)";
 	}
 
+	static long getPosition() {
+		return position;
+	}
+
+	public static void fastForwardTo(long position) {
+		while (getPosition() < position)
+			nextDouble();
+	}
+
 	// Don't use in production code - this is just for testing.
 	// So it always throws an exception, just in case somebody uses it by mistake.
 	static synchronized void reset() {
 		random = null;
 		seed = NO_SEED;
+		position = 0;
 		throw new RuntimeException("RanGen.reset() called. " + getExplanation());
 	}
 }

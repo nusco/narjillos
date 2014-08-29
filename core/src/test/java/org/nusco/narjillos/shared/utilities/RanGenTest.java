@@ -12,14 +12,7 @@ public class RanGenTest {
 
 	@Before
 	public void resetRanGen() {
-		try {
-			RanGen.reset();
-			throw new RuntimeException("Excepted an exception from RanGen.reset(), got nothing");
-		} catch (RuntimeException e) {
-			// RanGen.reset() always throws an exception, to
-			// protect ourselves from mistakenly using it in
-			// production code. In tests, it's OK to ignore it.
-		}
+		reset();
 		
 		assertEquals(RanGen.NO_SEED, RanGen.getSeed());
 		
@@ -28,10 +21,28 @@ public class RanGenTest {
 
 	@Test
 	public void generatesADeterministicSequenceOfNumbers() {
-		assertEquals(86, RanGen.nextByte());
-		assertEquals(0.237, RanGen.nextDouble(), 0.01);
-		assertEquals(-1.736, RanGen.nextGaussian(), 0.01);
-		assertEquals(1111887674, RanGen.nextInt());
+		assertEquals(205, RanGen.nextByte());
+		assertEquals(0.99, RanGen.nextDouble(), 0.01);
+		assertEquals(543942802, RanGen.nextInt());
+	}
+	
+	@Test
+	public void canBeFastForwardedToAGivenCounterPosition() {
+		reset();
+		RanGen.seed(1234);
+		for (int i = 0; i < 100; i++) {
+			RanGen.nextByte();
+			RanGen.nextDouble();
+			RanGen.nextInt();
+		}
+		long position = RanGen.getPosition();
+		int expected = RanGen.nextInt();
+		
+		reset();
+		RanGen.seed(1234);
+		RanGen.fastForwardTo(position);
+		
+		assertEquals(expected, RanGen.nextInt());
 	}
 	
 	@Test(expected=RuntimeException.class)
@@ -62,5 +73,16 @@ public class RanGenTest {
 			Thread.sleep(10);
 		
 		assertTrue(results.peek().startsWith("RanGen accessed from multiple threads"));
+	}
+
+	private void reset() {
+		try {
+			RanGen.reset();
+			throw new RuntimeException("Excepted an exception from RanGen.reset(), got nothing");
+		} catch (RuntimeException e) {
+			// RanGen.reset() always throws an exception, to
+			// protect ourselves from mistakenly using it in
+			// production code. In tests, it's OK to ignore it.
+		}
 	}
 }

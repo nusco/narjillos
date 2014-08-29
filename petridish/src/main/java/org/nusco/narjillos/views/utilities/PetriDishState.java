@@ -1,6 +1,6 @@
 package org.nusco.narjillos.views.utilities;
 
-public class ViewMode {
+public class PetriDishState {
 	private volatile Light light = Light.ON;
 	private volatile Speed speed = Speed.REALTIME;
 

@@ -12,7 +12,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Make "petri" with light off (almost) as fast as "experiment" °
 * Make FPS parametric to improve TPS on slower machines
-* Try speed under Linux
+* Check speed under Linux
 
 ###Gamer
 

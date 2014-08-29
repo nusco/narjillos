@@ -1,18 +1,13 @@
-package org.nusco.narjillos.views;
+package org.nusco.narjillos.views.utilities;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.views.utilities.Viewport;
 
-// TODO: needs to be rethought if I want to test it. I should move all
-// the "flyto" behaviour to a subclass of Viewport
-@Ignore
 public class ViewportVisibilityTest {
 
 	Viewport viewport;
@@ -113,7 +108,7 @@ public class ViewportVisibilityTest {
 	}
 
 	private void stabilizeViewport() {
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 300; i++)
 			viewport.tick();
 	}
 }

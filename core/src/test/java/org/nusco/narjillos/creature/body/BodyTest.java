@@ -3,7 +3,6 @@ package org.nusco.narjillos.creature.body;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -32,7 +31,7 @@ public class BodyTest {
 		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
-		head.addChild(new BodySegment(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), head, new DelayNerve(0), 0, 0));
+		head.addChild(new BodySegment(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), head, 0, 0, 0));
 		Body body = new Body(head);
 		
 		double expectedMassInGrams = 212;
@@ -43,7 +42,7 @@ public class BodyTest {
 	public void hasACenterOfMassAndARadius() {
 		Head head = new Head(10, 10, new ColorByte(1), 1);
 		
-		BodySegment child = new BodySegment(20, 5, new ColorByte(0), head, null, 0, 0);
+		BodySegment child = new BodySegment(20, 5, new ColorByte(0), head, 0, 0, 0);
 		head.addChild(child);
 
 		Body body = new Body(head);

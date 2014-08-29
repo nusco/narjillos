@@ -2,7 +2,6 @@ package org.nusco.narjillos.creature.body.embryogenesis;
 
 import org.nusco.narjillos.creature.body.BodySegment;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.genetics.Chromosome;
 
 class BodySegmentBuilder extends OrganBuilder {
@@ -24,6 +23,6 @@ class BodySegmentBuilder extends OrganBuilder {
 	}
 
 	public Organ build(Organ parent, int angleSign) {
-		return parent.addChild(new BodySegment(getLength(), getThickness(), getHue(), parent, new DelayNerve(getDelay()), getAngleToParent(angleSign), getAmplitude()));
+		return parent.addChild(new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(angleSign), getAmplitude()));
 	}
 }

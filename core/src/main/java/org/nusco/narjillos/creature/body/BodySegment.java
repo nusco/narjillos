@@ -10,8 +10,8 @@ public class BodySegment extends Organ {
 	private final int orientation; // -1 or 1
 	private final int amplitude;
 
-	public BodySegment(int length, int thickness, ColorByte hue, Organ parent, Nerve nerve, int angleToParentAtRest, int amplitude) {
-		super(length, thickness, calculateColorMix(parent, hue), parent, nerve);
+	public BodySegment(int length, int thickness, ColorByte hue, Organ parent, int delay, int angleToParentAtRest, int amplitude) {
+		super(length, thickness, calculateColorMix(parent, hue), parent, new DelayNerve(delay));
 		this.angleToParentAtRest = angleToParentAtRest;
 		this.orientation = (int) Math.signum(angleToParentAtRest);
 		setAngleToParent(angleToParentAtRest);
@@ -35,7 +35,7 @@ public class BodySegment extends Organ {
 	}
 
 	BodySegment(Nerve nerve) {
-		this(0, 0, new ColorByte(0), null, new DelayNerve(13), 0, 1);
+		this(0, 0, new ColorByte(0), null, 13, 0, 1);
 	}
 	
 	@Override

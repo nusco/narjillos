@@ -13,33 +13,44 @@ public class PetriDishState {
 	}
 
 	public void toggleLight() {
-		if (light == Light.INFRARED)
+		switch (light) {
+		case INFRARED:
 			this.light = Light.ON;
-		else if (light == Light.ON) {
+			break;
+		case ON:
 			this.light = Light.OFF;
 			this.speed = Speed.HIGH;
-		}
-		else {
+			break;
+		case OFF:
 			this.light = Light.ON;
 			this.speed = Speed.REALTIME;
+			break;
 		}
 	}
 
 	public void toggleInfrared() {
-		if (light == Light.OFF) {
+		switch (light) {
+		case INFRARED:
+			this.light = Light.ON;
+			break;
+		case ON:
+			this.light = Light.INFRARED;
+			break;
+		case OFF:
 			this.light = Light.INFRARED;
 			this.speed = Speed.REALTIME;
+			break;
 		}
-		else if (light == Light.INFRARED)
-			this.light = Light.ON;
-		else
-			this.light = Light.INFRARED;
 	}
 
 	public void toggleSpeed() {
-		if (speed == Speed.REALTIME)
+		switch (speed) {
+		case REALTIME:
 			this.speed = Speed.HIGH;
-		else
+			break;
+		case HIGH:
 			this.speed = Speed.REALTIME;
+			break;
+		}
 	}
 }

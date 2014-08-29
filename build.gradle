@@ -26,6 +26,10 @@ project(':core') {
 		mainClassName = 'org.nusco.narjillos.Experiment'
 	}
 
+	dependencies {
+		compile 'com.google.code.gson:gson:2.3'
+	}
+
 	mainClassName = 'org.nusco.narjillos.Experiment'
 }
 

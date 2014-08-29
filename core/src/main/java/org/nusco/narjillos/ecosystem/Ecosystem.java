@@ -30,13 +30,13 @@ public class Ecosystem {
 	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;
+	private final Space foodSpace;
 	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
 	private final Population narjillos = new Population();
-	private final Space foodSpace;
 	private final List<EcosystemEventListener> ecosystemEvents = new LinkedList<>();
 	private final Thing center;
-	private volatile boolean stopCommand = false;
-	private volatile boolean stopped = false;
+	private volatile boolean shouldBePaused = false;
+	private volatile boolean paused = false;
 	
 	public Ecosystem(final long size) {
 		this.size = size;
@@ -114,8 +114,8 @@ public class Ecosystem {
 	}
 
 	public boolean tick() {
-		stopped = stopCommand;
-		if (stopped)
+		paused = shouldBePaused;
+		if (isPaused())
 			return false;
 		
 		narjillos.tick();
@@ -251,18 +251,27 @@ public class Ecosystem {
 		return narjillos;
 	}
 	
-	// This method must be operated from a separate thread than
+	// These method must be called from a separate thread than
 	// the one that calls tick();
 	public void togglePause() {
-		if (!stopCommand) {
-			stopCommand = true;
-			while (!stopped)
+		if (!shouldBePaused) {
+			shouldBePaused = true;
+			while (!isPaused())
 				wait100Millis();
 		} else {
-			stopCommand = false;
-			while (stopped)
+			shouldBePaused = false;
+			while (isPaused())
 				wait100Millis();
 		}
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void unpause() {
+		if (isPaused())
+			togglePause();
 	}
 
 	private void wait100Millis() {

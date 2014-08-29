@@ -9,7 +9,7 @@ import java.util.Set;
 import org.nusco.narjillos.shared.things.Thing;
 
 /**
- * Partitioned space for fast neighbour searching, collision detection, etc.
+ * Partitioned space for fast neighbor searching, collision detection, etc.
  */
 public class Space {
 

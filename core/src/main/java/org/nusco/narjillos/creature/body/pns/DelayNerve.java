@@ -27,17 +27,4 @@ public class DelayNerve implements Nerve {
 	public LinkedList<Double> getBuffer() {
 		return buffer;
 	}
-	
-	public static void main(String[] args) {
-		Nerve delayNerve = new DelayNerve(4);
-		delayNerve.tick(1);
-		delayNerve.tick(2);
-		delayNerve.tick(3);
-		String json = new Gson().toJson(delayNerve);
-		System.out.println(json);
-		
-		DelayNerve fromJson = new Gson().fromJson(json, DelayNerve.class);
-		for (int i = 0; i < 10; i++)
-			System.out.println(fromJson.tick(0));
-	}
 }

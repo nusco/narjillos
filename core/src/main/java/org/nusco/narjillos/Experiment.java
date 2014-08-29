@@ -92,8 +92,10 @@ public class Experiment {
 	
 	public boolean tick() {
 		reportStatus();
-		getEcosystem().tick();
-		ticksChronometer.tick();
+		boolean running = getEcosystem().tick();
+		if (running) {
+			ticksChronometer.tick();
+		}
 		return areThereSurvivors();
 	}
 

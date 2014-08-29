@@ -113,10 +113,10 @@ public class Ecosystem {
 		return result;
 	}
 
-	public void tick() {
+	public boolean tick() {
 		stopped = stopCommand;
 		if (stopped)
-			return;
+			return false;
 		
 		narjillos.tick();
 		
@@ -124,6 +124,8 @@ public class Ecosystem {
 		
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
+		
+		return true;
 	}
 
 	public final FoodPiece spawnFood(Vector position) {

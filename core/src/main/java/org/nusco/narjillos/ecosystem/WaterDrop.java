@@ -31,12 +31,16 @@ public class WaterDrop extends Ecosystem {
 	}
 
 	@Override
-	public synchronized void tick() {
-		super.tick();
+	public boolean tick() {
+		boolean running = super.tick();
 
-		if (getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES &&
-				RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
-			spawnFood(randomPosition());
+		if (running) {
+			if (getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES &&
+					RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL)
+				spawnFood(randomPosition());
+		}
+		
+		return running;
 	}
 
 	protected Vector randomPosition() {

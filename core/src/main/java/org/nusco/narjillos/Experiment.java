@@ -32,7 +32,7 @@ public class Experiment {
 	public Experiment(String... args) {
 		LinkedList<String> argumentsList = toList(args);
 
-		String gitCommit = (argumentsList.isEmpty()) ? "UNKNOWN_COMMIT" : argumentsList.removeFirst();
+		String gitCommit = (argumentsList.isEmpty()) ? "???????" : argumentsList.removeFirst();
 		int seed = extractSeed(argumentsList);
 		id = gitCommit + "-" + seed;
 		System.out.println("Experiment " + id);
@@ -129,11 +129,21 @@ public class Experiment {
 	}
 
 	private String getHeadersString() {
-		return "\n" + alignLeft("ticks") + alignLeft("time") + alignLeft("tps") + alignLeft("narj") + alignLeft("food") + "    most_typical_dna";
+		return "\n" + alignLeft("id") + alignLeft("tick") + alignLeft("time") + alignLeft("tps") + alignLeft("narj") + alignLeft("food") + "    most_typical_dna";
 	}
 
 	private String getStatusString(Ecosystem ecosystem, long tick) {
 		return getStatusString(ecosystem, tick, getMostTypicalSpecimen(ecosystem));
+	}
+
+	private String getStatusString(Ecosystem ecosystem, long tick, Creature mostTypicalSpecimen) {
+		return alignLeft(id)
+				+ alignLeft(NumberFormat.format(tick))
+				+ alignLeft(NumberFormat.format(getTimeElapsed()))
+				+ alignLeft(ticksChronometer.getTicksInLastSecond())
+				+ alignLeft(ecosystem.getNumberOfNarjillos())
+				+ alignLeft(ecosystem.getNumberOfFoodPieces())
+				+ "    " + mostTypicalSpecimen.getDNA();
 	}
 
 	private Creature getMostTypicalSpecimen(Ecosystem ecosystem) {
@@ -145,17 +155,8 @@ public class Experiment {
 		return mostTypicalSpecimen;
 	}
 
-	private String getStatusString(Ecosystem ecosystem, long tick, Creature mostTypicalSpecimen) {
-		return alignLeft(NumberFormat.format(tick))
-				+ alignLeft(NumberFormat.format(getTimeElapsed()))
-				+ alignLeft(ticksChronometer.getTicksInLastSecond())
-				+ alignLeft(ecosystem.getNumberOfNarjillos())
-				+ alignLeft(ecosystem.getNumberOfFoodPieces())
-				+ "    " + mostTypicalSpecimen.getDNA();
-	}
-
 	private String alignLeft(Object label) {
-		final String padding = "        ";
+		final String padding = "                  ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}

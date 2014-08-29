@@ -26,10 +26,10 @@ public class EcosystemFinderTest {
 	}
 	
 	@Test
-	public void pointsAtCenterOfEcosystemForNarjillosInOuterSpace() {
-		// TODO: search in space by adding a Space.getAll() method
-//		Narjillo narjilloInOuterSpace = ecosystem.spawnNarjillo(Vector.cartesian(-1, -1), DNA.random());
-//		assertEquals("center_of_ecosystem", ecosystem.findClosestFoodPiece(narjilloInOuterSpace).getLabel());
+	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
+		Ecosystem emptyEcosystem = new Ecosystem(1000);
+		Narjillo narjillo = emptyEcosystem.spawnNarjillo(Vector.cartesian(100, 100), DNA.random());
+		assertEquals("center_of_ecosystem", emptyEcosystem.findClosestFoodPiece(narjillo).getLabel());
 	}
 
 	@Test

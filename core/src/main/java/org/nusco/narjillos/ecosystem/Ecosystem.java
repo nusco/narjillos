@@ -35,7 +35,9 @@ public class Ecosystem {
 	private final Space foodSpace;
 	private final List<EcosystemEventListener> ecosystemEvents = new LinkedList<>();
 	private final Thing center;
-
+	private volatile boolean stopCommand = false;
+	private volatile boolean stopped = false;
+	
 	public Ecosystem(final long size) {
 		this.size = size;
 		this.foodSpace = new Space(size);
@@ -112,6 +114,10 @@ public class Ecosystem {
 	}
 
 	public void tick() {
+		stopped = stopCommand;
+		if (stopped)
+			return;
+		
 		narjillos.tick();
 		
 		// no need to tick food
@@ -151,11 +157,7 @@ public class Ecosystem {
 	}
 
 	private void updateTarget(Narjillo narjillo) {
-		Thing foodPiece = findClosestFoodPiece(narjillo);
-		if (foodPiece == null)
-			narjillo.setTarget(center);
-		else
-			narjillo.setTarget(foodPiece);
+		narjillo.setTarget(findClosestFoodPiece(narjillo));
 	}
 
 	protected void updateTargets() {
@@ -245,5 +247,27 @@ public class Ecosystem {
 
 	public Population getPopulation() {
 		return narjillos;
+	}
+	
+	// This method must be operated from a separate thread than
+	// the one that calls tick();
+	public void togglePause() {
+		if (!stopCommand) {
+			stopCommand = true;
+			while (!stopped)
+				wait100Millis();
+		} else {
+			stopCommand = false;
+			while (stopped)
+				wait100Millis();
+		}
+	}
+
+	private void wait100Millis() {
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

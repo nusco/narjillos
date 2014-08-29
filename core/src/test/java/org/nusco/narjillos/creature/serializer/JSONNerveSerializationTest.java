@@ -12,7 +12,7 @@ import org.nusco.narjillos.creature.body.pns.WaveNerve;
 public class JSONNerveSerializationTest {
 
 	@Test
-	public void serializesAndDeserializesPassNerves() {
+	public void serializesAndDeserializesFood() {
 		Nerve nerve = new PassNerve();
 
 		String json = JSON.toJson(nerve);

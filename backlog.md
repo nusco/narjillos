@@ -5,6 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
+* Watchdog for excessive speed (results in warning) °°
 * Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °°
 * Smooth, inertial targeting °
 
@@ -26,7 +27,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * View Narjillo's evolutionary path °°
 * Ancestry browser °°
 * Find a good way to deal with atrophy °°
-* Narjillo's skewing is genetically determined °
+* Separate RGB color genes °°
+* Narjillo's skewing is genetically determined for each organ °
+* Recursive body plan (creates multiple identical segments)
 * Whole-body size gene
 * DNA diff during ancestry analysis
 

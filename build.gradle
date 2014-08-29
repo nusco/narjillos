@@ -16,6 +16,8 @@ allprojects {
 	task wrapper(type: Wrapper) {
 		gradleVersion = '2.0'
 	}
+
+	mainClassName = 'org.nusco.narjillos.Experiment'
 }
 
 project(':core') {

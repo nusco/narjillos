@@ -21,4 +21,8 @@ public class DelayNerve implements Nerve {
 			return buffer.getFirst();
 		return buffer.pop();
 	}
+
+	public LinkedList<Double> getBuffer() {
+		return buffer;
+	}
 }

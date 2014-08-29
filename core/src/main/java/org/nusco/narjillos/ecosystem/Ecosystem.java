@@ -30,10 +30,10 @@ public class Ecosystem {
 	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;
-	private final Space foodSpace;
 	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
 	private final Population narjillos = new Population();
-	private final List<EcosystemEventListener> ecosystemEvents = new LinkedList<>();
+	private final Space foodSpace;
+	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
 	private final Thing center;
 	private volatile boolean shouldBePaused = false;
 	private volatile boolean paused = false;
@@ -226,17 +226,17 @@ public class Ecosystem {
 	}
 
 	private final void notifyThingAdded(Thing thing) {
-		for (EcosystemEventListener ecosystemEvent : ecosystemEvents)
+		for (EcosystemEventListener ecosystemEvent : ecosystemEventListeners)
 			ecosystemEvent.thingAdded(thing);
 	}
 
 	private final void notifyThingRemoved(Thing thing) {
-		for (EcosystemEventListener ecosystemEvent : ecosystemEvents)
+		for (EcosystemEventListener ecosystemEvent : ecosystemEventListeners)
 			ecosystemEvent.thingRemoved(thing);
 	}
 
 	public void addEventListener(EcosystemEventListener ecosystemEventListener) {
-		ecosystemEvents.add(ecosystemEventListener);
+		ecosystemEventListeners.add(ecosystemEventListener);
 	}
 
 	public synchronized int getNumberOfFoodPieces() {

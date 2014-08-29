@@ -9,9 +9,10 @@ import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.ecosystem.FoodPiece;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class NarjilloTest {
@@ -81,8 +82,26 @@ public class NarjilloTest {
 
 	private double getEnergyLossWithMovement(Narjillo narjillo) {
 		double startingEnergy = narjillo.getEnergy().getValue();
-		FoodPiece foodPiece = new FoodPiece();
-		foodPiece.setPosition(Vector.cartesian(1000, 1000));
+		Thing foodPiece = new Thing() {
+
+			@Override
+			public void tick() {
+			}
+
+			@Override
+			public Vector getPosition() {
+				return Vector.cartesian(1000, 1000);
+			}
+
+			@Override
+			public Energy getEnergy() {
+				return null;
+			}
+
+			@Override
+			public String getLabel() {
+				return null;
+			}};
 		narjillo.setTarget(foodPiece);
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();

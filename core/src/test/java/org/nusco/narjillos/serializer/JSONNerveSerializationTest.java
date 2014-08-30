@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.serializer;
+package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -8,6 +8,7 @@ import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
+import org.nusco.narjillos.serializer.JSON;
 
 public class JSONNerveSerializationTest {
 

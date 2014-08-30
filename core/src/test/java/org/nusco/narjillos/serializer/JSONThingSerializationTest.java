@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.serializer;
+package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,7 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Placemark;

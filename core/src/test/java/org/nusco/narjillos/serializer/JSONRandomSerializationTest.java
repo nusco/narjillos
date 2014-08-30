@@ -1,8 +1,9 @@
-package org.nusco.narjillos.creature.serializer;
+package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class JSONRandomSerializationTest {

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.serializer;
+package org.nusco.narjillos.serializer;
 
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;

@@ -23,18 +23,20 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
 /**
  * The place that Narjillos live in.
  * 
- * Can find things and detecting collisions.
+ * Can find things and detect collisions.
  */
 public abstract class Ecosystem {
 
 	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;
+	
+	private final Space foodSpace;
+	private final Thing center;
+
 	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
 	private final Population narjillos = new Population();
-	private final Space foodSpace;
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
-	private final Thing center;
 	private volatile boolean shouldBePaused = false;
 	private volatile boolean paused = false;
 	
@@ -117,18 +119,18 @@ public abstract class Ecosystem {
 	public final FoodPiece spawnFood(Vector position) {
 		FoodPiece newFood = new FoodPiece();
 		newFood.setPosition(position);
-		notifyThingAdded(newFood);
 		synchronized (this) {
 			foodPieces.add(newFood);
 		}
 		foodSpace.add(newFood);
+		notifyThingAdded(newFood);
 		return newFood;
 	}
 
 	public final Narjillo spawnNarjillo(Vector position, DNA genes) {
 		final Narjillo narjillo = new Narjillo(new Embryo(genes).develop(), position, genes);
-		notifyThingAdded(narjillo);
 		narjillos.add(narjillo);
+		notifyThingAdded(narjillo);
 		return narjillo;
 	}
 
@@ -193,10 +195,13 @@ public abstract class Ecosystem {
 
 	private void reproduce(Creature narjillo) {
 		DNA childDNA = narjillo.reproduce();
-		Vector position = narjillo.getPosition().plus(
-				Vector.cartesian(6000 * RanGen.nextDouble() - 3000,
-						6000 * RanGen.nextDouble() - 3000));
+		Vector offset = Vector.cartesian(randomInRange(3000), randomInRange(3000));
+		Vector position = narjillo.getPosition().plus(offset);
 		spawnNarjillo(position, childDNA);
+	}
+
+	private double randomInRange(final int range) {
+		return (range * 2 * RanGen.nextDouble()) - range;
 	}
 
 	private final void notifyThingAdded(Thing thing) {

@@ -1,9 +1,10 @@
-package org.nusco.narjillos.creature.serializer;
+package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.serializer.JSON;
 
 public class JSONDNASerializationTest {
 

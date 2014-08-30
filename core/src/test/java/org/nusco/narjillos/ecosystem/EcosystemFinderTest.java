@@ -4,21 +4,37 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class EcosystemFinderTest {
 	
-	private Ecosystem ecosystem = new Ecosystem(1000) {};
-	private FoodPiece foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
-	private FoodPiece foodPiece2 = ecosystem.spawnFood(Vector.cartesian(999, 999));
-	private Narjillo narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(101, 101), DNA.random());
-	private Narjillo narjillo2 = ecosystem.spawnNarjillo(Vector.cartesian(998, 998), DNA.random());
+	Ecosystem ecosystem;
+	FoodPiece foodPiece1;
+	FoodPiece foodPiece2;
+	Narjillo narjillo1;
+	Narjillo narjillo2;
+	
+	@Before
+	public void initialize() {
+		try {
+			RanGen.reset();
+		} catch (RuntimeException e) {
+		}
+		RanGen.initializeWith(42);
+
+		ecosystem = new Ecosystem(1000) {};
+		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
+		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(999, 999));
+		narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(101, 101), DNA.random());
+		narjillo2 = ecosystem.spawnNarjillo(Vector.cartesian(998, 998), DNA.random());
+	}
 	
 	@Test
 	public void findsTheClosestFoodToAGivenNarjillo() {

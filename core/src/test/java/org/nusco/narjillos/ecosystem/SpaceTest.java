@@ -18,7 +18,7 @@ public class SpaceTest {
 	Space space = new Space(10_000);
 
 	@Test
-	public void itIsDividedInto10ThousandsAreas() {
+	public void itIsDividedIntoAGridOfSquareAreas() {
 		assertEquals(100, space.getAreaSize(), 0.00001);
 	}
 
@@ -182,7 +182,7 @@ public class SpaceTest {
 	}
 
 	@Test
-	public void thingsInOuterSpaceAreAddedToACommonArea() {
+	public void thingsInOuterSpaceBelongToACommonArea() {
 		Thing[] things = new Thing[] {
 				new MockThing(Vector.cartesian(-1, -1), 0),     // outer space
 				new MockThing(Vector.cartesian(10_010, 10_010), 1), // outer space

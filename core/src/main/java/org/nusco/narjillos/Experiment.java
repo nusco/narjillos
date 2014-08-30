@@ -11,10 +11,6 @@ import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.WaterDrop;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -137,76 +133,30 @@ public class Experiment {
 	}
 
 	private String getStatusString(Ecosystem ecosystem, long tick) {
-		return getStatusString(ecosystem, tick, getMostTypicalSpecimen(ecosystem));
+		Creature mostTypicalSpecimen = getMostTypicalSpecimen(ecosystem);
+		if (mostTypicalSpecimen == null)
+			return getStatusString(ecosystem, tick, "<none>");
+		return getStatusString(ecosystem, tick, mostTypicalSpecimen.getDNA().toString());
 	}
 
-	private String getStatusString(Ecosystem ecosystem, long tick, Creature mostTypicalSpecimen) {
+	private String getStatusString(Ecosystem ecosystem, long tick, String mostTypicalDNA) {
 		return alignLeft(id)
 				+ alignLeft(NumberFormat.format(tick))
 				+ alignLeft(NumberFormat.format(getTimeElapsed()))
 				+ alignLeft(ticksChronometer.getTicksInLastSecond())
 				+ alignLeft(ecosystem.getNumberOfNarjillos())
 				+ alignLeft(ecosystem.getNumberOfFoodPieces())
-				+ "    " + mostTypicalSpecimen.getDNA();
+				+ "    " + mostTypicalDNA;
 	}
 
 	private Creature getMostTypicalSpecimen(Ecosystem ecosystem) {
-		Creature mostTypicalSpecimen = ecosystem.getPopulation().getMostTypicalSpecimen();
-
-		if (mostTypicalSpecimen == null)
-			return getNullCreature();
-		
-		return mostTypicalSpecimen;
+		return ecosystem.getPopulation().getMostTypicalSpecimen();
 	}
 
 	private String alignLeft(Object label) {
 		final String padding = "                  ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
-	}
-
-	private Creature getNullCreature() {
-		return new Creature() {
-
-			@Override
-			public Segment tick() {
-				return new Segment(Vector.ZERO, Vector.ZERO);
-			}
-
-			@Override
-			public DNA getDNA() {
-				return new DNA("{0_0_0_0}");
-			}
-
-			@Override
-			public Vector getPosition() {
-				return Vector.ZERO;
-			}
-
-			@Override
-			public String getLabel() {
-				return "nobody";
-			}
-
-			@Override
-			public Energy getEnergy() {
-				return null;
-			}
-
-			@Override
-			public DNA reproduce() {
-				return null;
-			}
-
-			@Override
-			public void feedOn(Thing thing) {
-			}
-
-			@Override
-			public boolean isDead() {
-				return false;
-			}
-		};
 	}
 
 	public static void main(String... args) {

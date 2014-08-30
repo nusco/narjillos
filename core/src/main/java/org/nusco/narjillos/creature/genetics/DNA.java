@@ -86,7 +86,7 @@ public class DNA {
 		return random(size);
 	}
 
-	public static DNA random(int size) {
+	private static DNA random(int size) {
 		Integer[] genes = randomGenes(size);
 		return new DNA(genes);
 	}

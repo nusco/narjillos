@@ -13,7 +13,6 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Placemark;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.ColorByte;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class NarjilloTest {
 
@@ -22,11 +21,7 @@ public class NarjilloTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		try {
-			RanGen.reset();
-		} catch (RuntimeException e) {}
-		RanGen.initializeWith(1234);
-		narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), Vector.ZERO, DNA.random());
+		narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), Vector.ZERO, new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}"));
 		
 		DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
 		biggerNarjillo = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);

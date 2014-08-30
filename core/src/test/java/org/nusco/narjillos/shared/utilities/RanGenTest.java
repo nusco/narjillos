@@ -13,49 +13,51 @@ public class RanGenTest {
 	@Before
 	public void resetRanGen() {
 		reset();
-		
-		assertEquals(RanGen.NO_SEED, RanGen.getSeed());
-		
-		RanGen.seed(123);
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void failsIfNotInitialized() {
+		RanGen.nextByte();
 	}
 
 	@Test
 	public void generatesADeterministicSequenceOfNumbers() {
-		assertEquals(205, RanGen.nextByte());
-		assertEquals(0.99, RanGen.nextDouble(), 0.01);
-		assertEquals(543942802, RanGen.nextInt());
+		RanGen.initializeWith(123);
+
+		assertEquals(194, RanGen.nextByte());
+		assertEquals(0.91, RanGen.nextDouble(), 0.01);
+		assertEquals(-1537559018, RanGen.nextInt());
 	}
-	
+
 	@Test
-	public void canBeFastForwardedToAGivenCounterPosition() {
-		reset();
-		RanGen.seed(1234);
-		for (int i = 0; i < 100; i++) {
-			RanGen.nextByte();
+	public void returnsTheCurrentSeed() {
+		RanGen.initializeWith(123);
+
+		for (int i = 0; i < 10; i++)
 			RanGen.nextDouble();
-			RanGen.nextInt();
-		}
-		long position = RanGen.getPosition();
-		int expected = RanGen.nextInt();
-		
+		long seedBeforeNumberGeneration = RanGen.getCurrentSeed();
+		double expected = RanGen.nextDouble();
+
 		reset();
-		RanGen.seed(1234);
-		RanGen.fastForwardTo(position);
-		
-		assertEquals(expected, RanGen.nextInt());
+		RanGen.initializeWith(seedBeforeNumberGeneration);
+		double actual = RanGen.nextDouble();
+
+		assertEquals(expected, actual, 0.0);
 	}
-	
-	@Test(expected=RuntimeException.class)
+
+	@Test(expected = RuntimeException.class)
 	public void cannotBeSeededTwice() {
-		RanGen.seed(245);
+		RanGen.initializeWith(245);
+		RanGen.initializeWith(245);
 	}
-	
+
 	@Test
 	public void throwsAnExceptionIfYouGenerateNumbersFromMultipleThreads() throws InterruptedException {
+		RanGen.initializeWith(123456);
 		RanGen.nextByte();
 
 		final ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();
-		
+
 		new Thread() {
 			@Override
 			public void run() {
@@ -68,10 +70,10 @@ public class RanGenTest {
 				results.add("no exception");
 			}
 		}.start();
-		
+
 		while (results.isEmpty())
 			Thread.sleep(10);
-		
+
 		assertTrue(results.peek().startsWith("RanGen accessed from multiple threads"));
 	}
 

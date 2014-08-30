@@ -5,6 +5,7 @@ import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.RanGen;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,5 +27,14 @@ public class JSON {
 
 	public static <T> T fromJson(String json, Class<T> clazz) {
 		return gson.fromJson(json, clazz);
+	}
+
+	public static String serializeRandomGenerator() {
+		return toJson(RanGen.getCurrentSeed(), Long.class);
+	}
+
+	public static void deserializeRandomGenerator(String json) {
+		Long seed = fromJson(json, Long.class);
+		RanGen.initializeWith(seed);
 	}
 }

@@ -1,91 +1,92 @@
 package org.nusco.narjillos.shared.utilities;
 
+import java.lang.reflect.Field;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Generates pseudo-random numbers.
  * 
- * It's meant to be seeded to generate a predictable sequence. All the randomness
- * in the system should come from this class after seeding, to get repeatable
- * results from experiments.
+ * It's meant to be seeded to generate a predictable sequence. All the
+ * randomness in the system should come from this class after seeding, to get
+ * deterministic results from experiments.
  */
 public class RanGen {
 
-	static final int NO_SEED = -1;
-	
-	private static int seed = NO_SEED;
-	private static Random random;
+	private static TransparentRandom random;
 	private static Thread authorizedThread;
-	private static long position;
-	
-	public synchronized static void seed(int seed) {
-		if (getSeed() != NO_SEED)
-			throw new RuntimeException("RanGen seeded more than once. " + getExplanation());
-		setSeed(seed);
+
+	public synchronized static void initializeWith(long seed) {
+		if (random != null)
+			throw new RuntimeException("RanGen initialized more than once. " + getExplanation());
+
+		random = new TransparentRandom();
+		random.setSeed(seed);
+		
+		authorizedThread = Thread.currentThread();
 	}
 
 	public static double nextDouble() {
-		double result = getRandom().nextDouble();
-		position++;
-		return result;
+		return getRandom().nextDouble();
 	}
 
 	public static int nextInt() {
-		return (int)Math.round(nextDouble() * Integer.MAX_VALUE);
+		return getRandom().nextInt();
 	}
 
 	public static int nextByte() {
 		return Math.abs(nextInt()) % 255;
 	}
 
-	private static synchronized Random getRandom() {
+	public static synchronized Random getRandom() {
 		if (random == null)
-			initialize();
+			throw new RuntimeException("Initialize RanGen before using it. (Call initializeWith(seed)).");
 		if (Thread.currentThread() != authorizedThread)
 			throw new RuntimeException("RanGen accessed from multiple threads. " + getExplanation());
 		return random;
 	}
 
-	private static void initialize() {
-		if (getSeed() == NO_SEED)
-			seedRandomly();
-		random = new Random(getSeed());
-		authorizedThread = Thread.currentThread();
-		position = 0;
-	}
-
-	static int getSeed() {
-		return seed;
-	}
-
-	private static void setSeed(int seed) {
-		RanGen.seed = seed;
-	}
-
-	private static void seedRandomly() {
-		setSeed((int)(Math.random() * Integer.MAX_VALUE));
+	static long getSeed() {
+		return ((TransparentRandom) getRandom()).getCurrentSeed();
 	}
 
 	private static String getExplanation() {
-		return "(Don't do that, or else there is no guarantee that the same " + 
-				"seed will generate the same sequence of numbers.)";
+		return "(Don't do that, or else there is no guarantee that the same " + "seed will generate the same sequence of numbers.)";
 	}
 
-	static long getPosition() {
-		return position;
-	}
-
-	public static void fastForwardTo(long position) {
-		while (getPosition() < position)
-			nextDouble();
+	public static long getCurrentSeed() {
+		return random.getCurrentSeed();
 	}
 
 	// Don't use in production code - this is just for testing.
-	// So it always throws an exception, just in case somebody uses it by mistake.
-	static synchronized void reset() {
+	// So it always throws an exception, just in case somebody uses it by
+	// mistake.
+	public static synchronized void reset() {
 		random = null;
-		seed = NO_SEED;
-		position = 0;
 		throw new RuntimeException("RanGen.reset() called. " + getExplanation());
+	}
+
+	private static class TransparentRandom extends Random {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public synchronized void setSeed(long seed) {
+			// don't scramble
+			extractSeed().set(seed);
+		}
+
+		public long getCurrentSeed() {
+			return extractSeed().longValue();
+		}
+
+		private AtomicLong extractSeed() {
+			try {
+				Field seedField = Random.class.getDeclaredField("seed");
+				seedField.setAccessible(true);
+				return (AtomicLong) seedField.get(this);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }

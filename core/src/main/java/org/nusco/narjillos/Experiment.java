@@ -38,7 +38,7 @@ public class Experiment {
 		int seed = extractSeed(argumentsList);
 		id = gitCommit + "-" + seed;
 		System.out.println("Experiment " + id);
-		RanGen.seed(seed);
+		RanGen.initializeWith(seed);
 
 		ecosystem = extractEcosystem(argumentsList);
 

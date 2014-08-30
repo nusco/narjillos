@@ -65,7 +65,7 @@ public class Experiment {
 		if (argumentsList.isEmpty())
 			return new WaterDrop();
 		
-		if(argumentsList.getFirst().endsWith(".nrj"))
+		if(argumentsList.getFirst().endsWith(".dna"))
 			return new WaterDrop(readDNAFromFile(argumentsList.removeFirst()));
 		
 		return new WaterDrop(new DNA(argumentsList.removeFirst()));

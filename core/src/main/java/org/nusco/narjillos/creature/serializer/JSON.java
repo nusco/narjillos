@@ -3,6 +3,7 @@ package org.nusco.narjillos.creature.serializer;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
+import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.things.Thing;
 
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import com.google.gson.GsonBuilder;
 public class JSON {
 
 	private static final Gson gson = new GsonBuilder()
+		.registerTypeAdapter(DNA.class, new DNAAdapter())
 		.registerTypeAdapter(Nerve.class, new NerveAdapter())
 		.registerTypeAdapter(BodyPart.class, new BodyPartAdapter())
 		.registerTypeAdapter(Organ.class, new BodyPartAdapter())

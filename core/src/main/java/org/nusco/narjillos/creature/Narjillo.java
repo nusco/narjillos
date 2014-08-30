@@ -17,19 +17,19 @@ public class Narjillo implements Thing, Creature {
 	static final double MAX_LIFESPAN = 30_000;
 	
 	private final Body body;
-	private final DNA genes;
+	private final DNA dna;
 	private Thing target = Thing.NULL;
 	private Energy energy;
 	
 	public Narjillo(Body body, Vector position, DNA genes) {
 		this.body = body;
 		body.teleportTo(position);
-		this.genes = genes;
+		this.dna = genes;
 		energy = new Energy(body.getMass(), MAX_LIFESPAN);
 	}
 
 	public DNA getDNA() {
-		return genes;
+		return dna;
 	}
 
 	public Energy getEnergy() {

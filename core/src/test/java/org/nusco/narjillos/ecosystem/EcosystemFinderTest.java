@@ -14,7 +14,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class EcosystemFinderTest {
 	
-	private Ecosystem ecosystem = new Ecosystem(1000);
+	private Ecosystem ecosystem = new Ecosystem(1000) {};
 	private FoodPiece foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 	private FoodPiece foodPiece2 = ecosystem.spawnFood(Vector.cartesian(999, 999));
 	private Narjillo narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(101, 101), DNA.random());
@@ -28,7 +28,7 @@ public class EcosystemFinderTest {
 	
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
-		Ecosystem emptyEcosystem = new Ecosystem(1000);
+		Ecosystem emptyEcosystem = new Ecosystem(1000) {};
 		Narjillo narjillo = emptyEcosystem.spawnNarjillo(Vector.cartesian(100, 100), DNA.random());
 		Thing target = emptyEcosystem.findClosestTarget(narjillo);
 		assertEquals("placemark", target.getLabel());

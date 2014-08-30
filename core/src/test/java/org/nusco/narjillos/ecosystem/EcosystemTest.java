@@ -17,7 +17,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class EcosystemTest {
 	
-	Ecosystem ecosystem = new Ecosystem(1000);
+	Ecosystem ecosystem = new Ecosystem(1000) {};
 	FoodPiece foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 	FoodPiece foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
 	FoodPiece foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));

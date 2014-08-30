@@ -25,7 +25,7 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
  * 
  * Can find things and detecting collisions.
  */
-public class Ecosystem {
+public abstract class Ecosystem {
 
 	private static final double COLLISION_DISTANCE = 30;
 

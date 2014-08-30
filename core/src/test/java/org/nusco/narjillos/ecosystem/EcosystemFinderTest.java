@@ -29,7 +29,7 @@ public class EcosystemFinderTest {
 		}
 		RanGen.initializeWith(42);
 
-		ecosystem = new Ecosystem(1000) {};
+		ecosystem = new Ecosystem(1000);
 		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(999, 999));
 		narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(101, 101), DNA.random());
@@ -44,7 +44,7 @@ public class EcosystemFinderTest {
 	
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
-		Ecosystem emptyEcosystem = new Ecosystem(1000) {};
+		Ecosystem emptyEcosystem = new Ecosystem(1000);
 		Narjillo narjillo = emptyEcosystem.spawnNarjillo(Vector.cartesian(100, 100), DNA.random());
 		Thing target = emptyEcosystem.findClosestTarget(narjillo);
 		assertEquals("placemark", target.getLabel());
@@ -59,7 +59,7 @@ public class EcosystemFinderTest {
 
 	@Test
 	public void returnsNullIfLookingForNarjillosInAWorldWithoutThem() {
-		Ecosystem ecosystem = new Ecosystem(1000) {};
+		Ecosystem ecosystem = new Ecosystem(1000);
 		
 		assertNull(ecosystem.findNarjillo(Vector.cartesian(150, 150)));
 	}

@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class PopulationTest {
 	
-	Population population = new Population();
+	GenePool population = new GenePool();
 	
 	@Before
 	public void setupPopulation() {

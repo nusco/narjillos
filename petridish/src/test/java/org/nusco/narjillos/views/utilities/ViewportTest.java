@@ -11,21 +11,21 @@ public class ViewportTest {
 
 	@Test
 	public void hasTheSameSizeAsTheEcosystemByDefault() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 
 		assertMoreOrLessEquals(Vector.cartesian(100, 100), viewport.getSizeSC());
 	}
 
 	@Test
 	public void hasAMaximumInitialSize() {
-		Viewport viewport = new Viewport(new Ecosystem(100000) {});
+		Viewport viewport = new Viewport(new Ecosystem(100000));
 
 		assertMoreOrLessEquals(Vector.cartesian(Viewport.MAX_INITIAL_SIZE_SC, Viewport.MAX_INITIAL_SIZE_SC), viewport.getSizeSC());
 	}
 
 	@Test
 	public void canBeResized() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		viewport.setSizeSC(Vector.cartesian(1000, 900));
 		
 		assertMoreOrLessEquals(Vector.cartesian(1000, 900), viewport.getSizeSC());
@@ -33,14 +33,14 @@ public class ViewportTest {
 
 	@Test
 	public void isCenteredOnTheCenterOfTheEcosystemByDefault() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 	}
 
 	@Test
 	public void canBeCenteredOnADifferentPosition() {
-		Viewport viewport = new Viewport(new Ecosystem((long) 100) {});
+		Viewport viewport = new Viewport(new Ecosystem((long) 100));
 		stabilize(viewport);
 		
 		viewport.setCenterEC(Vector.cartesian(100, 200));
@@ -51,7 +51,7 @@ public class ViewportTest {
 
 	@Test
 	public void hasItsUpperCornerInTheOriginByDefault() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		stabilize(viewport);
 		
 		assertMoreOrLessEquals(Vector.ZERO, viewport.getPositionEC());
@@ -59,7 +59,7 @@ public class ViewportTest {
 
 	@Test
 	public void canBeRecentered() {
-		Viewport viewport = new Viewport(new Ecosystem(800) {});
+		Viewport viewport = new Viewport(new Ecosystem(800));
 		viewport.setSizeSC(Vector.cartesian(100, 400));
 		stabilize(viewport);
 		
@@ -76,7 +76,7 @@ public class ViewportTest {
 
 	@Test
 	public void hasADefaultZoomLevelOfOne() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		stabilize(viewport);
 
 		assertEquals(1, viewport.getZoomLevel(), 0.01);
@@ -85,7 +85,7 @@ public class ViewportTest {
 	@Test
 	public void zoomsToViewTheEntireEcosystemAtTheBeginning() {
 		final long ecosystemSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
-		Viewport viewport = new Viewport(new Ecosystem(ecosystemSize) {});
+		Viewport viewport = new Viewport(new Ecosystem(ecosystemSize));
 		stabilize(viewport);
 		
 		assertEquals(0.1, viewport.getZoomLevel(), 0.01);
@@ -94,7 +94,7 @@ public class ViewportTest {
 	@Test
 	public void resizingItDoesNotChangeTheZoomLevel() {
 		final long ecosystemSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
-		Viewport viewport = new Viewport(new Ecosystem(ecosystemSize) {});
+		Viewport viewport = new Viewport(new Ecosystem(ecosystemSize));
 		stabilize(viewport);
 		
 		viewport.setSizeSC(Vector.cartesian(100, 10000));
@@ -103,7 +103,7 @@ public class ViewportTest {
 
 	@Test
 	public void zoomingItDoesNotChangeItsCenter() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 
 		viewport.zoomIn();
@@ -117,7 +117,7 @@ public class ViewportTest {
 
 	@Test
 	public void resizingItDoesNotChangeItsCenter() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 
 		viewport.setSizeSC(Vector.cartesian(20, 1000));
@@ -127,7 +127,7 @@ public class ViewportTest {
 
 	@Test
 	public void resizingChangesItsPosition() {
-		Viewport viewport = new Viewport(new Ecosystem(300) {});
+		Viewport viewport = new Viewport(new Ecosystem(300));
 		viewport.setSizeSC(Vector.cartesian(50, 60));
 		viewport.setCenterEC(Vector.cartesian(100, 200));
 		stabilize(viewport);
@@ -141,7 +141,7 @@ public class ViewportTest {
 
 	@Test
 	public void canZoomIn() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		stabilize(viewport);
 		
 		viewport.setSizeSC(Vector.cartesian(50, 50));
@@ -158,7 +158,7 @@ public class ViewportTest {
 
 	@Test
 	public void canZoomOut() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		stabilize(viewport);
 		
 		viewport.setZoomLevel(0.2);
@@ -180,7 +180,7 @@ public class ViewportTest {
 
 	@Test
 	public void pansTowardsCenterWhenAtMaxZoomLevel() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		stabilize(viewport);
 		
 		viewport.setCenterSC(Vector.cartesian(60, 60));
@@ -198,7 +198,7 @@ public class ViewportTest {
 
 	@Test
 	public void zoomsOverTheMaxRegressToAStableState() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		viewport.setSizeSC(Vector.cartesian(50, 50));
 		viewport.setZoomLevel(Viewport.MAX_ZOOM + 0.2);
 		stabilize(viewport);
@@ -208,7 +208,7 @@ public class ViewportTest {
 
 	@Test
 	public void cannotZoomOutOverALimit() {
-		Viewport viewport = new Viewport(new Ecosystem(100) {});
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		for (int i = 0; i < 300; i++)
 			viewport.zoomOut();
 		

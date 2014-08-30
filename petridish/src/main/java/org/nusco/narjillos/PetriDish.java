@@ -43,13 +43,11 @@ public class PetriDish extends Application {
 	private static String[] programArguments = new String[0];
 
 	private Experiment experiment;
-	private EcosystemView ecosystemView;
+	private volatile EcosystemView ecosystemView;
 	
     private Node foreground;
-	private final Chronometer framesChronometer = new Chronometer();
-	
-	private volatile boolean isModelThreadReady;
 	private final PetriDishState state = new PetriDishState();
+	private final Chronometer framesChronometer = new Chronometer();
 	
 	@Override
 	public void start(final Stage primaryStage) {
@@ -86,16 +84,17 @@ public class PetriDish extends Application {
 	}
 	
 	private void startModelThread(final String[] experimentArguments) {
+		final boolean[] isModelThreadReady = new boolean[] { false };
 		Thread updateThread = new Thread() {
 			@Override
 			public void run() {
 				experiment = new Experiment(experimentArguments);
-				ecosystemView = new EcosystemView(getEcosystem());
-				isModelThreadReady = true;
+				ecosystemView = new EcosystemView(experiment.getEcosystem());
+				isModelThreadReady[0] = true;
 				
 				while (true) {
 					long startTime = System.currentTimeMillis();
-					if (!tick())
+					if (!experiment.tick())
 						return;
 					waitUntilTimePassed(getTicksPeriod(), startTime);
 				}
@@ -103,7 +102,11 @@ public class PetriDish extends Application {
 		};
 		updateThread.setDaemon(true);
 		updateThread.start();
-		waitUntilModelThreadIsReady();
+		while (!isModelThreadReady[0])
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+			}
 	}
 
 	private void startViewThread(final Group root) {
@@ -116,6 +119,7 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
+					ecosystemView.tick();
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
@@ -190,11 +194,6 @@ public class PetriDish extends Application {
 		});
 	}
 
-	private boolean tick() {
-		getEcosystemView().tick();
-		return experiment.tick();
-	}
-
 	void waitUntilTimePassed(int time, long since) {
 		long timeTaken = System.currentTimeMillis() - since;
 		long waitTime = Math.max(time - timeTaken, 1);
@@ -202,14 +201,6 @@ public class PetriDish extends Application {
 			Thread.sleep(waitTime);
 		} catch (InterruptedException e) {
 		}
-	}
-
-	private void waitUntilModelThreadIsReady() {
-		while (!isModelThreadReady)
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-			}
 	}
 
 	private synchronized void updateForeground() {

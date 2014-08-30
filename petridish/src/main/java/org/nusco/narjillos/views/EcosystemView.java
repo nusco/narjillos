@@ -29,7 +29,6 @@ import org.nusco.narjillos.views.utilities.Viewport;
 
 public class EcosystemView {
 
-	private final Ecosystem ecosystem;
 	private final Viewport viewport;
 	private final Shape background;
 	private final Shape darkness;
@@ -38,7 +37,6 @@ public class EcosystemView {
 	private Light light = Light.ON;
 
 	public EcosystemView(Ecosystem ecosystem) {
-		this.ecosystem = ecosystem;
 		viewport = new Viewport(ecosystem);
 		background = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
 		darkness = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
@@ -163,10 +161,6 @@ public class EcosystemView {
 
 	public void tick() {
 		viewport.tick();
-	}
-
-	public Ecosystem getEcosystem() {
-		return ecosystem;
 	}
 
 	public void setLight(Light light) {

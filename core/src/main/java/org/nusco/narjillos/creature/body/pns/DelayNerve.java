@@ -2,8 +2,6 @@ package org.nusco.narjillos.creature.body.pns;
 
 import java.util.LinkedList;
 
-import com.google.gson.Gson;
-
 /**
  * Outputs the same signal it receives as an input, delayed by a given number of ticks.
  */
@@ -26,5 +24,9 @@ public class DelayNerve implements Nerve {
 
 	public LinkedList<Double> getBuffer() {
 		return buffer;
+	}
+
+	public int getDelay() {
+		return delay;
 	}
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.Placemark;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class SpaceTest {
@@ -201,30 +201,15 @@ public class SpaceTest {
 	}
 }
 
-class MockThing implements Thing {
+class MockThing extends Placemark {
 
-	private final Vector position;
 	private final String label;
 
 	public MockThing(Vector position, Integer id) {
-		this.position = position;
+		super(position);
 		this.label = id.toString();
 	}
-
-	@Override
-	public void tick() {
-	}
-
-	@Override
-	public Vector getPosition() {
-		return position;
-	}
-
-	@Override
-	public Energy getEnergy() {
-		return null;
-	}
-
+	
 	@Override
 	public String getLabel() {
 		return label;

@@ -48,16 +48,6 @@ public class Population {
 		return result;
 	}
 
-	public void tick() {
-		Set<Creature> copyOfCreatures = new LinkedHashSet<Creature>();
-		synchronized (this) {
-			copyOfCreatures.addAll(creatures);
-		}
-
-		for (Creature creature : copyOfCreatures)
-			creature.tick();
-	}
-
 	public synchronized int size() {
 		return creatures.size();
 	}

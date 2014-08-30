@@ -54,7 +54,7 @@ public abstract class BodyPart {
 		return color;
 	}
 
-	protected final void updateCaches() {
+	public final void updateCaches() {
 		cachedAbsoluteAngle = calculateAbsoluteAngle();
 		cachedVector = calculateVector();
 		cachedStartPoint = calculateStartPoint();

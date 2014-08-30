@@ -8,8 +8,9 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.FoodPiece;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.FoodPiece;
+import org.nusco.narjillos.shared.things.Thing;
 
 public class EcosystemFinderTest {
 	
@@ -21,15 +22,17 @@ public class EcosystemFinderTest {
 	
 	@Test
 	public void findsTheClosestFoodToAGivenNarjillo() {
-		assertEquals(foodPiece1, ecosystem.findClosestFoodPiece(narjillo1));
-		assertEquals(foodPiece2, ecosystem.findClosestFoodPiece(narjillo2));
+		assertEquals(foodPiece1, ecosystem.findClosestTarget(narjillo1));
+		assertEquals(foodPiece2, ecosystem.findClosestTarget(narjillo2));
 	}
 	
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
 		Ecosystem emptyEcosystem = new Ecosystem(1000);
 		Narjillo narjillo = emptyEcosystem.spawnNarjillo(Vector.cartesian(100, 100), DNA.random());
-		assertEquals("center_of_ecosystem", emptyEcosystem.findClosestFoodPiece(narjillo).getLabel());
+		Thing target = emptyEcosystem.findClosestTarget(narjillo);
+		assertEquals("placemark", target.getLabel());
+		assertEquals(Vector.cartesian(500, 500), target.getPosition());
 	}
 
 	@Test

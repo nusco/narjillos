@@ -1,6 +1,6 @@
 package org.nusco.narjillos.creature.body;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.pns.Nerve;
@@ -14,15 +14,19 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public abstract class Organ extends BodyPart {
 
 	private final Nerve nerve;
-	private final BodyPart parent;
-	private final List<Organ> children = new LinkedList<>();
+	private transient BodyPart parent;
+	private final List<Organ> children = new ArrayList<>();
 
-	private volatile double angleToParent = 0;
-	public double skewing = 0;
+	private double angleToParent = 0;
+	private double skewing = 0;
 	
-	protected Organ(int length, int thickness, ColorByte color, BodyPart parent, Nerve nerve) {
+	protected Organ(int length, int thickness, ColorByte color, Organ parent, Nerve nerve) {
 		super(length, thickness, color);
 		this.nerve = nerve;
+		setParent(parent);
+	}
+
+	public final void setParent(Organ parent) {
 		this.parent = parent;
 	}
 
@@ -52,7 +56,7 @@ public abstract class Organ extends BodyPart {
 		return getStartPoint().plus(getVector().by(0.5));
 	}
 
-	protected final BodyPart getParent() {
+	public final BodyPart getParent() {
 		return parent;
 	}
 

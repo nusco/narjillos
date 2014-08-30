@@ -10,9 +10,9 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.FoodPiece;
 import org.nusco.narjillos.ecosystem.EcosystemEventListener;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class EcosystemTest {

@@ -16,8 +16,6 @@ abstract class OrganBuilder {
 	}
 	
 	int getLength() {
-		// TODO: find a good way to deal with atrophy.
-		// It should be possible for a Narjillo to have organs that are very short but wide.
 		final int ATROPHY_LENGTH = 29;
 		return chromosome.getGene(1) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(1);
 	}

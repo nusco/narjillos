@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.Thing;
 
 public class PopulationTest {
 	
@@ -30,7 +32,8 @@ public class PopulationTest {
 	private Creature createCreature(final String genes) {
 		return new Creature() {
 			@Override
-			public void tick() {
+			public Segment tick() {
+				return null;
 			}
 
 			@Override
@@ -51,6 +54,20 @@ public class PopulationTest {
 			@Override
 			public Energy getEnergy() {
 				return null;
+			}
+
+			@Override
+			public DNA reproduce() {
+				return null;
+			}
+
+			@Override
+			public void feedOn(Thing thing) {
+			}
+
+			@Override
+			public boolean isDead() {
+				return false;
 			}
 		};
 	}

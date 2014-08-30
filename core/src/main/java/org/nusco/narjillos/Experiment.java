@@ -11,8 +11,10 @@ import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.WaterDrop;
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -167,7 +169,8 @@ public class Experiment {
 		return new Creature() {
 
 			@Override
-			public void tick() {
+			public Segment tick() {
+				return new Segment(Vector.ZERO, Vector.ZERO);
 			}
 
 			@Override
@@ -188,6 +191,20 @@ public class Experiment {
 			@Override
 			public Energy getEnergy() {
 				return null;
+			}
+
+			@Override
+			public DNA reproduce() {
+				return null;
+			}
+
+			@Override
+			public void feedOn(Thing thing) {
+			}
+
+			@Override
+			public boolean isDead() {
+				return false;
 			}
 		};
 	}

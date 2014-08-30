@@ -15,8 +15,8 @@ public class JSONNerveSerializationTest {
 	public void serializesAndDeserializesFood() {
 		Nerve nerve = new PassNerve();
 
-		String json = JSON.toJson(nerve);
-		Nerve deserialized = JSON.fromJson(json, PassNerve.class);
+		String json = JSON.toJson(nerve, Nerve.class);
+		Nerve deserialized = JSON.fromJson(json, Nerve.class);
 
 		assertTrue(deserialized instanceof PassNerve);
 	}
@@ -27,8 +27,8 @@ public class JSONNerveSerializationTest {
 		for (int i = 0; i < 3; i++)
 			nerve.tick(i);
 		
-		String json = JSON.toJson(nerve);
-		Nerve deserialized = JSON.fromJson(json, DelayNerve.class);
+		String json = JSON.toJson(nerve, Nerve.class);
+		Nerve deserialized = JSON.fromJson(json, Nerve.class);
 
 		for (int i = 0; i < 10; i++)
 			assertEquals(nerve.tick(0), deserialized.tick(0), 0.0);
@@ -40,10 +40,20 @@ public class JSONNerveSerializationTest {
 		for (int i = 0; i < 5; i++)
 			nerve.tick(0);
 		
-		String json = JSON.toJson(nerve);
-		Nerve deserialized = JSON.fromJson(json, WaveNerve.class);
+		String json = JSON.toJson(nerve, Nerve.class);
+		Nerve deserialized = JSON.fromJson(json, Nerve.class);
 		
 		for (int i = 0; i < 10; i++)
 			assertEquals(nerve.tick(0), deserialized.tick(0), 0.0);
+	}
+
+	@Test
+	public void serializesAndDeserializesGenericNerves() {
+		Nerve nerve = new PassNerve();
+		
+		String json = JSON.toJson(nerve, Nerve.class);
+		Nerve deserialized = JSON.fromJson(json, Nerve.class);
+		
+		assertTrue(deserialized instanceof PassNerve);
 	}
 }

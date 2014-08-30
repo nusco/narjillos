@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
@@ -19,11 +18,9 @@ public class Narjillo implements Thing, Creature {
 	
 	private final Body body;
 	private final DNA genes;
-	private final List<NarjilloEventListener> eventListeners = new LinkedList<>();
-
 	private Thing target = Thing.NULL;
 	private Energy energy;
-
+	
 	public Narjillo(Body body, Vector position, DNA genes) {
 		this.body = body;
 		body.teleportTo(position);
@@ -44,23 +41,18 @@ public class Narjillo implements Thing, Creature {
 	}
 	
 	@Override
-	public void tick() {
-		if (isDead())
-			return;
-
+	public Segment tick() {
 		applyLifecycleAnimations();
 
 		Vector startingPosition = body.getStartPoint();
 
+		if (isDead())
+			return new Segment(startingPosition, Vector.ZERO);
+
 		double energySpent = body.tick(getTargetDirection());
 		energy.tick(-energySpent);
 
-		for (NarjilloEventListener eventListener : this.eventListeners)
-			eventListener.moved(new Segment(startingPosition, body.getStartPoint()));
-
-		if (isDead())
-			for (NarjilloEventListener eventListener : eventListeners)
-				eventListener.died();
+		return new Segment(startingPosition, body.getStartPoint());
 	}
 
 	private void applyLifecycleAnimations() {
@@ -95,10 +87,6 @@ public class Narjillo implements Thing, Creature {
 		energy.consume(thing);
 	}
 
-	public void addEventListener(NarjilloEventListener eventListener) {
-		eventListeners.add(eventListener);
-	}
-
 	public DNA reproduce() {
 		return getDNA().copy();
 	}
@@ -108,7 +96,7 @@ public class Narjillo implements Thing, Creature {
 		return "narjillo";
 	}
 
-	boolean isDead() {
+	public boolean isDead() {
 		return energy.isDepleted();
 	}
 
@@ -122,6 +110,10 @@ public class Narjillo implements Thing, Creature {
 
 	public double getEnergyPercent() {
 		return energy.getValue() / energy.getMax();
+	}
+
+	public Body getBody() {
+		return body;
 	}
 
 	public Thing getTarget() {

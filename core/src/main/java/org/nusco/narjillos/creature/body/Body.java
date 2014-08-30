@@ -1,8 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,15 +24,19 @@ public class Body {
 	private static final double MAX_SKEWING = 70;
 	private static final double MAX_SKEWING_VELOCITY = 0.1;
 
-	private final Head head;
-	private final List<BodyPart> bodyParts = new LinkedList<>();
+	private final Organ head;
 	private final double mass;
 	private double currentDirectionSkewing = 0;
+
+	private transient List<BodyPart> bodyParts;
 	
 	public Body(Head head) {
 		this.head = head;
-		addWithChildren(this.bodyParts, head);
 		this.mass = calculateTotalMass();
+	}
+
+	private Head getHead() {
+		return (Head) head;
 	}
 
 	public double getMass() {
@@ -40,20 +44,24 @@ public class Body {
 	}
 
 	public List<BodyPart> getBodyParts() {
+		if (bodyParts == null) {
+			bodyParts = new ArrayList<>();
+			addWithChildren(bodyParts, getHead());
+		}
 		return bodyParts;
 	}
 	
 	public void forceBend(double bendAngle) {
-		head.skew(bendAngle);
+		getHead().skew(bendAngle);
 	}
 
 	public void teleportTo(Vector position) {
 		final int northDirection = 90;
-		head.setPosition(position, northDirection);
+		getHead().setPosition(position, northDirection);
 	}
 
 	public Vector getStartPoint() {
-		return head.getStartPoint();
+		return getHead().getStartPoint();
 	}
 
 	public Vector calculateCenterOfMass() {
@@ -113,22 +121,22 @@ public class Body {
 	private void tick_step1_updateAngles(Vector targetDirection) {
 		double angleToTarget;
 		try {
-			Vector mainAxis = head.getVector().normalize(1).invert();
+			Vector mainAxis = getHead().getVector().normalize(1).invert();
 			angleToTarget = mainAxis.getAngleWith(targetDirection);
 		} catch (ZeroVectorException e) {
 			return;
 		}
 		
-		head.skew(calculateDirectionSkewing(angleToTarget));
+		getHead().skew(calculateDirectionSkewing(angleToTarget));
 		
-		head.recursivelyUpdateAngleToParent(0);
-		head.resetSkewing();
+		getHead().recursivelyUpdateAngleToParent(0);
+		getHead().resetSkewing();
 	}
 
 	private void tick_step2_reposition(Vector centerOfMassBeforeReshaping) {
 		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
 		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
-		head.moveBy(centerOfMassOffset, 0);
+		getHead().moveBy(centerOfMassOffset, 0);
 	}
 
 	private Impulse tick_step3_move(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
@@ -190,7 +198,7 @@ public class Body {
 	}
 
 	private double getMetabolicRate() {
-		return head.getMetabolicRate();
+		return getHead().getMetabolicRate();
 	}
 
 	private double calculateTotalMass() {
@@ -202,14 +210,14 @@ public class Body {
 	}
 
 	private double getAngle() {
-		return head.getAbsoluteAngle();
+		return getHead().getAbsoluteAngle();
 	}
 	
 	private void moveBy(Impulse impulse, Vector centerOfMass) {
 		Vector newPosition = getStartPoint().plus(impulse.linearComponent);
 		Vector pivotedPosition = newPosition.plus(rotateAround(centerOfMass, impulse.angularComponent));
 		double newAngle = Angle.normalize(getAngle() + impulse.angularComponent);
-		head.setPosition(pivotedPosition, newAngle);
+		getHead().setPosition(pivotedPosition, newAngle);
 	}
 
 	private Vector rotateAround(Vector center, double rotation) {
@@ -217,5 +225,9 @@ public class Body {
 		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));
 		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
 		return Vector.cartesian(-shiftX, -shiftY);
+	}
+	
+	public double getCurrentDirectionSkewing() {
+		return currentDirectionSkewing;
 	}
 }

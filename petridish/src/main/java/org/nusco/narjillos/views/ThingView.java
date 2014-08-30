@@ -6,7 +6,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.FoodPiece;
+import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.views.utilities.Viewport;
 

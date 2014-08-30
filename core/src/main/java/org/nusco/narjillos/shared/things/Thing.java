@@ -1,5 +1,6 @@
 package org.nusco.narjillos.shared.things;
 
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**
@@ -10,7 +11,8 @@ public interface Thing {
 	Thing NULL = new Thing() {
 		
 		@Override
-		public void tick() {
+		public Segment tick() {
+			return new Segment(Vector.ZERO, Vector.ZERO);
 		}
 		
 		@Override
@@ -29,7 +31,11 @@ public interface Thing {
 		}
 	};
 	
-	void tick();
+	/**
+	 * @return The movement segment.
+	 */
+	Segment tick();
+
 	Vector getPosition();
 	Energy getEnergy();
 	String getLabel();

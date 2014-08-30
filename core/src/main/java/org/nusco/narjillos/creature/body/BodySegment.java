@@ -18,8 +18,20 @@ public class BodySegment extends Organ {
 		this.amplitude = amplitude;
 	}
 
+	public double getAngleToParentAtRest() {
+		return angleToParentAtRest;
+	}
+
+	public int getOrientation() {
+		return orientation;
+	}
+
 	public int getAmplitude() {
 		return amplitude;
+	}
+
+	public int getDelay() {
+		return ((DelayNerve) getNerve()).getDelay();
 	}
 
 	@Override

@@ -1,8 +1,7 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.shared.things;
 
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.Thing;
 
 public class FoodPiece implements Thing {
 
@@ -20,7 +19,8 @@ public class FoodPiece implements Thing {
 	}
 
 	@Override
-	public void tick() {
+	public Segment tick() {
+		return new Segment(position, Vector.ZERO);
 	}
 
 	@Override

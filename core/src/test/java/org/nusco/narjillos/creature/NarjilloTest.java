@@ -1,7 +1,6 @@
 package org.nusco.narjillos.creature;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -9,9 +8,8 @@ import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.Placemark;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -22,54 +20,11 @@ public class NarjilloTest {
 	DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
 	Narjillo biggerNarjillo = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
 	
-	class NullNarjilloEventListener implements NarjilloEventListener {
-		@Override
-		public void moved(Segment movement) {
-		}
-
-		@Override
-		public void died() {
-		}
-	}
-	
-	@Test
-	public void sendsEventWhenMoving() {
-		final Segment[] moved = new Segment[] { null };
-		narjillo.addEventListener(new NullNarjilloEventListener() {
-
-			@Override
-			public void moved(Segment movement) {
-				moved[0] = movement;
-			}
-		});
-
-		narjillo.tick();
-		
-		assertNotNull(moved[0]);
-	}
-	
 	@Test
 	public void itsInitialEnergyIsProportionalToItsMass() {
 		double energyRatio = narjillo.getEnergy().getValue() / biggerNarjillo.getEnergy().getValue();
 		double massRatio = narjillo.getMass() / biggerNarjillo.getMass();
 		assertEquals(energyRatio, massRatio, 0.001);
-	}
-
-	@Test
-	public void sendsEventWhenDying() {
-		final boolean[] died = new boolean[] { false };
-		narjillo.addEventListener(new NullNarjilloEventListener() {
-
-			@Override
-			public void died() {
-				died[0] = true;
-			}
-		});
-
-		for (int i = 0; i <= Narjillo.MAX_LIFESPAN; i++)
-			narjillo.tick();
-		
-		assertTrue(died[0]);
 	}
 	
 	@Test
@@ -82,27 +37,8 @@ public class NarjilloTest {
 
 	private double getEnergyLossWithMovement(Narjillo narjillo) {
 		double startingEnergy = narjillo.getEnergy().getValue();
-		Thing foodPiece = new Thing() {
-
-			@Override
-			public void tick() {
-			}
-
-			@Override
-			public Vector getPosition() {
-				return Vector.cartesian(1000, 1000);
-			}
-
-			@Override
-			public Energy getEnergy() {
-				return null;
-			}
-
-			@Override
-			public String getLabel() {
-				return null;
-			}};
-		narjillo.setTarget(foodPiece);
+		Thing target = new Placemark(Vector.cartesian(1000, 1000));
+		narjillo.setTarget(target);
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();
 		return startingEnergy - narjillo.getEnergy().getValue();

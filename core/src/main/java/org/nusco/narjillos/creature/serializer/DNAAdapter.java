@@ -12,7 +12,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
+class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
 
 	@Override
 	public JsonElement serialize(DNA dna, Type type, JsonSerializationContext context) {

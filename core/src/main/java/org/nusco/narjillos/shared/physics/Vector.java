@@ -105,11 +105,6 @@ public class Vector {
 		final double delta = 0.001;
 		return Math.abs(x - other.x) < delta && Math.abs(y - other.y) < delta;
 	}
-	
-	@Override
-	public String toString() {
-		return "(" + approx(x) + ", " + approx(y) + ")";
-	}
 
 	private double approx(double n) {
 		final double decimals = 100.0;
@@ -122,5 +117,10 @@ public class Vector {
 
 	public boolean isZero() {
 		return x == 0 && y == 0;
+	}
+	
+	@Override
+	public String toString() {
+		return "(" + approx(x) + ", " + approx(y) + ")";
 	}
 }

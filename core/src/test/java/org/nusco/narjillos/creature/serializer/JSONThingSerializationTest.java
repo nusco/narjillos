@@ -46,7 +46,6 @@ public class JSONThingSerializationTest {
 			narjillo.tick();
 		
 		String json = JSON.toJson(narjillo, Thing.class);
-		System.out.println(json);
 		Narjillo deserialized = (Narjillo) JSON.fromJson(json, Thing.class);
 		
 		narjillo.tick();

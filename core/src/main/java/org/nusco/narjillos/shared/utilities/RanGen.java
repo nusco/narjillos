@@ -13,8 +13,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class RanGen {
 
-	private static TransparentRandom random;
-	private static Thread authorizedThread;
+	private static TransparentRandom random = null;
+	private static Thread authorizedThread = null;
 
 	public synchronized static void initializeWith(long seed) {
 		if (random != null)
@@ -22,7 +22,7 @@ public class RanGen {
 
 		random = new TransparentRandom();
 		random.setSeed(seed);
-		
+
 		authorizedThread = Thread.currentThread();
 	}
 
@@ -50,28 +50,30 @@ public class RanGen {
 		return ((TransparentRandom) getRandom()).getCurrentSeed();
 	}
 
-	private static String getExplanation() {
-		return "(Don't do that, or else there is no guarantee that the same " + "seed will generate the same sequence of numbers.)";
-	}
-
 	public static long getCurrentSeed() {
 		return random.getCurrentSeed();
 	}
 
+	private static String getExplanation() {
+		return "(Don't do that, or else there is no guarantee that the same " + "seed will generate the same sequence of numbers.)";
+	}
+
 	// Don't use in production code - this is just for testing.
-	// So it always throws an exception, just in case somebody uses it by
-	// mistake.
+	// It throws an exception, so that you won't use it by mistake.
 	public static synchronized void reset() {
 		random = null;
 		throw new RuntimeException("RanGen.reset() called. " + getExplanation());
 	}
 
+	/**
+	 * A Random that allows you to get and set the current seed.
+	 */
 	private static class TransparentRandom extends Random {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public synchronized void setSeed(long seed) {
-			// don't scramble
+			// Don't scramble the seed like the superclass does.
 			extractSeed().set(seed);
 		}
 
@@ -80,6 +82,7 @@ public class RanGen {
 		}
 
 		private AtomicLong extractSeed() {
+			// Put on your gloves - this is going to be dirty.
 			try {
 				Field seedField = Random.class.getDeclaredField("seed");
 				seedField.setAccessible(true);

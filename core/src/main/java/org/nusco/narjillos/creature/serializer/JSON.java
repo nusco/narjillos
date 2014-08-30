@@ -4,6 +4,7 @@ import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
@@ -13,6 +14,7 @@ import com.google.gson.GsonBuilder;
 public class JSON {
 
 	private static final Gson gson = new GsonBuilder()
+		.registerTypeAdapter(Vector.class, new VectorAdapter())
 		.registerTypeAdapter(DNA.class, new DNAAdapter())
 		.registerTypeAdapter(Nerve.class, new NerveAdapter())
 		.registerTypeAdapter(BodyPart.class, new BodyPartAdapter())

@@ -2,7 +2,6 @@ package org.nusco.narjillos.serializer;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Placemark;
 import org.nusco.narjillos.shared.things.Thing;
 
 import com.google.gson.JsonParseException;
@@ -20,8 +19,6 @@ class ThingAdapter extends HierarchyAdapter<Thing> {
 			return FoodPiece.class;
 		if (typeTag.equals("narjillo"))
 			return Narjillo.class;
-		if (typeTag.equals("placemark"))
-			return Placemark.class;
 		throw new RuntimeException("Unknown subtype of Thing: " + typeTag);
 	}
 }

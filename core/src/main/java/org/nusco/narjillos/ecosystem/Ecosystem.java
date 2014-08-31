@@ -14,7 +14,6 @@ import org.nusco.narjillos.creature.genetics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Placemark;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
@@ -34,7 +33,7 @@ public class Ecosystem {
 	private final GenePool narjillos = new GenePool();
 
 	private final Space foodSpace;
-	private final Thing center;
+	private final Vector center;
 
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
 	private volatile boolean shouldBePaused = false;
@@ -43,7 +42,7 @@ public class Ecosystem {
 	public Ecosystem(final long size) {
 		this.size = size;
 		this.foodSpace = new Space(size);
-		this.center = new Placemark(Vector.cartesian(size, size).by(0.5));
+		this.center = Vector.cartesian(size, size).by(0.5);
 	}
 
 	public long getSize() {
@@ -67,7 +66,7 @@ public class Ecosystem {
 		return result;
 	}
 
-	public Thing findClosestTarget(Narjillo narjillo) {
+	public Vector findClosestTarget(Narjillo narjillo) {
 		double minDistance = Double.MAX_VALUE;
 		Thing closestFood = null;
 
@@ -86,7 +85,7 @@ public class Ecosystem {
 			}
 		}
 		
-		return closestFood;
+		return closestFood.getPosition();
 	}
 
 	public Creature findNarjillo(Vector near) {
@@ -151,8 +150,8 @@ public class Ecosystem {
 		for (Thing creature : narjillos.getCreatures()) {
 			if (((Narjillo)creature).getTarget() == food) {
 				Narjillo narjillo = (Narjillo)creature;
-				Thing closestTarget = findClosestTarget(narjillo);
-				narjillo.setTarget(closestTarget.getPosition());
+				Vector closestTarget = findClosestTarget(narjillo);
+				narjillo.setTarget(closestTarget);
 			}
 		}
 	}

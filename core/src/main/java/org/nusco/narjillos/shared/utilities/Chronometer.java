@@ -6,13 +6,13 @@ package org.nusco.narjillos.shared.utilities;
 public class Chronometer {
 
 	private int totalTicks = 0;
-	private int ticks = 0;
-	private long startTime = 0;
+	private transient int ticks = 0;
+	private transient long lastSecondStartTime = 0;
 	private transient int ticksInLastSecond = 0;
 	
 	public synchronized void tick() {
-		if (System.currentTimeMillis() - startTime > 1000) {
-			startTime = System.currentTimeMillis();
+		if (System.currentTimeMillis() - lastSecondStartTime > 1000) {
+			lastSecondStartTime = System.currentTimeMillis();
 			ticksInLastSecond = ticks;
 			ticks = 0;
 		}

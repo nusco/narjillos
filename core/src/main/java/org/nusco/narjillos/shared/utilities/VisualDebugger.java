@@ -20,22 +20,22 @@ public class VisualDebugger {
 
 	private static final List<Segment> previousSegments = new LinkedList<>();
 	private static final List<Segment> segments = new LinkedList<>();
-	
-	public synchronized static void clear() {
+
+	public synchronized static List<Segment> getSegments() {
 		// The reading thread might peek in during an update,
-		// so we always return a backup of the previous update
-		previousSegments.clear();
-		previousSegments.addAll(segments);
-		segments.clear();
+		// so we always maintain a backup of the previous update
+		List<Segment> result = new LinkedList<>();
+		result.addAll(previousSegments);
+		return result;
 	}
 	
 	public synchronized static void add(Segment s) {
 		segments.add(s);
 	}
-
-	public synchronized static List<Segment> getSegments() {
-		List<Segment> result = new LinkedList<>();
-		result.addAll(previousSegments);
-		return result;
+	
+	public synchronized static void clear() {
+		previousSegments.clear();
+		previousSegments.addAll(segments);
+		segments.clear();
 	}
 }

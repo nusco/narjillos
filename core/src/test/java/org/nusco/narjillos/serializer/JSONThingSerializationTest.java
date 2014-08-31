@@ -9,10 +9,8 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Placemark;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class JSONThingSerializationTest {
@@ -25,16 +23,6 @@ public class JSONThingSerializationTest {
 		Thing deserialized = JSON.fromJson(json, Thing.class);
 		
 		assertEquals(food.getPosition(), deserialized.getPosition());
-	}
-
-	@Test
-	public void serializesAndDeserializesPlacemarks() {
-		Thing placemark = new Placemark(Vector.cartesian(10, 20));
-
-		String json = JSON.toJson(placemark, Thing.class);
-		Thing deserialized = JSON.fromJson(json, Thing.class);
-		
-		assertEquals(placemark.getPosition(), deserialized.getPosition());
 	}
 
 	@Test

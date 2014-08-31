@@ -7,17 +7,9 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Generates pseudo-random numbers.
  * 
- * Like java.math.Random, but strictly deterministic. You must seed it
- * with a random seed, and you cannot call the same instance from multiple threads
- * (at least for the few methods that I overrode - the rest still works as usual).
- * You can also read the current seed, for predictable behavior after serializing and
- * deserializing.
- * 
- * Finally, you can to set a global instance to be used by the entire system (and
- * you can only do this once).
- * 
- * I apologize for the defensive style of this class. Bugs with non-deterministic
- * random generators are hard to find, so I have to be extra careful here.
+ * A bit like java.math.Random, but strictly deterministic. You must give it a
+ * seed during construction, and you cannot call the same instance from multiple
+ * threads.
  */
 public class RanGen {
 
@@ -48,6 +40,10 @@ public class RanGen {
 	}
 
 	private synchronized void checkThreadIsAuthorized() {
+		// I apologize for this slightly paranoid defensive code. Bugs with
+		// non-deterministic random generators are hard to find, so I have to be
+		// extra careful here.
+
 		if (authorizedThread == null) {
 			// If the RanGen has been deserialized, the authorized thread
 			// could still be null. In this case, the first thread that
@@ -65,6 +61,7 @@ public class RanGen {
 	}
 }
 
+// A Random that allows you to get/set the current seed.
 class TransparentRanGen extends Random {
 
 	private static final long serialVersionUID = 1L;
@@ -72,11 +69,11 @@ class TransparentRanGen extends Random {
 	public long getSeed() {
 		return extractSeed().get();
 	}
-	
+
 	public void setSeed(long seed) {
 		extractSeed().set(seed);
 	}
-	
+
 	private AtomicLong extractSeed() {
 		// Put on your gloves - this is going to be dirty.
 		try {

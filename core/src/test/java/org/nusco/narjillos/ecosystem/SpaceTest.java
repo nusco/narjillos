@@ -9,8 +9,9 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Placemark;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class SpaceTest {
@@ -201,13 +202,19 @@ public class SpaceTest {
 	}
 }
 
-class MockThing extends Placemark {
+class MockThing implements Thing {
 
 	private final String label;
+	private final Vector position;
 
 	public MockThing(Vector position, Integer id) {
-		super(position);
+		this.position = position;
 		this.label = id.toString();
+	}
+
+	@Override
+	public Vector getPosition() {
+		return position;
 	}
 	
 	@Override
@@ -218,5 +225,15 @@ class MockThing extends Placemark {
 	@Override
 	public String toString() {
 		return getLabel();
+	}
+
+	@Override
+	public Segment tick() {
+		return null;
+	}
+
+	@Override
+	public Energy getEnergy() {
+		return null;
 	}
 }

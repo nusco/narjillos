@@ -203,7 +203,6 @@ public class Experiment {
 	}
 
 	private static long generateRandomSeed() {
-		System.out.print("Randomizing seed... ");
 		return Math.abs(new Random().nextInt());
 	}
 

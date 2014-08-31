@@ -30,12 +30,12 @@ public class Ecosystem {
 	private static final double COLLISION_DISTANCE = 30;
 
 	private final long size;
-	
+	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
+	private final GenePool narjillos = new GenePool();
+
 	private final Space foodSpace;
 	private final Thing center;
 
-	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
-	private final GenePool narjillos = new GenePool();
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
 	private volatile boolean shouldBePaused = false;
 	private volatile boolean paused = false;
@@ -48,6 +48,14 @@ public class Ecosystem {
 
 	public long getSize() {
 		return size;
+	}
+
+	public Set<FoodPiece> getFoodPieces() {
+		return foodPieces;
+	}
+
+	public GenePool getGenePool() {
+		return narjillos;
 	}
 
 	public Set<Thing> getThings() {
@@ -118,17 +126,25 @@ public class Ecosystem {
 	public final FoodPiece spawnFood(Vector position) {
 		FoodPiece newFood = new FoodPiece();
 		newFood.setPosition(position);
-		foodPieces.add(newFood);
-		foodSpace.add(newFood);
-		notifyThingAdded(newFood);
+		forceAdd(newFood);
 		return newFood;
+	}
+
+	public void forceAdd(FoodPiece food) {
+		foodPieces.add(food);
+		foodSpace.add(food);
+		notifyThingAdded(food);
 	}
 
 	public final Narjillo spawnNarjillo(Vector position, DNA genes) {
 		final Narjillo narjillo = new Narjillo(new Embryo(genes).develop(), position, genes);
+		forceAdd(narjillo);
+		return narjillo;
+	}
+
+	public void forceAdd(final Narjillo narjillo) {
 		narjillos.add(narjillo);
 		notifyThingAdded(narjillo);
-		return narjillo;
 	}
 
 	private void updateTargets(Thing food) {

@@ -5,6 +5,7 @@ import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -22,6 +23,7 @@ public class JSON {
 		.registerTypeAdapter(Organ.class, new BodyPartAdapter())
 		.registerTypeAdapter(Thing.class, new ThingAdapter())
 		.registerTypeAdapter(Creature.class, new ThingAdapter())
+		.registerTypeAdapter(Ecosystem.class, new EcosystemAdapter())
         .setPrettyPrinting()
         .create();
 

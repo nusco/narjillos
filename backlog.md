@@ -47,6 +47,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Dump isolated narjillos to file (instead of the console) °
 * Slow motion setting °
 * Lock on single narjillo °
+* Zipped experiment files
 * View narjillo stats (age, energy, times eaten...)
 * Make food visible in normal view
 * Make food visible in infrared view

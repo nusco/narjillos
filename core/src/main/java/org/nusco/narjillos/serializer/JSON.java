@@ -23,7 +23,6 @@ public class JSON {
 		.registerTypeAdapter(Thing.class, new ThingAdapter())
 		.registerTypeAdapter(Creature.class, new ThingAdapter())
 		.registerTypeAdapter(Ecosystem.class, new EcosystemAdapter())
-        .setPrettyPrinting()
         .create();
 
 	public static <T> String toJson(Object obj, Class<T> clazz) {

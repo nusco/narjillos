@@ -7,89 +7,84 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Generates pseudo-random numbers.
  * 
- * It's meant to be seeded to generate a predictable sequence. All the
- * randomness in the system should come from this class after seeding, to get
- * deterministic results from experiments.
+ * Like java.math.Random, but strictly deterministic. You must seed it
+ * with a random seed, and you cannot call the same instance from multiple threads
+ * (at least for the few methods that I overrode - the rest still works as usual).
+ * You can also read the current seed, for predictable behavior after serializing and
+ * deserializing.
+ * 
+ * Finally, you can to set a global instance to be used by the entire system (and
+ * you can only do this once).
+ * 
+ * I apologize for the defensive style of this class. Bugs with non-deterministic
+ * random generators are hard to find, so I have to be extra careful here.
  */
 public class RanGen {
 
-	private static TransparentRandom random = null;
-	private static Thread authorizedThread = null;
+	private final TransparentRanGen random = new TransparentRanGen();
+	private transient Thread authorizedThread;
 
-	public synchronized static void initializeWith(long seed) {
-		if (random != null)
-			throw new RuntimeException("RanGen initialized more than once. " + getExplanation());
-
-		random = new TransparentRandom();
+	public RanGen(long seed) {
 		random.setSeed(seed);
-
 		authorizedThread = Thread.currentThread();
 	}
 
-	public static double nextDouble() {
-		return getRandom().nextDouble();
+	public double nextDouble() {
+		checkThreadIsAuthorized();
+		return random.nextDouble();
 	}
 
-	public static int nextInt() {
-		return getRandom().nextInt();
+	public int nextInt() {
+		checkThreadIsAuthorized();
+		return random.nextInt();
 	}
 
-	public static int nextByte() {
+	public int nextByte() {
 		return Math.abs(nextInt()) % 255;
 	}
 
-	public static synchronized Random getRandom() {
-		if (random == null)
-			throw new RuntimeException("Initialize RanGen before using it. (Call initializeWith(seed)).");
+	public long getSeed() {
+		return random.getSeed();
+	}
+
+	private synchronized void checkThreadIsAuthorized() {
+		if (authorizedThread == null) {
+			// If the RanGen has been deserialized, the authorized thread
+			// could still be null. In this case, the first thread that
+			// accesses it wins the role.
+			authorizedThread = Thread.currentThread();
+			return;
+		}
+
 		if (Thread.currentThread() != authorizedThread)
 			throw new RuntimeException("RanGen accessed from multiple threads. " + getExplanation());
-		return random;
-	}
-
-	static long getSeed() {
-		return ((TransparentRandom) getRandom()).getCurrentSeed();
-	}
-
-	public static long getCurrentSeed() {
-		return random.getCurrentSeed();
 	}
 
 	private static String getExplanation() {
 		return "(Don't do that, or else there is no guarantee that the same " + "seed will generate the same sequence of numbers.)";
 	}
+}
 
-	// Don't use in production code - this is just for testing.
-	// It throws an exception, so that you won't use it by mistake.
-	public static synchronized void reset() {
-		random = null;
-		throw new RuntimeException("RanGen.reset() called. " + getExplanation());
+class TransparentRanGen extends Random {
+
+	private static final long serialVersionUID = 1L;
+
+	public long getSeed() {
+		return extractSeed().get();
 	}
-
-	/**
-	 * A Random that allows you to get and set the current seed.
-	 */
-	private static class TransparentRandom extends Random {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public synchronized void setSeed(long seed) {
-			// Don't scramble the seed like the superclass does.
-			extractSeed().set(seed);
-		}
-
-		public long getCurrentSeed() {
-			return extractSeed().longValue();
-		}
-
-		private AtomicLong extractSeed() {
-			// Put on your gloves - this is going to be dirty.
-			try {
-				Field seedField = Random.class.getDeclaredField("seed");
-				seedField.setAccessible(true);
-				return (AtomicLong) seedField.get(this);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+	
+	public void setSeed(long seed) {
+		extractSeed().set(seed);
+	}
+	
+	private AtomicLong extractSeed() {
+		// Put on your gloves - this is going to be dirty.
+		try {
+			Field seedField = Random.class.getDeclaredField("seed");
+			seedField.setAccessible(true);
+			return (AtomicLong) seedField.get(this);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

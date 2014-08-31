@@ -10,8 +10,6 @@ import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Placemark;
-import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class NarjilloTest {
@@ -44,8 +42,7 @@ public class NarjilloTest {
 
 	private double getEnergyLossWithMovement(Narjillo narjillo) {
 		double startingEnergy = narjillo.getEnergy().getValue();
-		Thing target = new Placemark(Vector.cartesian(1000, 1000));
-		narjillo.setTarget(target);
+		narjillo.setTarget(Vector.cartesian(1000, 1000));
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();
 		return startingEnergy - narjillo.getEnergy().getValue();

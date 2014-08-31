@@ -8,7 +8,6 @@ import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.GenePool;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Thing;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;

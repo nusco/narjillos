@@ -27,18 +27,13 @@ public class EcosystemTest {
 
 	@Before
 	public void initialize() {
-		try {
-			RanGen.reset();
-		} catch (RuntimeException e) {
-		}
-		RanGen.initializeWith(42);
-
 		ecosystem = new Ecosystem(1000);
 		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
 		foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
-		narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(150, 150), DNA.random());
-		narjillo2 = ecosystem.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random());
+		RanGen ranGen = new RanGen(1234);
+		narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(150, 150), DNA.random(ranGen));
+		narjillo2 = ecosystem.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random(ranGen));
 	}
 	
 	@Test

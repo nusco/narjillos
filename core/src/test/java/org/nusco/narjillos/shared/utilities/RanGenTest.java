@@ -5,56 +5,37 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class RanGenTest {
 
-	@Before
-	public void resetRanGen() {
-		reset();
-	}
-
-	@Test(expected = RuntimeException.class)
-	public void failsIfNotInitialized() {
-		RanGen.nextByte();
-	}
-
 	@Test
 	public void generatesADeterministicSequenceOfNumbers() {
-		RanGen.initializeWith(123);
-
-		assertEquals(194, RanGen.nextByte());
-		assertEquals(0.91, RanGen.nextDouble(), 0.01);
-		assertEquals(-1537559018, RanGen.nextInt());
+		RanGen ranGen1 = new RanGen(123);
+		RanGen ranGen2 = new RanGen(123);
+		
+		assertAreInSynch(ranGen1, ranGen2);
 	}
 
 	@Test
-	public void returnsTheCurrentSeed() {
-		RanGen.initializeWith(123);
+	public void returnsItsCurrentSeed() {
+		RanGen ranGen1 = new RanGen(123);
 
+		// get to a known state
 		for (int i = 0; i < 10; i++)
-			RanGen.nextDouble();
-		long seedBeforeNumberGeneration = RanGen.getCurrentSeed();
-		double expected = RanGen.nextDouble();
+			ranGen1.nextDouble();
+		
+		long seedBeforeNumberGeneration = ranGen1.getSeed();
 
-		reset();
-		RanGen.initializeWith(seedBeforeNumberGeneration);
-		double actual = RanGen.nextDouble();
-
-		assertEquals(expected, actual, 0.0);
-	}
-
-	@Test(expected = RuntimeException.class)
-	public void cannotBeSeededTwice() {
-		RanGen.initializeWith(245);
-		RanGen.initializeWith(245);
+		RanGen ranGen2 = new RanGen(seedBeforeNumberGeneration);
+		
+		assertAreInSynch(ranGen1, ranGen2);
 	}
 
 	@Test
-	public void throwsAnExceptionIfYouGenerateNumbersFromMultipleThreads() throws InterruptedException {
-		RanGen.initializeWith(123456);
-		RanGen.nextByte();
+	public void throwsAnExceptionIfCalledFromMultipleThreads() throws InterruptedException {
+		final RanGen ranGen = new RanGen(123456);
+		ranGen.nextByte();
 
 		final ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();
 
@@ -62,7 +43,7 @@ public class RanGenTest {
 			@Override
 			public void run() {
 				try {
-					RanGen.nextByte();
+					ranGen.nextByte();
 				} catch (RuntimeException e) {
 					results.add(e.getMessage());
 					return;
@@ -77,14 +58,11 @@ public class RanGenTest {
 		assertTrue(results.peek().startsWith("RanGen accessed from multiple threads"));
 	}
 
-	private void reset() {
-		try {
-			RanGen.reset();
-			throw new RuntimeException("Excepted an exception from RanGen.reset(), got nothing");
-		} catch (RuntimeException e) {
-			// RanGen.reset() always throws an exception, to
-			// protect ourselves from mistakenly using it in
-			// production code. In tests, it's OK to ignore it.
+	private void assertAreInSynch(RanGen ranGen1, RanGen ranGen2) {
+		for (int i = 0; i < 100; i++) {
+			assertEquals(ranGen2.nextDouble(), ranGen1.nextDouble(), 0.0);
+			assertEquals(ranGen2.nextInt(), ranGen1.nextInt(), 0.0);
+			assertEquals(ranGen2.nextByte(), ranGen1.nextByte(), 0.0);
 		}
 	}
 }

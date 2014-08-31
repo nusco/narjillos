@@ -24,12 +24,11 @@ public class Experiment {
 	private static final int INITIAL_NUMBER_OF_NARJILLOS = 150;
 	private static final int PARSE_INTERVAL = 10000;
 
+	private final String id;
 	private final Ecosystem ecosystem;
-
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final long startTime = System.currentTimeMillis();
-
-	private final String id;
+	private final RanGen ranGen;
 
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document>]
 	public Experiment(String... args) {
@@ -39,12 +38,20 @@ public class Experiment {
 		int seed = extractSeed(argumentsList);
 		id = gitCommit + "-" + seed;
 		System.out.println("Experiment " + id);
-		RanGen.initializeWith(seed);
+		ranGen = new RanGen(seed);
 
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		populate(ecosystem, argumentsList);
 		
 		System.out.println(getHeadersString());
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public long getStartTime() {
+		return startTime;
 	}
 
 	private void populate(Ecosystem ecosystem, LinkedList<String> argumentsList) {
@@ -62,7 +69,7 @@ public class Experiment {
 
 		for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++) {
 			if (dna == null)
-				ecosystem.spawnNarjillo(randomPosition(ecosystem.getSize()), DNA.random());
+				ecosystem.spawnNarjillo(randomPosition(ecosystem.getSize()), DNA.random(ranGen));
 			else
 				ecosystem.spawnNarjillo(randomPosition(ecosystem.getSize()), dna);
 		}
@@ -85,7 +92,7 @@ public class Experiment {
 	}
 
 	private Vector randomPosition(long size) {
-		return Vector.cartesian(RanGen.nextDouble() * size, RanGen.nextDouble() * size);
+		return Vector.cartesian(ranGen.nextDouble() * size, ranGen.nextDouble() * size);
 	}
 
 	private boolean isInteger(String argument) {
@@ -111,7 +118,7 @@ public class Experiment {
 
 	public boolean tick() {
 		reportStatus();
-		boolean running = getEcosystem().tick();
+		boolean running = getEcosystem().tick(ranGen);
 		if (running) {
 			ticksChronometer.tick();
 			if (shouldSpawnFood())
@@ -122,7 +129,7 @@ public class Experiment {
 
 	private boolean shouldSpawnFood() {
 		return ecosystem.getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES &&
-				RanGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL;
+				ranGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL;
 	}
 
 	public Ecosystem getEcosystem() {

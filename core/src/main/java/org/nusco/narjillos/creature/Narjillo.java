@@ -11,14 +11,15 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.RanGen;
 
-public class Narjillo implements Thing, Creature {
+public class Narjillo implements Creature {
 
 	static final double MAX_LIFESPAN = 30_000;
 	
 	private final Body body;
 	private final DNA dna;
-	private Thing target = Thing.NULL;
+	private Vector target = Vector.ZERO;
 	private Energy energy;
 	
 	public Narjillo(Body body, Vector position, DNA genes) {
@@ -73,13 +74,13 @@ public class Narjillo implements Thing, Creature {
 
 	public Vector getTargetDirection() {
 		try {
-			return target.getPosition().minus(getPosition()).normalize(1);
+			return target.minus(getPosition()).normalize(1);
 		} catch (ZeroVectorException e) {
 			return Vector.ZERO;
 		}
 	}
 
-	public void setTarget(Thing target) {
+	public void setTarget(Vector target) {
 		this.target = target;
 	}
 
@@ -87,8 +88,8 @@ public class Narjillo implements Thing, Creature {
 		energy.consume(thing);
 	}
 
-	public DNA reproduce() {
-		return getDNA().copy();
+	public DNA reproduce(RanGen ranGen) {
+		return getDNA().copy(ranGen);
 	}
 
 	@Override
@@ -116,7 +117,7 @@ public class Narjillo implements Thing, Creature {
 		return body;
 	}
 
-	public Thing getTarget() {
+	public Vector getTarget() {
 		return target;
 	}
 

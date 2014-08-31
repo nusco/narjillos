@@ -22,7 +22,6 @@ public class JSONEcosystemSerializationTest {
 		Narjillo narjillo = ecosystem.spawnNarjillo(Vector.cartesian(30, 30), new DNA("{1_2_3_4_5_6_7}"));
 		
 		String json = JSON.toJson(ecosystem, Ecosystem.class);
-		System.out.println(json);
 		Ecosystem deserialized = JSON.fromJson(json, Ecosystem.class);
 
 		assertEquals(123, deserialized.getSize());

@@ -11,7 +11,7 @@ public class DNA {
 	private static final int GENE_MUTATION_RANGE = 30;
 
 	private final Integer[] genes;
-
+	
 	DNA(Integer... genes) {
 		this.genes = (genes.length > 0) ? clipToByteSize(genes) : new Integer[] {0};
 	}
@@ -24,18 +24,18 @@ public class DNA {
 		return genes;
 	}
 
-	public DNA copy() {
+	public DNA copy(RanGen ranGen) {
 		List<Integer[]> resultChromosomes = new LinkedList<>();
 
 		DNAParser parser = new DNAParser(this);
 		Chromosome nextChromosome;
 		while((nextChromosome = parser.nextChromosome()) != null) {
 			// skip a chromosome every now and then
-			if (!isMutating())
-				resultChromosomes.add(copy(nextChromosome));
+			if (!isMutating(ranGen))
+				resultChromosomes.add(copy(nextChromosome, ranGen));
 			// add a chromosome every now and then
-			if (isMutating())
-				resultChromosomes.add(randomGenes(Chromosome.SIZE));
+			if (isMutating(ranGen))
+				resultChromosomes.add(randomGenes(Chromosome.SIZE, ranGen));
 		}
 
 		Integer[] resultGenes = flatten(resultChromosomes);
@@ -50,23 +50,23 @@ public class DNA {
 		return result.toArray(new Integer[result.size()]);
 	}
 
-	private Integer[] copy(Chromosome chromosome) {
+	private Integer[] copy(Chromosome chromosome, RanGen ranGen) {
 		Integer[] result = new Integer[Chromosome.SIZE];
 		for (int i = 0; i < result.length; i++)
-			result[i] = copy(chromosome.getGene(i));
+			result[i] = copy(chromosome.getGene(i), ranGen);
 		return result;
 	}
 
-	private int copy(int gene) {
-		return isMutating() ? mutate(gene) : gene;
+	private int copy(int gene, RanGen ranGen) {
+		return isMutating(ranGen) ? mutate(gene, ranGen) : gene;
 	}
 
-	private boolean isMutating() {
-		return RanGen.nextDouble() < MUTATION_RATE;
+	private boolean isMutating(RanGen ranGen) {
+		return ranGen.nextDouble() < MUTATION_RATE;
 	}
 
-	private int mutate(int gene) {
-		int randomFactor = ((int) (RanGen.nextDouble() * GENE_MUTATION_RANGE * 2)) - GENE_MUTATION_RANGE;
+	private int mutate(int gene, RanGen ranGen) {
+		int randomFactor = ((int) (ranGen.nextDouble() * GENE_MUTATION_RANGE * 2)) - GENE_MUTATION_RANGE;
 		return gene + randomFactor;
 	}
 
@@ -81,20 +81,20 @@ public class DNA {
 		return Math.max(0, Math.min(255, number));
 	}
 
-	public static DNA random() {
-		int size = Chromosome.SIZE * (Math.abs(RanGen.nextInt()) % 10 + 2);
-		return random(size);
+	public static DNA random(RanGen ranGen) {
+		int size = Chromosome.SIZE * (Math.abs(ranGen.nextInt()) % 10 + 2);
+		return random(size, ranGen);
 	}
 
-	private static DNA random(int size) {
-		Integer[] genes = randomGenes(size);
+	private static DNA random(int size, RanGen ranGen) {
+		Integer[] genes = randomGenes(size, ranGen);
 		return new DNA(genes);
 	}
 
-	private static Integer[] randomGenes(int size) {
+	private static Integer[] randomGenes(int size, RanGen ranGen) {
 		Integer[] genes = new Integer[size];
 		for (int i = 0; i < genes.length; i++)
-			genes[i] = RanGen.nextByte();
+			genes[i] = ranGen.nextByte();
 		return genes;
 	}
 

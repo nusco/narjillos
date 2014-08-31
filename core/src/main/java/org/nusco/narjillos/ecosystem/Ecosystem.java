@@ -102,7 +102,7 @@ public class Ecosystem {
 		return result;
 	}
 
-	public boolean tick() {
+	public boolean tick(RanGen ranGen) {
 		paused = shouldBePaused;
 		if (isPaused())
 			return false;
@@ -110,7 +110,7 @@ public class Ecosystem {
 		Set<Creature> creatures = new LinkedHashSet<>(narjillos.getCreatures());
 		for (Creature narjillo : creatures) {
 			Segment movement = narjillo.tick();
-			consumeCollidedFood(narjillo, movement);
+			consumeCollidedFood(narjillo, movement, ranGen);
 			if (narjillo.isDead())
 				remove(narjillo);
 		}
@@ -152,12 +152,12 @@ public class Ecosystem {
 			if (((Narjillo)creature).getTarget() == food) {
 				Narjillo narjillo = (Narjillo)creature;
 				Thing closestTarget = findClosestTarget(narjillo);
-				narjillo.setTarget(closestTarget);
+				narjillo.setTarget(closestTarget.getPosition());
 			}
 		}
 	}
 
-	private void consumeCollidedFood(Creature narjillo, Segment movement) {
+	private void consumeCollidedFood(Creature narjillo, Segment movement, RanGen ranGen) {
 		// TODO: naive algorithm. replace with space partitioning
 		if (movement.getVector().isZero())
 			return;
@@ -170,14 +170,14 @@ public class Ecosystem {
 					collidedFoodPieces.add(foodPiece);
 
 		for (Thing collidedFoodPiece : collidedFoodPieces)
-			consumeFood(narjillo, collidedFoodPiece);
+			consumeFood(narjillo, collidedFoodPiece, ranGen);
 	}
 
 	private boolean checkCollisionWithFood(Creature narjillo, Segment movement, Thing foodPiece) {
 		return movement.getMinimumDistanceFromPoint(foodPiece.getPosition()) <= COLLISION_DISTANCE;
 	}
 
-	private void consumeFood(Creature narjillo, Thing foodPiece) {
+	private void consumeFood(Creature narjillo, Thing foodPiece, RanGen ranGen) {
 		// TODO: replace with space.contains()
 		if (!foodPieces.contains(foodPiece))
 			return; // race condition: already consumed
@@ -187,7 +187,7 @@ public class Ecosystem {
 
 		narjillo.feedOn(foodPiece);
 
-		reproduce(narjillo);
+		reproduce(narjillo, ranGen);
 		updateTargets(foodPiece);
 	}
 
@@ -198,15 +198,15 @@ public class Ecosystem {
 		notifyThingRemoved(narjillo);
 	}
 
-	private void reproduce(Creature narjillo) {
-		DNA childDNA = narjillo.reproduce();
-		Vector offset = Vector.cartesian(getRandomInRange(3000), getRandomInRange(3000));
+	private void reproduce(Creature narjillo, RanGen ranGen) {
+		DNA childDNA = narjillo.reproduce(ranGen);
+		Vector offset = Vector.cartesian(getRandomInRange(3000, ranGen), getRandomInRange(3000, ranGen));
 		Vector position = narjillo.getPosition().plus(offset);
 		spawnNarjillo(position, childDNA);
 	}
 
-	private double getRandomInRange(final int range) {
-		return (range * 2 * RanGen.nextDouble()) - range;
+	private double getRandomInRange(final int range, RanGen ranGen) {
+		return (range * 2 * ranGen.nextDouble()) - range;
 	}
 
 	private final void notifyThingAdded(Thing thing) {

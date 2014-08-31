@@ -8,6 +8,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class PopulationTest {
 	
@@ -57,7 +58,7 @@ public class PopulationTest {
 			}
 
 			@Override
-			public DNA reproduce() {
+			public DNA reproduce(RanGen ranGen) {
 				return null;
 			}
 

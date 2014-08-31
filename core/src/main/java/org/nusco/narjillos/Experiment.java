@@ -155,15 +155,13 @@ public class Experiment {
 
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]
 	public static void main(String... args) {
-		final long CYCLES = 100_000_000;
-
 		Experiment experiment = initializeExperiment(args);
 
 		boolean finished = false;
-		while (!finished && experiment.getTicksChronometer().getTotalTicks() < CYCLES)
+		while (!finished)
 			finished = !experiment.tick();
 
-		System.out.println("*** The experiment is over at tick " + experiment.getTicksChronometer().getTotalTicks() + " ("
+		System.out.println("*** Experiment " + experiment.getId() + " is over at tick " + experiment.getTicksChronometer().getTotalTicks() + " ("
 				+ experiment.getTimeElapsed() + "s) ***");
 	}
 	

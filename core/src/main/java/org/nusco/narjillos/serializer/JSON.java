@@ -3,6 +3,7 @@ package org.nusco.narjillos.serializer;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
+import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
@@ -20,6 +21,7 @@ public class JSON {
 		.registerTypeAdapter(BodyPart.class, new BodyPartAdapter())
 		.registerTypeAdapter(Organ.class, new BodyPartAdapter())
 		.registerTypeAdapter(Thing.class, new ThingAdapter())
+		.registerTypeAdapter(Creature.class, new ThingAdapter())
         .setPrettyPrinting()
         .create();
 

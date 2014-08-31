@@ -212,7 +212,7 @@ public class Ecosystem {
 	}
 
 	public int getNumberOfNarjillos() {
-		return narjillos.size();
+		return narjillos.getSize();
 	}
 
 	public GenePool getPopulation() {

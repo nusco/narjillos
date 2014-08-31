@@ -19,7 +19,7 @@ public class GenePool {
 		return creatures;
 	}
 
-	public int size() {
+	public int getSize() {
 		return creatures.size();
 	}
 

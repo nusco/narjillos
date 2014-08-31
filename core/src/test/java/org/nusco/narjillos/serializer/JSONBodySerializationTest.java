@@ -16,7 +16,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 public class JSONBodySerializationTest {
 
 	@Test
-	public void serializesAndDeserializesEntireBody() {
+	public void serializesAndDeserializesBody() {
 		Head head = new Head(1, 2, new ColorByte(3), 4);
 		
 		BodySegment child1 = new BodySegment(11, 12, new ColorByte(13), head, 14, 15, 16);

@@ -36,15 +36,14 @@ public class Experiment {
 	private transient boolean persistent = false;
 	
 	public Experiment(String gitCommit, long seed) {
+		this(gitCommit, seed, null);
+	}
+
+	public Experiment(String gitCommit, long seed, DNA dna) {
 		id = gitCommit + "-" + seed;
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		System.out.println(getHeadersString());
-		populate(ecosystem, null);
-	}
-
-	public Experiment(String gitCommit, long seed, DNA dna) {
-		this(gitCommit, seed);
 		populate(ecosystem, dna);
 	}
 
@@ -77,13 +76,13 @@ public class Experiment {
 	}
 
 	public boolean tick() {
-		executePerodicOperations();
 		boolean running = getEcosystem().tick(ranGen);
 		if (running) {
 			ticksChronometer.tick();
 			if (shouldSpawnFood())
 				ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
 		}
+		executePerodicOperations();
 		return areThereSurvivors();
 	}
 
@@ -270,10 +269,6 @@ public class Experiment {
 	}
 
 	private void writeToFile(String content, String fileName) throws IOException, FileNotFoundException {
-		Path file = Paths.get(fileName);
-		if (Files.exists(file))
-			Files.delete(file);
-		Files.createFile(file);
 		PrintWriter out = new PrintWriter(fileName);
 		out.print(content);
 		out.close();

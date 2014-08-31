@@ -45,6 +45,7 @@ public class Experiment {
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		System.out.println(getHeadersString());
 		populate(ecosystem, dna);
+		System.out.println(getStatusString(ecosystem, 0));
 	}
 
 	public String getId() {
@@ -155,14 +156,17 @@ public class Experiment {
 
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]
 	public static void main(String... args) {
-		Experiment experiment = initializeExperiment(args);
+		final Experiment experiment = initializeExperiment(args);
 
-		boolean finished = false;
-		while (!finished)
-			finished = !experiment.tick();
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				System.out.println("Experiment " + experiment.getId() + " terminated at tick " + experiment.getTicksChronometer().getTotalTicks());
+			}
+		});
 
-		System.out.println("*** Experiment " + experiment.getId() + " is over at tick " + experiment.getTicksChronometer().getTotalTicks() + " ("
-				+ experiment.getTimeElapsed() + "s) ***");
+		while (experiment.tick());
+		
+		System.out.println("Experiment " + experiment.getId() + " ending at tick " + experiment.getTicksChronometer().getTotalTicks());
 	}
 	
 	public static Experiment initializeExperiment(String... args) {

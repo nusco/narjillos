@@ -21,11 +21,11 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class Experiment {
 
-	private final static int ECOSYSTEM_SIZE = 20_000;
-	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 200;
+	private final static int ECOSYSTEM_SIZE = 40_000;
+	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 400;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
-	private static final int INITIAL_NUMBER_OF_NARJILLOS = 150;
+	private static final int INITIAL_NUMBER_OF_NARJILLOS = 300;
 	private static final int PARSE_INTERVAL = 10000;
 
 	private final String id;
@@ -40,6 +40,7 @@ public class Experiment {
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		System.out.println(getHeadersString());
+		populate(ecosystem, null);
 	}
 
 	public Experiment(String gitCommit, long seed, DNA dna) {
@@ -171,32 +172,44 @@ public class Experiment {
 		String gitCommit = args.length == 0 ? "unknown" : args[0];
 		String secondArgument = args.length < 2 ? null : args[1];
 		
-		Experiment result = createExperiment(gitCommit, secondArgument);
-		result.setPersistent();
-		return result;
+		return createExperiment(gitCommit, secondArgument);
 	}
 
 	private static Experiment createExperiment(String gitCommit, String secondArgument) {
 		if (secondArgument == null) {
 			System.out.println("New experiment with random seed");
+			Experiment result = new Experiment(gitCommit, generateRandomSeed(), null);
+			result.setPersistent();
+			return result;
+		}
+		else if (secondArgument.equals("--no-persistence")) {
+			System.out.println("New non-persistent experiment with random seed");
 			return new Experiment(gitCommit, generateRandomSeed(), null);
 		}
 		else if (isInteger(secondArgument)) {
 			long seed = Long.parseLong(secondArgument);
 			System.out.println("New experiment with seed: " + seed);
-			return new Experiment(gitCommit, seed, null);
+			Experiment result = new Experiment(gitCommit, seed, null);
+			result.setPersistent();
+			return result;
 		}
 		else if (secondArgument.endsWith("nrj")) {
 			System.out.println("New experiment populated with DNA from " + secondArgument);
-			return new Experiment(gitCommit, generateRandomSeed(), readDNAFromFile(secondArgument));
+			Experiment result = new Experiment(gitCommit, generateRandomSeed(), readDNAFromFile(secondArgument));
+			result.setPersistent();
+			return result;
 		}
 		else if (secondArgument.startsWith("{")) {
 			System.out.println("New experiment populated with DNA: " + secondArgument);
-			return new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
+			Experiment result = new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
+			result.setPersistent();
+			return result;
 		}
 		else if (secondArgument.endsWith("exp")) {
 			System.out.println("Continuing experiment from " + secondArgument);
-			return readExperimentFromFile(secondArgument);
+			Experiment result = readExperimentFromFile(secondArgument);
+			result.setPersistent();
+			return result;
 		}
 		
 		throw new RuntimeException("Invalid experiment arguments. Use: 	[<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]");

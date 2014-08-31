@@ -43,12 +43,12 @@ public class Experiment {
 		id = gitCommit + "-" + seed;
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
-		System.out.println(getHeadersString());
 		populate(ecosystem, dna);
+		System.out.println(getHeadersString());
 		System.out.println(getStatusString(ecosystem, 0));
 	}
 
-	public String getId() {
+	public synchronized String getId() {
 		return id;
 	}
 
@@ -127,7 +127,7 @@ public class Experiment {
 	}
 
 	private String getHeadersString() {
-		return "\n" + alignLeft("id") + alignLeft("tick") + alignLeft("time") + alignLeft("tps") + alignLeft("narj") + alignLeft("food")
+		return alignLeft("tick") + alignLeft("time") + alignLeft("tps") + alignLeft("narj") + alignLeft("food")
 				+ "    most_typical_dna";
 	}
 
@@ -139,7 +139,7 @@ public class Experiment {
 	}
 
 	private String getStatusString(Ecosystem ecosystem, long tick, String mostTypicalDNA) {
-		return alignLeft(id) + alignLeft(NumberFormat.format(tick)) + alignLeft(NumberFormat.format(getTimeElapsed()))
+		return alignLeft(NumberFormat.format(tick)) + alignLeft(NumberFormat.format(getTimeElapsed()))
 				+ alignLeft(ticksChronometer.getTicksInLastSecond()) + alignLeft(ecosystem.getNumberOfNarjillos())
 				+ alignLeft(ecosystem.getNumberOfFoodPieces()) + "    " + mostTypicalDNA;
 	}
@@ -149,7 +149,7 @@ public class Experiment {
 	}
 
 	private String alignLeft(Object label) {
-		final String padding = "                  ";
+		final String padding = "      ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
@@ -157,12 +157,6 @@ public class Experiment {
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]
 	public static void main(String... args) {
 		final Experiment experiment = initializeExperiment(args);
-
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			public void run() {
-				System.out.println("Experiment " + experiment.getId() + " terminated at tick " + experiment.getTicksChronometer().getTotalTicks());
-			}
-		});
 
 		while (experiment.tick());
 		
@@ -173,7 +167,13 @@ public class Experiment {
 		String gitCommit = args.length == 0 ? "unknown" : args[0];
 		String secondArgument = args.length < 2 ? null : args[1];
 		
-		return createExperiment(gitCommit, secondArgument);
+		final Experiment experiment = createExperiment(gitCommit, secondArgument);
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				System.out.println("Experiment " + experiment.getId() + " terminated at tick " + experiment.getTicksChronometer().getTotalTicks());
+			}
+		});
+		return experiment;
 	}
 
 	private static Experiment createExperiment(String gitCommit, String secondArgument) {

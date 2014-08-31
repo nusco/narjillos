@@ -1,15 +1,19 @@
 package org.nusco.narjillos;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
@@ -29,21 +33,18 @@ public class Experiment {
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final long startTime = System.currentTimeMillis();
 	private final RanGen ranGen;
-
-	// arguments: [<git_commit>, <random_seed | dna_file | dna_document>]
-	public Experiment(String... args) {
-		LinkedList<String> argumentsList = toList(args);
-
-		String gitCommit = (argumentsList.isEmpty()) ? "???????" : argumentsList.removeFirst();
-		int seed = extractSeed(argumentsList);
+	private transient boolean persistent = false;
+	
+	public Experiment(String gitCommit, long seed) {
 		id = gitCommit + "-" + seed;
-		System.out.println("Experiment " + id);
 		ranGen = new RanGen(seed);
-
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
-		populate(ecosystem, argumentsList);
-		
 		System.out.println(getHeadersString());
+	}
+
+	public Experiment(String gitCommit, long seed, DNA dna) {
+		this(gitCommit, seed);
+		populate(ecosystem, dna);
 	}
 
 	public String getId() {
@@ -54,16 +55,11 @@ public class Experiment {
 		return startTime;
 	}
 
-	private void populate(Ecosystem ecosystem, LinkedList<String> argumentsList) {
-		if (argumentsList.isEmpty())
-			spawnFoodAndCreatures(ecosystem, null);
-		else if(argumentsList.getFirst().endsWith(".dna"))
-			spawnFoodAndCreatures(ecosystem, readDNAFromFile(argumentsList.removeFirst()));
-		else
-			spawnFoodAndCreatures(ecosystem, new DNA(argumentsList.removeFirst()));
+	public void setPersistent() {
+		persistent = true;
 	}
-
-	private void spawnFoodAndCreatures(Ecosystem ecosystem, DNA dna) {
+	
+	private void populate(Ecosystem ecosystem, DNA dna) {
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_PIECES; i++)
 			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
 
@@ -75,49 +71,12 @@ public class Experiment {
 		}
 	}
 
-	private LinkedList<String> toList(String... args) {
-		LinkedList<String> result = new LinkedList<>();
-		for (int i = 0; i < args.length; i++)
-			result.add(args[i]);
-		return result;
-	}
-
-	private int extractSeed(LinkedList<String> argumentsList) {
-		if (argumentsList.isEmpty() || !isInteger(argumentsList.getFirst())) {
-			System.out.print("Randomizing seed... ");
-			return Math.abs(new Random().nextInt());
-		}
-
-		return Integer.parseInt(argumentsList.removeFirst());
-	}
-
 	private Vector randomPosition(long size) {
 		return Vector.cartesian(ranGen.nextDouble() * size, ranGen.nextDouble() * size);
 	}
 
-	private boolean isInteger(String argument) {
-		try {
-			Integer.parseInt(argument);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
-	private static DNA readDNAFromFile(String file) {
-		try {
-			List<String> lines = Files.readAllLines(Paths.get(file));
-			StringBuffer result = new StringBuffer();
-			for (String line : lines)
-				result.append(line + "\n");
-			return new DNA(result.toString());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public boolean tick() {
-		reportStatus();
+		executePerodicOperations();
 		boolean running = getEcosystem().tick(ranGen);
 		if (running) {
 			ticksChronometer.tick();
@@ -140,11 +99,14 @@ public class Experiment {
 		return ticksChronometer;
 	}
 
-	private void reportStatus() {
+	private void executePerodicOperations() {
 		long ticks = ticksChronometer.getTotalTicks();
 
 		if (ticks % PARSE_INTERVAL != 0)
 			return;
+
+		if (persistent)
+			writeExperimentToFile();
 
 		System.out.println(getStatusString(ecosystem, ticks));
 	}
@@ -191,10 +153,11 @@ public class Experiment {
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
 
+	// arguments: [<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]
 	public static void main(String... args) {
 		final long CYCLES = 100_000_000;
 
-		Experiment experiment = new Experiment(args);
+		Experiment experiment = initializeExperiment(args);
 
 		boolean finished = false;
 		while (!finished && experiment.getTicksChronometer().getTotalTicks() < CYCLES)
@@ -202,5 +165,105 @@ public class Experiment {
 
 		System.out.println("*** The experiment is over at tick " + experiment.getTicksChronometer().getTotalTicks() + " ("
 				+ experiment.getTimeElapsed() + "s) ***");
+	}
+	
+	public static Experiment initializeExperiment(String... args) {
+		String gitCommit = args.length == 0 ? "unknown" : args[0];
+		String secondArgument = args.length < 2 ? null : args[1];
+		
+		Experiment result = createExperiment(gitCommit, secondArgument);
+		result.setPersistent();
+		return result;
+	}
+
+	private static Experiment createExperiment(String gitCommit, String secondArgument) {
+		if (secondArgument == null) {
+			System.out.println("New experiment with random seed");
+			return new Experiment(gitCommit, generateRandomSeed(), null);
+		}
+		else if (isInteger(secondArgument)) {
+			long seed = Long.parseLong(secondArgument);
+			System.out.println("New experiment with seed: " + seed);
+			return new Experiment(gitCommit, seed, null);
+		}
+		else if (secondArgument.endsWith("nrj")) {
+			System.out.println("New experiment populated with DNA from " + secondArgument);
+			return new Experiment(gitCommit, generateRandomSeed(), readDNAFromFile(secondArgument));
+		}
+		else if (secondArgument.startsWith("{")) {
+			System.out.println("New experiment populated with DNA: " + secondArgument);
+			return new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
+		}
+		else if (secondArgument.endsWith("exp")) {
+			System.out.println("Continuing experiment from " + secondArgument);
+			return readExperimentFromFile(secondArgument);
+		}
+		
+		throw new RuntimeException("Invalid experiment arguments. Use: 	[<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]");
+	}
+
+	private static long generateRandomSeed() {
+		System.out.print("Randomizing seed... ");
+		return Math.abs(new Random().nextInt());
+	}
+
+	private static boolean isInteger(String argument) {
+		try {
+			Integer.parseInt(argument);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	private static DNA readDNAFromFile(String file) {
+		try {
+			List<String> lines = Files.readAllLines(Paths.get(file));
+			StringBuffer result = new StringBuffer();
+			for (String line : lines)
+				result.append(line + "\n");
+			return new DNA(result.toString());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static Experiment readExperimentFromFile(String file) {
+		try {
+			byte[] encoded = Files.readAllBytes(Paths.get(file));
+			String json = new String(encoded, Charset.defaultCharset());
+			return JSON.fromJson(json, Experiment.class);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void writeExperimentToFile() {
+		try {
+			String fileName = getId() + ".exp";
+			String tempFileName = fileName + ".tmp";
+			
+			writeToFile(JSON.toJson(this, Experiment.class), tempFileName);
+			moveFile(tempFileName, fileName);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void moveFile(String source, String destination) throws IOException {
+		Path filePath = Paths.get(destination);
+		if (Files.exists(filePath))
+			Files.delete(filePath);
+		Files.move(Paths.get(source), filePath);
+	}
+
+	private void writeToFile(String content, String fileName) throws IOException, FileNotFoundException {
+		Path file = Paths.get(fileName);
+		if (Files.exists(file))
+			Files.delete(file);
+		Files.createFile(file);
+		PrintWriter out = new PrintWriter(fileName);
+		out.print(content);
+		out.close();
 	}
 }

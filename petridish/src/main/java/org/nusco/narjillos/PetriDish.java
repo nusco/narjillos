@@ -88,7 +88,7 @@ public class PetriDish extends Application {
 		Thread updateThread = new Thread() {
 			@Override
 			public void run() {
-				experiment = new Experiment(experimentArguments);
+				experiment = Experiment.initializeExperiment(experimentArguments);
 				ecosystemView = new EcosystemView(experiment.getEcosystem());
 				isModelThreadReady[0] = true;
 				

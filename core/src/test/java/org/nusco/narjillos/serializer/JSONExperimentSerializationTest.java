@@ -9,7 +9,7 @@ public class JSONExperimentSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesExperiment() {
-		Experiment experiment = new Experiment();
+		Experiment experiment = new Experiment("x", 1234);
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
 		

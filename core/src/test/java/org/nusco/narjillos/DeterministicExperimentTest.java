@@ -19,7 +19,7 @@ public class DeterministicExperimentTest {
 
 	@Test
 	public void isDeterministic() {
-		Experiment experiment = new Experiment("x", "1234");
+		Experiment experiment = new Experiment("x", 1234);
 		for (int i = 0; i < CYCLES; i++)
 			experiment.tick();
 		

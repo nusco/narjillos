@@ -1,5 +1,5 @@
 # ensure that the code is up to date
-./gradlew --quiet build
+./gradlew --quiet install
 
 # check for uncommitted files
 if ! git diff --quiet HEAD --

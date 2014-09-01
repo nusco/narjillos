@@ -174,7 +174,7 @@ public class PetriDish extends Application {
 
 		root.getChildren().add(foreground);
 		
-		Node environmentSpecificOverlay = getChronometers();
+		Node environmentSpecificOverlay = getDataView();
 		if (environmentSpecificOverlay != null)
 			root.getChildren().add(environmentSpecificOverlay);
 	}
@@ -265,9 +265,15 @@ public class PetriDish extends Application {
 			return 1000 / Integer.MAX_VALUE;
 	}
 
-	private synchronized Node getChronometers() {
-		Color color = state.getSpeed() == Speed.REALTIME ? Color.LIGHTGREEN : Color.HOTPINK;
+	private synchronized Node getDataView() {
+		Color color = getDataViewColor();
 		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage(), color);
+	}
+
+	private Color getDataViewColor() {
+		if (getEcosystem().isPaused())
+			return Color.CYAN;
+		return state.getSpeed() == Speed.REALTIME ? Color.LIGHTGREEN : Color.HOTPINK;
 	}
 
 	private String getStatisticsMessage() {
@@ -278,7 +284,13 @@ public class PetriDish extends Application {
 		return	"FPS: " + framesChronometer.getTicksInLastSecond() +
 				" / TPS: " + lab.getTicksInLastSecond() +
 				" / TICKS: " + NumberFormat.format(lab.getTotalTicks()) +
-				" (" + state.getSpeed().toString() + ")";
+				" (" + getStateString() + ")";
+	}
+
+	private String getStateString() {
+		if (getEcosystem().isPaused())
+			return "paused";
+		return state.getSpeed().toString();
 	}
 
 	private void moveViewport(long velocityX, long velocityY, KeyEvent event) {

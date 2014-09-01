@@ -21,7 +21,6 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
@@ -43,7 +42,7 @@ public class PetriDish extends Application {
 
 	private static String[] programArguments = new String[0];
 
-	private Experiment experiment;
+	private Lab lab;
 	private volatile EcosystemView ecosystemView;
 	
     private Node foreground;
@@ -77,25 +76,25 @@ public class PetriDish extends Application {
 	}
 
 	private Ecosystem getEcosystem() {
-		return experiment.getEcosystem();
+		return lab.getEcosystem();
 	}
 
 	private synchronized EcosystemView getEcosystemView() {
 		return ecosystemView;
 	}
 	
-	private void startModelThread(final String[] experimentArguments) {
+	private void startModelThread(final String[] arguments) {
 		final boolean[] isModelThreadReady = new boolean[] { false };
 		Thread updateThread = new Thread() {
 			@Override
 			public void run() {
-				experiment = RunExperiment.initializeExperiment(experimentArguments);
-				ecosystemView = new EcosystemView(experiment.getEcosystem());
+				lab = new Lab(arguments);
+				ecosystemView = new EcosystemView(lab.getEcosystem());
 				isModelThreadReady[0] = true;
 				
 				while (true) {
 					long startTime = System.currentTimeMillis();
-					if (!experiment.tick())
+					if (!lab.tick())
 						return;
 					waitUntilTimePassed(getTicksPeriod(), startTime);
 				}
@@ -277,8 +276,8 @@ public class PetriDish extends Application {
 
 	private String getPerformanceMessage() {
 		return	"FPS: " + framesChronometer.getTicksInLastSecond() +
-				" / TPS: " + experiment.getTicksChronometer().getTicksInLastSecond() +
-				" / TICKS: " + NumberFormat.format(experiment.getTicksChronometer().getTotalTicks()) +
+				" / TPS: " + lab.getTicksInLastSecond() +
+				" / TICKS: " + NumberFormat.format(lab.getTotalTicks()) +
 				" (" + state.getSpeed().toString() + ")";
 	}
 

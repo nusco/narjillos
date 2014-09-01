@@ -12,43 +12,56 @@ import java.util.Random;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
-public class RunExperiment {
+public class Lab {
 
 	private static final int PARSE_INTERVAL = 10000;
 	private static boolean persistent = false;
-	
-	// arguments: [<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]
-	public static void main(String... args) {
-		final Experiment experiment = initializeExperiment(args);
+	private final Experiment experiment;
 
+	public Lab(String... args) {
+		experiment = initializeExperiment(args);
+		System.out.println("Experiment " + experiment.getId());
 		System.out.println(getHeadersString());
-		System.out.println(getStatusString(experiment, 0));
-
-		while (experiment.tick()) {
-			if (experiment.getTicksChronometer().getTotalTicks() % PARSE_INTERVAL == 0)
-				executePerodicOperations(experiment);
-		}
-			
-		System.out.println("Experiment " + experiment.getId() + " ending at tick " + experiment.getTicksChronometer().getTotalTicks());
+		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
+	}
+	
+	public Experiment getExperiment() {
+		return experiment;
 	}
 
-	private static void executePerodicOperations(Experiment experiment) {
+	public Ecosystem getEcosystem() {
+		return experiment.getEcosystem();
+	}
+
+	public boolean tick() {
+		boolean isStillRunning = experiment.tick();
+		if (experiment.getTicksChronometer().getTotalTicks() % PARSE_INTERVAL == 0)
+			executePerodicOperations();
+
+		if (!isStillRunning)
+			System.out.println("Experiment " + experiment.getId() + " ending at tick " + experiment.getTicksChronometer().getTotalTicks());
+
+		return isStillRunning;
+	}
+
+	private void executePerodicOperations() {
 		long ticks = experiment.getTicksChronometer().getTotalTicks();
 
 		if (ticks % PARSE_INTERVAL != 0)
 			return;
 
 		if (persistent)
-			writeExperimentToFile(experiment);
+			writeExperimentToFile();
 
-		System.out.println(getStatusString(experiment, ticks));
+		System.out.println(getStatusString(ticks));
 	}
 
-	private static String getHeadersString() {
+	private String getHeadersString() {
 		return alignLeft("tick")
 				+ alignLeft("tps")
 				+ alignLeft("narj")
@@ -56,14 +69,14 @@ public class RunExperiment {
 				+ "    most_typical_dna";
 	}
 
-	private static String getStatusString(Experiment experiment, long tick) {
+	private String getStatusString(long tick) {
 		Narjillo mostTypicalSpecimen = getMostTypicalSpecimen(experiment);
 		if (mostTypicalSpecimen == null)
-			return getStatusString(experiment, tick, "<none>");
-		return getStatusString(experiment, tick, mostTypicalSpecimen.getDNA().toString());
+			return getStatusString(tick, "<none>");
+		return getStatusString(tick, mostTypicalSpecimen.getDNA().toString());
 	}
 
-	private static String getStatusString(Experiment experiment, long tick, String mostTypicalDNA) {
+	private String getStatusString(long tick, String mostTypicalDNA) {
 		return alignLeft(NumberFormat.format(tick))
 				+ alignLeft(experiment.getTicksChronometer().getTicksInLastSecond())
 				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
@@ -75,13 +88,13 @@ public class RunExperiment {
 		return experiment.getEcosystem().getPopulation().getMostTypicalSpecimen();
 	}
 
-	private static String alignLeft(Object label) {
+	private String alignLeft(Object label) {
 		final String padding = "      ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
 	
-	public static Experiment initializeExperiment(String... args) {
+	public Experiment initializeExperiment(String... args) {
 		String gitCommit = args.length == 0 ? "unknown" : args[0];
 		String secondArgument = args.length < 2 ? null : args[1];
 		
@@ -94,7 +107,7 @@ public class RunExperiment {
 		return experiment;
 	}
 
-	private static Experiment createExperiment(String gitCommit, String secondArgument) {
+	private Experiment createExperiment(String gitCommit, String secondArgument) {
 		if (secondArgument == null) {
 			System.out.println("New experiment with random seed");
 			persistent = true;
@@ -129,11 +142,11 @@ public class RunExperiment {
 		throw new RuntimeException("Invalid experiment arguments. Use: 	[<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]");
 	}
 
-	private static long generateRandomSeed() {
+	private long generateRandomSeed() {
 		return Math.abs(new Random().nextInt());
 	}
 
-	private static boolean isInteger(String argument) {
+	private boolean isInteger(String argument) {
 		try {
 			Integer.parseInt(argument);
 			return true;
@@ -142,7 +155,7 @@ public class RunExperiment {
 		}
 	}
 
-	private static DNA readDNAFromFile(String file) {
+	private DNA readDNAFromFile(String file) {
 		try {
 			List<String> lines = Files.readAllLines(Paths.get(file));
 			StringBuffer result = new StringBuffer();
@@ -154,7 +167,7 @@ public class RunExperiment {
 		}
 	}
 
-	private static Experiment readExperimentFromFile(String file) {
+	private Experiment readExperimentFromFile(String file) {
 		try {
 			byte[] encoded = Files.readAllBytes(Paths.get(file));
 			String json = new String(encoded, Charset.defaultCharset());
@@ -164,7 +177,7 @@ public class RunExperiment {
 		}
 	}
 
-	private static void writeExperimentToFile(Experiment experiment) {
+	private void writeExperimentToFile() {
 		try {
 			String fileName = experiment.getId() + ".exp";
 			String tempFileName = fileName + ".tmp";
@@ -176,16 +189,30 @@ public class RunExperiment {
 		}
 	}
 
-	private static void moveFile(String source, String destination) throws IOException {
+	private void moveFile(String source, String destination) throws IOException {
 		Path filePath = Paths.get(destination);
 		if (Files.exists(filePath))
 			Files.delete(filePath);
 		Files.move(Paths.get(source), filePath);
 	}
 
-	private static void writeToFile(String content, String fileName) throws IOException, FileNotFoundException {
+	private void writeToFile(String content, String fileName) throws IOException, FileNotFoundException {
 		PrintWriter out = new PrintWriter(fileName);
 		out.print(content);
 		out.close();
+	}
+
+	public int getTicksInLastSecond() {
+		return experiment.getTicksChronometer().getTicksInLastSecond();
+	}
+
+	public long getTotalTicks() {
+		return experiment.getTicksChronometer().getTotalTicks();
+	}
+
+	// arguments: [<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]
+	public static void main(String... args) {
+		Lab lab = new Lab(args);
+		while (lab.tick());
 	}
 }

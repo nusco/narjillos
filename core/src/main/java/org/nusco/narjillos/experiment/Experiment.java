@@ -19,13 +19,15 @@ public class Experiment {
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final long startTime = System.currentTimeMillis();
 	private final RanGen ranGen;
-	
+
 	public Experiment(String gitCommit, long seed) {
 		this(gitCommit, seed, null);
 	}
 
 	public Experiment(String gitCommit, long seed, DNA dna) {
 		id = gitCommit + "-" + seed;
+		if (dna == null)
+			System.out.println("Experiment " + id);
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		populate(ecosystem, dna);
@@ -38,15 +40,16 @@ public class Experiment {
 	public long getStartTime() {
 		return startTime;
 	}
-	
+
 	private void populate(Ecosystem ecosystem, DNA dna) {
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_PIECES; i++)
 			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
 
-		for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++) {
-			if (dna == null)
+		if (dna == null) {
+			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
 				ecosystem.spawnNarjillo(randomPosition(ecosystem.getSize()), DNA.random(ranGen));
-			else
+		} else {
+			for (int i = 0; i < 10; i++)
 				ecosystem.spawnNarjillo(randomPosition(ecosystem.getSize()), dna);
 		}
 	}
@@ -64,8 +67,7 @@ public class Experiment {
 	}
 
 	private boolean shouldSpawnFood() {
-		return ecosystem.getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES &&
-				ranGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL;
+		return ecosystem.getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES && ranGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL;
 	}
 
 	public Ecosystem getEcosystem() {

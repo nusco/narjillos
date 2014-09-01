@@ -25,7 +25,6 @@ public class Lab {
 
 	public Lab(String... args) {
 		experiment = initializeExperiment(args);
-		System.out.println("Experiment " + experiment.getId());
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
 	}
@@ -109,34 +108,35 @@ public class Lab {
 
 	private Experiment createExperiment(String gitCommit, String secondArgument) {
 		if (secondArgument == null) {
-			System.out.println("New experiment with random seed");
+			System.out.println("Starting new experiment with random seed");
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), null);
 		}
 		else if (secondArgument.equals("--no-persistence")) {
-			System.out.println("New non-persistent experiment with random seed");
+			System.out.println("Starting new non-persistent experiment with random seed");
 			return new Experiment(gitCommit, generateRandomSeed(), null);
+		}
+		else if (secondArgument.endsWith("exp")) {
+			System.out.println("Picking up experiment from " + secondArgument);
+			persistent = true;
+			return readExperimentFromFile(secondArgument);
 		}
 		else if (isInteger(secondArgument)) {
 			long seed = Long.parseLong(secondArgument);
-			System.out.println("New experiment with seed: " + seed);
+			System.out.println("Starting experiment " + seed + " from scratch");
 			persistent = true;
 			return new Experiment(gitCommit, seed, null);
 		}
 		else if (secondArgument.endsWith("nrj")) {
-			System.out.println("New experiment populated with DNA from " + secondArgument);
+			DNA dna = readDNAFromFile(secondArgument);
+			System.out.println("Observing DNA " + dna);
 			persistent = true;
-			return new Experiment(gitCommit, generateRandomSeed(), readDNAFromFile(secondArgument));
+			return new Experiment(gitCommit, generateRandomSeed(), dna);
 		}
 		else if (secondArgument.startsWith("{")) {
-			System.out.println("New experiment populated with DNA: " + secondArgument);
+			System.out.println("Observing DNA " + secondArgument);
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
-		}
-		else if (secondArgument.endsWith("exp")) {
-			System.out.println("Continuing experiment from " + secondArgument);
-			persistent = true;
-			return readExperimentFromFile(secondArgument);
 		}
 		
 		throw new RuntimeException("Invalid experiment arguments. Use: 	[<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]");

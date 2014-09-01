@@ -4,9 +4,8 @@ import java.lang.reflect.Type;
 import java.util.Set;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.genetics.Creature;
-import org.nusco.narjillos.creature.genetics.GenePool;
 import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.GenePool;
 import org.nusco.narjillos.shared.things.FoodPiece;
 
 import com.google.gson.JsonArray;
@@ -49,8 +48,8 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 	    }
 	    
 	    GenePool genePool = context.deserialize(jsonObject.get("genePool"), GenePool.class);
-	    Set<Creature> creatures = genePool.getCreatures();
-	    for (Creature creature : creatures)
+	    Set<Narjillo> narjillos = genePool.getNarjillos();
+	    for (Narjillo creature : narjillos)
 	    	result.forceAdd((Narjillo) creature);
 	    
 	    return result;

@@ -8,9 +8,7 @@ import java.util.Set;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
-import org.nusco.narjillos.creature.genetics.Creature;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.creature.genetics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
@@ -62,7 +60,7 @@ public class Ecosystem {
 		synchronized (this) {
 			result.addAll(foodPieces);
 		}
-		result.addAll(narjillos.getCreatures());
+		result.addAll(narjillos.getNarjillos());
 		return result;
 	}
 
@@ -88,10 +86,10 @@ public class Ecosystem {
 		return closestFood.getPosition();
 	}
 
-	public Creature findNarjillo(Vector near) {
+	public Narjillo findNarjillo(Vector near) {
 		double minDistance = Double.MAX_VALUE;
-		Creature result = null;
-		for (Creature narjillo : narjillos.getCreatures()) {
+		Narjillo result = null;
+		for (Narjillo narjillo : narjillos.getNarjillos()) {
 			double distance = narjillo.getPosition().minus(near).getLength();
 			if (distance < minDistance) {
 				minDistance = distance;
@@ -106,8 +104,8 @@ public class Ecosystem {
 		if (isPaused())
 			return false;
 		
-		Set<Creature> creatures = new LinkedHashSet<>(narjillos.getCreatures());
-		for (Creature narjillo : creatures) {
+		Set<Narjillo> narjillosCopy = new LinkedHashSet<>(narjillos.getNarjillos());
+		for (Narjillo narjillo : narjillosCopy) {
 			Segment movement = narjillo.tick();
 			consumeCollidedFood(narjillo, movement, ranGen);
 			if (narjillo.isDead())
@@ -147,7 +145,7 @@ public class Ecosystem {
 	}
 
 	private void updateTargets(Thing food) {
-		for (Thing creature : narjillos.getCreatures()) {
+		for (Thing creature : narjillos.getNarjillos()) {
 			if (((Narjillo)creature).getTarget() == food) {
 				Narjillo narjillo = (Narjillo)creature;
 				Vector closestTarget = findClosestTarget(narjillo);
@@ -156,7 +154,7 @@ public class Ecosystem {
 		}
 	}
 
-	private void consumeCollidedFood(Creature narjillo, Segment movement, RanGen ranGen) {
+	private void consumeCollidedFood(Narjillo narjillo, Segment movement, RanGen ranGen) {
 		// TODO: naive algorithm. replace with space partitioning
 		if (movement.getVector().isZero())
 			return;
@@ -172,11 +170,11 @@ public class Ecosystem {
 			consumeFood(narjillo, collidedFoodPiece, ranGen);
 	}
 
-	private boolean checkCollisionWithFood(Creature narjillo, Segment movement, Thing foodPiece) {
+	private boolean checkCollisionWithFood(Narjillo narjillo, Segment movement, Thing foodPiece) {
 		return movement.getMinimumDistanceFromPoint(foodPiece.getPosition()) <= COLLISION_DISTANCE;
 	}
 
-	private void consumeFood(Creature narjillo, Thing foodPiece, RanGen ranGen) {
+	private void consumeFood(Narjillo narjillo, Thing foodPiece, RanGen ranGen) {
 		// TODO: replace with space.contains()
 		if (!foodPieces.contains(foodPiece))
 			return; // race condition: already consumed
@@ -190,14 +188,14 @@ public class Ecosystem {
 		updateTargets(foodPiece);
 	}
 
-	private void remove(final Creature narjillo) {
-		if (!narjillos.getCreatures().contains(narjillo))
+	private void remove(Narjillo narjillo) {
+		if (!narjillos.getNarjillos().contains(narjillo))
 			return;
 		narjillos.remove(narjillo);
 		notifyThingRemoved(narjillo);
 	}
 
-	private void reproduce(Creature narjillo, RanGen ranGen) {
+	private void reproduce(Narjillo narjillo, RanGen ranGen) {
 		DNA childDNA = narjillo.reproduce(ranGen);
 		Vector offset = Vector.cartesian(getRandomInRange(3000, ranGen), getRandomInRange(3000, ranGen));
 		Vector position = narjillo.getPosition().plus(offset);

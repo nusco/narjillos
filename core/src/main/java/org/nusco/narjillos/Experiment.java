@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
 
-import org.nusco.narjillos.creature.genetics.Creature;
+import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.serializer.JSON;
@@ -132,7 +132,7 @@ public class Experiment {
 	}
 
 	private String getStatusString(Ecosystem ecosystem, long tick) {
-		Creature mostTypicalSpecimen = getMostTypicalSpecimen(ecosystem);
+		Narjillo mostTypicalSpecimen = getMostTypicalSpecimen(ecosystem);
 		if (mostTypicalSpecimen == null)
 			return getStatusString(ecosystem, tick, "<none>");
 		return getStatusString(ecosystem, tick, mostTypicalSpecimen.getDNA().toString());
@@ -144,7 +144,7 @@ public class Experiment {
 				+ alignLeft(ecosystem.getNumberOfFoodPieces()) + "    " + mostTypicalDNA;
 	}
 
-	private Creature getMostTypicalSpecimen(Ecosystem ecosystem) {
+	private Narjillo getMostTypicalSpecimen(Ecosystem ecosystem) {
 		return ecosystem.getPopulation().getMostTypicalSpecimen();
 	}
 

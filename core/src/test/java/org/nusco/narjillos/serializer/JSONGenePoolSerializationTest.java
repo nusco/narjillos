@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.creature.genetics.GenePool;
+import org.nusco.narjillos.ecosystem.GenePool;
 import org.nusco.narjillos.shared.physics.Vector;
 
 public class JSONGenePoolSerializationTest {
@@ -28,6 +28,6 @@ public class JSONGenePoolSerializationTest {
 		GenePool deserialized = JSON.fromJson(json, GenePool.class);
 
 		assertEquals(2, deserialized.getSize());
-		assertEquals(position1, deserialized.getCreatures().iterator().next().getPosition());
+		assertEquals(position1, deserialized.getNarjillos().iterator().next().getPosition());
 	}
 }

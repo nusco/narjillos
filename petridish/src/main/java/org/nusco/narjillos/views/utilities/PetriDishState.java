@@ -51,6 +51,23 @@ public class PetriDishState {
 		case HIGH:
 			this.speed = Speed.REALTIME;
 			break;
+		case PAUSED:
+			this.speed = Speed.REALTIME;
+			break;
+		}
+	}
+	
+	public void togglePause() {
+		switch (speed) {
+		case REALTIME:
+			this.speed = Speed.PAUSED;
+			break;
+		case HIGH:
+			this.speed = Speed.PAUSED;
+			break;
+		case PAUSED:
+			this.speed = Speed.REALTIME;
+			break;
 		}
 	}
 }

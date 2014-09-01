@@ -94,8 +94,9 @@ public class PetriDish extends Application {
 				
 				while (true) {
 					long startTime = System.currentTimeMillis();
-					if (!lab.tick())
-						return;
+					if (state.getSpeed() != Speed.PAUSED)
+						if (!lab.tick())
+							return;
 					waitUntilTimePassed(getTicksPeriod(), startTime);
 				}
 			}
@@ -151,11 +152,9 @@ public class PetriDish extends Application {
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					moveViewport(0, PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.P)
-					getEcosystem().togglePause();
-				else if (keyEvent.getCode() == KeyCode.S) {
+					state.togglePause();
+				else if (keyEvent.getCode() == KeyCode.S)
 					state.toggleSpeed();
-					getEcosystem().unpause();
-				}
 				else if (keyEvent.getCode() == KeyCode.L) {
 					state.toggleLight();
 					getEcosystemView().setLight(state.getLight());
@@ -271,9 +270,16 @@ public class PetriDish extends Application {
 	}
 
 	private Color getDataViewColor() {
-		if (getEcosystem().isPaused())
+		switch(state.getSpeed()) {
+		case HIGH:
+			return Color.HOTPINK;
+		case PAUSED:
 			return Color.CYAN;
-		return state.getSpeed() == Speed.REALTIME ? Color.LIGHTGREEN : Color.HOTPINK;
+		case REALTIME:
+			return Color.LIGHTGREEN;
+		default:
+			throw new RuntimeException("Unknown speed state: " + state.getSpeed());
+		}
 	}
 
 	private String getStatisticsMessage() {
@@ -288,8 +294,6 @@ public class PetriDish extends Application {
 	}
 
 	private String getStateString() {
-		if (getEcosystem().isPaused())
-			return "paused";
 		return state.getSpeed().toString();
 	}
 

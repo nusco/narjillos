@@ -2,7 +2,8 @@ package org.nusco.narjillos.views.utilities;
 
 public enum Speed {
 	REALTIME("real time"),
-	HIGH("high speed");
+	HIGH("high speed"),
+	PAUSED("paused");
 
 	private String description;
 

@@ -34,8 +34,6 @@ public class Ecosystem {
 	private final Vector center;
 
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
-	private volatile boolean shouldBePaused = false;
-	private volatile boolean paused = false;
 	
 	public Ecosystem(final long size) {
 		this.size = size;
@@ -99,11 +97,7 @@ public class Ecosystem {
 		return result;
 	}
 
-	public boolean tick(RanGen ranGen) {
-		paused = shouldBePaused;
-		if (isPaused())
-			return false;
-		
+	public void tick(RanGen ranGen) {
 		Set<Narjillo> narjillosCopy = new LinkedHashSet<>(narjillos.getNarjillos());
 		for (Narjillo narjillo : narjillosCopy) {
 			Segment movement = narjillo.tick();
@@ -116,8 +110,6 @@ public class Ecosystem {
 		
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
-		
-		return true;
 	}
 
 	public final FoodPiece spawnFood(Vector position) {
@@ -230,36 +222,5 @@ public class Ecosystem {
 
 	public GenePool getPopulation() {
 		return narjillos;
-	}
-	
-	// These method must be called from a separate thread than
-	// the one that calls tick();
-	public void togglePause() {
-		if (!shouldBePaused) {
-			shouldBePaused = true;
-			while (!isPaused())
-				wait100Millis();
-		} else {
-			shouldBePaused = false;
-			while (isPaused())
-				wait100Millis();
-		}
-	}
-
-	public boolean isPaused() {
-		return paused;
-	}
-
-	public void unpause() {
-		if (isPaused())
-			togglePause();
-	}
-
-	private void wait100Millis() {
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 }

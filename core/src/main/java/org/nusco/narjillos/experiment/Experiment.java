@@ -56,12 +56,10 @@ public class Experiment {
 	}
 
 	public boolean tick() {
-		boolean running = getEcosystem().tick(ranGen);
-		if (running) {
-			ticksChronometer.tick();
-			if (shouldSpawnFood())
-				ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
-		}
+		getEcosystem().tick(ranGen);
+		ticksChronometer.tick();
+		if (shouldSpawnFood())
+			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
 		return areThereSurvivors();
 	}
 

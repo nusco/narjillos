@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.genetics;
+package org.nusco.narjillos.ecosystem;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
+import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.GenePool;
 import org.nusco.narjillos.shared.physics.Vector;
 

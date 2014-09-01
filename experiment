@@ -1,4 +1,4 @@
 ./prepare
 
 # start an experiment (passing the seed if any)
-java -cp core/build/install/core/lib/narjillos-0.0.1.jar:core/build/install/core/lib/gson-2.3.jar org.nusco.narjillos.Experiment `git rev-parse --short HEAD` $1
+java -cp core/build/install/core/lib/narjillos-0.0.1.jar:core/build/install/core/lib/gson-2.3.jar org.nusco.narjillos.RunExperiment `git rev-parse --short HEAD` $1

@@ -21,14 +21,15 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.views.DataView;
 import org.nusco.narjillos.views.EcosystemView;
 import org.nusco.narjillos.views.utilities.Light;
-import org.nusco.narjillos.views.utilities.Speed;
 import org.nusco.narjillos.views.utilities.PetriDishState;
+import org.nusco.narjillos.views.utilities.Speed;
 import org.nusco.narjillos.views.utilities.Viewport;
 
 public class PetriDish extends Application {
@@ -88,7 +89,7 @@ public class PetriDish extends Application {
 		Thread updateThread = new Thread() {
 			@Override
 			public void run() {
-				experiment = Experiment.initializeExperiment(experimentArguments);
+				experiment = RunExperiment.initializeExperiment(experimentArguments);
 				ecosystemView = new EcosystemView(experiment.getEcosystem());
 				isModelThreadReady[0] = true;
 				

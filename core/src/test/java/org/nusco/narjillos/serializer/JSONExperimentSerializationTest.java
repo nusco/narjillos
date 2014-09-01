@@ -3,7 +3,7 @@ package org.nusco.narjillos.serializer;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.Experiment;
+import org.nusco.narjillos.experiment.Experiment;
 
 public class JSONExperimentSerializationTest {
 

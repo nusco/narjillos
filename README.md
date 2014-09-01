@@ -6,14 +6,14 @@ Narjillos are artificial creatures that mutate and evolve in a virtual microscop
 
 ##How to run an experiment
 
-To put a Petri dish full of narjillos under your microscope, you need Java 8 and git. To install Narjillos:
+To put a Petri dish full of narjillos under your microscope, you need Java 8 and git. Install Narjillos:
 
     git clone https://github.com/nusco/narjillos.git
     cd narjillos
-  
+
 Then start a Petri dish with the _petri_ command:
-  
-    petri
+
+    petri --no-persistence
 
 The first run installs the Gradle build tool and then builds the system, so it takes some time. The following runs start faster.
 
@@ -25,9 +25,9 @@ To turn from high speed to real time and back, press **S**.
 
 To turn the lamp on/off, press **L**. With the lamp off, high speed is faster (because the program doesn't need to render the creatures).
 
-If you have trouble distinguishing the shapes of narjillos, try infrared light. It makes things more visible, though not as pretty as a regular lamp. You can toggle infrared light by pressing **I**.
+If you have trouble distinguishing the shapes of narjillos, try infrared light. It makes things more visible, though not as pretty as a regular lamp does. You can toggle infrared light by pressing **I**.
 
-##What the heck are _these_?
+##But what the heck are these things?
 
 There are three main ingredients to the Narjillos recipe: _phenotypic variation_, _selection_ and _mutation_. They sound difficult, but you probably know about all three of them already. Let me tell how they work and what's their final result.
 
@@ -74,6 +74,16 @@ We have a single word to describe this entire process: _evolution_.
 After a few tens of minutes of running an experiment (at high speed), you'll likely see one "family" of related narjillos emerge and slowly take over the pond, while less successful genotypes go extinct. As you keep the program running, possibly for a few hours or days, this dominating DNA strand will subtly mutate to generate bodies that are better and better at swimming --- sometimes by using movement strategies that I myself wouldn't have expected when I wrote this program.
 
 The resulting creatures will look like they've been designed by a human intelligence intent on creating good swimmers. That's not the case. On the other hand, the more successfull narjillos are very unlikely to appear by just generating random genes from scratch: there are billions of possible genotypes, and only a few of those genotypes generate good swimmer phenotypes. This is neither a case of intelligent design, nor a case of blind luck. The narjillos are _evolving_ their ability to swim well.
+
+##For the pros
+
+A few advanced uses in case you really get serious with this program:
+
+* You can start an experiment with the _experiment_ command instead of the _petri_ command, to run it without graphics. It's even faster than _petri_ with lights off.
+
+* If you leave out the _--no-persistence--_ switch, then both _petri_ and _experiment_ will save the experiment to an _.exp_ file at regular intervals. If you interrupt the experiment for any reason (like restarting your computer), you can pass this file as a parameter to either _experiment_ or _petri_, and pick up the experiment from the last save. This allows you to run very long experiments. You can start an experiment in _experiment_, run it for a while, interrupt it and then pick it back up in _petri_ to see what happened.
+
+* Experiments are deterministic. Each experiment has a name composed of the current git commit (the revision of Narjillos that you're using), plus a random seed. Experiments with the same identifier will give exactly the same results over time.
 
 ## Goal
 

@@ -8,16 +8,17 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Watchdog for excessive speed (results in warning) °°
 * Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °°
   (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250} for a good case study)
-* Smooth, inertial targeting °
+* Smooth, inertial targeting
 
 ###Speed Demon
 
+* Optimize full-out view
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
 
 ###Gamer
 
-* Externalize all configurable parameters to JSON files °
+* Externalize all configurable parameters to JSON files
 * Try scrolling/panning commands under Linux
 * Parameterize scroll/pan speeds
 
@@ -26,11 +27,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * View Narjillo's evolutionary path °°
 * Ancestry browser °°
 * Find a good way to deal with atrophy °°
-* Separate RGB color genes °
-* Narjillo's skewing is genetically determined for each organ °
+* DNA diff during ancestry analysis °
+* Separate RGB color genes
+* Narjillo's skewing is genetically determined for each organ
 * Recursive body plan (creates multiple identical segments)
 * Whole-body size gene
-* DNA diff during ancestry analysis
 
 ###Etologist
 
@@ -44,6 +45,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
+* Track total running time for experiment °
 * Dump isolated narjillos to file (instead of the console) °
 * Slow motion setting °
 * Lock on single narjillo °
@@ -62,13 +64,14 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ethologist
 
-* Narjillos eat each other °
+* Narjillos are born small and then grow up °
+* Narjillos eat each other
 * "Fears" gene
 * "Wants to eat" gene
 
 ###Artist
 
-* Birth animation °
+* Birth animation °°
 * Light on/off visual and sound effects °
 * Better death animation (right now the bending is not visible) °
 * Fade out mouth/eye during death °

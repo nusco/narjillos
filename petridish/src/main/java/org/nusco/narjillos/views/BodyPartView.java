@@ -19,7 +19,7 @@ class BodyPartView extends ThingView {
 	private final BodyPart bodyPart;
 	private final Color color;
 	private final Rectangle rectangle;
-	
+
 	public BodyPartView(BodyPart bodyPart, Narjillo narjillo) {
 		super(narjillo);
 		this.bodyPart = bodyPart;
@@ -39,28 +39,31 @@ class BodyPartView extends ThingView {
 
 	public Node toNode(double zoomLevel, boolean infraredOn) {
 		if (bodyPart.getLength() == 0)
-			return null; // atrophy
-		
-		double alpha = getAlpha();
+			return null; // TODO: fix atrophy
+
+		double alpha = getAlpha(zoomLevel);
+		if (alpha == 0)
+			return null; // perfectly transparent. don't draw.
+
 		rectangle.setFill(getColor(infraredOn, alpha));
-		
+
 		if (infraredOn) {
 			rectangle.setStroke(new Color(1, 1, 1, alpha));
 			rectangle.setStrokeWidth(3);
 		} else {
 			rectangle.setStrokeWidth(0);
 		}
-		
+
 		rectangle.getTransforms().clear();
-		
+
 		// overlap slightly and shift to center based on thickness
 		double widthCenter = bodyPart.getThickness() / 2;
 		rectangle.getTransforms().add(new Translate(-OVERLAP, -widthCenter));
 		rectangle.getTransforms().add(moveToStartPoint());
-		
+
 		// rotate in position
 		rectangle.getTransforms().add(new Rotate(bodyPart.getAbsoluteAngle(), OVERLAP, widthCenter));
-		
+
 		return rectangle;
 	}
 
@@ -75,8 +78,53 @@ class BodyPartView extends ThingView {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 	}
 
-	private double getAlpha() {
-		return clipToRange(getNarjillo().getEnergyPercent() * 10, 0, 0.7);
+	private double getAlpha(double zoomLevel) {
+		double distanceAlpha = getDistanceAlpha(zoomLevel);
+		double energyAlpha = getEnergyAlpha();
+		return Math.min(energyAlpha, distanceAlpha);
+	}
+
+	private double getDistanceAlpha(double zoomLevel) {
+		double VERY_LOW_MAGNIFICATION = 0.005;
+		double LOW_MAGNIFICATION = 0.015;
+		double MEDIUM_MAGNIFICATION = 0.025;
+		double HIGH_MAGNIFICATION = 0.040;
+
+		if (zoomLevel <= VERY_LOW_MAGNIFICATION)
+			return 0; // nothing visible
+
+		if (zoomLevel > VERY_LOW_MAGNIFICATION && zoomLevel <= LOW_MAGNIFICATION) {
+			if (isSmall())
+				return 0;
+			return (zoomLevel - VERY_LOW_MAGNIFICATION) / (LOW_MAGNIFICATION - VERY_LOW_MAGNIFICATION);
+		}
+		
+		if (zoomLevel > LOW_MAGNIFICATION && zoomLevel <= MEDIUM_MAGNIFICATION) {
+			if (isVerySmall())
+				return 0;
+			if (isSmall())
+				return (zoomLevel - LOW_MAGNIFICATION) / (MEDIUM_MAGNIFICATION - LOW_MAGNIFICATION);
+		}
+		
+		if (zoomLevel > MEDIUM_MAGNIFICATION && zoomLevel <= HIGH_MAGNIFICATION) {
+			if (isVerySmall())
+				return (zoomLevel - MEDIUM_MAGNIFICATION) / (HIGH_MAGNIFICATION - MEDIUM_MAGNIFICATION);
+		}
+
+		return 1;
+	}
+
+	private boolean isSmall() {
+		return bodyPart.getLength() < 100 || bodyPart.getThickness() < 40;
+	}
+
+	private boolean isVerySmall() {
+		return bodyPart.getLength() < 50 || bodyPart.getThickness() < 20;
+	}
+
+	private double getEnergyAlpha() {
+		double currentEnergyPercent = getNarjillo().getEnergyPercent();
+		return clipToRange(currentEnergyPercent * 10, 0, 1);
 	}
 
 	public static Color toRGBColor(ColorByte colorByte) {
@@ -94,6 +142,6 @@ class BodyPartView extends ThingView {
 	}
 
 	private Narjillo getNarjillo() {
-		return (Narjillo)getThing();
+		return (Narjillo) getThing();
 	}
 }

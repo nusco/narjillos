@@ -37,7 +37,7 @@ public class PetriDish extends Application {
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_OFF = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_OFF;
-	private static final int DEFAULT_TICKS_PER_SECOND = 25;
+	private static final int TICKS_PER_SECOND = 25;
 	private static final long PAN_SPEED = 200;
 
 	private static String[] programArguments = new String[0];
@@ -259,9 +259,10 @@ public class PetriDish extends Application {
 
 	private synchronized int getTicksPeriod() {
 		if (state.getSpeed() == Speed.REALTIME)
-			return 1000 / DEFAULT_TICKS_PER_SECOND;
-		else
-			return 1000 / Integer.MAX_VALUE;
+			return 1000 / TICKS_PER_SECOND;
+
+		// go as fast as possible
+		return 1000 / Integer.MAX_VALUE;
 	}
 
 	private synchronized Node getDataView() {

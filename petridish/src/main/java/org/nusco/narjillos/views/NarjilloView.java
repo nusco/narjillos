@@ -43,8 +43,10 @@ class NarjilloView extends ThingView {
 
 		if (VisualDebugger.DEBUG)
 			group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn));
-		
-		group.setEffect(getEffects(zoomLevel, infraredOn));
+
+		if (!group.getChildren().isEmpty())
+			group.setEffect(getEffects(zoomLevel, infraredOn));
+
 		return group;
 	}
 

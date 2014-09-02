@@ -107,7 +107,8 @@ public class EcosystemView {
 	private void setZoomLevelEffects(Group group) {
 		double zoomLevel = viewport.getZoomLevel();
 		
-		if (zoomLevel <= 1)
+		final int EXTREME_MAGNIFICATION = 1;
+		if (zoomLevel <= EXTREME_MAGNIFICATION)
 			return;
 		
 		group.setEffect(getBlurEffect(zoomLevel));

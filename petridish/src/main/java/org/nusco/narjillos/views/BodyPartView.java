@@ -14,6 +14,11 @@ import org.nusco.narjillos.views.utilities.Viewport;
 
 class BodyPartView extends ThingView {
 
+	private final static double VERY_LOW_MAGNIFICATION = 0.005;
+	private final static double LOW_MAGNIFICATION = 0.015;
+	private final static double MEDIUM_MAGNIFICATION = 0.025;
+	private final static double HIGH_MAGNIFICATION = 0.040;
+
 	private final static int OVERLAP = 7;
 
 	private final BodyPart bodyPart;
@@ -47,7 +52,7 @@ class BodyPartView extends ThingView {
 
 		rectangle.setFill(getColor(infraredOn, alpha));
 
-		if (infraredOn) {
+		if (infraredOn && zoomLevel > HIGH_MAGNIFICATION) {
 			rectangle.setStroke(new Color(1, 1, 1, alpha));
 			rectangle.setStrokeWidth(3);
 		} else {
@@ -85,11 +90,6 @@ class BodyPartView extends ThingView {
 	}
 
 	private double getDistanceAlpha(double zoomLevel) {
-		double VERY_LOW_MAGNIFICATION = 0.005;
-		double LOW_MAGNIFICATION = 0.015;
-		double MEDIUM_MAGNIFICATION = 0.025;
-		double HIGH_MAGNIFICATION = 0.040;
-
 		if (zoomLevel <= VERY_LOW_MAGNIFICATION)
 			return 0; // nothing visible
 

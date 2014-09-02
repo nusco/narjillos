@@ -144,7 +144,7 @@ public class EcosystemView {
 	}
 
 	private Effect getBlurEffect(double zoomLevel) {
-		int blurAmount = (int)(15 * (zoomLevel - 0.7));
+		int blurAmount = Math.min((int)(15 * (zoomLevel - 0.7)), 10);
 		return new BoxBlur(blurAmount, blurAmount, 1);
 	}
 

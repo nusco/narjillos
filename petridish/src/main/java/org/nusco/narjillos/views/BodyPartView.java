@@ -14,7 +14,7 @@ import org.nusco.narjillos.views.utilities.Viewport;
 
 class BodyPartView extends ThingView {
 
-	private final static double VERY_LOW_MAGNIFICATION = 0.005;
+	private final static double VERY_LOW_MAGNIFICATION = 0.003;
 	private final static double LOW_MAGNIFICATION = 0.015;
 	private final static double MEDIUM_MAGNIFICATION = 0.025;
 	private final static double HIGH_MAGNIFICATION = 0.040;

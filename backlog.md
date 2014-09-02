@@ -12,7 +12,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Optimize full-out view
+* Optimize full-out view °°
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
 
@@ -35,7 +35,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Etologist
 
-* Reintroduce periodic target updates °°°
 * Eggs °°
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °

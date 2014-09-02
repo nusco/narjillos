@@ -10,8 +10,6 @@ public class Experiment {
 
 	private final static int ECOSYSTEM_SIZE = 40_000;
 	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 400;
-	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
-	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 	private static final int INITIAL_NUMBER_OF_NARJILLOS = 300;
 
 	private final String id;
@@ -61,13 +59,9 @@ public class Experiment {
 	public boolean tick() {
 		getEcosystem().tick(ranGen);
 		ticksChronometer.tick();
-		if (shouldSpawnFood())
-			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
+		if (ticksChronometer.getTotalTicks() % 1000 == 0)
+			getEcosystem().updateAllTargets();
 		return areThereSurvivors();
-	}
-
-	private boolean shouldSpawnFood() {
-		return ecosystem.getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES && ranGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL;
 	}
 
 	public Ecosystem getEcosystem() {

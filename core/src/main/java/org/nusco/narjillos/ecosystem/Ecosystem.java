@@ -25,6 +25,8 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
 public class Ecosystem {
 
 	private static final double COLLISION_DISTANCE = 30;
+	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
+	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 
 	private final long size;
 	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
@@ -107,9 +109,20 @@ public class Ecosystem {
 		}
 		
 		// no need to tick food
+
+		if (shouldSpawnFood(ranGen))
+			spawnFood(randomPosition(getSize(), ranGen));
 		
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
+	}
+
+	private boolean shouldSpawnFood(RanGen ranGen) {
+		return getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES && ranGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL;
+	}
+
+	private Vector randomPosition(long size, RanGen ranGen) {
+		return Vector.cartesian(ranGen.nextDouble() * size, ranGen.nextDouble() * size);
 	}
 
 	public final FoodPiece spawnFood(Vector position) {
@@ -143,6 +156,14 @@ public class Ecosystem {
 				Vector closestTarget = findClosestTarget(narjillo);
 				narjillo.setTarget(closestTarget);
 			}
+		}
+	}
+
+	public void updateAllTargets() {
+		for (Thing creature : narjillos.getNarjillos()) {
+			Narjillo narjillo = (Narjillo)creature;
+			Vector closestTarget = findClosestTarget(narjillo);
+			narjillo.setTarget(closestTarget);
 		}
 	}
 

@@ -218,10 +218,10 @@ public class PetriDish extends Application {
 	}
 
 	private int getFramesPeriod() {
-		if (state.getLight() == Light.ON)
-			return FRAMES_PERIOD_WITH_LIGHT_ON;
-		else
+		if (state.getLight() == Light.OFF)
 			return FRAMES_PERIOD_WITH_LIGHT_OFF;
+		else
+			return FRAMES_PERIOD_WITH_LIGHT_ON;
 	}
 
 	protected EventHandler<ScrollEvent> createMouseScrollHandler() {

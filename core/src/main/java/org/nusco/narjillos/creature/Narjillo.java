@@ -15,7 +15,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class Narjillo implements Thing {
 
-	static final double MAX_LIFESPAN = 30_000;
+	static final double MAX_LIFESPAN = 50_000;
 	
 	private final Body body;
 	private final DNA dna;
@@ -136,6 +136,6 @@ public class Narjillo implements Thing {
 	}
 
 	public double getEnergyPercent() {
-		return energy.getEnergyPercent();
+		return energy.getCurrentPercentOfInitialValue();
 	}
 }

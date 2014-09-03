@@ -67,7 +67,7 @@ public class Energy {
 		return donation;
 	}
 
-	public double getEnergyPercent() {
+	public double getCurrentPercentOfInitialValue() {
 		if (value == 0)
 			return 0;
 		return Math.min(1, initialValue / value);

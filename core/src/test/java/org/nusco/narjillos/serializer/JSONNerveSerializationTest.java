@@ -6,21 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.creature.body.pns.PassNerve;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
-import org.nusco.narjillos.serializer.JSON;
 
 public class JSONNerveSerializationTest {
-
-	@Test
-	public void serializesAndDeserializesFood() {
-		Nerve nerve = new PassNerve();
-
-		String json = JSON.toJson(nerve, Nerve.class);
-		Nerve deserialized = JSON.fromJson(json, Nerve.class);
-
-		assertTrue(deserialized instanceof PassNerve);
-	}
 
 	@Test
 	public void serializesAndDeserializesDelayNerves() {
@@ -50,11 +38,11 @@ public class JSONNerveSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesGenericNerves() {
-		Nerve nerve = new PassNerve();
+		Nerve nerve = new DelayNerve(10);
 		
 		String json = JSON.toJson(nerve, Nerve.class);
 		Nerve deserialized = JSON.fromJson(json, Nerve.class);
 		
-		assertTrue(deserialized instanceof PassNerve);
+		assertTrue(deserialized instanceof DelayNerve);
 	}
 }

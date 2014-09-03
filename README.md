@@ -13,7 +13,7 @@ To put a Petri dish full of narjillos under your microscope, you need Java 8 and
 
 Then start a Petri dish with the _petri_ command:
 
-    petri --no-persistence
+    petri no-persistence
 
 The first run installs the Gradle build tool and then builds the system, so it takes some time. The following runs start faster.
 
@@ -81,7 +81,7 @@ A few advanced uses in case you really get serious with this program:
 
 * You can start an experiment with the _experiment_ command instead of the _petri_ command, to run it without graphics. It's even faster than _petri_ with lights off.
 
-* If you leave out the _--no-persistence--_ switch, then both _petri_ and _experiment_ will save the experiment to an _.exp_ file at regular intervals. If you interrupt the experiment for any reason (like restarting your computer), you can pass this file as a parameter to either _experiment_ or _petri_, and pick up the experiment from the last save. This allows you to run very long experiments. You can start an experiment in _experiment_, run it for a while, interrupt it and then pick it back up in _petri_ to see what happened.
+* If you leave out the _no-persistence_ switch, then both _petri_ and _experiment_ will save the experiment to an _.exp_ file at regular intervals. If you interrupt the experiment for any reason (like restarting your computer), you can pass this file as a parameter to either _experiment_ or _petri_, and pick up the experiment from the last save. This allows you to run very long experiments. You can start an experiment in _experiment_, run it for a while, interrupt it and then pick it back up in _petri_ to see what happened.
 
 * Experiments are deterministic. Each experiment has a name composed of the current git commit (the revision of Narjillos that you're using), plus a random seed. Experiments with the same identifier will give exactly the same results over time.
 

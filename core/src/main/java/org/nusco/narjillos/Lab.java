@@ -112,7 +112,7 @@ public class Lab {
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), null);
 		}
-		else if (secondArgument.equals("--no-persistence")) {
+		else if (secondArgument.equals("no-persistence")) {
 			System.out.println("Starting new non-persistent experiment with random seed");
 			return new Experiment(gitCommit, generateRandomSeed(), null);
 		}

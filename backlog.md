@@ -23,22 +23,22 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Genetist
 
+* Narjillo's skewing is genetically determined for each organ °°
 * View Narjillo's evolutionary path °°
 * Ancestry browser °°
 * Find a good way to deal with atrophy °°
 * DNA diff during ancestry analysis °
-* Narjillo's skewing is genetically determined for each organ °
 * Separate RGB color genes
 * Recursive body plan (creates multiple identical segments)
 * Whole-body size gene
 
 ###Etologist
 
+* Skewing speed depends on metabolic rate °°
 * Eggs °°
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °
 * Distance of firing is determined by genes °
-* Skimming speed depends on metabolic rate
 * Narjillos spend energy to reproduce
 * Narjillos decide how much energy to give to descendants
 
@@ -48,6 +48,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Dump isolated narjillos to file (instead of the console) °
 * Slow motion setting °
 * Lock on single narjillo °
+* Real arguments parsing (use --no-persistence together with other switches)
 * Zipped experiment files
 * View narjillo stats (age, energy, times eaten...)
 * Make food visible in normal view

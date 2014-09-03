@@ -21,23 +21,16 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class Body {
 
-	private static final double MAX_SKEWING = 70;
-	private static final double SKEWING_VELOCITY_RATIO = 0.1;
-
 	private final Organ head;
 	private final double mass;
-	private final double maxSkewingVelocity;
-	private double currentDirectionSkewing = 0;
-
 	private transient List<BodyPart> bodyParts;
 	
 	public Body(Head head) {
 		this.head = head;
 		this.mass = calculateTotalMass();
-		this.maxSkewingVelocity = getMetabolicRate() * SKEWING_VELOCITY_RATIO;
 	}
 
-	private Head getHead() {
+	public Head getHead() {
 		return (Head) head;
 	}
 
@@ -52,9 +45,12 @@ public class Body {
 		}
 		return bodyParts;
 	}
-	
-	public void forceBend(double bendAngle) {
-		getHead().skew(bendAngle);
+
+	private void addWithChildren(List<BodyPart> result, Organ organ) {
+		// children first
+		for (Organ child : organ.getChildren())
+			addWithChildren(result, child);
+		result.add(organ);
 	}
 
 	public void teleportTo(Vector position) {
@@ -123,16 +119,13 @@ public class Body {
 	private void tick_step1_updateAngles(Vector targetDirection) {
 		double angleToTarget;
 		try {
-			Vector mainAxis = getHead().getVector().normalize(1).invert();
+			Vector mainAxis = getHead().getMainAxis();
 			angleToTarget = mainAxis.getAngleWith(targetDirection);
 		} catch (ZeroVectorException e) {
 			return;
 		}
 		
-		getHead().skew(calculateDirectionSkewing(angleToTarget));
-		
-		getHead().recursivelyUpdateAngleToParent(0);
-		getHead().resetSkewing();
+		getHead().recursivelyUpdateAngleToParent(0, angleToTarget);
 	}
 
 	private void tick_step2_reposition(Vector centerOfMassBeforeReshaping) {
@@ -184,21 +177,6 @@ public class Body {
 		return new Impulse(translation, rotation, energySpent);
 	}
 
-	private double calculateDirectionSkewing(double angleToTarget) {
-		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
-		double skewingVelocity = updatedSkewing - currentDirectionSkewing;
-		if (Math.abs(skewingVelocity) > maxSkewingVelocity)
-			skewingVelocity = Math.signum(skewingVelocity) * maxSkewingVelocity;
-		return currentDirectionSkewing += skewingVelocity;
-	}
-
-	private void addWithChildren(List<BodyPart> result, Organ organ) {
-		// children first
-		for (Organ child : organ.getChildren())
-			addWithChildren(result, child);
-		result.add(organ);
-	}
-
 	private double getMetabolicRate() {
 		return getHead().getMetabolicRate();
 	}
@@ -231,13 +209,5 @@ public class Body {
 		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));
 		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
 		return Vector.cartesian(-shiftX, -shiftY);
-	}
-	
-	public double getCurrentDirectionSkewing() {
-		return currentDirectionSkewing;
-	}
-
-	public double getMaxSkewingVelocity() {
-		return maxSkewingVelocity;
 	}
 }

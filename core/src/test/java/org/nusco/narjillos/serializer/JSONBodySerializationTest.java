@@ -30,7 +30,6 @@ public class JSONBodySerializationTest {
 		
 		Body body = new Body(head);
 		body.teleportTo(Vector.cartesian(100, 200));
-		body.forceBend(45);
 
 		String json = JSON.toJson(body, Body.class);
 		Body deserialized = JSON.fromJson(json, Body.class);
@@ -41,8 +40,6 @@ public class JSONBodySerializationTest {
 		
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
-		assertEquals(body.getCurrentDirectionSkewing(), deserialized.getCurrentDirectionSkewing(), 0.0);
-		assertEquals(body.getMaxSkewingVelocity(), deserialized.getMaxSkewingVelocity(), 0.0);
 
 		List<BodyPart> bodyParts = body.getBodyParts();
 		List<BodyPart> deserializedBodyParts = deserialized.getBodyParts();

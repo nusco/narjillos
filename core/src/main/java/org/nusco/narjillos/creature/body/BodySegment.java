@@ -35,9 +35,9 @@ public class BodySegment extends Organ {
 	}
 
 	@Override
-	protected double calculateNewAngleToParent(double targetAmplitudePercent) {
+	protected double calculateNewAngleToParent(double targetAmplitudePercent, double angleToTarget) {
 		double unbentAmplitude = orientation * targetAmplitudePercent * amplitude;
-		return angleToParentAtRest + unbentAmplitude + getSkewing();
+		return angleToParentAtRest + unbentAmplitude + calculateSkewing(angleToTarget);
 	}
 
 	private static ColorByte calculateColorMix(Organ parent, ColorByte color) {
@@ -53,5 +53,10 @@ public class BodySegment extends Organ {
 	@Override
 	protected double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle() + getAngleToParent();
+	}
+
+	@Override
+	protected double getMetabolicRate() {
+		return getParent().getMetabolicRate();
 	}
 }

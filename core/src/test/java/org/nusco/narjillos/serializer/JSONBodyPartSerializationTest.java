@@ -69,8 +69,10 @@ public class JSONBodyPartSerializationTest {
 		assertSame(deserializedParent, deserializedChild.getParent());
 
 		// everything still works after ticking
-		parent.recursivelyUpdateAngleToParent(10);
-		deserializedParent.recursivelyUpdateAngleToParent(10);
+		for (int i = 0; i < 3; i++) {
+			parent.recursivelyUpdateAngleToParent(10, 20);
+			deserializedParent.recursivelyUpdateAngleToParent(10, 20);
+		}
 		assertEquals(child.getAbsoluteAngle(), deserializedChild.getAbsoluteAngle(), 0.0);
 	}
 }

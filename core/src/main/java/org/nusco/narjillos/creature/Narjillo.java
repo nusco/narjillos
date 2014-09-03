@@ -61,19 +61,14 @@ public class Narjillo implements Thing {
 	}
 
 	private void applyLifecycleAnimations() {
-		if (energy.getValue() <= energy.getAgonyLevel())
-			applyDeathAnimation();
+		// TODO: find a new way to do this
+//		if (energy.getValue() <= energy.getAgonyLevel())
+//			applyDeathAnimation();
 	}
 
 	@Override
 	public Vector getPosition() {
 		return body.getStartPoint();
-	}
-
-	private void applyDeathAnimation() {
-		// TODO: needs tweaking. the effect became invisible across commits
-		double bendAngle = ((energy.getAgonyLevel() - getEnergy().getValue()) / energy.getAgonyLevel()) * 9;
-		body.forceBend(bendAngle);
 	}
 
 	public Vector getTargetDirection() {

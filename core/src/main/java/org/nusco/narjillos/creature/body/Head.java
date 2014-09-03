@@ -3,24 +3,21 @@ package org.nusco.narjillos.creature.body;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class Head extends Organ {
 
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
 
+	private final double percentEnergyToChildren;
 	private final double metabolicRate;
-	private double percentEnergyToChildren;
 	private Vector startPoint = Vector.ZERO;
 	
 	public Head(int length, int thickness, ColorByte hue, double metabolicRate, double percentEnergyToChildren) {
 		super(length, thickness, hue, null, new WaveNerve(WAVE_SIGNAL_FREQUENCY * metabolicRate));
-		this.metabolicRate = metabolicRate;
 		this.percentEnergyToChildren = percentEnergyToChildren;
-	}
-
-	public double getMetabolicRate() {
-		return metabolicRate;
+		this.metabolicRate = metabolicRate;
 	}
 
 	public double getPercentEnergyToChildren() {
@@ -56,9 +53,18 @@ public class Head extends Organ {
 	}
 	
 	@Override
-	protected double calculateNewAngleToParent(double targetAngle) {
+	protected double calculateNewAngleToParent(double targetAngle, double angleToTarget) {
 		// The head never rotates on its own. It must be
 		// explicitly repositioned by its client.
 		return getAngleToParent();
+	}
+
+	@Override
+	public double getMetabolicRate() {
+		return metabolicRate;
+	}
+
+	Vector getMainAxis() throws ZeroVectorException {
+		return getVector().normalize(1).invert();
 	}
 }

@@ -73,7 +73,8 @@ We have a single word to describe this entire process: _evolution_.
 
 After a few tens of minutes of running an experiment (at high speed), you'll likely see one "family" of related narjillos emerge and slowly take over the pond, while less successful genotypes go extinct. As you keep the program running, possibly for a few hours or days, this dominating DNA strand will subtly mutate to generate bodies that are better and better at swimming --- sometimes by using movement strategies that I myself wouldn't have expected when I wrote this program.
 
-The resulting creatures will look like they've been designed by a human intelligence intent on creating good swimmers. That's not the case. On the other hand, the more successfull narjillos are very unlikely to appear by just generating random genes from scratch: there are billions of possible genotypes, and only a few of those genotypes generate good swimmer phenotypes. This is neither a case of intelligent design, nor a case of blind luck. The narjillos are _evolving_ their ability to swim well.
+The resulting creatures are neither a result of my design, nor emerging by blind luck. On the one hand, I didn't design the individual creatures - I just created the environment where their genes can evolve. On the other hand, you probably won't be able to generate good swimmers by shuffling genes randomly, as the program does on startup. There are literally more possible narjillos body plans than grain of sands in a desert - vastly more so - and by far the most of them are no good at swimming. This is neither a case of intelligent design, nor a case of blind luck. The narjillos are _evolving_ their ability to swim well.
+
 
 ##For the pros
 

@@ -23,7 +23,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Genetist
 
-* Narjillo's skewing is genetically determined for each organ °°
 * View Narjillo's evolutionary path °°
 * Ancestry browser °°
 * Find a good way to deal with atrophy °°

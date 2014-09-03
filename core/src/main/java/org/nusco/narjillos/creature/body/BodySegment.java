@@ -6,16 +6,23 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class BodySegment extends Organ {
 
+	private static final double SKEWING_VELOCITY_RATIO = 0.1;
+	
 	private final double angleToParentAtRest;
 	private final int orientation; // -1 or 1
 	private final int amplitude;
+	private final int skewing;
 
-	public BodySegment(int length, int thickness, ColorByte hue, Organ parent, int delay, int angleToParentAtRest, int amplitude) {
+	private double currentSkewing = 0;
+	private double cachedMetabolicRate = -1;
+
+	public BodySegment(int length, int thickness, ColorByte hue, Organ parent, int delay, int angleToParentAtRest, int amplitude, int skewing) {
 		super(length, thickness, calculateColorMix(parent, hue), parent, new DelayNerve(delay));
 		this.angleToParentAtRest = angleToParentAtRest;
 		this.orientation = (int) Math.signum(angleToParentAtRest);
 		setAngleToParent(angleToParentAtRest);
 		this.amplitude = amplitude;
+		this.skewing = skewing;
 	}
 
 	public double getAngleToParentAtRest() {
@@ -28,6 +35,10 @@ public class BodySegment extends Organ {
 
 	public int getAmplitude() {
 		return amplitude;
+	}
+
+	public int getSkewing() {
+		return skewing;
 	}
 
 	public int getDelay() {
@@ -47,7 +58,7 @@ public class BodySegment extends Organ {
 	}
 
 	BodySegment(Nerve nerve) {
-		this(0, 0, new ColorByte(0), null, 13, 0, 1);
+		this(0, 0, new ColorByte(0), null, 13, 0, 1, 0);
 	}
 	
 	@Override
@@ -57,6 +68,22 @@ public class BodySegment extends Organ {
 
 	@Override
 	protected double getMetabolicRate() {
-		return getParent().getMetabolicRate();
+		if (cachedMetabolicRate == -1)
+			cachedMetabolicRate = getParent().getMetabolicRate();
+		return cachedMetabolicRate;
+	}
+
+	protected double calculateSkewing(double angleToTarget) {
+		double targetSkewing = (angleToTarget % 180) / 180 * getSkewing();
+		currentSkewing += getSkewingVelocity(targetSkewing);
+		return currentSkewing;
+	}
+
+	private double getSkewingVelocity(double targetSkewing) {
+		double result = targetSkewing - currentSkewing;
+		double maxSkewingVelocity = getMetabolicRate() * SKEWING_VELOCITY_RATIO;
+		if (Math.abs(result) > maxSkewingVelocity)
+			return Math.signum(result) * maxSkewingVelocity;
+		return result;
 	}
 }

@@ -34,7 +34,7 @@ public class JSONBodyPartSerializationTest {
 	@Test
 	public void serializesAndDeserializesBodySegments() {
 		Organ parent = new Head(10, 20, new ColorByte(0), 40, 0.5);
-		BodyPart bodyPart = new BodySegment(1, 2, new ColorByte(3), parent, 4, -5, 6);
+		BodyPart bodyPart = new BodySegment(1, 2, new ColorByte(3), parent, 4, -5, 6, 7);
 		bodyPart.updateCaches();
 		
 		String json = JSON.toJson(bodyPart, BodyPart.class);
@@ -47,6 +47,7 @@ public class JSONBodyPartSerializationTest {
 		assertEquals(-5, deserialized.getAngleToParentAtRest(), 0.0);
 		assertEquals(-1, deserialized.getOrientation(), 0.0);
 		assertEquals(6, deserialized.getAmplitude(), 0.0);
+		assertEquals(7, deserialized.getSkewing());
 		assertEquals(2, deserialized.getMass(), 0.0);
 		assertEquals(bodyPart.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(bodyPart.getCenterOfMass(), deserialized.getCenterOfMass());
@@ -56,7 +57,7 @@ public class JSONBodyPartSerializationTest {
 	@Test
 	public void serializesAndDeserializesAnEntireTreeOfOrgans() {
 		Organ parent = new Head(100, 0, new ColorByte(0), 0, 0.5);
-		Organ child = new BodySegment(200, 0, new ColorByte(0), parent, 0, 0, 0);
+		Organ child = new BodySegment(200, 0, new ColorByte(0), parent, 0, 0, 0, 0);
 		parent.addChild(child);
 		
 		String json = JSON.toJson(parent, Organ.class);

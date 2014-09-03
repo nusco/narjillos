@@ -19,13 +19,13 @@ public class JSONBodySerializationTest {
 	public void serializesAndDeserializesBody() {
 		Head head = new Head(1, 2, new ColorByte(3), 4, 0.5);
 		
-		BodySegment child1 = new BodySegment(11, 12, new ColorByte(13), head, 14, 15, 16);
+		BodySegment child1 = new BodySegment(11, 12, new ColorByte(13), head, 14, 15, 16, 17);
 		head.addChild(child1);
 		
-		BodySegment child2_1 = new BodySegment(21, 22, new ColorByte(23), child1, 24, 25, 26);
+		BodySegment child2_1 = new BodySegment(21, 22, new ColorByte(23), child1, 24, 25, 26, 27);
 		child1.addChild(child2_1);
 		
-		BodySegment child2_2 = new BodySegment(31, 32, new ColorByte(33), child1, 34, 35, 36);
+		BodySegment child2_2 = new BodySegment(31, 32, new ColorByte(33), child1, 34, 35, 36, 37);
 		child1.addChild(child2_2);
 		
 		Body body = new Body(head);

@@ -34,14 +34,6 @@ public abstract class OrganBuilderTest {
 	}
 
 	@Test
-	public void decodesADelayBetween0And30() {
-		assertEquals(0, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0)).getDelay());
-		assertEquals(0, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 8)).getDelay());
-		assertEquals(1, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 9)).getDelay());
-		assertEquals(30, createConcreteOrganBuilder(new Chromosome(0, 0, 0, 255)).getDelay());
-	}
-
-	@Test
 	public void decodesAHueBetween0And255() {
 		assertEquals(new ColorByte(0), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0)).getHue());
 		assertEquals(new ColorByte(1), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 1)).getHue());

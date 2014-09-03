@@ -10,10 +10,13 @@ class BodySegmentBuilder extends OrganBuilder {
 		super(chromosome);
 	}
 
+	int getDelay() {
+		final double MAX_DELAY = 30;
+		return (int)(getChromosome().getGene(3) * ((MAX_DELAY + 1) / 256));
+	}
+
 	int getAngleToParent(int mirroringSign) {
-		final double MAX_ABS_ANGLE_TO_PARENT = 70;
-		int angleToParentGene = getChromosome().getGene(5);
-		int result = (int)((angleToParentGene * ((MAX_ABS_ANGLE_TO_PARENT * 2 + 1) / 256)) - MAX_ABS_ANGLE_TO_PARENT);
+		int result = convertToRange(getChromosome().getGene(5), (double) 70);
 		return result * (int)Math.signum(mirroringSign);
 	}
 
@@ -22,7 +25,15 @@ class BodySegmentBuilder extends OrganBuilder {
 		return (int)(getChromosome().getGene(6) * (MAX_AMPLITUDE / 256)) + 1;
 	}
 
+	public int getSkewing() {
+		return convertToRange(getChromosome().getGene(0), (double) 90);
+	}
+
+	private int convertToRange(int gene, double maxAbsValue) {
+		return (int)((gene * ((maxAbsValue * 2 + 1) / 256)) - maxAbsValue);
+	}
+
 	public Organ build(Organ parent, int angleSign) {
-		return parent.addChild(new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(angleSign), getAmplitude()));
+		return parent.addChild(new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(angleSign), getAmplitude(), getSkewing()));
 	}
 }

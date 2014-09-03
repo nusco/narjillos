@@ -31,7 +31,7 @@ public class BodyTest {
 		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
-		head.addChild(new BodySegment(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), head, 0, 0, 0));
+		head.addChild(new BodySegment(segmentLengthInMm, segmentThicknessInMm, new ColorByte(0), head, 0, 0, 0, 0));
 		Body body = new Body(head);
 		
 		double expectedMassInGrams = 212;
@@ -42,7 +42,7 @@ public class BodyTest {
 	public void hasACenterOfMassAndARadius() {
 		Head head = new Head(10, 10, new ColorByte(1), 1, 0.5);
 		
-		BodySegment child = new BodySegment(20, 5, new ColorByte(0), head, 0, 0, 0);
+		BodySegment child = new BodySegment(20, 5, new ColorByte(0), head, 0, 0, 0, 0);
 		head.addChild(child);
 
 		Body body = new Body(head);

@@ -18,9 +18,12 @@ class TwinOrgansBuilder {
 
 	// Once in twice, organs are mirrored.
 	private boolean isMirrorSegment(Chromosome chromosome) {
-		int controlGene = chromosome.getGene(0);
 		final int MIRROR_ORGAN_BIT = 0b00000001;
-		return (controlGene & MIRROR_ORGAN_BIT) == MIRROR_ORGAN_BIT;
+		return (getControlGene(chromosome) & MIRROR_ORGAN_BIT) == MIRROR_ORGAN_BIT;
+	}
+
+	private int getControlGene(Chromosome chromosome) {
+		return chromosome.getGene(0);
 	}
 
 	public List<Organ> buildChildren(Organ parent) {

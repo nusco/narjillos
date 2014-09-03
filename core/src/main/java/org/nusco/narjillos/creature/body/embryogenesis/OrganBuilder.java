@@ -17,20 +17,15 @@ abstract class OrganBuilder {
 	
 	int getLength() {
 		final int ATROPHY_LENGTH = 29;
-		return chromosome.getGene(1) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(1);
+		return getChromosome().getGene(1) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(1);
 	}
 
 	int getThickness() {
 		final double MAX_THICKNESS = 50;
-		return (int)(chromosome.getGene(2) * (MAX_THICKNESS / 256)) + 1;
-	}
-
-	int getDelay() {
-		final double MAX_DELAY = 30;
-		return (int)(chromosome.getGene(3) * ((MAX_DELAY + 1) / 256));
+		return (int)(getChromosome().getGene(2) * (MAX_THICKNESS / 256)) + 1;
 	}
 	
 	ColorByte getHue() {
-		return new ColorByte(chromosome.getGene(4));
+		return new ColorByte(getChromosome().getGene(4));
 	}
 }

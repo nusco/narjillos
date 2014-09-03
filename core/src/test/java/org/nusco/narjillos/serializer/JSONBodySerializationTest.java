@@ -42,6 +42,7 @@ public class JSONBodySerializationTest {
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
 		assertEquals(body.getCurrentDirectionSkewing(), deserialized.getCurrentDirectionSkewing(), 0.0);
+		assertEquals(body.getMaxSkewingVelocity(), deserialized.getMaxSkewingVelocity(), 0.0);
 
 		List<BodyPart> bodyParts = body.getBodyParts();
 		List<BodyPart> deserializedBodyParts = deserialized.getBodyParts();

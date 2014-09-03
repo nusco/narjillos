@@ -22,10 +22,11 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
 public class Body {
 
 	private static final double MAX_SKEWING = 70;
-	private static final double MAX_SKEWING_VELOCITY = 0.1;
+	private static final double SKEWING_VELOCITY_RATIO = 0.1;
 
 	private final Organ head;
 	private final double mass;
+	private final double maxSkewingVelocity;
 	private double currentDirectionSkewing = 0;
 
 	private transient List<BodyPart> bodyParts;
@@ -33,6 +34,7 @@ public class Body {
 	public Body(Head head) {
 		this.head = head;
 		this.mass = calculateTotalMass();
+		this.maxSkewingVelocity = getMetabolicRate() * SKEWING_VELOCITY_RATIO;
 	}
 
 	private Head getHead() {
@@ -185,8 +187,8 @@ public class Body {
 	private double calculateDirectionSkewing(double angleToTarget) {
 		double updatedSkewing = (angleToTarget % 180) / 180 * MAX_SKEWING;
 		double skewingVelocity = updatedSkewing - currentDirectionSkewing;
-		if (Math.abs(skewingVelocity) > MAX_SKEWING_VELOCITY)
-			skewingVelocity = Math.signum(skewingVelocity) * MAX_SKEWING_VELOCITY;
+		if (Math.abs(skewingVelocity) > maxSkewingVelocity)
+			skewingVelocity = Math.signum(skewingVelocity) * maxSkewingVelocity;
 		return currentDirectionSkewing += skewingVelocity;
 	}
 
@@ -233,5 +235,9 @@ public class Body {
 	
 	public double getCurrentDirectionSkewing() {
 		return currentDirectionSkewing;
+	}
+
+	public double getMaxSkewingVelocity() {
+		return maxSkewingVelocity;
 	}
 }

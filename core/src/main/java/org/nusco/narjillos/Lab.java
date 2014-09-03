@@ -28,7 +28,7 @@ public class Lab {
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
 	}
-	
+
 	public Experiment getExperiment() {
 		return experiment;
 	}
@@ -37,15 +37,25 @@ public class Lab {
 		return experiment.getEcosystem();
 	}
 
+	public int getTicksInLastSecond() {
+		return experiment.getTicksChronometer().getTicksInLastSecond();
+	}
+
+	public long getTotalTicks() {
+		return experiment.getTicksChronometer().getTotalTicks();
+	}
+
 	public boolean tick() {
-		boolean isStillRunning = experiment.tick();
+		boolean thereAreSurvivors = experiment.tick();
 		if (experiment.getTicksChronometer().getTotalTicks() % PARSE_INTERVAL == 0)
 			executePerodicOperations();
 
-		if (!isStillRunning)
-			System.out.println("Experiment " + experiment.getId() + " ending at tick " + experiment.getTicksChronometer().getTotalTicks());
+		if (!thereAreSurvivors) {
+			System.out.println("*** Extinction happens. ***");
+			reportEndOfExperiment();
+		}
 
-		return isStillRunning;
+		return thereAreSurvivors;
 	}
 
 	private void executePerodicOperations() {
@@ -61,11 +71,7 @@ public class Lab {
 	}
 
 	private String getHeadersString() {
-		return alignLeft("tick")
-				+ alignLeft("tps")
-				+ alignLeft("narj")
-				+ alignLeft("food")
-				+ "    most_typical_dna";
+		return alignLeft("tick") + alignLeft("time") + alignLeft("tps") + alignLeft("narj") + alignLeft("food") + "    most_typical_dna";
 	}
 
 	private String getStatusString(long tick) {
@@ -76,11 +82,10 @@ public class Lab {
 	}
 
 	private String getStatusString(long tick, String mostTypicalDNA) {
-		return alignLeft(NumberFormat.format(tick))
+		return alignLeft(NumberFormat.format(tick)) + alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
 				+ alignLeft(experiment.getTicksChronometer().getTicksInLastSecond())
 				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
-				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces())
-				+ "    " + mostTypicalDNA;
+				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces()) + "    " + mostTypicalDNA;
 	}
 
 	private static Narjillo getMostTypicalSpecimen(Experiment experiment) {
@@ -88,19 +93,20 @@ public class Lab {
 	}
 
 	private String alignLeft(Object label) {
-		final String padding = "      ";
+		final String padding = "        ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
-	
+
 	public Experiment initializeExperiment(String... args) {
 		String gitCommit = args.length == 0 ? "unknown" : args[0];
 		String secondArgument = args.length < 2 ? null : args[1];
-		
+
 		final Experiment experiment = createExperiment(gitCommit, secondArgument);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				System.out.println("Experiment " + experiment.getId() + " terminated at tick " + experiment.getTicksChronometer().getTotalTicks());
+				experiment.stop();
+				reportEndOfExperiment();
 			}
 		});
 		return experiment;
@@ -111,35 +117,31 @@ public class Lab {
 			System.out.println("Starting new experiment with random seed");
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), null);
-		}
-		else if (secondArgument.equals("no-persistence")) {
+		} else if (secondArgument.equals("no-persistence")) {
 			System.out.println("Starting new non-persistent experiment with random seed");
 			return new Experiment(gitCommit, generateRandomSeed(), null);
-		}
-		else if (secondArgument.endsWith("exp")) {
+		} else if (secondArgument.endsWith("exp")) {
 			System.out.println("Picking up experiment from " + secondArgument);
 			persistent = true;
 			return readExperimentFromFile(secondArgument);
-		}
-		else if (isInteger(secondArgument)) {
+		} else if (isInteger(secondArgument)) {
 			long seed = Long.parseLong(secondArgument);
 			System.out.println("Starting experiment " + seed + " from scratch");
 			persistent = true;
 			return new Experiment(gitCommit, seed, null);
-		}
-		else if (secondArgument.endsWith("nrj")) {
+		} else if (secondArgument.endsWith("nrj")) {
 			DNA dna = readDNAFromFile(secondArgument);
 			System.out.println("Observing DNA " + dna);
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), dna);
-		}
-		else if (secondArgument.startsWith("{")) {
+		} else if (secondArgument.startsWith("{")) {
 			System.out.println("Observing DNA " + secondArgument);
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
 		}
-		
-		throw new RuntimeException("Invalid experiment arguments. Use: 	[<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]");
+
+		throw new RuntimeException(
+				"Invalid experiment arguments. Use: 	[<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]");
 	}
 
 	private long generateRandomSeed() {
@@ -181,7 +183,7 @@ public class Lab {
 		try {
 			String fileName = experiment.getId() + ".exp";
 			String tempFileName = fileName + ".tmp";
-			
+
 			writeToFile(JSON.toJson(experiment, Experiment.class), tempFileName);
 			moveFile(tempFileName, fileName);
 		} catch (IOException e) {
@@ -202,17 +204,16 @@ public class Lab {
 		out.close();
 	}
 
-	public int getTicksInLastSecond() {
-		return experiment.getTicksChronometer().getTicksInLastSecond();
+	private void reportEndOfExperiment() {
+		System.out.println("Experiment " + experiment.getId() + " ending at " + experiment.getTotalRunningTimeInSeconds() + " seconds, "
+				+ experiment.getTicksChronometer().getTotalTicks() + " ticks");
 	}
 
-	public long getTotalTicks() {
-		return experiment.getTicksChronometer().getTotalTicks();
-	}
-
-	// arguments: [<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]
+	// arguments: [<git_commit>, <random_seed | dna_file | dna_document |
+	// experiment_file>]
 	public static void main(String... args) {
 		Lab lab = new Lab(args);
-		while (lab.tick());
+		while (lab.tick())
+			;
 	}
 }

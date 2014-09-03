@@ -15,8 +15,10 @@ public class Experiment {
 	private final String id;
 	private final Ecosystem ecosystem;
 	private final Chronometer ticksChronometer = new Chronometer();
-	private final long startTime = System.currentTimeMillis();
 	private final RanGen ranGen;
+	
+	private long totalRunningTime = 0;
+	private long lastRegisteredRunningTime;
 
 	public Experiment(String gitCommit, long seed) {
 		this(gitCommit, seed, null);
@@ -26,6 +28,7 @@ public class Experiment {
 		id = gitCommit + "-" + seed;
 		if (dna == null)
 			System.out.println("Experiment " + id);
+		lastRegisteredRunningTime = System.currentTimeMillis();
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		populate(ecosystem, dna);
@@ -33,10 +36,6 @@ public class Experiment {
 
 	public synchronized String getId() {
 		return id;
-	}
-
-	public long getStartTime() {
-		return startTime;
 	}
 
 	private void populate(Ecosystem ecosystem, DNA dna) {
@@ -60,8 +59,13 @@ public class Experiment {
 		getEcosystem().tick(ranGen);
 		ticksChronometer.tick();
 		if (ticksChronometer.getTotalTicks() % 1000 == 0)
-			getEcosystem().updateAllTargets();
+			executePeriodicOperations();
 		return areThereSurvivors();
+	}
+
+	private void executePeriodicOperations() {
+		getEcosystem().updateAllTargets();
+		updateTotalRunningTime();
 	}
 
 	public Ecosystem getEcosystem() {
@@ -73,10 +77,20 @@ public class Experiment {
 	}
 
 	private boolean areThereSurvivors() {
-		if (getEcosystem().getNumberOfNarjillos() > 0)
-			return true;
+		return getEcosystem().getNumberOfNarjillos() > 0;
+	}
 
-		System.out.println("*** Extinction happens. ***");
-		return false;
+	public long getTotalRunningTimeInSeconds() {
+		return totalRunningTime / 1000L;
+	}
+
+	public void stop() {
+		updateTotalRunningTime();
+	}
+
+	private void updateTotalRunningTime() {
+		long updateTime = System.currentTimeMillis();
+		totalRunningTime = totalRunningTime + (updateTime - lastRegisteredRunningTime);
+		lastRegisteredRunningTime = updateTime;
 	}
 }

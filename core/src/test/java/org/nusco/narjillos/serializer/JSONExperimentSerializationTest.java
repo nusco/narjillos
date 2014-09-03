@@ -17,7 +17,7 @@ public class JSONExperimentSerializationTest {
 		Experiment deserialized = JSON.fromJson(json, Experiment.class);
 
 		assertEquals(experiment.getId(), deserialized.getId());
-		assertEquals(experiment.getStartTime(), deserialized.getStartTime());
+		assertEquals(experiment.getTotalRunningTimeInSeconds(), deserialized.getTotalRunningTimeInSeconds());
 		assertEquals(experiment.getEcosystem().getNumberOfFoodPieces(), deserialized.getEcosystem().getNumberOfFoodPieces());
 		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), deserialized.getEcosystem().getNumberOfNarjillos());
 		assertEquals(10, deserialized.getTicksChronometer().getTotalTicks());

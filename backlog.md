@@ -6,7 +6,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Physicist
 
 * Watchdog for excessive speed (results in warning) °°
-* Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °°
+* Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °
   (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250} for a good case study)
 * Smooth, inertial targeting
 
@@ -34,7 +34,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Etologist
 
-* Eggs °°
+* Eggs °
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °
 * Distance of firing is determined by genes °
@@ -43,7 +43,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Track total running time for experiment °
 * Dump isolated narjillos to file (instead of the console) °
 * Slow motion setting °
 * Lock on single narjillo °

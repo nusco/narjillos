@@ -10,15 +10,21 @@ public class Head extends Organ {
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
 
 	private final double metabolicRate;
+	private double percentEnergyToChildren;
 	private Vector startPoint = Vector.ZERO;
 	
-	public Head(int length, int thickness, ColorByte hue, double metabolicRate) {
+	public Head(int length, int thickness, ColorByte hue, double metabolicRate, double percentEnergyToChildren) {
 		super(length, thickness, hue, null, new WaveNerve(WAVE_SIGNAL_FREQUENCY * metabolicRate));
 		this.metabolicRate = metabolicRate;
+		this.percentEnergyToChildren = percentEnergyToChildren;
 	}
 
 	public double getMetabolicRate() {
 		return metabolicRate;
+	}
+
+	public double getPercentEnergyToChildren() {
+		return percentEnergyToChildren;
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class JSONEcosystemSerializationTest {
 		Ecosystem ecosystem = new Ecosystem(123);
 		FoodPiece food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));
 		FoodPiece food2 = ecosystem.spawnFood(Vector.cartesian(20, 20));
-		Narjillo narjillo = ecosystem.spawnNarjillo(Vector.cartesian(30, 30), new DNA("{1_2_3_4_5_6_7}"));
+		Narjillo narjillo = ecosystem.spawnNarjillo(new DNA("{1_2_3_4_5_6_7}"), Vector.cartesian(30, 30));
 		
 		String json = JSON.toJson(ecosystem, Ecosystem.class);
 		Ecosystem deserialized = JSON.fromJson(json, Ecosystem.class);

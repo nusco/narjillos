@@ -138,8 +138,8 @@ public class Ecosystem {
 		notifyThingAdded(food);
 	}
 
-	public final Narjillo spawnNarjillo(Vector position, DNA genes) {
-		final Narjillo narjillo = new Narjillo(new Embryo(genes).develop(), position, genes);
+	public final Narjillo spawnNarjillo(DNA genes, Vector position) {
+		final Narjillo narjillo = new Narjillo(genes, new Embryo(genes).develop(), position);
 		forceAdd(narjillo);
 		return narjillo;
 	}
@@ -197,7 +197,10 @@ public class Ecosystem {
 
 		narjillo.feedOn(foodPiece);
 
-		reproduce(narjillo, ranGen);
+		Vector offset = Vector.cartesian(getRandomInRange(3000, ranGen), getRandomInRange(3000, ranGen));
+		Vector position = narjillo.getPosition().plus(offset);
+
+		reproduce(narjillo, position, ranGen);
 		updateTargets(foodPiece);
 	}
 
@@ -208,11 +211,11 @@ public class Ecosystem {
 		notifyThingRemoved(narjillo);
 	}
 
-	private void reproduce(Narjillo narjillo, RanGen ranGen) {
-		DNA childDNA = narjillo.reproduce(ranGen);
-		Vector offset = Vector.cartesian(getRandomInRange(3000, ranGen), getRandomInRange(3000, ranGen));
-		Vector position = narjillo.getPosition().plus(offset);
-		spawnNarjillo(position, childDNA);
+	private void reproduce(Narjillo narjillo, Vector position, RanGen ranGen) {
+		final Narjillo child = narjillo.reproduce(position, ranGen);
+		if (child == null)  // refused to reproduce
+			return;
+		forceAdd(child );
 	}
 
 	private double getRandomInRange(final int range, RanGen ranGen) {

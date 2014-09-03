@@ -27,8 +27,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Ancestry browser °°
 * Find a good way to deal with atrophy °°
 * DNA diff during ancestry analysis °
+* Narjillo's skewing is genetically determined for each organ °
 * Separate RGB color genes
-* Narjillo's skewing is genetically determined for each organ
 * Recursive body plan (creates multiple identical segments)
 * Whole-body size gene
 

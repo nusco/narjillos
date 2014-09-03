@@ -19,10 +19,10 @@ public class NarjilloTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		narjillo = new Narjillo(new Body(new Head(10, 10, new ColorByte(10), 1)), Vector.ZERO, new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}"));
+		narjillo = new Narjillo(new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO);
 		
 		DNA dna = new DNA("{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}{255_255_255_255_255_255}");
-		biggerNarjillo = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
+		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO);
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class NarjilloTest {
 	@Test
 	public void itsEnergyNaturallyDecreasesWithOldAgeEvenWhenItDoesntMove() {
 		DNA dna = new DNA("{1_1_1_1_1_1");
-		Narjillo narjilloThatCannotMove = new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
+		Narjillo narjilloThatCannotMove = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO);
 
 		for (int i = 0; i < Narjillo.MAX_LIFESPAN + 1; i++)
 			narjilloThatCannotMove.tick();

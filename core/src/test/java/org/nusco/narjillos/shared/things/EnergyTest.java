@@ -8,10 +8,10 @@ import org.junit.Test;
 
 public class EnergyTest {
 
-	final double mass = 10;
+	final double initialValue = 10;
 	final double lifespan = 100;
-	Energy energy = new Energy(mass, lifespan);
-	Energy biggerMassEnergy = new Energy(mass * 2, lifespan);
+	Energy energy = new Energy(initialValue, lifespan);
+	Energy biggerMassEnergy = new Energy(initialValue * 2, lifespan);
 	private Thing nutrient = new FoodPiece() {
 		@Override
 		public Energy getEnergy() {
@@ -20,22 +20,22 @@ public class EnergyTest {
 	};
 
 	@Test
-	public void itIsInitiallyProportionalToTheMass() {
-		assertEquals(energy.getValue() / biggerMassEnergy.getValue(), 0.5, 0.0);
+	public void itStartsWithTheInitialValue() {
+		assertEquals(energy.getValue(), initialValue, 0.0);
 	}
 
 	@Test
 	public void canBeDepleted() {
 		assertFalse(energy.isDepleted());
 
-		energy.tick(-mass);
+		energy.tick(initialValue);
 
 		assertTrue(energy.isDepleted());
 	}
 
 	@Test
 	public void cannotFallBelowZero() {
-		energy.tick(-mass);
+		energy.tick(initialValue);
 		assertEquals(0, energy.getValue(), 0.001);
 
 		energy.tick(-10);
@@ -44,7 +44,7 @@ public class EnergyTest {
 
 	@Test
 	public void cannotIncreaseAgainAfterBeingDepleted() {
-		energy.tick(-mass);
+		energy.tick(initialValue);
 		assertEquals(0, energy.getValue(), 0.001);
 
 		energy.tick(10);
@@ -55,7 +55,7 @@ public class EnergyTest {
 	public void increasesByConsumingThings() {
 		energy.consume(nutrient);
 
-		double expected = mass * Energy.INITIAL_ENERGY_TO_MASS * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
+		double expected = initialValue * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
 		assertEquals(expected, energy.getValue(), 0.001);
 	}
 
@@ -90,7 +90,9 @@ public class EnergyTest {
 	}
 
 	@Test
-	public void depletedNaturallyDuringItsLifespan() {
+	public void depletesNaturallyDuringItsLifespan() {
+		fillToTheMax();
+		
 		for (int i = 0; i < lifespan - 1; i++)
 			energy.tick(0);
 
@@ -99,6 +101,24 @@ public class EnergyTest {
 		energy.tick(0);
 
 		assertTrue(energy.isDepleted());
+	}
+
+	@Test
+	public void canDonateAPercentOfItself() {
+		energy.tick(-10);
+		double donation = energy.donatePercent(0.25);
+
+		assertEquals(5, donation, 0.0);
+		assertEquals(15, energy.getValue(), 0.0);
+	}
+
+	@Test
+	public void refusesDonationsIfTheyResultInAValueBelowTheInitialValue() {
+		energy.tick(-10);
+		double donation = energy.donatePercent(51);
+
+		assertEquals(0, donation, 0.0);
+		assertEquals(20, energy.getValue(), 0.0);
 	}
 
 	private void fillToTheMax() {

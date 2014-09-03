@@ -201,6 +201,10 @@ public class Body {
 		return getHead().getMetabolicRate();
 	}
 
+	public double getPercentEnergyToChildren() {
+		return getHead().getPercentEnergyToChildren();
+	}
+
 	private double calculateTotalMass() {
 		double result = 0;
 		List<BodyPart> allOrgans = getBodyParts();

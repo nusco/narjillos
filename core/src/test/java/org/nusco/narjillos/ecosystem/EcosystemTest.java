@@ -32,8 +32,8 @@ public class EcosystemTest {
 		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
 		foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
 		RanGen ranGen = new RanGen(1234);
-		narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(150, 150), DNA.random(ranGen));
-		narjillo2 = ecosystem.spawnNarjillo(Vector.cartesian(1050, 1050), DNA.random(ranGen));
+		narjillo1 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(150, 150));
+		narjillo2 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(1050, 1050));
 	}
 	
 	@Test

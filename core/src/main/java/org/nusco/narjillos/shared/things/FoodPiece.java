@@ -5,7 +5,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class FoodPiece implements Thing {
 
-	private static final double ENERGY = 1000;
+	private static final double ENERGY = 30_000;
 	
 	public Vector position;
 

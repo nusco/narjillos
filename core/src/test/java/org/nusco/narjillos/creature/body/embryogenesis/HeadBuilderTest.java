@@ -17,10 +17,17 @@ public class HeadBuilderTest extends OrganBuilderTest {
 
 	@Test
 	public void decodesAMetabolicRateBetween0And3() {
-		assertEquals(0, new HeadBuilder(new Chromosome(0, 0, 0, 0)).getMetabolicRate(), 0.01);
-		assertEquals(0.74, new HeadBuilder(new Chromosome(0, 0, 0, 63)).getMetabolicRate(), 0.01);
-		assertEquals(1, new HeadBuilder(new Chromosome(0, 0, 0, 85)).getMetabolicRate(), 0.01);
-		assertEquals(3, new HeadBuilder(new Chromosome(0, 0, 0, 255)).getMetabolicRate(), 0.01);
+		assertEquals(0, new HeadBuilder(new Chromosome(0, 0, 0, 0, 0)).getMetabolicRate(), 0.01);
+		assertEquals(0.74, new HeadBuilder(new Chromosome(0, 0, 0, 63, 0)).getMetabolicRate(), 0.01);
+		assertEquals(1, new HeadBuilder(new Chromosome(0, 0, 0, 85, 0)).getMetabolicRate(), 0.01);
+		assertEquals(3, new HeadBuilder(new Chromosome(0, 0, 0, 255, 0)).getMetabolicRate(), 0.01);
+	}
+
+	@Test
+	public void decodesAPercentEnergyToChildrenBetween0and1() {
+		assertEquals(0, new HeadBuilder(new Chromosome(0, 0, 0, 0, 0)).getPercentEnergyToChildren(), 0.01);
+		assertEquals(0.5, new HeadBuilder(new Chromosome(0, 0, 0, 0, 126)).getPercentEnergyToChildren(), 0.01);
+		assertEquals(1, new HeadBuilder(new Chromosome(0, 0, 0, 0, 255)).getPercentEnergyToChildren(), 0.01);
 	}
 
 	@Test

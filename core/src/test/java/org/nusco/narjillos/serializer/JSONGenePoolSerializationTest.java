@@ -15,10 +15,10 @@ public class JSONGenePoolSerializationTest {
 	public void serializesAndDeserializesGenePool() {
 		DNA dna1 = new DNA("{1_2_3_4_5_6_7}");
 		Vector position1 = Vector.cartesian(1, 1);
-		Narjillo narjillo1 = new Narjillo(new Embryo(dna1).develop(), position1, dna1);
+		Narjillo narjillo1 = new Narjillo(dna1, new Embryo(dna1).develop(), position1);
 		DNA dna2 = new DNA("{8_9_10_11_12_13_14}");
 		Vector position2 = Vector.cartesian(100, 100);
-		Narjillo narjillo2 = new Narjillo(new Embryo(dna2).develop(), position2, dna2);
+		Narjillo narjillo2 = new Narjillo(dna2, new Embryo(dna2).develop(), position2);
 
 		GenePool genePool = new GenePool();
 		genePool.add(narjillo1);

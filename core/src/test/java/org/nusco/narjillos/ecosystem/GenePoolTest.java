@@ -32,6 +32,6 @@ public class GenePoolTest {
 
 	private Narjillo createNarjillo(String genes) {
 		DNA dna = new DNA(genes);
-		return new Narjillo(new Embryo(dna).develop(), Vector.ZERO, dna);
+		return new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO);
 	}
 }

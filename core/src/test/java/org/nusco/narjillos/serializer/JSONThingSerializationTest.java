@@ -29,7 +29,7 @@ public class JSONThingSerializationTest {
 	public void serializesAndDeserializesNarjillos() {
 		String genes = "{001_002_003_004_005_006_007}{001_002_003_004_005_006_007}{001_002_003_004_005_006_007}{001_002_003_004_005_006_007}{001_002_003_004_005_006_007}";
 		DNA dna = new DNA(genes);
-		Narjillo narjillo = new Narjillo(new Embryo(dna).develop(), Vector.cartesian(10, 20), dna);
+		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(10, 20));
 		narjillo.setTarget(Vector.cartesian(100, 200));
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();
@@ -44,7 +44,6 @@ public class JSONThingSerializationTest {
 		assertEquals(genes, deserialized.getDNA().toString());
 		assertEquals(Vector.cartesian(100, 200), deserialized.getTarget());
 		assertEquals(narjillo.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0.0);
-		assertEquals(narjillo.getEnergyPercent(), deserialized.getEnergyPercent(), 0.0);
 
 		List<BodyPart> bodyParts = narjillo.getBodyParts();
 		List<BodyPart> deserializedBodyParts = deserialized.getBodyParts();

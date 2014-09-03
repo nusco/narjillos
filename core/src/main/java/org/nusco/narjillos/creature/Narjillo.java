@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -21,7 +22,11 @@ public class Narjillo implements Thing {
 	private Vector target = Vector.ZERO;
 	private Energy energy;
 	
-	public Narjillo(Body body, Vector position, DNA genes) {
+	public Narjillo(DNA genes, Body body, Vector position) {
+		this(genes, body, position, body.getMass());
+	}
+
+	private Narjillo(DNA genes, Body body, Vector position, double initialEnergy) {
 		this.body = body;
 		body.teleportTo(position);
 		this.dna = genes;
@@ -50,7 +55,7 @@ public class Narjillo implements Thing {
 			return new Segment(startingPosition, Vector.ZERO);
 
 		double energySpent = body.tick(getTargetDirection());
-		energy.tick(-energySpent);
+		energy.tick(energySpent);
 
 		return new Segment(startingPosition, body.getStartPoint());
 	}
@@ -87,8 +92,14 @@ public class Narjillo implements Thing {
 		energy.consume(thing);
 	}
 
-	public DNA reproduce(RanGen ranGen) {
-		return getDNA().copy(ranGen);
+	public Narjillo reproduce(Vector position, RanGen ranGen) {
+		double percentEnergyToChildren = getPercentEnergyToChildren();
+		double childEnergy = energy.donatePercent(percentEnergyToChildren);
+		if (childEnergy == 0)
+			return null;
+
+		DNA childDNA = getDNA().copy(ranGen);
+		return new Narjillo(childDNA, new Embryo(childDNA).develop(), position, childEnergy);
 	}
 
 	@Override
@@ -108,10 +119,6 @@ public class Narjillo implements Thing {
 		return body.getMass();
 	}
 
-	public double getEnergyPercent() {
-		return energy.getValue() / energy.getMax();
-	}
-
 	public Body getBody() {
 		return body;
 	}
@@ -122,5 +129,13 @@ public class Narjillo implements Thing {
 
 	public Vector getCenterOfMass() {
 		return body.calculateCenterOfMass();
+	}
+
+	public double getPercentEnergyToChildren() {
+		return body.getPercentEnergyToChildren();
+	}
+
+	public double getEnergyPercent() {
+		return energy.getEnergyPercent();
 	}
 }

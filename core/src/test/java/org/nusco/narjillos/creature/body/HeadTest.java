@@ -13,7 +13,7 @@ public class HeadTest extends OrganTest {
 
 	@Override
 	public Head createConcreteOrgan(int length, int thickness) {
-		return new Head(length, thickness, new ColorByte(100), 1);
+		return new Head(length, thickness, new ColorByte(100), 1, 0.5);
 	}
 
 	@Test
@@ -33,16 +33,23 @@ public class HeadTest extends OrganTest {
 
 	@Test
 	public void hasAWaveNerve() {
-		Nerve nerve = new Head(0, 0, new ColorByte(0), 1).getNerve();
+		Nerve nerve = new Head(0, 0, new ColorByte(0), 1, 0.5).getNerve();
 				
 		assertEquals(WaveNerve.class, nerve.getClass());
 	}
 	
 	@Test
 	public void hasACenterOfMass() {
-		Head head = new Head(10, 6, new ColorByte(100), 1);
+		Head head = new Head(10, 6, new ColorByte(100), 1, 0.5);
 		head.setAngleToParent(90);
 		
 		assertTrue(head.getCenterOfMass().almostEquals(Vector.cartesian(0, 5)));
+	}
+	
+	@Test
+	public void hasAPercentEnergyToChildren() {
+		Head head = new Head(10, 6, new ColorByte(100), 1, 0.42);
+		
+		assertEquals(0.42, head.getPercentEnergyToChildren(), 0.0);
 	}
 }

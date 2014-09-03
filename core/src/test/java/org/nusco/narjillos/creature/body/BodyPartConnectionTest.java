@@ -14,7 +14,7 @@ public abstract class BodyPartConnectionTest {
 		final ClickNerve nerve2 = new ClickNerve();
 		final ClickNerve nerve3 = new ClickNerve();
 
-		Organ head = new Head(0, 0, new ColorByte(0), 1);
+		Organ head = new Head(0, 0, new ColorByte(0), 1, 0.5);
 		Organ child1 = head.addChild(new BodySegment(nerve1));
 		child1.addChild(new BodySegment(nerve2));
 		head.addChild(new BodySegment(nerve3));

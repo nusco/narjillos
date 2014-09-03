@@ -27,8 +27,8 @@ public class EcosystemFinderTest {
 		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(999, 999));
 		ranGen = new RanGen(1234);
-		narjillo1 = ecosystem.spawnNarjillo(Vector.cartesian(101, 101), DNA.random(ranGen));
-		narjillo2 = ecosystem.spawnNarjillo(Vector.cartesian(998, 998), DNA.random(ranGen));
+		narjillo1 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(101, 101));
+		narjillo2 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(998, 998));
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ public class EcosystemFinderTest {
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
 		Ecosystem emptyEcosystem = new Ecosystem(1000);
-		Narjillo narjillo = emptyEcosystem.spawnNarjillo(Vector.cartesian(100, 100), DNA.random(ranGen));
+		Narjillo narjillo = emptyEcosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(100, 100));
 		Vector target = emptyEcosystem.findClosestTarget(narjillo);
 		assertEquals(Vector.cartesian(500, 500), target);
 	}

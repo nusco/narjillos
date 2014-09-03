@@ -45,10 +45,10 @@ public class Experiment {
 
 		if (dna == null) {
 			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
-				ecosystem.spawnNarjillo(randomPosition(ecosystem.getSize()), DNA.random(ranGen));
+				ecosystem.spawnNarjillo(DNA.random(ranGen), randomPosition(ecosystem.getSize()));
 		} else {
 			for (int i = 0; i < 10; i++)
-				ecosystem.spawnNarjillo(randomPosition(ecosystem.getSize()), dna);
+				ecosystem.spawnNarjillo(dna, randomPosition(ecosystem.getSize()));
 		}
 	}
 

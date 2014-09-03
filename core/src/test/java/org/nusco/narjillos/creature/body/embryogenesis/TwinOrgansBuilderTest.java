@@ -22,7 +22,7 @@ public class TwinOrgansBuilderTest {
 	Chromosome mirroring1 = new Chromosome(MIRRORING, 62, 72, 82, 92, 102);
 	Chromosome mirroring2 = new Chromosome(MIRRORING, 63, 73, 83, 93, 103);
 
-	Organ parent = new Head(10, 10, new ColorByte(0), 10);
+	Organ parent = new Head(10, 10, new ColorByte(0), 10, 0.5);
 
 	@Test
 	public void buildsRegularSegmentIfNeitherGenesIsMirroring() {

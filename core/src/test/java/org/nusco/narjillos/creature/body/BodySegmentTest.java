@@ -12,7 +12,7 @@ public class BodySegmentTest extends OrganTest {
 	
 	@Override
 	public Organ createConcreteOrgan(int length, int thickness) {
-		parent = new Head(10, 5, new ColorByte(100), 1);
+		parent = new Head(10, 5, new ColorByte(100), 1, 0.5);
 		return new BodySegment(20, 10, new ColorByte(100), parent, 10, 0, 1);
 	}
 
@@ -28,7 +28,7 @@ public class BodySegmentTest extends OrganTest {
 	
 	@Test
 	public void hasAnAbsoluteAngle() {
-		Head head = new Head(0, 0, new ColorByte(100), 1);
+		Head head = new Head(0, 0, new ColorByte(100), 1, 0.5);
 		Organ organ1 = new BodySegment(0, 0, new ColorByte(100), head, 0, 30, 1);
 		BodyPart organ2 = new BodySegment(0, 0, new ColorByte(100), organ1, 0, -10, 1);
 		assertEquals(20, organ2.getAbsoluteAngle(), 0);
@@ -36,14 +36,14 @@ public class BodySegmentTest extends OrganTest {
 	
 	@Test
 	public void hasAnAmplitude() {
-		Head head = new Head(0, 0, new ColorByte(100), 1);
+		Head head = new Head(0, 0, new ColorByte(100), 1, 0.5);
 		BodySegment organ = new BodySegment(0, 0, new ColorByte(100), head, 0, -10, 42);
 		assertEquals(42, organ.getAmplitude(), 0);
 	}
 
 	@Override
 	public void hasAnEndPoint() {
-		Head head = new Head(10, 0, new ColorByte(100), 1);
+		Head head = new Head(10, 0, new ColorByte(100), 1, 0.5);
 		Organ organ1 = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, 0, 90, 1));
 		Organ organ2 = organ1.addChild(new BodySegment(10, 0, new ColorByte(100), organ1, 0, -90, 1));
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
@@ -51,7 +51,7 @@ public class BodySegmentTest extends OrganTest {
 	
 	@Test
 	public void hasACenterOfMass() {
-		Head head = new Head(10, 0, new ColorByte(100), 1);
+		Head head = new Head(10, 0, new ColorByte(100), 1, 0.5);
 		Organ organ = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, 0, 20, 1));
 		// uses the current angle, not the angle at rest
 		organ.setAngleToParent(45);

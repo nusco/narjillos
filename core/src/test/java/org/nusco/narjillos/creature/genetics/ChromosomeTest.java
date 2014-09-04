@@ -8,7 +8,7 @@ public class ChromosomeTest {
 
 	@Test
 	public void returnsASingleGene() {
-		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7);
+		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7, 8);
 
 		assertEquals(4, chromosome.getGene(3));
 	}
@@ -34,8 +34,8 @@ public class ChromosomeTest {
 
 	@Test
 	public void convertsToAString() {
-		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7);
+		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7, 8);
 		
-		assertEquals("{001_002_003_004_005_006_007}", chromosome.toString());
+		assertEquals("{001_002_003_004_005_006_007_008}", chromosome.toString());
 	}
 }

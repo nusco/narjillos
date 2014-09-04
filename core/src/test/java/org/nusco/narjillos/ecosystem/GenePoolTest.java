@@ -16,18 +16,18 @@ public class GenePoolTest {
 	
 	@Before
 	public void setupPopulation() {
-		population.add(createNarjillo("111_111_111_222_111_000_000"));
-		population.add(createNarjillo("111_111_111_111_111_000_000"));
-		population.add(createNarjillo("111_111_111_222_222_000_000"));
-		population.add(createNarjillo("111_111_222_111_222_000_000"));
-		population.add(createNarjillo("111_222_222_222_222_000_000"));
+		population.add(createNarjillo("111_111_111_222_111_000_000_000"));
+		population.add(createNarjillo("111_111_111_111_111_000_000_000"));
+		population.add(createNarjillo("111_111_111_222_222_000_000_000"));
+		population.add(createNarjillo("111_111_222_111_222_000_000_000"));
+		population.add(createNarjillo("111_222_222_222_222_000_000_000"));
 	}
 	
 	@Test
 	public void getsMostTypicalSpecimen() {
 		Narjillo creature = population.getMostTypicalSpecimen();
 		
-		assertEquals("{111_111_111_111_111_000_000}", creature.getDNA().toString());
+		assertEquals("{111_111_111_111_111_000_000_000}", creature.getDNA().toString());
 	}
 
 	private Narjillo createNarjillo(String genes) {

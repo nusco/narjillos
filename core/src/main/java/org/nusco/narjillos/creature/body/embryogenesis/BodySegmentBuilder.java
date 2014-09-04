@@ -26,7 +26,7 @@ class BodySegmentBuilder extends OrganBuilder {
 	}
 
 	public int getSkewing() {
-		return convertToRange(getChromosome().getGene(0), (double) 90);
+		return convertToRange(getChromosome().getGene(7), (double) 90);
 	}
 
 	private int convertToRange(int gene, double maxAbsValue) {

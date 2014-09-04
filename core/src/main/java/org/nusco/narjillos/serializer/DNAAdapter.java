@@ -7,8 +7,8 @@ import org.nusco.narjillos.creature.genetics.DNA;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
@@ -16,11 +16,17 @@ class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
 
 	@Override
 	public JsonElement serialize(DNA dna, Type type, JsonSerializationContext context) {
-		return new JsonPrimitive(dna.toString());
+		JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("genes", dna.toString());
+        jsonObject.addProperty("id", dna.getId());
+        return jsonObject;
 	}
 
 	@Override
 	public DNA deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
-		return new DNA(json.getAsJsonPrimitive().getAsString());
+		JsonObject jsonObject = json.getAsJsonObject();
+		String genes = jsonObject.get("genes").getAsString();
+		long id = jsonObject.get("id").getAsLong();
+		return new DNA(genes, id);
 	}
 }

@@ -9,15 +9,46 @@ public class DNA {
 
 	public static final double MUTATION_RATE = 0.02;
 	private static final int GENE_MUTATION_RANGE = 30;
-
-	private final Integer[] genes;
 	
-	DNA(Integer... genes) {
-		this.genes = (genes.length > 0) ? clipToByteSize(genes) : new Integer[] {0};
-	}
+	private static long serial = 0;
+
+	private long id; // unique for each DNA instance in the same run of the program
+	private final Integer[] genes;
 
 	public DNA(String dnaDocument) {
-		this(new DNADocument(dnaDocument).toGenes());
+		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
+		setId(serial + 1);
+	}
+
+	public DNA(String dnaDocument, long id) {
+		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
+		setId(id);
+	}
+
+	private DNA(Integer... genes) {
+		this.genes = clipGenes(genes);
+		setId(serial + 1);
+	}
+
+	private Integer[] clipGenes(Integer[] genes) {
+		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
+	}
+
+	private void setId(long id) {
+		this.id = id;
+		// This complicated mechanism guarantees that even
+		// after deserializing DNA, the serial will still
+		// contain the highest id in the system. (But
+		// if you generate DNA and *then* deserialize
+		// other DNA, then you might have duplicated
+		// DNA ids in the system. I assume that you
+		// will only deserialize DNA before ever creating it.
+		if (id > serial)
+			serial = id;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public Integer[] getGenes() {
@@ -29,7 +60,7 @@ public class DNA {
 
 		DNAParser parser = new DNAParser(this);
 		Chromosome nextChromosome;
-		while((nextChromosome = parser.nextChromosome()) != null) {
+		while ((nextChromosome = parser.nextChromosome()) != null) {
 			// skip a chromosome every now and then
 			if (!isMutating(ranGen))
 				resultChromosomes.add(copy(nextChromosome, ranGen));
@@ -104,44 +135,55 @@ public class DNA {
 		Integer[] theseGenes = getGenes();
 		Integer[] otherGenes = other.getGenes();
 
-	    if (theseGenes.length == 0) return otherGenes.length;
-	    if (otherGenes.length == 0) return theseGenes.length;
-	 
-	    // create two work vectors of integer distances
-	    int[] v0 = new int[otherGenes.length + 1];
-	    int[] v1 = new int[otherGenes.length + 1];
-	 
-	    // initialize v0 (the previous row of distances)
-	    // this row is A[0][i]: edit distance for an empty s
-	    // the distance is just the number of characters to delete from t
-	    for (int i = 0; i < v0.length; i++)
-	        v0[i] = i;
-	 
-	    for (int i = 0; i < theseGenes.length; i++)
-	    {
-	        // calculate v1 (current row distances) from the previous row v0
-	 
-	        // first element of v1 is A[i+1][0]
-	        //   edit distance is delete (i+1) chars from s to match empty t
-	        v1[0] = i + 1;
-	 
-	        // use formula to fill in the rest of the row
-	        for (int j = 0; j < otherGenes.length; j++)
-	        {
-	            int cost = (theseGenes[i] == otherGenes[j]) ? 0 : 1;
-	            v1[j + 1] = Math.min(Math.min(v1[j] + 1, v0[j + 1] + 1), v0[j] + cost);
-	        }
-	 
-	        // copy v1 (current row) to v0 (previous row) for next iteration
-	        for (int j = 0; j < v0.length; j++)
-	            v0[j] = v1[j];
-	    }
-	 
-	    return v1[otherGenes.length];
+		if (theseGenes.length == 0)
+			return otherGenes.length;
+		if (otherGenes.length == 0)
+			return theseGenes.length;
+
+		// create two work vectors of integer distances
+		int[] v0 = new int[otherGenes.length + 1];
+		int[] v1 = new int[otherGenes.length + 1];
+
+		// initialize v0 (the previous row of distances)
+		// this row is A[0][i]: edit distance for an empty s
+		// the distance is just the number of characters to delete from t
+		for (int i = 0; i < v0.length; i++)
+			v0[i] = i;
+
+		for (int i = 0; i < theseGenes.length; i++) {
+			// calculate v1 (current row distances) from the previous row v0
+
+			// first element of v1 is A[i+1][0]
+			// edit distance is delete (i+1) chars from s to match empty t
+			v1[0] = i + 1;
+
+			// use formula to fill in the rest of the row
+			for (int j = 0; j < otherGenes.length; j++) {
+				int cost = (theseGenes[i] == otherGenes[j]) ? 0 : 1;
+				v1[j + 1] = Math.min(Math.min(v1[j] + 1, v0[j + 1] + 1), v0[j] + cost);
+			}
+
+			// copy v1 (current row) to v0 (previous row) for next iteration
+			for (int j = 0; j < v0.length; j++)
+				v0[j] = v1[j];
+		}
+
+		return v1[otherGenes.length];
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) getId();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		DNA other = (DNA) obj;
+		return other.getId() == getId();
 	}
 
 	@Override
 	public String toString() {
 		return DNADocument.toString(this);
 	}
- }
+}

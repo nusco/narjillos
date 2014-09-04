@@ -9,10 +9,7 @@ public class DNAParserTest {
 
 	@Test
 	public void iteratesOverChromosomes() {
-		Integer[] genes =  new Integer[]{
-				1, 2, 3, 4, 5, 6, 7, 8,
-				9, 10, 11, 12, 13, 14, 15, 16
-			};
+		String genes = "{1_2_3_4_5_6_7_8}{9_10_11_12_13_14_15_16}";
 
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
@@ -24,10 +21,7 @@ public class DNAParserTest {
 
 	@Test
 	public void padsUnterminatedLastChromosome() {
-		Integer[] genes =  new Integer[]{
-				1, 2, 3, 4, 5, 6, 7, 8,
-				9, 10
-			};
+		String genes = "{1_2_3_4_5_6_7_8}{9_10}";
 
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
@@ -39,9 +33,7 @@ public class DNAParserTest {
 
 	@Test
 	public void padsUnterminatedSingleChromosome() {
-		Integer[] genes =  new Integer[]{
-				1, 2, 3
-			};
+		String genes = "{1_2_3}";
 
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);

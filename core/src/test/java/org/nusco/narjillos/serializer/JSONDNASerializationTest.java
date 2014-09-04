@@ -15,15 +15,7 @@ public class JSONDNASerializationTest {
 		String json = JSON.toJson(dna, DNA.class);
 		DNA deserialized = JSON.fromJson(json, DNA.class);
 
+		assertEquals(dna.getId(), deserialized.getId());
 		assertArrayEquals(dna.getGenes(), deserialized.getGenes());
-	}
-
-	@Test
-	public void nicelyFormatsDNA() {
-		String dnaDocument = "{001_002_003_004_005_006_007_008}{009_010_011_012_013_014_015_016}";
-		DNA dna = new DNA(dnaDocument);
-		String json = JSON.toJson(dna, DNA.class);
-		
-		assertEquals("\"" + dnaDocument + "\"", json);
 	}
 }

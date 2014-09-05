@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.creature.genetics.Clades;
 import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
@@ -22,6 +23,7 @@ public class Lab {
 	private static final int PARSE_INTERVAL = 10000;
 	private static boolean persistent = false;
 	private final Experiment experiment;
+	private Clades clades = new Clades();
 
 	public Lab(String... args) {
 		experiment = initializeExperiment(args);
@@ -64,8 +66,10 @@ public class Lab {
 		if (ticks % PARSE_INTERVAL != 0)
 			return;
 
-		if (persistent)
+		if (persistent) {
 			writeExperimentToFile();
+			writeCladesToFile();
+		}
 
 		System.out.println(getStatusString(ticks));
 	}
@@ -109,6 +113,10 @@ public class Lab {
 				reportEndOfExperiment();
 			}
 		});
+
+		if (persistent)
+			DNA.setObserver(clades);
+
 		return experiment;
 	}
 
@@ -123,6 +131,7 @@ public class Lab {
 		} else if (secondArgument.endsWith("exp")) {
 			System.out.println("Picking up experiment from " + secondArgument);
 			persistent = true;
+			clades = readCladesFromFile(secondArgument.split("\\.*^")[0] + ".cld");
 			return readExperimentFromFile(secondArgument);
 		} else if (isInteger(secondArgument)) {
 			long seed = Long.parseLong(secondArgument);
@@ -170,21 +179,39 @@ public class Lab {
 	}
 
 	private Experiment readExperimentFromFile(String file) {
+		return JSON.fromJson(read(file), Experiment.class);
+	}
+
+	private Clades readCladesFromFile(String file) {
+		return JSON.fromJson(read(file), Clades.class);
+	}
+
+	private String read(String file) {
 		try {
 			byte[] encoded = Files.readAllBytes(Paths.get(file));
-			String json = new String(encoded, Charset.defaultCharset());
-			return JSON.fromJson(json, Experiment.class);
+			return new String(encoded, Charset.defaultCharset());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	private void writeExperimentToFile() {
+		String fileName = experiment.getId() + ".exp";
+		String content = JSON.toJson(experiment, Experiment.class);
+		writeToFileSafely(fileName, content);
+	}
+
+	private void writeCladesToFile() {
+		String fileName = experiment.getId() + ".cld";
+		String content = JSON.toJson(clades, Clades.class);
+		writeToFileSafely(fileName, content);
+	}
+
+	private void writeToFileSafely(String fileName, String content) {
 		try {
-			String fileName = experiment.getId() + ".exp";
 			String tempFileName = fileName + ".tmp";
 
-			writeToFile(JSON.toJson(experiment, Experiment.class), tempFileName);
+			writeToFile(tempFileName, content);
 			moveFile(tempFileName, fileName);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -198,7 +225,7 @@ public class Lab {
 		Files.move(Paths.get(source), filePath);
 	}
 
-	private void writeToFile(String content, String fileName) throws IOException, FileNotFoundException {
+	private void writeToFile(String fileName, String content) throws IOException, FileNotFoundException {
 		PrintWriter out = new PrintWriter(fileName);
 		out.print(content);
 		out.close();

@@ -20,7 +20,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
+import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
@@ -247,12 +249,13 @@ public class PetriDish extends Application {
 					getViewport().flyToNextZoomCloseupLevel();
 
 				if (event.getClickCount() > 2)
-					printOutIsolatedNarjillo(clickedPoint);
+					printOutDNA(clickedPoint);
 			}
 
-			private void printOutIsolatedNarjillo(Vector clickedPoint) {
+			private void printOutDNA(Vector clickedPoint) {
 				Vector clickedPointEC = getViewport().toEC(clickedPoint);
-				System.out.println("Isolating: " + getEcosystem().findNarjillo(clickedPointEC).getDNA());
+				DNA dna = getEcosystem().findNarjillo(clickedPointEC).getDNA();
+				System.out.println("Isolating: " + JSON.toJson(dna, DNA.class));
 			}
 		};
 	}

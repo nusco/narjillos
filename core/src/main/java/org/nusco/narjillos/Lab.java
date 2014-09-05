@@ -25,6 +25,7 @@ public class Lab {
 	private GenePool genePool = new GenePool();
 
 	public Lab(String... args) {
+		DNA.setObserver(genePool);
 		experiment = initialize(args);
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
@@ -67,7 +68,7 @@ public class Lab {
 
 		if (persistent) {
 			writeExperimentToFile();
-			writeCladesToFile();
+			writeGenePoolToFile();
 		}
 
 		System.out.println(getStatusString(ticks));
@@ -84,11 +85,13 @@ public class Lab {
 		return getStatusString(tick, mostSuccessfulDna.toString());
 	}
 
-	private String getStatusString(long tick, String mostTypicalDNA) {
-		return alignLeft(NumberFormat.format(tick)) + alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
+	private String getStatusString(long tick, String mostSuccessfulDNA) {
+		return alignLeft(NumberFormat.format(tick))
+				+ alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
 				+ alignLeft(experiment.getTicksChronometer().getTicksInLastSecond())
 				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
-				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces()) + "    " + mostTypicalDNA;
+				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces())
+				+ "    " + mostSuccessfulDNA;
 	}
 
 	private String alignLeft(Object label) {
@@ -173,7 +176,7 @@ public class Lab {
 	private GenePool readGenePoolFromFile(String file) {
 		String fileName = file + ".gep";
 		if (!new File(fileName).exists()) {
-			System.out.println("\\e[0;31mWarning: no genepool file found. Creating new genepool.\\e[0m");
+			System.out.println("\\e[0;31mWarning: no .gep file found. Continuing with empty genepool.\\e[0m");
 			return new GenePool();
 		}
 		return JSON.fromJson(read(fileName), GenePool.class);
@@ -194,8 +197,8 @@ public class Lab {
 		writeToFileSafely(fileName, content);
 	}
 
-	private void writeCladesToFile() {
-		String fileName = experiment.getId() + ".cld";
+	private void writeGenePoolToFile() {
+		String fileName = experiment.getId() + ".gep";
 		String content = JSON.toJson(genePool, GenePool.class);
 		writeToFileSafely(fileName, content);
 	}

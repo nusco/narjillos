@@ -16,7 +16,7 @@ import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
-public class Lab {
+public strictfp class Lab {
 
 	private static final int PARSE_INTERVAL = 10000;
 	private static boolean persistent = false;

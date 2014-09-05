@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.things.Thing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class JSON {
+public strictfp class JSON {
 
 	private static final Gson gson = new GsonBuilder()
 		.registerTypeAdapter(Vector.class, new VectorAdapter())

@@ -46,7 +46,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Slow motion setting °
 * Lock on single narjillo °
 * Real arguments parsing (use --no-persistence together with other switches)
-* Use strictfp on doubles to guarantee deterministic results on multiple platforms
 * Zipped experiment files
 * View narjillo stats (age, energy, times eaten...)
 * Make food visible in normal view

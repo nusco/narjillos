@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class GenePool implements DNAObserver {
+public strictfp class GenePool implements DNAObserver {
 
 	private Map<DNA, DNA> childrenToParents = new LinkedHashMap<>();
 	private List<DNA> currentPool = new LinkedList<>();

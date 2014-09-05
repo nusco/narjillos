@@ -6,7 +6,7 @@ import java.util.List;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.genetics.Chromosome;
 
-class TwinOrgansBuilder {
+strictfp class TwinOrgansBuilder {
 
 	private final Chromosome chromosome1;
 	private final Chromosome chromosome2;

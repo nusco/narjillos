@@ -12,7 +12,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
+strictfp class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
 
 	@Override
 	public JsonElement serialize(DNA dna, Type type, JsonSerializationContext context) {

@@ -6,7 +6,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 /**
  * Something that has a physical representation in the environment.
  */
-public interface Thing {
+public strictfp interface Thing {
 
 	Thing NULL = new Thing() {
 		

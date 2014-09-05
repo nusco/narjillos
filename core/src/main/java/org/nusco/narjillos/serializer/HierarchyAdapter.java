@@ -10,7 +10,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-abstract class HierarchyAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
+strictfp abstract class HierarchyAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
 
 	protected abstract String getTypeTag(T obj);
 	protected abstract Class<?> getClass(String typeTag) throws JsonParseException;

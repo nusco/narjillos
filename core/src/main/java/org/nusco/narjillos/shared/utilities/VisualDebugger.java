@@ -14,7 +14,7 @@ import org.nusco.narjillos.shared.physics.Segment;
  * This class is made to be accessed by multiple threads, one of which is
  * the writer.
  */
-public class VisualDebugger {
+public strictfp class VisualDebugger {
 
 	public static final boolean DEBUG = false;
 

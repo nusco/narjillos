@@ -6,7 +6,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 import com.google.gson.JsonParseException;
 
-class ThingAdapter extends HierarchyAdapter<Thing> {
+strictfp class ThingAdapter extends HierarchyAdapter<Thing> {
 
 	@Override
 	protected String getTypeTag(Thing obj) {

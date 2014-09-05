@@ -3,7 +3,7 @@ package org.nusco.narjillos.shared.utilities;
 /**
  * Stores a wide range of colors in a single byte-sized integer.
  */
-public class ColorByte {
+public strictfp class ColorByte {
 
 	private static final double MAX_THREE_BITS_VALUE = 0b111;
 

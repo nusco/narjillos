@@ -6,7 +6,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-public class Experiment {
+public strictfp class Experiment {
 
 	private final static int ECOSYSTEM_SIZE = 40_000;
 	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 400;

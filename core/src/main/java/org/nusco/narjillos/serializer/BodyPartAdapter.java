@@ -6,7 +6,7 @@ import org.nusco.narjillos.creature.body.Organ;
 
 import com.google.gson.JsonParseException;
 
-class BodyPartAdapter extends HierarchyAdapter<Organ> {
+strictfp class BodyPartAdapter extends HierarchyAdapter<Organ> {
 
 	private static final String BODY_PACKAGE = BodyPart.class.getPackage().getName();
 

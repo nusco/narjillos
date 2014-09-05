@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature.genetics;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
-public class Chromosome {
+public strictfp class Chromosome {
 
 	static final int SIZE = 8;
 	

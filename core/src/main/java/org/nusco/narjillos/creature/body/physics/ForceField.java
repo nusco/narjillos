@@ -42,7 +42,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * translation_energy = mass * linear_velocity^2 / 2;
  * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  */
-public class ForceField {
+public strictfp class ForceField {
 
 	private static final double ENERGY_SCALE = 1.0 / 75_000_000_000L;
 	private static final double VISCOSITY = 1; //.01;

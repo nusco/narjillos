@@ -3,7 +3,7 @@ package org.nusco.narjillos.shared.utilities;
 /**
  * Counts ticks.
  */
-public class Chronometer {
+public strictfp class Chronometer {
 
 	private int totalTicks = 0;
 	private transient int ticks = 0;

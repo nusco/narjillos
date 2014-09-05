@@ -4,7 +4,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public abstract class BodyPart {
+public strictfp abstract class BodyPart {
 
 	private final int length;
 	private final int thickness;

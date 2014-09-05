@@ -3,7 +3,7 @@ package org.nusco.narjillos.shared.things;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 
-public class FoodPiece implements Thing {
+public strictfp class FoodPiece implements Thing {
 
 	private static final double ENERGY = 30_000;
 	

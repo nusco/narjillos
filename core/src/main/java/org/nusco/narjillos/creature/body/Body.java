@@ -19,7 +19,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * This class contains the all-important Body.tick() method. Look at its comments
  * for details.
  */
-public class Body {
+public strictfp class Body {
 
 	private final Organ head;
 	private final double mass;

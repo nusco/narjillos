@@ -9,6 +9,7 @@ public class DNA {
 
 	public static final double MUTATION_RATE = 0.02;
 	private static final int GENE_MUTATION_RANGE = 30;
+	private static DNAObserver observer = DNAObserver.NULL;
 	
 	private static long serial = 0;
 
@@ -16,18 +17,19 @@ public class DNA {
 	private final Integer[] genes;
 
 	public DNA(String dnaDocument) {
-		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
-		setId(serial + 1);
+		this(new DNADocument(dnaDocument).toGenes());
 	}
 
 	public DNA(String dnaDocument, long id) {
 		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
 		setId(id);
+		DNA.observer.created(this, null);
 	}
 
 	private DNA(Integer... genes) {
 		this.genes = clipGenes(genes);
 		setId(serial + 1);
+		DNA.observer.created(this, null);
 	}
 
 	private Integer[] clipGenes(Integer[] genes) {
@@ -70,7 +72,9 @@ public class DNA {
 		}
 
 		Integer[] resultGenes = flatten(resultChromosomes);
-		return new DNA(resultGenes);
+		DNA result = new DNA(resultGenes);
+		DNA.observer.created(result, this);
+		return result;
 	}
 
 	private Integer[] flatten(List<Integer[]> chromosomes) {
@@ -185,5 +189,9 @@ public class DNA {
 	@Override
 	public String toString() {
 		return DNADocument.toString(this);
+	}
+
+	public static void setObserver(DNAObserver dnaObserver) {
+		DNA.observer = dnaObserver;
 	}
 }

@@ -30,7 +30,7 @@ public class Ecosystem {
 
 	private final long size;
 	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
-	private final GenePool narjillos = new GenePool();
+	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
 
 	private final Space foodSpace;
 	private final Vector center;
@@ -51,7 +51,7 @@ public class Ecosystem {
 		return foodPieces;
 	}
 
-	public GenePool getGenePool() {
+	public Set<Narjillo> getNarjillos() {
 		return narjillos;
 	}
 
@@ -60,7 +60,7 @@ public class Ecosystem {
 		synchronized (this) {
 			result.addAll(foodPieces);
 		}
-		result.addAll(narjillos.getNarjillos());
+		result.addAll(narjillos);
 		return result;
 	}
 
@@ -89,7 +89,7 @@ public class Ecosystem {
 	public Narjillo findNarjillo(Vector near) {
 		double minDistance = Double.MAX_VALUE;
 		Narjillo result = null;
-		for (Narjillo narjillo : narjillos.getNarjillos()) {
+		for (Narjillo narjillo : narjillos) {
 			double distance = narjillo.getPosition().minus(near).getLength();
 			if (distance < minDistance) {
 				minDistance = distance;
@@ -100,7 +100,7 @@ public class Ecosystem {
 	}
 
 	public void tick(RanGen ranGen) {
-		Set<Narjillo> narjillosCopy = new LinkedHashSet<>(narjillos.getNarjillos());
+		Set<Narjillo> narjillosCopy = new LinkedHashSet<>(narjillos);
 		for (Narjillo narjillo : narjillosCopy) {
 			Segment movement = narjillo.tick();
 			consumeCollidedFood(narjillo, movement, ranGen);
@@ -150,7 +150,7 @@ public class Ecosystem {
 	}
 
 	private void updateTargets(Thing food) {
-		for (Thing creature : narjillos.getNarjillos()) {
+		for (Thing creature : narjillos) {
 			if (((Narjillo)creature).getTarget() == food) {
 				Narjillo narjillo = (Narjillo)creature;
 				Vector closestTarget = findClosestTarget(narjillo);
@@ -160,7 +160,7 @@ public class Ecosystem {
 	}
 
 	public void updateAllTargets() {
-		for (Thing creature : narjillos.getNarjillos()) {
+		for (Thing creature : narjillos) {
 			Narjillo narjillo = (Narjillo)creature;
 			Vector closestTarget = findClosestTarget(narjillo);
 			narjillo.setTarget(closestTarget);
@@ -205,7 +205,7 @@ public class Ecosystem {
 	}
 
 	private void remove(Narjillo narjillo) {
-		if (!narjillos.getNarjillos().contains(narjillo))
+		if (!narjillos.contains(narjillo))
 			return;
 		narjillos.remove(narjillo);
 		notifyThingRemoved(narjillo);
@@ -241,10 +241,6 @@ public class Ecosystem {
 	}
 
 	public int getNumberOfNarjillos() {
-		return narjillos.getSize();
-	}
-
-	public GenePool getPopulation() {
-		return narjillos;
+		return narjillos.size();
 	}
 }

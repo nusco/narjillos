@@ -26,7 +26,7 @@ public class JSONEcosystemSerializationTest {
 
 		assertEquals(123, deserialized.getSize());
 		assertEquals(3, deserialized.getThings().size());
-		assertEquals(1, deserialized.getPopulation().getSize());
+		assertEquals(1, deserialized.getNarjillos().size());
 
 		Iterator<Thing> thingsIterator = deserialized.getThings().iterator();
 		assertEquals(food1.getPosition(), thingsIterator.next().getPosition());

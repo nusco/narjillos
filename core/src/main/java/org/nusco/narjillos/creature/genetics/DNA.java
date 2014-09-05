@@ -194,4 +194,8 @@ public class DNA {
 	public static void setObserver(DNAObserver dnaObserver) {
 		DNA.observer = dnaObserver;
 	}
+
+	public void removeFromPool() {
+		DNA.observer.removed(this);
+	}
 }

@@ -19,6 +19,11 @@ public class DNAObserverTest {
 			public void created(DNA newDNA, DNA parent) {
 				log[0] = newDNA + "," + parent;
 			}
+
+			@Override
+			public void removed(DNA dna) {
+				log[0] = "Removed: " + dna;
+			}
 		});
 	}
 
@@ -28,21 +33,28 @@ public class DNAObserverTest {
 	}
 
 	@Test
-	public void notifiesCreationgOfNewDNA() {
+	public void observesCreationgOfNewDNA() {
 		DNA parentDna = new DNA("{1}");
 
 		String expected = parentDna.toString() + ",null";
-
 		assertEquals(expected, log[0]);
 	}
 
 	@Test
-	public void notifiesDNACopy() {
+	public void observesDNACopy() {
 		DNA parentDna = new DNA("{1}");
 		DNA childDNA = parentDna.copy(new RanGen(1234));
 
 		String expected = childDNA.toString() + "," + parentDna.toString();
+		assertEquals(expected, log[0]);
+	}
 
+	@Test
+	public void observesDNARemoval() {
+		DNA dna = new DNA("{1}");
+		dna.removeFromPool();
+
+		String expected = "Removed: " + dna.toString();
 		assertEquals(expected, log[0]);
 	}
 }

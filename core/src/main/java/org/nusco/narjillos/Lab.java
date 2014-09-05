@@ -1,5 +1,6 @@
 package org.nusco.narjillos;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,12 +8,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Random;
 
-import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.genetics.Clades;
 import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.creature.genetics.GenePool;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.serializer.JSON;
@@ -23,10 +22,10 @@ public class Lab {
 	private static final int PARSE_INTERVAL = 10000;
 	private static boolean persistent = false;
 	private final Experiment experiment;
-	private Clades clades = new Clades();
+	private GenePool genePool = new GenePool();
 
 	public Lab(String... args) {
-		experiment = initializeExperiment(args);
+		experiment = initialize(args);
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
 	}
@@ -79,10 +78,10 @@ public class Lab {
 	}
 
 	private String getStatusString(long tick) {
-		Narjillo mostTypicalSpecimen = getMostTypicalSpecimen(experiment);
-		if (mostTypicalSpecimen == null)
+		DNA mostSuccessfulDna = genePool.getMostSuccessfulDNA();
+		if (mostSuccessfulDna == null)
 			return getStatusString(tick, "<none>");
-		return getStatusString(tick, mostTypicalSpecimen.getDNA().toString());
+		return getStatusString(tick, mostSuccessfulDna.toString());
 	}
 
 	private String getStatusString(long tick, String mostTypicalDNA) {
@@ -92,17 +91,13 @@ public class Lab {
 				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces()) + "    " + mostTypicalDNA;
 	}
 
-	private static Narjillo getMostTypicalSpecimen(Experiment experiment) {
-		return experiment.getEcosystem().getPopulation().getMostTypicalSpecimen();
-	}
-
 	private String alignLeft(Object label) {
 		final String padding = "        ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
 
-	public Experiment initializeExperiment(String... args) {
+	public Experiment initialize(String... args) {
 		String gitCommit = args.length == 0 ? "unknown" : args[0];
 		String secondArgument = args.length < 2 ? null : args[1];
 
@@ -114,8 +109,7 @@ public class Lab {
 			}
 		});
 
-		if (persistent)
-			DNA.setObserver(clades);
+		DNA.setObserver(genePool);
 
 		return experiment;
 	}
@@ -128,17 +122,12 @@ public class Lab {
 		} else if (secondArgument.equals("no-persistence")) {
 			System.out.println("Starting new non-persistent experiment with random seed");
 			return new Experiment(gitCommit, generateRandomSeed(), null);
-		} else if (secondArgument.endsWith("exp")) {
-			System.out.println("Picking up experiment from " + secondArgument);
-			persistent = true;
-			clades = readCladesFromFile(secondArgument.split("\\.*^")[0] + ".cld");
-			return readExperimentFromFile(secondArgument);
 		} else if (isInteger(secondArgument)) {
 			long seed = Long.parseLong(secondArgument);
 			System.out.println("Starting experiment " + seed + " from scratch");
 			persistent = true;
 			return new Experiment(gitCommit, seed, null);
-		} else if (secondArgument.endsWith("nrj")) {
+		} else if (secondArgument.endsWith(".nrj")) {
 			DNA dna = readDNAFromFile(secondArgument);
 			System.out.println("Observing DNA " + dna);
 			persistent = true;
@@ -147,10 +136,17 @@ public class Lab {
 			System.out.println("Observing DNA " + secondArgument);
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
+		} else {
+			System.out.println("Picking up experiment from " + secondArgument);
+			persistent = true;
+			String experimentId = removeFileExtension(secondArgument);
+			genePool = readGenePoolFromFile(experimentId);
+			return readExperimentFromFile(experimentId);
 		}
+	}
 
-		throw new RuntimeException(
-				"Invalid experiment arguments. Use: 	[<git_commit>, <random_seed | dna_file | dna_document | experiment_file>]");
+	private String removeFileExtension(String secondArgument) {
+		return secondArgument.split("\\.*^")[0];
 	}
 
 	private long generateRandomSeed() {
@@ -167,23 +163,20 @@ public class Lab {
 	}
 
 	private DNA readDNAFromFile(String file) {
-		try {
-			List<String> lines = Files.readAllLines(Paths.get(file));
-			StringBuffer result = new StringBuffer();
-			for (String line : lines)
-				result.append(line + "\n");
-			return new DNA(result.toString());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return new DNA(read(file));
 	}
 
 	private Experiment readExperimentFromFile(String file) {
-		return JSON.fromJson(read(file), Experiment.class);
+		return JSON.fromJson(read(file + ".exp"), Experiment.class);
 	}
 
-	private Clades readCladesFromFile(String file) {
-		return JSON.fromJson(read(file), Clades.class);
+	private GenePool readGenePoolFromFile(String file) {
+		String fileName = file + ".gep";
+		if (!new File(fileName).exists()) {
+			System.out.println("\\e[0;31mWarning: no genepool file found. Creating new genepool.\\e[0m");
+			return new GenePool();
+		}
+		return JSON.fromJson(read(fileName), GenePool.class);
 	}
 
 	private String read(String file) {
@@ -203,7 +196,7 @@ public class Lab {
 
 	private void writeCladesToFile() {
 		String fileName = experiment.getId() + ".cld";
-		String content = JSON.toJson(clades, Clades.class);
+		String content = JSON.toJson(genePool, GenePool.class);
 		writeToFileSafely(fileName, content);
 	}
 

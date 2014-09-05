@@ -1,11 +1,9 @@
 package org.nusco.narjillos.serializer;
 
 import java.lang.reflect.Type;
-import java.util.Set;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.GenePool;
 import org.nusco.narjillos.shared.things.FoodPiece;
 
 import com.google.gson.JsonArray;
@@ -22,36 +20,38 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 	@Override
 	public JsonElement serialize(Ecosystem ecosystem, Type type, JsonSerializationContext context) {
 		JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("size", ecosystem.getSize());
+		jsonObject.addProperty("size", ecosystem.getSize());
 
-        final JsonElement foodPieces = context.serialize(ecosystem.getFoodPieces());
-        jsonObject.add("foodPieces", foodPieces);
+		final JsonElement foodPieces = context.serialize(ecosystem.getFoodPieces());
+		jsonObject.add("foodPieces", foodPieces);
 
-        final JsonElement genePool = context.serialize(ecosystem.getGenePool());
-        jsonObject.add("genePool", genePool);
+		final JsonElement narjillos = context.serialize(ecosystem.getNarjillos());
+		jsonObject.add("narjillos", narjillos);
 
-        return jsonObject;
-    }
+		return jsonObject;
+	}
 
 	@Override
 	public Ecosystem deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 		JsonObject jsonObject = json.getAsJsonObject();
 
-	    long size = jsonObject.get("size").getAsLong();
-	    Ecosystem result = new Ecosystem(size);
-	    
-	    JsonArray foodPieces = jsonObject.get("foodPieces").getAsJsonArray();
-	    for (int i = 0; i < foodPieces.size(); i++) {
-	      JsonElement jsonFoodPiece = foodPieces.get(i);
-	      FoodPiece foodPiece = context.deserialize(jsonFoodPiece, FoodPiece.class);
-	      result.forceAdd((FoodPiece) foodPiece);
-	    }
-	    
-	    GenePool genePool = context.deserialize(jsonObject.get("genePool"), GenePool.class);
-	    Set<Narjillo> narjillos = genePool.getNarjillos();
-	    for (Narjillo creature : narjillos)
-	    	result.forceAdd((Narjillo) creature);
-	    
-	    return result;
+		long size = jsonObject.get("size").getAsLong();
+		Ecosystem result = new Ecosystem(size);
+
+		JsonArray foodPieces = jsonObject.get("foodPieces").getAsJsonArray();
+		for (int i = 0; i < foodPieces.size(); i++) {
+			JsonElement jsonFoodPiece = foodPieces.get(i);
+			FoodPiece foodPiece = context.deserialize(jsonFoodPiece, FoodPiece.class);
+			result.forceAdd(foodPiece);
+		}
+
+		JsonArray narjillos = jsonObject.get("narjillos").getAsJsonArray();
+		for (int i = 0; i < narjillos.size(); i++) {
+			JsonElement jsonNarjllo = narjillos.get(i);
+			Narjillo narjillo = context.deserialize(jsonNarjllo, Narjillo.class);
+			result.forceAdd(narjillo);
+		}
+
+		return result;
 	}
 }

@@ -7,7 +7,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public strictfp class DNA {
 
-	public static final double MUTATION_RATE = 0.02;
+	public static final double MUTATION_RATE = 0.03;
 	private static final int GENE_MUTATION_RANGE = 30;
 	private static DNAObserver observer = DNAObserver.NULL;
 	
@@ -64,10 +64,10 @@ public strictfp class DNA {
 		Chromosome nextChromosome;
 		while ((nextChromosome = parser.nextChromosome()) != null) {
 			// skip a chromosome every now and then
-			if (!isMutating(ranGen))
+			if (!isChromosomeMutation(ranGen))
 				resultChromosomes.add(copy(nextChromosome, ranGen));
 			// add a chromosome every now and then
-			if (isMutating(ranGen))
+			if (isChromosomeMutation(ranGen))
 				resultChromosomes.add(randomGenes(Chromosome.SIZE, ranGen));
 		}
 
@@ -93,11 +93,15 @@ public strictfp class DNA {
 	}
 
 	private int copy(int gene, RanGen ranGen) {
-		return isMutating(ranGen) ? mutate(gene, ranGen) : gene;
+		return isMutantGene(ranGen) ? mutate(gene, ranGen) : gene;
 	}
 
-	private boolean isMutating(RanGen ranGen) {
+	private boolean isMutantGene(RanGen ranGen) {
 		return ranGen.nextDouble() < MUTATION_RATE;
+	}
+
+	private boolean isChromosomeMutation(RanGen ranGen) {
+		return ranGen.nextDouble() < (MUTATION_RATE / (Chromosome.SIZE * 2));
 	}
 
 	private int mutate(int gene, RanGen ranGen) {

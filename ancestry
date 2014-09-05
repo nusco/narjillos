@@ -1,0 +1,4 @@
+# ensure that the code is up to date
+./gradlew --quiet install
+
+java -cp core/build/install/core/lib/narjillos-0.0.1.jar:core/build/install/core/lib/gson-2.3.jar org.nusco.narjillos.Ancestry $1

@@ -21,6 +21,7 @@ public class JSON {
 		.registerTypeAdapter(Organ.class, new BodyPartAdapter())
 		.registerTypeAdapter(Thing.class, new ThingAdapter())
 		.registerTypeAdapter(Ecosystem.class, new EcosystemAdapter())
+		.enableComplexMapKeySerialization()
         .create();
 
 	public static <T> String toJson(Object obj, Class<T> clazz) {

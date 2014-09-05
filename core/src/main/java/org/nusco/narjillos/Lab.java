@@ -1,6 +1,5 @@
 package org.nusco.narjillos;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -140,16 +139,17 @@ public class Lab {
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
 		} else {
-			System.out.println("Picking up experiment from " + secondArgument);
+			String experimentId = stripFileExtension(secondArgument);
+			System.out.println("Picking up experiment from " + experimentId + ".exp");
 			persistent = true;
-			String experimentId = removeFileExtension(secondArgument);
 			genePool = readGenePoolFromFile(experimentId);
 			return readExperimentFromFile(experimentId);
 		}
 	}
 
-	private String removeFileExtension(String secondArgument) {
-		return secondArgument.split("\\.*^")[0];
+	private String stripFileExtension(String fileName) {
+		int extensionIndex = fileName.lastIndexOf('.');
+		return (extensionIndex < 0) ? fileName : fileName.substring(0, extensionIndex);
 	}
 
 	private long generateRandomSeed() {
@@ -174,12 +174,12 @@ public class Lab {
 	}
 
 	private GenePool readGenePoolFromFile(String file) {
-		String fileName = file + ".gep";
-		if (!new File(fileName).exists()) {
-			System.out.println("\\e[0;31mWarning: no .gep file found. Continuing with empty genepool.\\e[0m");
+		Path filePath = Paths.get(file + ".gep");
+		if (!Files.exists(filePath)) {
+			System.out.println("Warning: no .gep file found. Continuing with empty genepool.");
 			return new GenePool();
 		}
-		return JSON.fromJson(read(fileName), GenePool.class);
+		return JSON.fromJson(read(file + ".gep"), GenePool.class);
 	}
 
 	private String read(String file) {

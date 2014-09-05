@@ -2,20 +2,18 @@ package org.nusco.narjillos.creature.genetics;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class GenePool implements DNAObserver {
 
-	private Map<DNA, DNA> childsToParents = new LinkedHashMap<>();
-	private Set<DNA> currentPool = new LinkedHashSet<>();
-			
+	private Map<DNA, DNA> childrenToParents = new LinkedHashMap<>();
+	private List<DNA> currentPool = new LinkedList<>();
+
 	@Override
 	public void created(DNA newDNA, DNA parent) {
-		childsToParents.put(newDNA, parent);
+		childrenToParents.put(newDNA, parent);
 		currentPool.add(newDNA);
 	}
 
@@ -33,7 +31,7 @@ public class GenePool implements DNAObserver {
 	}
 
 	private void collectAncestors(LinkedList<DNA> collector, DNA dna) {
-		DNA parent = childsToParents.get(dna);
+		DNA parent = childrenToParents.get(dna);
 		if (parent == null)
 			return;
 		collector.add(parent);
@@ -59,5 +57,13 @@ public class GenePool implements DNAObserver {
 			if (!otherDNA.equals(dna))
 				result += dna.getLevenshteinDistanceFrom(otherDNA);
 		return result;
+	}
+
+	public Map<DNA, DNA> getChildrenToParents() {
+		return childrenToParents;
+	}
+	
+	public List<DNA> getCurrentPool() {
+		return currentPool;
 	}
 }

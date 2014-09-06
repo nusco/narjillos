@@ -74,23 +74,15 @@ public strictfp class Lab {
 	}
 
 	private String getHeadersString() {
-		return alignLeft("tick") + alignLeft("time") + alignLeft("tps") + alignLeft("narj") + alignLeft("food") + "    most_typical_dna";
+		return alignLeft("tick") + alignLeft("time") + alignLeft("tps") + alignLeft("narj") + alignLeft("food");
 	}
 
 	private String getStatusString(long tick) {
-		DNA mostSuccessfulDna = genePool.getMostSuccessfulDNA();
-		if (mostSuccessfulDna == null)
-			return getStatusString(tick, "<none>");
-		return getStatusString(tick, mostSuccessfulDna.toString());
-	}
-
-	private String getStatusString(long tick, String mostSuccessfulDNA) {
-		return alignLeft(NumberFormat.format(tick))
+				return alignLeft(NumberFormat.format(tick))
 				+ alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
 				+ alignLeft(experiment.getTicksChronometer().getTicksInLastSecond())
 				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
-				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces())
-				+ "    " + mostSuccessfulDNA;
+				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces());
 	}
 
 	private String alignLeft(Object label) {

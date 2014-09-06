@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.body.embryogenesis;
+package org.nusco.narjillos.embryogenesis;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.creature.genetics.DNAParser;
+import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.DNAParser;
 
 strictfp public class Embryo {
 

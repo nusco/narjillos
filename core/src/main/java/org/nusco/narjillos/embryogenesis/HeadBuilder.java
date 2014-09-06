@@ -1,7 +1,7 @@
-package org.nusco.narjillos.creature.body.embryogenesis;
+package org.nusco.narjillos.embryogenesis;
 
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.genetics.Chromosome;
+import org.nusco.narjillos.genomics.Chromosome;
 
 strictfp class HeadBuilder extends OrganBuilder {
 

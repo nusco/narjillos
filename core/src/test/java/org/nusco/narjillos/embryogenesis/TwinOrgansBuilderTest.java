@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.body.embryogenesis;
+package org.nusco.narjillos.embryogenesis;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.body.embryogenesis.TwinOrgansBuilder;
-import org.nusco.narjillos.creature.genetics.Chromosome;
+import org.nusco.narjillos.embryogenesis.TwinOrgansBuilder;
+import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class TwinOrgansBuilderTest {

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
-import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.embryogenesis.Embryo;
+import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.genetics;
+package org.nusco.narjillos.genomics;
 
 import java.util.LinkedList;
 import java.util.List;

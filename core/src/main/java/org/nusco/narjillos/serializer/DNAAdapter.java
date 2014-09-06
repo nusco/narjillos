@@ -2,7 +2,7 @@ package org.nusco.narjillos.serializer;
 
 import java.lang.reflect.Type;
 
-import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.genomics.DNA;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

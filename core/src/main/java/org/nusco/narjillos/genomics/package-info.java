@@ -6,10 +6,10 @@
  * specific DNA mean - they treat genes as meaningless data.
  * 
  * The most important classes and interfaces here are
- * {@link org.nusco.narjillos.creature.genetics.DNA},
- * {@link org.nusco.narjillos.creature.genetics.Chromosome}, the
+ * {@link org.nusco.narjillos.genomics.DNA},
+ * {@link org.nusco.narjillos.genomics.Chromosome}, the
  * {@link org.nusco.narjillos.creature.genetics.Creature} interface, and
  * a few support classes that process genes.
  */
-package org.nusco.narjillos.creature.genetics;
+package org.nusco.narjillos.genomics;
 

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.creature.body.embryogenesis.Embryo;
-import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.embryogenesis.Embryo;
+import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;

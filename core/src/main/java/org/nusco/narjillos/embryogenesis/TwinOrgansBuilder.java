@@ -1,10 +1,10 @@
-package org.nusco.narjillos.creature.body.embryogenesis;
+package org.nusco.narjillos.embryogenesis;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.genetics.Chromosome;
+import org.nusco.narjillos.genomics.Chromosome;
 
 strictfp class TwinOrgansBuilder {
 

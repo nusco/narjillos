@@ -1,11 +1,11 @@
-package org.nusco.narjillos.creature.body.embryogenesis;
+package org.nusco.narjillos.embryogenesis;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.body.embryogenesis.HeadBuilder;
-import org.nusco.narjillos.creature.genetics.Chromosome;
+import org.nusco.narjillos.embryogenesis.HeadBuilder;
+import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class HeadBuilderTest extends OrganBuilderTest {

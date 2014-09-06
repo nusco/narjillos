@@ -6,8 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.creature.genetics.GenePool;
+import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
 
 public class Ancestry {

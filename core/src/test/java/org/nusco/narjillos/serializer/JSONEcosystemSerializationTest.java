@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.genetics.DNA;
 import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;

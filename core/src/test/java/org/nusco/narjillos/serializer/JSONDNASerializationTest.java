@@ -4,7 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.genetics.DNA;
+import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.serializer.JSON;
 
 public class JSONDNASerializationTest {

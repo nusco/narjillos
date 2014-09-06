@@ -1,8 +1,8 @@
-package org.nusco.narjillos.creature.body.embryogenesis;
+package org.nusco.narjillos.embryogenesis;
 
 import org.nusco.narjillos.creature.body.BodySegment;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.genetics.Chromosome;
+import org.nusco.narjillos.genomics.Chromosome;
 
 strictfp class BodySegmentBuilder extends OrganBuilder {
 

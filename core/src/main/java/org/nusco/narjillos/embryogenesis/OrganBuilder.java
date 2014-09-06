@@ -1,6 +1,6 @@
-package org.nusco.narjillos.creature.body.embryogenesis;
+package org.nusco.narjillos.embryogenesis;
 
-import org.nusco.narjillos.creature.genetics.Chromosome;
+import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 strictfp abstract class OrganBuilder {

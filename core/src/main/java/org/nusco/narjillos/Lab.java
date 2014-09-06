@@ -9,10 +9,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
-import org.nusco.narjillos.creature.genetics.DNA;
-import org.nusco.narjillos.creature.genetics.GenePool;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 

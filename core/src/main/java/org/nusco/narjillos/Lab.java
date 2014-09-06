@@ -78,7 +78,7 @@ public strictfp class Lab {
 	}
 
 	private String getStatusString(long tick) {
-				return alignLeft(NumberFormat.format(tick))
+		return alignLeft(NumberFormat.format(tick))
 				+ alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
 				+ alignLeft(experiment.getTicksChronometer().getTicksInLastSecond())
 				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())

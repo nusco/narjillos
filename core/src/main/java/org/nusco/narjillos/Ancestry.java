@@ -17,16 +17,18 @@ public class Ancestry {
 	}
 
 	private static void printAncestry(String genePoolFile) throws IOException {
-		System.out.println(">Reading file " + genePoolFile);
+		System.out.println(">Reading file \"" + genePoolFile + "\"...");
 		String json = new String(Files.readAllBytes(Paths.get(genePoolFile)), Charset.defaultCharset());
 
-		System.out.println(">Deserializing gene pool from JSON");
+		System.out.println(">Deserializing gene pool from JSON...");
 		GenePool genePool = JSON.fromJson(json, GenePool.class);
-		
-		System.out.println(">Identifying most successful DNA");
+		System.out.println("  > Current gene pool size: " + genePool.getCurrentPool().size());
+		System.out.println("  > Historical gene pool size: " + genePool.getChildrenToParents().size());
+
+		System.out.println(">Identifying most successful DNA...");
 		DNA mostSuccessfulDNA = genePool.getMostSuccessfulDNA();
 
-		System.out.println(">Extracting ancestry");
+		System.out.println(">Extracting ancestry...");
 		List<DNA> ancestry = genePool.getAncestry(mostSuccessfulDNA);
 
 		for (DNA dna : ancestry)

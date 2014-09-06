@@ -208,6 +208,7 @@ public strictfp class Ecosystem {
 		if (!narjillos.contains(narjillo))
 			return;
 		narjillos.remove(narjillo);
+		narjillo.getDNA().removeFromPool();
 		notifyThingRemoved(narjillo);
 	}
 

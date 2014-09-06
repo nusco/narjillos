@@ -64,8 +64,8 @@ public class GenePoolTest {
 	
 	@Test
 	public void canRemoveDNA() {
-		DNA thisOneWillDie = new DNA("111_111_111_222_111_000_000_000");
-		new DNA("111_111_111_111_111_000_000_000");
+		new DNA("111_111_111_222_111_000_000_000");
+		DNA thisOneWillDie = new DNA("111_111_111_111_111_000_000_000");
 		new DNA("111_111_111_222_222_000_000_000");
 		new DNA("111_111_222_111_222_000_000_000");
 		new DNA("111_222_222_222_222_000_000_000");
@@ -73,6 +73,6 @@ public class GenePoolTest {
 		thisOneWillDie.removeFromPool();
 		DNA mostSuccessful = pool.getMostSuccessfulDNA();
 		
-		assertEquals("{111_111_111_111_111_000_000_000}", mostSuccessful.toString());
+		assertEquals("{111_111_111_222_111_000_000_000}", mostSuccessful.toString());
 	}
 }

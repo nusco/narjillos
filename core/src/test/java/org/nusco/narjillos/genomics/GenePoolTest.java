@@ -13,11 +13,11 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class GenePoolTest {
 	
 	RanGen ranGen = new RanGen(1234);
-	GenePool pool = new GenePool();
+	GenePool genePool = new GenePool();
 
 	@Before
 	public void setUpObserver() {
-		DNA.setObserver(pool);
+		DNA.setObserver(genePool);
 	}
 	
 	@After
@@ -36,7 +36,7 @@ public class GenePoolTest {
 
 		DNA child2_2_1 = child2_1.copy(ranGen);
 
-		List<DNA> ancestry = pool.getAncestry(child2_2_1);
+		List<DNA> ancestry = genePool.getAncestry(child2_2_1);
 		
 		assertEquals(3, ancestry.size());
 		assertEquals(parent2, ancestry.get(0));
@@ -52,14 +52,14 @@ public class GenePoolTest {
 		new DNA("111_111_222_111_222_000_000_000");
 		new DNA("111_222_222_222_222_000_000_000");
 
-		DNA mostSuccessful = pool.getMostSuccessfulDNA();
+		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
 		assertEquals("{111_111_111_111_111_000_000_000}", mostSuccessful.toString());
 	}
 	
 	@Test
 	public void getsNullAsTheMostSuccesfulInAnEmptyPool() {
-		assertNull(pool.getMostSuccessfulDNA());
+		assertNull(genePool.getMostSuccessfulDNA());
 	}
 	
 	@Test
@@ -71,8 +71,21 @@ public class GenePoolTest {
 		new DNA("111_222_222_222_222_000_000_000");
 
 		thisOneWillDie.removeFromPool();
-		DNA mostSuccessful = pool.getMostSuccessfulDNA();
+		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
 		assertEquals("{111_111_111_222_111_000_000_000}", mostSuccessful.toString());
+	}
+	
+	@Test
+	public void neverRemovesDNAFromTheParentToChildMap() {
+		RanGen ranGen = new RanGen(42);
+		for (int i = 0; i < 100; i++) {
+			DNA dna = DNA.random(ranGen);
+			if (i >= 50)
+				dna.removeFromPool();
+		}
+		
+		assertEquals(50, genePool.getCurrentPool().size());
+		assertEquals(100, genePool.getChildrenToParents().size());
 	}
 }

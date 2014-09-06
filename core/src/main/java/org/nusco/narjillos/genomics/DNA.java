@@ -32,6 +32,12 @@ public strictfp class DNA {
 		DNA.observer.created(this, null);
 	}
 
+	private DNA(DNA parent, Integer... genes) {
+		this.genes = clipGenes(genes);
+		setId(serial + 1);
+		DNA.observer.created(this, parent);
+	}
+
 	private Integer[] clipGenes(Integer[] genes) {
 		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
 	}
@@ -72,9 +78,7 @@ public strictfp class DNA {
 		}
 
 		Integer[] resultGenes = flatten(resultChromosomes);
-		DNA result = new DNA(resultGenes);
-		DNA.observer.created(result, this);
-		return result;
+		return new DNA(this, resultGenes);
 	}
 
 	private Integer[] flatten(List<Integer[]> chromosomes) {

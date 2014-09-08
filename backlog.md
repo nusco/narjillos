@@ -5,6 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
+* Fix crazy movement (see experiment 4a633a7-587427717, after a few million ticks) °°
 * Watchdog for excessive speed (results in warning) °°
 * Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °
   (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250} for a good case study)
@@ -43,7 +44,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Dump isolated narjillos to file (instead of the console) °
-* Slow motion setting °
 * Lock on single narjillo °
 * Real arguments parsing (use --no-persistence together with other switches)
 * Zipped experiment files

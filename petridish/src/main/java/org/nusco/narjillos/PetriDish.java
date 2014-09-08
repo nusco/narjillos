@@ -39,7 +39,6 @@ public class PetriDish extends Application {
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_OFF = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_OFF;
-	private static final int TICKS_PER_SECOND = 25;
 	private static final long PAN_SPEED = 200;
 
 	private static String[] programArguments = new String[0];
@@ -99,7 +98,7 @@ public class PetriDish extends Application {
 					if (state.getSpeed() != Speed.PAUSED)
 						if (!lab.tick())
 							return;
-					waitUntilTimePassed(getTicksPeriod(), startTime);
+					waitUntilTimePassed(state.getSpeed().getTicksPeriod(), startTime);
 				}
 			}
 		};
@@ -156,7 +155,7 @@ public class PetriDish extends Application {
 				else if (keyEvent.getCode() == KeyCode.P)
 					state.togglePause();
 				else if (keyEvent.getCode() == KeyCode.S)
-					state.toggleSpeed();
+					state.shiftSpeed();
 				else if (keyEvent.getCode() == KeyCode.L) {
 					state.toggleLight();
 					getEcosystemView().setLight(state.getLight());
@@ -260,14 +259,6 @@ public class PetriDish extends Application {
 		};
 	}
 
-	private synchronized int getTicksPeriod() {
-		if (state.getSpeed() == Speed.REALTIME)
-			return 1000 / TICKS_PER_SECOND;
-
-		// go as fast as possible
-		return 1000 / Integer.MAX_VALUE;
-	}
-
 	private synchronized Node getDataView() {
 		Color color = getDataViewColor();
 		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage(), color);
@@ -277,10 +268,12 @@ public class PetriDish extends Application {
 		switch(state.getSpeed()) {
 		case HIGH:
 			return Color.HOTPINK;
-		case PAUSED:
-			return Color.CYAN;
 		case REALTIME:
 			return Color.LIGHTGREEN;
+		case SLOW:
+			return Color.BEIGE;
+		case PAUSED:
+			return Color.CYAN;
 		default:
 			throw new RuntimeException("Unknown speed state: " + state.getSpeed());
 		}

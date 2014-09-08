@@ -29,7 +29,7 @@ public strictfp class Head extends Organ {
 		return startPoint;
 	}
 
-	public void setPosition(Vector startPoint, double angle) {
+	public void moveTo(Vector startPoint, double angle) {
 		// we already reset the cache in setAngleToParent(), so
 		// no need to do it twice here
 		this.startPoint  = startPoint;
@@ -39,7 +39,7 @@ public strictfp class Head extends Organ {
 	public void moveBy(Vector translation, double rotation) {
 		Vector newStartPoint = getStartPoint().plus(translation);
 		double newAngleToParent = Angle.normalize(getAngleToParent() + rotation);
-		setPosition(newStartPoint, newAngleToParent);
+		moveTo(newStartPoint, newAngleToParent);
 	}
 
 	@Override

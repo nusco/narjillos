@@ -5,10 +5,13 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Fix crazy movement (see experiment 4a633a7-587427717, after a few million ticks) °°
+* Remove "crazy rotation" effect °°°
+  (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
+* Fix "angle trembling" problem °°°
+  (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250})
+* Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °°
+  (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250} for a good case study after fixing the previous issue)
 * Watchdog for excessive speed (results in warning) °°
-* Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °
-  (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250} for a good case study)
 * Smooth, inertial targeting
 
 ###Speed Demon

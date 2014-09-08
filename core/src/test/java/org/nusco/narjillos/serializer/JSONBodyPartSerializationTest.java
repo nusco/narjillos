@@ -17,7 +17,7 @@ public class JSONBodyPartSerializationTest {
 	@Test
 	public void serializesAndDeserializesHeads() {
 		Head head = new Head(1, 2, new ColorByte(3), 4, 0.5);
-		head.setPosition(Vector.cartesian(6, 7), 8);
+		head.moveTo(Vector.cartesian(6, 7), 8);
 
 		String json = JSON.toJson(head, BodyPart.class);
 		BodyPart deserialized = (Head)JSON.fromJson(json, BodyPart.class);

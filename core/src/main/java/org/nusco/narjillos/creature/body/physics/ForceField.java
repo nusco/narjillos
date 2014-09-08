@@ -42,17 +42,18 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * translation_energy = mass * linear_velocity^2 / 2;
  * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  */
+// TODO: split into two separate classes for translations and rotations
 public strictfp class ForceField {
 
 	private static final double ENERGY_SCALE = 1.0 / 75_000_000_000L;
-	private static final double VISCOSITY = 1; //.01;
 
 	private final double bodyMass;
 	private final double bodyRadius;
 	private final Vector centerOfMass;
 	private final List<Vector> linearMomenta = new LinkedList<>();
 	private final List<Double> angularMomenta = new LinkedList<>();
-	private double energySpent = 0;
+	private double translationEnergy = 0;
+	private double rotationEnergy = 0;
 	
 	public ForceField(double bodyMass, double bodyRadius, Vector centerOfMass) {
 		this.bodyMass = bodyMass;
@@ -64,13 +65,13 @@ public strictfp class ForceField {
 		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
 		Vector linearMomentum = linearVelocity.by(mass);
 		linearMomenta.add(linearMomentum);
-		energySpent += calculateTranslationEnergy(mass, linearVelocity);
+		translationEnergy += calculateTranslationEnergy(mass, linearVelocity);
 
 		double angularVelocity = calculateAngularVelocity(initialPositionInSpace, finalPositionInSpace);
 		double momentOfInertia = calculateMomentOfInertia(finalPositionInSpace, mass);
 		double angularMomentum = momentOfInertia * angularVelocity;
 		angularMomenta.add(angularMomentum);
-		energySpent += calculateRotationEnergy(momentOfInertia, angularVelocity);
+		rotationEnergy += calculateRotationEnergy(momentOfInertia, angularVelocity);
 	}
 
 	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {
@@ -128,11 +129,6 @@ public strictfp class ForceField {
 		Vector result = Vector.ZERO;
 		for (Vector linearMomentum : linearMomenta)
 			result = result.plus(linearMomentum);
-		try {
-			result = result.normalize(Math.pow(result.getLength(), VISCOSITY));
-		} catch (ZeroVectorException e) {
-			return Vector.ZERO;
-		}
 		return result;
 	}
 
@@ -147,7 +143,11 @@ public strictfp class ForceField {
 		return result;
 	}
 
-	public double getTotalEnergySpent() {
-		return energySpent * ENERGY_SCALE;
+	public double getTranslationEnergy() {
+		return translationEnergy * ENERGY_SCALE;
+	}
+
+	public double getRotationEnergy() {
+		return rotationEnergy * ENERGY_SCALE;
 	}
 }

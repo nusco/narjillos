@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.nusco.narjillos.creature.body.physics.ForceField;
-import org.nusco.narjillos.creature.body.physics.Impulse;
-import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
@@ -55,7 +53,7 @@ public strictfp class Body {
 
 	public void teleportTo(Vector position) {
 		final int northDirection = 90;
-		getHead().setPosition(position, northDirection);
+		getHead().moveTo(position, northDirection);
 	}
 
 	public Vector getStartPoint() {
@@ -101,19 +99,27 @@ public strictfp class Body {
 		// target's direction. It doesn't "think" were to go - it just
 		// changes its geometry *somehow*. Natural selection will favor
 		// movements that result in getting closer to the target.
+		// This first step happens as if the body where in a vacuum.
 		tick_step1_updateAngles(targetDirection);
 		
-		// The key concept here is that the body changed its shape as
-		// if it were in a vacuum: the center of mass stays in the same
-		// position, and the moment of inertia stays zero. (This last
-		// quality is not yet implemented.)
-		tick_step2_reposition(initialCenterOfMass);
-		
-		// Now we move out of the "vacuum" metaphor: thanks to the fluid's viscosity,
-		// the body's movement generates translational and rotation forces.
-		Impulse impulse = tick_step3_move(initialCenterOfMass, initialPositions);
+		// Changing the angles in the body results in a rotational force.
+		// Rotate the body to match the force. In other words, keep its moment
+		// of inertia equal to zero.
+		double rotationEnergy = tick_step2_rotate(initialCenterOfMass, initialPositions);
 
-		return impulse.energySpent;
+		// The previous updates moved the center of mass. Remember, we're
+		// in a vacuum - so the center of mass shouldn't move. Let's put it
+		// back to its original position.
+		tick_step3_recenter(initialCenterOfMass);
+
+		// Now we can finally move out of the "vacuum" reference system.
+		// All the movements from the previous steps result in a different
+		// body position in space, and this different position generates
+		// translational forces. We can update the body position based on
+		// these translations.
+		double translationEnergy = tick_step4_translate(initialPositions, initialCenterOfMass);
+		
+		return (rotationEnergy + translationEnergy) * getMetabolicRate();
 	}
 
 	private void tick_step1_updateAngles(Vector targetDirection) {
@@ -128,17 +134,22 @@ public strictfp class Body {
 		getHead().recursivelyUpdateAngleToParent(0, angleToTarget);
 	}
 
-	private void tick_step2_reposition(Vector centerOfMassBeforeReshaping) {
+	private double tick_step2_rotate(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
+		ForceField forceField = calculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMass);
+		getHead().moveBy(Vector.ZERO, forceField.getRotation());
+		return forceField.getRotationEnergy();
+	}
+
+	private void tick_step3_recenter(Vector centerOfMassBeforeReshaping) {
 		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
 		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
 		getHead().moveBy(centerOfMassOffset, 0);
 	}
 
-	private Impulse tick_step3_move(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
+	private double tick_step4_translate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass) {
 		ForceField forceField = calculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMass);
-		Impulse impulse = calculateAccelerationForWholeBody(forceField, centerOfMass);
-		moveBy(impulse, centerOfMass);
-		return impulse;
+		getHead().moveBy(forceField.getTranslation(), 0);
+		return forceField.getTranslationEnergy();
 	}
 
 	private Map<BodyPart, Segment> calculateBodyPartPositions() {
@@ -168,15 +179,6 @@ public strictfp class Body {
 		return result;
 	}
 
-	private Impulse calculateAccelerationForWholeBody(ForceField forceField, Vector centerOfMass) {
-		Vector translation = forceField.getTranslation();
-		double rotation = forceField.getRotation();
-
-		double energySpent = forceField.getTotalEnergySpent() * getMetabolicRate();
-		
-		return new Impulse(translation, rotation, energySpent);
-	}
-
 	private double getMetabolicRate() {
 		return getHead().getMetabolicRate();
 	}
@@ -191,23 +193,5 @@ public strictfp class Body {
 		for (BodyPart organ : allOrgans)
 			result += organ.getMass();
 		return result;
-	}
-
-	private double getAngle() {
-		return getHead().getAbsoluteAngle();
-	}
-	
-	private void moveBy(Impulse impulse, Vector centerOfMass) {
-		Vector newPosition = getStartPoint().plus(impulse.linearComponent);
-		Vector pivotedPosition = newPosition.plus(rotateAround(centerOfMass, impulse.angularComponent));
-		double newAngle = Angle.normalize(getAngle() + impulse.angularComponent);
-		getHead().setPosition(pivotedPosition, newAngle);
-	}
-
-	private Vector rotateAround(Vector center, double rotation) {
-		Vector pivot = center.minus(getStartPoint());
-		double shiftX = pivot.x * (1 - Math.cos(Math.toRadians(rotation)));
-		double shiftY = pivot.y * Math.sin(Math.toRadians(rotation));
-		return Vector.cartesian(-shiftX, -shiftY);
 	}
 }

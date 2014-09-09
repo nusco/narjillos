@@ -6,7 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.nusco.narjillos.creature.body.physics.ForceField;
+import org.nusco.narjillos.creature.body.physics.RotationalForceField;
+import org.nusco.narjillos.creature.body.physics.TranslationalForceField;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
@@ -93,19 +94,19 @@ public strictfp class Body {
 		// Before any movement, store away the current body positions
 		// and center of mass. These will come useful later.
 		Vector initialCenterOfMass = calculateCenterOfMass();
-		Map<BodyPart, Segment> initialPositions = calculateBodyPartPositions();
+		Map<BodyPart, Segment> initialBodyPartPositions = calculateBodyPartPositions();
 		
-		// The body reactively changes its geometry in response to the
-		// target's direction. It doesn't "think" were to go - it just
-		// changes its geometry *somehow*. Natural selection will favor
-		// movements that result in getting closer to the target.
 		// This first step happens as if the body where in a vacuum.
+		// The organs in the body remodel their own geometry based on the
+		// target's direction. They don't "think" were to go - they just
+		// changes their positions *somehow*. Natural selection will favor
+		// movements that result in getting closer to the target.
 		tick_step1_updateAngles(targetDirection);
 		
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep its moment
 		// of inertia equal to zero.
-		double rotationEnergy = tick_step2_rotate(initialCenterOfMass, initialPositions);
+		double rotationEnergy = tick_step2_rotate(initialCenterOfMass, initialBodyPartPositions);
 
 		// The previous updates moved the center of mass. Remember, we're
 		// in a vacuum - so the center of mass shouldn't move. Let's put it
@@ -117,14 +118,13 @@ public strictfp class Body {
 		// body position in space, and this different position generates
 		// translational forces. We can update the body position based on
 		// these translations.
-		double translationEnergy = tick_step4_translate(initialPositions, initialCenterOfMass);
+		double translationEnergy = tick_step4_translate(initialBodyPartPositions, initialCenterOfMass);
 		
 		return (rotationEnergy + translationEnergy) * getMetabolicRate();
 	}
 
 	private void tick_step1_updateAngles(Vector targetDirection) {
 		double angleToTarget = getAngleTo(targetDirection);
-		
 		getHead().recursivelyUpdateAngleToParent(0, angleToTarget);
 	}
 
@@ -139,9 +139,11 @@ public strictfp class Body {
 	}
 
 	private double tick_step2_rotate(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
-		ForceField forceField = calculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMass);
+		RotationalForceField forceField = new RotationalForceField(getMass(), calculateRadius(centerOfMass), centerOfMass);
+		for (BodyPart bodyPart : bodyParts)
+			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().moveBy(Vector.ZERO, forceField.getRotation());
-		return forceField.getRotationEnergy();
+		return forceField.getEnergy();
 	}
 
 	private void tick_step3_recenter(Vector centerOfMassBeforeReshaping) {
@@ -151,9 +153,11 @@ public strictfp class Body {
 	}
 
 	private double tick_step4_translate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass) {
-		ForceField forceField = calculateForcesGeneratedByMovement(getBodyParts(), initialPositions, centerOfMass);
+		TranslationalForceField forceField = new TranslationalForceField(getMass());
+		for (BodyPart bodyPart : bodyParts)
+			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().moveBy(forceField.getTranslation(), 0);
-		return forceField.getTranslationEnergy();
+		return forceField.getEnergy();
 	}
 
 	private Map<BodyPart, Segment> calculateBodyPartPositions() {
@@ -161,13 +165,6 @@ public strictfp class Body {
 		for (BodyPart bodyPart : getBodyParts())
 			result.put(bodyPart, bodyPart.getPositionInSpace());
 		return result;
-	}
-
-	private ForceField calculateForcesGeneratedByMovement(List<BodyPart> bodyParts, Map<BodyPart, Segment> previousPositions, Vector centerOfMass) {
-		ForceField forceField = new ForceField(getMass(), calculateRadius(centerOfMass), centerOfMass);
-		for (BodyPart bodyPart : bodyParts)
-			forceField.registerMovement(previousPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
-		return forceField;
 	}
 
 	double calculateRadius(Vector centerOfMass) {

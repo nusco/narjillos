@@ -75,7 +75,7 @@ public strictfp class Narjillo implements Thing {
 		try {
 			return target.minus(getPosition()).normalize(1);
 		} catch (ZeroVectorException e) {
-			return Vector.ZERO;
+			return Vector.cartesian(-1, 0);
 		}
 	}
 

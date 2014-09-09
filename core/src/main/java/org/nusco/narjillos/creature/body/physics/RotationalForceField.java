@@ -33,7 +33,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  *                  
  * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  */
-public strictfp class RotationalForceField implements ForceField {
+public class RotationalForceField implements ForceField {
 
 	private final double bodyMass;
 	private final double bodyRadius;

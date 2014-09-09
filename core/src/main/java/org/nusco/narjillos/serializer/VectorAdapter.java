@@ -11,7 +11,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-strictfp class VectorAdapter implements JsonSerializer<Vector>, JsonDeserializer<Vector> {
+class VectorAdapter implements JsonSerializer<Vector>, JsonDeserializer<Vector> {
 
 	@Override
 	public JsonElement serialize(Vector vector, Type type, JsonSerializationContext context) {

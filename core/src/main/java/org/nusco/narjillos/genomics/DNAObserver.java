@@ -1,6 +1,6 @@
 package org.nusco.narjillos.genomics;
 
-public strictfp interface DNAObserver {
+public interface DNAObserver {
 
 	public void created(DNA newDna, DNA parent);
 	public void removed(DNA dna);

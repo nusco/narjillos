@@ -4,7 +4,7 @@ import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public strictfp class BodySegment extends Organ {
+public class BodySegment extends Organ {
 
 	private static final double SKEWING_VELOCITY_RATIO = 0.1;
 	

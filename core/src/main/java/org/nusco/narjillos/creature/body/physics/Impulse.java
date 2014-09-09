@@ -2,7 +2,7 @@ package org.nusco.narjillos.creature.body.physics;
 
 import org.nusco.narjillos.shared.physics.Vector;
 
-public strictfp class Impulse {
+public class Impulse {
 
 	public final Vector linearComponent;
 	public final double angularComponent;

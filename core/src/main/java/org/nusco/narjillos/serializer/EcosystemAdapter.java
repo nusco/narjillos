@@ -15,7 +15,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-strictfp class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ecosystem> {
+class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ecosystem> {
 
 	@Override
 	public JsonElement serialize(Ecosystem ecosystem, Type type, JsonSerializationContext context) {

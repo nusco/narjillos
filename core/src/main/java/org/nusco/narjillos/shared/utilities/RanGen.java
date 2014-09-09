@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * seed during construction, and you cannot call the same instance from multiple
  * threads.
  */
-public strictfp class RanGen {
+public class RanGen {
 
 	private final TransparentRanGen random = new TransparentRanGen();
 	private transient Thread authorizedThread;

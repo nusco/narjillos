@@ -3,7 +3,7 @@ package org.nusco.narjillos.genomics;
 import java.util.LinkedList;
 import java.util.List;
 
-strictfp class DNADocument {
+class DNADocument {
 
 	private final String dnaDocument;
 

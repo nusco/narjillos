@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
  * Connects with other BodyParts in a tree. Also moves, thanks to the calculateAngleToParent()
  * abstract method.
  */
-public strictfp abstract class Organ extends BodyPart {
+public abstract class Organ extends BodyPart {
 
 	private final Nerve nerve;
 	private transient Organ parent;

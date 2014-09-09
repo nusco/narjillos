@@ -20,7 +20,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * 
  * translation_energy = mass * linear_velocity^2 / 2;
  */
-public strictfp class TranslationalForceField implements ForceField {
+public class TranslationalForceField implements ForceField {
 
 	private final double bodyMass;
 	private final List<Vector> linearMomenta = new LinkedList<>();

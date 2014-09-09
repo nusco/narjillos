@@ -4,7 +4,7 @@ import org.nusco.narjillos.creature.body.BodySegment;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.Chromosome;
 
-strictfp class BodySegmentBuilder extends OrganBuilder {
+class BodySegmentBuilder extends OrganBuilder {
 
 	public BodySegmentBuilder(Chromosome chromosome) {
 		super(chromosome);

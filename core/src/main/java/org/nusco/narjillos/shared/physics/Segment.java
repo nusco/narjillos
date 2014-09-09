@@ -3,7 +3,7 @@ package org.nusco.narjillos.shared.physics;
 /**
  * A vector that has a specific origin in the plane.
  */
-public strictfp class Segment {
+public class Segment {
 
 	private final Vector startPoint;
 	private final Vector vector;

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 /**
  * Outputs the same signal it receives as an input, delayed by a given number of ticks.
  */
-public strictfp class DelayNerve implements Nerve {
+public class DelayNerve implements Nerve {
 
 	private final int delay;
 	private final LinkedList<Double> buffer = new LinkedList<>();

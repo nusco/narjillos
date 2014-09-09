@@ -1,6 +1,6 @@
 package org.nusco.narjillos.shared.physics;
 
-public strictfp class Angle {
+public class Angle {
 
 	public static double normalize(double angle) {
 		if(angle < -180)

@@ -3,7 +3,7 @@ package org.nusco.narjillos.embryogenesis;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-strictfp abstract class OrganBuilder {
+abstract class OrganBuilder {
 
 	private final Chromosome chromosome;
 

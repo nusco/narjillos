@@ -4,7 +4,7 @@ import org.nusco.narjillos.creature.body.pns.Nerve;
 
 import com.google.gson.JsonParseException;
 
-strictfp class NerveAdapter extends HierarchyAdapter<Nerve> {
+class NerveAdapter extends HierarchyAdapter<Nerve> {
 
 	private static final String NERVE_PACKAGE = Nerve.class.getPackage().getName();
 

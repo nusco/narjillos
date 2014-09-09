@@ -5,7 +5,7 @@ import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public strictfp class Head extends Organ {
+public class Head extends Organ {
 
 	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
 

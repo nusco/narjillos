@@ -3,7 +3,7 @@ package org.nusco.narjillos.embryogenesis;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.genomics.Chromosome;
 
-strictfp class HeadBuilder extends OrganBuilder {
+class HeadBuilder extends OrganBuilder {
 
 	public HeadBuilder(Chromosome chromosome) {
 		super(chromosome);

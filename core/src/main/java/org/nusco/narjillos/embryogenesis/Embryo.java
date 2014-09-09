@@ -9,7 +9,7 @@ import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNAParser;
 
-strictfp public class Embryo {
+public class Embryo {
 
 	private final DNA genes;
 

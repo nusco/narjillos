@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.things.Thing;
 /**
  * Partitioned space for fast neighbor searching, collision detection, etc.
  */
-public strictfp class Space {
+public class Space {
 
 	private static int AREAS_PER_EDGE = 100;
 

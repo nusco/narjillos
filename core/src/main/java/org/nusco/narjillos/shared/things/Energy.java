@@ -1,6 +1,6 @@
 package org.nusco.narjillos.shared.things;
 
-public strictfp class Energy {
+public class Energy {
 	static final double MAX_ENERGY_TO_INITIAL_ENERGY = 5;
 
 	private final double initialValue;

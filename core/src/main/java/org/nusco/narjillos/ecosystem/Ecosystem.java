@@ -22,7 +22,7 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
  * 
  * Can find things and detect collisions.
  */
-public strictfp class Ecosystem {
+public class Ecosystem {
 
 	private static final double COLLISION_DISTANCE = 30;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;

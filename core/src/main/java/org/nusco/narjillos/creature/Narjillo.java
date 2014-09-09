@@ -13,7 +13,7 @@ import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-public strictfp class Narjillo implements Thing {
+public class Narjillo implements Thing {
 
 	static final double MAX_LIFESPAN = 50_000;
 	

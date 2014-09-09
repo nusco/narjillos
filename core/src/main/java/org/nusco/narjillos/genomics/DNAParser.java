@@ -1,6 +1,6 @@
 package org.nusco.narjillos.genomics;
 
-public strictfp class DNAParser {
+public class DNAParser {
 	
 	private final Integer[] genes;
 	private int indexInGenes = 0;

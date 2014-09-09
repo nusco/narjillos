@@ -16,7 +16,7 @@ import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
-public strictfp class Lab {
+public class Lab {
 
 	private static final int PARSE_INTERVAL = 10000;
 	private static boolean persistent = false;

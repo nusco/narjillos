@@ -9,7 +9,7 @@ package org.nusco.narjillos.creature.body.pns;
  * an organic-like motion, where organs move more slower in one direction and
  * quicker in the other.
  */
-public strictfp class WaveNerve implements Nerve {
+public class WaveNerve implements Nerve {
 
 	private static final double BEAT_RATIO = 2;
 

@@ -6,7 +6,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 /**
  * This interface's implementors contain most of the physics engine.
  */
-public strictfp interface ForceField {
+public interface ForceField {
 
 	public static final double ENERGY_SCALE = 1.0 / 75_000_000_000L;
 

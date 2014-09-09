@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-public strictfp class DNA {
+public class DNA {
 
 	public static final double MUTATION_RATE = 0.03;
 	private static final int GENE_MUTATION_RANGE = 30;

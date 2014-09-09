@@ -123,15 +123,19 @@ public strictfp class Body {
 	}
 
 	private void tick_step1_updateAngles(Vector targetDirection) {
-		double angleToTarget;
-		try {
-			Vector mainAxis = getHead().getMainAxis();
-			angleToTarget = mainAxis.getAngleWith(targetDirection);
-		} catch (ZeroVectorException e) {
-			return;
-		}
+		double angleToTarget = getAngleTo(targetDirection);
 		
 		getHead().recursivelyUpdateAngleToParent(0, angleToTarget);
+	}
+
+	private double getAngleTo(Vector direction) {
+		if (direction.equals(Vector.ZERO))
+			return 0;
+		try {
+			return getHead().getMainAxis().getAngleWith(direction);
+		} catch (ZeroVectorException e) {
+			throw new RuntimeException(e); // should never happen
+		}
 	}
 
 	private double tick_step2_rotate(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {

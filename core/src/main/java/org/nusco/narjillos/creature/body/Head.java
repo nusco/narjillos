@@ -3,7 +3,6 @@ package org.nusco.narjillos.creature.body;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public strictfp class Head extends Organ {
@@ -63,8 +62,8 @@ public strictfp class Head extends Organ {
 	public double getMetabolicRate() {
 		return metabolicRate;
 	}
-
-	Vector getMainAxis() throws ZeroVectorException {
-		return getVector().normalize(1).invert();
+	
+	public Vector getMainAxis() {
+		return Vector.polar(getAbsoluteAngle(), 1).invert();
 	}
 }

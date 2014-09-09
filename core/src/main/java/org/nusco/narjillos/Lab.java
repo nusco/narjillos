@@ -166,12 +166,12 @@ public class Lab {
 	}
 
 	private GenePool readGenePoolFromFile(String file) {
-		Path filePath = Paths.get(file + ".gep");
+		Path filePath = Paths.get(file + ".gpl");
 		if (!Files.exists(filePath)) {
-			System.out.println("Warning: no .gep file found. Continuing with empty genepool.");
+			System.out.println("Warning: no .gpl file found. Continuing with empty genepool.");
 			return new GenePool();
 		}
-		return JSON.fromJson(read(file + ".gep"), GenePool.class);
+		return JSON.fromJson(read(file + ".gpl"), GenePool.class);
 	}
 
 	private String read(String file) {
@@ -190,7 +190,7 @@ public class Lab {
 	}
 
 	private void writeGenePoolToFile() {
-		String fileName = experiment.getId() + ".gep";
+		String fileName = experiment.getId() + ".gpl";
 		String content = JSON.toJson(genePool, GenePool.class);
 		writeToFileSafely(fileName, content);
 	}

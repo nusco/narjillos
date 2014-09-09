@@ -7,16 +7,12 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Remove "crazy rotation" effect °°°
   (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
-* Fix "angle trembling" problem °°°
-  (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250})
-* Remove "tail wiggling dog" effect (probably requires conservation of MoI during update in vacuum) °°
-  (see {163_180_006_231_095_236_202}{011_235_181_210_129_134_250} for a good case study after fixing the previous issue)
-* Watchdog for excessive speed (results in warning) °°
+* Watchdog for excessive speed (results in warning) °
 * Smooth, inertial targeting
 
 ###Speed Demon
 
-* Check host system and issue warnings if running an experiment with different floatpoint precision °
+* Optimize system after last update of the physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
 
@@ -46,7 +42,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
+* Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp) °
 * Dump isolated narjillos to file (instead of the console) °
+* Check git commit on experiment startup °
 * Lock on single narjillo °
 * Real arguments parsing (use --no-persistence together with other switches)
 * Zipped experiment files

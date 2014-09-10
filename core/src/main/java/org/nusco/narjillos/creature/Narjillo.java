@@ -23,14 +23,14 @@ public class Narjillo implements Thing {
 	private Energy energy;
 	
 	public Narjillo(DNA genes, Body body, Vector position) {
-		this(genes, body, position, body.getMass());
+		this(genes, body, position, body.getMass() / 2);
 	}
 
 	private Narjillo(DNA genes, Body body, Vector position, double initialEnergy) {
 		this.body = body;
 		body.teleportTo(position);
 		this.dna = genes;
-		energy = new Energy(body.getMass(), MAX_LIFESPAN);
+		energy = new Energy(initialEnergy, MAX_LIFESPAN);
 	}
 
 	public DNA getDNA() {

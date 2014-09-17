@@ -86,6 +86,10 @@ A few advanced uses in case you really get serious with this program:
 
 * Experiments are deterministic. Each experiment has a name composed of the current git commit (the revision of Narjillos that you're using), plus a random seed. Experiments with the same identifier will give exactly the same results over time.
 
+* If you run a very long experiment, DNA ancestry tracking might consume your available memory. In that case, run you experiment with additional JVM arguments to increase memory. For example:
+
+    experiment f818449-521468119.exp -Xmx2048M -Xms2048M
+
 ## Goal
 
 The ultimate goal of Narjillos is to trigger an _evolutionary arms race_: two or more distinct "species" of creatures becoming more and more complex by leapfrogging over each other.

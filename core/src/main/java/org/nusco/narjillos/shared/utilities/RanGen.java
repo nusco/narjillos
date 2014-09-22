@@ -32,7 +32,7 @@ public class RanGen {
 	}
 
 	public int nextByte() {
-		return Math.abs(nextInt()) % 255;
+		return Math.abs(nextInt()) % 256;
 	}
 
 	public long getSeed() {

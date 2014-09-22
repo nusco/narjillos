@@ -28,6 +28,11 @@ public class GenePool implements DNAObserver {
 		DNA current = dna;
 		while (current != null) {
 			result.add(current);
+
+			// this can happen in very unlucky cases of file contention
+			if (!childrenToParents.containsKey(current))
+				throw new RuntimeException("Inconsistent ancestry - cannot find parent of " + current.getId());
+
 			current = childrenToParents.get(current);
 		}
 

@@ -65,12 +65,30 @@ public class Lab {
 		if (ticks % PARSE_INTERVAL != 0)
 			return;
 
-		if (persistent) {
-			writeExperimentToFile();
-			writeGenePoolToFile();
-		}
+		if (persistent)
+			writeStatusFiles();
 
 		System.out.println(getStatusString(ticks));
+	}
+
+	private void writeStatusFiles() {
+		String experimentFileName = experiment.getId() + ".exp";
+		String tempExperimentFileName = experimentFileName + ".tmp";
+		
+		String ancestryFileName = experiment.getId() + ".gpl";
+		String tempAncestryFileName = ancestryFileName + ".tmp";
+
+		try {
+			writeToFile(tempExperimentFileName, JSON.toJson(experiment, Experiment.class));
+			writeToFile(tempAncestryFileName, JSON.toJson(genePool, GenePool.class));
+
+			// do this quickly to minimize the chances of getting
+			// the two files misaligned
+			moveFile(tempExperimentFileName, experimentFileName);
+			moveFile(tempAncestryFileName, ancestryFileName);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private String getHeadersString() {
@@ -183,29 +201,6 @@ public class Lab {
 		}
 	}
 
-	private void writeExperimentToFile() {
-		String fileName = experiment.getId() + ".exp";
-		String content = JSON.toJson(experiment, Experiment.class);
-		writeToFileSafely(fileName, content);
-	}
-
-	private void writeGenePoolToFile() {
-		String fileName = experiment.getId() + ".gpl";
-		String content = JSON.toJson(genePool, GenePool.class);
-		writeToFileSafely(fileName, content);
-	}
-
-	private void writeToFileSafely(String fileName, String content) {
-		try {
-			String tempFileName = fileName + ".tmp";
-
-			writeToFile(tempFileName, content);
-			moveFile(tempFileName, fileName);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	private void moveFile(String source, String destination) throws IOException {
 		Path filePath = Paths.get(destination);
 		if (Files.exists(filePath))
@@ -228,7 +223,6 @@ public class Lab {
 	// experiment_file>]
 	public static void main(String... args) {
 		Lab lab = new Lab(args);
-		while (lab.tick())
-			;
+		while (lab.tick());
 	}
 }

@@ -24,18 +24,15 @@ public class GenePool implements DNAObserver {
 
 	public List<DNA> getAncestry(DNA dna) {
 		LinkedList<DNA> result = new LinkedList<>();
-		result.add(dna);
-		collectAncestors(result, dna);
+
+		DNA current = dna;
+		while (current != null) {
+			result.add(current);
+			current = childrenToParents.get(current);
+		}
+
 		Collections.reverse(result);
 		return result;
-	}
-
-	private void collectAncestors(LinkedList<DNA> collector, DNA dna) {
-		DNA parent = childrenToParents.get(dna);
-		if (parent == null)
-			return;
-		collector.add(parent);
-		collectAncestors(collector, parent);
 	}
 
 	public DNA getMostSuccessfulDNA() {

@@ -20,7 +20,7 @@ public class ViewModeTest {
 		viewMode.toggleLight();
 		assertEquals(Speed.HIGH, viewMode.getSpeed());
 
-		viewMode.shiftSpeed();
+		viewMode.toggleLight();
 		
 		assertEquals(Speed.REALTIME, viewMode.getSpeed());
 	}

@@ -77,7 +77,7 @@ public class GenePoolTest {
 	}
 	
 	@Test
-	public void neverRemovesDNAFromTheParentToChildMap() {
+	public void neverRemovesDNAFromHistory() {
 		RanGen ranGen = new RanGen(42);
 		for (int i = 0; i < 100; i++) {
 			DNA dna = DNA.random(ranGen);
@@ -85,7 +85,7 @@ public class GenePoolTest {
 				dna.removeFromPool();
 		}
 		
-		assertEquals(50, genePool.getCurrentPool().size());
-		assertEquals(100, genePool.getChildrenToParents().size());
+		assertEquals(50, genePool.getCurrentPoolSize());
+		assertEquals(100, genePool.getHistoricalPoolSize());
 	}
 }

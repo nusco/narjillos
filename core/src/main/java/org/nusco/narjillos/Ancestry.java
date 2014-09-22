@@ -22,8 +22,8 @@ public class Ancestry {
 
 		System.out.println(">Deserializing gene pool from JSON...");
 		GenePool genePool = JSON.fromJson(json, GenePool.class);
-		System.out.println("  > Current gene pool size: " + genePool.getCurrentPool().size());
-		System.out.println("  > Historical gene pool size: " + genePool.getChildrenToParents().size());
+		System.out.println("  > Current gene pool size: " + genePool.getCurrentPoolSize());
+		System.out.println("  > Historical gene pool size: " + genePool.getHistoricalPoolSize());
 
 		System.out.println(">Identifying most successful DNA...");
 		DNA mostSuccessfulDNA = genePool.getMostSuccessfulDNA();

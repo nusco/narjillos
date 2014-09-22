@@ -8,32 +8,37 @@ import java.util.Map;
 
 public class GenePool implements DNAObserver {
 
-	private Map<DNA, DNA> childrenToParents = new LinkedHashMap<>();
-	private List<DNA> currentPool = new LinkedList<>();
+	private Map<Long, DNA> dnaById = new LinkedHashMap<>();
+	private List<Long> currentPool = new LinkedList<>();
+	private Map<Long, Long> childrenToParents = new LinkedHashMap<>();
 
 	@Override
 	public void created(DNA newDNA, DNA parent) {
-		childrenToParents.put(newDNA, parent);
-		currentPool.add(newDNA);
+		dnaById.put(newDNA.getId(), newDNA);
+		currentPool.add(newDNA.getId());
+		if (parent == null)
+			childrenToParents.put(newDNA.getId(), 0l);
+		else
+			childrenToParents.put(newDNA.getId(), parent.getId());
 	}
 
 	@Override
 	public void removed(DNA dna) {
-		currentPool.remove(dna);
+		currentPool.remove(dna.getId());
 	}
 
 	public List<DNA> getAncestry(DNA dna) {
 		LinkedList<DNA> result = new LinkedList<>();
 
-		DNA current = dna;
-		while (current != null) {
-			result.add(current);
+		Long currentDnaId = dna.getId();
+		while (currentDnaId != 0) {
+			result.add(dnaById.get(currentDnaId));
 
 			// this can happen in very unlucky cases of file contention
-			if (!childrenToParents.containsKey(current))
-				throw new RuntimeException("Inconsistent ancestry - cannot find parent of " + current.getId());
+			if (!childrenToParents.containsKey(currentDnaId))
+				throw new RuntimeException("Inconsistent ancestry - cannot find parent of DNA " + currentDnaId);
 
-			current = childrenToParents.get(current);
+			currentDnaId = childrenToParents.get(currentDnaId);
 		}
 
 		Collections.reverse(result);
@@ -43,7 +48,8 @@ public class GenePool implements DNAObserver {
 	public DNA getMostSuccessfulDNA() {
 		DNA result = null;
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
-		for (DNA dna : currentPool) {
+		for (Long dnaId : currentPool) {
+			DNA dna = dnaById.get(dnaId);
 			int currentLevenshteinDistance = totalLevenshteinDistanceFromOthers(dna);
 			if (currentLevenshteinDistance < lowestLevenshteinDistance) {
 				result = dna;
@@ -55,17 +61,23 @@ public class GenePool implements DNAObserver {
 
 	private int totalLevenshteinDistanceFromOthers(DNA dna) {
 		int result = 0;
-		for (DNA otherDNA : currentPool)
+		for (Long otherDNAId : currentPool) {
+			DNA otherDNA = dnaById.get(otherDNAId);
 			if (!otherDNA.equals(dna))
 				result += dna.getLevenshteinDistanceFrom(otherDNA);
+		}
 		return result;
 	}
 
-	public Map<DNA, DNA> getChildrenToParents() {
+	public Map<Long, Long> getChildrenToParents() {
 		return childrenToParents;
 	}
-	
-	public List<DNA> getCurrentPool() {
-		return currentPool;
+
+	public int getCurrentPoolSize() {
+		return currentPool.size();
+	}
+
+	public int getHistoricalPoolSize() {
+		return dnaById.size();
 	}
 }

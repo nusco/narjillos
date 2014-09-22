@@ -7,8 +7,8 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class DNA {
 
-	public static final double MUTATION_RATE = 0.03;
-	private static final int GENE_MUTATION_RANGE = 30;
+	public static final double MUTATION_RATE = 0.05;
+	private static final int GENE_MUTATION_RANGE = 15;
 	private static DNAObserver observer = DNAObserver.NULL;
 	
 	private static long serial = 0;

@@ -28,12 +28,16 @@ public class Experiment {
 		id = gitCommit + "-" + seed;
 		if (dna == null)
 			System.out.println("Experiment " + id);
-		lastRegisteredRunningTime = System.currentTimeMillis();
+		timeStamp();
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		populate(ecosystem, dna);
 	}
 
+	public final void timeStamp() {
+		lastRegisteredRunningTime = System.currentTimeMillis();
+	}
+	
 	public synchronized String getId() {
 		return id;
 	}

@@ -180,7 +180,9 @@ public class Lab {
 	}
 
 	private Experiment readExperimentFromFile(String file) {
-		return JSON.fromJson(read(file + ".exp"), Experiment.class);
+		Experiment result = JSON.fromJson(read(file + ".exp"), Experiment.class);
+		result.timeStamp();
+		return result;
 	}
 
 	private GenePool readGenePoolFromFile(String file) {

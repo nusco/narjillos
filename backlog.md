@@ -42,7 +42,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Fix bug with experiment running time °°
 * Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp) °
 * Dump isolated narjillos to file (instead of the console) °
 * Check git commit on experiment startup °

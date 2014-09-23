@@ -9,6 +9,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
   (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
 * Watchdog for excessive speed (results in warning) °
 * Smooth, inertial targeting
+* Additional cost for high metabolic rate?
 
 ###Speed Demon
 
@@ -24,11 +25,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Genetist
 
-* Ancestry browser °°
+* Recursive body plan °°°
 * Find a good way to deal with atrophy °°
+* Ancestry browser °°
 * DNA diff during ancestry analysis °
 * Separate RGB color genes
-* Recursive body plan (creates multiple identical segments)
 * Whole-body size gene
 
 ###Etologist
@@ -37,8 +38,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °
 * Distance of firing is determined by genes °
-* Narjillos spend energy to reproduce
-* Narjillos decide how much energy to give to descendants
 
 ###Lab Technician
 
@@ -47,7 +46,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Check git commit on experiment startup °
 * Lock on single narjillo °
 * Real arguments parsing (use --no-persistence together with other switches)
-* Zipped experiment files
+* Zipped persistence files
 * View narjillo stats (age, energy, times eaten...)
 * Make food visible in normal view
 * Make food visible in infrared view
@@ -66,6 +65,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Narjillos eat each other
 * "Fears" gene
 * "Wants to eat" gene
+* Obstacles and reactive sense system
 
 ###Artist
 
@@ -73,6 +73,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Light on/off visual and sound effects °
 * Better death animation (right now the bending is not visible) °
 * Fade out mouth/eye during death °
+* Smoother contours when zooming in infrared mode
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)
 
 ##Neurologist

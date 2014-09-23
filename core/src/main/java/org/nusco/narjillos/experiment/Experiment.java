@@ -18,7 +18,7 @@ public class Experiment {
 	private final RanGen ranGen;
 	
 	private long totalRunningTime = 0;
-	private long lastRegisteredRunningTime;
+	private transient long lastRegisteredRunningTime;
 
 	public Experiment(String gitCommit, long seed) {
 		this(gitCommit, seed, null);

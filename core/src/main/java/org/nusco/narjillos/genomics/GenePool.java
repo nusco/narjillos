@@ -34,7 +34,9 @@ public class GenePool implements DNAObserver {
 		while (currentDnaId != 0) {
 			result.add(dnaById.get(currentDnaId));
 
-			// this can happen in very unlucky cases of file contention
+			// this can happen in very unlucky cases when the
+			// genepool file and the experiment file go out
+			// of synch
 			if (!childrenToParents.containsKey(currentDnaId))
 				throw new RuntimeException("Inconsistent ancestry - cannot find parent of DNA " + currentDnaId);
 

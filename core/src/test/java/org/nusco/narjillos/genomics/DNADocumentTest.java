@@ -42,12 +42,12 @@ public class DNADocumentTest {
 		assertArrayEquals(new Integer[] {1, 0, 255}, dnaDocument.toGenes());
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void throwsAnExceptionIfNoLineBeginsWithANumber() {
+	@Test
+	public void returnsTheZeroDNAIfNoLineBeginsWithANumber() {
 		String dnaString = 	"comment\n";
 		DNADocument dnaDocument = new DNADocument(dnaString);
 
-		assertArrayEquals(new Integer[0], dnaDocument.toGenes());
+		assertArrayEquals(new Integer[] {0}, dnaDocument.toGenes());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

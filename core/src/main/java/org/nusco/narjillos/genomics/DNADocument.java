@@ -18,7 +18,7 @@ class DNADocument {
 			if (cleanedUpLine.matches("_*\\d.*"))
 				return parseDNAString(cleanedUpLine);
 		}
-		throw new IllegalArgumentException("Illegal DNA syntax: no genes found.");
+		return new Integer[] {0};
 	}
 
 	private String stripBraces(String line) {

@@ -38,12 +38,15 @@ public class DNAParserTest {
 		DNA dna = new DNA(genes);
 		DNAParser parser = new DNAParser(dna);
 		
-		assertEquals(new Chromosome(new int[]{1, 2, 3, 0, 0, 0}), parser.nextChromosome());
+		assertEquals(new Chromosome(new int[]{1, 2, 3, 0, 0, 0, 0}), parser.nextChromosome());
 		assertNull(parser.nextChromosome());
 	}
 
-	@Test(expected=RuntimeException.class)
-	public void throwsAnExceptionIfTheDNASequenceIsEmpty() {
-		new DNA("{}");
+	public void alwaysReturnsAtLeastOneChromosome() {
+		DNA dna = new DNA("{}");
+		DNAParser parser = new DNAParser(dna);
+		
+		assertEquals(new Chromosome(new int[]{0, 0, 0, 0, 0, 0, 0}), parser.nextChromosome());
+		assertNull(parser.nextChromosome());
 	}
 }

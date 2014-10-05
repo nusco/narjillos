@@ -47,9 +47,11 @@ public class DNATest {
 		assertEquals("{001_002_003_000_000_000_000_000}", dna.toString());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	public void alwaysContainsAtLeastOneGene() {
-		new DNA("{}");
+	@Test
+	public void isNeverEmpty() {
+		DNA dna = new DNA("{}");
+		
+		assertEquals("{000_000_000_000_000_000_000_000}", dna.toString());
 	}
 
 	@Test

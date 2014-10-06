@@ -12,7 +12,7 @@ public class BodyPlanTest {
 
 	@Test
 	public void executesChromosomesInASequence() {
-		DNA dna = new DNA("{0_100_0_0_0_0_0_0}" + "{0_101_0_0_0_0_0_0}" + "{0_102_0_0_0_0_0_0}");
+		DNA dna = new DNA("{0_100_0_0_0_0_0_0_0}" + "{0_101_0_0_0_0_0_0_0}" + "{0_102_0_0_0_0_0_0_0}");
 		Body body = new Embryo(dna).develop();
 		
 		Organ organ1 = body.getHead();
@@ -28,4 +28,9 @@ public class BodyPlanTest {
 		assertTrue(organ3.getChildren().isEmpty());
 	}
 
+	@Test
+	public void repeatsSegments() {
+		DNA dna = new DNA("{0_100_0_0_0_0_0_0_0}" + "{0_101_0_0_0_0_0_0_0}" + "{0_102_0_0_0_0_0_0_0}");
+		// TODO
+	}
 }

@@ -17,7 +17,7 @@ abstract class OrganBuilder {
 	
 	int getLength() {
 		final int ATROPHY_LENGTH = 29;
-		return getChromosome().getGene(Gene.LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(1);
+		return getChromosome().getGene(Gene.LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(Gene.LENGTH);
 	}
 
 	int getThickness() {
@@ -26,6 +26,6 @@ abstract class OrganBuilder {
 	}
 	
 	ColorByte getHue() {
-		return new ColorByte(getChromosome().getGene(Gene.PERCENT_ENERGY_TO_CHILDREN_OR_HUE));
+		return new ColorByte(getChromosome().getGene(Gene.HUE));
 	}
 }

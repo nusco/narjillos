@@ -15,7 +15,7 @@ class HeadBuilder extends OrganBuilder {
 	}
 
 	public double getPercentEnergyToChildren() {
-		return (getChromosome().getGene(Gene.PERCENT_ENERGY_TO_CHILDREN_OR_HUE) + 1) / 256.0;
+		return (getChromosome().getGene(Gene.PERCENT_ENERGY_TO_CHILDREN_OR_AMPLITUDE) + 1) / 256.0;
 	}
 
 	public Head build() {

@@ -23,7 +23,7 @@ class TwinOrgansBuilder {
 	}
 
 	private int getBodyShapeGene(Chromosome chromosome) {
-		return chromosome.getGene(0);
+		return chromosome.getGene(Gene.UNUSED_1);
 	}
 
 	public List<Organ> buildChildren(Organ parent) {

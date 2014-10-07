@@ -45,7 +45,6 @@ public abstract class BodyPart {
 		return thickness;
 	}
 
-	// expressed in [millimeters]
 	public double getMass() {
 		return mass;
 	}

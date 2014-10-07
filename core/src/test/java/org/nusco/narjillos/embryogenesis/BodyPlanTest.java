@@ -12,7 +12,7 @@ public class BodyPlanTest {
 
 	@Test
 	public void executesChromosomesInASequence() {
-		DNA dna = new DNA("{0_100_0_0_0_0_0_0_0}" + "{0_101_0_0_0_0_0_0_0}" + "{0_102_0_0_0_0_0_0_0}");
+		DNA dna = new DNA("{0_0_100_0_0_0_0_0_0}" + "{0_0_101_0_0_0_0_0_0}" + "{0_0_102_0_0_0_0_0_0}");
 		Body body = new Embryo(dna).develop();
 		
 		Organ organ1 = body.getHead();
@@ -30,6 +30,9 @@ public class BodyPlanTest {
 
 	@Test
 	public void repeatsSegments() {
+		final int loopEndByte = 0x00;
+		final int loopFlowByte = 0x11;
+		final int loopCyclesByte = 3;
 		DNA dna = new DNA("{0_100_0_0_0_0_0_0_0}" + "{0_101_0_0_0_0_0_0_0}" + "{0_102_0_0_0_0_0_0_0}");
 		// TODO
 	}

@@ -17,10 +17,10 @@ public class TwinOrgansBuilderTest {
 	private static final int MIRRORING = 1;
 	private static final int NOT_MIRRORING = 0;
 
-	Chromosome notMirroring1 = new Chromosome(NOT_MIRRORING, 60, 70, 80, 90, 100);
-	Chromosome notMirroring2 = new Chromosome(NOT_MIRRORING, 61, 71, 81, 91, 101);
-	Chromosome mirroring1 = new Chromosome(MIRRORING, 62, 72, 82, 92, 102);
-	Chromosome mirroring2 = new Chromosome(MIRRORING, 63, 73, 83, 93, 103);
+	Chromosome notMirroring1 = new Chromosome(NOT_MIRRORING, 50, 60, 70, 80, 90, 100, 110, 120);
+	Chromosome notMirroring2 = new Chromosome(NOT_MIRRORING, 51, 61, 71, 81, 91, 101, 111, 121);
+	Chromosome mirroring1 = new Chromosome(MIRRORING, 52, 62, 72, 82, 92, 102, 112, 122);
+	Chromosome mirroring2 = new Chromosome(MIRRORING, 62, 63, 73, 83, 93, 103, 113, 123);
 
 	Organ parent = new Head(10, 10, new ColorByte(0), 10, 0.5);
 

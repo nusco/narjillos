@@ -22,7 +22,7 @@ class BodySegmentBuilder extends OrganBuilder {
 
 	int getAmplitude() {
 		final double MAX_AMPLITUDE = 80;
-		return (int)(getChromosome().getGene(Gene.AMPLITUDE) * (MAX_AMPLITUDE / 256)) + 1;
+		return (int)(getChromosome().getGene(Gene.PERCENT_ENERGY_TO_CHILDREN_OR_AMPLITUDE) * (MAX_AMPLITUDE / 256)) + 1;
 	}
 
 	public int getSkewing() {

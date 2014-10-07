@@ -59,4 +59,9 @@ public class ColorByte {
 	public int hashCode() {
 		return colorByte;
 	}
+	
+	@Override
+	public String toString() {
+		return "ColorByte(" + colorByte + ")";
+	}
 }

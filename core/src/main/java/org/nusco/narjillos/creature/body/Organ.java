@@ -84,4 +84,32 @@ public abstract class Organ extends BodyPart {
 	}
 	
 	protected abstract double getMetabolicRate();
+	
+	public abstract int getId();
+	
+	@Override
+	public String toString() {
+		StringBuffer result = new StringBuffer();
+		result.append(Integer.toString(getId()));
+		
+		Organ[] children = getChildren().toArray(new Organ[0]);
+		if (children.length == 0)
+			return result.toString();
+		
+		result.append("-");
+		
+		if (children.length == 1) {
+			result.append(children[0]);
+			return result.toString();
+		}
+		
+		result.append("(");
+		for (int i = 0; i < children.length; i++) {
+			result.append(children[i].toString());
+			if (i < children.length - 1)
+				result.append(", ");
+		}
+		result.append(")");
+		return result.toString();
+	}
 }

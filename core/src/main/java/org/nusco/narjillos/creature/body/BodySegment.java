@@ -86,4 +86,9 @@ public class BodySegment extends Organ {
 			return Math.signum(result) * maxSkewingVelocity;
 		return result;
 	}
+
+	@Override
+	public int getId() {
+		return getLength();
+	}
 }

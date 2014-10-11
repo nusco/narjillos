@@ -24,7 +24,7 @@ public class Body {
 	private final double mass;
 	private transient List<BodyPart> bodyParts;
 	
-	public Body(Head head) {
+	public Body(Organ head) {
 		this.head = head;
 		this.mass = calculateTotalMass();
 	}
@@ -40,7 +40,7 @@ public class Body {
 	public List<BodyPart> getBodyParts() {
 		if (bodyParts == null) {
 			bodyParts = new ArrayList<>();
-			addWithChildren(bodyParts, getHead());
+			addWithChildren(bodyParts, head);
 		}
 		return bodyParts;
 	}
@@ -194,5 +194,10 @@ public class Body {
 		for (BodyPart organ : allOrgans)
 			result += organ.getMass();
 		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return head.toString();
 	}
 }

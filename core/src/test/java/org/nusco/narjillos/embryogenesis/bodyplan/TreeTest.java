@@ -7,7 +7,7 @@ import org.junit.Test;
 public class TreeTest {
 
 	@Test
-	public void executesContinueInstructions() {
+	public void executesContinues() {
 		TreeBuilder bodyPlan = new TreeBuilder(new OrganBuilder[] {
 				new MockOrganBuilder(1, Instruction.CONTINUE),
 				new MockOrganBuilder(2, Instruction.CONTINUE),
@@ -33,7 +33,7 @@ public class TreeTest {
 	}
 
 	@Test
-	public void executesBranchInstructions() {
+	public void executesBranches() {
 		TreeBuilder bodyPlan = new TreeBuilder(new OrganBuilder[] {
 				new MockOrganBuilder(1, Instruction.CONTINUE),
 				new MockOrganBuilder(2, Instruction.BRANCH),
@@ -79,7 +79,7 @@ public class TreeTest {
 	}
 
 	@Test
-	public void executeMirroringInstructions() {
+	public void executesMirroring() {
 		TreeBuilder bodyPlan = new TreeBuilder(new OrganBuilder[] {
 				new MockOrganBuilder(1, Instruction.MIRROR),
 				new MockOrganBuilder(2, Instruction.BRANCH),
@@ -90,6 +90,21 @@ public class TreeTest {
 		});
 
 		String expectedBodyPlan = "1-(2-(3, 4), ^2-(^3, ^4), 5-6)";
+		assertEquals(expectedBodyPlan, bodyPlan.buildTree().toString());
+	}
+
+	@Test
+	public void executesRecursiveMirroring() {
+		TreeBuilder bodyPlan = new TreeBuilder(new OrganBuilder[] {
+				new MockOrganBuilder(1, Instruction.MIRROR),
+				new MockOrganBuilder(2, Instruction.MIRROR),
+				new MockOrganBuilder(3, Instruction.STOP),
+				new MockOrganBuilder(4, Instruction.STOP),
+				new MockOrganBuilder(5, Instruction.STOP),
+				new MockOrganBuilder(6, Instruction.STOP),
+		});
+
+		String expectedBodyPlan = "1-(2-(3, ^3, 4), ^2-(^3, 3, ^4), 5)";
 		assertEquals(expectedBodyPlan, bodyPlan.buildTree().toString());
 	}
 }

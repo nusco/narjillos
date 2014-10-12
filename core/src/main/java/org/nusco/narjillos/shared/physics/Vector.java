@@ -10,6 +10,12 @@ public class Vector {
 	public final double x;
 	public final double y;
 
+	// cached fields (for performance)
+	private double angle = Double.NaN;
+	private double length = Double.NaN;
+	private Vector inverted = null;
+	private Vector normal = null;
+	
 	public static Vector polar(double degrees, double length) {
 		double sin = Math.sin(Math.toRadians(degrees));
 		double cos = Math.cos(Math.toRadians(degrees));
@@ -28,11 +34,15 @@ public class Vector {
 	public double getAngle() throws ZeroVectorException {
 		if (x == 0 && y == 0)
 			throw new ZeroVectorException();
-	    return Math.toDegrees(Math.atan2(y, x));
+		if (Double.isNaN(angle))
+			angle = Math.toDegrees(Math.atan2(y, x));
+		return angle;
 	}
 
 	public double getLength() {
-		return Math.sqrt(x * x + y * y);
+		if (Double.isNaN(length))
+			length = Math.sqrt(x * x + y * y);
+		return length;
 	}
 
 	public Vector plus(Vector other) {
@@ -48,7 +58,9 @@ public class Vector {
 	}
 
 	public Vector invert() {
-		return this.by(-1);
+		if (inverted == null)
+			inverted  = this.by(-1);
+		return inverted;
 	}
 
 	public Vector normalize(double length) throws ZeroVectorException {
@@ -56,7 +68,9 @@ public class Vector {
 	}
 
 	public Vector getNormal() throws ZeroVectorException {
-		return Vector.polar(getAngle() - 90, 1);
+		if (normal == null)
+			normal = Vector.polar(getAngle() - 90, 1);
+		return normal;
 	}
 
 	public Vector getProjectionOn(Vector other) throws ZeroVectorException {
@@ -64,6 +78,10 @@ public class Vector {
 		double relativeAngle = Math.toRadians(direction.getAngle() - getAngle());
 		double resultLength = Math.cos(relativeAngle) * getLength();
 		return Vector.polar(direction.getAngle(), resultLength);
+		// FIXME: use this (but check broken tests)
+//		double theta = Math.cos(getAngleWith(other));
+//		double resultLength = theta * getLength();
+//		return Vector.polar(other.getAngle(), resultLength);
 	}
 
 	private boolean pointsInSameDirectionAs(Vector other) throws ZeroVectorException {

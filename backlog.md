@@ -45,6 +45,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
+* Fix non-deterministic bug introduced after 2d81f4345 (check that's true) °°°
 * Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp) °
 * Dump isolated narjillos to file (instead of the console) °
 * Check git commit on experiment startup °

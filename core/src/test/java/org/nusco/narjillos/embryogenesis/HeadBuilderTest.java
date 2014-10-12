@@ -8,7 +8,7 @@ import org.nusco.narjillos.embryogenesis.HeadBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class HeadBuilderTest extends OrganBuilderTest {
+public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 
 	@Override
 	protected HeadBuilder createConcreteOrganBuilder(Chromosome chromosome) {

@@ -12,11 +12,11 @@ public class BodyPlan {
 		this.builders = builders;
 	}
 
-	public Organ buildOrganTree() {
-		return buildTree(null, getBuildersQueue(), 1);
+	public Organ buildBodyTree() {
+		return buildBodyTree(null, getBuildersQueue(), 1);
 	}
 
-	private Organ buildTree(Organ parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
+	private Organ buildBodyTree(Organ parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
 		if (buildersQueue.isEmpty())
 			return null;
 		
@@ -43,7 +43,7 @@ public class BodyPlan {
 	}
 
 	private void buildChild(Organ parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
-		Organ child = buildTree(parent, buildersQueue, sign);
+		Organ child = buildBodyTree(parent, buildersQueue, sign);
 		if (child != null)
 			parent.addChild(child);
 	}

@@ -32,6 +32,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Find a good way to deal with atrophy °°
 * Ancestry browser °°
 * DNA diff during ancestry analysis °
+* "Skip next" instruction in body plan °
 * Separate RGB color genes
 * Whole-body size gene
 

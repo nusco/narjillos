@@ -23,7 +23,7 @@ public class Embryo {
 		DNAParser parser = new DNAParser(genes);
 		List<OrganBuilder> organBuilders = getOrganBuilders(parser);
 		BodyPlan bodyPlan = new BodyPlan(organBuilders.toArray(new OrganBuilder[0]));
-		Organ head = bodyPlan.buildOrganTree();
+		Organ head = bodyPlan.buildBodyTree();
 		return new Body(head);
 	}
 

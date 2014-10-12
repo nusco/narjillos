@@ -10,7 +10,7 @@ import org.nusco.narjillos.embryogenesis.BodySegmentBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class BodySegmentBuilderTest extends OrganBuilderTest {
+public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 
 	@Override
 	protected BodySegmentBuilder createConcreteOrganBuilder(Chromosome chromosome) {

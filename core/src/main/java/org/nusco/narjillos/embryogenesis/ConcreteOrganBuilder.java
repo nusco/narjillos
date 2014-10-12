@@ -19,21 +19,21 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 	
 	int getLength() {
 		final int ATROPHY_LENGTH = 29;
-		return getChromosome().getGene(Gene.LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(Gene.LENGTH);
+		return getChromosome().getGene(CytogeneticLocation.LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(CytogeneticLocation.LENGTH);
 	}
 
 	int getThickness() {
 		final double MAX_THICKNESS = 50;
-		return (int)(getChromosome().getGene(Gene.THICKNESS) * (MAX_THICKNESS / 256)) + 1;
+		return (int)(getChromosome().getGene(CytogeneticLocation.THICKNESS) * (MAX_THICKNESS / 256)) + 1;
 	}
 	
 	ColorByte getHue() {
-		return new ColorByte(getChromosome().getGene(Gene.HUE));
+		return new ColorByte(getChromosome().getGene(CytogeneticLocation.HUE));
 	}
 
 	@Override
 	public Instruction getInstruction() {
-		int bodyPlan = getChromosome().getGene(Gene.BODY_PLAN) & 0b00000111;
+		int bodyPlan = getChromosome().getGene(CytogeneticLocation.BODY_PLAN) & 0b00000111;
 		if (bodyPlan == 0 || bodyPlan == 1)
 			return Instruction.CONTINUE;
 		if (bodyPlan == 2 || bodyPlan == 3)

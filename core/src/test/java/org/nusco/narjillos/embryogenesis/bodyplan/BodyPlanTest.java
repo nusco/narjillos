@@ -16,7 +16,7 @@ public class BodyPlanTest {
 		});
 
 		String expectedBodyPlan = "1-2-3-4";
-		assertEquals(expectedBodyPlan, bodyPlan.buildOrganTree().toString());
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
 
 	@Test
@@ -29,7 +29,7 @@ public class BodyPlanTest {
 		});
 
 		String expectedBodyPlan = "1-2-3";
-		assertEquals(expectedBodyPlan, bodyPlan.buildOrganTree().toString());
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class BodyPlanTest {
 		});
 
 		String expectedBodyPlan = "1-2-(3-4, 5-6)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildOrganTree().toString());
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class BodyPlanTest {
 		});
 
 		String expectedBodyPlan = "1-2-(3-4-(5, 6-7), 8-9)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildOrganTree().toString());
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class BodyPlanTest {
 		});
 
 		String expectedBodyPlan = "1-(2, 3)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildOrganTree().toString());
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class BodyPlanTest {
 		});
 
 		String expectedBodyPlan = "1-(2-(3, 4), ^2-(^3, ^4), 5-6)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildOrganTree().toString());
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
 
 	@Test
@@ -105,6 +105,6 @@ public class BodyPlanTest {
 		});
 
 		String expectedBodyPlan = "1-(2-(3, ^3, 4), ^2-(^3, 3, ^4), 5)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildOrganTree().toString());
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
 }

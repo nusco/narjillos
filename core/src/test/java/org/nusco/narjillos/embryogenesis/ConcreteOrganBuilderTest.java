@@ -7,7 +7,7 @@ import org.nusco.narjillos.embryogenesis.ConcreteOrganBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public abstract class OrganBuilderTest {
+public abstract class ConcreteOrganBuilderTest {
 
 	protected abstract ConcreteOrganBuilder createConcreteOrganBuilder(Chromosome chromosome);
 

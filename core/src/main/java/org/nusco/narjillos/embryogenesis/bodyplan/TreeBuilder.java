@@ -33,6 +33,8 @@ public class TreeBuilder {
 			break;
 		case STOP:
 			break;
+		case MIRROR:
+			break;
 		}
 		return result;
 	}

@@ -34,12 +34,12 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 	@Override
 	public Instruction getInstruction() {
 		int bodyPlan = getChromosome().getGene(Gene.BODY_PLAN) & 0b00000111;
-		if ((bodyPlan == 0b000) || (bodyPlan == 0b001))
-			return Instruction.STOP;
-		if ((bodyPlan == 0b010) || (bodyPlan == 0b011))
+		if (bodyPlan == 0 || bodyPlan == 1)
 			return Instruction.CONTINUE;
-		if ((bodyPlan == 0b100) || (bodyPlan == 0b101))
+		if (bodyPlan == 2 || bodyPlan == 3)
 			return Instruction.BRANCH;
-		return Instruction.MIRROR;
+		if (bodyPlan == 4)
+			return Instruction.MIRROR;
+		return Instruction.STOP;
 	}
 }

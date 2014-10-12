@@ -19,9 +19,9 @@ public class NarjilloTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		narjillo = new Narjillo(new DNA("{255_255_255_255_255_255_255_255}{255_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO);
+		narjillo = new Narjillo(new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO);
 		
-		DNA dna = new DNA("{255_255_255_255_255_255_255_255}{255_255_255_255_255_255_255_255}{255_255_255_255_255_255_255_255}{255_255_255_255_255_255_255_255}{255_255_255_255_255_255_255_255}");
+		DNA dna = new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}");
 		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO);
 	}
 	

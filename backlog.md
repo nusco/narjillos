@@ -5,14 +5,18 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Remove "crazy rotation" effect °° (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
+* Remove "crazy rotation" effect °°
+  (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
 * Watchdog for excessive speed (results in warning) °
+* Fix jerky movements for some large narjillos °°
+  (to check it, increase the number of random genes and the frequency of mirrors and branches)
 * Smooth, inertial targeting
-* Additional cost for high metabolic rate?
+* Additional cost for high metabolic rate
+  (to avoid the metabolic rate always increasing to the max)
 
 ###Speed Demon
 
-* Optimize system after last update of the physics engine °
+* Optimize physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
 
@@ -25,7 +29,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Genetist
 
 * Iterations in body plan °°°
-* Branches in body plan °°°
 * Find a good way to deal with atrophy °°
 * Ancestry browser °°
 * DNA diff during ancestry analysis °

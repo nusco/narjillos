@@ -40,9 +40,9 @@ class DNADocument {
 
 	public static String toString(DNA dna) {
 		StringBuffer result = new StringBuffer();
-		DNAParser parser = new DNAParser(dna);
+		DNAIterator iterator = new DNAIterator(dna);
 		Chromosome nextChromosome;
-		while ((nextChromosome = parser.nextChromosome()) != null)
+		while ((nextChromosome = iterator.nextChromosome()) != null)
 			result.append(nextChromosome.toString());
 		return result.toString();
 	}

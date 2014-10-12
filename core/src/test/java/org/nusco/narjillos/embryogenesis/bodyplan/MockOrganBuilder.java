@@ -5,15 +5,15 @@ import org.nusco.narjillos.creature.body.Organ;
 class MockOrganBuilder implements OrganBuilder {
 
 	private final int id;
-	private final Instruction instruction;
+	private final BodyPlanInstruction instruction;
 
-	public MockOrganBuilder(int id, Instruction instruction) {
+	public MockOrganBuilder(int id, BodyPlanInstruction instruction) {
 		this.id = id;
 		this.instruction = instruction;
 	}
 
 	@Override
-	public Instruction getInstruction() {
+	public BodyPlanInstruction getInstruction() {
 		return instruction;
 	}
 	

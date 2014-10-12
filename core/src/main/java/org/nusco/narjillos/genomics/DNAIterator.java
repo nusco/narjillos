@@ -1,11 +1,11 @@
 package org.nusco.narjillos.genomics;
 
-public class DNAParser {
+public class DNAIterator {
 	
 	private final Integer[] genes;
 	private int indexInGenes = 0;
 	
-	public DNAParser(DNA dna) {
+	public DNAIterator(DNA dna) {
 		if (dna.getGenes().length > 0)
 			genes = dna.getGenes();
 		else

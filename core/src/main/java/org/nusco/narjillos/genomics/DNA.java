@@ -66,9 +66,9 @@ public class DNA {
 	public DNA copy(RanGen ranGen) {
 		List<Integer[]> resultChromosomes = new LinkedList<>();
 
-		DNAParser parser = new DNAParser(this);
+		DNAIterator iterator = new DNAIterator(this);
 		Chromosome nextChromosome;
-		while ((nextChromosome = parser.nextChromosome()) != null) {
+		while ((nextChromosome = iterator.nextChromosome()) != null) {
 			// skip a chromosome every now and then
 			if (!isChromosomeMutation(ranGen))
 				resultChromosomes.add(copy(nextChromosome, ranGen));
@@ -125,7 +125,7 @@ public class DNA {
 	}
 
 	public static DNA random(RanGen ranGen) {
-		int size = Chromosome.SIZE * (Math.abs(ranGen.nextInt()) % 6 + 2);
+		int size = Chromosome.SIZE * (Math.abs(ranGen.nextInt()) % 5 + 2);
 		return random(size, ranGen);
 	}
 

@@ -13,36 +13,45 @@ public class TreeBuilder {
 	}
 
 	public Organ buildTree() {
-		return buildTree(null, getBuildersQueue());
+		return buildTree(null, getBuildersQueue(), 1);
 	}
 
-	private Organ buildTree(Organ parent, LinkedList<OrganBuilder> buildersQueue) {
+	private Organ buildTree(Organ parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
 		if (buildersQueue.isEmpty())
 			return null;
 		
 		OrganBuilder nextBuilder = buildersQueue.pop();
-		Organ result = nextBuilder.buildOrgan(parent);
+		Organ result = nextBuilder.buildOrgan(parent, sign);
 		
 		switch (nextBuilder.getInstruction()) {
-		case CONTINUE:
-			buildChild(result, buildersQueue);
-			break;
-		case BRANCH:
-			buildChild(result, buildersQueue);
-			buildChild(result, buildersQueue);
-			break;
 		case STOP:
 			break;
+		case CONTINUE:
+			buildChild(result, buildersQueue, sign);
+			break;
+		case BRANCH:
+			buildChild(result, buildersQueue, sign);
+			buildChild(result, buildersQueue, sign);
+			break;
 		case MIRROR:
+			buildChild(result, copyOf(buildersQueue), sign);
+			buildChild(result, buildersQueue, -sign);
+			buildChild(result, buildersQueue, sign);
 			break;
 		}
 		return result;
 	}
 
-	private void buildChild(Organ parent, LinkedList<OrganBuilder> buildersQueue) {
-		Organ child = buildTree(parent, buildersQueue);
+	private void buildChild(Organ parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
+		Organ child = buildTree(parent, buildersQueue, sign);
 		if (child != null)
 			parent.addChild(child);
+	}
+
+	private LinkedList<OrganBuilder> copyOf(LinkedList<OrganBuilder> queue) {
+		LinkedList<OrganBuilder> result = new LinkedList<OrganBuilder>();
+		result.addAll(queue);
+		return result;
 	}
 
 	private LinkedList<OrganBuilder> getBuildersQueue() {

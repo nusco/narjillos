@@ -66,9 +66,4 @@ public class Head extends Organ {
 	public Vector getMainAxis() {
 		return Vector.polar(getAbsoluteAngle(), 1).invert();
 	}
-
-	@Override
-	public int getId() {
-		return getLength();
-	}
 }

@@ -18,7 +18,7 @@ class MockOrganBuilder implements OrganBuilder {
 	}
 	
 	@Override
-	public Organ buildOrgan(Organ parent) {
-		return new MockOrgan(id, parent);
+	public Organ buildOrgan(Organ parent, int sign) {
+		return new MockOrgan(id, parent, sign);
 	}
 }

@@ -4,7 +4,7 @@ import org.nusco.narjillos.creature.body.BodySegment;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.Chromosome;
 
-class BodySegmentBuilder extends OrganBuilder {
+class BodySegmentBuilder extends ConcreteOrganBuilder {
 
 	public BodySegmentBuilder(Chromosome chromosome) {
 		super(chromosome);
@@ -33,7 +33,8 @@ class BodySegmentBuilder extends OrganBuilder {
 		return (int)((gene * ((maxAbsValue * 2 + 1) / 256)) - maxAbsValue);
 	}
 
-	public Organ build(Organ parent, int angleSign) {
-		return parent.addChild(new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(angleSign), getAmplitude(), getSkewing()));
+	@Override
+	public Organ buildOrgan(Organ parent, int sign) {
+		return parent.addChild(new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing()));
 	}
 }

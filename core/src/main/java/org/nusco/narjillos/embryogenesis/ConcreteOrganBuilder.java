@@ -1,13 +1,15 @@
 package org.nusco.narjillos.embryogenesis;
 
+import org.nusco.narjillos.embryogenesis.bodyplan.Instruction;
+import org.nusco.narjillos.embryogenesis.bodyplan.OrganBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-abstract class OrganBuilder {
+abstract class ConcreteOrganBuilder implements OrganBuilder {
 
 	private final Chromosome chromosome;
 
-	public OrganBuilder(Chromosome chromosome) {
+	public ConcreteOrganBuilder(Chromosome chromosome) {
 		this.chromosome = chromosome;
 	}
 
@@ -27,5 +29,17 @@ abstract class OrganBuilder {
 	
 	ColorByte getHue() {
 		return new ColorByte(getChromosome().getGene(Gene.HUE));
+	}
+
+	@Override
+	public Instruction getInstruction() {
+		int bodyPlan = getChromosome().getGene(Gene.BODY_PLAN) & 0b00000111;
+		if ((bodyPlan == 0b000) || (bodyPlan == 0b001))
+			return Instruction.STOP;
+		if ((bodyPlan == 0b010) || (bodyPlan == 0b011))
+			return Instruction.CONTINUE;
+		if ((bodyPlan == 0b100) || (bodyPlan == 0b101))
+			return Instruction.BRANCH;
+		return Instruction.MIRROR;
 	}
 }

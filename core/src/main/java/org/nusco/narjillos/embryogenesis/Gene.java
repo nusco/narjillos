@@ -1,7 +1,7 @@
 package org.nusco.narjillos.embryogenesis;
 
 interface Gene {
-	static final int UNUSED_1 = 0;
+	static final int BODY_PLAN = 0;
 	static final int UNUSED_2 = 1;
 	static final int LENGTH = 2;
 	static final int THICKNESS = 3;

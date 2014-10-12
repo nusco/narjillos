@@ -44,7 +44,7 @@ public class HeadBuilderTest extends OrganBuilderTest {
 
 		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, metabolicRateGene, amplitudeGene, angleToParentGene, skewingGene, hueGene);
 		HeadBuilder builder = createConcreteOrganBuilder(chromosome);
-		Head head = builder.build();
+		Head head = (Head)builder.buildOrgan(null, 0);
 		
 		assertEquals(40, head.getLength(), 0);
 		assertEquals(50, head.getThickness(), 0);

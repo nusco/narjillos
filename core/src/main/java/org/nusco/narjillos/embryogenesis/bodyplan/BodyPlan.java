@@ -4,15 +4,15 @@ import java.util.LinkedList;
 
 import org.nusco.narjillos.creature.body.Organ;
 
-public class TreeBuilder {
+public class BodyPlan {
 
 	private final OrganBuilder[] builders;
 
-	public TreeBuilder(OrganBuilder[] builders) {
+	public BodyPlan(OrganBuilder[] builders) {
 		this.builders = builders;
 	}
 
-	public Organ buildTree() {
+	public Organ buildOrganTree() {
 		return buildTree(null, getBuildersQueue(), 1);
 	}
 

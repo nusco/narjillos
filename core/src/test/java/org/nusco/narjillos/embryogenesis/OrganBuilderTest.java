@@ -3,13 +3,13 @@ package org.nusco.narjillos.embryogenesis;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.embryogenesis.OrganBuilder;
+import org.nusco.narjillos.embryogenesis.ConcreteOrganBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public abstract class OrganBuilderTest {
 
-	protected abstract OrganBuilder createConcreteOrganBuilder(Chromosome chromosome);
+	protected abstract ConcreteOrganBuilder createConcreteOrganBuilder(Chromosome chromosome);
 
 	@Test
 	public void decodesALengthBetween1And255() {

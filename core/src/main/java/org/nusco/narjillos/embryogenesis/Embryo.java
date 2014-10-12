@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.embryogenesis.bodyplan.BodyPlan;
+import org.nusco.narjillos.embryogenesis.bodyplan.OrganBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNAParser;
@@ -20,24 +21,21 @@ public class Embryo {
 	
 	public Body develop() {
 		DNAParser parser = new DNAParser(genes);
-		Head head = new HeadBuilder(parser.nextChromosome()).build();
-
-		List<Organ> organs = new LinkedList<>();
-		organs.add(head);
-		developRestOfBody(organs, parser);
-		
+		List<OrganBuilder> organBuilders = getOrganBuilders(parser);
+		BodyPlan bodyPlan = new BodyPlan(organBuilders.toArray(new OrganBuilder[0]));
+		Organ head = bodyPlan.buildOrganTree();
 		return new Body(head);
 	}
 
-	private void developRestOfBody(List<Organ> organs, DNAParser parser) {
-		Chromosome chromosome = parser.nextChromosome();
-		if (chromosome == null)
-			return;
-		List<Organ> children = new LinkedList<>();
-		for (Organ organ : organs) {
-			Organ child = new BodySegmentBuilder(chromosome).build(organ, +1);
-			children.add(child);
+	private List<OrganBuilder> getOrganBuilders(DNAParser parser) {
+		List<OrganBuilder> result = new LinkedList<>();
+		result.add(new HeadBuilder(parser.nextChromosome()));
+
+		while (true) {
+			Chromosome chromosome = parser.nextChromosome();
+			if (chromosome == null)
+				return result;
+			result.add(new BodySegmentBuilder(chromosome));
 		}
-		developRestOfBody(children, parser);
 	}
 }

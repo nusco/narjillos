@@ -1,9 +1,10 @@
 package org.nusco.narjillos.embryogenesis;
 
 import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.Chromosome;
 
-class HeadBuilder extends OrganBuilder {
+class HeadBuilder extends ConcreteOrganBuilder {
 
 	public HeadBuilder(Chromosome chromosome) {
 		super(chromosome);
@@ -18,7 +19,8 @@ class HeadBuilder extends OrganBuilder {
 		return (getChromosome().getGene(Gene.PERCENT_ENERGY_TO_CHILDREN_OR_AMPLITUDE) + 1) / 256.0;
 	}
 
-	public Head build() {
+	@Override
+	public Organ buildOrgan(Organ parent, int ignored) {
 		return new Head(getLength(), getThickness(), getHue(), getMetabolicRate(), getPercentEnergyToChildren());
 	}
 }

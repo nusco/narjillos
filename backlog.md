@@ -40,7 +40,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Separate RGB color genes
 * Whole-body size gene
 
-###Etologist
+###Ethologist
 
 * Genetically determined asymmetric skewing strategies °°
 * Eggs °

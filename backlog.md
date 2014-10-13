@@ -19,7 +19,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Speed Demon
 
 * Synchronize cuncurrent access in parallel ticking of narjillos °°°
-  (also double-check parallel code)
+  (also double-check parallel code and shutdown thread pool on exiting)
 * Optimize physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
@@ -42,6 +42,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Etologist
 
+* Genetically determined asymmetric skewing strategies °°
 * Eggs °
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °

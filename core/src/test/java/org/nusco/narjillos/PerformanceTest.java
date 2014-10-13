@@ -4,7 +4,7 @@ import org.nusco.narjillos.experiment.Experiment;
 
 public class PerformanceTest {
 
-	private final static int TICKS = 1000;
+	private final static int TICKS = 4000;
 
 	public static void main(String[] args) {
 		Experiment experiment = new Experiment("performance_test", 424242);

@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -41,7 +40,7 @@ public class Ecosystem {
 	private final Vector center;
 
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
-	private final ExecutorService executorService = Executors.newFixedThreadPool(3);
+	private final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
 	public Ecosystem(final long size) {
 		this.size = size;
@@ -79,8 +78,9 @@ public class Ecosystem {
 			return center;
 
 		allFood.addAll(foodPieces);
-		
-		// TODO: replace with spiral search in partitioned space? (after checking that food exists)
+
+		// TODO: replace with spiral search in partitioned space? (after
+		// checking that food exists)
 		for (Thing foodPiece : allFood) {
 			double distance = foodPiece.getPosition().minus(narjillo.getPosition()).getLength();
 			if (distance < minDistance) {
@@ -88,7 +88,7 @@ public class Ecosystem {
 				closestFood = foodPiece;
 			}
 		}
-		
+
 		return closestFood.getPosition();
 	}
 
@@ -107,46 +107,44 @@ public class Ecosystem {
 
 	public void tick(RanGen ranGen) {
 		List<Narjillo> narjillosCopy = new LinkedList<>(narjillos);
-		
-		Future<Segment>[] movements = new Future[narjillosCopy.size()];
-		
-		for (int i = 0; i < narjillosCopy.size(); i++) {
-			final Narjillo narjillo = narjillosCopy.get(i);
-			movements[i] = executorService.submit(new Callable<Segment>(){
 
-				@Override
-				public Segment call() throws Exception {
-					return narjillo.tick();
-				}});
-		}
-		
+		List<Future<Segment>> movements = tickAll(narjillosCopy);
+
 		for (int i = 0; i < narjillosCopy.size(); i++) {
-			Segment movement;
-			try {
-				movement = movements[i].get();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			Segment movement = waitUntilAvailable(movements, i);
 			Narjillo narjillo = narjillosCopy.get(i);
 			consumeCollidedFood(narjillo, movement, ranGen);
 			if (narjillo.isDead())
 				remove(narjillo);
 		}
-		
-		// no need to tick food
 
 		if (shouldSpawnFood(ranGen))
 			spawnFood(randomPosition(getSize(), ranGen));
-		
+
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
 	}
 
-	private boolean hasNoNulls(Segment[] movements) {
-		for (int i = 0; i < movements.length; i++)
-			if (movements[i] == null)
-				return false;
-		return true;
+	private Segment waitUntilAvailable(List<Future<Segment>> movements, int index) {
+		try {
+			return movements.get(index).get();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private List<Future<Segment>> tickAll(List<Narjillo> narjillos) {
+		List<Future<Segment>> result = new LinkedList<>();
+		for (int i = 0; i < narjillos.size(); i++) {
+			final Narjillo narjillo = narjillos.get(i);
+			result.add(executorService.submit(new Callable<Segment>() {
+				@Override
+				public Segment call() throws Exception {
+					return narjillo.tick();
+				}
+			}));
+		}
+		return result;
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {
@@ -183,8 +181,8 @@ public class Ecosystem {
 
 	private void updateTargets(Thing food) {
 		for (Thing creature : narjillos) {
-			if (((Narjillo)creature).getTarget() == food) {
-				Narjillo narjillo = (Narjillo)creature;
+			if (((Narjillo) creature).getTarget() == food) {
+				Narjillo narjillo = (Narjillo) creature;
 				Vector closestTarget = findClosestTarget(narjillo);
 				narjillo.setTarget(closestTarget);
 			}
@@ -193,7 +191,7 @@ public class Ecosystem {
 
 	public void updateAllTargets() {
 		for (Thing creature : narjillos) {
-			Narjillo narjillo = (Narjillo)creature;
+			Narjillo narjillo = (Narjillo) creature;
 			Vector closestTarget = findClosestTarget(narjillo);
 			narjillo.setTarget(closestTarget);
 		}
@@ -205,8 +203,8 @@ public class Ecosystem {
 			return;
 
 		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
-		
-		for (Set<Thing> nearbyFood: foodSpace.getNeighbors(narjillo))
+
+		for (Set<Thing> nearbyFood : foodSpace.getNeighbors(narjillo))
 			for (Thing foodPiece : nearbyFood)
 				if (checkCollisionWithFood(movement, foodPiece))
 					collidedFoodPieces.add(foodPiece);
@@ -246,9 +244,9 @@ public class Ecosystem {
 
 	private void reproduce(Narjillo narjillo, Vector position, RanGen ranGen) {
 		final Narjillo child = narjillo.reproduce(position, ranGen);
-		if (child == null)  // refused to reproduce
+		if (child == null) // refused to reproduce
 			return;
-		forceAdd(child );
+		forceAdd(child);
 	}
 
 	private double getRandomInRange(final int range, RanGen ranGen) {

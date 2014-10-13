@@ -125,7 +125,7 @@ public class DNA {
 	}
 
 	public static DNA random(RanGen ranGen) {
-		int size = Chromosome.SIZE * (Math.abs(ranGen.nextInt()) % 5 + 2);
+		int size = Chromosome.SIZE * (Math.abs(ranGen.nextInt()) % 10 + 2);
 		return random(size, ranGen);
 	}
 

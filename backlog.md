@@ -16,6 +16,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
+* Parallelize ticking of narjillos °°°
 * Optimize physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines

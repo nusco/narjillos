@@ -5,6 +5,11 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.embryogenesis.Embryo;
@@ -36,7 +41,8 @@ public class Ecosystem {
 	private final Vector center;
 
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
-	
+	private final ExecutorService executorService = Executors.newFixedThreadPool(3);
+
 	public Ecosystem(final long size) {
 		this.size = size;
 		this.foodSpace = new Space(size);
@@ -100,9 +106,28 @@ public class Ecosystem {
 	}
 
 	public void tick(RanGen ranGen) {
-		Set<Narjillo> narjillosCopy = new LinkedHashSet<>(narjillos);
-		for (Narjillo narjillo : narjillosCopy) {
-			Segment movement = narjillo.tick();
+		List<Narjillo> narjillosCopy = new LinkedList<>(narjillos);
+		
+		Future<Segment>[] movements = new Future[narjillosCopy.size()];
+		
+		for (int i = 0; i < narjillosCopy.size(); i++) {
+			final Narjillo narjillo = narjillosCopy.get(i);
+			movements[i] = executorService.submit(new Callable<Segment>(){
+
+				@Override
+				public Segment call() throws Exception {
+					return narjillo.tick();
+				}});
+		}
+		
+		for (int i = 0; i < narjillosCopy.size(); i++) {
+			Segment movement;
+			try {
+				movement = movements[i].get();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			Narjillo narjillo = narjillosCopy.get(i);
 			consumeCollidedFood(narjillo, movement, ranGen);
 			if (narjillo.isDead())
 				remove(narjillo);
@@ -115,6 +140,13 @@ public class Ecosystem {
 		
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
+	}
+
+	private boolean hasNoNulls(Segment[] movements) {
+		for (int i = 0; i < movements.length; i++)
+			if (movements[i] == null)
+				return false;
+		return true;
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {
@@ -176,14 +208,14 @@ public class Ecosystem {
 		
 		for (Set<Thing> nearbyFood: foodSpace.getNeighbors(narjillo))
 			for (Thing foodPiece : nearbyFood)
-				if (checkCollisionWithFood(narjillo, movement, foodPiece))
+				if (checkCollisionWithFood(movement, foodPiece))
 					collidedFoodPieces.add(foodPiece);
 
 		for (Thing collidedFoodPiece : collidedFoodPieces)
 			consumeFood(narjillo, collidedFoodPiece, ranGen);
 	}
 
-	private boolean checkCollisionWithFood(Narjillo narjillo, Segment movement, Thing foodPiece) {
+	private boolean checkCollisionWithFood(Segment movement, Thing foodPiece) {
 		return movement.getMinimumDistanceFromPoint(foodPiece.getPosition()) <= COLLISION_DISTANCE;
 	}
 

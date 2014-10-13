@@ -12,10 +12,10 @@ public class DeterministicExperimentTest {
 	// same exact simulation running. This should be true even after
 	// an Experiment is serialized and then deserialized.
 	// To check whether that's true, we run two experiments for 100
-	// cycles. This is good for test speed, but not particularly safe
-	// - many bugs with non-deterministic behavior only become apparent
+	// cycles. This makes for fast tests, but it's not particularly safe,
+	// because many bugs with non-deterministic behavior only become apparent
 	// after 1000 or even 10_000 cycles. Every now and then, it's
-	// worth trying this with a higher number of cycles , just in case.
+	// worth trying this test with a higher number of cycles , just in case.
 	private static final int CYCLES = 100;
 
 	@Test

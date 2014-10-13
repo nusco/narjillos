@@ -35,6 +35,6 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 
 	@Override
 	public Organ buildOrgan(Organ parent, int sign) {
-		return parent.addChild(new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing()));
+		return new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing());
 	}
 }

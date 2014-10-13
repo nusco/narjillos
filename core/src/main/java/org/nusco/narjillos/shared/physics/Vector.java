@@ -78,7 +78,7 @@ public class Vector {
 		double relativeAngle = Math.toRadians(direction.getAngle() - getAngle());
 		double resultLength = Math.cos(relativeAngle) * getLength();
 		return Vector.polar(direction.getAngle(), resultLength);
-		// FIXME: use this (but check broken tests)
+		// TODO: switch to the code below (but check broken tests)
 //		double theta = Math.cos(getAngleWith(other));
 //		double resultLength = theta * getLength();
 //		return Vector.polar(other.getAngle(), resultLength);

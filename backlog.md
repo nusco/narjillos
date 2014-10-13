@@ -5,18 +5,20 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
+* Switch to correct vector math algorithms °°
+  (see TODO in class Vector for an example)
+* Fix jerky movements for some large narjillos °°
+  (to check it, increase the number of random genes and the frequency of mirrors and branches)
 * Remove "crazy rotation" effect °°
   (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
 * Watchdog for excessive speed (results in warning) °
-* Fix jerky movements for some large narjillos °°
-  (to check it, increase the number of random genes and the frequency of mirrors and branches)
 * Smooth, inertial targeting
 * Additional cost for high metabolic rate
   (to avoid the metabolic rate always increasing to the max)
 
 ###Speed Demon
 
-* Parallelize ticking of narjillos °°°
+* Synchronize cuncurrent access in parallel ticking of narjillos °°°
 * Optimize physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
@@ -46,7 +48,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Fix non-deterministic bug introduced after 2d81f4345 (check that's true) °°°
 * Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp) °
 * Dump isolated narjillos to file (instead of the console) °
 * Check git commit on experiment startup °

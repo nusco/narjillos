@@ -7,19 +7,16 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Switch to correct vector math algorithms °°
   (see TODO in class Vector for an example)
-* Fix jerky movements for some large narjillos °°
-  (to check it, increase the number of random genes and the frequency of mirrors and branches)
 * Remove "crazy rotation" effect °°
   (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
 * Watchdog for excessive speed (results in warning) °
 * Smooth, inertial targeting
-* Additional cost for high metabolic rate
-  (to avoid the metabolic rate always increasing to the max)
 
 ###Speed Demon
 
 * Synchronize cuncurrent access in parallel ticking of narjillos °°°
   (also double-check parallel code and shutdown thread pool on exiting)
+* Switch to fixed-point vector math °°
 * Optimize physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines

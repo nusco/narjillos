@@ -13,20 +13,23 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
- * The physical body of a Narjillo, with all its organs and their position in space.
+ * The physical body of a Narjillo, with all its organs and their position in
+ * space.
  * 
- * This class contains the all-important Body.tick() method. Look at its comments
- * for details.
+ * This class contains the all-important Body.tick() method. Look at its
+ * comments for details.
  */
 public class Body {
 
 	private final Organ head;
 	private final double mass;
+	private final double metabolicConsumption;
 	private transient List<BodyPart> bodyParts;
-	
+
 	public Body(Organ head) {
 		this.head = head;
 		this.mass = calculateTotalMass();
+		this.metabolicConsumption = Math.pow(getMetabolicRate(), 1.5);
 	}
 
 	public Head getHead() {
@@ -75,34 +78,35 @@ public class Body {
 			BodyPart organ = iterator.next();
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
 		}
-		
+
 		double totalX = 0;
 		double totalY = 0;
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
 			totalX += weightedCentersOfMass[i].x;
 			totalY += weightedCentersOfMass[i].y;
 		}
-		
+
 		return Vector.cartesian(totalX / getMass(), totalY / getMass());
 	}
 
 	/**
 	 * Take a target direction. Change the body's geometry based on the target
-	 * direction. Move the body. Return the energy spent on the entire operation.
+	 * direction. Move the body. Return the energy consumed on the entire
+	 * operation.
 	 */
 	public double tick(Vector targetDirection) {
 		// Before any movement, store away the current body positions
 		// and center of mass. These will come useful later.
 		Vector initialCenterOfMass = calculateCenterOfMass();
 		Map<BodyPart, Segment> initialBodyPartPositions = calculateBodyPartPositions();
-		
+
 		// This first step happens as if the body where in a vacuum.
 		// The organs in the body remodel their own geometry based on the
 		// target's direction. They don't "think" were to go - they just
 		// changes their positions *somehow*. Natural selection will favor
 		// movements that result in getting closer to the target.
 		tick_step1_updateAngles(targetDirection);
-		
+
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep its moment
 		// of inertia equal to zero.
@@ -119,8 +123,12 @@ public class Body {
 		// translational forces. We can update the body position based on
 		// these translations.
 		double translationEnergy = tick_step4_translate(initialBodyPartPositions, initialCenterOfMass);
-		
-		return (rotationEnergy + translationEnergy) * getMetabolicRate();
+
+		return getEnergyConsumed(rotationEnergy, translationEnergy);
+	}
+
+	private double getEnergyConsumed(double rotationEnergy, double translationEnergy) {
+		return (rotationEnergy + translationEnergy) * metabolicConsumption;
 	}
 
 	private void tick_step1_updateAngles(Vector targetDirection) {
@@ -195,7 +203,7 @@ public class Body {
 			result += organ.getMass();
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		return head.toString();

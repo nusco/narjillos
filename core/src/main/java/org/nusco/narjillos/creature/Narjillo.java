@@ -40,10 +40,6 @@ public class Narjillo implements Thing {
 	public Energy getEnergy() {
 		return energy;
 	}
-
-	double getEnergyValue() {
-		return energy.getValue();
-	}
 	
 	@Override
 	public Segment tick() {

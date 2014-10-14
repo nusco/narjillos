@@ -88,8 +88,7 @@ A few advanced uses in case you really get serious with this program:
 
 * If you run a very long experiment, DNA ancestry tracking might consume your available memory. In that case, run you experiment with additional JVM arguments to increase memory. For example:
 
-
-    experiment f818449-521468119.exp -Xmx2048M -Xms2048M
+        experiment f818449-521468119.exp -Xmx2048M -Xms2048M
 
 ## Goal
 

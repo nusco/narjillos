@@ -19,5 +19,6 @@ public class PerformanceTest {
 		double timeSeconds = Math.ceil(timeMillis * 10) / 10.0;
 		
 		System.out.println("" + TICKS + " cycles in " + timeSeconds + " seconds.");
+		System.exit(0);
 	}
 }

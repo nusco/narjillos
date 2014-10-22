@@ -40,7 +40,7 @@ public class JSONBodySerializationTest {
 		
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
-
+		
 		List<BodyPart> bodyParts = body.getBodyParts();
 		List<BodyPart> deserializedBodyParts = deserialized.getBodyParts();
 		for (int i = 0; i < bodyParts.size(); i++)

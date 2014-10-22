@@ -46,6 +46,12 @@ public class Ecosystem {
 		this.size = size;
 		this.foodSpace = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				executorService.shutdown();
+			}
+		});
 	}
 
 	public long getSize() {

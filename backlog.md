@@ -5,6 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
+* Increase precision of fast arctangent °°
 * Switch to correct vector math algorithms °°
   (see TODO in class Vector for an example)
 * Remove "crazy rotation" effect °°
@@ -16,7 +17,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Synchronize cuncurrent access in parallel ticking of narjillos °°°
   (also double-check parallel code)
-* Switch to fixed-point vector math °°
 * Optimize physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
@@ -48,9 +48,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp) °
-* Dump isolated narjillos to file (instead of the console) °
 * Check git commit on experiment startup °
 * Lock on single narjillo °
+* Dump isolated narjillos to file (instead of the console)
 * Real arguments parsing (use --no-persistence together with other switches)
 * Zipped persistence files
 * View narjillo stats (age, energy, times eaten...)

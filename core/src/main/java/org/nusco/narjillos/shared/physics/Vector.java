@@ -36,7 +36,7 @@ public class Vector {
 	}
 
 	public double getAngle() throws ZeroVectorException {
-		if (x == 0 && y == 0)
+		if (isZero())
 			throw new ZeroVectorException();
 		if (Double.isNaN(angle))
 			angle = Math.toDegrees(Math.atan2(y, x));
@@ -112,10 +112,10 @@ public class Vector {
 	@Override
 	public boolean equals(Object obj) {
 		Vector other = (Vector) obj;
-		return compare(x, other.x) && compare(y, other.y);
+		return areExactlyEqual(x, other.x) && areExactlyEqual(y, other.y);
 	}
 
-	private boolean compare(double d1, double d2) {
+	private boolean areExactlyEqual(double d1, double d2) {
 		return Double.doubleToLongBits(d1) == Double.doubleToLongBits(d2);
 	}
 

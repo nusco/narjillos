@@ -1,12 +1,15 @@
 package org.nusco.narjillos;
 
 import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.shared.physics.FastMath;
 
 public class PerformanceTest {
 
 	private final static int TICKS = 4000;
 
 	public static void main(String[] args) {
+		FastMath.setUp();
+		
 		Experiment experiment = new Experiment("performance_test", 424242);
 
 		long startTimeMillis = System.currentTimeMillis();

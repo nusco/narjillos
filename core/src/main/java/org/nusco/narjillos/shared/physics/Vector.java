@@ -7,6 +7,10 @@ public class Vector {
 
 	public static final Vector ZERO = Vector.cartesian(0, 0);
 
+	static {
+		FastMath.setUp();
+	}
+
 	public final double x;
 	public final double y;
 
@@ -17,8 +21,8 @@ public class Vector {
 	private Vector normal = null;
 	
 	public static Vector polar(double degrees, double length) {
-		double sin = Math.sin(Math.toRadians(degrees));
-		double cos = Math.cos(Math.toRadians(degrees));
+		double sin = FastMath.sin(degrees);
+		double cos = FastMath.cos(degrees);
 		return Vector.cartesian(cos * length, sin * length);
 	}
 
@@ -120,7 +124,7 @@ public class Vector {
 	}
 
 	public boolean almostEquals(Vector other) {
-		final double delta = 0.001;
+		final double delta = 0.01;
 		return Math.abs(x - other.x) < delta && Math.abs(y - other.y) < delta;
 	}
 

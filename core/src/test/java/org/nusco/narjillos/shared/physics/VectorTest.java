@@ -42,7 +42,7 @@ public class VectorTest {
 	@Test
 	public void normalizesAnglesWhenUsingPolarCoordinates() throws ZeroVectorException {
 		assertEquals(0, Vector.polar(0, 1).getAngle(), 0.001);
-		assertEquals(180, Vector.polar(180, 1).getAngle(), 0.001);
+		assertEquals(-180, Vector.polar(180, 1).getAngle(), 0.001);
 		assertEquals(0, Vector.polar(360, 1).getAngle(), 0.001);
 		assertEquals(1, Vector.polar(361, 1).getAngle(), 0.001);
 		assertEquals(-10, Vector.polar(-10, 1).getAngle(), 0.001);
@@ -133,7 +133,10 @@ public class VectorTest {
 	public void canBeNormalizedToAnArbitraryLength() throws ZeroVectorException {
 		Vector original = Vector.polar(42, 1234);
 		
-		assertEquals(Vector.polar(42, 10), original.normalize(10));
+		Vector normalized = original.normalize(10);
+
+		assertTrue(normalized.almostEquals(Vector.polar(42, 10)));
+		assertEquals(10, normalized.getLength(), 0.001);
 	}
 
 	@Test(expected = ZeroVectorException.class)

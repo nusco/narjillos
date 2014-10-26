@@ -79,11 +79,11 @@ public class Vector {
 
 	public Vector getProjectionOn(Vector other) throws ZeroVectorException {
 		Vector direction = pointsInSameDirectionAs(other) ? other : other.invert();
-		double relativeAngle = Math.toRadians(direction.getAngle() - getAngle());
-		double resultLength = Math.cos(relativeAngle) * getLength();
+		double relativeAngle = direction.getAngle() - getAngle();
+		double resultLength = FastMath.cos(relativeAngle) * getLength();
 		return Vector.polar(direction.getAngle(), resultLength);
 		// TODO: switch to the code below (but check broken tests)
-//		double theta = Math.cos(getAngleWith(other));
+//		double theta = FastMath.cos(getAngleWith(other));
 //		double resultLength = theta * getLength();
 //		return Vector.polar(other.getAngle(), resultLength);
 	}

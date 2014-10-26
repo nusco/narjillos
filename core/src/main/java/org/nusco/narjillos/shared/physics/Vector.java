@@ -100,10 +100,6 @@ public class Vector {
 		return Angle.normalize(getAngle() - other.getAngle());
 	}
 
-	public Vector rotateBy(double degrees) throws ZeroVectorException {
-		return Vector.polar(getAngle() + degrees, getLength());
-	}
-
 	double getDistanceFrom(Vector other) {
 		return this.minus(other).getLength();
 	}
@@ -131,10 +127,6 @@ public class Vector {
 	private double approx(double n) {
 		final double decimals = 100.0;
 		return (Math.round(n * decimals)) / decimals;
-	}
-
-	public double getCrossProductWith(Vector other) throws ZeroVectorException {
-		return getLength() * other.getLength() * Math.cos(Math.toRadians(getAngleWith(other)));
 	}
 
 	public boolean isZero() {

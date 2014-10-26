@@ -146,10 +146,10 @@ public class VectorTest {
 
 	@Test
 	public void hasANormalVector() throws ZeroVectorException {
-		assertEqualsVector(Vector.polar(-50, 1), Vector.polar(40, 1234).getNormal());
-		assertEqualsVector(Vector.polar(0, 1), Vector.polar(90, 1234).getNormal());
-		assertEqualsVector(Vector.polar(90, 1), Vector.polar(180, 1234).getNormal());
-		assertEqualsVector(Vector.polar(180, 1), Vector.polar(-90, 1234).getNormal());
+		assertAlmostEquals(Vector.polar(-50, 1), Vector.polar(40, 1234).getNormal());
+		assertAlmostEquals(Vector.polar(0, 1), Vector.polar(90, 1234).getNormal());
+		assertAlmostEquals(Vector.polar(90, 1), Vector.polar(180, 1234).getNormal());
+		assertAlmostEquals(Vector.polar(180, 1), Vector.polar(-90, 1234).getNormal());
 	}
 
 	@Test(expected = ZeroVectorException.class)
@@ -159,12 +159,12 @@ public class VectorTest {
 
 	@Test
 	public void hasAProjectionOnAnotherVector() throws ZeroVectorException {
-		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 1)));
-		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(0, 1)));
-		assertEqualsVector(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 10)));
-		assertEqualsVector(Vector.ZERO, Vector.polar(180, 10).getProjectionOn(Vector.polar(90, 1)));
-		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(45, 1)));
-		assertEqualsVector(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(-135, 1)));
+		assertAlmostEquals(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 1)));
+		assertAlmostEquals(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(0, 1)));
+		assertAlmostEquals(Vector.polar(180, 10), Vector.polar(180, 10).getProjectionOn(Vector.polar(180, 10)));
+		assertAlmostEquals(Vector.ZERO, Vector.polar(180, 10).getProjectionOn(Vector.polar(90, 1)));
+		assertAlmostEquals(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(45, 1)));
+		assertAlmostEquals(Vector.polar(45, 7.0710), Vector.polar(90, 10).getProjectionOn(Vector.polar(-135, 1)));
 	}
 
 	@Test(expected = ZeroVectorException.class)
@@ -179,13 +179,13 @@ public class VectorTest {
 	
 	@Test
 	public void hasANormalComponentOnAnotherVector() throws ZeroVectorException {
-		assertEqualsVector(Vector.ZERO, Vector.polar(90, 10).getNormalComponentOn(Vector.polar(90, 1)));
-		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 1)));
-		assertEqualsVector(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 10)));
-		assertEqualsVector(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(0, 10)));
-		assertEqualsVector(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(180, 10)));
-		assertEqualsVector(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(0, 10)));
-		assertEqualsVector(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(180, 10)));
+		assertAlmostEquals(Vector.ZERO, Vector.polar(90, 10).getNormalComponentOn(Vector.polar(90, 1)));
+		assertAlmostEquals(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 1)));
+		assertAlmostEquals(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 10)));
+		assertAlmostEquals(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(0, 10)));
+		assertAlmostEquals(Vector.polar(90, 7.0710), Vector.polar(45, 10).getNormalComponentOn(Vector.polar(180, 10)));
+		assertAlmostEquals(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(0, 10)));
+		assertAlmostEquals(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(180, 10)));
 	}
 	
 	@Test(expected = ZeroVectorException.class)
@@ -224,15 +224,6 @@ public class VectorTest {
 	}
 
 	@Test
-	public void canBeRotated() throws ZeroVectorException {
-		Vector ninetyDegrees = Vector.polar(90, 10);
-		assertEqualsVector(Vector.polar(180, 10), ninetyDegrees.rotateBy(90));
-		assertEqualsVector(Vector.polar(-179, 10), ninetyDegrees.rotateBy(91));
-		assertEqualsVector(Vector.polar(0, 10), ninetyDegrees.rotateBy(-90));
-		assertEqualsVector(Vector.polar(-1, 10), ninetyDegrees.rotateBy(-91));
-	}
-
-	@Test
 	public void hasADistanceFromAnotherVector() {
 		Vector vector1 = Vector.cartesian(120, 130);
 		Vector vector2 = Vector.cartesian(-20, 80);
@@ -240,23 +231,8 @@ public class VectorTest {
 		assertEquals(148.66, vector1.getDistanceFrom(vector2), 0.001);
 		assertEquals(148.66, vector2.getDistanceFrom(vector1), 0.001);
 	}
-
-	@Test
-	public void hasACrossProductWithAnotherVector() throws ZeroVectorException {
-		Vector vector1 = Vector.polar(0, 10);
-		Vector vector2 = Vector.polar(90, 10);
-		Vector vector3 = Vector.polar(180, 10);
-		Vector vector4 = Vector.polar(-90, 10);
-
-		assertEquals(100, vector1.getCrossProductWith(vector1), 0.001);
-		assertEquals(0, vector1.getCrossProductWith(vector2), 0.001);
-		assertEquals(0, vector2.getCrossProductWith(vector1), 0.001);
-		assertEquals(-100, vector1.getCrossProductWith(vector3), 0.001);
-		assertEquals(0, vector1.getCrossProductWith(vector4), 0.001);
-	}
 	
-	private void assertEqualsVector(Vector v1, Vector v2) {
-		assertEquals(v1.x, v2.x, 0.001);
-		assertEquals(v1.y, v2.y, 0.001);
+	private void assertAlmostEquals(Vector v1, Vector v2) {
+		assertTrue("Different vectors: " + v1 + ", " + v2, v1.almostEquals(v2));
 	}
 }

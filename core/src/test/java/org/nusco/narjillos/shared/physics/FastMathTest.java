@@ -7,6 +7,7 @@ import org.junit.Test;
 public class FastMathTest {
 	
 	private final double EXPECTED_TRIG_PRECISION = 0.001;
+	private final double EXPECTED_ATAN_PRECISION = 0.6;
 
 	@Test
 	public void preciselyCalculatesSinForMainAngles() {
@@ -69,19 +70,35 @@ public class FastMathTest {
 		assertEquals(180, FastMath.atan(0, -100), 0.0);
 		assertEquals(-90, FastMath.atan(-100, 0), 0.0);
 	}
+
+	@Test
+	public void calculatesApproximatedArcTangentForSegmentsCloseToTheAxes() {
+		final double VERY_LARGE = Double.MAX_VALUE;
+		final double VERY_SMALL = 1 / Double.MAX_VALUE;
+		
+		assertEqualsAtan(VERY_SMALL, VERY_LARGE);
+		assertEqualsAtan(VERY_SMALL, -VERY_LARGE);
+		assertEqualsAtan(-VERY_SMALL, VERY_LARGE);
+		assertEqualsAtan(-VERY_SMALL, -VERY_LARGE);
+		
+		assertEqualsAtan(VERY_LARGE, VERY_SMALL);
+		assertEqualsAtan(VERY_LARGE, -VERY_SMALL);
+		assertEqualsAtan(-VERY_LARGE, VERY_SMALL);
+		assertEqualsAtan(-VERY_LARGE, -VERY_SMALL);
+	}
 	
 	// Very slow test, so keep it disabled by default
 	// TODO: the arctangent should be more precise. investigate how
-	//@Test
+//	@Test
 	public void calculatesApproximatedArcTangent() {
-		final double EXPECTED_ATAN_PRECISION = 0.6;
+		for (double y = -6000; y <= 6000; y += 0.9)
+			for (double x = -100; x <= 100; x += 0.13)
+				assertEqualsAtan(y, x);
+	}
 
-		for (double x = -100; x <= 100; x += 0.13) {
-			for (double y = -6000; y <= 6000; y += 0.9) {
-				double javaAtan = Math.toDegrees(Math.atan2(x, y));
-				double fastAtan = FastMath.atan(x, y);
-				assertEquals("Mismatched atan(" + x + ", " + y + ")", javaAtan, fastAtan, EXPECTED_ATAN_PRECISION);
-			}
-		}
+	private void assertEqualsAtan(double y, double x) {
+		double javaAtan = Math.toDegrees(Math.atan2(y, x));
+		double fastAtan = FastMath.atan(y, x);
+		assertEquals("Mismatched atan(" + y + ", " + x + ")", javaAtan, fastAtan, EXPECTED_ATAN_PRECISION);
 	}
 }

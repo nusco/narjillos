@@ -98,27 +98,27 @@ public class FastMath {
 		return ATAN_TABLE[index];
 	}
 
-	public static double atan(double x, double y) {
+	public static double atan(double y, double x) {
 		double arc;
-		if (y == 0)
-			arc = atan(x / 0.0000001); // avoid divisions by zero
+		if (x == 0)
+			arc = atan(y / 0.0000001); // avoid divisions by zero
 		else
-			arc = atan(x / y);
+			arc = atan(y / x);
 
-		if (y > 0)
-			return arc; // first quadrant
+		if (x > 0)
+			return arc; // first or fourth quadrant
 
-		if (y < 0) {
-			if (x > 0)
-				return 180 - arc; // second quadrant
-			if (x < 0)
-				return -180 - arc; // third quadrant
-			// x == 0
+		if (x < 0) {
+			if (y > 0)
+				return 180 + arc; // second quadrant
+			if (y < 0)
+				return -180 + arc; // third quadrant
+			// y == 0
 			return 180;
 		}
 
-		// y == 0
-		if (x > 0)
+		// x == 0
+		if (y > 0)
 			return 90;
 		return -90;
 	}

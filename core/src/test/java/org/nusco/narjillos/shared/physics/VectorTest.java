@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class VectorTest {
+	
 	@Test
 	public void canBeCreatedFromItCartesianCoordinates() throws ZeroVectorException {
 		double x = 10.1;
@@ -42,7 +43,7 @@ public class VectorTest {
 	@Test
 	public void normalizesAnglesWhenUsingPolarCoordinates() throws ZeroVectorException {
 		assertEquals(0, Vector.polar(0, 1).getAngle(), 0.001);
-		assertEquals(-180, Vector.polar(180, 1).getAngle(), 0.001);
+		assertEquals(180, Vector.polar(180, 1).getAngle(), 0.001);
 		assertEquals(0, Vector.polar(360, 1).getAngle(), 0.001);
 		assertEquals(1, Vector.polar(361, 1).getAngle(), 0.001);
 		assertEquals(-10, Vector.polar(-10, 1).getAngle(), 0.001);

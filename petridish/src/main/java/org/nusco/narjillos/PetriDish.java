@@ -97,7 +97,7 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					if (state.getSpeed() != Speed.PAUSED)
 						if (!lab.tick())
-							return;
+							System.exit(0);
 					waitUntilTimePassed(state.getSpeed().getTicksPeriod(), startTime);
 				}
 			}

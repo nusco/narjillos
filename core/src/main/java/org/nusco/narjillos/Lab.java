@@ -225,5 +225,6 @@ public class Lab {
 	public static void main(String... args) {
 		Lab lab = new Lab(args);
 		while (lab.tick());
+		System.exit(0);
 	}
 }

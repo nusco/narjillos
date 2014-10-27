@@ -5,7 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Increase precision of fast arctangent °°
+* Increase precision of fast arctangent °°°
 * Switch to correct vector math algorithms °°
   (see TODO in class Vector for an example)
 * Remove "crazy rotation" effect °°
@@ -17,7 +17,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Synchronize cuncurrent access in parallel ticking of narjillos °°°
   (also double-check parallel code)
-* Optimize physics engine °
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
 
@@ -39,7 +38,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ethologist
 
-* Genetically determined asymmetric skewing strategies °°
+* Genetically determined asymmetric skewing strategies °°°
 * Eggs °
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °

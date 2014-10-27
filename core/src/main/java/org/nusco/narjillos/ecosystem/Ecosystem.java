@@ -204,10 +204,6 @@ public class Ecosystem {
 	}
 
 	private void consumeCollidedFood(Narjillo narjillo, Segment movement, RanGen ranGen) {
-		// TODO: naive algorithm. replace with space partitioning
-		if (movement.getVector().isZero())
-			return;
-
 		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
 
 		for (Set<Thing> nearbyFood : foodSpace.getNeighbors(narjillo))

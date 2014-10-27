@@ -87,7 +87,7 @@ public class VectorTest {
 
 	@Test
 	public void itsAngleIsCorrectedForNegativeLengths() throws ZeroVectorException {
-		assertEquals(-180, Vector.polar(0, -1).getAngle(), 0.001);
+		assertEquals(180, Vector.polar(0, -1).getAngle(), 0.001);
 		assertEquals(0, Vector.polar(180, -1).getAngle(), 0.001);
 		assertEquals(-90, Vector.polar(90, -1).getAngle(), 0.001);
 		assertEquals(-135, Vector.polar(45, -1).getAngle(), 0.001);

@@ -26,6 +26,9 @@ public class Segment {
 	}
 	
 	public double getMinimumDistanceFromPoint(Vector point) {
+		if (vector.isZero())
+			return startPoint.getDistanceFrom(point);
+		
 		double length = getLength(); // slow - only do it once
 		
 		if (length < 0.0001)

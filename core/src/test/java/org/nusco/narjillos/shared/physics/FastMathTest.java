@@ -6,8 +6,8 @@ import org.junit.Test;
 
 public class FastMathTest {
 	
-	private final double EXPECTED_TRIG_PRECISION = 0.001;
-	private final double EXPECTED_ATAN_PRECISION = 0.6;
+	private final double EXPECTED_TRIG_PRECISION = 0.001; // 1/1000th of a point
+	private final double EXPECTED_ATAN_PRECISION = 0.01;  // 1/100th of a degree
 
 	@Test
 	public void preciselyCalculatesSinForMainAngles() {
@@ -88,10 +88,9 @@ public class FastMathTest {
 	}
 	
 	// Very slow test, so keep it disabled by default
-	// TODO: the arctangent should be more precise. investigate how
 //	@Test
 	public void calculatesApproximatedArcTangent() {
-		for (double y = -6000; y <= 6000; y += 0.9)
+		for (double y = -6000; y <= 6000; y += 0.7)
 			for (double x = -100; x <= 100; x += 0.13)
 				assertEqualsAtan(y, x);
 	}

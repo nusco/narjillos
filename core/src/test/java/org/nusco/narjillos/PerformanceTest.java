@@ -8,7 +8,7 @@ public class PerformanceTest {
 	private final static int TICKS = 4000;
 
 	public static void main(String[] args) {
-		FastMath.setUp();
+		FastMath.setUp();  // pay up front for the setup of FastMath
 		
 		Experiment experiment = new Experiment("performance_test", 424242);
 

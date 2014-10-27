@@ -5,7 +5,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Increase precision of fast arctangent °°°
 * Switch to correct vector math algorithms °°
   (see TODO in class Vector for an example)
 * Remove "crazy rotation" effect °°

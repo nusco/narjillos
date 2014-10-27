@@ -47,7 +47,7 @@ public class VectorTest {
 		assertEquals(0, Vector.polar(360, 1).getAngle(), 0.001);
 		assertEquals(1, Vector.polar(361, 1).getAngle(), 0.001);
 		assertEquals(-10, Vector.polar(-10, 1).getAngle(), 0.001);
-		assertEquals(-180, Vector.polar(-180, 1).getAngle(), 0.001);
+		assertEquals(180, Vector.polar(-180, 1).getAngle(), 0.001);
 		assertEquals(179, Vector.polar(-181, 1).getAngle(), 0.001);
 		assertEquals(0, Vector.polar(-360, 1).getAngle(), 0.001);
 		assertEquals(-1, Vector.polar(-361, 1).getAngle(), 0.001);
@@ -55,14 +55,17 @@ public class VectorTest {
 	
 	@Test
 	public void normalizesAnglesWhenUsingCartesianCoordinates() throws ZeroVectorException {
-		assertEquals(0, Vector.cartesian(1, 0).getAngle(), 0);
-		assertEquals(45, Vector.cartesian(1, 1).getAngle(), 0);
-		assertEquals(90, Vector.cartesian(0, 1).getAngle(), 0);
-		assertEquals(-45, Vector.cartesian(1, -1).getAngle(), 0);
-		assertEquals(-90, Vector.cartesian(0, -1).getAngle(), 0);
-		assertEquals(-135, Vector.cartesian(-1, -1).getAngle(), 0);
-		assertEquals(180, Vector.cartesian(-1, 0).getAngle(), 0);
-		assertEquals(135, Vector.cartesian(-1, 1).getAngle(), 0);
+		double PRECISION_FOR_ANGLES_ALONG_THE_AXES = 0.0;
+		double PRECISION_FOR_ANY_OTHER_ANGLE = 0.01;
+
+		assertEquals(0, Vector.cartesian(1, 0).getAngle(), PRECISION_FOR_ANGLES_ALONG_THE_AXES);
+		assertEquals(45, Vector.cartesian(1, 1).getAngle(), PRECISION_FOR_ANY_OTHER_ANGLE);
+		assertEquals(90, Vector.cartesian(0, 1).getAngle(), PRECISION_FOR_ANGLES_ALONG_THE_AXES);
+		assertEquals(-45, Vector.cartesian(1, -1).getAngle(), PRECISION_FOR_ANY_OTHER_ANGLE);
+		assertEquals(-90, Vector.cartesian(0, -1).getAngle(), PRECISION_FOR_ANGLES_ALONG_THE_AXES);
+		assertEquals(-135, Vector.cartesian(-1, -1).getAngle(), PRECISION_FOR_ANY_OTHER_ANGLE);
+		assertEquals(180, Vector.cartesian(-1, 0).getAngle(), PRECISION_FOR_ANGLES_ALONG_THE_AXES);
+		assertEquals(135, Vector.cartesian(-1, 1).getAngle(), PRECISION_FOR_ANY_OTHER_ANGLE);
 	}
 	
 	@Test(expected = ZeroVectorException.class)
@@ -88,10 +91,10 @@ public class VectorTest {
 
 	@Test
 	public void itsAngleIsCorrectedForNegativeLengths() throws ZeroVectorException {
-		assertEquals(180, Vector.polar(0, -1).getAngle(), 0.001);
-		assertEquals(0, Vector.polar(180, -1).getAngle(), 0.001);
-		assertEquals(-90, Vector.polar(90, -1).getAngle(), 0.001);
-		assertEquals(-135, Vector.polar(45, -1).getAngle(), 0.001);
+		assertEquals(180, Vector.polar(0, -1).getAngle(), 0.01);
+		assertEquals(0, Vector.polar(180, -1).getAngle(), 0.01);
+		assertEquals(-90, Vector.polar(90, -1).getAngle(), 0.01);
+		assertEquals(-135, Vector.polar(45, -1).getAngle(), 0.01);
 	}
 	
 	@Test

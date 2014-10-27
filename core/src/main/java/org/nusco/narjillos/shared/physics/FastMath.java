@@ -8,17 +8,39 @@ package org.nusco.narjillos.shared.physics;
  */
 public class FastMath {
 
-	private static final int ANGLE_RESOLUTION = 100; // 1/100th of a degree
+	// Consider angles at a 1/100th of a degree resolution.
+	private static final int ANGLE_RESOLUTION = 100;
+
+	// Only store angles in the first quadrant, from 0 to 90 included.
+	// Results in the remaining three quadrants can be calculated from these.
 	private static final int ANGLE_TABLES_LENGTH = (int) (90 * ANGLE_RESOLUTION + 1);
+
+	// The sin table matches angles (in degree) to their sin. The same
+	// table is also used to calculate cos.
 	private static final double[] SIN_TABLE = new double[ANGLE_TABLES_LENGTH];
 
-	private static final int ATAN_RESOLUTION = 100;
-	private static final int ATAN_TABLE_LENGTH;
+	// The resolution of the arctangent table must be enough to
+	// accomodate changes of 1/100th of a degree. I did some empirical
+	// calculations here, by looking at the minimum distance between consecutive
+	// values in the tan table (that is compiled in the static initializer
+	// below). We need a much higher resolution than ANGLE_RESOLUTION here
+	// (possibly always pow(ANGLE_RESOLUTION, 2)?).
+	private static final int ATAN_RESOLUTION = 10_000;
+
+	// The atan table matches tan length to angles in degrees.
 	private static final double[] ATAN_TABLE;
 
+	// The code will check for this value, so we store it in a field for quick
+	// access. It will be initialized in the static initializer below.
+	private static final int ATAN_TABLE_LENGTH;
+
 	static {
+		// The tan table matches angles in the first quadrant to their tangent.
+		// We calculate it, use it to calculate the ATAN_TABLE, then throw it
+		// away.
 		final double[] TAN_TABLE = new double[ANGLE_TABLES_LENGTH];
 
+		// Fill in the SIN_TABLE and the TAN_TABLE.
 		final double degreesStep = 1.0 / ANGLE_RESOLUTION;
 		double degrees = 0;
 		for (int i = 0; i < ANGLE_TABLES_LENGTH; i++) {
@@ -28,26 +50,41 @@ public class FastMath {
 			degrees += degreesStep;
 		}
 
-		// the very last value in the tan table is overflowing.
-		// set it to the highest possible value
+		// The very last value in the tan table is overflowing. (It's close to
+		// 90 degrees, so close to an infinite tangent). Set it to the highest
+		// possible value.
 		TAN_TABLE[TAN_TABLE.length - 1] = Double.MAX_VALUE;
+
+		// This is the highest tangent that we need to care about. So we need an
+		// ATAN_TABLE that goes from 0 to this. Anything bigger can be
+		// approximated to 90 degrees.
 		double maxTan = TAN_TABLE[TAN_TABLE.length - 2];
 
-		// create the ATAN_TABLE as a reverse lookup of the TAN_TABLE
+		// Create the ATAN_TABLE as a reverse lookup of the TAN_TABLE. We only
+		// consider the values in the first quadrant. We will calculate the
+		// remaining three quadrants from there.
 		ATAN_TABLE_LENGTH = (int) (maxTan * ATAN_RESOLUTION + 1);
 		ATAN_TABLE = new double[ATAN_TABLE_LENGTH];
-		int indexInTanTable = 0;
-		double tan = 0;
-		for (int i = 0; i < ATAN_TABLE.length; i++) {
-			ATAN_TABLE[i] = ((double) indexInTanTable) / ANGLE_RESOLUTION;
-			tan += 1.0 / ATAN_RESOLUTION;
-			while (indexInTanTable < TAN_TABLE.length && TAN_TABLE[indexInTanTable] < tan)
-				indexInTanTable++;
+
+		// Fill in the ATAN_TABLE from the TAN_TABLE.
+		ATAN_TABLE[0] = 0.0;
+		int currentIndexInTanTable = 0;
+		for (int i = 1; i < ATAN_TABLE.length; i++) {
+			// Increment the position in the TAN_TABLE until we find a tan that
+			// matches the current angle.
+			double currentTan = ((double) i) / ATAN_RESOLUTION;
+			while (currentIndexInTanTable < TAN_TABLE.length && TAN_TABLE[currentIndexInTanTable] <= currentTan)
+				currentIndexInTanTable++;
+
+			// Store the angle corresponding to the TAN_TABLE index in the
+			// ATAN_TABLE.
+			double currentAngle = ((double) currentIndexInTanTable) / ANGLE_RESOLUTION;
+			ATAN_TABLE[i] = currentAngle;
 		}
 	}
 
 	public static void setUp() {
-		// just an excuse to load the class and run the static initializer
+		// just an excuse to load the class and run the static initializer.
 	}
 
 	public static double sin(double angle) {
@@ -84,14 +121,14 @@ public class FastMath {
 
 	private static double atan(double ratio) {
 		if (ratio < 0) {
-			int index = (int) (-ratio * ANGLE_RESOLUTION);
+			int index = (int) (-ratio * ATAN_RESOLUTION);
 			if (index >= ATAN_TABLE_LENGTH)
 				return -90;
 
 			return -ATAN_TABLE[index];
 		}
 
-		int index = (int) (ratio * ANGLE_RESOLUTION);
+		int index = (int) (ratio * ATAN_RESOLUTION);
 		if (index >= ATAN_TABLE_LENGTH)
 			return 90;
 
@@ -132,7 +169,8 @@ public class FastMath {
 	}
 
 	public static void main(String[] args) {
-		// Quick performance test. I'll leave around - I'll probably need it.
+		// Quick performance test. I'll leave this around - I'll probably need
+		// it in the future.
 		System.out.println("Starting performance test");
 
 		long mathAtanStart = System.currentTimeMillis();

@@ -39,7 +39,7 @@ public class Vector {
 		if (isZero())
 			throw new ZeroVectorException();
 		if (Double.isNaN(angle))
-			angle = Math.toDegrees(Math.atan2(y, x));
+			angle = FastMath.atan(y, x);
 		return angle;
 	}
 

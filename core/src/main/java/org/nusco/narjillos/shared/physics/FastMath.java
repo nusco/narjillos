@@ -3,21 +3,22 @@ package org.nusco.narjillos.shared.physics;
 /**
  * Fast approximated trigonometry functions based on lookup tables.
  * 
- * Inspired by the algorithms in http://blog.numfum.com/2007/09/java-fixed-point-maths.html.
+ * Inspired by the algorithms in
+ * http://blog.numfum.com/2007/09/java-fixed-point-maths.html.
  */
 public class FastMath {
 
 	private static final int ANGLE_RESOLUTION = 100; // 1/100th of a degree
 	private static final int ANGLE_TABLES_LENGTH = (int) (90 * ANGLE_RESOLUTION + 1);
 	private static final double[] SIN_TABLE = new double[ANGLE_TABLES_LENGTH];
-	
+
 	private static final int ATAN_RESOLUTION = 100;
 	private static final int ATAN_TABLE_LENGTH;
 	private static final double[] ATAN_TABLE;
 
 	static {
 		final double[] TAN_TABLE = new double[ANGLE_TABLES_LENGTH];
-		
+
 		final double degreesStep = 1.0 / ANGLE_RESOLUTION;
 		double degrees = 0;
 		for (int i = 0; i < ANGLE_TABLES_LENGTH; i++) {
@@ -28,10 +29,10 @@ public class FastMath {
 		}
 
 		// the very last value in the tan table is overflowing.
-		// set it very high
+		// set it to the highest possible value
 		TAN_TABLE[TAN_TABLE.length - 1] = Double.MAX_VALUE;
 		double maxTan = TAN_TABLE[TAN_TABLE.length - 2];
-		
+
 		// create the ATAN_TABLE as a reverse lookup of the TAN_TABLE
 		ATAN_TABLE_LENGTH = (int) (maxTan * ATAN_RESOLUTION + 1);
 		ATAN_TABLE = new double[ATAN_TABLE_LENGTH];
@@ -53,17 +54,15 @@ public class FastMath {
 		double normalizedAngle = normalize(angle);
 
 		if (normalizedAngle < 180) {
-			if (normalizedAngle < 90) {
+			if (normalizedAngle < 90)
 				return SIN_TABLE[toIndexInSinTable(normalizedAngle)];
-			} else {
+			else
 				return SIN_TABLE[toIndexInSinTable(180 - normalizedAngle)];
-			}
 		} else {
-			if (normalizedAngle < 270) {
+			if (normalizedAngle < 270)
 				return -SIN_TABLE[toIndexInSinTable(normalizedAngle - 180)];
-			} else {
+			else
 				return -SIN_TABLE[toIndexInSinTable(360 - normalizedAngle)];
-			}
 		}
 	}
 
@@ -71,17 +70,15 @@ public class FastMath {
 		double normalizedAngle = normalize(angle);
 
 		if (normalizedAngle < 180) {
-			if (normalizedAngle < 90) {
+			if (normalizedAngle < 90)
 				return SIN_TABLE[toIndexInSinTable(90 - normalizedAngle)];
-			} else {
+			else
 				return -SIN_TABLE[toIndexInSinTable(normalizedAngle - 90)];
-			}
 		} else {
-			if (normalizedAngle < 270) {
+			if (normalizedAngle < 270)
 				return -SIN_TABLE[toIndexInSinTable(270 - normalizedAngle)];
-			} else {
+			else
 				return SIN_TABLE[toIndexInSinTable(normalizedAngle - 270)];
-			}
 		}
 	}
 
@@ -90,45 +87,40 @@ public class FastMath {
 			int index = (int) (-ratio * ANGLE_RESOLUTION);
 			if (index >= ATAN_TABLE_LENGTH)
 				return -90;
-			
+
 			return -ATAN_TABLE[index];
 		}
 
 		int index = (int) (ratio * ANGLE_RESOLUTION);
 		if (index >= ATAN_TABLE_LENGTH)
 			return 90;
-		
+
 		return ATAN_TABLE[index];
 	}
 
 	public static double atan(double x, double y) {
-		double tweakedY = abs(y) + 0.0000001;  // to avoid divisions by zero
-		double arc = atan(x / tweakedY);
-		
+		double arc;
+		if (y == 0)
+			arc = atan(x / 0.0000001); // avoid divisions by zero
+		else
+			arc = atan(x / y);
+
 		if (y > 0)
 			return arc; // first quadrant
 
 		if (y < 0) {
 			if (x > 0)
 				return 180 - arc; // second quadrant
-
 			if (x < 0)
 				return -180 - arc; // third quadrant
-			
 			// x == 0
 			return 180;
 		}
 
 		// y == 0
-		
 		if (x > 0)
 			return 90;
-
 		return -90;
-	}
-
-	private static double abs(double n) {
-		return (n >= 0) ? n : -n;
 	}
 
 	private static double normalize(double angle) {
@@ -140,21 +132,19 @@ public class FastMath {
 	}
 
 	public static void main(String[] args) {
-		// the main acts as a performance test
-		
-		setUp();
+		// Quick performance test. I'll leave around - I'll probably need it.
 		System.out.println("Starting performance test");
 
-		long start1 = System.currentTimeMillis();
+		long mathAtanStart = System.currentTimeMillis();
 		for (double x = -6000; x < 6000; x += 0.3)
 			for (double y = -100; y < 100; y += 0.3)
 				Math.toDegrees(Math.atan2(y, x));
-		System.out.println((double) (System.currentTimeMillis() - start1) / 1000);
+		System.out.println((double) (System.currentTimeMillis() - mathAtanStart) / 1000);
 
-		long start2 = System.currentTimeMillis();
+		long fastMathAtanStart = System.currentTimeMillis();
 		for (double x = -6000; x < 6000; x += 0.3)
 			for (double y = -100; y < 100; y += 0.3)
 				atan(y, x);
-		System.out.println((double) (System.currentTimeMillis() - start2) / 1000);
+		System.out.println((double) (System.currentTimeMillis() - fastMathAtanStart) / 1000);
 	}
 }

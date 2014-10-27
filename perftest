@@ -1,0 +1,3 @@
+./prepare
+
+java -cp core/build/install/core/lib/narjillos-0.0.1.jar:core/build/install/core/lib/gson-2.3.jar org.nusco.narjillos.PerformanceTest -Xmx2048M -Xms2048M

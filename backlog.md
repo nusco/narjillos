@@ -5,17 +5,13 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Switch to correct vector math algorithms °°
-  (see TODO in class Vector for an example)
-* Remove "crazy rotation" effect °°
-  (see "{037_033_009_240_163_114_226_093}{070_235_165_209_037_163_103_156}{070_041_062_065_112_221_235_088}{224_046_028_223_162_019_227_001})
+* Switch to correct vector math algorithms (see TODO in class Vector for an example) °°
 * Watchdog for excessive speed (results in warning) °
 * Smooth, inertial targeting
 
 ###Speed Demon
 
-* Synchronize cuncurrent access in parallel ticking of narjillos °°°
-  (also double-check parallel code)
+* Synchronize cuncurrent access in parallel ticking of narjillos (also double-check parallel code) °°°
 * Check speed under Linux
 * Make FPS parametric to improve TPS on slower machines
 
@@ -37,23 +33,30 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ethologist
 
-* Genetically determined asymmetric skewing strategies °°°
+* Skewing histeresis around 180 degrees °°°
+* Find out why creatures seem to ignore nearby food so often °°
 * Eggs °
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °
 * Distance of firing is determined by genes °
+* Narjillos are born small and then grow up °
+* Narjillos eat each other
+* "Fears" gene
+* "Wants to eat" gene
+* Obstacles and reactive sense system
 
 ###Lab Technician
 
-* Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp) °
+* Fix tmp file bug while reloading experiment (happens when both files have matching .tmp files) °°°
+* Real arguments parsing (use --no-persistence together with other switches) °°
 * Check git commit on experiment startup °
 * Lock on single narjillo °
+* Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp)
 * Dump isolated narjillos to file (instead of the console)
-* Real arguments parsing (use --no-persistence together with other switches)
 * Zipped persistence files
 * View narjillo stats (age, energy, times eaten...)
-* Make food visible in normal view
-* Make food visible in infrared view
+* Make food more visible in normal view
+* Make food more visible in infrared view
 
 ###Ecologist
 
@@ -63,20 +66,12 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Multiple environments in multiple processes (with migration)
 * Plant-like creatures instead of food (minimal energy expenditure? photosyntesis?)
 
-###Ethologist
-
-* Narjillos are born small and then grow up °
-* Narjillos eat each other
-* "Fears" gene
-* "Wants to eat" gene
-* Obstacles and reactive sense system
-
 ###Artist
 
-* Birth animation °
-* Light on/off visual and sound effects °
 * Better death animation (right now the bending is not visible) °
+* Birth animation °
 * Fade out mouth/eye during death °
+* Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)
 

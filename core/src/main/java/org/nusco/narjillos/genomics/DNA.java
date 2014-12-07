@@ -203,7 +203,7 @@ public class DNA {
 		DNA.observer = dnaObserver;
 	}
 
-	public void removeFromPool() {
+	public void destroy() {
 		DNA.observer.removed(this);
 	}
 }

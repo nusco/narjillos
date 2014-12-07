@@ -20,7 +20,6 @@ import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
-//TODO: check thread-safety (too complicated and fragile right now).
 /**
  * The place that Narjillos live in.
  * 
@@ -89,19 +88,19 @@ public class Ecosystem {
 	}
 
 	public void tick(RanGen ranGen) {
-		List<Narjillo> narjillosCopy = new LinkedList<>(narjillos);
-
-		List<Future<Segment>> movements = tickAll(narjillosCopy);
-
-		for (int i = 0; i < narjillosCopy.size(); i++) {
-			Segment movement = waitUntilAvailable(movements, i);
-
-			checkForExcessiveSpeed(movement);
-			
-			Narjillo narjillo = narjillosCopy.get(i);
-			consumeCollidedFood(narjillo, movement, ranGen);
+		for (Narjillo narjillo : new LinkedList<>(narjillos))
 			if (narjillo.isDead())
 				remove(narjillo);
+
+		List<Future<Segment>> movements = tickAll(narjillos);
+
+		List<Narjillo> allNarjillos = new LinkedList<>(narjillos);
+		for (int i = 0; i < allNarjillos.size(); i++) {
+			Segment movement = waitUntilAvailable(movements, i);
+			checkForExcessiveSpeed(movement);
+
+			Narjillo narjillo = allNarjillos.get(i);
+			consumeCollidedFood(narjillo, movement, ranGen);
 		}
 
 		if (shouldSpawnFood(ranGen))
@@ -124,10 +123,9 @@ public class Ecosystem {
 		}
 	}
 
-	private List<Future<Segment>> tickAll(List<Narjillo> narjillos) {
+	private List<Future<Segment>> tickAll(Set<Narjillo> narjillos) {
 		List<Future<Segment>> result = new LinkedList<>();
-		for (int i = 0; i < narjillos.size(); i++) {
-			final Narjillo narjillo = narjillos.get(i);
+		for (final Narjillo narjillo : narjillos) {
 			result.add(executorService.submit(new Callable<Segment>() {
 				@Override
 				public Segment call() throws Exception {
@@ -160,6 +158,7 @@ public class Ecosystem {
 
 	public final Narjillo spawnNarjillo(DNA genes, Vector position) {
 		final Narjillo narjillo = new Narjillo(genes, new Embryo(genes).develop(), position);
+		
 		forceAdd(narjillo);
 		return narjillo;
 	}
@@ -211,11 +210,9 @@ public class Ecosystem {
 	}
 
 	private void remove(Narjillo narjillo) {
-		if (!narjillos.contains(narjillo))
-			return;
-		narjillos.remove(narjillo);
-		narjillo.getDNA().removeFromPool();
 		notifyThingRemoved(narjillo);
+		narjillos.remove(narjillo);
+		narjillo.getDNA().destroy();
 	}
 
 	private void reproduce(Narjillo narjillo, Vector position, RanGen ranGen) {

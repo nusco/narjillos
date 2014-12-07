@@ -52,7 +52,7 @@ public class DNAObserverTest {
 	@Test
 	public void observesDNARemoval() {
 		DNA dna = new DNA("{1}");
-		dna.removeFromPool();
+		dna.destroy();
 
 		String expected = "Removed: " + dna.toString();
 		assertEquals(expected, log[0]);

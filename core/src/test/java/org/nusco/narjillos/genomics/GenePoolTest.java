@@ -70,7 +70,7 @@ public class GenePoolTest {
 		new DNA("111_111_222_111_222_000_000_000_000");
 		new DNA("111_222_222_222_222_000_000_000_000");
 
-		thisOneWillDie.removeFromPool();
+		thisOneWillDie.destroy();
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
 		assertEquals("{111_111_111_222_111_000_000_000_000}", mostSuccessful.toString());
@@ -82,7 +82,7 @@ public class GenePoolTest {
 		for (int i = 0; i < 100; i++) {
 			DNA dna = DNA.random(ranGen);
 			if (i >= 50)
-				dna.removeFromPool();
+				dna.destroy();
 		}
 		
 		assertEquals(50, genePool.getCurrentPoolSize());

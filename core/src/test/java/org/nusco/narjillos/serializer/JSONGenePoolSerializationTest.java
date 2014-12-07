@@ -30,7 +30,7 @@ public class JSONGenePoolSerializationTest {
 		DNA child2 = parent.copy(ranGen);
 		parent.copy(ranGen);
 		
-		child2.removeFromPool();
+		child2.destroy();
 		
 		child1.copy(ranGen);
 		DNA child3 = child1.copy(ranGen);

@@ -11,7 +11,7 @@ public class Energy {
 
 	public Energy(double initialValue, double lifespan) {
 		this.initialValue = initialValue;
-		this.value = initialValue;
+		this.value = this.initialValue;
 		this.maxForAge = initialValue * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
 		this.decay = maxForAge / lifespan;
 		this.agonyLevel = this.decay * 300;

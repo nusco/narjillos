@@ -9,21 +9,18 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Synchronize cuncurrent access in parallel ticking of narjillos (also double-check parallel code) °°°
 * Check speed under Linux
-* Make FPS parametric to improve TPS on slower machines
 
 ###Gamer
 
-* Externalize all configurable parameters to JSON files
+* Externalize all configurable parameters to YAML
 * Try scrolling/panning commands under Linux
-* Parameterize scroll/pan speeds
 
 ###Genetist
 
-* Iterations in body plan °°°
+* Iterations in body plan °°
 * Find a good way to deal with atrophy °°
-* Ancestry browser °°
+* Ancestry browser °
 * DNA diff during ancestry analysis °
 * "Skip next" instruction in body plan °
 * Separate RGB color genes
@@ -50,7 +47,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Automatically purge experiment temp file
 * Automatically recover missing experiment from temp file
 * Lock on single narjillo
-* Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp)
+* Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
 * Dump isolated narjillos to file (instead of the console)
 * Zipped persistence files
 * View narjillo stats (age, energy, times eaten...)
@@ -59,8 +56,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ecologist
 
-* Bug: PetriDish can miss notifications from pond (in particular, Narjillos dying when they spawn with very low or no energy) °°
-  (This might not be the case anymore, but a good chance to check multithreading around the Ecosystem)
 * Conservation of energy in entire pond (with sun to give more energy)
 * Multiple environments in multiple processes (with migration)
 * Plant-like creatures instead of food (minimal energy expenditure? photosyntesis?)

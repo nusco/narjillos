@@ -78,18 +78,8 @@ public class Vector {
 	}
 
 	public Vector getProjectionOn(Vector other) throws ZeroVectorException {
-		Vector direction = pointsInSameDirectionAs(other) ? other : other.invert();
-		double relativeAngle = direction.getAngle() - getAngle();
-		double resultLength = FastMath.cos(relativeAngle) * getLength();
-		return Vector.polar(direction.getAngle(), resultLength);
-		// TODO: switch to the code below (but check broken tests)
-//		double theta = FastMath.cos(getAngleWith(other));
-//		double resultLength = theta * getLength();
-//		return Vector.polar(other.getAngle(), resultLength);
-	}
-
-	private boolean pointsInSameDirectionAs(Vector other) throws ZeroVectorException {
-		return Math.abs(getAngleWith(other)) < 90;
+		double resultLength = FastMath.cos(getAngleWith(other)) * getLength();
+		return Vector.polar(other.getAngle(), resultLength);
 	}
 
 	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {

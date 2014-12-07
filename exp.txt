@@ -1,4 +1,0 @@
-Randomizing seed... Experiment 20cfb50:1804409495
-
-   ticks    time     tps    narj    food    most_typical_dna
-       0       0       0     150     200    {216_111_052_107_059_011_131}{217_176_111_147_124_207_015}

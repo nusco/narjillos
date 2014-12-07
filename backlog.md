@@ -47,10 +47,12 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Fix tmp file bug while reloading experiment (happens when both files have matching .tmp files) °°°
 * Real arguments parsing (use --no-persistence together with other switches) °°
 * Check git commit on experiment startup °
-* Lock on single narjillo °
+* Save single file for both experiment and genepool °
+* Automatically purge experiment temp file
+* Automatically recover missing experiment from temp file
+* Lock on single narjillo
 * Make CPU floatpoint precision a part of the experiment's id (instead of using strictfp)
 * Dump isolated narjillos to file (instead of the console)
 * Zipped persistence files

@@ -31,6 +31,7 @@ public class Ecosystem {
 	private static final double COLLISION_DISTANCE = 30;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
+	private static final int AREAS_PER_EDGE = 80;
 
 	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
@@ -43,7 +44,7 @@ public class Ecosystem {
 
 	public Ecosystem(final long size) {
 		this.size = size;
-		this.foodSpace = new Space(size);
+		this.foodSpace = new Space(size, AREAS_PER_EDGE);
 		this.center = Vector.cartesian(size, size).by(0.5);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
@@ -95,6 +96,9 @@ public class Ecosystem {
 
 		for (int i = 0; i < narjillosCopy.size(); i++) {
 			Segment movement = waitUntilAvailable(movements, i);
+
+			checkForExcessiveSpeed(movement);
+			
 			Narjillo narjillo = narjillosCopy.get(i);
 			consumeCollidedFood(narjillo, movement, ranGen);
 			if (narjillo.isDead())
@@ -106,6 +110,11 @@ public class Ecosystem {
 
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
+	}
+
+	private void checkForExcessiveSpeed(Segment movement) {
+		if (movement.getVector().getLength() > foodSpace.getAreaSize())
+			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of " + foodSpace.getAreaSize() + ". Could result in missed collisions.");
 	}
 
 	private Segment waitUntilAvailable(List<Future<Segment>> movements, int index) {

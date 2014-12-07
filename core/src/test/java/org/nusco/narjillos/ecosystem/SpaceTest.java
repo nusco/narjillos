@@ -16,7 +16,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class SpaceTest {
 
-	Space space = new Space(10_000);
+	Space space = new Space(10_000, 100);
 
 	@Test
 	public void isDividedIntoAGridOfSquareAreas() {
@@ -117,7 +117,7 @@ public class SpaceTest {
 	}
 
 	@Test
-	public void neighborsSearchWorksForEdgesAreas() {
+	public void neighborsSearchWorksForEdgeAreas() {
 		Thing[] things = new Thing[] {
 				new MockThing(Vector.cartesian(010, 310), 0), // area [0, 3]
 				new MockThing(Vector.cartesian(020, 320), 1), // area [0, 3]

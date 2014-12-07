@@ -54,7 +54,7 @@ public class Narjillo implements Thing {
 		double energySpent = body.tick(getMouth().getDirection());
 		energy.tick(energySpent);
 
-		return new Segment(startingPosition, body.getStartPoint());
+		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
 	}
 
 	private void applyLifecycleAnimations() {

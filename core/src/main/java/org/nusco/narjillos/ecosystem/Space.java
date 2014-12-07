@@ -11,8 +11,6 @@ import org.nusco.narjillos.shared.things.Thing;
  */
 public class Space {
 
-	private static int AREAS_PER_EDGE = 100;
-
 	// The assumption here is that no Thing will ever
 	// move more than this value in a single tick.
 	// So a Thing can only move from one area to one of its neighboring areas,
@@ -20,17 +18,20 @@ public class Space {
 	// If we have faster Things, then we need to make this
 	// at least equal to their maximum velocity.
 	private final double areaSize;
-	
+
+	private final int areasPerEdge;
 	private final Set<Thing>[][] areas;
+
 	private final Set<Thing> allTheThings = new LinkedHashSet<>();
 
 	// TODO: right now there is no visibility to/from outer space. the first is easy, the second is hard
 	private final Set<Thing> outerSpace = new LinkedHashSet<>();
 	
 	@SuppressWarnings("unchecked")
-	public Space(long size) {
-		areaSize = ((double) size) / AREAS_PER_EDGE;
-		this.areas = new Set[AREAS_PER_EDGE][AREAS_PER_EDGE];
+	public Space(long size, int areasPerEdge) {
+		this.areasPerEdge = areasPerEdge;
+		areaSize = ((double) size) / areasPerEdge;
+		this.areas = new Set[areasPerEdge][areasPerEdge];
 		for (int i = 0; i < areas.length; i++)
 			for (int j = 0; j < areas[i].length; j++)
 				areas[i][j] = new LinkedHashSet<>();
@@ -125,7 +126,7 @@ public class Space {
 	}
 
 	private boolean isInOuterSpace(int x, int y) {
-		return x < 0 || x >= AREAS_PER_EDGE || y < 0 || y >= AREAS_PER_EDGE;
+		return x < 0 || x >= areasPerEdge || y < 0 || y >= areasPerEdge;
 	}
 
 	private Set<Thing> getArea(int x, int y) {

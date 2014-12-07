@@ -12,7 +12,7 @@ import org.nusco.narjillos.shared.things.Thing;
  */
 public class Space {
 
-	private static final double COLLISION_DISTANCE = 30;
+	private static final double COLLISION_DISTANCE = 60;
 
 	// The assumption here is that no Thing will ever
 	// move more than this value in a single tick.

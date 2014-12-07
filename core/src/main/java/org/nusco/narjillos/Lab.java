@@ -51,10 +51,8 @@ public class Lab {
 		if (experiment.getTicksChronometer().getTotalTicks() % PARSE_INTERVAL == 0)
 			executePerodicOperations();
 
-		if (!thereAreSurvivors) {
+		if (!thereAreSurvivors)
 			System.out.println("*** Extinction happens. ***");
-			reportEndOfExperiment();
-		}
 
 		return thereAreSurvivors;
 	}

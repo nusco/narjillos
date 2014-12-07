@@ -21,8 +21,8 @@ public class Segment {
 		return vector;
 	}
 
-	private double getLength() {
-		return vector.minus(startPoint).getLength();
+	public double getLength() {
+		return vector.getLength();
 	}
 	
 	public double getMinimumDistanceFromPoint(Vector point) {

@@ -6,13 +6,20 @@ import org.junit.Test;
 
 public class SegmentTest {
 	@Test
-	public void isIdentifiedByTwoVectors() {
+	public void isDescribedByAStartingPositionAndAVector() {
 		Segment segment = new Segment(Vector.cartesian(10, 12), Vector.cartesian(13, 17));
 		
 		assertEquals(10, segment.getStartPoint().x, 0);
 		assertEquals(12, segment.getStartPoint().y, 0);
 		assertEquals(13, segment.getVector().x, 0);
 		assertEquals(17, segment.getVector().y, 0);
+	}
+	
+	@Test
+	public void hasALength() {
+		Segment segment = new Segment(Vector.cartesian(10, 0), Vector.cartesian(0, 20));
+		
+		assertEquals(20, segment.getLength(), 0);
 	}
 
 	@Test

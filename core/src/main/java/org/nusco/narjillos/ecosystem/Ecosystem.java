@@ -33,7 +33,6 @@ public class Ecosystem {
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 
 	private final long size;
-	private final Set<FoodPiece> foodPieces = Collections.synchronizedSet(new LinkedHashSet<FoodPiece>());
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
 
 	private final Space foodSpace;
@@ -58,18 +57,10 @@ public class Ecosystem {
 		return size;
 	}
 
-	public Set<FoodPiece> getFoodPieces() {
-		return foodPieces;
-	}
-
-	public Set<Narjillo> getNarjillos() {
-		return narjillos;
-	}
-
 	public Set<Thing> getThings() {
 		Set<Thing> result = new LinkedHashSet<Thing>();
 		synchronized (this) {
-			result.addAll(foodPieces);
+			result.addAll(foodSpace.getAll());
 		}
 		result.addAll(narjillos);
 		return result;
@@ -80,10 +71,10 @@ public class Ecosystem {
 		Thing closestFood = null;
 
 		Set<Thing> allFood = new LinkedHashSet<>();
-		if (foodPieces.isEmpty())
+		if (foodSpace.isEmpty())
 			return center;
 
-		allFood.addAll(foodPieces);
+		allFood.addAll(foodSpace.getAll()); // TODO: maybe unnecessary?
 
 		// TODO: replace with spiral search in partitioned space? (after
 		// checking that food exists)
@@ -169,7 +160,6 @@ public class Ecosystem {
 	}
 
 	public void forceAdd(FoodPiece food) {
-		foodPieces.add(food);
 		foodSpace.add(food);
 		notifyThingAdded(food);
 	}
@@ -222,7 +212,6 @@ public class Ecosystem {
 	private void consumeFood(Narjillo narjillo, Thing foodPiece, RanGen ranGen) {
 		if (!foodSpace.contains(foodPiece))
 			return; // race condition: already consumed
-		foodPieces.remove(foodPiece);
 		notifyThingRemoved(foodPiece);
 		foodSpace.remove(foodPiece);
 
@@ -268,11 +257,19 @@ public class Ecosystem {
 		ecosystemEventListeners.add(ecosystemEventListener);
 	}
 
-	public synchronized int getNumberOfFoodPieces() {
-		return foodPieces.size();
+	public int getNumberOfFoodPieces() {
+		return foodSpace.getAll().size();
 	}
 
 	public int getNumberOfNarjillos() {
 		return narjillos.size();
+	}
+
+	public Set<Thing> getFoodPieces() {
+		return foodSpace.getAll();
+	}
+
+	public Set<Narjillo> getNarjillos() {
+		return narjillos;
 	}
 }

@@ -210,6 +210,32 @@ public class SpaceTest {
 		assertEquals(1, outerSpaceArea.size());
 		assertEquals("1", outerSpaceArea.iterator().next().getLabel());
 	}
+
+	@Test
+	public void returnsAllTheThings() {
+		Thing[] things = new Thing[] {
+				new MockThing(Vector.cartesian(9910, 9910), 0),
+				new MockThing(Vector.cartesian(9920, 9920), 1),
+				new MockThing(Vector.cartesian(10_010, 10_010), 1),
+		};
+		for (int i = 0; i < things.length; i++)
+			space.add(things[i]);
+
+		Set<Thing> allTheThings = space.getAll();
+		
+		assertEquals(3, allTheThings.size());
+		for (int i = 0; i < things.length; i++)
+			assertTrue(allTheThings.contains(things[i]));
+	}
+
+	@Test
+	public void knowsWhetherItIsEmpty() {
+		assertTrue(space.isEmpty());
+		
+		space.add(new MockThing(Vector.cartesian(9910, 9910), 0));
+
+		assertFalse(space.isEmpty());
+	}
 }
 
 class MockThing implements Thing {

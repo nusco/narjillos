@@ -16,14 +16,15 @@ public class Space {
 	private static int AREAS_PER_EDGE = 100;
 
 	// The assumption here is that no Thing will ever
-	// move more than twice this value in a single tick.
+	// move more than this value in a single tick.
 	// So a Thing can only move from one area to one of its neighboring areas,
 	// not farther away.
 	// If we have faster Things, then we need to make this
-	// at least half their maximum velocity.
+	// at least equal to their maximum velocity.
 	private final double areaSize;
 	
 	private final Set<Thing>[][] areas;
+	private final Set<Thing> allTheThings = new LinkedHashSet<>();
 
 	// TODO: right now there is no visibility to/from outer space. the first is easy, the second is hard
 	private final Set<Thing> outerSpace = new LinkedHashSet<>();
@@ -47,12 +48,14 @@ public class Space {
 		Set<Thing> area = getArea(x, y);
 
 		area.add(thing);
+		allTheThings.add(thing);
 		
 		return new int[] {x, y};
 	}
 
 	public void remove(Thing thing) {
 		getArea(thing).remove(thing);
+		allTheThings.remove(thing);
 	}
 
 	public boolean contains(Thing thing) {
@@ -118,5 +121,13 @@ public class Space {
 
 	private int toAreaCoordinates(double x) {
 		return (int) Math.floor(x / areaSize);
+	}
+
+	public Set<Thing> getAll() {
+		return allTheThings;
+	}
+
+	public boolean isEmpty() {
+		return allTheThings.isEmpty();
 	}
 }

@@ -86,9 +86,7 @@ A few advanced uses in case you really get serious with this program:
 
 * Experiments are deterministic. Each experiment has a name composed of the current git commit (the revision of Narjillos that you're using), plus a random seed. Experiments with the same identifier will give exactly the same results over time.
 
-* If you run a very long experiment, DNA ancestry tracking might consume your available memory. In that case, run you experiment with additional JVM arguments to increase memory. For example:
-
-        experiment f818449-521468119.exp -Xmx2048M -Xms2048M
+* Be aware that very long experiments need a lot of memory to store the history of the gene pool, so both _petri_ and _experiment_ allocate a 4 Gb heap when starting the JVM. If you want to allocate less memory, you can edit the _-Xmx4096M_ and _-Xms4096M_ arguments in the two scripts.
 
 ## Goal
 

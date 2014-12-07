@@ -28,7 +28,6 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
  */
 public class Ecosystem {
 
-	private static final double COLLISION_DISTANCE = 30;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 	private static final int AREAS_PER_EDGE = 80;
@@ -189,18 +188,10 @@ public class Ecosystem {
 	}
 
 	private void consumeCollidedFood(Narjillo narjillo, Segment movement, RanGen ranGen) {
-		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
-
-		for (Thing nearbyFood : foodSpace.getNearbyNeighbors(narjillo))
-			if (checkCollisionWithFood(movement, nearbyFood))
-				collidedFoodPieces.add(nearbyFood);
+		Set<Thing> collidedFoodPieces = foodSpace.detectCollisions(movement);
 
 		for (Thing collidedFoodPiece : collidedFoodPieces)
 			consumeFood(narjillo, collidedFoodPiece, ranGen);
-	}
-
-	private boolean checkCollisionWithFood(Segment movement, Thing foodPiece) {
-		return movement.getMinimumDistanceFromPoint(foodPiece.getPosition()) <= COLLISION_DISTANCE;
 	}
 
 	private void consumeFood(Narjillo narjillo, Thing foodPiece, RanGen ranGen) {

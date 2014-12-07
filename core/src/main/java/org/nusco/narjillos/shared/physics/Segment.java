@@ -29,7 +29,7 @@ public class Segment {
 		if (vector.isZero())
 			return startPoint.getDistanceFrom(point);
 		
-		double length = getLength(); // slow - only do it once
+		double length = getLength();
 		
 		if (length < 0.0001)
 			return startPoint.getDistanceFrom(point);

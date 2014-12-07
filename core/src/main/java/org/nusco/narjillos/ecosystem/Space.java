@@ -1,15 +1,18 @@
 package org.nusco.narjillos.ecosystem;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.nusco.narjillos.shared.physics.Segment;
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 
 /**
  * Partitioned space for fast neighbor searching, collision detection, etc.
  */
 public class Space {
+
+	private static final double COLLISION_DISTANCE = 30;
 
 	// The assumption here is that no Thing will ever
 	// move more than this value in a single tick.
@@ -62,13 +65,18 @@ public class Space {
 	}
 
 	public Set<Thing> getNearbyNeighbors(Thing thing) {
-		int x = toAreaCoordinates(thing.getPosition().x);
-		int y = toAreaCoordinates(thing.getPosition().y);
+		Set<Thing> result = getNearbyNeighbors(thing.getPosition());
+		result.remove(thing);
+		return result;
+	}
 
+	private Set<Thing> getNearbyNeighbors(Vector position) {
+		int x = toAreaCoordinates(position.x);
+		int y = toAreaCoordinates(position.y);
 		Set<Thing> result = new LinkedHashSet<>();
-
+		
 		if (isInOuterSpace(x, y)) {
-			result.addAll(copy_without_(outerSpace, thing));
+			result.addAll(outerSpace);
 			return result;
 		}
 		
@@ -76,12 +84,7 @@ public class Space {
 		result.addAll(getArea(x - 1, y));
 		result.addAll(getArea(x - 1, y + 1));
 		result.addAll(getArea(x, y - 1));
-		
-		// Special case: the central area will include the thing
-		// we're searching for. We need to remove it.
-		Set<Thing> centralAreaWithoutThing = copy_without_(getArea(x, y), thing);
-		result.addAll(centralAreaWithoutThing);
-
+		result.addAll(getArea(x, y));
 		result.addAll(getArea(x, y + 1));
 		result.addAll(getArea(x + 1, y -1));
 		result.addAll(getArea(x + 1, y));
@@ -90,10 +93,10 @@ public class Space {
 	}
 
 	public Thing findClosestTo(Thing thing) {
+		// TODO: naive three-step approximation. Replace with spiral search?
+
 		if (isEmpty())
 			return null;
-
-		// TODO: replace with spiral search
 		
 		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing);
 		
@@ -101,6 +104,16 @@ public class Space {
 			return findClosestTo_Amongst(thing, nearbyNeighbors);
 
 		return findClosestTo_Amongst(thing, allTheThings);
+	}
+
+	public Set<Thing> detectCollisions(Segment movement) {
+		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
+
+		for (Thing neighbor : getNearbyNeighbors(movement.getStartPoint()))
+			if (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= COLLISION_DISTANCE)
+				collidedFoodPieces.add(neighbor);
+
+		return collidedFoodPieces;
 	}
 
 	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things) {
@@ -116,13 +129,6 @@ public class Space {
 		}
 
 		return result;
-	}
-	
-	private Set<Thing> copy_without_(Collection<Thing> area, Thing thing) {
-		Set<Thing> centralAreaWithoutThing = new LinkedHashSet<>();
-		centralAreaWithoutThing.addAll(area);
-		centralAreaWithoutThing.remove(thing);
-		return centralAreaWithoutThing;
 	}
 
 	private boolean isInOuterSpace(int x, int y) {

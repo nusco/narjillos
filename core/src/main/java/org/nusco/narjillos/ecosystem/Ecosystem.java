@@ -220,8 +220,7 @@ public class Ecosystem {
 	}
 
 	private void consumeFood(Narjillo narjillo, Thing foodPiece, RanGen ranGen) {
-		// TODO: replace with space.contains()
-		if (!foodPieces.contains(foodPiece))
+		if (!foodSpace.contains(foodPiece))
 			return; // race condition: already consumed
 		foodPieces.remove(foodPiece);
 		notifyThingRemoved(foodPiece);

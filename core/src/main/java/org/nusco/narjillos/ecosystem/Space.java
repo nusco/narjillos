@@ -21,7 +21,6 @@ public class Space {
 	// not farther away.
 	// If we have faster Things, then we need to make this
 	// at least half their maximum velocity.
-	// TODO: put in a runtime watchdog for this?
 	private final double areaSize;
 	
 	private final Set<Thing>[][] areas;
@@ -53,11 +52,11 @@ public class Space {
 	}
 
 	public void remove(Thing thing) {
-		int x = toAreaCoordinates(thing.getPosition().x);
-		int y = toAreaCoordinates(thing.getPosition().y);
-		Set<Thing> area = getArea(x, y);
+		getArea(thing).remove(thing);
+	}
 
-		area.remove(thing);
+	public boolean contains(Thing thing) {
+		return getArea(thing).contains(thing);
 	}
 
 	public List<Set<Thing>> getNeighbors(Thing thing) {
@@ -109,6 +108,12 @@ public class Space {
 		if (isInOuterSpace(x, y))
 			return outerSpace;
 		return areas[x][y];
+	}
+
+	private Set<Thing> getArea(Thing thing) {
+		int x = toAreaCoordinates(thing.getPosition().x);
+		int y = toAreaCoordinates(thing.getPosition().y);
+		return getArea(x, y);
 	}
 
 	private int toAreaCoordinates(double x) {

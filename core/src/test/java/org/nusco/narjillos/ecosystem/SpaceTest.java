@@ -1,6 +1,7 @@
 package org.nusco.narjillos.ecosystem;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
@@ -19,7 +20,7 @@ public class SpaceTest {
 	Space space = new Space(10_000);
 
 	@Test
-	public void itIsDividedIntoAGridOfSquareAreas() {
+	public void isDividedIntoAGridOfSquareAreas() {
 		assertEquals(100, space.getAreaSize(), 0.00001);
 	}
 
@@ -86,9 +87,18 @@ public class SpaceTest {
 
 		space.remove(thingThatGoes);
 		
-		List<Set<Thing>> neighbors = space.getNeighbors(thingThatStays);
+		assertFalse(space.contains(thingThatGoes));
+	}
 
-		assertTrue(neighbors.isEmpty());
+	@Test
+	public void knowsWhetherAThingExists() {
+		MockThing thing = new MockThing(Vector.cartesian(100, 200), 1);
+
+		assertFalse(space.contains(thing));
+
+		space.add(thing);
+
+		assertTrue(space.contains(thing));
 	}
 	
 	@Test

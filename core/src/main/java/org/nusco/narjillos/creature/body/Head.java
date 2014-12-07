@@ -62,8 +62,4 @@ public class Head extends Organ {
 	public double getMetabolicRate() {
 		return metabolicRate;
 	}
-	
-	public Vector getMainAxis() {
-		return Vector.polar(getAbsoluteAngle(), 1).invert();
-	}
 }

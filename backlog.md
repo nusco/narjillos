@@ -33,7 +33,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ethologist
 
-* Skewing histeresis around 180 degrees °°°
 * Find out why creatures seem to ignore nearby food so often °°
 * Eggs °
 * "Egg-firing" °

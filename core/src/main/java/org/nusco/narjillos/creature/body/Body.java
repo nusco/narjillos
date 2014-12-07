@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.nusco.narjillos.creature.body.physics.RotationalForceField;
 import org.nusco.narjillos.creature.body.physics.TranslationalForceField;
+import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
@@ -140,7 +141,7 @@ public class Body {
 		if (direction.equals(Vector.ZERO))
 			return 0;
 		try {
-			return getHead().getMainAxis().getAngleWith(direction);
+			return Angle.normalize(getAngle() - direction.getAngle());
 		} catch (ZeroVectorException e) {
 			throw new RuntimeException(e); // should never happen
 		}
@@ -207,5 +208,9 @@ public class Body {
 	@Override
 	public String toString() {
 		return head.toString();
+	}
+
+	public double getAngle() {
+		return Angle.normalize(getHead().getAbsoluteAngle() + 180);
 	}
 }

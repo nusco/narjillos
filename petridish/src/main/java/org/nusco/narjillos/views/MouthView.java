@@ -63,7 +63,7 @@ class MouthView extends ThingView {
 
 	private double getMouthAngle() {
 		try {
-			return getNarjillo().getTargetDirection().getAngle();
+			return getNarjillo().getMouth().getDirection().getAngle();
 		} catch (ZeroVectorException e) {
 			return 0;
 		}

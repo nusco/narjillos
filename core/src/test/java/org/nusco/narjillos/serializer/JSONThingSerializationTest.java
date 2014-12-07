@@ -44,6 +44,7 @@ public class JSONThingSerializationTest {
 		assertEquals(genes, deserialized.getDNA().toString());
 		assertEquals(Vector.cartesian(100, 200), deserialized.getTarget());
 		assertEquals(narjillo.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0.0);
+		assertEquals(narjillo.getMouth(), deserialized.getMouth());
 
 		List<BodyPart> bodyParts = narjillo.getBodyParts();
 		List<BodyPart> deserializedBodyParts = deserialized.getBodyParts();

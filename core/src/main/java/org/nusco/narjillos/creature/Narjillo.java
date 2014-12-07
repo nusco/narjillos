@@ -8,7 +8,6 @@ import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -21,6 +20,7 @@ public class Narjillo implements Thing {
 	private final DNA dna;
 	private Vector target = Vector.ZERO;
 	private Energy energy;
+	private Mouth mouth = new Mouth();
 	
 	public Narjillo(DNA genes, Body body, Vector position) {
 		this(genes, body, position, body.getMass() / 2);
@@ -50,7 +50,8 @@ public class Narjillo implements Thing {
 		if (isDead())
 			return new Segment(startingPosition, Vector.ZERO);
 
-		double energySpent = body.tick(getTargetDirection());
+		mouth.tick(getPosition(), target, getBody().getAngle());
+		double energySpent = body.tick(getMouth().getDirection());
 		energy.tick(energySpent);
 
 		return new Segment(startingPosition, body.getStartPoint());
@@ -65,14 +66,6 @@ public class Narjillo implements Thing {
 	@Override
 	public Vector getPosition() {
 		return body.getStartPoint();
-	}
-
-	public Vector getTargetDirection() {
-		try {
-			return target.minus(getPosition()).normalize(1);
-		} catch (ZeroVectorException e) {
-			return Vector.cartesian(-1, 0);
-		}
 	}
 
 	public void setTarget(Vector target) {
@@ -128,5 +121,9 @@ public class Narjillo implements Thing {
 
 	public double getEnergyPercent() {
 		return energy.getCurrentPercentOfInitialValue();
+	}
+
+	public Mouth getMouth() {
+		return mouth;
 	}
 }

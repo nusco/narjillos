@@ -67,26 +67,12 @@ public class Ecosystem {
 	}
 
 	public Vector findClosestTarget(Narjillo narjillo) {
-		double minDistance = Double.MAX_VALUE;
-		Thing closestFood = null;
+		Thing target = foodSpace.findClosestTo(narjillo);
 
-		Set<Thing> allFood = new LinkedHashSet<>();
-		if (foodSpace.isEmpty())
+		if (target == null)
 			return center;
-
-		allFood.addAll(foodSpace.getAll()); // TODO: maybe unnecessary?
-
-		// TODO: replace with spiral search in partitioned space? (after
-		// checking that food exists)
-		for (Thing foodPiece : allFood) {
-			double distance = foodPiece.getPosition().minus(narjillo.getPosition()).getLength();
-			if (distance < minDistance) {
-				minDistance = distance;
-				closestFood = foodPiece;
-			}
-		}
-
-		return closestFood.getPosition();
+		
+		return target.getPosition();
 	}
 
 	public Narjillo findNarjillo(Vector near) {
@@ -196,10 +182,9 @@ public class Ecosystem {
 	private void consumeCollidedFood(Narjillo narjillo, Segment movement, RanGen ranGen) {
 		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
 
-		for (Set<Thing> nearbyFood : foodSpace.getNeighbors(narjillo))
-			for (Thing foodPiece : nearbyFood)
-				if (checkCollisionWithFood(movement, foodPiece))
-					collidedFoodPieces.add(foodPiece);
+		for (Thing nearbyFood : foodSpace.getNearbyNeighbors(narjillo))
+			if (checkCollisionWithFood(movement, nearbyFood))
+				collidedFoodPieces.add(nearbyFood);
 
 		for (Thing collidedFoodPiece : collidedFoodPieces)
 			consumeFood(narjillo, collidedFoodPiece, ranGen);
@@ -212,6 +197,7 @@ public class Ecosystem {
 	private void consumeFood(Narjillo narjillo, Thing foodPiece, RanGen ranGen) {
 		if (!foodSpace.contains(foodPiece))
 			return; // race condition: already consumed
+
 		notifyThingRemoved(foodPiece);
 		foodSpace.remove(foodPiece);
 

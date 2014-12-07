@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -51,27 +50,16 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing thing = things[0]; // area [5, 3]
-		List<Set<Thing>> neighbors = space.getNeighbors(thing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(thing);
 
-		assertEquals(4, neighbors.size());
-
-		Set<Thing> area4_2 = neighbors.get(0);
-		assertEquals(1, area4_2.size());
-		assertEquals("2", area4_2.iterator().next().getLabel());
-
-		Set<Thing> area5_3 = neighbors.get(1);
-		assertEquals(1, area5_3.size());
-		assertEquals("1", area5_3.iterator().next().getLabel());
-
-		Set<Thing> area6_3 = neighbors.get(2);
-		assertEquals(2, area6_3.size());
-		Iterator<Thing> area6_3Iterator = area6_3.iterator();
-		assertEquals("3", area6_3Iterator.next().getLabel());
-		assertEquals("4", area6_3Iterator.next().getLabel());
-
-		Set<Thing> area6_4 = neighbors.get(3);
-		assertEquals(1, area6_4.size()); // the thing itself is not included
-		assertEquals("5", area6_4.iterator().next().getLabel());
+		assertEquals(5, neighbors.size());
+		Iterator<Thing> thingsIterator = neighbors.iterator();
+		
+		assertEquals("2", thingsIterator.next().getLabel());
+		assertEquals("1", thingsIterator.next().getLabel());
+		assertEquals("3", thingsIterator.next().getLabel());
+		assertEquals("4", thingsIterator.next().getLabel());
+		assertEquals("5", thingsIterator.next().getLabel());
 	}
 
 	@Test
@@ -111,13 +99,10 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // area [5, 5]
-		List<Set<Thing>> neighbors = space.getNeighbors(referenceThing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
 
 		assertEquals(1, neighbors.size());
-
-		Set<Thing> area5_5 = neighbors.get(0);
-		assertEquals(1, area5_5.size());
-		assertEquals("1", area5_5.iterator().next().getLabel());
+		assertEquals("1", neighbors.iterator().next().getLabel());
 	}
 	
 	@Test
@@ -125,13 +110,10 @@ public class SpaceTest {
 		MockThing thingOutOfSpace = new MockThing(Vector.cartesian(510, 510), 0); // area [5, 5]
 		space.add(new MockThing(Vector.cartesian(520, 520), 1)); // area [5, 5]
 
-		List<Set<Thing>> neighbors = space.getNeighbors(thingOutOfSpace);
+		Set<Thing> neighbors = space.getNearbyNeighbors(thingOutOfSpace);
 
 		assertEquals(1, neighbors.size());
-
-		Set<Thing> area5_5 = neighbors.get(0);
-		assertEquals(1, area5_5.size());
-		assertEquals("1", area5_5.iterator().next().getLabel());
+		assertEquals("1", neighbors.iterator().next().getLabel());
 	}
 
 	@Test
@@ -146,21 +128,13 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // area [0, 3]
-		List<Set<Thing>> neighbors = space.getNeighbors(referenceThing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
 
 		assertEquals(3, neighbors.size());
-
-		Set<Thing> area0_2 = neighbors.get(0);
-		assertEquals(1, area0_2.size());
-		assertEquals("2", area0_2.iterator().next().getLabel());
-
-		Set<Thing> area0_3 = neighbors.get(1);
-		assertEquals(1, area0_3.size());
-		assertEquals("1", area0_3.iterator().next().getLabel());
-
-		Set<Thing> area1_4 = neighbors.get(2);
-		assertEquals(1, area1_4.size());
-		assertEquals("3", area1_4.iterator().next().getLabel());
+		Iterator<Thing> thingsIterator = neighbors.iterator();
+		assertEquals("2", thingsIterator.next().getLabel());
+		assertEquals("1", thingsIterator.next().getLabel());
+		assertEquals("3", thingsIterator.next().getLabel());
 	}
 
 	@Test
@@ -175,21 +149,12 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // area [99, 99]
-		List<Set<Thing>> neighbors = space.getNeighbors(referenceThing);
-
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
 		assertEquals(3, neighbors.size());
-
-		Set<Thing> area98_99 = neighbors.get(0);
-		assertEquals(1, area98_99.size());
-		assertEquals("2", area98_99.iterator().next().getLabel());
-
-		Set<Thing> area99_98 = neighbors.get(1);
-		assertEquals(1, area99_98.size());
-		assertEquals("3", area99_98.iterator().next().getLabel());
-
-		Set<Thing> area99_99 = neighbors.get(2);
-		assertEquals(1, area99_99.size());
-		assertEquals("1", area99_99.iterator().next().getLabel());
+		Iterator<Thing> thingsIterator = neighbors.iterator();
+		assertEquals("2", thingsIterator.next().getLabel());
+		assertEquals("3", thingsIterator.next().getLabel());
+		assertEquals("1", thingsIterator.next().getLabel());
 	}
 
 	@Test
@@ -202,13 +167,10 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // outer space
-		List<Set<Thing>> neighbors = space.getNeighbors(referenceThing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
 
 		assertEquals(1, neighbors.size());
-
-		Set<Thing> outerSpaceArea = neighbors.get(0);
-		assertEquals(1, outerSpaceArea.size());
-		assertEquals("1", outerSpaceArea.iterator().next().getLabel());
+		assertEquals("1", neighbors.iterator().next().getLabel());
 	}
 
 	@Test

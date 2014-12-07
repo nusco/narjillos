@@ -2,8 +2,6 @@ package org.nusco.narjillos.ecosystem;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import org.nusco.narjillos.shared.things.Thing;
@@ -62,34 +60,63 @@ public class Space {
 		return getArea(thing).contains(thing);
 	}
 
-	public List<Set<Thing>> getNeighbors(Thing thing) {
+	public Set<Thing> getNearbyNeighbors(Thing thing) {
 		int x = toAreaCoordinates(thing.getPosition().x);
 		int y = toAreaCoordinates(thing.getPosition().y);
 
+		Set<Thing> result = new LinkedHashSet<>();
+
 		if (isInOuterSpace(x, y)) {
-			List<Set<Thing>> result = new LinkedList<>();
-			result.add(copy_without_(outerSpace, thing));
+			result.addAll(copy_without_(outerSpace, thing));
 			return result;
 		}
 		
-		List<Set<Thing>> result = new LinkedList<>();
-		addNeighborsFrom_to_(getArea(x - 1, y - 1), result);
-		addNeighborsFrom_to_(getArea(x - 1, y), result);
-		addNeighborsFrom_to_(getArea(x - 1, y + 1), result);
-		addNeighborsFrom_to_(getArea(x, y - 1), result);
+		result.addAll(getArea(x - 1, y - 1));
+		result.addAll(getArea(x - 1, y));
+		result.addAll(getArea(x - 1, y + 1));
+		result.addAll(getArea(x, y - 1));
 		
 		// Special case: the central area will include the thing
 		// we're searching for. We need to remove it.
 		Set<Thing> centralAreaWithoutThing = copy_without_(getArea(x, y), thing);
-		addNeighborsFrom_to_(centralAreaWithoutThing, result);
+		result.addAll(centralAreaWithoutThing);
 
-		addNeighborsFrom_to_(getArea(x, y + 1), result);
-		addNeighborsFrom_to_(getArea(x + 1, y -1), result);
-		addNeighborsFrom_to_(getArea(x + 1, y), result);
-		addNeighborsFrom_to_(getArea(x + 1, y + 1), result);
+		result.addAll(getArea(x, y + 1));
+		result.addAll(getArea(x + 1, y -1));
+		result.addAll(getArea(x + 1, y));
+		result.addAll(getArea(x + 1, y + 1));
 		return result;
 	}
 
+	public Thing findClosestTo(Thing thing) {
+		if (isEmpty())
+			return null;
+
+		// TODO: replace with spiral search
+		
+		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing);
+		
+		if (!nearbyNeighbors.isEmpty())
+			return findClosestTo_Amongst(thing, nearbyNeighbors);
+
+		return findClosestTo_Amongst(thing, allTheThings);
+	}
+
+	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things) {
+		double minDistance = Double.MAX_VALUE;
+		Thing result = null;
+
+		for (Thing neighbor : things) {
+			double distance = neighbor.getPosition().minus(thing.getPosition()).getLength();
+			if (distance < minDistance) {
+				minDistance = distance;
+				result = neighbor;
+			}
+		}
+
+		return result;
+	}
+	
 	private Set<Thing> copy_without_(Collection<Thing> area, Thing thing) {
 		Set<Thing> centralAreaWithoutThing = new LinkedHashSet<>();
 		centralAreaWithoutThing.addAll(area);
@@ -99,12 +126,6 @@ public class Space {
 
 	private boolean isInOuterSpace(int x, int y) {
 		return x < 0 || x >= AREAS_PER_EDGE || y < 0 || y >= AREAS_PER_EDGE;
-	}
-
-	private void addNeighborsFrom_to_(Set<Thing> area, List<Set<Thing>> collection) {
-		if (area.isEmpty())
-			return;
-		collection.add(area);
 	}
 
 	private Set<Thing> getArea(int x, int y) {

@@ -6,10 +6,14 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public abstract class BodyPart {
 
-	private final int length;
-	private final int thickness;
-	private final double mass;
+	private static final double GROWTH_RATE = 0.01;
+	
+	private final double adultLength;
+	private final int adultThickness;
+	private final double adultMass;
 	private final ColorByte color;
+	private double length;
+	private double thickness;
 
 	// Caching - ugly, but has huge performance benefits.
 	// All volatile, to avoid too much synchronization
@@ -17,14 +21,19 @@ public abstract class BodyPart {
 	private volatile Vector cachedStartPoint;
 	private volatile Vector cachedVector;
 	private volatile Vector cachedEndPoint;
+	private volatile double cachedMass;
 	private volatile Vector cachedCenterOfMass;
 	private volatile Segment cachedPositionInSpace;
 
-	public BodyPart(int length, int thickness, ColorByte color) {
-		this.length = length;
-		this.thickness = thickness;
-		this.mass = Math.max(length * thickness, 1);
+	public BodyPart(int adultLength, int adultThickness, ColorByte color) {
+		this.adultLength = adultLength;
+		this.adultThickness = adultThickness;
+		this.adultMass = Math.max(adultLength * adultThickness, 1);
+		
+		this.length = Math.min(10, adultLength);
+		this.thickness = Math.min(1, adultThickness);
 		this.color = color;
+		
 		initCaches();
 	}
 
@@ -33,24 +42,9 @@ public abstract class BodyPart {
 		this.cachedStartPoint = Vector.ZERO;
 		this.cachedVector = Vector.polar(0, getLength());
 		this.cachedEndPoint = cachedVector;
-		this.cachedCenterOfMass = cachedVector.by(0.5);
 		this.cachedPositionInSpace = new Segment(Vector.ZERO, cachedVector);
-	}
-
-	public final int getLength() {
-		return length;
-	}
-
-	public int getThickness() {
-		return thickness;
-	}
-
-	public double getMass() {
-		return mass;
-	}
-
-	public ColorByte getColor() {
-		return color;
+		this.cachedMass = calculateMass();
+		this.cachedCenterOfMass = cachedVector.by(0.5);
 	}
 
 	public final void updateCaches() {
@@ -59,7 +53,42 @@ public abstract class BodyPart {
 		cachedStartPoint = calculateStartPoint();
 		cachedEndPoint = calculateEndPoint();
 		cachedPositionInSpace = calculatePositionInSpace();
+		cachedMass = calculateMass();
 		cachedCenterOfMass = calculateCenterOfMass();
+	}
+
+	public final double getLength() {
+		return length;
+	}
+
+	public double getThickness() {
+		return thickness;
+	}
+
+	protected void grow() {
+		if (isFullyGrown())
+			return;
+	
+		length = Math.min(adultLength, getLength() + GROWTH_RATE);
+		thickness = Math.min(adultThickness, getThickness() + GROWTH_RATE);
+
+		// optimization: let the client update the caches
+	}
+
+	private boolean isFullyGrown() {
+		return getLength() >= adultLength && getThickness() >= adultThickness;
+	}
+
+	public double getMass() {
+		return cachedMass;
+	}
+
+	public double getAdultMass() {
+		return adultMass;
+	}
+
+	public ColorByte getColor() {
+		return color;
 	}
 
 	private Vector calculateVector() {
@@ -94,6 +123,10 @@ public abstract class BodyPart {
 		return cachedCenterOfMass;
 	}
 
+	private double calculateMass() {
+		return Math.max(getLength() * getThickness(), 1);
+	}
+
 	protected abstract Vector calculateCenterOfMass();
 
 	public Segment getPositionInSpace() {
@@ -102,5 +135,9 @@ public abstract class BodyPart {
 
 	private Segment calculatePositionInSpace() {
 		return new Segment(getStartPoint(), getVector());
+	}
+
+	public boolean isAtrophic() {
+		return adultLength == 0;
 	}
 }

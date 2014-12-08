@@ -16,11 +16,11 @@ public class BodySegment extends Organ {
 	private double currentSkewing = 0;
 	private double cachedMetabolicRate = -1;
 
-	public BodySegment(int length, int thickness, ColorByte hue, Organ parent, int delay, int angleToParentAtRest, int amplitude, int skewing) {
-		super(length, thickness, calculateColorMix(parent, hue), parent, new DelayNerve(delay));
+	public BodySegment(int adultLength, int adultThickness, ColorByte hue, Organ parent, int delay, int angleToParentAtRest, int amplitude, int skewing) {
+		super(adultLength, adultThickness, calculateColorMix(parent, hue), parent, new DelayNerve(delay));
 		this.angleToParentAtRest = angleToParentAtRest;
 		this.orientation = (int) Math.signum(angleToParentAtRest);
-		setAngleToParent(angleToParentAtRest);
+		updateAngleToParent(angleToParentAtRest);
 		this.amplitude = amplitude;
 		this.skewing = skewing;
 	}

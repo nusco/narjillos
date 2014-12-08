@@ -54,7 +54,7 @@ public class BodySegmentTest extends OrganTest {
 		Head head = new Head(10, 0, new ColorByte(100), 1, 0.5);
 		Organ organ = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, 0, 20, 1, 0));
 		// uses the current angle, not the angle at rest
-		organ.setAngleToParent(45);
+		organ.updateAngleToParent(45);
 		
 		final double lengthAt45Degrees = 7.07106;
 		double expectedX = head.getEndPoint().x + lengthAt45Degrees / 2;

@@ -19,11 +19,14 @@ public class JSONBodyPartSerializationTest {
 		Head head = new Head(1, 2, new ColorByte(3), 4, 0.5);
 		head.moveTo(Vector.cartesian(6, 7), 8);
 
+		for (int i = 0; i < 10; i++)
+			head.tick(1, 20);
+		
 		String json = JSON.toJson(head, BodyPart.class);
 		BodyPart deserialized = (Head)JSON.fromJson(json, BodyPart.class);
 		
-		assertEquals(1, deserialized.getLength());
-		assertEquals(2, deserialized.getThickness());
+		assertEquals(head.getLength(), deserialized.getLength(), 0.0);
+		assertEquals(head.getThickness(), deserialized.getThickness(), 0.0);
 		assertEquals(3, deserialized.getColor().toByteSizedInt());
 		assertEquals(4, ((Head) deserialized).getMetabolicRate(), 0.0);
 		assertEquals(0.5, ((Head) deserialized).getPercentEnergyToChildren(), 0.0);
@@ -34,24 +37,27 @@ public class JSONBodyPartSerializationTest {
 	@Test
 	public void serializesAndDeserializesBodySegments() {
 		Organ parent = new Head(10, 20, new ColorByte(0), 40, 0.5);
-		BodyPart bodyPart = new BodySegment(1, 2, new ColorByte(3), parent, 4, -5, 6, 7);
-		bodyPart.updateCaches();
+		BodySegment bodySegment = new BodySegment(1, 2, new ColorByte(3), parent, 4, -5, 6, 7);
+
+		for (int i = 0; i < 10; i++)
+			bodySegment.tick(1, 10);
+		bodySegment.updateCaches();
 		
-		String json = JSON.toJson(bodyPart, BodyPart.class);
+		String json = JSON.toJson(bodySegment, BodyPart.class);
 		BodySegment deserialized = (BodySegment)JSON.fromJson(json, BodyPart.class);
 		
-		assertEquals(1, deserialized.getLength());
-		assertEquals(2, deserialized.getThickness());
+		assertEquals(bodySegment.getLength(), deserialized.getLength(), 0);
+		assertEquals(bodySegment.getThickness(), deserialized.getThickness(), 0);
 		assertEquals(3, deserialized.getColor().toByteSizedInt());
 		assertEquals(4, deserialized.getDelay());
 		assertEquals(-5, deserialized.getAngleToParentAtRest(), 0.0);
 		assertEquals(-1, deserialized.getOrientation(), 0.0);
 		assertEquals(6, deserialized.getAmplitude(), 0.0);
 		assertEquals(7, deserialized.getSkewing());
-		assertEquals(2, deserialized.getMass(), 0.0);
-		assertEquals(bodyPart.getStartPoint(), deserialized.getStartPoint());
-		assertEquals(bodyPart.getCenterOfMass(), deserialized.getCenterOfMass());
-		assertEquals(bodyPart.getAbsoluteAngle(), deserialized.getAbsoluteAngle(), 0.0);
+		assertEquals(bodySegment.getMass(), deserialized.getMass(), 0.0);
+		assertEquals(bodySegment.getStartPoint(), deserialized.getStartPoint());
+		assertEquals(bodySegment.getCenterOfMass(), deserialized.getCenterOfMass());
+		assertEquals(bodySegment.getAbsoluteAngle(), deserialized.getAbsoluteAngle(), 0.0);
 	}
 
 	@Test
@@ -63,16 +69,16 @@ public class JSONBodyPartSerializationTest {
 		String json = JSON.toJson(parent, Organ.class);
 		Organ deserializedParent = (Organ) JSON.fromJson(json, Organ.class);
 		
-		assertEquals(100, deserializedParent.getLength());
+		assertEquals(parent.getLength(), deserializedParent.getLength(), 0);
 		assertEquals(1, deserializedParent.getChildren().size());
 		Organ deserializedChild = deserializedParent.getChildren().get(0);
-		assertEquals(200, deserializedChild.getLength());
+		assertEquals(child.getLength(), deserializedChild.getLength(), 0);
 		assertSame(deserializedParent, deserializedChild.getParent());
 
 		// everything still works after ticking
 		for (int i = 0; i < 3; i++) {
-			parent.recursivelyUpdateAngleToParent(10, 20);
-			deserializedParent.recursivelyUpdateAngleToParent(10, 20);
+			parent.tick(10, 20);
+			deserializedParent.tick(10, 20);
 		}
 		assertEquals(child.getAbsoluteAngle(), deserializedChild.getAbsoluteAngle(), 0.0);
 	}

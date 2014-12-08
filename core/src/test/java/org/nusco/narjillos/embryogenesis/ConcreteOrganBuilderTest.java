@@ -3,7 +3,7 @@ package org.nusco.narjillos.embryogenesis;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.embryogenesis.ConcreteOrganBuilder;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -38,5 +38,10 @@ public abstract class ConcreteOrganBuilderTest {
 		assertEquals(new ColorByte(0), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0)).getHue());
 		assertEquals(new ColorByte(1), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 1)).getHue());
 		assertEquals(new ColorByte(255), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 255)).getHue());
+	}
+
+	protected void grow(Organ organ) {
+		for (int i = 0; i < 2000; i++)
+			organ.tick(100, 0);
 	}
 }

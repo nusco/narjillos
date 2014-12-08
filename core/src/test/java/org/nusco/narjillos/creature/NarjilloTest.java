@@ -28,7 +28,7 @@ public class NarjilloTest {
 	@Test
 	public void itsInitialEnergyIsProportionalToItsMass() {
 		double energyRatio = narjillo.getEnergy().getValue() / biggerNarjillo.getEnergy().getValue();
-		double massRatio = narjillo.getMass() / biggerNarjillo.getMass();
+		double massRatio = narjillo.getBody().getAdultMass() / biggerNarjillo.getBody().getAdultMass();
 		assertEquals(energyRatio, massRatio, 0.001);
 	}
 	

@@ -13,7 +13,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Externalize all configurable parameters to YAML
+* Externalize configurable parameters to YAML
 * Try scrolling/panning commands under Linux
 
 ###Genetist
@@ -28,12 +28,12 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ethologist
 
+* Fix "mouth flickering" (bug in target histeresis) °°
 * Find out why creatures seem to ignore nearby food so often °°
 * Eggs °
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °
 * Distance of firing is determined by genes °
-* Narjillos are born small and then grow up °
 * Narjillos eat each other
 * "Fears" gene
 * "Wants to eat" gene

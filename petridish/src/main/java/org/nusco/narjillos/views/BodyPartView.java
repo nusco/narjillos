@@ -33,22 +33,23 @@ class BodyPartView extends ThingView {
 	}
 
 	private Rectangle createRectangle() {
-		Rectangle result = new Rectangle(0, 0, getLengthIncludingOverlap(), bodyPart.getThickness());
-
-		double arc = (bodyPart.getLength() * bodyPart.getThickness()) % 15 + 15;
-		result.setArcWidth(arc);
-		result.setArcHeight(arc);
-
-		return result;
+		return new Rectangle(0, 0, getLengthIncludingOverlap(), bodyPart.getThickness());
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn) {
-		if (bodyPart.getLength() == 0)
+		if (bodyPart.isAtrophic())
 			return null; // TODO: fix atrophy
 
 		double alpha = getAlpha(zoomLevel);
 		if (alpha == 0)
 			return null; // perfectly transparent. don't draw.
+
+		rectangle.setWidth(getLengthIncludingOverlap());
+		rectangle.setHeight(bodyPart.getThickness());
+
+		double arc = (bodyPart.getLength() * bodyPart.getThickness()) % 15 + 15;
+		rectangle.setArcWidth(arc);
+		rectangle.setArcHeight(arc);
 
 		rectangle.setFill(getColor(infraredOn, alpha));
 
@@ -137,7 +138,7 @@ class BodyPartView extends ThingView {
 		return viewport.isVisible(bodyPart.getStartPoint(), margin);
 	}
 
-	private int getLengthIncludingOverlap() {
+	private double getLengthIncludingOverlap() {
 		return bodyPart.getLength() + (OVERLAP * 2);
 	}
 

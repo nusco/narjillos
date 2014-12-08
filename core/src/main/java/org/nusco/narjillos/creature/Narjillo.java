@@ -23,7 +23,7 @@ public class Narjillo implements Thing {
 	private Mouth mouth = new Mouth();
 	
 	public Narjillo(DNA genes, Body body, Vector position) {
-		this(genes, body, position, body.getMass() / 2);
+		this(genes, body, position, body.getAdultMass() / 2);
 	}
 
 	private Narjillo(DNA genes, Body body, Vector position, double initialEnergy) {
@@ -99,10 +99,6 @@ public class Narjillo implements Thing {
 		return body.getBodyParts();
 	}
 
-	double getMass() {
-		return body.getMass();
-	}
-
 	public Body getBody() {
 		return body;
 	}
@@ -111,7 +107,7 @@ public class Narjillo implements Thing {
 		return target;
 	}
 
-	public Vector getCenterOfMass() {
+	public Vector calculateCenterOfMass() {
 		return body.calculateCenterOfMass();
 	}
 

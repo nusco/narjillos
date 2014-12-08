@@ -23,7 +23,7 @@ class CenterOfMassView extends RoundObjectView {
 
 	@Override
 	public Node toNode(double zoomLevel, boolean infraredOn) {
-		Vector position = ((Narjillo)getThing()).getCenterOfMass();
+		Vector position = ((Narjillo)getThing()).calculateCenterOfMass();
 		circle.getTransforms().clear();
 		circle.getTransforms().add(new Translate(position.x, position.y));
 		return circle;

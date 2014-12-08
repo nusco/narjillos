@@ -13,8 +13,8 @@ public class Head extends Organ {
 	private final double metabolicRate;
 	private Vector startPoint = Vector.ZERO;
 	
-	public Head(int length, int thickness, ColorByte hue, double metabolicRate, double percentEnergyToChildren) {
-		super(length, thickness, hue, null, new WaveNerve(WAVE_SIGNAL_FREQUENCY * metabolicRate));
+	public Head(int adultLength, int adultThickness, ColorByte hue, double metabolicRate, double percentEnergyToChildren) {
+		super(adultLength, adultThickness, hue, null, new WaveNerve(WAVE_SIGNAL_FREQUENCY * metabolicRate));
 		this.percentEnergyToChildren = percentEnergyToChildren;
 		this.metabolicRate = metabolicRate;
 	}
@@ -32,7 +32,7 @@ public class Head extends Organ {
 		// we already reset the cache in setAngleToParent(), so
 		// no need to do it twice here
 		this.startPoint  = startPoint;
-		setAngleToParent(angle);
+		updateAngleToParent(angle);
 	}
 
 	public void moveBy(Vector translation, double rotation) {

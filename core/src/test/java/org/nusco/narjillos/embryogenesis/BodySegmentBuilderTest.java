@@ -64,8 +64,8 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 	public void buildsABodySegment() {
 		int controlFlowGene = 0b00000000;
 		int controlLoopGene = 0b00000000;
-		int lengthGene = 40;
-		int thicknessGene = 255;
+		int lengthGene = 30;
+		int thicknessGene = 126;
 		int delayGene = 90;
 		int amplitudeGene = 107;
 		int angleToParentGene = 81;
@@ -76,13 +76,16 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		BodySegmentBuilder builder = createConcreteOrganBuilder(chromosome);
 		Organ head = new Head(10, 10, new ColorByte(40), 10, 0.5);
 		BodySegment bodySegment = (BodySegment) builder.buildOrgan(head, 1);
-		
-		assertEquals(40, bodySegment.getLength(), 0);
-		assertEquals(50, bodySegment.getThickness(), 0);
+
+		assertEquals(-25, bodySegment.getAbsoluteAngle(), 0);
 		assertEquals(10, bodySegment.getDelay(), 0);
 		assertEquals(34, bodySegment.getAmplitude(), 0);
-		assertEquals(-25, bodySegment.getAbsoluteAngle(), 0);
 		assertEquals(16, bodySegment.getSkewing(), 0);
 		assertEquals(new ColorByte(32), bodySegment.getColor());
+
+		grow(bodySegment);
+		
+		assertEquals(30, bodySegment.getLength(), 0);
+		assertEquals(21, bodySegment.getThickness(), 0.01);
 	}
 }

@@ -34,8 +34,8 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 	public void buildsAHead() {
 		int controlFlowGene = 0b00000000;
 		int controlLoopGene = 0b00000000;
-		int lengthGene = 40;
-		int thicknessGene = 255;
+		int lengthGene = 30;
+		int thicknessGene = 126;
 		int metabolicRateGene = 150;
 		int amplitudeGene = 70;
 		int angleToParentGene = 81;
@@ -46,8 +46,10 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 		HeadBuilder builder = createConcreteOrganBuilder(chromosome);
 		Head head = (Head)builder.buildOrgan(null, 0);
 		
-		assertEquals(40, head.getLength(), 0);
-		assertEquals(50, head.getThickness(), 0);
+		grow(head);
+		
+		assertEquals(30, head.getLength(), 0);
+		assertEquals(21, head.getThickness(), 0.01);
 		assertEquals(1.764, head.getMetabolicRate(), 0.01);
 		assertEquals(new ColorByte(50), head.getColor());
 	}

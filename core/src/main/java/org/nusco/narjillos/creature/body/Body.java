@@ -23,22 +23,19 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
 public class Body {
 
 	private final Organ head;
-	private final double mass;
 	private final double metabolicConsumption;
+	private final double adultMass;
+	private double mass;
 	private transient List<BodyPart> bodyParts;
 
 	public Body(Organ head) {
 		this.head = head;
-		this.mass = calculateTotalMass();
+		adultMass = calculateAdultMass();
 		this.metabolicConsumption = Math.pow(getMetabolicRate(), 1.5);
 	}
 
 	public Head getHead() {
 		return (Head) head;
-	}
-
-	public double getMass() {
-		return mass;
 	}
 
 	public List<BodyPart> getBodyParts() {
@@ -66,7 +63,13 @@ public class Body {
 	}
 
 	public Vector calculateCenterOfMass() {
-		if (getMass() <= 0)
+		// TODO: any way to avoid recalculating this here?
+		// When I try to cache it, I get a weird bug with
+		// the mass staying too low and narjillos zipping
+		// around like crazy.
+		double mass = calculateMass();
+
+		if (mass <= 0)
 			return getStartPoint();
 
 		// do it in one swoop instead of creating a lot of
@@ -87,7 +90,7 @@ public class Body {
 			totalY += weightedCentersOfMass[i].y;
 		}
 
-		return Vector.cartesian(totalX / getMass(), totalY / getMass());
+		return Vector.cartesian(totalX / mass, totalY / mass);
 	}
 
 	/**
@@ -96,6 +99,10 @@ public class Body {
 	 * operation.
 	 */
 	public double tick(Vector targetDirection) {
+		// First, update the mass of a still-developing body.
+		if (isStillGrowing())
+			mass = calculateMass();
+
 		// Before any movement, store away the current body positions
 		// and center of mass. These will come useful later.
 		Vector initialCenterOfMass = calculateCenterOfMass();
@@ -111,7 +118,7 @@ public class Body {
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep its moment
 		// of inertia equal to zero.
-		double rotationEnergy = tick_step2_rotate(initialCenterOfMass, initialBodyPartPositions);
+		double rotationEnergy = tick_step2_rotate(initialBodyPartPositions, initialCenterOfMass, mass);
 
 		// The previous updates moved the center of mass. Remember, we're
 		// in a vacuum - so the center of mass shouldn't move. Let's put it
@@ -123,9 +130,13 @@ public class Body {
 		// body position in space, and this different position generates
 		// translational forces. We can update the body position based on
 		// these translations.
-		double translationEnergy = tick_step4_translate(initialBodyPartPositions, initialCenterOfMass);
+		double translationEnergy = tick_step4_translate(initialBodyPartPositions, initialCenterOfMass, mass);
 
 		return getEnergyConsumed(rotationEnergy, translationEnergy);
+	}
+
+	private boolean isStillGrowing() {
+		return mass < getAdultMass();
 	}
 
 	private double getEnergyConsumed(double rotationEnergy, double translationEnergy) {
@@ -134,7 +145,7 @@ public class Body {
 
 	private void tick_step1_updateAngles(Vector targetDirection) {
 		double angleToTarget = getAngleTo(targetDirection);
-		getHead().recursivelyUpdateAngleToParent(0, angleToTarget);
+		getHead().tick(0, angleToTarget);
 	}
 
 	private double getAngleTo(Vector direction) {
@@ -147,8 +158,8 @@ public class Body {
 		}
 	}
 
-	private double tick_step2_rotate(Vector centerOfMass, Map<BodyPart, Segment> initialPositions) {
-		RotationalForceField forceField = new RotationalForceField(getMass(), calculateRadius(centerOfMass), centerOfMass);
+	private double tick_step2_rotate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass, double mass) {
+		RotationalForceField forceField = new RotationalForceField(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (BodyPart bodyPart : bodyParts)
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().moveBy(Vector.ZERO, forceField.getRotation());
@@ -161,8 +172,8 @@ public class Body {
 		getHead().moveBy(centerOfMassOffset, 0);
 	}
 
-	private double tick_step4_translate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass) {
-		TranslationalForceField forceField = new TranslationalForceField(getMass());
+	private double tick_step4_translate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass, double mass) {
+		TranslationalForceField forceField = new TranslationalForceField(mass);
 		for (BodyPart bodyPart : bodyParts)
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().moveBy(forceField.getTranslation(), 0);
@@ -197,11 +208,17 @@ public class Body {
 		return getHead().getPercentEnergyToChildren();
 	}
 
-	private double calculateTotalMass() {
+	public double calculateMass() {
 		double result = 0;
-		List<BodyPart> allOrgans = getBodyParts();
-		for (BodyPart organ : allOrgans)
+		for (BodyPart organ : getBodyParts())
 			result += organ.getMass();
+		return result;
+	}
+
+	private double calculateAdultMass() {
+		double result = 0;
+		for (BodyPart organ : getBodyParts())
+			result += organ.getAdultMass();
 		return result;
 	}
 
@@ -212,5 +229,9 @@ public class Body {
 
 	public double getAngle() {
 		return Angle.normalize(getHead().getAbsoluteAngle() + 180);
+	}
+
+	public double getAdultMass() {
+		return adultMass;
 	}
 }

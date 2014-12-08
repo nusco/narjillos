@@ -19,13 +19,21 @@ public abstract class BodyPartTest {
 	public abstract BodyPart createConcreteOrgan(int length, int thickness);
 
 	@Test
-	public void hasALength() {
-		assertEquals(20, bodyPart.getLength());
+	public void hasALengthThatGrowsWithTime() {
+		assertEquals(10, bodyPart.getLength(), 0);
+		
+		fullyGrowBodyPart();
+
+		assertEquals(20, bodyPart.getLength(), 0);
 	}
 
 	@Test
-	public void hasAThickness() {
-		assertEquals(10, bodyPart.getThickness());
+	public void hasAThicknessThatGrowsWithTime() {
+		assertEquals(1, bodyPart.getThickness(), 0);
+		
+		fullyGrowBodyPart();
+		
+		assertEquals(10, bodyPart.getThickness(), 0);
 	}
 
 	@Test
@@ -33,11 +41,19 @@ public abstract class BodyPartTest {
 	
 	@Test
 	public void hasAMassProportionalToItsArea() {
+		fullyGrowBodyPart();
+		
 		assertEquals(200, bodyPart.getMass(), 0.01);
+	}
+
+	protected void fullyGrowBodyPart() {
+		for (int i = 0; i < 1000; i++)
+			bodyPart.grow();
+		bodyPart.updateCaches();
 	}
 	
 	@Test
-	public void theMassIsAlwaysAtLeast1() {
+	public void itsMassIsAlwaysAtLeast1() {
 		BodyPart verySmallBodyPart = new BodyPart(0, 0, new ColorByte(0)) {
 
 			@Override

@@ -39,11 +39,11 @@ public class JSONBodySerializationTest {
 		deserialized.tick(Vector.polar(10, 1));
 		
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
-		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
+		assertEquals(body.calculateMass(), deserialized.calculateMass(), 0.0);
 		
 		List<BodyPart> bodyParts = body.getBodyParts();
 		List<BodyPart> deserializedBodyParts = deserialized.getBodyParts();
 		for (int i = 0; i < bodyParts.size(); i++)
-			assertEquals(bodyParts.get(i).getLength(), deserializedBodyParts.get(i).getLength());
+			assertEquals(bodyParts.get(i).getLength(), deserializedBodyParts.get(i).getLength(), 0);
 	}
 }

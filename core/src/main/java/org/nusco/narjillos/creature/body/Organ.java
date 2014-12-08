@@ -18,8 +18,8 @@ public abstract class Organ extends BodyPart {
 	private final List<Organ> children = new ArrayList<>();
 	private double angleToParent = 0;
 	
-	protected Organ(int length, int thickness, ColorByte color, Organ parent, Nerve nerve) {
-		super(length, thickness, color);
+	protected Organ(int adultLength, int adultThickness, ColorByte color, Organ parent, Nerve nerve) {
+		super(adultLength, adultThickness, color);
 		this.nerve = nerve;
 		setParent(parent);
 	}
@@ -30,11 +30,6 @@ public abstract class Organ extends BodyPart {
 
 	protected final double getAngleToParent() {
 		return angleToParent;
-	}
-
-	protected final void setAngleToParent(double angleToParent) {
-		this.angleToParent = angleToParent;
-		recursivelyCalculateCachedFields();
 	}
 
 	protected void recursivelyCalculateCachedFields() {
@@ -62,14 +57,34 @@ public abstract class Organ extends BodyPart {
 		return children;
 	}
 
-	public void recursivelyUpdateAngleToParent(double percentOfAmplitude, double angleToTarget) {
+	public void tick(double percentOfAmplitude, double angleToTarget) {
 		double processedPercentOfAmplitude = getNerve().tick(percentOfAmplitude);
+
+		recursivelyGrow();
 		
 		double newAngleToParent = calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget);
-		setAngleToParent(newAngleToParent);
+		updateAngleToParent(newAngleToParent);
 
 		for (Organ child : getChildren())
-			child.recursivelyUpdateAngleToParent(processedPercentOfAmplitude, angleToTarget);
+			child.tick(processedPercentOfAmplitude, angleToTarget);
+	}
+
+	protected final void updateAngleToParent(double angleToParent) {
+		this.angleToParent = angleToParent;
+		
+		// Optimization: this is the only place where we update
+		// the cache. Doing it more often would make the code
+		// much simpler to follow, but also much slower. It's
+		// important that all changes to Organ state pass by
+		// here at some point.
+		recursivelyCalculateCachedFields();
+	}
+
+	public void recursivelyGrow() {
+		grow();
+
+		for (Organ child : getChildren())
+			child.recursivelyGrow();
 	}
 
 	protected abstract double calculateNewAngleToParent(double targetAngle, double angleToTarget);

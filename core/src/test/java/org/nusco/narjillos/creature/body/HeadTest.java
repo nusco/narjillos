@@ -23,7 +23,9 @@ public class HeadTest extends OrganTest {
 
 	@Override
 	public void hasAnEndPoint() {
-		assertEquals(Vector.cartesian(20, 0), getBodyPart().getEndPoint());
+		fullyGrowBodyPart();
+		
+		assertEquals(Vector.cartesian(20, 0), bodyPart.getEndPoint());
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class HeadTest extends OrganTest {
 	@Test
 	public void hasACenterOfMass() {
 		Head head = new Head(10, 6, new ColorByte(100), 1, 0.5);
-		head.setAngleToParent(90);
+		head.updateAngleToParent(90);
 		
 		assertTrue(head.getCenterOfMass().almostEquals(Vector.cartesian(0, 5)));
 	}

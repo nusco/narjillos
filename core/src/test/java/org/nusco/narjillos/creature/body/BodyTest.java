@@ -35,7 +35,7 @@ public class BodyTest {
 		Body body = new Body(head);
 		
 		double expectedMassInGrams = 212;
-		assertEquals(expectedMassInGrams, body.getMass(), 0.001);
+		assertEquals(expectedMassInGrams, body.getAdultMass(), 0.001);
 	}
 	
 	@Test
@@ -47,11 +47,23 @@ public class BodyTest {
 
 		Body body = new Body(head);
 
+		// TODO: why doesn't it work if I just tick the body?
+//		for (int i = 0; i < 1000; i++)
+//			body.tick(Vector.polar(100, 100));
+		grow(head);
+		grow(child);
+		
 		// calculateRadius() needs an explicit center of mass, because of optimizations.
 		// So these two are better tested together: 
 		Vector centerOfMass = body.calculateCenterOfMass();
 		assertEquals(Vector.cartesian(12.5, 0), centerOfMass);
+		
 		assertEquals(17.5, body.calculateRadius(body.calculateCenterOfMass()), 0.0);
+	}
+
+	private void grow(Organ organ) {
+		for (int i = 0; i < 1000; i++)
+			organ.tick(1, 0);
 	}	
 	
 	@Test

@@ -60,10 +60,11 @@ public class Experiment {
 	}
 
 	public boolean tick() {
-		getEcosystem().tick(ranGen);
-		ticksChronometer.tick();
 		if (ticksChronometer.getTotalTicks() % 1000 == 0)
 			executePeriodicOperations();
+
+		getEcosystem().tick(ranGen);
+		ticksChronometer.tick();
 		return areThereSurvivors();
 	}
 

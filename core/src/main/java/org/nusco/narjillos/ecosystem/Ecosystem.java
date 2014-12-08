@@ -103,8 +103,10 @@ public class Ecosystem {
 			consumeCollidedFood(narjillo, movement, ranGen);
 		}
 
-		if (shouldSpawnFood(ranGen))
+		if (shouldSpawnFood(ranGen)) {
 			spawnFood(randomPosition(getSize(), ranGen));
+			updateAllTargets();
+		}
 
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();

@@ -28,7 +28,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ethologist
 
-* Fix "mouth flickering" (bug in target histeresis) °°
 * Eggs °
 * "Egg-firing" °
 * Additional cost for long-distance egg-flinging °

@@ -27,12 +27,15 @@ public class Mouth {
 
 			// else keep pointing in the same direction
 		} catch (ZeroVectorException e) {
-			directionAngle = LATERAL_VIEWFIELD;
+			pointTowards(0);
 		}
 	}
 
 	private void pointTowards(double angle) {
-		directionAngle = Angle.normalize(angle);
+		double angleDifference = Angle.normalize(angle) - directionAngle;
+		if (Math.abs(angleDifference) < 1)
+			return;
+		directionAngle += Math.signum(angleDifference);
 	}
 
 	public Vector getDirection() {

@@ -9,7 +9,7 @@ import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.views.utilities.Viewport;
+import org.nusco.narjillos.utilities.Viewport;
 
 abstract class ThingView {
 

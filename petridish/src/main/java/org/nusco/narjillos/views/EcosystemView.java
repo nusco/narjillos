@@ -24,8 +24,8 @@ import org.nusco.narjillos.ecosystem.EcosystemEventListener;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
-import org.nusco.narjillos.views.utilities.Light;
-import org.nusco.narjillos.views.utilities.Viewport;
+import org.nusco.narjillos.utilities.Light;
+import org.nusco.narjillos.utilities.Viewport;
 
 public class EcosystemView {
 

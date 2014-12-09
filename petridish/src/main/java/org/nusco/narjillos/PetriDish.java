@@ -28,12 +28,13 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
+import org.nusco.narjillos.utilities.Locator;
+import org.nusco.narjillos.utilities.Light;
+import org.nusco.narjillos.utilities.PetriDishState;
+import org.nusco.narjillos.utilities.Speed;
+import org.nusco.narjillos.utilities.Viewport;
 import org.nusco.narjillos.views.DataView;
 import org.nusco.narjillos.views.EcosystemView;
-import org.nusco.narjillos.views.utilities.Light;
-import org.nusco.narjillos.views.utilities.PetriDishState;
-import org.nusco.narjillos.views.utilities.Speed;
-import org.nusco.narjillos.views.utilities.Viewport;
 
 public class PetriDish extends Application {
 
@@ -47,7 +48,8 @@ public class PetriDish extends Application {
 
 	private Lab lab;
 	private volatile EcosystemView ecosystemView;
-
+	private Locator locator;
+	
 	private Node foreground;
 	private final PetriDishState state = new PetriDishState();
 	private final Chronometer framesChronometer = new Chronometer();
@@ -99,6 +101,7 @@ public class PetriDish extends Application {
 			public void run() {
 				lab = new Lab(arguments);
 				ecosystemView = new EcosystemView(lab.getEcosystem());
+				locator = new Locator(lab.getEcosystem());
 				isModelThreadReady[0] = true;
 
 				while (true) {
@@ -250,7 +253,8 @@ public class PetriDish extends Application {
 
 				getViewport().flyToTargetSC(clickedPoint);
 
-				Narjillo narjillo = findNarjilloNear(clickedPoint);
+				Vector clickedPointEC = getViewport().toEC(clickedPoint);
+				Narjillo narjillo = locator.findNarjilloNear(clickedPointEC);
 
 				if (event.getClickCount() == 1) {
 					if (isLocked()) {
@@ -275,27 +279,9 @@ public class PetriDish extends Application {
 					printOutDNA(clickedPoint);
 			}
 
-			private Narjillo findNarjilloNear(Vector clickedPoint) {
-				// TODO: put the algorithm for finding close-by narjillos
-				// in one place. Right now it's spread between here and the
-				// ecosystem, and it doesn't really feel like it belongs to
-				// either.
-				Vector clickedPointEC = getViewport().toEC(clickedPoint);
-				Narjillo narjillo = getEcosystem().findNarjillo(clickedPointEC);
-				
-				if (narjillo == null)
-					return null;
-				
-				double maxLockDistance = Math.max(narjillo.getBody().getRadius() * 1.2, 200);
-				if (narjillo.calculateCenterOfMass().minus(clickedPointEC).getLength() > maxLockDistance)
-					return null;
-				
-				return narjillo;
-			}
-
 			private void printOutDNA(Vector clickedPoint) {
 				Vector clickedPointEC = getViewport().toEC(clickedPoint);
-				Narjillo narjillo = getEcosystem().findNarjillo(clickedPointEC);
+				Narjillo narjillo = locator.findNarjilloNear(clickedPointEC);
 				if (narjillo == null)
 					return;
 				DNA dna = narjillo.getDNA();

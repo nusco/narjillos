@@ -97,4 +97,18 @@ public class EcosystemTest {
 		ecosystem.spawnFood(Vector.ZERO);
 		assertTrue(eventFired[0]);
 	}
+	
+	@Test
+	public void findsTheClosestFoodToAGivenNarjillo() {
+		assertEquals(foodPiece1.getPosition(), ecosystem.findClosestFoodPiece(narjillo1));
+		assertEquals(foodPiece2.getPosition(), ecosystem.findClosestFoodPiece(narjillo2));
+	}
+
+	@Test
+	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
+		Ecosystem emptyEcosystem = new Ecosystem(1000);
+		Narjillo narjillo = insertNarjillo(Vector.cartesian(100, 100));
+		Vector target = emptyEcosystem.findClosestFoodPiece(narjillo);
+		assertEquals(Vector.cartesian(500, 500), target);
+	}
 }

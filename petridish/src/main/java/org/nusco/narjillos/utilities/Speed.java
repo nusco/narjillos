@@ -1,4 +1,4 @@
-package org.nusco.narjillos.views.utilities;
+package org.nusco.narjillos.utilities;
 
 public enum Speed {
 	

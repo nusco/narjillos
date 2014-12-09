@@ -5,7 +5,7 @@ import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.views.utilities.Viewport;
+import org.nusco.narjillos.utilities.Viewport;
 
 public abstract class RoundObjectView extends ThingView {
 

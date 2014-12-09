@@ -78,19 +78,6 @@ public class Ecosystem {
 		return target.getPosition();
 	}
 
-	public Narjillo findNarjillo(Vector near) {
-		double minDistance = Double.MAX_VALUE;
-		Narjillo result = null;
-		for (Narjillo narjillo : narjillos) {
-			double distance = narjillo.calculateCenterOfMass().minus(near).getLength();
-			if (distance < minDistance) {
-				minDistance = distance;
-				result = narjillo;
-			}
-		}
-		return result;
-	}
-
 	public void tick(RanGen ranGen) {
 		for (Thing thing : new LinkedList<>(things.getAll("egg")))
 			tickEgg((Egg) thing);

@@ -338,6 +338,7 @@ public class PetriDish extends Application {
 	}
 
 	private void moveViewport(long velocityX, long velocityY, KeyEvent event) {
+		lockedOn = Thing.NULL;
 		getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
 		event.consume();
 	};

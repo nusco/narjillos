@@ -6,7 +6,7 @@ Narjillos are artificial creatures that mutate and evolve in a virtual microscop
 
 ##How to run an experiment
 
-To put a Petri dish full of narjillos under your microscope, you need Java 8 and git. Install Narjillos:
+To put a Petri dish full of narjillo eggs under your microscope, you need Java 8 and git. Install Narjillos:
 
     git clone https://github.com/nusco/narjillos.git
     cd narjillos
@@ -57,11 +57,11 @@ Look at a narjillo's eye color to get a clue about its energy level. Fully healt
 
 ####Mutation
 
-Each time a narjillo eats a piece of food, it spawns a "child" nearby. To do that, it makes a copy of its own genotype, and then generates a new phenotype out of it.
+Each time a narjillo eats a piece of food, it lays an egg that contains a full copy of the narjillo's genotype. The egg soon hatches, giving birth to a new phenotype - a little baby narjillo.
 
-However, here is a twist: when the narjillo copies its genotype, it introduces random errors (called "mutations") in the copy. These errors mean that, while the copy probably resembles the original, it also has a few different genes --- which typically result in a slightly different body shape, movement style, or color.
+However, here is a twist: when the egg receives the parent's genotype, it introduces random errors (called "mutations") in the copy. These errors mean that, while the copy probably resembles the original, it also has a few different genes --- which typically result in a child with slightly different body shape, movement style, or color.
 
-A child can also have entirely new (random) chromosomes, or lose some of the chromosomes of its parent. This generally results in more, or less, segments in the child's body compared to its parent. However, the same old rule applies: the child's genotype is similar to the parent's genotype, so the child is going to resemble the parent. As grandma used to say, "the apple doesn't fall far from the tree".
+A child can also have entirely new (random) chromosomes, or lose some of the chromosomes of its parent. This generally results in more, or fewer, segments in the child's body compared to the parent. However, the same old rule applies: the child's genotype is similar to the parent's genotype, so the child is going to resemble the parent. As grandma used to say, "the apple doesn't fall far from the tree".
 
 Phenotypic variation, Selection, Mutation... done! Now that you know about the three ingredients, let's put them together.
 

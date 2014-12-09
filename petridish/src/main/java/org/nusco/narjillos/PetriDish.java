@@ -69,6 +69,11 @@ public class PetriDish extends Application {
 		
 		primaryStage.setTitle("Narjillos - Petri Dish");
 		primaryStage.setScene(scene);
+
+		// run GC to avoid it kicking off during
+		// the first stages of animation
+		System.gc();
+		
 		primaryStage.show();
 	}
 

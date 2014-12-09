@@ -86,24 +86,30 @@ public class Space {
 	private Set<Thing> getNearbyNeighbors(Vector position, String label) {
 		int x = toAreaCoordinates(position.x);
 		int y = toAreaCoordinates(position.y);
-		Set<Thing> allNeighbors = new LinkedHashSet<>();
+		Set<Thing> result = new LinkedHashSet<>();
 
 		if (isInOuterSpace(x, y)) {
-			allNeighbors.addAll(outerSpace);
-			return allNeighbors;
+			populateWithFilteredArea(result, label, outerSpace);
+			return result;
 		}
 
-		allNeighbors.addAll(getArea(x - 1, y - 1));
-		allNeighbors.addAll(getArea(x - 1, y));
-		allNeighbors.addAll(getArea(x - 1, y + 1));
-		allNeighbors.addAll(getArea(x, y - 1));
-		allNeighbors.addAll(getArea(x, y));
-		allNeighbors.addAll(getArea(x, y + 1));
-		allNeighbors.addAll(getArea(x + 1, y - 1));
-		allNeighbors.addAll(getArea(x + 1, y));
-		allNeighbors.addAll(getArea(x + 1, y + 1));
+		populateWithFilteredArea(result, label, getArea(x, y));
+		populateWithFilteredArea(result, label, getArea(x - 1, y));
+		populateWithFilteredArea(result, label, getArea(x - 1, y + 1));
+		populateWithFilteredArea(result, label, getArea(x, y - 1));
+		populateWithFilteredArea(result, label, getArea(x, y));
+		populateWithFilteredArea(result, label, getArea(x, y + 1));
+		populateWithFilteredArea(result, label, getArea(x + 1, y - 1));
+		populateWithFilteredArea(result, label, getArea(x + 1, y));
+		populateWithFilteredArea(result, label, getArea(x + 1, y + 1));
 
-		return filterByLabel(allNeighbors, label);
+		return result;
+	}
+
+	private void populateWithFilteredArea(Set<Thing> collector, String label, Set<Thing> area) {
+		for (Thing thing : area)
+			if (thing.getLabel().contains(label))
+				collector.add(thing);
 	}
 	
 	public Thing findClosestTo(Thing thing, String labelRegExp) {

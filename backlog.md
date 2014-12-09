@@ -13,13 +13,12 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Externalize configurable parameters to YAML
+* Externalize configurable parameters to YAML °
 * Try scrolling/panning commands under Linux
 
 ###Genetist
 
 * Iterations in body plan °°
-* Find a good way to deal with atrophy °°
 * Ancestry browser °
 * DNA diff during ancestry analysis °
 * "Skip next" instruction in body plan °
@@ -28,26 +27,21 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ethologist
 
-* "Egg-firing" °
-* Additional cost for long-distance egg-flinging °
-* Distance of firing is determined by genes °
+* Narjillos eat eggs
+* Drifting eggs
 * Narjillos eat each other
-* "Fears" gene
-* "Wants to eat" gene
-* Obstacles and reactive sense system
 
 ###Lab Technician
 
-* Real arguments parsing (use --no-persistence together with other switches) °°
-* Check git commit on experiment startup °
-* Save single file for both experiment and genepool °
+* Lock on single narjillo °
+* Real arguments parsing (use --no-persistence together with other switches) °
+* Single savefile for both experiment and genepool °
+* Check git commit on experiment startup
 * Automatically purge experiment temp file
 * Automatically recover missing experiment from temp file
-* Lock on single narjillo
+* View narjillo stats (age, energy, times eaten, genome...)
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
-* Dump isolated narjillos to file (instead of the console)
 * Zipped persistence files
-* View narjillo stats (age, energy, times eaten...)
 * Make food more visible in normal view
 * Make food more visible in infrared view
 
@@ -59,9 +53,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
-* Better death animation (right now the bending is not visible) °
-* Birth animation °
-* Fade out mouth/eye during death °
+* Fade out mouth/eye during death
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)

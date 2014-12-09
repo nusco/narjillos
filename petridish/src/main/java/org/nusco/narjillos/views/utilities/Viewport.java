@@ -141,6 +141,10 @@ public class Viewport {
 		targetCenterEC = toEC(targetSC);
 	}
 
+	public void flyToTargetEC(Vector targetEC) {
+		targetCenterEC = targetEC;
+	}
+
 	public void flyToNextZoomCloseupLevel() {
 		targetZoomLevel = nextZoomCloseupLevel();
 	}

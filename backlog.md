@@ -33,7 +33,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Lock on single narjillo °
 * Real arguments parsing (use --no-persistence together with other switches) °
 * Single savefile for both experiment and genepool °
 * Check git commit on experiment startup

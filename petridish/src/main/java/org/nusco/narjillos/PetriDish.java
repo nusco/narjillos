@@ -20,10 +20,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
+import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.views.DataView;
@@ -49,6 +51,7 @@ public class PetriDish extends Application {
     private Node foreground;
 	private final PetriDishState state = new PetriDishState();
 	private final Chronometer framesChronometer = new Chronometer();
+	private volatile Thing lockedOn = Thing.NULL;
 	
 	@Override
 	public void start(final Stage primaryStage) {
@@ -126,7 +129,11 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
+					if (lockedOn != Thing.NULL)
+						getViewport().flyToTargetEC(lockedOn.getPosition());
+
 					ecosystemView.tick();
+					
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
@@ -144,33 +151,6 @@ public class PetriDish extends Application {
 		Thread updateGUI = new Thread(task);
 		updateGUI.setDaemon(true);
 		updateGUI.start();
-	}
-	
-	private EventHandler<? super KeyEvent> createKeyboardHandler() {
-		return new EventHandler<KeyEvent>() {
-			public void handle(final KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.RIGHT)
-					moveViewport(PAN_SPEED, 0, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.LEFT)
-					moveViewport(-PAN_SPEED, 0, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.UP)
-					moveViewport(0, -PAN_SPEED, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.DOWN)
-					moveViewport(0, PAN_SPEED, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.P)
-					state.togglePause();
-				else if (keyEvent.getCode() == KeyCode.S)
-					state.shiftSpeed();
-				else if (keyEvent.getCode() == KeyCode.L) {
-					state.toggleLight();
-					getEcosystemView().setLight(state.getLight());
-				}
-				else if (keyEvent.getCode() == KeyCode.I) {
-					state.toggleInfrared();
-					getEcosystemView().setLight(state.getLight());
-				}
-			}
-		};
 	}
 
 	private synchronized void update(final Group root) {
@@ -229,8 +209,73 @@ public class PetriDish extends Application {
 		else
 			return FRAMES_PERIOD_WITH_LIGHT_ON;
 	}
+	
+	private EventHandler<? super KeyEvent> createKeyboardHandler() {
+		return new EventHandler<KeyEvent>() {
+			public void handle(final KeyEvent keyEvent) {
+				if (keyEvent.getCode() == KeyCode.RIGHT)
+					moveViewport(PAN_SPEED, 0, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.LEFT)
+					moveViewport(-PAN_SPEED, 0, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.UP)
+					moveViewport(0, -PAN_SPEED, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.DOWN)
+					moveViewport(0, PAN_SPEED, keyEvent);
+				else if (keyEvent.getCode() == KeyCode.P)
+					state.togglePause();
+				else if (keyEvent.getCode() == KeyCode.S)
+					state.shiftSpeed();
+				else if (keyEvent.getCode() == KeyCode.L) {
+					state.toggleLight();
+					getEcosystemView().setLight(state.getLight());
+				}
+				else if (keyEvent.getCode() == KeyCode.I) {
+					state.toggleInfrared();
+					getEcosystemView().setLight(state.getLight());
+				}
+			}
+		};
+	}
 
-	protected EventHandler<ScrollEvent> createMouseScrollHandler() {
+	private EventHandler<MouseEvent> createMouseHandler() {
+		return new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
+				
+				getViewport().flyToTargetSC(clickedPoint);
+
+				lockedOn = Thing.NULL;
+
+				if (event.getClickCount() > 1)
+					getViewport().flyToNextZoomCloseupLevel();
+
+				if (event.getClickCount() == 2)
+					lockedOn = findNarjilloNear(clickedPoint);
+				
+				if (event.getClickCount() == 3)
+					printOutDNA(clickedPoint);
+			}
+
+			private Thing findNarjilloNear(Vector clickedPoint) {
+				Vector clickedPointEC = getViewport().toEC(clickedPoint);
+				Narjillo narjillo = getEcosystem().findNarjillo(clickedPointEC);
+				if (narjillo == null || narjillo.getPosition().minus(clickedPointEC).getLength() > 200)
+					return Thing.NULL;
+				return narjillo;
+			}
+
+			private void printOutDNA(Vector clickedPoint) {
+				Vector clickedPointEC = getViewport().toEC(clickedPoint);
+				Narjillo narjillo = getEcosystem().findNarjillo(clickedPointEC);
+				if (narjillo == null)
+					return;
+				DNA dna = narjillo.getDNA();
+				System.out.println("Isolating: " + JSON.toJson(dna, DNA.class));
+			}
+		};
+	}
+
+	private EventHandler<ScrollEvent> createMouseScrollHandler() {
 		return new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
@@ -242,31 +287,9 @@ public class PetriDish extends Application {
 		};
 	}
 
-	protected EventHandler<MouseEvent> createMouseHandler() {
-		return new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				
-				getViewport().flyToTargetSC(clickedPoint);
-				
-				if (event.getClickCount() > 1)
-					getViewport().flyToNextZoomCloseupLevel();
-
-				if (event.getClickCount() > 2)
-					printOutDNA(clickedPoint);
-			}
-
-			private void printOutDNA(Vector clickedPoint) {
-				Vector clickedPointEC = getViewport().toEC(clickedPoint);
-				DNA dna = getEcosystem().findNarjillo(clickedPointEC).getDNA();
-				System.out.println("Isolating: " + JSON.toJson(dna, DNA.class));
-			}
-		};
-	}
-
 	private synchronized Node getDataView() {
 		Color color = getDataViewColor();
-		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage(), color);
+		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage() + "\n" + getModeMessage(), color );
 	}
 
 	private Color getDataViewColor() {
@@ -295,6 +318,12 @@ public class PetriDish extends Application {
 				" / TPS: " + lab.getTicksInLastSecond() +
 				" / TICKS: " + NumberFormat.format(lab.getTotalTicks()) +
 				" (" + getStateString() + ")";
+	}
+
+	private String getModeMessage() {
+		if (lockedOn == Thing.NULL)
+			return "";
+		return "Follow mode (click to unfollow)";
 	}
 
 	private String getStateString() {

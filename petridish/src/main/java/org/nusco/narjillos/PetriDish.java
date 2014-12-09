@@ -47,18 +47,18 @@ public class PetriDish extends Application {
 
 	private Lab lab;
 	private volatile EcosystemView ecosystemView;
-	
-    private Node foreground;
+
+	private Node foreground;
 	private final PetriDishState state = new PetriDishState();
 	private final Chronometer framesChronometer = new Chronometer();
 	private volatile Thing lockedOn = Thing.NULL;
-	
+
 	@Override
 	public void start(final Stage primaryStage) {
 		final Group root = new Group();
 
 		startModelThread(programArguments);
-		
+
 		updateForeground();
 		update(root);
 		startViewThread(root);
@@ -69,14 +69,14 @@ public class PetriDish extends Application {
 		scene.setOnMouseClicked(createMouseHandler());
 		scene.setOnScroll(createMouseScrollHandler());
 		bindViewportSizeToWindowSize(scene, viewport);
-		
+
 		primaryStage.setTitle("Narjillos - Petri Dish");
 		primaryStage.setScene(scene);
 
 		// run GC to avoid it kicking off during
 		// the first stages of animation
 		System.gc();
-		
+
 		primaryStage.show();
 	}
 
@@ -91,7 +91,7 @@ public class PetriDish extends Application {
 	private synchronized EcosystemView getEcosystemView() {
 		return ecosystemView;
 	}
-	
+
 	private void startModelThread(final String[] arguments) {
 		final boolean[] isModelThreadReady = new boolean[] { false };
 		Thread updateThread = new Thread() {
@@ -100,7 +100,7 @@ public class PetriDish extends Application {
 				lab = new Lab(arguments);
 				ecosystemView = new EcosystemView(lab.getEcosystem());
 				isModelThreadReady[0] = true;
-				
+
 				while (true) {
 					long startTime = System.currentTimeMillis();
 					if (state.getSpeed() != Speed.PAUSED)
@@ -129,11 +129,13 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
-					if (lockedOn != Thing.NULL)
-						getViewport().flyToTargetEC(lockedOn.getPosition());
+					if (lockedOn != Thing.NULL) {
+						Narjillo narjillo = (Narjillo) lockedOn;
+						getViewport().flyToTargetEC(narjillo.calculateCenterOfMass());
+					}
 
 					ecosystemView.tick();
-					
+
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
@@ -158,7 +160,7 @@ public class PetriDish extends Application {
 		root.getChildren().add(getEcosystemView().toNode());
 
 		root.getChildren().add(foreground);
-		
+
 		Node environmentSpecificOverlay = getDataView();
 		if (environmentSpecificOverlay != null)
 			root.getChildren().add(environmentSpecificOverlay);
@@ -166,16 +168,18 @@ public class PetriDish extends Application {
 
 	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-		    	viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
-		    	updateForeground();
-		    }
+			@Override
+			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+				viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
+				updateForeground();
+			}
 		});
 		scene.heightProperty().addListener(new ChangeListener<Number>() {
-			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-		        viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
-		        updateForeground();
-		    }
+			@Override
+			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+				viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
+				updateForeground();
+			}
 		});
 	}
 
@@ -209,7 +213,7 @@ public class PetriDish extends Application {
 		else
 			return FRAMES_PERIOD_WITH_LIGHT_ON;
 	}
-	
+
 	private EventHandler<? super KeyEvent> createKeyboardHandler() {
 		return new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
@@ -228,8 +232,7 @@ public class PetriDish extends Application {
 				else if (keyEvent.getCode() == KeyCode.L) {
 					state.toggleLight();
 					getEcosystemView().setLight(state.getLight());
-				}
-				else if (keyEvent.getCode() == KeyCode.I) {
+				} else if (keyEvent.getCode() == KeyCode.I) {
 					state.toggleInfrared();
 					getEcosystemView().setLight(state.getLight());
 				}
@@ -241,26 +244,33 @@ public class PetriDish extends Application {
 		return new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				
+
 				getViewport().flyToTargetSC(clickedPoint);
 
-				lockedOn = Thing.NULL;
-
+				lockedOn = findNarjilloNear(clickedPoint);
+				
 				if (event.getClickCount() > 1)
 					getViewport().flyToNextZoomCloseupLevel();
-
-				if (event.getClickCount() == 2)
-					lockedOn = findNarjilloNear(clickedPoint);
 				
-				if (event.getClickCount() == 3)
+				if (event.getClickCount() == 2)
 					printOutDNA(clickedPoint);
 			}
 
 			private Thing findNarjilloNear(Vector clickedPoint) {
+				// TODO: put the algorithm for finding close-by narjillos
+				// in one place. Right now it's spread between here and the
+				// ecosystem, and it doesn't really feel like it belongs to
+				// either.
 				Vector clickedPointEC = getViewport().toEC(clickedPoint);
 				Narjillo narjillo = getEcosystem().findNarjillo(clickedPointEC);
-				if (narjillo == null || narjillo.getPosition().minus(clickedPointEC).getLength() > 200)
+				
+				if (narjillo == null)
 					return Thing.NULL;
+				
+				double maxLockDistance = Math.max(narjillo.getBody().getRadius() * 1.2, 200);
+				if (narjillo.calculateCenterOfMass().minus(clickedPointEC).getLength() > maxLockDistance)
+					return Thing.NULL;
+				
 				return narjillo;
 			}
 
@@ -289,11 +299,11 @@ public class PetriDish extends Application {
 
 	private synchronized Node getDataView() {
 		Color color = getDataViewColor();
-		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage() + "\n" + getModeMessage(), color );
+		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage() + "\n" + getModeMessage(), color);
 	}
 
 	private Color getDataViewColor() {
-		switch(state.getSpeed()) {
+		switch (state.getSpeed()) {
 		case HIGH:
 			return Color.HOTPINK;
 		case REALTIME:
@@ -308,22 +318,19 @@ public class PetriDish extends Application {
 	}
 
 	private String getStatisticsMessage() {
-		return 	"NARJ: " + getEcosystem().getNumberOfNarjillos() +
-				" / EGGS: " + getEcosystem().getNumberOfEggs() +
-				" / FOOD: " + getEcosystem().getNumberOfFoodPieces();
+		return "NARJ: " + getEcosystem().getNumberOfNarjillos() + " / EGGS: " + getEcosystem().getNumberOfEggs() + " / FOOD: "
+				+ getEcosystem().getNumberOfFoodPieces();
 	}
 
 	private String getPerformanceMessage() {
-		return	"FPS: " + framesChronometer.getTicksInLastSecond() +
-				" / TPS: " + lab.getTicksInLastSecond() +
-				" / TICKS: " + NumberFormat.format(lab.getTotalTicks()) +
-				" (" + getStateString() + ")";
+		return "FPS: " + framesChronometer.getTicksInLastSecond() + " / TPS: " + lab.getTicksInLastSecond() + " / TICKS: "
+				+ NumberFormat.format(lab.getTotalTicks()) + " (" + getStateString() + ")";
 	}
 
 	private String getModeMessage() {
 		if (lockedOn == Thing.NULL)
-			return "";
-		return "Follow mode (click to unfollow)";
+			return "Mode: Freeroam";
+		return "Mode: Follow";
 	}
 
 	private String getStateString() {

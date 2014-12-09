@@ -82,7 +82,7 @@ public class Ecosystem {
 		double minDistance = Double.MAX_VALUE;
 		Narjillo result = null;
 		for (Narjillo narjillo : narjillos) {
-			double distance = narjillo.getPosition().minus(near).getLength();
+			double distance = narjillo.calculateCenterOfMass().minus(near).getLength();
 			if (distance < minDistance) {
 				minDistance = distance;
 				result = narjillo;

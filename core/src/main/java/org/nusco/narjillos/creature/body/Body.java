@@ -187,19 +187,6 @@ public class Body {
 		return result;
 	}
 
-	double calculateRadius(Vector centerOfMass) {
-		final double MIN_RADIUS = 1;
-		double result = MIN_RADIUS;
-		for (BodyPart bodyPart : getBodyParts()) {
-			double startPointDistance = bodyPart.getStartPoint().minus(centerOfMass).getLength();
-			double endPointDistance = bodyPart.getEndPoint().minus(centerOfMass).getLength();
-			double distance = Math.max(startPointDistance, endPointDistance);
-			if (distance > result)
-				result = distance;
-		}
-		return result;
-	}
-
 	private double getMetabolicRate() {
 		return getHead().getMetabolicRate();
 	}
@@ -233,5 +220,22 @@ public class Body {
 
 	public double getAdultMass() {
 		return adultMass;
+	}
+
+	private double calculateRadius(Vector centerOfMass) {
+		final double MIN_RADIUS = 1;
+		double result = MIN_RADIUS;
+		for (BodyPart bodyPart : getBodyParts()) {
+			double startPointDistance = bodyPart.getStartPoint().minus(centerOfMass).getLength();
+			double endPointDistance = bodyPart.getEndPoint().minus(centerOfMass).getLength();
+			double distance = Math.max(startPointDistance, endPointDistance);
+			if (distance > result)
+				result = distance;
+		}
+		return result;
+	}
+
+	public double getRadius() {
+		return calculateRadius(calculateCenterOfMass());
 	}
 }

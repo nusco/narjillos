@@ -58,7 +58,7 @@ public class BodyTest {
 		Vector centerOfMass = body.calculateCenterOfMass();
 		assertEquals(Vector.cartesian(12.5, 0), centerOfMass);
 		
-		assertEquals(17.5, body.calculateRadius(body.calculateCenterOfMass()), 0.0);
+		assertEquals(17.5, body.getRadius(), 0.0);
 	}
 
 	private void grow(Organ organ) {
@@ -70,7 +70,7 @@ public class BodyTest {
 	public void itsMinimumRadiusIsOne() {
 		Head head = new Head(0, 1, new ColorByte(1), 1, 0.5);
 		Body body = new Body(head);
-		assertEquals(1, body.calculateRadius(head.getCenterOfMass()), 0.0);
+		assertEquals(1, body.getRadius(), 0.0);
 	}
 	
 	@Test

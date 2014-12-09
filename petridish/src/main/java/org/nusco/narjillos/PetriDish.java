@@ -248,11 +248,17 @@ public class PetriDish extends Application {
 				getViewport().flyToTargetSC(clickedPoint);
 
 				lockedOn = findNarjilloNear(clickedPoint);
+
+				if (lockedOn != Thing.NULL) {
+					// Zoom in on the locked narjillo
+					getViewport().flyToMaxZoomCloseupLevel();
+				} else {
+					// Freeroam mode
+					if (event.getClickCount() > 1)
+						getViewport().flyToNextZoomCloseupLevel();
+				}
 				
-				if (event.getClickCount() > 1)
-					getViewport().flyToNextZoomCloseupLevel();
-				
-				if (event.getClickCount() == 2)
+				if (event.getClickCount() == 3)
 					printOutDNA(clickedPoint);
 			}
 

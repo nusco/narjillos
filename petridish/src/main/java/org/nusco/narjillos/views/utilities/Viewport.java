@@ -149,6 +149,10 @@ public class Viewport {
 		targetZoomLevel = nextZoomCloseupLevel();
 	}
 
+	public void flyToMaxZoomCloseupLevel() {
+		targetZoomLevel = ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
+	}
+
 	private double nextZoomCloseupLevel() {
 		for (int i = 0; i < ZOOM_CLOSEUP_LEVELS.length; i++)
 			if (ZOOM_CLOSEUP_LEVELS[i] > targetZoomLevel + 0.01)

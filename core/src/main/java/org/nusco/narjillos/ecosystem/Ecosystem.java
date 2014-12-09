@@ -10,8 +10,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -27,6 +27,9 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
  */
 public class Ecosystem {
 
+	private static final int INITIAL_EGG_ENERGY = 50_000;
+	private static final int MIN_EGG_INCUBATION_TIME = 400;
+	private static final int MAX_EGG_INCUBATION_TIME = 800;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 	private static final int AREAS_PER_EDGE = 80;
@@ -34,7 +37,7 @@ public class Ecosystem {
 	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
 
-	private final Space foodSpace;
+	private final Space things;
 	private final Vector center;
 
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
@@ -42,7 +45,7 @@ public class Ecosystem {
 
 	public Ecosystem(final long size) {
 		this.size = size;
-		this.foodSpace = new Space(size, AREAS_PER_EDGE);
+		this.things = new Space(size, AREAS_PER_EDGE);
 		this.center = Vector.cartesian(size, size).by(0.5);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
@@ -56,17 +59,18 @@ public class Ecosystem {
 		return size;
 	}
 
-	public Set<Thing> getThings() {
+	public Set<Thing> getThings(String label) {
 		Set<Thing> result = new LinkedHashSet<Thing>();
-		synchronized (this) {
-			result.addAll(foodSpace.getAll());
-		}
-		result.addAll(narjillos);
+		// this ugliness will stay until we have narjillos
+		// in the same space as other things
+		if (label.equals("narjillo") || label.equals(""))
+			result.addAll(narjillos);
+		result.addAll(things.getAll(label));
 		return result;
 	}
 
-	public Vector findClosestTarget(Narjillo narjillo) {
-		Thing target = foodSpace.findClosestTo(narjillo);
+	public Vector findClosestFoodPiece(Thing thing) {
+		Thing target = things.findClosestTo(thing, "food_piece");
 
 		if (target == null)
 			return center;
@@ -88,10 +92,13 @@ public class Ecosystem {
 	}
 
 	public void tick(RanGen ranGen) {
+		for (Thing thing : new LinkedList<>(things.getAll("egg")))
+			tickEgg((Egg) thing);
+
 		for (Narjillo narjillo : new LinkedList<>(narjillos))
 			if (narjillo.isDead())
-				remove(narjillo);
-
+				removeNarjillo(narjillo);
+		
 		List<Future<Segment>> movements = tickAll(narjillos);
 
 		List<Narjillo> allNarjillos = new LinkedList<>(narjillos);
@@ -112,9 +119,17 @@ public class Ecosystem {
 			VisualDebugger.clear();
 	}
 
+	private void tickEgg(Egg egg) {
+		egg.tick();
+		if (egg.hatch())
+			insertNarjillo(egg.getHatchedNarjillo());
+		if (egg.isDecayed())
+			remove(egg);
+	}
+
 	private void checkForExcessiveSpeed(Segment movement) {
-		if (movement.getVector().getLength() > foodSpace.getAreaSize())
-			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of " + foodSpace.getAreaSize() + ". Could result in missed collisions.");
+		if (movement.getVector().getLength() > things.getAreaSize())
+			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of " + things.getAreaSize() + ". Could result in missed collisions.");
 	}
 
 	private Segment waitUntilAvailable(List<Future<Segment>> movements, int index) {
@@ -149,32 +164,37 @@ public class Ecosystem {
 	public final FoodPiece spawnFood(Vector position) {
 		FoodPiece newFood = new FoodPiece();
 		newFood.setPosition(position);
-		forceAdd(newFood);
+		insert(newFood);
 		return newFood;
 	}
 
-	public void forceAdd(FoodPiece food) {
-		foodSpace.add(food);
-		notifyThingAdded(food);
+	public void insert(Thing thing) {
+		things.add(thing);
+		notifyThingAdded(thing);
 	}
 
-	public final Narjillo spawnNarjillo(DNA genes, Vector position) {
-		final Narjillo narjillo = new Narjillo(genes, new Embryo(genes).develop(), position);
-		
-		forceAdd(narjillo);
-		return narjillo;
-	}
-
-	public void forceAdd(final Narjillo narjillo) {
+	public void insertNarjillo(Narjillo narjillo) {
 		narjillos.add(narjillo);
 		notifyThingAdded(narjillo);
+	}
+
+	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
+		Egg egg = new Egg(genes, position, INITIAL_EGG_ENERGY, getRandomIncubationTime(ranGen));
+		insert(egg);
+		return egg;
+	}
+
+	private int getRandomIncubationTime(RanGen ranGen) {
+		final int MAX_INCUBATION_INTERVAL = MAX_EGG_INCUBATION_TIME - MIN_EGG_INCUBATION_TIME;
+		int extraIncubation = (int)(MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
+		return MIN_EGG_INCUBATION_TIME + extraIncubation;
 	}
 
 	private void updateTargets(Thing food) {
 		for (Thing creature : narjillos) {
 			if (((Narjillo) creature).getTarget() == food) {
 				Narjillo narjillo = (Narjillo) creature;
-				Vector closestTarget = findClosestTarget(narjillo);
+				Vector closestTarget = findClosestFoodPiece(narjillo);
 				narjillo.setTarget(closestTarget);
 			}
 		}
@@ -183,49 +203,46 @@ public class Ecosystem {
 	public void updateAllTargets() {
 		for (Thing creature : narjillos) {
 			Narjillo narjillo = (Narjillo) creature;
-			Vector closestTarget = findClosestTarget(narjillo);
+			Vector closestTarget = findClosestFoodPiece(narjillo);
 			narjillo.setTarget(closestTarget);
 		}
 	}
 
 	private void consumeCollidedFood(Narjillo narjillo, Segment movement, RanGen ranGen) {
-		Set<Thing> collidedFoodPieces = foodSpace.detectCollisions(movement);
+		Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
 
 		for (Thing collidedFoodPiece : collidedFoodPieces)
 			consumeFood(narjillo, collidedFoodPiece, ranGen);
 	}
 
 	private void consumeFood(Narjillo narjillo, Thing foodPiece, RanGen ranGen) {
-		if (!foodSpace.contains(foodPiece))
+		if (!things.contains(foodPiece))
 			return; // race condition: already consumed
 
-		notifyThingRemoved(foodPiece);
-		foodSpace.remove(foodPiece);
+		remove(foodPiece);
 
 		narjillo.feedOn(foodPiece);
 
-		Vector offset = Vector.cartesian(getRandomInRange(3000, ranGen), getRandomInRange(3000, ranGen));
-		Vector position = narjillo.getPosition().plus(offset);
-
-		reproduce(narjillo, position, ranGen);
+		layEgg(narjillo, ranGen);
 		updateTargets(foodPiece);
 	}
 
-	private void remove(Narjillo narjillo) {
+	private void remove(Thing thing) {
+		notifyThingRemoved(thing);
+		things.remove(thing);
+	}
+
+	private void removeNarjillo(Narjillo narjillo) {
 		notifyThingRemoved(narjillo);
 		narjillos.remove(narjillo);
 		narjillo.getDNA().destroy();
 	}
 
-	private void reproduce(Narjillo narjillo, Vector position, RanGen ranGen) {
-		final Narjillo child = narjillo.reproduce(position, ranGen);
-		if (child == null) // refused to reproduce
+	private void layEgg(Narjillo narjillo, RanGen ranGen) {
+		Egg egg = narjillo.layEgg(narjillo.getNeckPosition(), ranGen);
+		if (egg == null) // refused to lay egg
 			return;
-		forceAdd(child);
-	}
-
-	private double getRandomInRange(final int range, RanGen ranGen) {
-		return (range * 2 * ranGen.nextDouble()) - range;
+		insert(egg);
 	}
 
 	private final void notifyThingAdded(Thing thing) {
@@ -243,15 +260,19 @@ public class Ecosystem {
 	}
 
 	public int getNumberOfFoodPieces() {
-		return foodSpace.getAll().size();
+		return things.count("food_piece");
+	}
+
+	public int getNumberOfEggs() {
+		return things.count("egg");
 	}
 
 	public int getNumberOfNarjillos() {
 		return narjillos.size();
 	}
 
-	public Set<Thing> getFoodPieces() {
-		return foodSpace.getAll();
+	public Set<Thing> getNonNarjilloThings() {
+		return things.getAll("");
 	}
 
 	public Set<Narjillo> getNarjillos() {

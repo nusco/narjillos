@@ -2,6 +2,7 @@ package org.nusco.narjillos.serializer;
 
 import java.lang.reflect.Type;
 
+import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.things.FoodPiece;
@@ -22,8 +23,11 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("size", ecosystem.getSize());
 
-		final JsonElement foodPieces = context.serialize(ecosystem.getFoodPieces());
+		final JsonElement foodPieces = context.serialize(ecosystem.getThings("food_piece"));
 		jsonObject.add("foodPieces", foodPieces);
+
+		final JsonElement eggs = context.serialize(ecosystem.getThings("egg"));
+		jsonObject.add("eggs", eggs);
 
 		final JsonElement narjillos = context.serialize(ecosystem.getNarjillos());
 		jsonObject.add("narjillos", narjillos);
@@ -42,14 +46,21 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 		for (int i = 0; i < foodPieces.size(); i++) {
 			JsonElement jsonFoodPiece = foodPieces.get(i);
 			FoodPiece foodPiece = context.deserialize(jsonFoodPiece, FoodPiece.class);
-			result.forceAdd(foodPiece);
+			result.insert(foodPiece);
+		}
+
+		JsonArray eggs = jsonObject.get("eggs").getAsJsonArray();
+		for (int i = 0; i < eggs.size(); i++) {
+			JsonElement jsonEgg = eggs.get(i);
+			Egg egg = context.deserialize(jsonEgg, Egg.class);
+			result.insert(egg);
 		}
 
 		JsonArray narjillos = jsonObject.get("narjillos").getAsJsonArray();
 		for (int i = 0; i < narjillos.size(); i++) {
 			JsonElement jsonNarjllo = narjillos.get(i);
 			Narjillo narjillo = context.deserialize(jsonNarjllo, Narjillo.class);
-			result.forceAdd(narjillo);
+			result.insertNarjillo(narjillo);
 		}
 
 		return result;

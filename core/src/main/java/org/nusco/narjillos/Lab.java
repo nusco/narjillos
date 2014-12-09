@@ -90,12 +90,13 @@ public class Lab {
 	}
 
 	private String getHeadersString() {
-		return alignLeft("tick") + alignLeft("time") + alignLeft("narj") + alignLeft("food");
+		return alignLeft("tick") + alignLeft("time") + alignLeft("eggs") + alignLeft("narj") + alignLeft("food");
 	}
 
 	private String getStatusString(long tick) {
 		return alignLeft(NumberFormat.format(tick))
 				+ alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
+				+ alignLeft(experiment.getEcosystem().getNumberOfEggs())
 				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
 				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces());
 	}

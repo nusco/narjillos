@@ -50,7 +50,7 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing thing = things[0]; // area [5, 3]
-		Set<Thing> neighbors = space.getNearbyNeighbors(thing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(thing, "");
 
 		assertEquals(5, neighbors.size());
 		Iterator<Thing> thingsIterator = neighbors.iterator();
@@ -99,7 +99,7 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // area [5, 5]
-		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
 
 		assertEquals(1, neighbors.size());
 		assertEquals("1", neighbors.iterator().next().getLabel());
@@ -110,7 +110,7 @@ public class SpaceTest {
 		MockThing thingOutOfSpace = new MockThing(Vector.cartesian(510, 510), 0); // area [5, 5]
 		space.add(new MockThing(Vector.cartesian(520, 520), 1)); // area [5, 5]
 
-		Set<Thing> neighbors = space.getNearbyNeighbors(thingOutOfSpace);
+		Set<Thing> neighbors = space.getNearbyNeighbors(thingOutOfSpace, "");
 
 		assertEquals(1, neighbors.size());
 		assertEquals("1", neighbors.iterator().next().getLabel());
@@ -128,7 +128,7 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // area [0, 3]
-		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
 
 		assertEquals(3, neighbors.size());
 		Iterator<Thing> thingsIterator = neighbors.iterator();
@@ -149,7 +149,7 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // area [99, 99]
-		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
 		assertEquals(3, neighbors.size());
 		Iterator<Thing> thingsIterator = neighbors.iterator();
 		assertEquals("2", thingsIterator.next().getLabel());
@@ -167,7 +167,7 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Thing referenceThing = things[0]; // outer space
-		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing);
+		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
 
 		assertEquals(1, neighbors.size());
 		assertEquals("1", neighbors.iterator().next().getLabel());
@@ -183,7 +183,7 @@ public class SpaceTest {
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);
 
-		Set<Thing> allTheThings = space.getAll();
+		Set<Thing> allTheThings = space.getAll("");
 		
 		assertEquals(3, allTheThings.size());
 		for (int i = 0; i < things.length; i++)

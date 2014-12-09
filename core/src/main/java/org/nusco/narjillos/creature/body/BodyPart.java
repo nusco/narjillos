@@ -6,6 +6,8 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public abstract class BodyPart {
 
+	private static final int MINIMUM_LENGTH_AT_BIRTH = 5;
+	private static final int MINIMUM_THICKNESS_AT_BIRTH = 1;
 	private static final double GROWTH_RATE = 0.01;
 	
 	private final double adultLength;
@@ -30,8 +32,8 @@ public abstract class BodyPart {
 		this.adultThickness = adultThickness;
 		this.adultMass = Math.max(adultLength * adultThickness, 1);
 		
-		this.length = Math.min(10, adultLength);
-		this.thickness = Math.min(1, adultThickness);
+		this.length = Math.min(MINIMUM_LENGTH_AT_BIRTH, adultLength);
+		this.thickness = Math.min(MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
 		this.color = color;
 		
 		initCaches();
@@ -65,7 +67,7 @@ public abstract class BodyPart {
 		return thickness;
 	}
 
-	protected void grow() {
+	public void grow() {
 		if (isFullyGrown())
 			return;
 	
@@ -75,7 +77,7 @@ public abstract class BodyPart {
 		// optimization: let the client update the caches
 	}
 
-	private boolean isFullyGrown() {
+	public boolean isFullyGrown() {
 		return getLength() >= adultLength && getThickness() >= adultThickness;
 	}
 

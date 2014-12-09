@@ -48,10 +48,10 @@ public class Experiment {
 
 		if (dna == null) {
 			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
-				ecosystem.spawnNarjillo(DNA.random(ranGen), randomPosition(ecosystem.getSize()));
+				ecosystem.spawnEgg(DNA.random(ranGen), randomPosition(ecosystem.getSize()), ranGen);
 		} else {
 			for (int i = 0; i < 10; i++)
-				ecosystem.spawnNarjillo(dna, randomPosition(ecosystem.getSize()));
+				ecosystem.spawnEgg(dna, randomPosition(ecosystem.getSize()), ranGen);
 		}
 	}
 
@@ -82,7 +82,7 @@ public class Experiment {
 	}
 
 	private boolean areThereSurvivors() {
-		return getEcosystem().getNumberOfNarjillos() > 0;
+		return getEcosystem().getNumberOfNarjillos() > 0 || getEcosystem().getNumberOfEggs() > 0;
 	}
 
 	public long getTotalRunningTimeInSeconds() {

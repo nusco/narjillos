@@ -41,7 +41,7 @@ public class EcosystemView {
 		background = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
 		darkness = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
 
-		for (Thing thing : ecosystem.getThings())
+		for (Thing thing : ecosystem.getThings(""))
 			addThingView(thing);
 
 		ecosystem.addEventListener(new EcosystemEventListener() {
@@ -64,7 +64,7 @@ public class EcosystemView {
 	public Node toNode() {
 		if (light == Light.OFF)
 			return darkness;
-		
+
 		Group result = new Group();
 		result.getChildren().add(getBackground(light == Light.INFRARED));
 		result.getChildren().add(getThingsGroup(light == Light.INFRARED));
@@ -74,43 +74,43 @@ public class EcosystemView {
 	private Group getThingsGroup(boolean infraredOn) {
 		Group things = new Group();
 		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn));
-		
+
 		if (VisualDebugger.DEBUG)
 			things.getChildren().add(getVisualDebuggingSegments());
-		
+
 		things.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
-		things.getTransforms().add(new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(),
-											viewport.getPositionEC().x, viewport.getPositionEC().y));
+		things.getTransforms().add(
+				new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(), viewport.getPositionEC().x, viewport.getPositionEC().y));
 
 		setZoomLevelEffects(things);
-		
+
 		return things;
 	}
 
 	private Group getVisualDebuggingSegments() {
 		Group result = new Group();
 		List<Segment> segments = VisualDebugger.getSegments();
-		
+
 		if (segments.isEmpty())
 			return result;
-		
+
 		for (Segment segment : segments) {
 			Line line = new Line(segment.getStartPoint().x, segment.getStartPoint().y, segment.getEndPoint().x, segment.getEndPoint().y);
 			line.setStrokeWidth(2);
 			line.setStroke(Color.RED);
 			result.getChildren().add(line);
 		}
-		
+
 		return result;
 	}
 
 	private void setZoomLevelEffects(Group group) {
 		double zoomLevel = viewport.getZoomLevel();
-		
+
 		final int EXTREME_MAGNIFICATION = 1;
 		if (zoomLevel <= EXTREME_MAGNIFICATION)
 			return;
-		
+
 		group.setEffect(getBlurEffect(zoomLevel));
 	}
 
@@ -125,26 +125,27 @@ public class EcosystemView {
 		background.setEffect(new ColorAdjust(0, 0, brightnessAdjust, 0));
 		return background;
 	}
-	
+
 	private List<Node> getNodesForThingsInOrder(boolean infraredOn) {
 		List<Node> result = new LinkedList<>();
 		addNodesFor("food_piece", result, infraredOn);
 		addNodesFor("narjillo", result, infraredOn);
+		addNodesFor("egg", result, infraredOn);
 		return result;
 	}
 
 	private void addNodesFor(String thingLabel, List<Node> result, boolean infraredOn) {
 		for (ThingView view : getThingViews()) {
 			if (view.getThing().getLabel().equals(thingLabel)) {
-			Node node = view.toNode(viewport, infraredOn);
-			if (node != null)
-				result.add(node);
+				Node node = view.toNode(viewport, infraredOn);
+				if (node != null)
+					result.add(node);
 			}
 		}
 	}
 
 	private Effect getBlurEffect(double zoomLevel) {
-		int blurAmount = Math.min((int)(15 * (zoomLevel - 0.7)), 10);
+		int blurAmount = Math.min((int) (15 * (zoomLevel - 0.7)), 10);
 		return new BoxBlur(blurAmount, blurAmount, 1);
 	}
 

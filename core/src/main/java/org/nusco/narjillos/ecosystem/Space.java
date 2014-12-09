@@ -1,6 +1,9 @@
 package org.nusco.narjillos.ecosystem;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.nusco.narjillos.shared.physics.Segment;
@@ -25,11 +28,13 @@ public class Space {
 	private final int areasPerEdge;
 	private final Set<Thing>[][] areas;
 
-	private final Set<Thing> allTheThings = new LinkedHashSet<>();
-
-	// TODO: right now there is no visibility to/from outer space. the first is easy, the second is hard
-	private final Set<Thing> outerSpace = new LinkedHashSet<>();
+	private final Set<Thing> allTheThings = Collections.synchronizedSet(new LinkedHashSet<Thing>());
+	private final Map<String, Integer> countsByLabel = Collections.synchronizedMap(new HashMap<String, Integer>());
 	
+	// TODO: right now there is no visibility to/from outer space. the first is
+	// easy, the second is hard
+	private final Set<Thing> outerSpace = new LinkedHashSet<>();
+
 	@SuppressWarnings("unchecked")
 	public Space(long size, int areasPerEdge) {
 		this.areasPerEdge = areasPerEdge;
@@ -51,80 +56,91 @@ public class Space {
 
 		area.add(thing);
 		allTheThings.add(thing);
+
+		String label = thing.getLabel();
+		if (countsByLabel.containsKey(label))
+			countsByLabel.put(label, countsByLabel.get(label) + 1);
+		else
+			countsByLabel.put(label, 1);
 		
-		return new int[] {x, y};
+		return new int[] { x, y };
 	}
 
 	public void remove(Thing thing) {
 		getArea(thing).remove(thing);
 		allTheThings.remove(thing);
+
+		countsByLabel.put(thing.getLabel(), countsByLabel.get(thing.getLabel()) - 1);
 	}
 
 	public boolean contains(Thing thing) {
 		return getArea(thing).contains(thing);
 	}
 
-	public Set<Thing> getNearbyNeighbors(Thing thing) {
-		Set<Thing> result = getNearbyNeighbors(thing.getPosition());
+	Set<Thing> getNearbyNeighbors(Thing thing, String label) {
+		Set<Thing> result = getNearbyNeighbors(thing.getPosition(), label);
 		result.remove(thing);
 		return result;
 	}
 
-	private Set<Thing> getNearbyNeighbors(Vector position) {
+	private Set<Thing> getNearbyNeighbors(Vector position, String label) {
 		int x = toAreaCoordinates(position.x);
 		int y = toAreaCoordinates(position.y);
-		Set<Thing> result = new LinkedHashSet<>();
-		
-		if (isInOuterSpace(x, y)) {
-			result.addAll(outerSpace);
-			return result;
-		}
-		
-		result.addAll(getArea(x - 1, y - 1));
-		result.addAll(getArea(x - 1, y));
-		result.addAll(getArea(x - 1, y + 1));
-		result.addAll(getArea(x, y - 1));
-		result.addAll(getArea(x, y));
-		result.addAll(getArea(x, y + 1));
-		result.addAll(getArea(x + 1, y -1));
-		result.addAll(getArea(x + 1, y));
-		result.addAll(getArea(x + 1, y + 1));
-		return result;
-	}
+		Set<Thing> allNeighbors = new LinkedHashSet<>();
 
-	public Thing findClosestTo(Thing thing) {
+		if (isInOuterSpace(x, y)) {
+			allNeighbors.addAll(outerSpace);
+			return allNeighbors;
+		}
+
+		allNeighbors.addAll(getArea(x - 1, y - 1));
+		allNeighbors.addAll(getArea(x - 1, y));
+		allNeighbors.addAll(getArea(x - 1, y + 1));
+		allNeighbors.addAll(getArea(x, y - 1));
+		allNeighbors.addAll(getArea(x, y));
+		allNeighbors.addAll(getArea(x, y + 1));
+		allNeighbors.addAll(getArea(x + 1, y - 1));
+		allNeighbors.addAll(getArea(x + 1, y));
+		allNeighbors.addAll(getArea(x + 1, y + 1));
+
+		return filterByLabel(allNeighbors, label);
+	}
+	
+	public Thing findClosestTo(Thing thing, String labelRegExp) {
 		// TODO: naive three-step approximation. Replace with spiral search?
 
 		if (isEmpty())
 			return null;
-		
-		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing);
-		
-		if (!nearbyNeighbors.isEmpty())
-			return findClosestTo_Amongst(thing, nearbyNeighbors);
 
-		return findClosestTo_Amongst(thing, allTheThings);
+		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing, labelRegExp);
+
+		if (!nearbyNeighbors.isEmpty())
+			return findClosestTo_Amongst(thing, nearbyNeighbors, labelRegExp);
+
+		return findClosestTo_Amongst(thing, allTheThings, labelRegExp);
 	}
 
-	public Set<Thing> detectCollisions(Segment movement) {
+	public Set<Thing> detectCollisions(Segment movement, String label) {
 		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
 
-		for (Thing neighbor : getNearbyNeighbors(movement.getStartPoint()))
+		for (Thing neighbor : getNearbyNeighbors(movement.getStartPoint(), label))
 			if (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= COLLISION_DISTANCE)
 				collidedFoodPieces.add(neighbor);
 
 		return collidedFoodPieces;
 	}
 
-	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things) {
+	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things, String label) {
 		double minDistance = Double.MAX_VALUE;
 		Thing result = null;
 
 		for (Thing neighbor : things) {
-			double distance = neighbor.getPosition().minus(thing.getPosition()).getLength();
-			if (distance < minDistance) {
-				minDistance = distance;
-				result = neighbor;
+			if (matches(neighbor, label)) {
+				double distance = neighbor.getPosition().minus(thing.getPosition()).getLength();
+				if (distance < minDistance) {
+					minDistance = distance;
+					result = neighbor;
+				}
 			}
 		}
 
@@ -151,11 +167,30 @@ public class Space {
 		return (int) Math.floor(x / areaSize);
 	}
 
-	public Set<Thing> getAll() {
-		return allTheThings;
+	public Set<Thing> getAll(String label) {
+		return filterByLabel(allTheThings, label);
+	}
+
+	private Set<Thing> filterByLabel(Set<Thing> things, String label) {
+		Set<Thing> result = new LinkedHashSet<>();
+		for (Thing thing : things)
+			if (matches(thing, label))
+				result.add(thing);
+		return result;
+	}
+
+	private boolean matches(Thing thing, String label) {
+		return thing.getLabel().contains(label);
 	}
 
 	public boolean isEmpty() {
 		return allTheThings.isEmpty();
+	}
+
+	public int count(String label) {
+		Integer result = countsByLabel.get(label);
+		if (result == null)
+			return 0;
+		return result;
 	}
 }

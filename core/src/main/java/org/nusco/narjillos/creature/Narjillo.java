@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.embryogenesis.Embryo;
+import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -15,18 +15,16 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class Narjillo implements Thing {
 
 	static final double MAX_LIFESPAN = 30_000;
+	private static final int INCUBATION_TIME = 500;
 	
 	private final Body body;
 	private final DNA dna;
 	private Vector target = Vector.ZERO;
 	private Energy energy;
 	private Mouth mouth = new Mouth();
+	private int age = 0;
 	
-	public Narjillo(DNA genes, Body body, Vector position) {
-		this(genes, body, position, body.getAdultMass() / 2);
-	}
-
-	private Narjillo(DNA genes, Body body, Vector position, double initialEnergy) {
+	public Narjillo(DNA genes, Body body, Vector position, double initialEnergy) {
 		this.body = body;
 		body.teleportTo(position);
 		this.dna = genes;
@@ -43,6 +41,8 @@ public class Narjillo implements Thing {
 	
 	@Override
 	public Segment tick() {
+		age++;
+		
 		applyLifecycleAnimations();
 
 		Vector startingPosition = body.getStartPoint();
@@ -76,14 +76,14 @@ public class Narjillo implements Thing {
 		energy.consume(thing);
 	}
 
-	public Narjillo reproduce(Vector position, RanGen ranGen) {
+	public Egg layEgg(Vector position, RanGen ranGen) {
 		double percentEnergyToChildren = getPercentEnergyToChildren();
 		double childEnergy = energy.donatePercent(percentEnergyToChildren);
 		if (childEnergy == 0)
 			return null;
 
 		DNA childDNA = getDNA().copy(ranGen);
-		return new Narjillo(childDNA, new Embryo(childDNA).develop(), position, childEnergy);
+		return new Egg(childDNA, getPosition(), childEnergy, INCUBATION_TIME);
 	}
 
 	@Override
@@ -121,5 +121,13 @@ public class Narjillo implements Thing {
 
 	public Mouth getMouth() {
 		return mouth;
+	}
+
+	public Vector getNeckPosition() {
+		return getBody().getHead().getEndPoint();
+	}
+
+	public int getAge() {
+		return age;
 	}
 }

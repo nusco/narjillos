@@ -83,9 +83,10 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		assertEquals(16, bodySegment.getSkewing(), 0);
 		assertEquals(new ColorByte(32), bodySegment.getColor());
 
-		grow(bodySegment);
+		fullyGrow(head);
+		fullyGrow(bodySegment);
 		
 		assertEquals(30, bodySegment.getLength(), 0);
-		assertEquals(21, bodySegment.getThickness(), 0.01);
+		assertEquals(25, bodySegment.getThickness(), 0.01);
 	}
 }

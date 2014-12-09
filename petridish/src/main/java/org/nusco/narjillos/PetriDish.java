@@ -285,7 +285,9 @@ public class PetriDish extends Application {
 	}
 
 	private String getStatisticsMessage() {
-		return "NARJ: " + getEcosystem().getNumberOfNarjillos() + " / FOOD: " + getEcosystem().getNumberOfFoodPieces();
+		return 	"NARJ: " + getEcosystem().getNumberOfNarjillos() +
+				" / EGGS: " + getEcosystem().getNumberOfEggs() +
+				" / FOOD: " + getEcosystem().getNumberOfFoodPieces();
 	}
 
 	private String getPerformanceMessage() {

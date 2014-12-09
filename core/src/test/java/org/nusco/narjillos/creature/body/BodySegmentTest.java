@@ -13,7 +13,7 @@ public class BodySegmentTest extends OrganTest {
 	@Override
 	public Organ createConcreteOrgan(int length, int thickness) {
 		parent = new Head(10, 5, new ColorByte(100), 1, 0.5);
-		return new BodySegment(20, 10, new ColorByte(100), parent, 10, 0, 1, 0);
+		return new BodySegment(length, thickness, new ColorByte(100), parent, 10, 0, 1, 0);
 	}
 
 	@Override
@@ -46,6 +46,11 @@ public class BodySegmentTest extends OrganTest {
 		Head head = new Head(10, 0, new ColorByte(100), 1, 0.5);
 		Organ organ1 = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, 0, 90, 1, 0));
 		Organ organ2 = organ1.addChild(new BodySegment(10, 0, new ColorByte(100), organ1, 0, -90, 1, 0));
+
+		fullyGrow(head);
+		fullyGrow(organ1);
+		fullyGrow(organ2);
+		
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
 	
@@ -55,6 +60,8 @@ public class BodySegmentTest extends OrganTest {
 		Organ organ = head.addChild(new BodySegment(10, 0, new ColorByte(100), head, 0, 20, 1, 0));
 		// uses the current angle, not the angle at rest
 		organ.updateAngleToParent(45);
+		
+		fullyGrow(organ);
 		
 		final double lengthAt45Degrees = 7.07106;
 		double expectedX = head.getEndPoint().x + lengthAt45Degrees / 2;

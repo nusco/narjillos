@@ -99,7 +99,7 @@ public class Body {
 	 * operation.
 	 */
 	public double tick(Vector targetDirection) {
-		// First, update the mass of a still-developing body.
+		// Update the mass of a still-developing body.
 		if (isStillGrowing())
 			mass = calculateMass();
 

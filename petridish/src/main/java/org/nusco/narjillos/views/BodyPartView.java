@@ -38,7 +38,7 @@ class BodyPartView extends ThingView {
 
 	public Node toNode(double zoomLevel, boolean infraredOn) {
 		if (bodyPart.isAtrophic())
-			return null; // TODO: fix atrophy
+			return null;
 
 		double alpha = getAlpha(zoomLevel);
 		if (alpha == 0)

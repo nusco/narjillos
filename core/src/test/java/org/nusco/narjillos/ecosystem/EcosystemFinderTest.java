@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
@@ -27,21 +28,28 @@ public class EcosystemFinderTest {
 		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(999, 999));
 		ranGen = new RanGen(1234);
-		narjillo1 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(101, 101));
-		narjillo2 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(998, 998));
+		narjillo1 = insertNarjillo(Vector.cartesian(101, 101));
+		narjillo2 = insertNarjillo(Vector.cartesian(998, 998));
+	}
+
+	private Narjillo insertNarjillo(Vector position) {
+		DNA dna = DNA.random(ranGen);
+		Narjillo result = new Narjillo(dna, new Embryo(dna).develop(), position, 10000);
+		ecosystem.insertNarjillo(result);
+		return result;
 	}
 	
 	@Test
 	public void findsTheClosestFoodToAGivenNarjillo() {
-		assertEquals(foodPiece1.getPosition(), ecosystem.findClosestTarget(narjillo1));
-		assertEquals(foodPiece2.getPosition(), ecosystem.findClosestTarget(narjillo2));
+		assertEquals(foodPiece1.getPosition(), ecosystem.findClosestFoodPiece(narjillo1));
+		assertEquals(foodPiece2.getPosition(), ecosystem.findClosestFoodPiece(narjillo2));
 	}
 	
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
 		Ecosystem emptyEcosystem = new Ecosystem(1000);
-		Narjillo narjillo = emptyEcosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(100, 100));
-		Vector target = emptyEcosystem.findClosestTarget(narjillo);
+		Narjillo narjillo = insertNarjillo(Vector.cartesian(100, 100));
+		Vector target = emptyEcosystem.findClosestFoodPiece(narjillo);
 		assertEquals(Vector.cartesian(500, 500), target);
 	}
 

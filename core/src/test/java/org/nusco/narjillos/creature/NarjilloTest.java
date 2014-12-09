@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -19,17 +18,10 @@ public class NarjilloTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		narjillo = new Narjillo(new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO);
+		narjillo = new Narjillo(new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO, 10000);
 		
 		DNA dna = new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}");
-		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO);
-	}
-	
-	@Test
-	public void itsInitialEnergyIsProportionalToItsMass() {
-		double energyRatio = narjillo.getEnergy().getValue() / biggerNarjillo.getEnergy().getValue();
-		double massRatio = narjillo.getBody().getAdultMass() / biggerNarjillo.getBody().getAdultMass();
-		assertEquals(energyRatio, massRatio, 0.001);
+		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, 10000);
 	}
 	
 	@Test
@@ -51,7 +43,7 @@ public class NarjilloTest {
 	@Test
 	public void itsEnergyNaturallyDecreasesWithOldAgeEvenWhenItDoesntMove() {
 		DNA dna = new DNA("{1_1_1_1_1_1_1_1");
-		Narjillo narjilloThatCannotMove = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO);
+		Narjillo narjilloThatCannotMove = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, 10000);
 
 		for (int i = 0; i < Narjillo.MAX_LIFESPAN + 1; i++)
 			narjilloThatCannotMove.tick();

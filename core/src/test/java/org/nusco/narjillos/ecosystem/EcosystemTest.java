@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.EcosystemEventListener;
+import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
@@ -24,18 +25,25 @@ public class EcosystemTest {
 	FoodPiece foodPiece3;
 	Narjillo narjillo1;
 	Narjillo narjillo2;
-
+	RanGen ranGen = new RanGen(1234);
+	
 	@Before
 	public void initialize() {
 		ecosystem = new Ecosystem(1000);
 		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
 		foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
-		RanGen ranGen = new RanGen(1234);
-		narjillo1 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(150, 150));
-		narjillo2 = ecosystem.spawnNarjillo(DNA.random(ranGen), Vector.cartesian(1050, 1050));
+		narjillo1 = insertNarjillo(Vector.cartesian(150, 150));
+		narjillo2 = insertNarjillo(Vector.cartesian(1050, 1050));
 	}
-	
+
+	private Narjillo insertNarjillo(Vector position) {
+		DNA dna = DNA.random(ranGen);
+		Narjillo result = new Narjillo(dna, new Embryo(dna).develop(), position, 10000);
+		ecosystem.insertNarjillo(result);
+		return result;
+	}
+
 	@Test
 	public void countsFoodPieces() {
 		assertEquals(3, ecosystem.getNumberOfFoodPieces());
@@ -48,9 +56,26 @@ public class EcosystemTest {
 
 	@Test
 	public void returnsAllTheThings() {
-		Set<Thing> things = ecosystem.getThings();
+		Set<Thing> things = ecosystem.getThings("");
 		
+		assertEquals(5, things.size());
 		assertTrue(things.contains(narjillo1));
+		assertTrue(things.contains(foodPiece1));
+	}
+
+	@Test
+	public void returnsAllNarjillos() {
+		Set<Thing> things = ecosystem.getThings("narjillo");
+		
+		assertEquals(2, things.size());
+		assertTrue(things.contains(narjillo1));
+	}
+
+	@Test
+	public void returnsASubsetOfThings() {
+		Set<Thing> things = ecosystem.getThings("food_piece");
+		
+		assertEquals(3, things.size());
 		assertTrue(things.contains(foodPiece1));
 	}
 	

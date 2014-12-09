@@ -5,6 +5,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 
+import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
@@ -38,6 +39,8 @@ abstract class ThingView {
 			return new NarjilloView((Narjillo) thing);
 		else if (thing.getLabel().equals("food_piece"))
 			return new FoodView((FoodPiece)thing);
+		else if (thing.getLabel().equals("egg"))
+			return new EggView((Egg)thing);
 		else
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}

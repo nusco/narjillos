@@ -13,27 +13,27 @@ public abstract class BodyPartTest {
 
 	@Before
 	public void setUpPart() {
-		bodyPart = createConcreteOrgan(20, 10);
+		bodyPart = createConcreteOrgan(50, 20);
 	}
 
 	public abstract BodyPart createConcreteOrgan(int length, int thickness);
 
 	@Test
 	public void hasALengthThatGrowsWithTime() {
-		assertEquals(10, bodyPart.getLength(), 0);
+		assertEquals(5, bodyPart.getLength(), 0);
 		
-		fullyGrowBodyPart();
+		fullyGrow(bodyPart);
 
-		assertEquals(20, bodyPart.getLength(), 0);
+		assertEquals(50, bodyPart.getLength(), 0);
 	}
 
 	@Test
 	public void hasAThicknessThatGrowsWithTime() {
 		assertEquals(1, bodyPart.getThickness(), 0);
 		
-		fullyGrowBodyPart();
+		fullyGrow(bodyPart);
 		
-		assertEquals(10, bodyPart.getThickness(), 0);
+		assertEquals(20, bodyPart.getThickness(), 0);
 	}
 
 	@Test
@@ -41,15 +41,9 @@ public abstract class BodyPartTest {
 	
 	@Test
 	public void hasAMassProportionalToItsArea() {
-		fullyGrowBodyPart();
+		fullyGrow(bodyPart);
 		
-		assertEquals(200, bodyPart.getMass(), 0.01);
-	}
-
-	protected void fullyGrowBodyPart() {
-		for (int i = 0; i < 1000; i++)
-			bodyPart.grow();
-		bodyPart.updateCaches();
+		assertEquals(1000, bodyPart.getMass(), 0.01);
 	}
 	
 	@Test
@@ -72,5 +66,11 @@ public abstract class BodyPartTest {
 			}};
 
 		assertEquals(1, verySmallBodyPart.getMass(), 0.0001);
+	}
+
+	protected void fullyGrow(BodyPart bodyPart) {
+		while (!bodyPart.isFullyGrown())
+			bodyPart.grow();
+		bodyPart.updateCaches();
 	}
 }

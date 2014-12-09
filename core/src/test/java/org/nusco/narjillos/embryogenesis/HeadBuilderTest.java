@@ -46,10 +46,10 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 		HeadBuilder builder = createConcreteOrganBuilder(chromosome);
 		Head head = (Head)builder.buildOrgan(null, 0);
 		
-		grow(head);
+		fullyGrow(head);
 		
 		assertEquals(30, head.getLength(), 0);
-		assertEquals(21, head.getThickness(), 0.01);
+		assertEquals(25, head.getThickness(), 0.01);
 		assertEquals(1.764, head.getMetabolicRate(), 0.01);
 		assertEquals(new ColorByte(50), head.getColor());
 	}

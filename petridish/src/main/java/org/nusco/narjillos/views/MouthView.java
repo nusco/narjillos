@@ -49,11 +49,22 @@ class MouthView extends ThingView {
 	private Color getColor(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
 			return Color.WHITE;
-		return new Color(0, 0.6, 0, getTransparency(zoomLevel));
+		return new Color(0, 0.6, 0, getAlpha(zoomLevel));
 	}
 
-	private double getTransparency(double zoomLevel) {
-		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 20, 0, 1);
+	private double getAlpha(double zoomLevel) {
+		double alphaBasedOnZoom = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 20;
+		return clipToRange(Math.min(alphaBasedOnZoom, getAlphaBasedOnAge()), 0, 1);
+	}
+
+	private double getAlphaBasedOnAge() {
+		final double AGE_OF_OPACITY = 100;
+
+		int age = getNarjillo().getAge();
+		if (age > AGE_OF_OPACITY)
+			return 1;
+		
+		return age / AGE_OF_OPACITY;
 	}
 	
 	private void rotate(Line line, int angle) {

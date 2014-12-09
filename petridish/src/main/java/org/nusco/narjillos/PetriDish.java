@@ -129,7 +129,7 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
-					if (lockedOn != Thing.NULL) {
+					if (isLocked()) {
 						Narjillo narjillo = (Narjillo) lockedOn;
 						getViewport().flyToTargetEC(narjillo.calculateCenterOfMass());
 					}
@@ -247,22 +247,32 @@ public class PetriDish extends Application {
 
 				getViewport().flyToTargetSC(clickedPoint);
 
-				lockedOn = findNarjilloNear(clickedPoint);
+				Narjillo narjillo = findNarjilloNear(clickedPoint);
 
-				if (lockedOn != Thing.NULL) {
-					// Zoom in on the locked narjillo
-					getViewport().flyToMaxZoomCloseupLevel();
-				} else {
-					// Freeroam mode
-					if (event.getClickCount() > 1)
+				if (event.getClickCount() == 1) {
+					if (isLocked()) {
+						if (narjillo == null)
+							unlock();
+						else
+							lockOn(narjillo);
+					}
+					getViewport().flyToNextZoomCloseupLevel();
+				}
+
+				if (event.getClickCount() >= 2) {
+					if (narjillo == null)
 						getViewport().flyToNextZoomCloseupLevel();
+					else {
+						lockOn(narjillo);
+						getViewport().flyToMaxZoomCloseupLevel();
+					}
 				}
 				
 				if (event.getClickCount() == 3)
 					printOutDNA(clickedPoint);
 			}
 
-			private Thing findNarjilloNear(Vector clickedPoint) {
+			private Narjillo findNarjilloNear(Vector clickedPoint) {
 				// TODO: put the algorithm for finding close-by narjillos
 				// in one place. Right now it's spread between here and the
 				// ecosystem, and it doesn't really feel like it belongs to
@@ -271,11 +281,11 @@ public class PetriDish extends Application {
 				Narjillo narjillo = getEcosystem().findNarjillo(clickedPointEC);
 				
 				if (narjillo == null)
-					return Thing.NULL;
+					return null;
 				
 				double maxLockDistance = Math.max(narjillo.getBody().getRadius() * 1.2, 200);
 				if (narjillo.calculateCenterOfMass().minus(clickedPointEC).getLength() > maxLockDistance)
-					return Thing.NULL;
+					return null;
 				
 				return narjillo;
 			}
@@ -295,8 +305,11 @@ public class PetriDish extends Application {
 		return new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
-				if (event.getDeltaY() > 0)
+				if (event.getDeltaY() > 0) {
 					getViewport().zoomOut();
+					if (getViewport().isZoomedOutCompletely())
+						unlock();
+				}
 				else
 					getViewport().zoomIn();
 			}
@@ -334,9 +347,9 @@ public class PetriDish extends Application {
 	}
 
 	private String getModeMessage() {
-		if (lockedOn == Thing.NULL)
-			return "Mode: Freeroam";
-		return "Mode: Follow";
+		if (isLocked())
+			return "Mode: Follow";
+		return "Mode: Freeroam";
 	}
 
 	private String getStateString() {
@@ -352,5 +365,17 @@ public class PetriDish extends Application {
 	public static void main(String... args) throws Exception {
 		PetriDish.programArguments = args;
 		launch(args);
+	}
+
+	private void lockOn(Thing narjillo) {
+		lockedOn = narjillo;
+	}
+
+	private Thing unlock() {
+		return lockedOn = Thing.NULL;
+	}
+
+	private boolean isLocked() {
+		return lockedOn != Thing.NULL;
 	}
 }

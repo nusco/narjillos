@@ -13,6 +13,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
+* Zoom in on anything, not just narjillos (without locking)
 * Externalize configurable parameters to YAML °
 * Try scrolling/panning commands under Linux
 

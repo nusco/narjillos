@@ -24,7 +24,7 @@ public class Viewport {
 
 	private Vector targetCenterEC;
 	private double targetZoomLevel;
-	private final double idealZoomLevel;
+	private final double fitAllZoomLevel;
 	private final double minZoomLevel;
 	private volatile boolean userIsZooming = false;
 	
@@ -34,8 +34,8 @@ public class Viewport {
 
 		double size = Math.min(ecosystem.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
-		idealZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / ecosystemSizeEC;
-		minZoomLevel = idealZoomLevel / 2.5;
+		fitAllZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / ecosystemSizeEC;
+		minZoomLevel = fitAllZoomLevel / 2.5;
 		
 		centerOnEcosystem();
 		zoomToFit();
@@ -86,14 +86,14 @@ public class Viewport {
 
 	public void zoomOut() {
 		userIsZooming = true;
-		if (zoomLevel - minZoomLevel < 0.001) 
+		if (isZoomedOutCompletely()) 
 			targetCenterEC = getEcosystemCenterEC();
 
 		setZoomLevel(zoomLevel / ZOOM_VELOCITY);
 	}
 
 	private void zoomToFit() {
-		targetZoomLevel = idealZoomLevel;
+		targetZoomLevel = fitAllZoomLevel;
 		zoomLevel = targetZoomLevel / 10;
 	}
 
@@ -117,7 +117,7 @@ public class Viewport {
 
 	private void correctOverzooming() {
 		if (zoomLevel > 1) {
-			double highestCloseupLevel = ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
+			double highestCloseupLevel = getMaxZoomLevel();
 			targetZoomLevel = highestCloseupLevel;
 		}
 	}
@@ -150,7 +150,11 @@ public class Viewport {
 	}
 
 	public void flyToMaxZoomCloseupLevel() {
-		targetZoomLevel = ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
+		targetZoomLevel = getMaxZoomLevel();
+	}
+
+	private double getMaxZoomLevel() {
+		return ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
 	}
 
 	private double nextZoomCloseupLevel() {
@@ -174,5 +178,9 @@ public class Viewport {
 			return;
 
 		this.zoomLevel = zoomLevel + differenceToTargetZoomLevel * 0.015;
+	}
+
+	public boolean isZoomedOutCompletely() {
+		return zoomLevel - minZoomLevel < 0.001;
 	}
 }

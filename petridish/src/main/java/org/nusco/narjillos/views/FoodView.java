@@ -43,7 +43,7 @@ class FoodView extends RoundObjectView {
 	private Color getColor(boolean infraredOn) {
 		if (infraredOn)
 			return Color.RED;
-		return Color.BLUE;
+		return Color.BROWN;
 	}
 
 	private Translate moveToStartPoint() {

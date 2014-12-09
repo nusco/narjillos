@@ -27,7 +27,7 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
  */
 public class Ecosystem {
 
-	private static final int INITIAL_EGG_ENERGY = 50_000;
+	private static final int INITIAL_EGG_ENERGY = 25_000;
 	private static final int MIN_EGG_INCUBATION_TIME = 400;
 	private static final int MAX_EGG_INCUBATION_TIME = 800;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;

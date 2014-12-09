@@ -140,4 +140,12 @@ public abstract class BodyPart {
 	public boolean isAtrophic() {
 		return adultLength == 0;
 	}
+
+	public double getAdultLength() {
+		return adultLength;
+	}
+
+	public int getAdultThickness() {
+		return adultThickness;
+	}
 }

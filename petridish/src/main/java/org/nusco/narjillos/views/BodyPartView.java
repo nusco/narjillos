@@ -47,7 +47,7 @@ class BodyPartView extends ThingView {
 		rectangle.setWidth(getLengthIncludingOverlap());
 		rectangle.setHeight(bodyPart.getThickness());
 
-		double arc = (bodyPart.getLength() * bodyPart.getThickness()) % 15 + 15;
+		double arc = (bodyPart.getAdultLength() * bodyPart.getAdultThickness()) % 15 + 15;
 		rectangle.setArcWidth(arc);
 		rectangle.setArcHeight(arc);
 

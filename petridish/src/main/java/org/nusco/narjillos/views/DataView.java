@@ -9,10 +9,10 @@ public class DataView {
 
 	public static Node toNode(String message, Color color) {
 		Text result = new Text(message);
-		result.setFont(Font.font("Helvetica-Bold", 12));
+		result.setFont(Font.font("Helvetica-Bold", 14));
 		result.setFill(color);
-		result.setTranslateX(2);
-		result.setTranslateY(10);
+		result.setTranslateX(5);
+		result.setTranslateY(15);
 		return result;
 	}
 }

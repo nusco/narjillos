@@ -93,7 +93,7 @@ public class Space {
 			return result;
 		}
 
-		populateWithFilteredArea(result, label, getArea(x, y));
+		populateWithFilteredArea(result, label, getArea(x - 1, y - 1));
 		populateWithFilteredArea(result, label, getArea(x - 1, y));
 		populateWithFilteredArea(result, label, getArea(x - 1, y + 1));
 		populateWithFilteredArea(result, label, getArea(x, y - 1));

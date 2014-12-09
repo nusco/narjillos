@@ -131,7 +131,10 @@ public class PetriDish extends Application {
 
 					if (isLocked()) {
 						Narjillo narjillo = (Narjillo) lockedOn;
-						getViewport().flyToTargetEC(narjillo.calculateCenterOfMass());
+						if (narjillo.isDead())
+							unlock();
+						else
+							getViewport().flyToTargetEC(narjillo.calculateCenterOfMass());
 					}
 
 					ecosystemView.tick();

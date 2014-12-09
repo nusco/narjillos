@@ -19,20 +19,12 @@ class EggView extends RoundObjectView {
 			return null;
 
 		getShape().setRadius(Math.min(getEgg().getAge(), RADIUS));
-		
 		getShape().setFill(getFillColor(infraredOn));
-		getShape().setStroke(getStrokeColor(infraredOn));
-		getShape().setStrokeWidth(2);
-		
-		getShape().setEffect(getEffects(zoomLevel, infraredOn));
 
+		getShape().setEffect(getEffects(zoomLevel, infraredOn));
 		moveToPosition();
 		
 		return getShape();
-	}
-
-	private Color getStrokeColor(boolean infraredOn) {
-		return getFillColor(infraredOn).darker();
 	}
 
 	private Color getFillColor(boolean infraredOn) {

@@ -178,9 +178,8 @@ public class Ecosystem {
 	}
 
 	private void updateTargets(Thing food) {
-		for (Thing creature : narjillos) {
-			if (((Narjillo) creature).getTarget() == food) {
-				Narjillo narjillo = (Narjillo) creature;
+		for (Narjillo narjillo : narjillos) {
+			if (narjillo.getTarget().equals(food.getPosition())) {
 				Vector closestTarget = findClosestFoodPiece(narjillo);
 				narjillo.setTarget(closestTarget);
 			}

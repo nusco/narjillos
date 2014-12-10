@@ -8,7 +8,7 @@ import org.nusco.narjillos.shared.physics.Vector;
  */
 public interface Thing {
 
-	Thing NULL = new Thing() {
+	public static Thing NULL = new Thing() {
 		
 		@Override
 		public Segment tick() {
@@ -34,9 +34,8 @@ public interface Thing {
 	/**
 	 * @return The movement segment.
 	 */
-	Segment tick();
-
-	Vector getPosition();
-	Energy getEnergy();
-	String getLabel();
+	public Segment tick();
+	public Vector getPosition();
+	public Energy getEnergy();
+	public String getLabel();
 }

@@ -1,19 +1,12 @@
 package org.nusco.narjillos;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Random;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.serializer.JSON;
+import org.nusco.narjillos.serializer.Persistence;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
 public class Lab {
@@ -22,6 +15,7 @@ public class Lab {
 	private static boolean persistent = false;
 	private final Experiment experiment;
 	private GenePool genePool = new GenePool();
+	private volatile boolean isSaving = false;
 
 	public Lab(String... args) {
 		DNA.setObserver(genePool);
@@ -63,30 +57,13 @@ public class Lab {
 		if (ticks % PARSE_INTERVAL != 0)
 			return;
 
-		if (persistent)
-			writeStatusFiles();
+		if (persistent) {
+			isSaving  = true;
+			Persistence.save(experiment, genePool);
+			isSaving = false;
+		}
 
 		System.out.println(getStatusString(ticks));
-	}
-
-	private void writeStatusFiles() {
-		String experimentFileName = experiment.getId() + ".exp";
-		String tempExperimentFileName = experimentFileName + ".tmp";
-		
-		String ancestryFileName = experiment.getId() + ".gpl";
-		String tempAncestryFileName = ancestryFileName + ".tmp";
-
-		try {
-			writeToFile(tempExperimentFileName, JSON.toJson(experiment, Experiment.class));
-			writeToFile(tempAncestryFileName, JSON.toJson(genePool, GenePool.class));
-
-			// do this quickly to minimize the chances of getting
-			// the two files misaligned
-			moveFile(tempExperimentFileName, experimentFileName);
-			moveFile(tempAncestryFileName, ancestryFileName);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	private String getHeadersString() {
@@ -138,7 +115,7 @@ public class Lab {
 			persistent = true;
 			return new Experiment(gitCommit, seed, null);
 		} else if (secondArgument.endsWith(".nrj")) {
-			DNA dna = readDNAFromFile(secondArgument);
+			DNA dna = Persistence.loadDNA(secondArgument);
 			System.out.println("Observing DNA " + dna);
 			persistent = true;
 			return new Experiment(gitCommit, generateRandomSeed(), dna);
@@ -150,8 +127,8 @@ public class Lab {
 			String experimentId = stripFileExtension(secondArgument);
 			System.out.println("Picking up experiment from " + experimentId + ".exp");
 			persistent = true;
-			genePool = readGenePoolFromFile(experimentId);
-			return readExperimentFromFile(experimentId);
+			genePool = Persistence.loadGenePool(experimentId);
+			return Persistence.loadExperiment(experimentId);
 		}
 	}
 
@@ -173,52 +150,15 @@ public class Lab {
 		}
 	}
 
-	private DNA readDNAFromFile(String file) {
-		return new DNA(read(file));
-	}
-
-	private Experiment readExperimentFromFile(String file) {
-		Experiment result = JSON.fromJson(read(file + ".exp"), Experiment.class);
-		result.timeStamp();
-		return result;
-	}
-
-	private GenePool readGenePoolFromFile(String file) {
-		Path filePath = Paths.get(file + ".gpl");
-		if (!Files.exists(filePath)) {
-			System.out.println("Warning: no .gpl file found. Continuing with empty genepool.");
-			return new GenePool();
-		}
-		return JSON.fromJson(read(file + ".gpl"), GenePool.class);
-	}
-
-	private String read(String file) {
-		try {
-			byte[] encoded = Files.readAllBytes(Paths.get(file));
-			return new String(encoded, Charset.defaultCharset());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void moveFile(String source, String destination) throws IOException {
-		Path filePath = Paths.get(destination);
-		if (Files.exists(filePath))
-			Files.delete(filePath);
-		Files.move(Paths.get(source), filePath);
-	}
-
-	private void writeToFile(String fileName, String content) throws IOException, FileNotFoundException {
-		PrintWriter out = new PrintWriter(fileName);
-		out.print(content);
-		out.close();
-	}
-
 	private void reportEndOfExperiment() {
 		System.out.println("Experiment " + experiment.getId() + " ending at " + experiment.getTotalRunningTimeInSeconds() + " seconds, "
 				+ experiment.getTicksChronometer().getTotalTicks() + " ticks");
 	}
 
+	public boolean isSaving() {
+		return isSaving;
+	}
+	
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document |
 	// experiment_file>]
 	public static void main(String... args) {

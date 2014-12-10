@@ -31,7 +31,7 @@ import org.nusco.narjillos.utilities.Locator;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Speed;
 import org.nusco.narjillos.utilities.Viewport;
-import org.nusco.narjillos.views.DataView;
+import org.nusco.narjillos.views.StatusBarView;
 import org.nusco.narjillos.views.EcosystemView;
 
 public class PetriDish extends Application {
@@ -47,7 +47,7 @@ public class PetriDish extends Application {
 	private Lab lab;
 	private volatile EcosystemView ecosystemView;
 	private Locator locator;
-	private DataView dataView;
+	private StatusBarView statusBarView;
 
 	private Node foreground;
 	private final Chronometer framesChronometer = new Chronometer();
@@ -61,7 +61,7 @@ public class PetriDish extends Application {
 
 		ecosystemView = new EcosystemView(lab.getEcosystem());
 		locator = new Locator(lab.getEcosystem());
-		dataView = new DataView(lab);
+		statusBarView = new StatusBarView(lab);
 
 		updateForeground();
 		update(root);
@@ -169,7 +169,7 @@ public class PetriDish extends Application {
 		root.getChildren().add(getEcosystemView().toNode());
 		root.getChildren().add(foreground);
 
-		Node statusInfo = dataView.toNode(state.getSpeed(), framesChronometer, state.isLocked());
+		Node statusInfo = statusBarView.toNode(state.getSpeed(), framesChronometer, state.isLocked(), lab.isSaving());
 		root.getChildren().add(statusInfo);
 	}
 

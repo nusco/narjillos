@@ -10,19 +10,20 @@ import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 import org.nusco.narjillos.utilities.Speed;
 
-public class DataView {
+public class StatusBarView {
 
 	private final Lab lab;
 
-	public DataView(Lab lab) {
+	public StatusBarView(Lab lab) {
 		this.lab = lab;
 	}
 
-	public Node toNode(Speed speed, Chronometer chronometer, boolean locked) {
+	public Node toNode(Speed speed, Chronometer chronometer, boolean locked, boolean isSaving) {
 		String message = 	getStatisticsMessage() + "\n" +
 							getPerformanceMessage(speed, chronometer) + "\n" +
 							getSpeedMessage(speed) + "\n" +
-							getModeMessage(locked);
+							getModeMessage(locked) + "\n" +
+							getSavingMessage(isSaving);
 
 		Text result = new Text(message);
 		result.setFont(Font.font("HelveticaNeue-Bold", 14));
@@ -50,6 +51,16 @@ public class DataView {
 
 	private String getSpeedMessage(Speed speed) {
 		return "Speed: " + speed.toString();
+	}
+
+	private String getSavingMessage(boolean isSaving) {
+		if (!isSaving)
+			return "";
+		StringBuffer result = new StringBuffer("Saving");
+		long halfSecondsCounter = Math.round(System.currentTimeMillis() / 500.0) % 4;
+		for (int i = 0; i < halfSecondsCounter; i++)
+			result.append(".");
+		return result.toString();
 	}
 
 	private Ecosystem getEcosystem() {

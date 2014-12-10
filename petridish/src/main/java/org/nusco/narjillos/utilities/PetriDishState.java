@@ -26,7 +26,7 @@ public class PetriDishState {
 			break;
 		case ON:
 			this.light = Light.OFF;
-			this.speed = Speed.HIGH;
+			this.speed = Speed.FAST;
 			break;
 		case OFF:
 			this.light = Light.ON;
@@ -49,30 +49,41 @@ public class PetriDishState {
 			break;
 		}
 	}
-
-	public void shiftSpeed() {
-		this.speed = speed.shift();
+	
+	public void speedUp() {
+		switch (speed) {
+		case PAUSED:
+			this.speed = Speed.SLOW;
+			break;
+		case SLOW:
+			this.speed = Speed.REALTIME;
+			break;
+		case REALTIME:
+			this.speed = Speed.FAST;
+			break;
+		case FAST:
+		default:
+			break;
+		}
 	}
 	
-	public void togglePause() {
+	public void speedDown() {
 		switch (speed) {
-		case REALTIME:
-			this.speed = Speed.PAUSED;
+		case FAST:
+			this.speed = Speed.REALTIME;
 			break;
-		case HIGH:
-			this.speed = Speed.PAUSED;
+		case REALTIME:
+			this.speed = Speed.SLOW;
 			break;
 		case SLOW:
 			this.speed = Speed.PAUSED;
 			break;
 		case PAUSED:
-			this.speed = Speed.REALTIME;
-			break;
 		default:
 			break;
 		}
 	}
-
+	
 	public void lockOn(Thing narjillo) {
 		lockedOn = narjillo;
 	}

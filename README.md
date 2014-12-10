@@ -21,7 +21,7 @@ The first run installs the Gradle build tool and then builds the system, so it t
 
 Move around with your mouse: **click anywhere** to center, **double-click** to auto-zoom, and zoom in/out by **scrolling**. You can also move the microscope with your **cursor keys**.
 
-To turn from high speed to real time and back, press **S**.
+To shift the speed up, press **P**. To shift it down, press **O**.
 
 To turn the lamp on/off, press **L**. With the lamp off, high speed is faster (because the program doesn't need to render the creatures).
 

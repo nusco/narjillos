@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public enum Speed {
 	
 	REALTIME("real time"),
-	HIGH("high speed"),
+	FAST("high speed"),
 	SLOW("slow motion"),
 	PAUSED("paused");
 
@@ -21,7 +21,7 @@ public enum Speed {
 		switch(this) {
 		case REALTIME:
 			return 1000 / TICKS_PER_SECOND;
-		case HIGH:
+		case FAST:
 			return 1 / Integer.MAX_VALUE;
 		case SLOW:
 			return 10_000 / TICKS_PER_SECOND;
@@ -40,8 +40,8 @@ public enum Speed {
 	public Speed shift() {
 		switch (this) {
 		case REALTIME:
-			return Speed.HIGH;
-		case HIGH:
+			return Speed.FAST;
+		case FAST:
 			return Speed.SLOW;
 		case SLOW:
 			return Speed.REALTIME;
@@ -54,14 +54,14 @@ public enum Speed {
 
 	public Color getViewColor() {
 		switch (this) {
-		case HIGH:
-			return Color.HOTPINK;
+		case FAST:
+			return Color.WHITE;
 		case REALTIME:
 			return Color.LIGHTGREEN;
 		case SLOW:
-			return Color.BEIGE;
+			return Color.GREEN;
 		case PAUSED:
-			return Color.CYAN;
+			return Color.DARKGREEN;
 		default:
 			throw new RuntimeException("Unknown speed state: " + this);
 		}

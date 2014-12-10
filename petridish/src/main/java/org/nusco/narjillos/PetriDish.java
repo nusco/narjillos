@@ -233,9 +233,9 @@ public class PetriDish extends Application {
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					moveViewport(0, PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.P)
-					state.togglePause();
-				else if (keyEvent.getCode() == KeyCode.S)
-					state.shiftSpeed();
+					state.speedUp();
+				else if (keyEvent.getCode() == KeyCode.O)
+					state.speedDown();
 				else if (keyEvent.getCode() == KeyCode.L) {
 					state.toggleLight();
 					getEcosystemView().setLight(state.getLight());

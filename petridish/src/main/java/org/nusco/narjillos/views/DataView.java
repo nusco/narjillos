@@ -19,12 +19,13 @@ public class DataView {
 	}
 
 	public Node toNode(Speed speed, Chronometer chronometer, boolean locked) {
-		String message = 	getPerformanceMessage(speed, chronometer) + "\n" +
-							getStatisticsMessage() + "\n" +
+		String message = 	getStatisticsMessage() + "\n" +
+							getPerformanceMessage(speed, chronometer) + "\n" +
+							getSpeedMessage(speed) + "\n" +
 							getModeMessage(locked);
 
 		Text result = new Text(message);
-		result.setFont(Font.font("Helvetica-Bold", 14));
+		result.setFont(Font.font("HelveticaNeue-Bold", 14));
 		result.setFill(speed.getViewColor());
 		result.setTranslateX(5);
 		result.setTranslateY(15);
@@ -32,13 +33,13 @@ public class DataView {
 	}
 
 	private String getStatisticsMessage() {
-		return "NARJ: " + getEcosystem().getNumberOfNarjillos() + " / EGGS: " + getEcosystem().getNumberOfEggs() + " / FOOD: "
+		return "Narj: " + getEcosystem().getNumberOfNarjillos() + " / Eggs: " + getEcosystem().getNumberOfEggs() + " / Food: "
 				+ getEcosystem().getNumberOfFoodPieces();
 	}
 
 	private String getPerformanceMessage(Speed speed, Chronometer chronometer) {
-		return "FPS: " + chronometer.getTicksInLastSecond() + " / TPS: " + lab.getTicksInLastSecond() + " / TICKS: "
-				+ NumberFormat.format(lab.getTotalTicks()) + " (" + getStateString(speed) + ")";
+		return "FPS: " + chronometer.getTicksInLastSecond() + " / TPS: " + lab.getTicksInLastSecond() + " / Ticks: "
+				+ NumberFormat.format(lab.getTotalTicks());
 	}
 
 	private String getModeMessage(boolean locked) {
@@ -47,8 +48,8 @@ public class DataView {
 		return "Mode: Freeroam";
 	}
 
-	private String getStateString(Speed speed) {
-		return speed.toString();
+	private String getSpeedMessage(Speed speed) {
+		return "Speed: " + speed.toString();
 	}
 
 	private Ecosystem getEcosystem() {

@@ -12,13 +12,13 @@ public class ViewModeTest {
 	public void turningOffTheLightSwitchesToHighSpeed() {
 		viewMode.toggleLight();
 
-		assertEquals(Speed.HIGH, viewMode.getSpeed());
+		assertEquals(Speed.FAST, viewMode.getSpeed());
 	}
 	
 	@Test
 	public void turningOnTheLightSwitchesToRealtimeSpeed() {
 		viewMode.toggleLight();
-		assertEquals(Speed.HIGH, viewMode.getSpeed());
+		assertEquals(Speed.FAST, viewMode.getSpeed());
 
 		viewMode.toggleLight();
 		
@@ -28,7 +28,7 @@ public class ViewModeTest {
 	@Test
 	public void turningOnInfraredFromDarknessSwitchesToRealtimeSpeed() {
 		viewMode.toggleLight();
-		assertEquals(Speed.HIGH, viewMode.getSpeed());
+		assertEquals(Speed.FAST, viewMode.getSpeed());
 
 		viewMode.toggleInfrared();
 		

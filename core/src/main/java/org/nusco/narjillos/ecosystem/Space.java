@@ -17,20 +17,13 @@ public class Space {
 
 	private static final double COLLISION_DISTANCE = 60;
 
-	// The assumption here is that no Thing will ever
-	// move more than this value in a single tick.
-	// So a Thing can only move from one area to one of its neighboring areas,
-	// not farther away.
-	// If we have faster Things, then we need to make this
-	// at least equal to their maximum velocity.
 	private final double areaSize;
-
 	private final int areasPerEdge;
 	private final Set<Thing>[][] areas;
 
 	private final Set<Thing> allTheThings = Collections.synchronizedSet(new LinkedHashSet<Thing>());
 	private final Map<String, Integer> countsByLabel = Collections.synchronizedMap(new HashMap<String, Integer>());
-	
+
 	// TODO: right now there is no visibility to/from outer space. the first is
 	// easy, the second is hard
 	private final Set<Thing> outerSpace = new LinkedHashSet<>();
@@ -62,7 +55,7 @@ public class Space {
 			countsByLabel.put(label, countsByLabel.get(label) + 1);
 		else
 			countsByLabel.put(label, 1);
-		
+
 		return new int[] { x, y };
 	}
 
@@ -111,9 +104,11 @@ public class Space {
 			if (thing.getLabel().contains(label))
 				collector.add(thing);
 	}
-	
+
 	public Thing findClosestTo(Thing thing, String labelRegExp) {
-		// TODO: naive three-step approximation. Replace with spiral search?
+		// Naive three-step approximation.
+		// (It can be replaced with spiral search if we ever need more
+		// performance).
 
 		if (isEmpty())
 			return null;
@@ -126,6 +121,14 @@ public class Space {
 		return findClosestTo_Amongst(thing, allTheThings, labelRegExp);
 	}
 
+	/**
+	 * This only searches in the neibhoring areas. So, if the movement is able
+	 * to span more than one area, it will fail to check all potential
+	 * collisions. The assumption here is that movements are smaller than the
+	 * areaSize. If this assumption ever becomes limiting, then we'll have to
+	 * make this method smarter, and search all the areas that are intersecated
+	 * by the movement, plus their neighbors (potentially including outerSpace).
+	 */
 	public Set<Thing> detectCollisions(Segment movement, String label) {
 		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
 

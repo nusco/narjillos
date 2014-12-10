@@ -13,35 +13,34 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Zoom in on anything, not just narjillos (without locking)
 * Externalize configurable parameters to YAML °
+* Lock on eggs and the narjillo that will be born out of them.
 * Try scrolling/panning commands under Linux
 
 ###Genetist
 
-* Iterations in body plan °°
+* Iterations in body plan °
 * Ancestry browser °
-* DNA diff during ancestry analysis °
 * "Skip next" instruction in body plan °
+* DNA diff during ancestry analysis
 * Separate RGB color genes
 * Whole-body size gene
 
 ###Ethologist
 
-* Narjillos eat eggs
 * Drifting eggs
+* Narjillos eat eggs
 * Narjillos eat each other
 
 ###Lab Technician
 
 * Real arguments parsing (use --no-persistence together with other switches) °
-* Single savefile for both experiment and genepool °
+* Single zipped savefile for both experiment and genepool °
+* View locked narjillo (age, energy, times eaten, genome...) °
 * Check git commit on experiment startup
 * Automatically purge experiment temp file
 * Automatically recover missing experiment from temp file
-* View narjillo stats (age, energy, times eaten, genome...)
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
-* Zipped persistence files
 * Make food more visible in normal view
 * Make food more visible in infrared view
 
@@ -53,10 +52,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
-* Fade out mouth/eye during death
+* Give a sense of movement when following a locked-on Narjillo (speckles in liquid?) °
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
-* Give a sense of movement when following a locked-on Narjillo (speckles in liquid?)
 
 ##Neurologist
 

@@ -3,9 +3,14 @@ package org.nusco.narjillos.utilities;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class PetriDishState {
-	private volatile Light light = Light.ON;
-	private volatile Speed speed = Speed.REALTIME;
-	private volatile Thing lockedOn = Thing.NULL;
+	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 30;
+	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
+	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
+	private static final int FRAMES_PERIOD_WITH_LIGHT_OFF = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_OFF;
+
+	private Light light = Light.ON;
+	private Speed speed = Speed.REALTIME;
+	private Thing lockedOn = Thing.NULL;
 
 	public Light getLight() {
 		return light;
@@ -51,37 +56,11 @@ public class PetriDishState {
 	}
 	
 	public void speedUp() {
-		switch (speed) {
-		case PAUSED:
-			this.speed = Speed.SLOW;
-			break;
-		case SLOW:
-			this.speed = Speed.REALTIME;
-			break;
-		case REALTIME:
-			this.speed = Speed.FAST;
-			break;
-		case FAST:
-		default:
-			break;
-		}
+		speed = speed.up();
 	}
 	
 	public void speedDown() {
-		switch (speed) {
-		case FAST:
-			this.speed = Speed.REALTIME;
-			break;
-		case REALTIME:
-			this.speed = Speed.SLOW;
-			break;
-		case SLOW:
-			this.speed = Speed.PAUSED;
-			break;
-		case PAUSED:
-		default:
-			break;
-		}
+		speed = speed.down();
 	}
 	
 	public void lockOn(Thing narjillo) {
@@ -94,5 +73,12 @@ public class PetriDishState {
 
 	public boolean isLocked() {
 		return lockedOn != Thing.NULL;
+	}
+
+	public int getFramesPeriod() {
+		if (getLight() == Light.OFF)
+			return FRAMES_PERIOD_WITH_LIGHT_OFF;
+		else
+			return FRAMES_PERIOD_WITH_LIGHT_ON;
 	}
 }

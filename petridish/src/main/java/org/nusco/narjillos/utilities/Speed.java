@@ -32,23 +32,31 @@ public enum Speed {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return description;
-	}
-
-	public Speed shift() {
+	public Speed up() {
 		switch (this) {
-		case REALTIME:
-			return Speed.FAST;
-		case FAST:
+		case PAUSED:
 			return Speed.SLOW;
 		case SLOW:
 			return Speed.REALTIME;
-		case PAUSED:
-			return Speed.REALTIME;
+		case REALTIME:
+			return Speed.FAST;
+		case FAST:
 		default:
-			throw new RuntimeException("Unknown speed state: " + this);
+			return this;
+		}
+	}
+
+	public Speed down() {
+		switch (this) {
+			case FAST:
+				return Speed.REALTIME;
+			case REALTIME:
+				return Speed.SLOW;
+			case SLOW:
+				return Speed.PAUSED;
+			case PAUSED:
+			default:
+				return this;
 		}
 	}
 
@@ -65,5 +73,10 @@ public enum Speed {
 		default:
 			throw new RuntimeException("Unknown speed state: " + this);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return description;
 	}
 }

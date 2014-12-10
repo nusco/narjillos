@@ -13,97 +13,74 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
-import org.nusco.narjillos.utilities.Light;
 import org.nusco.narjillos.utilities.Locator;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Speed;
 import org.nusco.narjillos.utilities.Viewport;
-import org.nusco.narjillos.views.StatusBarView;
 import org.nusco.narjillos.views.EcosystemView;
+import org.nusco.narjillos.views.MicroscopeView;
+import org.nusco.narjillos.views.StatusBarView;
 
+/**
+ * The main JavaFX Application class. It binds model and view together, and also
+ * manages the user interface.
+ */
 public class PetriDish extends Application {
 
-	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 30;
-	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
-	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
-	private static final int FRAMES_PERIOD_WITH_LIGHT_OFF = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_OFF;
 	private static final long PAN_SPEED = 200;
 
 	private static String[] programArguments = new String[0];
 
 	private Lab lab;
-	private volatile EcosystemView ecosystemView;
-	private Locator locator;
-	private StatusBarView statusBarView;
 
-	private Node foreground;
-	private final Chronometer framesChronometer = new Chronometer();
-	private volatile PetriDishState state = new PetriDishState();
+	// These fields are all just visualization stuff - no data will
+	// get corrupted if different threads see slightly outdated versions of
+	// them. So we can avoid synchronization altogether.
+	private PetriDishState state = new PetriDishState();
+	private Viewport viewport;
 
 	@Override
-	public void start(final Stage primaryStage) {
-		final Group root = new Group();
-
+	public void start(Stage primaryStage) {
 		startModelThread(programArguments);
 
-		ecosystemView = new EcosystemView(lab.getEcosystem());
-		locator = new Locator(lab.getEcosystem());
-		statusBarView = new StatusBarView(lab);
+		System.gc(); // minimize GC during the first stages on animation
 
-		updateForeground();
-		update(root);
+		viewport = new Viewport(lab.getEcosystem());
+
+		final Group root = new Group();
 		startViewThread(root);
 
-		Viewport viewport = getEcosystemView().getViewport();
 		Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 		scene.setOnKeyPressed(createKeyboardHandler());
 		scene.setOnMouseClicked(createMouseHandler());
 		scene.setOnScroll(createMouseScrollHandler());
 		bindViewportSizeToWindowSize(scene, viewport);
 
-		primaryStage.setTitle("Narjillos - Petri Dish");
 		primaryStage.setScene(scene);
-
-		// run GC to avoid it kicking off during
-		// the first stages of animation
-		System.gc();
-
+		primaryStage.setTitle("Narjillos - Petri Dish");
 		primaryStage.show();
-	}
-
-	private Viewport getViewport() {
-		return getEcosystemView().getViewport();
-	}
-
-	private EcosystemView getEcosystemView() {
-		return ecosystemView;
 	}
 
 	private void startModelThread(final String[] arguments) {
 		final boolean[] isInitializationDone = new boolean[] { false };
-		
+
 		Thread modelThread = new Thread() {
 			@Override
 			public void run() {
-				// We need to do initialize the lab here,
-				// because the random number generator will
-				// complain if it is called from different
-				// threads.
+				// We need to initialize the lab inside this thread, because
+				// the random number generator will complain if it is called
+				// from different threads.
 				lab = new Lab(arguments);
-				
+
 				isInitializationDone[0] = true;
 
 				while (true) {
@@ -115,7 +92,7 @@ public class PetriDish extends Application {
 				}
 			}
 		};
-		
+
 		modelThread.setDaemon(true);
 		modelThread.start();
 		while (!isInitializationDone[0])
@@ -127,7 +104,12 @@ public class PetriDish extends Application {
 
 	private void startViewThread(final Group root) {
 		Task<Void> task = new Task<Void>() {
+			private final Chronometer framesChronometer = new Chronometer();
 			private volatile boolean renderingFinished = false;
+
+			private final MicroscopeView foregroundView = new MicroscopeView(viewport);
+			private final EcosystemView ecosystemView = new EcosystemView(lab.getEcosystem(), viewport, state);
+			private StatusBarView statusBarView = new StatusBarView(lab);
 
 			@Override
 			public Void call() throws Exception {
@@ -140,7 +122,7 @@ public class PetriDish extends Application {
 						if (narjillo.isDead())
 							state.unlock();
 						else
-							getViewport().flyToTargetEC(narjillo.calculateCenterOfMass());
+							viewport.flyToTargetEC(narjillo.calculateCenterOfMass());
 					}
 
 					ecosystemView.tick();
@@ -152,11 +134,20 @@ public class PetriDish extends Application {
 							renderingFinished = true;
 						}
 					});
-					waitFor(getFramesPeriod(), startTime);
+					waitFor(state.getFramesPeriod(), startTime);
 					while (!renderingFinished)
-						Thread.sleep(getFramesPeriod() * 2);
+						Thread.sleep(state.getFramesPeriod() * 2);
 					framesChronometer.tick();
 				}
+			}
+
+			private void update(final Group root) {
+				root.getChildren().clear();
+				root.getChildren().add(ecosystemView.toNode());
+				root.getChildren().add(foregroundView.toNode());
+
+				Node statusInfo = statusBarView.toNode(state.getSpeed(), framesChronometer, state.isLocked(), lab.isSaving());
+				root.getChildren().add(statusInfo);
 			}
 		};
 		Thread updateGUI = new Thread(task);
@@ -164,28 +155,17 @@ public class PetriDish extends Application {
 		updateGUI.start();
 	}
 
-	private void update(final Group root) {
-		root.getChildren().clear();
-		root.getChildren().add(getEcosystemView().toNode());
-		root.getChildren().add(foreground);
-
-		Node statusInfo = statusBarView.toNode(state.getSpeed(), framesChronometer, state.isLocked(), lab.isSaving());
-		root.getChildren().add(statusInfo);
-	}
-
 	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
 				viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
-				updateForeground();
 			}
 		});
 		scene.heightProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
 				viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
-				updateForeground();
 			}
 		});
 	}
@@ -199,55 +179,31 @@ public class PetriDish extends Application {
 		}
 	}
 
-	private synchronized void updateForeground() {
-		foreground = createForeground();
-	}
-
-	private Node createForeground() {
-		Vector sizeSC = getViewport().getSizeSC();
-		double minScreenSize = Math.min(sizeSC.x, sizeSC.y);
-		double maxScreenSize = Math.max(sizeSC.x, sizeSC.y);
-		Rectangle black = new Rectangle(-10, -10, maxScreenSize + 20, maxScreenSize + 20);
-		Circle hole = new Circle(sizeSC.x / 2, sizeSC.y / 2, minScreenSize / 2.03);
-		Shape microscope = Shape.subtract(black, hole);
-		microscope.setEffect(new BoxBlur(5, 5, 1));
-		return microscope;
-	}
-
-	private int getFramesPeriod() {
-		if (state.getLight() == Light.OFF)
-			return FRAMES_PERIOD_WITH_LIGHT_OFF;
-		else
-			return FRAMES_PERIOD_WITH_LIGHT_ON;
-	}
-
 	private EventHandler<? super KeyEvent> createKeyboardHandler() {
 		return new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
 				if (keyEvent.getCode() == KeyCode.RIGHT)
-					moveViewport(PAN_SPEED, 0, keyEvent);
+					panViewport(PAN_SPEED, 0, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.LEFT)
-					moveViewport(-PAN_SPEED, 0, keyEvent);
+					panViewport(-PAN_SPEED, 0, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.UP)
-					moveViewport(0, -PAN_SPEED, keyEvent);
+					panViewport(0, -PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.DOWN)
-					moveViewport(0, PAN_SPEED, keyEvent);
+					panViewport(0, PAN_SPEED, keyEvent);
 				else if (keyEvent.getCode() == KeyCode.P)
 					state.speedUp();
 				else if (keyEvent.getCode() == KeyCode.O)
 					state.speedDown();
 				else if (keyEvent.getCode() == KeyCode.L) {
 					state.toggleLight();
-					getEcosystemView().setLight(state.getLight());
 				} else if (keyEvent.getCode() == KeyCode.I) {
 					state.toggleInfrared();
-					getEcosystemView().setLight(state.getLight());
 				}
 			}
 
-			private void moveViewport(long velocityX, long velocityY, KeyEvent event) {
+			private void panViewport(long velocityX, long velocityY, KeyEvent event) {
 				state.unlock();
-				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
+				viewport.moveBy(Vector.cartesian(velocityX, velocityY));
 				event.consume();
 			};
 		};
@@ -255,12 +211,13 @@ public class PetriDish extends Application {
 
 	private EventHandler<MouseEvent> createMouseHandler() {
 		return new EventHandler<MouseEvent>() {
+			private Locator locator = new Locator(lab.getEcosystem());
+
 			public void handle(MouseEvent event) {
 				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
+				viewport.flyToTargetSC(clickedPoint);
 
-				getViewport().flyToTargetSC(clickedPoint);
-
-				Vector clickedPointEC = getViewport().toEC(clickedPoint);
+				Vector clickedPointEC = viewport.toEC(clickedPoint);
 				Narjillo narjillo = locator.findNarjilloNear(clickedPointEC);
 
 				if (event.getClickCount() == 1) {
@@ -270,28 +227,30 @@ public class PetriDish extends Application {
 						else
 							state.lockOn(narjillo);
 					}
-					getViewport().flyToNextZoomCloseupLevel();
+					viewport.flyToNextZoomCloseupLevel();
 				}
 
 				if (event.getClickCount() >= 2) {
 					if (narjillo == null)
-						getViewport().flyToNextZoomCloseupLevel();
+						viewport.flyToNextZoomCloseupLevel();
 					else {
 						state.lockOn(narjillo);
-						getViewport().flyToMaxZoomCloseupLevel();
+						viewport.flyToMaxZoomCloseupLevel();
 					}
 				}
 
 				if (event.getClickCount() == 3)
-					copyDNAToClipboard(clickedPoint);
+					copyIsolatedDNAToClipboard(clickedPoint);
+
+				event.consume();
 			}
 
-			private void copyDNAToClipboard(Vector clickedPoint) {
-				Narjillo narjillo = locator.findNarjilloNear(getViewport().toEC(clickedPoint));
+			private void copyIsolatedDNAToClipboard(Vector clickedPoint) {
+				Narjillo narjillo = locator.findNarjilloNear(viewport.toEC(clickedPoint));
 
 				if (narjillo == null)
 					return;
-				
+
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 			}
@@ -302,12 +261,15 @@ public class PetriDish extends Application {
 		return new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
-				if (event.getDeltaY() > 0) {
-					getViewport().zoomOut();
-					if (getViewport().isZoomedOutCompletely())
+				if (event.getDeltaY() <= 0)
+					viewport.zoomIn();
+				else {
+					viewport.zoomOut();
+					if (viewport.isZoomedOutCompletely())
 						state.unlock();
-				} else
-					getViewport().zoomIn();
+				}
+
+				event.consume();
 			}
 		};
 	}

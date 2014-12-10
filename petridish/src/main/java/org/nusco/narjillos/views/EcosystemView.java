@@ -25,6 +25,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 import org.nusco.narjillos.utilities.Light;
+import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Viewport;
 
 public class EcosystemView {
@@ -34,10 +35,12 @@ public class EcosystemView {
 	private final Shape darkness;
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
 
-	private Light light = Light.ON;
+	private final PetriDishState petriDishState;
 
-	public EcosystemView(Ecosystem ecosystem) {
-		viewport = new Viewport(ecosystem);
+	public EcosystemView(Ecosystem ecosystem, Viewport viewport, PetriDishState state) {
+		this.viewport = viewport;
+		this.petriDishState = state;
+		
 		background = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
 		darkness = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
 
@@ -57,17 +60,15 @@ public class EcosystemView {
 		});
 	}
 
-	public Viewport getViewport() {
-		return viewport;
-	}
-
 	public Node toNode() {
-		if (light == Light.OFF)
+		if (petriDishState.getLight() == Light.OFF)
 			return darkness;
 
+		boolean isInfrared = petriDishState.getLight() == Light.INFRARED;
+
 		Group result = new Group();
-		result.getChildren().add(getBackground(light == Light.INFRARED));
-		result.getChildren().add(getThingsGroup(light == Light.INFRARED));
+		result.getChildren().add(getBackground(isInfrared));
+		result.getChildren().add(getThingsGroup(isInfrared));
 		return result;
 	}
 
@@ -163,9 +164,5 @@ public class EcosystemView {
 
 	public void tick() {
 		viewport.tick();
-	}
-
-	public void setLight(Light light) {
-		this.light = light;
 	}
 }

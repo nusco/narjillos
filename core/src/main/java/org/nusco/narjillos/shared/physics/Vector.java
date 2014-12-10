@@ -101,6 +101,8 @@ public class Vector {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
 		Vector other = (Vector) obj;
 		return areExactlyEqual(x, other.x) && areExactlyEqual(y, other.y);
 	}

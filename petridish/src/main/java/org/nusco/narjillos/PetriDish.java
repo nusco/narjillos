@@ -1,5 +1,9 @@
 package org.nusco.narjillos;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -20,10 +24,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.utilities.Light;
 import org.nusco.narjillos.utilities.Locator;
@@ -49,9 +50,8 @@ public class PetriDish extends Application {
 	private DataView dataView;
 
 	private Node foreground;
-	private final PetriDishState state = new PetriDishState();
 	private final Chronometer framesChronometer = new Chronometer();
-	private volatile Thing lockedOn = Thing.NULL;
+	private volatile PetriDishState state = new PetriDishState();
 
 	@Override
 	public void start(final Stage primaryStage) {
@@ -135,10 +135,10 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
-					if (isLocked()) {
-						Narjillo narjillo = (Narjillo) lockedOn;
+					if (state.isLocked()) {
+						Narjillo narjillo = (Narjillo) state.getLockedOn();
 						if (narjillo.isDead())
-							unlock();
+							state.unlock();
 						else
 							getViewport().flyToTargetEC(narjillo.calculateCenterOfMass());
 					}
@@ -164,11 +164,13 @@ public class PetriDish extends Application {
 		updateGUI.start();
 	}
 
-	private synchronized void update(final Group root) {
+	private void update(final Group root) {
 		root.getChildren().clear();
 		root.getChildren().add(getEcosystemView().toNode());
 		root.getChildren().add(foreground);
-		root.getChildren().add(getStatusInfo());
+
+		Node statusInfo = dataView.toNode(state.getSpeed(), framesChronometer, state.isLocked());
+		root.getChildren().add(statusInfo);
 	}
 
 	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
@@ -242,6 +244,12 @@ public class PetriDish extends Application {
 					getEcosystemView().setLight(state.getLight());
 				}
 			}
+
+			private void moveViewport(long velocityX, long velocityY, KeyEvent event) {
+				state.unlock();
+				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
+				event.consume();
+			};
 		};
 	}
 
@@ -256,11 +264,11 @@ public class PetriDish extends Application {
 				Narjillo narjillo = locator.findNarjilloNear(clickedPointEC);
 
 				if (event.getClickCount() == 1) {
-					if (isLocked()) {
+					if (state.isLocked()) {
 						if (narjillo == null)
-							unlock();
+							state.unlock();
 						else
-							lockOn(narjillo);
+							state.lockOn(narjillo);
 					}
 					getViewport().flyToNextZoomCloseupLevel();
 				}
@@ -269,22 +277,23 @@ public class PetriDish extends Application {
 					if (narjillo == null)
 						getViewport().flyToNextZoomCloseupLevel();
 					else {
-						lockOn(narjillo);
+						state.lockOn(narjillo);
 						getViewport().flyToMaxZoomCloseupLevel();
 					}
 				}
 
 				if (event.getClickCount() == 3)
-					printOutDNA(clickedPoint);
+					copyDNAToClipboard(clickedPoint);
 			}
 
-			private void printOutDNA(Vector clickedPoint) {
-				Vector clickedPointEC = getViewport().toEC(clickedPoint);
-				Narjillo narjillo = locator.findNarjilloNear(clickedPointEC);
+			private void copyDNAToClipboard(Vector clickedPoint) {
+				Narjillo narjillo = locator.findNarjilloNear(getViewport().toEC(clickedPoint));
+
 				if (narjillo == null)
 					return;
-				DNA dna = narjillo.getDNA();
-				System.out.println("Isolating: " + JSON.toJson(dna, DNA.class));
+				
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 			}
 		};
 	}
@@ -296,37 +305,15 @@ public class PetriDish extends Application {
 				if (event.getDeltaY() > 0) {
 					getViewport().zoomOut();
 					if (getViewport().isZoomedOutCompletely())
-						unlock();
+						state.unlock();
 				} else
 					getViewport().zoomIn();
 			}
 		};
 	}
 
-	private synchronized Node getStatusInfo() {
-		return dataView.toNode(state.getSpeed(), framesChronometer, isLocked());
-	}
-
-	private void moveViewport(long velocityX, long velocityY, KeyEvent event) {
-		lockedOn = Thing.NULL;
-		getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
-		event.consume();
-	};
-
 	public static void main(String... args) throws Exception {
 		PetriDish.programArguments = args;
 		launch(args);
-	}
-
-	private void lockOn(Thing narjillo) {
-		lockedOn = narjillo;
-	}
-
-	private Thing unlock() {
-		return lockedOn = Thing.NULL;
-	}
-
-	private boolean isLocked() {
-		return lockedOn != Thing.NULL;
 	}
 }

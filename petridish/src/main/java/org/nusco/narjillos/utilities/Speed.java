@@ -3,11 +3,8 @@ package org.nusco.narjillos.utilities;
 import javafx.scene.paint.Color;
 
 public enum Speed {
-	
-	REALTIME("real time"),
-	FAST("high speed"),
-	SLOW("slow motion"),
-	PAUSED("paused");
+
+	REALTIME("real time"), FAST("high speed"), SLOW("slow motion"), PAUSED("paused");
 
 	private static final int TICKS_PER_SECOND = 25;
 
@@ -18,7 +15,7 @@ public enum Speed {
 	}
 
 	public int getTicksPeriod() {
-		switch(this) {
+		switch (this) {
 		case REALTIME:
 			return 1000 / TICKS_PER_SECOND;
 		case FAST:
@@ -48,15 +45,15 @@ public enum Speed {
 
 	public Speed down() {
 		switch (this) {
-			case FAST:
-				return Speed.REALTIME;
-			case REALTIME:
-				return Speed.SLOW;
-			case SLOW:
-				return Speed.PAUSED;
-			case PAUSED:
-			default:
-				return this;
+		case FAST:
+			return Speed.REALTIME;
+		case REALTIME:
+			return Speed.SLOW;
+		case SLOW:
+			return Speed.PAUSED;
+		case PAUSED:
+		default:
+			return this;
 		}
 	}
 

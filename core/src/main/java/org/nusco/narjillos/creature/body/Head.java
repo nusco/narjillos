@@ -5,27 +5,31 @@ import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
+/**
+ * The head of a creature, and the root of a tree of Organs.
+ */
 public class Head extends Organ {
 
-	private static final double WAVE_SIGNAL_FREQUENCY = 0.01;
+	private static final double BASE_WAVE_FREQUENCY = 0.01;
 
-	private final double percentEnergyToChildren;
 	private final double metabolicRate;
+	private final double percentEnergyToChildren;
+
 	private Vector startPoint = Vector.ZERO;
 	
 	public Head(int adultLength, int adultThickness, ColorByte hue, double metabolicRate, double percentEnergyToChildren) {
-		super(adultLength, adultThickness, hue, null, new WaveNerve(WAVE_SIGNAL_FREQUENCY * metabolicRate));
+		super(adultLength, adultThickness, hue, null, new WaveNerve(BASE_WAVE_FREQUENCY * metabolicRate));
 		this.percentEnergyToChildren = percentEnergyToChildren;
 		this.metabolicRate = metabolicRate;
 	}
 
-	public double getPercentEnergyToChildren() {
-		return percentEnergyToChildren;
+	@Override
+	public double getMetabolicRate() {
+		return metabolicRate;
 	}
 
-	@Override
-	protected Vector calculateStartPoint() {
-		return startPoint;
+	public double getPercentEnergyToChildren() {
+		return percentEnergyToChildren;
 	}
 
 	public void moveTo(Vector startPoint, double angle) {
@@ -39,6 +43,11 @@ public class Head extends Organ {
 		Vector newStartPoint = getStartPoint().plus(translation);
 		double newAngleToParent = Angle.normalize(getAngleToParent() + rotation);
 		moveTo(newStartPoint, newAngleToParent);
+	}
+
+	@Override
+	protected Vector calculateStartPoint() {
+		return startPoint;
 	}
 
 	@Override
@@ -56,10 +65,5 @@ public class Head extends Organ {
 		// The head never rotates on its own. It must be
 		// explicitly repositioned by its client.
 		return getAngleToParent();
-	}
-
-	@Override
-	public double getMetabolicRate() {
-		return metabolicRate;
 	}
 }

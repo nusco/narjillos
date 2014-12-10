@@ -1,5 +1,8 @@
 package org.nusco.narjillos.genomics;
 
+/**
+ * Takes a DNA and iterates over its chromosomes.
+ */
 public class DNAIterator {
 	
 	private final Integer[] genes;

@@ -6,8 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.nusco.narjillos.creature.body.physics.RotationalForceField;
-import org.nusco.narjillos.creature.body.physics.TranslationalForceField;
+import org.nusco.narjillos.creature.body.physics.RotationsPhysicsEngine;
+import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -159,7 +159,7 @@ public class Body {
 	}
 
 	private double tick_step2_rotate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass, double mass) {
-		RotationalForceField forceField = new RotationalForceField(mass, calculateRadius(centerOfMass), centerOfMass);
+		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (BodyPart bodyPart : bodyParts)
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().moveBy(Vector.ZERO, forceField.getRotation());
@@ -173,7 +173,7 @@ public class Body {
 	}
 
 	private double tick_step4_translate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass, double mass) {
-		TranslationalForceField forceField = new TranslationalForceField(mass);
+		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
 		for (BodyPart bodyPart : bodyParts)
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().moveBy(forceField.getTranslation(), 0);

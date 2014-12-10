@@ -5,15 +5,19 @@ import java.util.List;
 
 import org.nusco.narjillos.shared.utilities.RanGen;
 
+/**
+ * A sequence of genes.
+ */
 public class DNA {
 
 	public static final double MUTATION_RATE = 0.055;
 	private static final int GENE_MUTATION_RANGE = 15;
 	private static DNAObserver observer = DNAObserver.NULL;
-	
+
 	private static long serial = 0;
 
-	private long id; // unique for each DNA instance in the same run of the program
+	private long id; // unique for each DNA instance in the same run of the
+						// program
 	private final Integer[] genes;
 
 	public DNA(String dnaDocument) {
@@ -38,23 +42,6 @@ public class DNA {
 		DNA.observer.created(this, parent);
 	}
 
-	private Integer[] clipGenes(Integer[] genes) {
-		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
-	}
-
-	private void setId(long id) {
-		this.id = id;
-		// This complicated mechanism guarantees that even
-		// after deserializing DNA, the serial will still
-		// contain the highest id in the system. (But
-		// if you generate DNA and *then* deserialize
-		// other DNA, then you might have duplicated
-		// DNA ids in the system. I assume that you
-		// will only deserialize DNA before ever creating it.
-		if (id > serial)
-			serial = id;
-	}
-
 	public long getId() {
 		return id;
 	}
@@ -63,7 +50,11 @@ public class DNA {
 		return genes;
 	}
 
-	public DNA copy(RanGen ranGen) {
+	public void destroy() {
+		DNA.observer.removed(this);
+	}
+
+	public DNA copyWithMutations(RanGen ranGen) {
 		List<Integer[]> resultChromosomes = new LinkedList<>();
 
 		DNAIterator iterator = new DNAIterator(this);
@@ -71,7 +62,7 @@ public class DNA {
 		while ((nextChromosome = iterator.nextChromosome()) != null) {
 			// skip a chromosome every now and then
 			if (!isChromosomeMutation(ranGen))
-				resultChromosomes.add(copy(nextChromosome, ranGen));
+				resultChromosomes.add(copyWithMutations(nextChromosome, ranGen));
 			// add a chromosome every now and then
 			if (isChromosomeMutation(ranGen))
 				resultChromosomes.add(randomGenes(Chromosome.SIZE, ranGen));
@@ -81,68 +72,13 @@ public class DNA {
 		return new DNA(this, resultGenes);
 	}
 
-	private Integer[] flatten(List<Integer[]> chromosomes) {
-		List<Integer> result = new LinkedList<>();
-		for (Integer[] chromosome : chromosomes)
-			for (Integer gene : chromosome)
-				result.add(gene);
-		return result.toArray(new Integer[result.size()]);
-	}
-
-	private Integer[] copy(Chromosome chromosome, RanGen ranGen) {
-		Integer[] result = new Integer[Chromosome.SIZE];
-		for (int i = 0; i < result.length; i++)
-			result[i] = copy(chromosome.getGene(i), ranGen);
-		return result;
-	}
-
-	private int copy(int gene, RanGen ranGen) {
-		return isMutantGene(ranGen) ? mutate(gene, ranGen) : gene;
-	}
-
-	private boolean isMutantGene(RanGen ranGen) {
-		return ranGen.nextDouble() < MUTATION_RATE;
-	}
-
-	private boolean isChromosomeMutation(RanGen ranGen) {
-		return ranGen.nextDouble() < (MUTATION_RATE / (Chromosome.SIZE * 2));
-	}
-
-	private int mutate(int gene, RanGen ranGen) {
-		int randomFactor = ((int) (ranGen.nextDouble() * GENE_MUTATION_RANGE * 2)) - GENE_MUTATION_RANGE;
-		return gene + randomFactor;
-	}
-
-	private Integer[] clipToByteSize(Integer[] genes) {
-		Integer[] result = new Integer[genes.length];
-		for (int i = 0; i < result.length; i++)
-			result[i] = clipToByteSize(genes[i]);
-		return result;
-	}
-
-	private int clipToByteSize(int number) {
-		return Math.max(0, Math.min(255, number));
-	}
-
 	public static DNA random(RanGen ranGen) {
 		int size = Chromosome.SIZE * (Math.abs(ranGen.nextInt()) % 10 + 2);
 		return random(size, ranGen);
 	}
 
-	private static DNA random(int size, RanGen ranGen) {
-		Integer[] genes = randomGenes(size, ranGen);
-		return new DNA(genes);
-	}
-
-	private static Integer[] randomGenes(int size, RanGen ranGen) {
-		Integer[] genes = new Integer[size];
-		for (int i = 0; i < genes.length; i++)
-			genes[i] = ranGen.nextByte();
-		return genes;
-	}
-
-	// Taken (only slightly adapted) from:
-	// http://en.wikipedia.org/wiki/Levenshtein_distance
+	// From: http://en.wikipedia.org/wiki/Levenshtein_distance,
+	// with slight changes.
 	public int getLevenshteinDistanceFrom(DNA other) {
 		Integer[] theseGenes = getGenes();
 		Integer[] otherGenes = other.getGenes();
@@ -183,6 +119,10 @@ public class DNA {
 		return v1[otherGenes.length];
 	}
 
+	public static void setObserver(DNAObserver dnaObserver) {
+		DNA.observer = dnaObserver;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int) getId();
@@ -199,11 +139,76 @@ public class DNA {
 		return DNADocument.toString(this);
 	}
 
-	public static void setObserver(DNAObserver dnaObserver) {
-		DNA.observer = dnaObserver;
+	private Integer[] clipGenes(Integer[] genes) {
+		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
 	}
 
-	public void destroy() {
-		DNA.observer.removed(this);
+	private void setId(long id) {
+		this.id = id;
+		// This complicated mechanism guarantees that even
+		// after deserializing DNA, the serial will still
+		// contain the highest id in the system. (But
+		// if you generate DNA and *then* deserialize
+		// other DNA, then you might have duplicated
+		// DNA ids in the system. I assume that you
+		// will only deserialize DNA before ever creating
+		// it.
+		if (id > serial)
+			serial = id;
+	}
+
+	private Integer[] copyWithMutations(Chromosome chromosome, RanGen ranGen) {
+		Integer[] result = new Integer[Chromosome.SIZE];
+		for (int i = 0; i < result.length; i++)
+			result[i] = copyWithMutations(chromosome.getGene(i), ranGen);
+		return result;
+	}
+
+	private int copyWithMutations(int gene, RanGen ranGen) {
+		return isMutantGene(ranGen) ? mutate(gene, ranGen) : gene;
+	}
+
+	private boolean isMutantGene(RanGen ranGen) {
+		return ranGen.nextDouble() < MUTATION_RATE;
+	}
+
+	private boolean isChromosomeMutation(RanGen ranGen) {
+		return ranGen.nextDouble() < (MUTATION_RATE / (Chromosome.SIZE * 2));
+	}
+
+	private int mutate(int gene, RanGen ranGen) {
+		int randomFactor = ((int) (ranGen.nextDouble() * GENE_MUTATION_RANGE * 2)) - GENE_MUTATION_RANGE;
+		return gene + randomFactor;
+	}
+
+	private Integer[] flatten(List<Integer[]> chromosomes) {
+		List<Integer> result = new LinkedList<>();
+		for (Integer[] chromosome : chromosomes)
+			for (Integer gene : chromosome)
+				result.add(gene);
+		return result.toArray(new Integer[result.size()]);
+	}
+
+	private Integer[] clipToByteSize(Integer[] genes) {
+		Integer[] result = new Integer[genes.length];
+		for (int i = 0; i < result.length; i++)
+			result[i] = clipToByteSize(genes[i]);
+		return result;
+	}
+
+	private int clipToByteSize(int number) {
+		return Math.max(0, Math.min(255, number));
+	}
+
+	private static DNA random(int size, RanGen ranGen) {
+		Integer[] genes = randomGenes(size, ranGen);
+		return new DNA(genes);
+	}
+
+	private static Integer[] randomGenes(int size, RanGen ranGen) {
+		Integer[] genes = new Integer[size];
+		for (int i = 0; i < genes.length; i++)
+			genes[i] = ranGen.nextByte();
+		return genes;
 	}
 }

@@ -8,7 +8,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
- * This class contains the physics of translations.
+ * The physics of translations.
  * 
  * Here are the formulas it uses. See RotationalForceField for details.
  * 
@@ -20,13 +20,13 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  * 
  * translation_energy = mass * linear_velocity^2 / 2;
  */
-public class TranslationalForceField implements ForceField {
+public class TranslationsPhysicsEngine implements PhysicsEngine {
 
 	private final double bodyMass;
 	private final List<Vector> linearMomenta = new LinkedList<>();
 	private double translationEnergy = 0;
 	
-	public TranslationalForceField(double bodyMass) {
+	public TranslationsPhysicsEngine(double bodyMass) {
 		this.bodyMass = bodyMass;
 	}
 
@@ -36,6 +36,15 @@ public class TranslationalForceField implements ForceField {
 		Vector linearMomentum = linearVelocity.by(mass);
 		linearMomenta.add(linearMomentum);
 		translationEnergy += calculateTranslationEnergy(mass, linearVelocity);
+	}
+
+	public Vector getTranslation() {
+		return getTotalLinearMomentum().by(-1.0 / bodyMass);
+	}
+
+	@Override
+	public double getEnergy() {
+		return translationEnergy * ENERGY_SCALE;
 	}
 
 	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {
@@ -67,19 +76,10 @@ public class TranslationalForceField implements ForceField {
 		return mass * linearVelocityLength * linearVelocityLength / 2;
 	}
 
-	public Vector getTranslation() {
-		return getTotalLinearMomentum().by(-1.0 / bodyMass);
-	}
-
 	private Vector getTotalLinearMomentum() {
 		Vector result = Vector.ZERO;
 		for (Vector linearMomentum : linearMomenta)
 			result = result.plus(linearMomentum);
 		return result;
-	}
-
-	@Override
-	public double getEnergy() {
-		return translationEnergy * ENERGY_SCALE;
 	}
 }

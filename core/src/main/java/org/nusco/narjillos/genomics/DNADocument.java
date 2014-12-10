@@ -3,6 +3,9 @@ package org.nusco.narjillos.genomics;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Converts a string to a DNA object.
+ */
 class DNADocument {
 
 	private final String dnaDocument;
@@ -25,6 +28,15 @@ class DNADocument {
 		return line.replaceAll("[\\{\\}]", "_");
 	}
 
+	public static String toString(DNA dna) {
+		StringBuffer result = new StringBuffer();
+		DNAIterator iterator = new DNAIterator(dna);
+		Chromosome nextChromosome;
+		while ((nextChromosome = iterator.nextChromosome()) != null)
+			result.append(nextChromosome.toString());
+		return result.toString();
+	}
+
 	private Integer[] parseDNAString(String dnaString) {
 		String[] numbers = dnaString.split("_");
 		List<Integer> result = new LinkedList<>();
@@ -36,14 +48,5 @@ class DNADocument {
 			throw new IllegalArgumentException("Illegal DNA syntax: " + dnaString);
 		}
 		return result.toArray(new Integer[result.size()]);
-	}
-
-	public static String toString(DNA dna) {
-		StringBuffer result = new StringBuffer();
-		DNAIterator iterator = new DNAIterator(dna);
-		Chromosome nextChromosome;
-		while ((nextChromosome = iterator.nextChromosome()) != null)
-			result.append(nextChromosome.toString());
-		return result.toString();
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Contains the basic interface of all physically visible things in an ecosystem.
+ * Miscellaneous utility classes.
  */
 package org.nusco.narjillos.shared.utilities;
 

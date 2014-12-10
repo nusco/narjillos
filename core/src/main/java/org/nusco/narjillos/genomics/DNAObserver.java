@@ -1,5 +1,8 @@
 package org.nusco.narjillos.genomics;
 
+/**
+ * Observes DNA getting created and destroyed.
+ */
 public interface DNAObserver {
 
 	public void created(DNA newDna, DNA parent);

@@ -8,8 +8,12 @@ import java.util.concurrent.atomic.AtomicLong;
  * Generates pseudo-random numbers.
  * 
  * A bit like java.math.Random, but strictly deterministic. You must give it a
- * seed during construction, and you cannot call the same instance from multiple
- * threads.
+ * seed during construction, and it will spew out the same exact numbers every
+ * time.
+ * 
+ * You cannot call the same instance of this class from multiple threads,
+ * because multithreading and deterministic behavior don't really match. If you
+ * try, the RanGen will complain loudly.
  */
 public class RanGen {
 
@@ -66,12 +70,13 @@ class TransparentRanGen extends Random {
 
 	private static final long serialVersionUID = 1L;
 
-	public long getSeed() {
-		return extractSeed().get();
-	}
-
+	@Override
 	public void setSeed(long seed) {
 		extractSeed().set(seed);
+	}
+
+	long getSeed() {
+		return extractSeed().get();
 	}
 
 	private AtomicLong extractSeed() {

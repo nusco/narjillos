@@ -3,6 +3,9 @@ package org.nusco.narjillos.genomics;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
+/**
+ * A short sequence of genes in a long chain of DNA.
+ */
 public class Chromosome {
 
 	static final int SIZE = 9;

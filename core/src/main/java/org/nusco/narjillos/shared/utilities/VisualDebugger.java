@@ -6,13 +6,15 @@ import java.util.List;
 import org.nusco.narjillos.shared.physics.Segment;
 
 /**
- * A quick debugging class. It's just a global thing that holds segments.
- * If any code in the system loads it with segments, those segments get
- * visualized by the viewer classes. Whoever fills in the GlobalPeeker
- * also has the responsibility to clean it up, probably once per tick.
+ * A quick debugging class.
  * 
- * This class is made to be accessed by multiple threads, one of which is
- * the writer.
+ * This is just a global object that holds geometric Segments. If any code in
+ * the system loads it with Segments, those segments will be visualized by the
+ * viewer classes. Whoever fills in the VisualDebugger also has the
+ * responsibility to clean it up, probably once per tick.
+ * 
+ * This class is made to be accessed by multiple threads: one will write the
+ * Segments, the other(s) will read them.
  */
 public class VisualDebugger {
 
@@ -28,11 +30,11 @@ public class VisualDebugger {
 		result.addAll(previousSegments);
 		return result;
 	}
-	
+
 	public synchronized static void add(Segment s) {
 		segments.add(s);
 	}
-	
+
 	public synchronized static void clear() {
 		previousSegments.clear();
 		previousSegments.addAll(segments);

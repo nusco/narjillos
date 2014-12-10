@@ -43,7 +43,7 @@ public class DNAObserverTest {
 	@Test
 	public void observesDNACopy() {
 		DNA parentDna = new DNA("{1}");
-		DNA childDNA = parentDna.copy(new RanGen(1234));
+		DNA childDNA = parentDna.copyWithMutations(new RanGen(1234));
 
 		String expected = childDNA.toString() + "," + parentDna.toString();
 		assertEquals(expected, log[0]);

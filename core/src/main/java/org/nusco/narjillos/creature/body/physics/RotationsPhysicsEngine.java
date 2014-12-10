@@ -8,7 +8,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
- * This class contains the physics of rotations.
+ * The physics of rotations.
  * 
  * Here are the formulas it uses. To understand them, consider that we don't use
  * inertia - so we can safely replace velocities with positions in space. (In
@@ -33,7 +33,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  *                  
  * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  */
-public class RotationalForceField implements ForceField {
+public class RotationsPhysicsEngine implements PhysicsEngine {
 
 	private final double bodyMass;
 	private final double bodyRadius;
@@ -41,7 +41,7 @@ public class RotationalForceField implements ForceField {
 	private final List<Double> angularMomenta = new LinkedList<>();
 	private double rotationEnergy = 0;
 	
-	public RotationalForceField(double bodyMass, double bodyRadius, Vector centerOfMass) {
+	public RotationsPhysicsEngine(double bodyMass, double bodyRadius, Vector centerOfMass) {
 		this.bodyMass = bodyMass;
 		this.bodyRadius = bodyRadius;
 		this.centerOfMass = centerOfMass;
@@ -54,6 +54,15 @@ public class RotationalForceField implements ForceField {
 		double angularMomentum = momentOfInertia * angularVelocity;
 		angularMomenta.add(angularMomentum);
 		rotationEnergy += calculateRotationEnergy(momentOfInertia, angularVelocity);
+	}
+
+	public double getRotation() {
+		return -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4);
+	}
+
+	@Override
+	public double getEnergy() {
+		return rotationEnergy * ENERGY_SCALE;
 	}
 
 	private double calculateAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {
@@ -74,19 +83,10 @@ public class RotationalForceField implements ForceField {
 		return momentOfInertia * angularVelocity * angularVelocity / 2;
 	}
 
-	public double getRotation() {
-		return -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4);
-	}
-
 	private double getTotalAngularMomentum() {
 		double result = 0;
 		for (double angularMomentum : angularMomenta)
 			result += angularMomentum;
 		return result;
-	}
-
-	@Override
-	public double getEnergy() {
-		return rotationEnergy * ENERGY_SCALE;
 	}
 }

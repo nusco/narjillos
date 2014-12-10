@@ -12,6 +12,9 @@ import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
+/**
+ * A fully-formed, autonomous creature.
+ */
 public class Narjillo implements Thing {
 
 	static final double MAX_LIFESPAN = 30_000;
@@ -82,7 +85,7 @@ public class Narjillo implements Thing {
 		if (childEnergy == 0)
 			return null;
 
-		DNA childDNA = getDNA().copy(ranGen);
+		DNA childDNA = getDNA().copyWithMutations(ranGen);
 		return new Egg(childDNA, getPosition(), childEnergy, INCUBATION_TIME);
 	}
 

@@ -4,6 +4,9 @@ import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
+/**
+ * A segment in the body of a creature.
+ */
 public class BodySegment extends Organ {
 
 	private static final double SKEWING_VELOCITY_RATIO = 0.1;
@@ -23,6 +26,10 @@ public class BodySegment extends Organ {
 		updateAngleToParent(angleToParentAtRest);
 		this.amplitude = amplitude;
 		this.skewing = skewing;
+	}
+
+	BodySegment(Nerve nerve) {
+		this(0, 0, new ColorByte(0), null, 13, 0, 1, 0);
 	}
 
 	public double getAngleToParentAtRest() {
@@ -50,16 +57,6 @@ public class BodySegment extends Organ {
 		double unbentAmplitude = orientation * targetAmplitudePercent * amplitude;
 		return angleToParentAtRest + unbentAmplitude + calculateSkewing(angleToTarget);
 	}
-
-	private static ColorByte calculateColorMix(Organ parent, ColorByte color) {
-		if (parent == null)
-			return color;
-		return parent.getColor().mix(color);
-	}
-
-	BodySegment(Nerve nerve) {
-		this(0, 0, new ColorByte(0), null, 13, 0, 1, 0);
-	}
 	
 	@Override
 	protected double calculateAbsoluteAngle() {
@@ -77,6 +74,12 @@ public class BodySegment extends Organ {
 		double targetSkewing = (angleToTarget % 180) / 180 * getSkewing();
 		currentSkewing += getSkewingVelocity(targetSkewing);
 		return currentSkewing;
+	}
+
+	private static ColorByte calculateColorMix(Organ parent, ColorByte color) {
+		if (parent == null)
+			return color;
+		return parent.getColor().mix(color);
 	}
 
 	private double getSkewingVelocity(double targetSkewing) {

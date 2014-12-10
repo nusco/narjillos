@@ -26,14 +26,14 @@ public class JSONGenePoolSerializationTest {
 		DNA.setObserver(genePool);
 		
 		DNA parent = DNA.random(ranGen);
-		DNA child1 = parent.copy(ranGen);
-		DNA child2 = parent.copy(ranGen);
-		parent.copy(ranGen);
+		DNA child1 = parent.copyWithMutations(ranGen);
+		DNA child2 = parent.copyWithMutations(ranGen);
+		parent.copyWithMutations(ranGen);
 		
 		child2.destroy();
 		
-		child1.copy(ranGen);
-		DNA child3 = child1.copy(ranGen);
+		child1.copyWithMutations(ranGen);
+		DNA child3 = child1.copyWithMutations(ranGen);
 
 		DNA.setObserver(DNAObserver.NULL);
 		

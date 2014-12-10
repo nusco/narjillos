@@ -13,7 +13,7 @@ import org.nusco.narjillos.shared.things.Thing;
 /**
  * Partitioned space for fast neighbor searching, collision detection, etc.
  */
-public class Space {
+class Space {
 
 	private static final double COLLISION_DISTANCE = 60;
 

@@ -4,12 +4,23 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
+/**
+ * A piece of a body.
+ * 
+ * Contains all the geometric qualities of the body part (like length, thickness
+ * and mass), and does the painstaking calculations needed to come up with
+ * angles, etc.
+ * 
+ * This code is not something I'm proud of. The caching code confuses the heck
+ * out of me as much as it does to you. Try to understand... it's for
+ * performance.
+ */
 public abstract class BodyPart {
 
 	private static final int MINIMUM_LENGTH_AT_BIRTH = 5;
 	private static final int MINIMUM_THICKNESS_AT_BIRTH = 1;
 	private static final double GROWTH_RATE = 0.01;
-	
+
 	private final double adultLength;
 	private final int adultThickness;
 	private final double adultMass;
@@ -31,11 +42,11 @@ public abstract class BodyPart {
 		this.adultLength = adultLength;
 		this.adultThickness = adultThickness;
 		this.adultMass = Math.max(adultLength * adultThickness, 1);
-		
+
 		this.length = Math.min(MINIMUM_LENGTH_AT_BIRTH, adultLength);
 		this.thickness = Math.min(MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
 		this.color = color;
-		
+
 		initCaches();
 	}
 
@@ -70,7 +81,7 @@ public abstract class BodyPart {
 	public void grow() {
 		if (isFullyGrown())
 			return;
-	
+
 		length = Math.min(adultLength, getLength() + GROWTH_RATE);
 		thickness = Math.min(adultThickness, getThickness() + GROWTH_RATE);
 

@@ -13,7 +13,7 @@ class MockOrganBuilder implements OrganBuilder {
 	}
 
 	@Override
-	public BodyPlanInstruction getInstruction() {
+	public BodyPlanInstruction getBodyPlanInstruction() {
 		return instruction;
 	}
 	

@@ -21,9 +21,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 /**
- * The place that Narjillos live in.
- * 
- * Can find things and detect collisions.
+ * The place that Narjillos call "home".
  */
 public class Ecosystem {
 

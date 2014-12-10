@@ -28,13 +28,13 @@ public class GenePoolTest {
 	@Test
 	public void tracksAncestry() {
 		DNA parent1 = new DNA("{0}");
-		parent1.copy(ranGen);
+		parent1.copyWithMutations(ranGen);
 
 		DNA parent2 = new DNA("{0}");
-		DNA child2_1 = parent2.copy(ranGen);
-		parent2.copy(ranGen);
+		DNA child2_1 = parent2.copyWithMutations(ranGen);
+		parent2.copyWithMutations(ranGen);
 
-		DNA child2_2_1 = child2_1.copy(ranGen);
+		DNA child2_2_1 = child2_1.copyWithMutations(ranGen);
 
 		List<DNA> ancestry = genePool.getAncestry(child2_2_1);
 		

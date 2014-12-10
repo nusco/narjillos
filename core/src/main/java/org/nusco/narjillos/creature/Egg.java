@@ -7,6 +7,9 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 
+/**
+ * A narjillo egg, that eventually hatches to spawn a cute baby narjillo.
+ */
 public class Egg implements Thing {
 
 	private final DNA dna;

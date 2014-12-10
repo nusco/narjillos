@@ -11,6 +11,9 @@ import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNAIterator;
 
+/**
+ * Takes DNA, develops into a fully formed Body.
+ */
 public class Embryo {
 
 	private final DNA genes;

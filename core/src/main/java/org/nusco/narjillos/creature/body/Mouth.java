@@ -4,6 +4,9 @@ import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
+/**
+ * The mouth of a creature. It reactively points towards food.
+ */
 public class Mouth {
 
 	private final double LATERAL_VIEWFIELD = 135;
@@ -17,25 +20,18 @@ public class Mouth {
 			
 			boolean targetIsInViewField = Math.abs(relativeTargetAngle) < LATERAL_VIEWFIELD;
 			if (targetIsInViewField) {
-				pointTowards(absoluteTargetAngle);
+				shiftSmoothlyTowards(absoluteTargetAngle);
 				return;
 			}
 			
 			boolean targetJustExitedTheViewField = Math.abs(directionAngle) < LATERAL_VIEWFIELD;
 			if (targetJustExitedTheViewField)
-				pointTowards(rotation + LATERAL_VIEWFIELD * Math.signum(relativeTargetAngle));
+				shiftSmoothlyTowards(rotation + LATERAL_VIEWFIELD * Math.signum(relativeTargetAngle));
 
 			// else keep pointing in the same direction
 		} catch (ZeroVectorException e) {
-			pointTowards(0);
+			shiftSmoothlyTowards(0);
 		}
-	}
-
-	private void pointTowards(double angle) {
-		double angleDifference = Angle.normalize(angle) - directionAngle;
-		if (Math.abs(angleDifference) < 1)
-			return;
-		directionAngle += Math.signum(angleDifference);
 	}
 
 	public Vector getDirection() {
@@ -50,5 +46,12 @@ public class Mouth {
 	@Override
 	public int hashCode() {
 		return (int)directionAngle;
+	}
+
+	private void shiftSmoothlyTowards(double angle) {
+		double angleDifference = Angle.normalize(angle) - directionAngle;
+		if (Math.abs(angleDifference) < 1)
+			return;
+		directionAngle += Math.signum(angleDifference);
 	}
 }

@@ -1,5 +1,8 @@
 package org.nusco.narjillos.embryogenesis;
 
+import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.*;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.*;
+
 import org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction;
 import org.nusco.narjillos.embryogenesis.bodyplan.OrganBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
@@ -19,27 +22,27 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 	
 	int getLength() {
 		final int ATROPHY_LENGTH = 29;
-		return getChromosome().getGene(CytogeneticLocation.LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(CytogeneticLocation.LENGTH);
+		return getChromosome().getGene(LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(CytogeneticLocation.LENGTH);
 	}
 
 	int getThickness() {
 		final double MAX_THICKNESS = 50;
-		return (int)(getChromosome().getGene(CytogeneticLocation.THICKNESS) * (MAX_THICKNESS / 256)) + 1;
+		return (int)(getChromosome().getGene(THICKNESS) * (MAX_THICKNESS / 256)) + 1;
 	}
 	
 	ColorByte getHue() {
-		return new ColorByte(getChromosome().getGene(CytogeneticLocation.HUE));
+		return new ColorByte(getChromosome().getGene(HUE));
 	}
 
 	@Override
-	public BodyPlanInstruction getInstruction() {
-		int bodyPlan = getChromosome().getGene(CytogeneticLocation.BODY_PLAN) & 0b00000111;
+	public BodyPlanInstruction getBodyPlanInstruction() {
+		int bodyPlan = getChromosome().getGene(BODY_PLAN_INSTRUCTION) & 0b00000111;
 		if (bodyPlan == 0 || bodyPlan == 1)
-			return BodyPlanInstruction.CONTINUE;
+			return CONTINUE;
 		if (bodyPlan == 2 || bodyPlan == 3)
-			return BodyPlanInstruction.BRANCH;
+			return BRANCH;
 		if (bodyPlan == 4)
-			return BodyPlanInstruction.MIRROR;
-		return BodyPlanInstruction.STOP;
+			return MIRROR;
+		return STOP;
 	}
 }

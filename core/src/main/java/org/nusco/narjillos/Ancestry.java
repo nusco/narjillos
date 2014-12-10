@@ -10,6 +10,11 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
 
+/**
+ * A utility program that reads a gene pool from a file, identifies the most
+ * successfull DNA in the pool, and prints out its entire ancestry - from the
+ * first randomly generates ancestor onwards.
+ */
 public class Ancestry {
 
 	public static void main(String[] args) throws IOException {

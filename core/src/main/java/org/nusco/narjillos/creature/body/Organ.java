@@ -8,8 +8,10 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
- * Connects with other BodyParts in a tree. Also moves, thanks to the calculateAngleToParent()
- * abstract method.
+ * Allows BodyParts to connect in a tree to form a body.
+ * 
+ * Also has a notion of the passing of time (embodied by the tick() method).
+ * This means that it moves (see calculateAngleToParent()) and grows over time.
  */
 public abstract class Organ extends BodyPart {
 
@@ -17,7 +19,7 @@ public abstract class Organ extends BodyPart {
 	private transient Organ parent;
 	private final List<Organ> children = new ArrayList<>();
 	private double angleToParent = 0;
-	
+
 	protected Organ(int adultLength, int adultThickness, ColorByte color, Organ parent, Nerve nerve) {
 		super(adultLength, adultThickness, color);
 		this.nerve = nerve;
@@ -61,7 +63,7 @@ public abstract class Organ extends BodyPart {
 		double processedPercentOfAmplitude = getNerve().tick(percentOfAmplitude);
 
 		recursivelyGrow();
-		
+
 		double newAngleToParent = calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget);
 		updateAngleToParent(newAngleToParent);
 
@@ -71,7 +73,7 @@ public abstract class Organ extends BodyPart {
 
 	protected final void updateAngleToParent(double angleToParent) {
 		this.angleToParent = angleToParent;
-		
+
 		// Optimization: this is the only place where we update
 		// the cache. Doing it more often would make the code
 		// much simpler to follow, but also much slower. It's
@@ -97,6 +99,6 @@ public abstract class Organ extends BodyPart {
 		children.add(child);
 		return child;
 	}
-	
+
 	protected abstract double getMetabolicRate();
 }

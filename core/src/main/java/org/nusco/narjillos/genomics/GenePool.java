@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A pool of DNA strands.
+ */
 public class GenePool implements DNAObserver {
 
 	private Map<Long, DNA> dnaById = new LinkedHashMap<>();
@@ -52,21 +55,11 @@ public class GenePool implements DNAObserver {
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
 		for (Long dnaId : currentPool) {
 			DNA dna = dnaById.get(dnaId);
-			int currentLevenshteinDistance = totalLevenshteinDistanceFromOthers(dna);
+			int currentLevenshteinDistance = totalLevenshteinDistanceFromTheRestOfThePool(dna);
 			if (currentLevenshteinDistance < lowestLevenshteinDistance) {
 				result = dna;
 				lowestLevenshteinDistance = currentLevenshteinDistance;
 			}
-		}
-		return result;
-	}
-
-	private int totalLevenshteinDistanceFromOthers(DNA dna) {
-		int result = 0;
-		for (Long otherDNAId : currentPool) {
-			DNA otherDNA = dnaById.get(otherDNAId);
-			if (!otherDNA.equals(dna))
-				result += dna.getLevenshteinDistanceFrom(otherDNA);
 		}
 		return result;
 	}
@@ -81,5 +74,15 @@ public class GenePool implements DNAObserver {
 
 	public int getHistoricalPoolSize() {
 		return dnaById.size();
+	}
+
+	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
+		int result = 0;
+		for (Long otherDNAId : currentPool) {
+			DNA otherDNA = dnaById.get(otherDNAId);
+			if (!otherDNA.equals(dna))
+				result += dna.getLevenshteinDistanceFrom(otherDNA);
+		}
+		return result;
 	}
 }

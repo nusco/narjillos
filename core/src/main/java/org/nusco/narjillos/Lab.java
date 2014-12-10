@@ -9,6 +9,11 @@ import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.Persistence;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
+/**
+ * The class that initialized and runs an Experiment. It can be run on its own
+ * (the _experiment_ script does just that), or used in a larger system (as the
+ * _petridish_ script does to provide graphics).
+ */
 public class Lab {
 
 	private static final int PARSE_INTERVAL = 10000;
@@ -58,7 +63,7 @@ public class Lab {
 			return;
 
 		if (persistent) {
-			isSaving  = true;
+			isSaving = true;
 			Persistence.save(experiment, genePool);
 			isSaving = false;
 		}
@@ -71,10 +76,8 @@ public class Lab {
 	}
 
 	private String getStatusString(long tick) {
-		return alignLeft(NumberFormat.format(tick))
-				+ alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
-				+ alignLeft(experiment.getEcosystem().getNumberOfEggs())
-				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
+		return alignLeft(NumberFormat.format(tick)) + alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
+				+ alignLeft(experiment.getEcosystem().getNumberOfEggs()) + alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
 				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces());
 	}
 
@@ -158,12 +161,13 @@ public class Lab {
 	public boolean isSaving() {
 		return isSaving;
 	}
-	
+
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document |
 	// experiment_file>]
 	public static void main(String... args) {
 		Lab lab = new Lab(args);
-		while (lab.tick());
+		while (lab.tick())
+			;
 		System.exit(0);
 	}
 }

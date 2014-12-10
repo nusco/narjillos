@@ -41,7 +41,7 @@ Inside the egg, each DNA strand goes through a process called "embryology", whic
 
 The DNA is also called the _genotype_, and the physical body is also called the _phenotype_ --- so you can say that "the genotype generates the phenotype". Identical genotypes always generate identical phenotypes. Similar genotypes tend to generate similar phenotypes. Very different genotypes tend to generate very different phenotypes.
 
-All the eggs generated in the beginning are collected in a dish under your microscope, where they hatch within half a minute or so. The narjillos are small in the beginning, but they keep growing until they reach their adult form. The dish is also filled with food --- the blue dots. More food keeps spawning slowly as the experiment goes on.
+All the eggs generated in the beginning are collected in a dish under your microscope. They soon hatch, giving birth to cute little baby narjillos. The babies are small in the beginning, but they keep growing until they reach their adult form. The dish is also filled with food --- the blue dots. More food keeps spawning slowly as the experiment goes on.
 
 ####Selection
 
@@ -57,7 +57,7 @@ Look at a narjillo's eye color to get a clue about its energy level. Fully healt
 
 ####Mutation
 
-Each time a narjillo eats a piece of food, it lays an egg that contains a full copy of the narjillo's genotype. The egg soon hatches, giving birth to a new phenotype --- a little baby narjillo.
+Each time a narjillo eats a piece of food, it lays an egg that contains a full copy of the narjillo's genotype. The egg hatches after a short while, giving birth to the phenotype --- a new baby narjillo.
 
 However, here is a twist: when the parent's genotype is copied into the egg, random errors can happen. These errors (called "mutations") mean that, while the copy probably resembles the original, it also has a few differences --- which typically result in a child with slightly different body shape, movement style, or color.
 

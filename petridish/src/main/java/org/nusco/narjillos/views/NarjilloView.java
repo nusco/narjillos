@@ -7,14 +7,14 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 import org.nusco.narjillos.utilities.Viewport;
 
 class NarjilloView extends ThingView {
 	
 	private final Group group = new Group();
-	private final List<BodyPartView> organViews;
+	private final List<OrganView> organViews;
 	private final MouthView mouthView;
 	private final RoundObjectView eyeView;
 	private final CenterOfMassView centerOfMassView;
@@ -52,7 +52,7 @@ class NarjilloView extends ThingView {
 
 	private List<Node> getOrganNodes(double zoomLevel, boolean infraredOn) {
 		List<Node> result = new LinkedList<>();
-		for (BodyPartView view : organViews) {
+		for (OrganView view : organViews) {
 			Node node = view.toNode(zoomLevel, infraredOn);
 			if (node != null)
 				result.add(node);
@@ -60,10 +60,10 @@ class NarjilloView extends ThingView {
 		return result;
 	}
 
-	private List<BodyPartView> createOrganViews() {
-		List<BodyPartView> result = new LinkedList<>();
-		for (BodyPart bodyPart : getNarjillo().getBodyParts())
-			result.add(new BodyPartView(bodyPart, getNarjillo()));
+	private List<OrganView> createOrganViews() {
+		List<OrganView> result = new LinkedList<>();
+		for (Organ bodyPart : getNarjillo().getBodyParts())
+			result.add(new OrganView(bodyPart, getNarjillo()));
 		return result;
 	}
 
@@ -73,10 +73,10 @@ class NarjilloView extends ThingView {
 
 	@Override
 	protected boolean isVisible(Viewport viewport) {
-		for (BodyPartView organView : organViews)
+		for (OrganView organView : organViews)
 			if (organView.isVisible(viewport))
 				return true;
-		BodyPartView organView = organViews.get(0);
+		OrganView organView = organViews.get(0);
 		organView.isVisible(viewport);
 		// ignore the mouth and eye, too small to make a visible difference
 		return false;

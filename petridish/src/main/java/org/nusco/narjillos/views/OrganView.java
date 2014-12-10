@@ -7,12 +7,12 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 import org.nusco.narjillos.utilities.Viewport;
 
-class BodyPartView extends ThingView {
+class OrganView extends ThingView {
 
 	private final static double VERY_LOW_MAGNIFICATION = 0.003;
 	private final static double LOW_MAGNIFICATION = 0.015;
@@ -21,11 +21,11 @@ class BodyPartView extends ThingView {
 
 	private final static int OVERLAP = 7;
 
-	private final BodyPart bodyPart;
+	private final Organ bodyPart;
 	private final Color color;
 	private final Rectangle rectangle;
 
-	public BodyPartView(BodyPart bodyPart, Narjillo narjillo) {
+	public OrganView(Organ bodyPart, Narjillo narjillo) {
 		super(narjillo);
 		this.bodyPart = bodyPart;
 		color = toRGBColor(bodyPart.getColor());

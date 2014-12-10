@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.embryogenesis.bodyplan.BodyPlan;
 import org.nusco.narjillos.embryogenesis.bodyplan.OrganBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
@@ -26,7 +26,7 @@ public class Embryo {
 		DNAIterator iterator = new DNAIterator(genes);
 		List<OrganBuilder> organBuilders = getOrganBuilders(iterator);
 		BodyPlan bodyPlan = new BodyPlan(organBuilders.toArray(new OrganBuilder[0]));
-		Organ head = bodyPlan.buildBodyTree();
+		ConnectedOrgan head = bodyPlan.buildBodyTree();
 		return new Body(head);
 	}
 

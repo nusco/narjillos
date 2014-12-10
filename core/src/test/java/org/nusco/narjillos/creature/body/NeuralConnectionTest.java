@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public abstract class BodyPartConnectionTest {
+public abstract class NeuralConnectionTest {
 	
 	@Test
 	public void sendsNerveSignalsToItsChildren() {
@@ -14,10 +14,10 @@ public abstract class BodyPartConnectionTest {
 		final ClickNerve nerve2 = new ClickNerve();
 		final ClickNerve nerve3 = new ClickNerve();
 
-		Organ head = new Head(0, 0, new ColorByte(0), 1, 0.5);
-		Organ child1 = head.addChild(new BodySegment(nerve1));
-		child1.addChild(new BodySegment(nerve2));
-		head.addChild(new BodySegment(nerve3));
+		MovingOrgan head = new Head(0, 0, new ColorByte(0), 1, 0.5);
+		ConnectedOrgan child1 = head.addChild(new BodyPart(nerve1));
+		child1.addChild(new BodyPart(nerve2));
+		head.addChild(new BodyPart(nerve3));
 
 		head.tick(0, 0);
 		

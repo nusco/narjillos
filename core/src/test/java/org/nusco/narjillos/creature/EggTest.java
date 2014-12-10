@@ -78,5 +78,4 @@ public class EggTest {
 		while (!egg.hatch())
 			egg.tick();
 	}
-	
 }

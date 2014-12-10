@@ -9,28 +9,29 @@ import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class HeadTest extends OrganTest {
+public class HeadTest extends ConnectedOrganTest {
 
 	@Override
 	public Head createConcreteOrgan(int length, int thickness) {
 		return new Head(length, thickness, new ColorByte(100), 1, 0.5);
 	}
 
-	@Test
-	public void startsAtPointZeroByDefault() {
-		assertEquals(Vector.ZERO, bodyPart.getStartPoint());
+	@Override
+	public void hasAParent() {
+		// ...only it's null
+		assertEquals(null, getOrgan().getParent());
 	}
 
 	@Override
 	public void hasAnEndPoint() {
-		fullyGrow(bodyPart);
+		fullyGrow(organ);
 		
-		assertEquals(Vector.cartesian(50, 0), bodyPart.getEndPoint());
+		assertEquals(Vector.cartesian(50, 0), organ.getEndPoint());
 	}
 
-	@Override
-	public void hasAParent() {
-		assertEquals(null, getBodyPart().getParent());
+	@Test
+	public void startsAtPointZeroByDefault() {
+		assertEquals(Vector.ZERO, organ.getStartPoint());
 	}
 
 	@Test
@@ -51,7 +52,7 @@ public class HeadTest extends OrganTest {
 	}
 	
 	@Test
-	public void hasAPercentEnergyToChildren() {
+	public void hasAPercentOfEnergyThatItPassesOnToChildren() {
 		Head head = new Head(10, 6, new ColorByte(100), 1, 0.42);
 		
 		assertEquals(0.42, head.getPercentEnergyToChildren(), 0.0);

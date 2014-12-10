@@ -3,7 +3,7 @@ package org.nusco.narjillos.embryogenesis;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -40,7 +40,7 @@ public abstract class ConcreteOrganBuilderTest {
 		assertEquals(new ColorByte(255), createConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 255)).getHue());
 	}
 
-	protected void fullyGrow(BodyPart bodyPart) {
+	protected void fullyGrow(Organ bodyPart) {
 		while (!bodyPart.isFullyGrown())
 			bodyPart.grow();
 		bodyPart.updateCaches();

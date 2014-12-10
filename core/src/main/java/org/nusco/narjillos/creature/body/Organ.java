@@ -1,104 +1,164 @@
 package org.nusco.narjillos.creature.body;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.nusco.narjillos.creature.body.pns.Nerve;
+import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
- * Allows BodyParts to connect in a tree to form a body.
+ * A piece of body.
  * 
- * Also has a notion of the passing of time (embodied by the tick() method).
- * This means that it moves (see calculateAngleToParent()) and grows over time.
+ * Contains all the geometric qualities of the organ (like length, thickness
+ * and mass), and does the painstaking calculations needed to come up with
+ * angles, etc.
+ * 
+ * This code is not something I'm proud of. The caching code confuses the heck
+ * out of me as much as it does to you. Try to understand... it's for
+ * performance.
  */
-public abstract class Organ extends BodyPart {
+public abstract class Organ {
 
-	private final Nerve nerve;
-	private transient Organ parent;
-	private final List<Organ> children = new ArrayList<>();
-	private double angleToParent = 0;
+	private static final int MINIMUM_LENGTH_AT_BIRTH = 5;
+	private static final int MINIMUM_THICKNESS_AT_BIRTH = 1;
+	private static final double GROWTH_RATE = 0.01;
 
-	protected Organ(int adultLength, int adultThickness, ColorByte color, Organ parent, Nerve nerve) {
-		super(adultLength, adultThickness, color);
-		this.nerve = nerve;
-		setParent(parent);
+	private final double adultLength;
+	private final int adultThickness;
+	private final double adultMass;
+	private final ColorByte color;
+	private double length;
+	private double thickness;
+
+	// Caching - ugly, but has huge performance benefits.
+	// All volatile, to avoid too much synchronization
+	private volatile double cachedAbsoluteAngle;
+	private volatile Vector cachedStartPoint;
+	private volatile Vector cachedVector;
+	private volatile Vector cachedEndPoint;
+	private volatile double cachedMass;
+	private volatile Vector cachedCenterOfMass;
+	private volatile Segment cachedPositionInSpace;
+
+	public Organ(int adultLength, int adultThickness, ColorByte color) {
+		this.adultLength = adultLength;
+		this.adultThickness = adultThickness;
+		this.adultMass = Math.max(adultLength * adultThickness, 1);
+
+		this.length = Math.min(MINIMUM_LENGTH_AT_BIRTH, adultLength);
+		this.thickness = Math.min(MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
+		this.color = color;
+
+		initCaches();
 	}
 
-	public final void setParent(Organ parent) {
-		this.parent = parent;
+	private void initCaches() {
+		this.cachedAbsoluteAngle = 0;
+		this.cachedStartPoint = Vector.ZERO;
+		this.cachedVector = Vector.polar(0, getLength());
+		this.cachedEndPoint = cachedVector;
+		this.cachedPositionInSpace = new Segment(Vector.ZERO, cachedVector);
+		this.cachedMass = calculateMass();
+		this.cachedCenterOfMass = cachedVector.by(0.5);
 	}
 
-	protected final double getAngleToParent() {
-		return angleToParent;
+	public final void updateCaches() {
+		cachedAbsoluteAngle = calculateAbsoluteAngle();
+		cachedVector = calculateVector();
+		cachedStartPoint = calculateStartPoint();
+		cachedEndPoint = calculateEndPoint();
+		cachedPositionInSpace = calculatePositionInSpace();
+		cachedMass = calculateMass();
+		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
-	protected void recursivelyCalculateCachedFields() {
-		super.updateCaches();
-
-		for (Organ child : getChildren())
-			child.recursivelyCalculateCachedFields();
+	public final double getLength() {
+		return length;
 	}
 
-	@Override
-	protected Vector calculateStartPoint() {
-		return getParent().getEndPoint();
+	public double getThickness() {
+		return thickness;
 	}
 
-	@Override
-	protected Vector calculateCenterOfMass() {
-		return getStartPoint().plus(getVector().by(0.5));
+	public void grow() {
+		if (isFullyGrown())
+			return;
+
+		length = Math.min(adultLength, getLength() + GROWTH_RATE);
+		thickness = Math.min(adultThickness, getThickness() + GROWTH_RATE);
+
+		// optimization: let the client update the caches
 	}
 
-	public final Organ getParent() {
-		return parent;
+	public boolean isFullyGrown() {
+		return getLength() >= adultLength && getThickness() >= adultThickness;
 	}
 
-	public List<Organ> getChildren() {
-		return children;
+	public double getMass() {
+		return cachedMass;
 	}
 
-	public void tick(double percentOfAmplitude, double angleToTarget) {
-		double processedPercentOfAmplitude = getNerve().tick(percentOfAmplitude);
-
-		recursivelyGrow();
-
-		double newAngleToParent = calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget);
-		updateAngleToParent(newAngleToParent);
-
-		for (Organ child : getChildren())
-			child.tick(processedPercentOfAmplitude, angleToTarget);
+	public double getAdultMass() {
+		return adultMass;
 	}
 
-	protected final void updateAngleToParent(double angleToParent) {
-		this.angleToParent = angleToParent;
-
-		// Optimization: this is the only place where we update
-		// the cache. Doing it more often would make the code
-		// much simpler to follow, but also much slower. It's
-		// important that all changes to Organ state pass by
-		// here at some point.
-		recursivelyCalculateCachedFields();
+	public ColorByte getColor() {
+		return color;
 	}
 
-	public void recursivelyGrow() {
-		grow();
-
-		for (Organ child : getChildren())
-			child.recursivelyGrow();
+	private Vector calculateVector() {
+		return Vector.polar(getAbsoluteAngle(), getLength());
 	}
 
-	protected abstract double calculateNewAngleToParent(double targetAngle, double angleToTarget);
-
-	Nerve getNerve() {
-		return nerve;
+	public final double getAbsoluteAngle() {
+		return cachedAbsoluteAngle;
 	}
 
-	public Organ addChild(Organ child) {
-		children.add(child);
-		return child;
+	protected abstract double calculateAbsoluteAngle();
+
+	public final Vector getStartPoint() {
+		return cachedStartPoint;
 	}
 
-	protected abstract double getMetabolicRate();
+	protected abstract Vector calculateStartPoint();
+
+	private Vector calculateEndPoint() {
+		return getStartPoint().plus(getVector());
+	}
+
+	public final Vector getEndPoint() {
+		return cachedEndPoint;
+	}
+
+	final Vector getVector() {
+		return cachedVector;
+	}
+
+	public final Vector getCenterOfMass() {
+		return cachedCenterOfMass;
+	}
+
+	private double calculateMass() {
+		return Math.max(getLength() * getThickness(), 1);
+	}
+
+	protected abstract Vector calculateCenterOfMass();
+
+	public Segment getPositionInSpace() {
+		return cachedPositionInSpace;
+	}
+
+	private Segment calculatePositionInSpace() {
+		return new Segment(getStartPoint(), getVector());
+	}
+
+	public boolean isAtrophic() {
+		return adultLength == 0;
+	}
+
+	public double getAdultLength() {
+		return adultLength;
+	}
+
+	public int getAdultThickness() {
+		return adultThickness;
+	}
 }

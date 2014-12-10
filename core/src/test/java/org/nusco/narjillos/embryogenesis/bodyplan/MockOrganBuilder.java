@@ -1,6 +1,6 @@
 package org.nusco.narjillos.embryogenesis.bodyplan;
 
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 
 class MockOrganBuilder implements OrganBuilder {
 
@@ -18,7 +18,7 @@ class MockOrganBuilder implements OrganBuilder {
 	}
 	
 	@Override
-	public Organ buildOrgan(Organ parent, int sign) {
+	public ConnectedOrgan buildOrgan(ConnectedOrgan parent, int sign) {
 		return new MockOrgan(id, parent, sign);
 	}
 }

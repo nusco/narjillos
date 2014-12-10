@@ -4,10 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.BodyPart;
-import org.nusco.narjillos.creature.body.BodySegment;
-import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.body.MovingOrgan;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
@@ -22,8 +23,8 @@ public class JSONBodyPartSerializationTest {
 		for (int i = 0; i < 10; i++)
 			head.tick(1, 20);
 		
-		String json = JSON.toJson(head, BodyPart.class);
-		BodyPart deserialized = (Head)JSON.fromJson(json, BodyPart.class);
+		String json = JSON.toJson(head, Organ.class);
+		Organ deserialized = (Head)JSON.fromJson(json, Organ.class);
 		
 		assertEquals(head.getLength(), deserialized.getLength(), 0.0);
 		assertEquals(head.getThickness(), deserialized.getThickness(), 0.0);
@@ -36,15 +37,15 @@ public class JSONBodyPartSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesBodySegments() {
-		Organ parent = new Head(10, 20, new ColorByte(0), 40, 0.5);
-		BodySegment bodySegment = new BodySegment(1, 2, new ColorByte(3), parent, 4, -5, 6, 7);
+		ConnectedOrgan parent = new Head(10, 20, new ColorByte(0), 40, 0.5);
+		BodyPart bodySegment = new BodyPart(1, 2, new ColorByte(3), parent, 4, -5, 6, 7);
 
 		for (int i = 0; i < 10; i++)
 			bodySegment.tick(1, 10);
 		bodySegment.updateCaches();
 		
-		String json = JSON.toJson(bodySegment, BodyPart.class);
-		BodySegment deserialized = (BodySegment)JSON.fromJson(json, BodyPart.class);
+		String json = JSON.toJson(bodySegment, Organ.class);
+		BodyPart deserialized = (BodyPart)JSON.fromJson(json, Organ.class);
 		
 		assertEquals(bodySegment.getLength(), deserialized.getLength(), 0);
 		assertEquals(bodySegment.getThickness(), deserialized.getThickness(), 0);
@@ -62,16 +63,16 @@ public class JSONBodyPartSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesAnEntireTreeOfOrgans() {
-		Organ parent = new Head(100, 0, new ColorByte(0), 0, 0.5);
-		Organ child = new BodySegment(200, 0, new ColorByte(0), parent, 0, 0, 0, 0);
+		MovingOrgan parent = new Head(100, 0, new ColorByte(0), 0, 0.5);
+		ConnectedOrgan child = new BodyPart(200, 0, new ColorByte(0), parent, 0, 0, 0, 0);
 		parent.addChild(child);
 		
-		String json = JSON.toJson(parent, Organ.class);
-		Organ deserializedParent = (Organ) JSON.fromJson(json, Organ.class);
+		String json = JSON.toJson(parent, MovingOrgan.class);
+		MovingOrgan deserializedParent = (MovingOrgan) JSON.fromJson(json, MovingOrgan.class);
 		
 		assertEquals(parent.getLength(), deserializedParent.getLength(), 0);
 		assertEquals(1, deserializedParent.getChildren().size());
-		Organ deserializedChild = deserializedParent.getChildren().get(0);
+		ConnectedOrgan deserializedChild = deserializedParent.getChildren().get(0);
 		assertEquals(child.getLength(), deserializedChild.getLength(), 0);
 		assertSame(deserializedParent, deserializedChild.getParent());
 

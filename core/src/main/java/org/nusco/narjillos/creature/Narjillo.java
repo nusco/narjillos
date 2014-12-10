@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -27,11 +27,11 @@ public class Narjillo implements Thing {
 	private Mouth mouth = new Mouth();
 	private int age = 0;
 	
-	public Narjillo(DNA genes, Body body, Vector position, double initialEnergy) {
+	public Narjillo(DNA genes, Body body, Vector position, double energyAtBirth) {
 		this.body = body;
 		body.teleportTo(position);
 		this.dna = genes;
-		energy = new Energy(initialEnergy, MAX_LIFESPAN);
+		energy = new Energy(energyAtBirth, MAX_LIFESPAN);
 	}
 
 	public DNA getDNA() {
@@ -44,10 +44,8 @@ public class Narjillo implements Thing {
 	
 	@Override
 	public Segment tick() {
-		age++;
+		growOlder();
 		
-		applyLifecycleAnimations();
-
 		Vector startingPosition = body.getStartPoint();
 
 		if (isDead())
@@ -58,12 +56,6 @@ public class Narjillo implements Thing {
 		energy.tick(energySpent);
 
 		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
-	}
-
-	private void applyLifecycleAnimations() {
-		// TODO: find a new way to do this
-//		if (energy.getValue() <= energy.getAgonyLevel())
-//			applyDeathAnimation();
 	}
 
 	@Override
@@ -80,8 +72,8 @@ public class Narjillo implements Thing {
 	}
 
 	public Egg layEgg(Vector position, RanGen ranGen) {
-		double percentEnergyToChildren = getPercentEnergyToChildren();
-		double childEnergy = energy.donatePercent(percentEnergyToChildren);
+		double percentEnergyToChildren = body.getPercentEnergyToChildren();
+		double childEnergy = energy.chunkOff(percentEnergyToChildren);
 		if (childEnergy == 0)
 			return null;
 
@@ -98,8 +90,8 @@ public class Narjillo implements Thing {
 		return energy.isDepleted();
 	}
 
-	public List<BodyPart> getBodyParts() {
-		return body.getBodyParts();
+	public List<Organ> getBodyParts() {
+		return body.getOrgans();
 	}
 
 	public Body getBody() {
@@ -114,23 +106,23 @@ public class Narjillo implements Thing {
 		return body.calculateCenterOfMass();
 	}
 
-	public double getPercentEnergyToChildren() {
-		return body.getPercentEnergyToChildren();
-	}
-
 	public double getEnergyPercent() {
-		return energy.getCurrentPercentOfInitialValue();
+		return energy.getPercentOfInitialValue();
 	}
 
 	public Mouth getMouth() {
 		return mouth;
 	}
 
-	public Vector getNeckPosition() {
+	public Vector getNeckLocation() {
 		return getBody().getHead().getEndPoint();
 	}
 
 	public int getAge() {
 		return age;
+	}
+
+	private void growOlder() {
+		age++;
 	}
 }

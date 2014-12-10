@@ -11,14 +11,14 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-public class NarjilloTest {
+public class NarjilloEnergyLossTest {
 
-	Narjillo narjillo;
+	Narjillo smallerNarjillo;
 	Narjillo biggerNarjillo;
 	
 	@Before
 	public void initializeNarjillos() {
-		narjillo = new Narjillo(new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO, 10000);
+		smallerNarjillo = new Narjillo(new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO, 10000);
 		
 		DNA dna = new DNA("{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}");
 		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, 10000);
@@ -26,18 +26,10 @@ public class NarjilloTest {
 	
 	@Test
 	public void itLosesEnergyFasterWhileMovingIfItIsBigger() {
-		double smallerNarjilloEnergyLoss = getEnergyLossWithMovement(narjillo);
+		double smallerNarjilloEnergyLoss = getEnergyLossWithMovement(smallerNarjillo);
 		double biggerNarjilloEnergyLoss = getEnergyLossWithMovement(biggerNarjillo);
 
 		assertTrue(biggerNarjilloEnergyLoss > smallerNarjilloEnergyLoss);
-	}
-
-	private double getEnergyLossWithMovement(Narjillo narjillo) {
-		double startingEnergy = narjillo.getEnergy().getValue();
-		narjillo.setTarget(Vector.cartesian(1000, 1000));
-		for (int i = 0; i < 10; i++)
-			narjillo.tick();
-		return startingEnergy - narjillo.getEnergy().getValue();
 	}
 
 	@Test
@@ -49,5 +41,13 @@ public class NarjilloTest {
 			narjilloThatCannotMove.tick();
 
 		assertTrue(narjilloThatCannotMove.isDead());
+	}
+
+	private double getEnergyLossWithMovement(Narjillo narjillo) {
+		double startingEnergy = narjillo.getEnergy().getValue();
+		narjillo.setTarget(Vector.cartesian(1000, 1000));
+		for (int i = 0; i < 10; i++)
+			narjillo.tick();
+		return startingEnergy - narjillo.getEnergy().getValue();
 	}
 }

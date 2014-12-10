@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -60,8 +60,8 @@ public class JSONThingSerializationTest {
 		assertEquals(narjillo.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0.0);
 		assertEquals(narjillo.getMouth(), deserialized.getMouth());
 
-		List<BodyPart> bodyParts = narjillo.getBodyParts();
-		List<BodyPart> deserializedBodyParts = deserialized.getBodyParts();
+		List<Organ> bodyParts = narjillo.getBodyParts();
+		List<Organ> deserializedBodyParts = deserialized.getBodyParts();
 		for (int i = 0; i < bodyParts.size(); i++)
 			assertEquals(bodyParts.get(i).getLength(), deserializedBodyParts.get(i).getLength(), 0);
 	}

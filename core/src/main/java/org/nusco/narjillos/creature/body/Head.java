@@ -8,7 +8,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 /**
  * The head of a creature, and the root of a tree of Organs.
  */
-public class Head extends Organ {
+public class Head extends MovingOrgan {
 
 	private static final double BASE_WAVE_FREQUENCY = 0.01;
 

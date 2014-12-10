@@ -7,22 +7,16 @@ public class Energy {
 	private double value;
 	private double maxForAge;
 	private final double decay;
-	private final double agonyLevel;
 
 	public Energy(double initialValue, double lifespan) {
 		this.initialValue = initialValue;
 		this.value = this.initialValue;
-		this.maxForAge = initialValue * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
+		this.maxForAge = this.initialValue * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
 		this.decay = maxForAge / lifespan;
-		this.agonyLevel = this.decay * 300;
 	}
 
 	public double getValue() {
 		return value;
-	}
-
-	public boolean isDepleted() {
-		return value <= 0;
 	}
 
 	public double getInitialValue() {
@@ -33,8 +27,14 @@ public class Energy {
 		return maxForAge;
 	}
 
-	public double getAgonyLevel() {
-		return agonyLevel;
+	public boolean isDepleted() {
+		return value <= 0;
+	}
+
+	public double getPercentOfInitialValue() {
+		if (value == 0)
+			return 0;
+		return Math.min(1, value / initialValue);
 	}
 
 	public void tick(double energySpent) {
@@ -55,11 +55,7 @@ public class Energy {
 		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
 	}
 
-	private void decreaseBy(double amount) {
-		increaseBy(-amount);
-	}
-
-	public double donatePercent(double percentFromZeroToOne) {
+	public double chunkOff(double percentFromZeroToOne) {
 		double donation = getValue() * percentFromZeroToOne;
 		if (getValue() - donation < getInitialValue())
 			return 0; // Short on energy. Refuse donation.
@@ -67,9 +63,7 @@ public class Energy {
 		return donation;
 	}
 
-	public double getCurrentPercentOfInitialValue() {
-		if (value == 0)
-			return 0;
-		return Math.min(1, value / initialValue);
+	private void decreaseBy(double amount) {
+		increaseBy(-amount);
 	}
 }

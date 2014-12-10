@@ -223,7 +223,7 @@ public class Ecosystem {
 	}
 
 	private void layEgg(Narjillo narjillo, RanGen ranGen) {
-		Egg egg = narjillo.layEgg(narjillo.getNeckPosition(), ranGen);
+		Egg egg = narjillo.layEgg(narjillo.getNeckLocation(), ranGen);
 		if (egg == null) // refused to lay egg
 			return;
 		insert(egg);

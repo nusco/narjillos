@@ -22,44 +22,55 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class Body {
 
-	private final Organ head;
+	private final ConnectedOrgan head;
 	private final double metabolicConsumption;
 	private final double adultMass;
 	private double mass;
-	private transient List<BodyPart> bodyParts;
+	private transient List<Organ> organs;
 
-	public Body(Organ head) {
+	public Body(ConnectedOrgan head) {
 		this.head = head;
 		adultMass = calculateAdultMass();
-		this.metabolicConsumption = Math.pow(getMetabolicRate(), 1.5);
+		this.metabolicConsumption = Math.pow(getHead().getMetabolicRate(), 1.5);
 	}
 
 	public Head getHead() {
 		return (Head) head;
 	}
 
-	public List<BodyPart> getBodyParts() {
-		if (bodyParts == null) {
-			bodyParts = new ArrayList<>();
-			addWithChildren(bodyParts, head);
+	public List<Organ> getOrgans() {
+		if (organs == null) {
+			organs = new ArrayList<>();
+			addWithChildren(organs, head);
 		}
-		return bodyParts;
-	}
-
-	private void addWithChildren(List<BodyPart> result, Organ organ) {
-		// children first
-		for (Organ child : organ.getChildren())
-			addWithChildren(result, child);
-		result.add(organ);
-	}
-
-	public void teleportTo(Vector position) {
-		final int northDirection = 90;
-		getHead().moveTo(position, northDirection);
+		return organs;
 	}
 
 	public Vector getStartPoint() {
 		return getHead().getStartPoint();
+	}
+
+	public double getAngle() {
+		return Angle.normalize(getHead().getAbsoluteAngle() + 180);
+	}
+
+	public double getPercentEnergyToChildren() {
+		return getHead().getPercentEnergyToChildren();
+	}
+
+	public double getMass() {
+		double result = 0;
+		for (Organ organ : getOrgans())
+			result += organ.getMass();
+		return result;
+	}
+
+	public double getRadius() {
+		return calculateRadius(calculateCenterOfMass());
+	}
+
+	public double getAdultMass() {
+		return adultMass;
 	}
 
 	public Vector calculateCenterOfMass() {
@@ -67,7 +78,7 @@ public class Body {
 		// When I try to cache it, I get a weird bug with
 		// the mass staying too low and narjillos zipping
 		// around like crazy.
-		double mass = calculateMass();
+		double mass = getMass();
 
 		if (mass <= 0)
 			return getStartPoint();
@@ -75,11 +86,11 @@ public class Body {
 		// do it in one swoop instead of creating a lot of
 		// intermediate vectors
 
-		List<BodyPart> organs = getBodyParts();
+		List<Organ> organs = getOrgans();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<BodyPart> iterator = getBodyParts().iterator();
+		Iterator<Organ> iterator = getOrgans().iterator();
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			BodyPart organ = iterator.next();
+			Organ organ = iterator.next();
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
 		}
 
@@ -93,31 +104,40 @@ public class Body {
 		return Vector.cartesian(totalX / mass, totalY / mass);
 	}
 
+	public void teleportTo(Vector position) {
+		final int northDirection = 90;
+		getHead().moveTo(position, northDirection);
+	}
+
 	/**
+	 * Contains the core movement algorithm:
+	 * 
 	 * Take a target direction. Change the body's geometry based on the target
 	 * direction. Move the body. Return the energy consumed on the entire
 	 * operation.
+	 * 
+	 * Look inside for more details...
 	 */
 	public double tick(Vector targetDirection) {
 		// Update the mass of a still-developing body.
 		if (isStillGrowing())
-			mass = calculateMass();
+			mass = getMass();
 
-		// Before any movement, store away the current body positions
-		// and center of mass. These will come useful later.
+		// Before any movement, store away the current center of mass and the
+		// positions of all body parts. These will come useful later.
 		Vector initialCenterOfMass = calculateCenterOfMass();
-		Map<BodyPart, Segment> initialBodyPartPositions = calculateBodyPartPositions();
+		Map<Organ, Segment> initialBodyPartPositions = calculateBodyPartPositions();
 
 		// This first step happens as if the body where in a vacuum.
 		// The organs in the body remodel their own geometry based on the
 		// target's direction. They don't "think" were to go - they just
-		// changes their positions *somehow*. Natural selection will favor
-		// movements that result in getting closer to the target.
+		// changes their positions *somehow*. Natural selection will eventually
+		// favor movements that result in getting closer to the target.
 		tick_step1_updateAngles(targetDirection);
 
 		// Changing the angles in the body results in a rotational force.
-		// Rotate the body to match the force. In other words, keep its moment
-		// of inertia equal to zero.
+		// Rotate the body to match the force. In other words, keep the body's
+		// moment of inertia equal to zero.
 		double rotationEnergy = tick_step2_rotate(initialBodyPartPositions, initialCenterOfMass, mass);
 
 		// The previous updates moved the center of mass. Remember, we're
@@ -132,20 +152,55 @@ public class Body {
 		// these translations.
 		double translationEnergy = tick_step4_translate(initialBodyPartPositions, initialCenterOfMass, mass);
 
+		// We're done! Return the energy spent on the entire operation.
 		return getEnergyConsumed(rotationEnergy, translationEnergy);
 	}
 
-	private boolean isStillGrowing() {
-		return mass < getAdultMass();
+	@Override
+	public String toString() {
+		return head.toString();
+	}
+
+	private void tick_step1_updateAngles(Vector targetDirection) {
+		double angleToTarget = getAngleTo(targetDirection);
+		getHead().tick(0, angleToTarget);
+	}
+
+	private double tick_step2_rotate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
+		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
+		for (Organ bodyPart : organs)
+			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
+		getHead().moveBy(Vector.ZERO, forceField.getRotation());
+		return forceField.getEnergy();
+	}
+
+	private void tick_step3_recenter(Vector centerOfMassBeforeReshaping) {
+		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
+		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
+		getHead().moveBy(centerOfMassOffset, 0);
+	}
+
+	private double tick_step4_translate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
+		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
+		for (Organ bodyPart : organs)
+			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
+		getHead().moveBy(forceField.getTranslation(), 0);
+		return forceField.getEnergy();
 	}
 
 	private double getEnergyConsumed(double rotationEnergy, double translationEnergy) {
 		return (rotationEnergy + translationEnergy) * metabolicConsumption;
 	}
 
-	private void tick_step1_updateAngles(Vector targetDirection) {
-		double angleToTarget = getAngleTo(targetDirection);
-		getHead().tick(0, angleToTarget);
+	private void addWithChildren(List<Organ> result, ConnectedOrgan organ) {
+		// children first
+		for (ConnectedOrgan child : organ.getChildren())
+			addWithChildren(result, child);
+		result.add(organ);
+	}
+
+	private boolean isStillGrowing() {
+		return mass < getAdultMass();
 	}
 
 	private double getAngleTo(Vector direction) {
@@ -158,74 +213,24 @@ public class Body {
 		}
 	}
 
-	private double tick_step2_rotate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass, double mass) {
-		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
-		for (BodyPart bodyPart : bodyParts)
-			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
-		getHead().moveBy(Vector.ZERO, forceField.getRotation());
-		return forceField.getEnergy();
-	}
-
-	private void tick_step3_recenter(Vector centerOfMassBeforeReshaping) {
-		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
-		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
-		getHead().moveBy(centerOfMassOffset, 0);
-	}
-
-	private double tick_step4_translate(Map<BodyPart, Segment> initialPositions, Vector centerOfMass, double mass) {
-		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
-		for (BodyPart bodyPart : bodyParts)
-			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
-		getHead().moveBy(forceField.getTranslation(), 0);
-		return forceField.getEnergy();
-	}
-
-	private Map<BodyPart, Segment> calculateBodyPartPositions() {
-		Map<BodyPart, Segment> result = new LinkedHashMap<>();
-		for (BodyPart bodyPart : getBodyParts())
+	private Map<Organ, Segment> calculateBodyPartPositions() {
+		Map<Organ, Segment> result = new LinkedHashMap<>();
+		for (Organ bodyPart : getOrgans())
 			result.put(bodyPart, bodyPart.getPositionInSpace());
-		return result;
-	}
-
-	private double getMetabolicRate() {
-		return getHead().getMetabolicRate();
-	}
-
-	public double getPercentEnergyToChildren() {
-		return getHead().getPercentEnergyToChildren();
-	}
-
-	public double calculateMass() {
-		double result = 0;
-		for (BodyPart organ : getBodyParts())
-			result += organ.getMass();
 		return result;
 	}
 
 	private double calculateAdultMass() {
 		double result = 0;
-		for (BodyPart organ : getBodyParts())
+		for (Organ organ : getOrgans())
 			result += organ.getAdultMass();
 		return result;
-	}
-
-	@Override
-	public String toString() {
-		return head.toString();
-	}
-
-	public double getAngle() {
-		return Angle.normalize(getHead().getAbsoluteAngle() + 180);
-	}
-
-	public double getAdultMass() {
-		return adultMass;
 	}
 
 	private double calculateRadius(Vector centerOfMass) {
 		final double MIN_RADIUS = 1;
 		double result = MIN_RADIUS;
-		for (BodyPart bodyPart : getBodyParts()) {
+		for (Organ bodyPart : getOrgans()) {
 			double startPointDistance = bodyPart.getStartPoint().minus(centerOfMass).getLength();
 			double endPointDistance = bodyPart.getEndPoint().minus(centerOfMass).getLength();
 			double distance = Math.max(startPointDistance, endPointDistance);
@@ -233,9 +238,5 @@ public class Body {
 				result = distance;
 		}
 		return result;
-	}
-
-	public double getRadius() {
-		return calculateRadius(calculateCenterOfMass());
 	}
 }

@@ -3,7 +3,7 @@
  * 
  * Contains the {@link org.nusco.narjillos.creature.body.Body} class, that acts as a
  * Facade to multiple parts of the Narjillo's body---all of them objects of the
- * {@link org.nusco.narjillos.creature.body.BodyPart} hierarchy.
+ * {@link org.nusco.narjillos.creature.body.Organ} hierarchy.
  * 
  * This is probably the most messed-up and experimental code in the whole system, and
  * the one that was hardest to write (and re-write; and re-write again). ;)

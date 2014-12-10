@@ -3,9 +3,9 @@ package org.nusco.narjillos.embryogenesis;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.BodySegment;
+import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.embryogenesis.BodySegmentBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
@@ -74,8 +74,8 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		
 		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, delayGene, amplitudeGene, angleToParentGene, skewingGene, hueGene);
 		BodySegmentBuilder builder = createConcreteOrganBuilder(chromosome);
-		Organ head = new Head(10, 10, new ColorByte(40), 10, 0.5);
-		BodySegment bodySegment = (BodySegment) builder.buildOrgan(head, 1);
+		ConnectedOrgan head = new Head(10, 10, new ColorByte(40), 10, 0.5);
+		BodyPart bodySegment = (BodyPart) builder.buildOrgan(head, 1);
 
 		assertEquals(-25, bodySegment.getAbsoluteAngle(), 0);
 		assertEquals(10, bodySegment.getDelay(), 0);

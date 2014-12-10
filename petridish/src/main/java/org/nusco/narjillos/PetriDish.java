@@ -20,6 +20,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.utilities.Locator;
@@ -50,6 +51,8 @@ public class PetriDish extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		FastMath.setUp();
+
 		startModelThread(programArguments);
 
 		System.gc(); // minimize GC during the first stages on animation

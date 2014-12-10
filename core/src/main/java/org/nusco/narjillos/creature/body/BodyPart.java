@@ -1,164 +1,92 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.creature.body.pns.DelayNerve;
+import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
- * A piece of a body.
- * 
- * Contains all the geometric qualities of the body part (like length, thickness
- * and mass), and does the painstaking calculations needed to come up with
- * angles, etc.
- * 
- * This code is not something I'm proud of. The caching code confuses the heck
- * out of me as much as it does to you. Try to understand... it's for
- * performance.
+ * A segment in the body of a creature.
  */
-public abstract class BodyPart {
+public class BodyPart extends MovingOrgan {
 
-	private static final int MINIMUM_LENGTH_AT_BIRTH = 5;
-	private static final int MINIMUM_THICKNESS_AT_BIRTH = 1;
-	private static final double GROWTH_RATE = 0.01;
+	private static final double SKEWING_VELOCITY_RATIO = 0.1;
+	
+	private final double angleToParentAtRest;
+	private final int orientation; // -1 or 1
+	private final int amplitude;
+	private final int skewing;
 
-	private final double adultLength;
-	private final int adultThickness;
-	private final double adultMass;
-	private final ColorByte color;
-	private double length;
-	private double thickness;
+	private double currentSkewing = 0;
+	private double cachedMetabolicRate = -1;
 
-	// Caching - ugly, but has huge performance benefits.
-	// All volatile, to avoid too much synchronization
-	private volatile double cachedAbsoluteAngle;
-	private volatile Vector cachedStartPoint;
-	private volatile Vector cachedVector;
-	private volatile Vector cachedEndPoint;
-	private volatile double cachedMass;
-	private volatile Vector cachedCenterOfMass;
-	private volatile Segment cachedPositionInSpace;
-
-	public BodyPart(int adultLength, int adultThickness, ColorByte color) {
-		this.adultLength = adultLength;
-		this.adultThickness = adultThickness;
-		this.adultMass = Math.max(adultLength * adultThickness, 1);
-
-		this.length = Math.min(MINIMUM_LENGTH_AT_BIRTH, adultLength);
-		this.thickness = Math.min(MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
-		this.color = color;
-
-		initCaches();
+	public BodyPart(int adultLength, int adultThickness, ColorByte hue, ConnectedOrgan parent, int delay, int angleToParentAtRest, int amplitude, int skewing) {
+		super(adultLength, adultThickness, calculateColorMix(parent, hue), parent, new DelayNerve(delay));
+		this.angleToParentAtRest = angleToParentAtRest;
+		this.orientation = (int) Math.signum(angleToParentAtRest);
+		updateAngleToParent(angleToParentAtRest);
+		this.amplitude = amplitude;
+		this.skewing = skewing;
 	}
 
-	private void initCaches() {
-		this.cachedAbsoluteAngle = 0;
-		this.cachedStartPoint = Vector.ZERO;
-		this.cachedVector = Vector.polar(0, getLength());
-		this.cachedEndPoint = cachedVector;
-		this.cachedPositionInSpace = new Segment(Vector.ZERO, cachedVector);
-		this.cachedMass = calculateMass();
-		this.cachedCenterOfMass = cachedVector.by(0.5);
+	BodyPart(Nerve nerve) {
+		this(0, 0, new ColorByte(0), null, 13, 0, 1, 0);
 	}
 
-	public final void updateCaches() {
-		cachedAbsoluteAngle = calculateAbsoluteAngle();
-		cachedVector = calculateVector();
-		cachedStartPoint = calculateStartPoint();
-		cachedEndPoint = calculateEndPoint();
-		cachedPositionInSpace = calculatePositionInSpace();
-		cachedMass = calculateMass();
-		cachedCenterOfMass = calculateCenterOfMass();
+	public double getAngleToParentAtRest() {
+		return angleToParentAtRest;
 	}
 
-	public final double getLength() {
-		return length;
+	public int getOrientation() {
+		return orientation;
 	}
 
-	public double getThickness() {
-		return thickness;
+	public int getAmplitude() {
+		return amplitude;
 	}
 
-	public void grow() {
-		if (isFullyGrown())
-			return;
-
-		length = Math.min(adultLength, getLength() + GROWTH_RATE);
-		thickness = Math.min(adultThickness, getThickness() + GROWTH_RATE);
-
-		// optimization: let the client update the caches
+	public int getSkewing() {
+		return skewing;
 	}
 
-	public boolean isFullyGrown() {
-		return getLength() >= adultLength && getThickness() >= adultThickness;
+	public int getDelay() {
+		return ((DelayNerve) getNerve()).getDelay();
 	}
 
-	public double getMass() {
-		return cachedMass;
+	@Override
+	protected double calculateNewAngleToParent(double targetAmplitudePercent, double angleToTarget) {
+		double unbentAmplitude = orientation * targetAmplitudePercent * amplitude;
+		return angleToParentAtRest + unbentAmplitude + calculateSkewing(angleToTarget);
+	}
+	
+	@Override
+	protected double calculateAbsoluteAngle() {
+		return getParent().getAbsoluteAngle() + getAngleToParent();
 	}
 
-	public double getAdultMass() {
-		return adultMass;
+	@Override
+	protected double getMetabolicRate() {
+		if (cachedMetabolicRate == -1)
+			cachedMetabolicRate = getParent().getMetabolicRate();
+		return cachedMetabolicRate;
 	}
 
-	public ColorByte getColor() {
-		return color;
+	protected double calculateSkewing(double angleToTarget) {
+		double targetSkewing = (angleToTarget % 180) / 180 * getSkewing();
+		currentSkewing += getSkewingVelocity(targetSkewing);
+		return currentSkewing;
 	}
 
-	private Vector calculateVector() {
-		return Vector.polar(getAbsoluteAngle(), getLength());
+	private static ColorByte calculateColorMix(ConnectedOrgan parent, ColorByte color) {
+		if (parent == null)
+			return color;
+		return parent.getColor().mix(color);
 	}
 
-	public final double getAbsoluteAngle() {
-		return cachedAbsoluteAngle;
-	}
-
-	protected abstract double calculateAbsoluteAngle();
-
-	public final Vector getStartPoint() {
-		return cachedStartPoint;
-	}
-
-	protected abstract Vector calculateStartPoint();
-
-	private Vector calculateEndPoint() {
-		return getStartPoint().plus(getVector());
-	}
-
-	public final Vector getEndPoint() {
-		return cachedEndPoint;
-	}
-
-	final Vector getVector() {
-		return cachedVector;
-	}
-
-	public final Vector getCenterOfMass() {
-		return cachedCenterOfMass;
-	}
-
-	private double calculateMass() {
-		return Math.max(getLength() * getThickness(), 1);
-	}
-
-	protected abstract Vector calculateCenterOfMass();
-
-	public Segment getPositionInSpace() {
-		return cachedPositionInSpace;
-	}
-
-	private Segment calculatePositionInSpace() {
-		return new Segment(getStartPoint(), getVector());
-	}
-
-	public boolean isAtrophic() {
-		return adultLength == 0;
-	}
-
-	public double getAdultLength() {
-		return adultLength;
-	}
-
-	public int getAdultThickness() {
-		return adultThickness;
+	private double getSkewingVelocity(double targetSkewing) {
+		double result = targetSkewing - currentSkewing;
+		double maxSkewingVelocity = getMetabolicRate() * SKEWING_VELOCITY_RATIO;
+		if (Math.abs(result) > maxSkewingVelocity)
+			return Math.signum(result) * maxSkewingVelocity;
+		return result;
 	}
 }

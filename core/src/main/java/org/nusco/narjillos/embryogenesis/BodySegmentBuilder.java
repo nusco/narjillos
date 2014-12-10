@@ -2,8 +2,8 @@ package org.nusco.narjillos.embryogenesis;
 
 import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.*;
 
-import org.nusco.narjillos.creature.body.BodySegment;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.genomics.Chromosome;
 
 /**
@@ -39,7 +39,7 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 	}
 
 	@Override
-	public Organ buildOrgan(Organ parent, int sign) {
-		return new BodySegment(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing());
+	public ConnectedOrgan buildOrgan(ConnectedOrgan parent, int sign) {
+		return new BodyPart(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing());
 	}
 }

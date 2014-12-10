@@ -22,6 +22,5 @@ public class JSONEnergySerializationTest {
 
 		assertEquals(energy.getValue(), deserialized.getValue(), 0.0);
 		assertEquals(energy.getMax(), deserialized.getMax(), 0.0);
-		assertEquals(energy.getAgonyLevel(), deserialized.getAgonyLevel(), 0.0);
 	}
 }

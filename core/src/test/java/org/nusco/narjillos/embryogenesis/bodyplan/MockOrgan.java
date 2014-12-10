@@ -1,14 +1,15 @@
 package org.nusco.narjillos.embryogenesis.bodyplan;
 
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.MovingOrgan;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
-class MockOrgan extends Organ {
+class MockOrgan extends MovingOrgan {
 
 	private final int id;
 	private final int sign;
 
-	public MockOrgan(int id, Organ parent, int sign) {
+	public MockOrgan(int id, ConnectedOrgan parent, int sign) {
 		super(0, 0, new ColorByte(0), parent, null);
 		this.id = id;
 		this.sign = sign;
@@ -36,7 +37,7 @@ class MockOrgan extends Organ {
 			result.append("^");
 		result.append(Integer.toString(id));
 		
-		Organ[] children = getChildren().toArray(new Organ[0]);
+		ConnectedOrgan[] children = getChildren().toArray(new MovingOrgan[0]);
 		if (children.length == 0)
 			return result.toString();
 		

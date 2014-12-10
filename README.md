@@ -57,7 +57,7 @@ Look at a narjillo's eye color to get a clue about its energy level. Fully healt
 
 ####Mutation
 
-Each time a narjillo eats a piece of food, it lays an egg that contains a full copy of the narjillo's genotype. The egg hatches after a short while, giving birth to the phenotype --- a new baby narjillo.
+Each time a narjillo eats a piece of food, its energy rises. If the energy is over a certain amount, the narjillo uses it to lay an egg that contains a full copy of the narjillo's own genotype. The egg hatches after a short while, giving birth to the phenotype --- a new baby narjillo.
 
 However, here is a twist: when the parent's genotype is copied into the egg, random errors can happen. These errors (called "mutations") mean that, while the copy probably resembles the original, it also has a few differences --- which typically result in a child with slightly different body shape, movement style, or color.
 

@@ -19,7 +19,7 @@ The first run installs the Gradle build tool and then builds the system, so it t
 
 ##How to control the microscope
 
-Move around with your mouse: **click anywhere** to center, **double-click** to auto-zoom, and zoom in/out by **scrolling**. You can also move the microscope with your **cursor keys**.
+Move around with your mouse: **click anywhere** to center, **double-click** to lock on a specific narjillo, and zoom in/out by **scrolling**. You can also move the microscope with your **cursor keys**.
 
 To shift the speed up, press **P**. To shift it down, press **O**.
 
@@ -35,21 +35,21 @@ There are three main ingredients to the Narjillos recipe: _phenotypic variation_
 
 ####Phenotypic variation
 
-When you start an experiment, the program generates a few hundreds different strands of DNA. Each DNA is a random sequence of bytes. Each byte is a "gene", and genes are collected into "chromosomes".
+When you start an experiment, the program generates a few hundreds eggs, containing different strands of DNA. Each DNA is a random sequence of bytes. Each byte is a "gene", and genes are collected into "chromosomes".
 
-Each DNA strand goes through a process called "embryology", which generates the physical body of a narjillo. Each chromosome roughly generates a segment in the narjillo's body, and the genes in the chromosome dictate that segment's appearance and behavior: its color, size, angle, and so on.
+Inside the egg, each DNA strand goes through a process called "embryology", which generates the physical body of a baby narjillo. Each chromosome roughly generates a segment in the narjillo's body, and the genes in the chromosome dictate that segment's appearance and behavior: its color, size, angle, and so on.
 
 The DNA is also called the _genotype_, and the physical body is also called the _phenotype_ --- so you can say that "the genotype generates the phenotype". Identical genotypes always generate identical phenotypes. Similar genotypes tend to generate similar phenotypes. Very different genotypes tend to generate very different phenotypes.
 
-All the narjillos generated in the beginning are collected in a dish under your microscope. The dish is also filled with food --- the blue dots. More food keeps spawning slowly as the experiment goes on.
+All the eggs generated in the beginning are collected in a dish under your microscope, where they hatch within half a minute or so. The narjillos are small in the beginning, but they keep growing until they reach their adult form. The dish is also filled with food --- the blue dots. More food keeps spawning slowly as the experiment goes on.
 
 ####Selection
 
-Narjillos try to reach the food by swimming. You can look at their "mouths" (the thin green lines) to see which direction they're trying to go. Narjillos don't think, and they don't have any sophisticated states --- they just oscillate mechanically in response to the direction of their target. These oscillations push them around in the dish.
+Narjillos try to reach the food by swimming. You can look at their "mouths" (the thin green lines) to see which direction they're trying to go. Narjillos don't think --- they just oscillate mechanically in response to the direction of their target. These oscillations push them around in the dish.
 
 Some narjillos are decent swimmers, but most are not. You'll see many who cannot even move, or tend to move in the opposite direction they're aiming at. Those who cannot reach food will eventually get exhausted and die.
 
-Bigger narjillos are born with more energy, but they tend to consume it faster as they push their large bodies around the dish. In general, more movement consumes more energy. The maximum energy of a narjillo also decreases with age, so even narjillos who can't move will eventually lose energy and die.
+Narjillos that are bigger or faster have the potential to move quicker, but they tend to consume more energy as they push their bodies around the dish. The maximum energy of a narjillo also decreases with age, so even narjillos who can't move will eventually lose energy and die.
 
 Look at a narjillo's eye color to get a clue about its energy level. Fully healthy, energized narjillos have a bright green eye, that becomes darker as they get exhausted. Also, they become transparent once they're nearing death.
 
@@ -57,11 +57,11 @@ Look at a narjillo's eye color to get a clue about its energy level. Fully healt
 
 ####Mutation
 
-Each time a narjillo eats a piece of food, it lays an egg that contains a full copy of the narjillo's genotype. The egg soon hatches, giving birth to a new phenotype - a little baby narjillo.
+Each time a narjillo eats a piece of food, it lays an egg that contains a full copy of the narjillo's genotype. The egg soon hatches, giving birth to a new phenotype --- a little baby narjillo.
 
-However, here is a twist: when the egg receives the parent's genotype, it introduces random errors (called "mutations") in the copy. These errors mean that, while the copy probably resembles the original, it also has a few different genes --- which typically result in a child with slightly different body shape, movement style, or color.
+However, here is a twist: when the parent's genotype is copied into the egg, random errors can happen. These errors (called "mutations") mean that, while the copy probably resembles the original, it also has a few differences --- which typically result in a child with slightly different body shape, movement style, or color.
 
-A child can also have entirely new (random) chromosomes, or lose some of the chromosomes of its parent. This generally results in more, or fewer, segments in the child's body compared to the parent. However, the same old rule applies: the child's genotype is similar to the parent's genotype, so the child is going to resemble the parent. As grandma used to say, "the apple doesn't fall far from the tree".
+A child can also gain entirely new chromosomes, or lose some of the chromosomes of its parent. This generally results in more, or fewer, segments in the child's body compared to the parent. However, the same old rule applies: the child's genotype is similar to the parent's genotype, so the child is going to resemble the parent. As grandma used to say, "the apple doesn't fall far from the tree".
 
 Phenotypic variation, Selection, Mutation... done! Now that you know about the three ingredients, let's put them together.
 
@@ -86,7 +86,7 @@ A few advanced uses in case you really get serious with this program:
 
 * Experiments are deterministic. Each experiment has a name composed of the current git commit (the revision of Narjillos that you're using), plus a random seed. Experiments with the same identifier will give exactly the same results over time.
 
-* Be aware that very long experiments need a lot of memory to store the history of the gene pool, so both _petri_ and _experiment_ allocate a 4 Gb heap when starting the JVM. If you want to allocate less memory, you can edit the _-Xmx4096M_ and _-Xms4096M_ arguments in the two scripts.
+* Very long experiments need a lot of memory to store the history of the gene pool, so both _petri_ and _experiment_ allocate a 4 Gb heap when starting the JVM. If you want to allocate less memory, you can edit the _-Xmx4096M_ and _-Xms4096M_ arguments in the two scripts.
 
 ## Goal
 

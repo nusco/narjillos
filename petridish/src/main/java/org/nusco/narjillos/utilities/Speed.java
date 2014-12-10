@@ -1,5 +1,7 @@
 package org.nusco.narjillos.utilities;
 
+import javafx.scene.paint.Color;
+
 public enum Speed {
 	
 	REALTIME("real time"),
@@ -45,6 +47,21 @@ public enum Speed {
 			return Speed.REALTIME;
 		case PAUSED:
 			return Speed.REALTIME;
+		default:
+			throw new RuntimeException("Unknown speed state: " + this);
+		}
+	}
+
+	public Color getViewColor() {
+		switch (this) {
+		case HIGH:
+			return Color.HOTPINK;
+		case REALTIME:
+			return Color.LIGHTGREEN;
+		case SLOW:
+			return Color.BEIGE;
+		case PAUSED:
+			return Color.CYAN;
 		default:
 			throw new RuntimeException("Unknown speed state: " + this);
 		}

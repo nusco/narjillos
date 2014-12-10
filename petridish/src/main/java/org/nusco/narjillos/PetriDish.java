@@ -14,22 +14,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
-import org.nusco.narjillos.shared.utilities.NumberFormat;
-import org.nusco.narjillos.utilities.Locator;
 import org.nusco.narjillos.utilities.Light;
+import org.nusco.narjillos.utilities.Locator;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Speed;
 import org.nusco.narjillos.utilities.Viewport;
@@ -38,7 +35,7 @@ import org.nusco.narjillos.views.EcosystemView;
 
 public class PetriDish extends Application {
 
-	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 25;
+	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 30;
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_OFF = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_OFF;
@@ -49,7 +46,8 @@ public class PetriDish extends Application {
 	private Lab lab;
 	private volatile EcosystemView ecosystemView;
 	private Locator locator;
-	
+	private DataView dataView;
+
 	private Node foreground;
 	private final PetriDishState state = new PetriDishState();
 	private final Chronometer framesChronometer = new Chronometer();
@@ -60,6 +58,10 @@ public class PetriDish extends Application {
 		final Group root = new Group();
 
 		startModelThread(programArguments);
+
+		ecosystemView = new EcosystemView(lab.getEcosystem());
+		locator = new Locator(lab.getEcosystem());
+		dataView = new DataView(lab);
 
 		updateForeground();
 		update(root);
@@ -86,36 +88,37 @@ public class PetriDish extends Application {
 		return getEcosystemView().getViewport();
 	}
 
-	private Ecosystem getEcosystem() {
-		return lab.getEcosystem();
-	}
-
-	private synchronized EcosystemView getEcosystemView() {
+	private EcosystemView getEcosystemView() {
 		return ecosystemView;
 	}
 
 	private void startModelThread(final String[] arguments) {
-		final boolean[] isModelThreadReady = new boolean[] { false };
-		Thread updateThread = new Thread() {
+		final boolean[] isInitializationDone = new boolean[] { false };
+		
+		Thread modelThread = new Thread() {
 			@Override
 			public void run() {
+				// We need to do initialize the lab here,
+				// because the random number generator will
+				// complain if it is called from different
+				// threads.
 				lab = new Lab(arguments);
-				ecosystemView = new EcosystemView(lab.getEcosystem());
-				locator = new Locator(lab.getEcosystem());
-				isModelThreadReady[0] = true;
+				
+				isInitializationDone[0] = true;
 
 				while (true) {
 					long startTime = System.currentTimeMillis();
 					if (state.getSpeed() != Speed.PAUSED)
 						if (!lab.tick())
 							System.exit(0);
-					waitUntilTimePassed(state.getSpeed().getTicksPeriod(), startTime);
+					waitFor(state.getSpeed().getTicksPeriod(), startTime);
 				}
 			}
 		};
-		updateThread.setDaemon(true);
-		updateThread.start();
-		while (!isModelThreadReady[0])
+		
+		modelThread.setDaemon(true);
+		modelThread.start();
+		while (!isInitializationDone[0])
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -149,7 +152,7 @@ public class PetriDish extends Application {
 							renderingFinished = true;
 						}
 					});
-					waitUntilTimePassed(getFramesPeriod(), startTime);
+					waitFor(getFramesPeriod(), startTime);
 					while (!renderingFinished)
 						Thread.sleep(getFramesPeriod() * 2);
 					framesChronometer.tick();
@@ -164,12 +167,8 @@ public class PetriDish extends Application {
 	private synchronized void update(final Group root) {
 		root.getChildren().clear();
 		root.getChildren().add(getEcosystemView().toNode());
-
 		root.getChildren().add(foreground);
-
-		Node environmentSpecificOverlay = getDataView();
-		if (environmentSpecificOverlay != null)
-			root.getChildren().add(environmentSpecificOverlay);
+		root.getChildren().add(getStatusInfo());
 	}
 
 	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
@@ -189,7 +188,7 @@ public class PetriDish extends Application {
 		});
 	}
 
-	void waitUntilTimePassed(int time, long since) {
+	void waitFor(int time, long since) {
 		long timeTaken = System.currentTimeMillis() - since;
 		long waitTime = Math.max(time - timeTaken, 1);
 		try {
@@ -274,7 +273,7 @@ public class PetriDish extends Application {
 						getViewport().flyToMaxZoomCloseupLevel();
 					}
 				}
-				
+
 				if (event.getClickCount() == 3)
 					printOutDNA(clickedPoint);
 			}
@@ -298,51 +297,14 @@ public class PetriDish extends Application {
 					getViewport().zoomOut();
 					if (getViewport().isZoomedOutCompletely())
 						unlock();
-				}
-				else
+				} else
 					getViewport().zoomIn();
 			}
 		};
 	}
 
-	private synchronized Node getDataView() {
-		Color color = getDataViewColor();
-		return DataView.toNode(getPerformanceMessage() + "\n" + getStatisticsMessage() + "\n" + getModeMessage(), color);
-	}
-
-	private Color getDataViewColor() {
-		switch (state.getSpeed()) {
-		case HIGH:
-			return Color.HOTPINK;
-		case REALTIME:
-			return Color.LIGHTGREEN;
-		case SLOW:
-			return Color.BEIGE;
-		case PAUSED:
-			return Color.CYAN;
-		default:
-			throw new RuntimeException("Unknown speed state: " + state.getSpeed());
-		}
-	}
-
-	private String getStatisticsMessage() {
-		return "NARJ: " + getEcosystem().getNumberOfNarjillos() + " / EGGS: " + getEcosystem().getNumberOfEggs() + " / FOOD: "
-				+ getEcosystem().getNumberOfFoodPieces();
-	}
-
-	private String getPerformanceMessage() {
-		return "FPS: " + framesChronometer.getTicksInLastSecond() + " / TPS: " + lab.getTicksInLastSecond() + " / TICKS: "
-				+ NumberFormat.format(lab.getTotalTicks()) + " (" + getStateString() + ")";
-	}
-
-	private String getModeMessage() {
-		if (isLocked())
-			return "Mode: Follow";
-		return "Mode: Freeroam";
-	}
-
-	private String getStateString() {
-		return state.getSpeed().toString();
+	private synchronized Node getStatusInfo() {
+		return dataView.toNode(state.getSpeed(), framesChronometer, isLocked());
 	}
 
 	private void moveViewport(long velocityX, long velocityY, KeyEvent event) {

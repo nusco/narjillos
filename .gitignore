@@ -1,3 +1,5 @@
+*.exp
+*.gpl
 .classpath
 .project
 .settings/

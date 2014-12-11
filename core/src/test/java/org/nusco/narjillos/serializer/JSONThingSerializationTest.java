@@ -60,8 +60,8 @@ public class JSONThingSerializationTest {
 		assertEquals(narjillo.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0.0);
 		assertEquals(narjillo.getMouth(), deserialized.getMouth());
 
-		List<Organ> bodyParts = narjillo.getBodyParts();
-		List<Organ> deserializedBodyParts = deserialized.getBodyParts();
+		List<Organ> bodyParts = narjillo.getOrgans();
+		List<Organ> deserializedBodyParts = deserialized.getOrgans();
 		for (int i = 0; i < bodyParts.size(); i++)
 			assertEquals(bodyParts.get(i).getLength(), deserializedBodyParts.get(i).getLength(), 0);
 	}

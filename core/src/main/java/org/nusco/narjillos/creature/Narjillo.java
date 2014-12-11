@@ -90,7 +90,7 @@ public class Narjillo implements Thing {
 		return energy.isDepleted();
 	}
 
-	public List<Organ> getBodyParts() {
+	public List<Organ> getOrgans() {
 		return body.getOrgans();
 	}
 

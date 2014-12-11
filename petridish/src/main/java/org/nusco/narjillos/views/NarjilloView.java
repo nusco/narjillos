@@ -62,7 +62,7 @@ class NarjilloView extends ThingView {
 
 	private List<OrganView> createOrganViews() {
 		List<OrganView> result = new LinkedList<>();
-		for (Organ bodyPart : getNarjillo().getBodyParts())
+		for (Organ bodyPart : getNarjillo().getOrgans())
 			result.add(new OrganView(bodyPart, getNarjillo()));
 		return result;
 	}

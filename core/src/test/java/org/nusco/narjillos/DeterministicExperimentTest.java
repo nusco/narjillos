@@ -11,19 +11,21 @@ public class DeterministicExperimentTest {
 	// Check that two Experiments with the same seed result in the
 	// same exact simulation running. This should be true even after
 	// an Experiment is serialized and then deserialized.
-	// To check whether that's true, we run two experiments for 100
+	// To check whether that's true, we run two experiments for a few thousands
 	// cycles. This makes for fast tests, but it's not particularly safe,
 	// because many bugs with non-deterministic behavior only become apparent
-	// after 1000 or even 10_000 cycles. Every now and then, it's
-	// worth trying this test with a higher number of cycles , just in case.
-	private static final int CYCLES = 100;
+	// after more cycles (especially because the experiment must have the time
+	// to see eggs hatch, and narjillos grow enough to get some food). Every now
+	// and then, it's worth trying this test with
+	// 10_000 cycles , just in case.
+	private static final int CYCLES = 2000;
 
 	@Test
 	public void isDeterministic() {
 		Experiment experiment = new Experiment("x", 1234);
 		for (int i = 0; i < CYCLES; i++)
 			experiment.tick();
-		
+
 		String json = JSON.toJson(experiment, Experiment.class);
 		Experiment deserialized = JSON.fromJson(json, Experiment.class);
 

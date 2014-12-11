@@ -1,7 +1,6 @@
 package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
-import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -18,7 +17,7 @@ public class Head extends MovingOrgan {
 	private Vector startPoint = Vector.ZERO;
 	
 	public Head(int adultLength, int adultThickness, ColorByte hue, double metabolicRate, double percentEnergyToChildren) {
-		super(adultLength, adultThickness, hue, null, new WaveNerve(BASE_WAVE_FREQUENCY * metabolicRate));
+		super(adultLength, adultThickness, hue, null, new WaveNerve(BASE_WAVE_FREQUENCY * metabolicRate), 0);
 		this.percentEnergyToChildren = percentEnergyToChildren;
 		this.metabolicRate = metabolicRate;
 	}
@@ -32,17 +31,18 @@ public class Head extends MovingOrgan {
 		return percentEnergyToChildren;
 	}
 
-	public void moveTo(Vector startPoint, double angle) {
+	public void forcePosition(Vector startPoint, double angle) {
 		// we already reset the cache in setAngleToParent(), so
 		// no need to do it twice here
 		this.startPoint  = startPoint;
-		updateAngleToParent(angle);
+		setAngleToParent(angle);
+		updateTree();
 	}
 
-	public void moveBy(Vector translation, double rotation) {
-		Vector newStartPoint = getStartPoint().plus(translation);
-		double newAngleToParent = Angle.normalize(getAngleToParent() + rotation);
-		moveTo(newStartPoint, newAngleToParent);
+	@Override
+	public void translateBy(Vector translation) {
+		this.startPoint  = getStartPoint().plus(translation);
+		super.translateBy(translation);
 	}
 
 	@Override
@@ -53,11 +53,6 @@ public class Head extends MovingOrgan {
 	@Override
 	protected double calculateAbsoluteAngle() {
 		return getAngleToParent();
-	}
-
-	@Override
-	protected Vector calculateCenterOfMass() {
-		return getStartPoint().plus(getVector().by(0.5));
 	}
 	
 	@Override

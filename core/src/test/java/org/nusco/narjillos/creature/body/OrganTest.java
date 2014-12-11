@@ -59,11 +59,7 @@ public abstract class OrganTest {
 			protected Vector calculateStartPoint() {
 				return null;
 			}
-
-			@Override
-			protected Vector calculateCenterOfMass() {
-				return null;
-			}};
+		};
 
 		assertEquals(1, verySmallBodyPart.getMass(), 0.0001);
 	}
@@ -71,6 +67,6 @@ public abstract class OrganTest {
 	protected void fullyGrow(Organ bodyPart) {
 		while (!bodyPart.isFullyGrown())
 			bodyPart.grow();
-		bodyPart.updateCaches();
+		bodyPart.updateGeometry();
 	}
 }

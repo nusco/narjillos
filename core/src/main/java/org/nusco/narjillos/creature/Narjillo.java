@@ -3,8 +3,8 @@ package org.nusco.narjillos.creature;
 import java.util.List;
 
 import org.nusco.narjillos.creature.body.Body;
-import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.Mouth;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;

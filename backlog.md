@@ -9,6 +9,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
+* Fix code for growing organs and bodies (currently weird and probably worth optimizing) °
 * Check speed under Linux
 
 ###Gamer

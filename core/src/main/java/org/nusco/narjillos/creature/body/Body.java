@@ -22,13 +22,13 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class Body {
 
-	private final ConnectedOrgan head;
+	private final MovingOrgan head;
 	private final double metabolicConsumption;
 	private final double adultMass;
 	private double mass;
 	private transient List<Organ> organs;
 
-	public Body(ConnectedOrgan head) {
+	public Body(MovingOrgan head) {
 		this.head = head;
 		adultMass = calculateAdultMass();
 		this.metabolicConsumption = Math.pow(getHead().getMetabolicRate(), 1.5);
@@ -88,7 +88,7 @@ public class Body {
 
 		List<Organ> organs = getOrgans();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<Organ> iterator = getOrgans().iterator();
+		Iterator<Organ> iterator = organs.iterator();
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
 			Organ organ = iterator.next();
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
@@ -106,7 +106,7 @@ public class Body {
 
 	public void teleportTo(Vector position) {
 		final int northDirection = 90;
-		getHead().moveTo(position, northDirection);
+		getHead().forcePosition(position, northDirection);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class Body {
 		// Before any movement, store away the current center of mass and the
 		// positions of all body parts. These will come useful later.
 		Vector initialCenterOfMass = calculateCenterOfMass();
-		Map<Organ, Segment> initialBodyPartPositions = calculateBodyPartPositions();
+		Map<Organ, Segment> initialPositionsOfOrgans = calculatePositionsOfOrgans();
 
 		// This first step happens as if the body where in a vacuum.
 		// The organs in the body remodel their own geometry based on the
@@ -138,7 +138,7 @@ public class Body {
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep the body's
 		// moment of inertia equal to zero.
-		double rotationEnergy = tick_step2_rotate(initialBodyPartPositions, initialCenterOfMass, mass);
+		double rotationEnergy = tick_step2_rotate(initialPositionsOfOrgans, initialCenterOfMass, mass);
 
 		// The previous updates moved the center of mass. Remember, we're
 		// in a vacuum - so the center of mass shouldn't move. Let's put it
@@ -150,7 +150,7 @@ public class Body {
 		// body position in space, and this different position generates
 		// translational forces. We can update the body position based on
 		// these translations.
-		double translationEnergy = tick_step4_translate(initialBodyPartPositions, initialCenterOfMass, mass);
+		double translationEnergy = tick_step4_translate(initialPositionsOfOrgans, initialCenterOfMass, mass);
 
 		// We're done! Return the energy spent on the entire operation.
 		return getEnergyConsumed(rotationEnergy, translationEnergy);
@@ -170,21 +170,21 @@ public class Body {
 		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (Organ bodyPart : organs)
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
-		getHead().moveBy(Vector.ZERO, forceField.getRotation());
+		getHead().rotateBy(forceField.getRotation());
 		return forceField.getEnergy();
 	}
 
 	private void tick_step3_recenter(Vector centerOfMassBeforeReshaping) {
 		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
 		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
-		getHead().moveBy(centerOfMassOffset, 0);
+		getHead().translateBy(centerOfMassOffset);
 	}
 
 	private double tick_step4_translate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
 		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
 		for (Organ bodyPart : organs)
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
-		getHead().moveBy(forceField.getTranslation(), 0);
+		getHead().translateBy(forceField.getTranslation());
 		return forceField.getEnergy();
 	}
 
@@ -192,10 +192,10 @@ public class Body {
 		return (rotationEnergy + translationEnergy) * metabolicConsumption;
 	}
 
-	private void addWithChildren(List<Organ> result, ConnectedOrgan organ) {
+	private void addWithChildren(List<Organ> result, MovingOrgan organ) {
 		// children first
 		for (ConnectedOrgan child : organ.getChildren())
-			addWithChildren(result, child);
+			addWithChildren(result, (MovingOrgan) child);
 		result.add(organ);
 	}
 
@@ -213,10 +213,10 @@ public class Body {
 		}
 	}
 
-	private Map<Organ, Segment> calculateBodyPartPositions() {
+	private Map<Organ, Segment> calculatePositionsOfOrgans() {
 		Map<Organ, Segment> result = new LinkedHashMap<>();
-		for (Organ bodyPart : getOrgans())
-			result.put(bodyPart, bodyPart.getPositionInSpace());
+		for (Organ organ : getOrgans())
+			result.put(organ, organ.getPositionInSpace());
 		return result;
 	}
 

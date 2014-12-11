@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.body.ConnectedOrgan;
-import org.nusco.narjillos.embryogenesis.BodySegmentBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -74,19 +72,22 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		
 		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, delayGene, amplitudeGene, angleToParentGene, skewingGene, hueGene);
 		BodySegmentBuilder builder = createConcreteOrganBuilder(chromosome);
-		ConnectedOrgan head = new Head(10, 10, new ColorByte(40), 10, 0.5);
-		BodyPart bodySegment = (BodyPart) builder.buildOrgan(head, 1);
+		Head head = new Head(10, 10, new ColorByte(40), 10, 0.5);
+		BodyPart bodyPart = (BodyPart) builder.buildOrgan(head, 1);
 
-		assertEquals(-25, bodySegment.getAbsoluteAngle(), 0);
-		assertEquals(10, bodySegment.getDelay(), 0);
-		assertEquals(34, bodySegment.getAmplitude(), 0);
-		assertEquals(16, bodySegment.getSkewing(), 0);
-		assertEquals(new ColorByte(32), bodySegment.getColor());
+		head.updateGeometry();
+		bodyPart.updateGeometry();
+		
+		assertEquals(-25, bodyPart.getAbsoluteAngle(), 0);
+		assertEquals(10, bodyPart.getDelay(), 0);
+		assertEquals(34, bodyPart.getAmplitude(), 0);
+		assertEquals(16, bodyPart.getSkewing(), 0);
+		assertEquals(new ColorByte(32), bodyPart.getColor());
 
 		fullyGrow(head);
-		fullyGrow(bodySegment);
+		fullyGrow(bodyPart);
 		
-		assertEquals(30, bodySegment.getLength(), 0);
-		assertEquals(25, bodySegment.getThickness(), 0.01);
+		assertEquals(30, bodyPart.getLength(), 0);
+		assertEquals(25, bodyPart.getThickness(), 0.01);
 	}
 }

@@ -6,10 +6,9 @@ import java.util.List;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.Body;
-import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.serializer.JSON;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
@@ -41,9 +40,9 @@ public class JSONBodySerializationTest {
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
 		
-		List<Organ> bodyParts = body.getOrgans();
-		List<Organ> deserializedBodyParts = deserialized.getOrgans();
-		for (int i = 0; i < bodyParts.size(); i++)
-			assertEquals(bodyParts.get(i).getLength(), deserializedBodyParts.get(i).getLength(), 0);
+		List<Organ> organs = body.getOrgans();
+		List<Organ> deserializedOrgans = deserialized.getOrgans();
+		for (int i = 0; i < organs.size(); i++)
+			assertEquals(organs.get(i).getLength(), deserializedOrgans.get(i).getLength(), 0);
 	}
 }

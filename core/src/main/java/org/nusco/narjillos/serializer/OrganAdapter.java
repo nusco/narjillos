@@ -26,7 +26,7 @@ class OrganAdapter extends HierarchyAdapter<MovingOrgan> {
 
 	@Override
 	protected void preSerialize(MovingOrgan obj) {
-		obj.updateCaches();
+		obj.updateGeometry();
 	}
 
 	@Override

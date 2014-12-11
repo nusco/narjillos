@@ -2,7 +2,7 @@ package org.nusco.narjillos.embryogenesis.bodyplan;
 
 import java.util.LinkedList;
 
-import org.nusco.narjillos.creature.body.ConnectedOrgan;
+import org.nusco.narjillos.creature.body.MovingOrgan;
 
 /**
  * The interpreter for the body plan "program". It takes a sequence of
@@ -18,16 +18,16 @@ public class BodyPlan {
 		this.builders = builders;
 	}
 
-	public ConnectedOrgan buildBodyTree() {
+	public MovingOrgan buildBodyTree() {
 		return buildBodyTree(null, getBuildersQueue(), 1);
 	}
 
-	private ConnectedOrgan buildBodyTree(ConnectedOrgan parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
+	private MovingOrgan buildBodyTree(MovingOrgan parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
 		if (buildersQueue.isEmpty())
 			return null;
 
 		OrganBuilder nextBuilder = buildersQueue.pop();
-		ConnectedOrgan result = nextBuilder.buildOrgan(parent, sign);
+		MovingOrgan result = nextBuilder.buildOrgan(parent, sign);
 
 		switch (nextBuilder.getBodyPlanInstruction()) {
 		case STOP:
@@ -48,8 +48,8 @@ public class BodyPlan {
 		return result;
 	}
 
-	private void buildChild(ConnectedOrgan parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
-		ConnectedOrgan child = buildBodyTree(parent, buildersQueue, sign);
+	private void buildChild(MovingOrgan parent, LinkedList<OrganBuilder> buildersQueue, int sign) {
+		MovingOrgan child = buildBodyTree(parent, buildersQueue, sign);
 		if (child != null)
 			parent.addChild(child);
 	}

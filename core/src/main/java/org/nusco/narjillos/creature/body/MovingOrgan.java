@@ -1,6 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.creature.body.pns.Nerve;
+import org.nusco.narjillos.shared.physics.Angle;
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
@@ -11,17 +13,19 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 
 	private double angleToParent = 0;
 
-	protected MovingOrgan(int adultLength, int adultThickness, ColorByte color, ConnectedOrgan parent, Nerve nerve) {
+	protected MovingOrgan(int adultLength, int adultThickness, ColorByte color, ConnectedOrgan parent, Nerve nerve, int angleToParentAtRest) {
 		super(adultLength, adultThickness, color, parent, nerve);
+		setAngleToParent(angleToParentAtRest);
 	}
 
 	public void tick(double percentOfAmplitude, double angleToTarget) {
-		double processedPercentOfAmplitude = getNerve().tick(percentOfAmplitude);
-
 		recursivelyGrow();
 
-		double newAngleToParent = calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget);
-		updateAngleToParent(newAngleToParent);
+		double processedPercentOfAmplitude = getNerve().tick(percentOfAmplitude);
+
+		setAngleToParent(calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget));
+
+		updateGeometry();
 
 		for (ConnectedOrgan child : getChildren())
 			((MovingOrgan) child).tick(processedPercentOfAmplitude, angleToTarget);
@@ -31,30 +35,37 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 		return angleToParent;
 	}
 
-	protected final void updateAngleToParent(double angleToParent) {
-		this.angleToParent = angleToParent;
-
-		// Optimization: this is the only place where we update
-		// the cache. Doing it more often would make the code
-		// much simpler to follow, but also much slower. It's
-		// important that all changes to Organ state pass by
-		// here at some point.
-		recursivelyCalculateCachedFields();
+	protected final void setAngleToParent(double newAngleToParent) {
+		angleToParent = newAngleToParent;
 	}
 
 	protected abstract double calculateNewAngleToParent(double targetAngle, double angleToTarget);
 
 	private void recursivelyGrow() {
+		// FIXME: this needs to be rethought. In particular, children's grow()
+		// gets called many times (look at the tick() recursion)
 		grow();
 
 		for (ConnectedOrgan child : getChildren())
 			((MovingOrgan) child).recursivelyGrow();
 	}
 
-	private void recursivelyCalculateCachedFields() {
-		super.updateCaches();
-	
+	protected void updateTree() {
+		updateGeometry();
+
 		for (ConnectedOrgan child : getChildren())
-			((MovingOrgan) child).recursivelyCalculateCachedFields();
+			((MovingOrgan) child).updateTree();
+	}
+
+	public void rotateBy(double rotation) {
+		setAngleToParent(Angle.normalize(getAngleToParent() + rotation));
+		updateTree();
+	}
+
+	protected void translateBy(Vector translation) {
+		updatePosition();
+
+		for (ConnectedOrgan child : getChildren())
+			((MovingOrgan) child).translateBy(translation);
 	}
 }

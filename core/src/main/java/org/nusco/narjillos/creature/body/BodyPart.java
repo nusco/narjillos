@@ -20,10 +20,9 @@ public class BodyPart extends MovingOrgan {
 	private double cachedMetabolicRate = -1;
 
 	public BodyPart(int adultLength, int adultThickness, ColorByte hue, ConnectedOrgan parent, int delay, int angleToParentAtRest, int amplitude, int skewing) {
-		super(adultLength, adultThickness, calculateColorMix(parent, hue), parent, new DelayNerve(delay));
+		super(adultLength, adultThickness, calculateColorMix(parent, hue), parent, new DelayNerve(delay), angleToParentAtRest);
 		this.angleToParentAtRest = angleToParentAtRest;
 		this.orientation = (int) Math.signum(angleToParentAtRest);
-		updateAngleToParent(angleToParentAtRest);
 		this.amplitude = amplitude;
 		this.skewing = skewing;
 	}

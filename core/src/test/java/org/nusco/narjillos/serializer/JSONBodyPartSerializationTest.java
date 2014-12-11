@@ -18,7 +18,7 @@ public class JSONBodyPartSerializationTest {
 	@Test
 	public void serializesAndDeserializesHeads() {
 		Head head = new Head(1, 2, new ColorByte(3), 4, 0.5);
-		head.moveTo(Vector.cartesian(6, 7), 8);
+		head.forcePosition(Vector.cartesian(6, 7), 8);
 
 		for (int i = 0; i < 10; i++)
 			head.tick(1, 20);
@@ -42,7 +42,6 @@ public class JSONBodyPartSerializationTest {
 
 		for (int i = 0; i < 10; i++)
 			bodySegment.tick(1, 10);
-		bodySegment.updateCaches();
 		
 		String json = JSON.toJson(bodySegment, Organ.class);
 		BodyPart deserialized = (BodyPart)JSON.fromJson(json, Organ.class);

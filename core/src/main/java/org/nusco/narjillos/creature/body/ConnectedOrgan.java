@@ -11,6 +11,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
  * A body part that is connected to other body parts in a tree to form a body.
  */
 public abstract class ConnectedOrgan extends Organ {
+
 	private transient ConnectedOrgan parent;
 	private final List<ConnectedOrgan> children = new ArrayList<>();
 	protected final Nerve nerve;
@@ -28,11 +29,6 @@ public abstract class ConnectedOrgan extends Organ {
 	@Override
 	protected Vector calculateStartPoint() {
 		return getParent().getEndPoint();
-	}
-
-	@Override
-	protected Vector calculateCenterOfMass() {
-		return getStartPoint().plus(getVector().by(0.5));
 	}
 
 	public final ConnectedOrgan getParent() {

@@ -9,7 +9,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class BodyPartTest extends ConnectedOrganTest {
 	
-	private ConnectedOrgan parent;
+	private MovingOrgan parent;
 	
 	@Override
 	public ConnectedOrgan createConcreteOrgan(int length, int thickness) {
@@ -37,6 +37,9 @@ public class BodyPartTest extends ConnectedOrganTest {
 
 	@Test
 	public void startsAtItsParentsEndPoint() {
+		parent.updateGeometry();
+		getOrgan().updateGeometry();
+		
 		assertEquals(parent.getEndPoint(), getOrgan().getStartPoint());
 	}
 	
@@ -45,6 +48,11 @@ public class BodyPartTest extends ConnectedOrganTest {
 		Head head = new Head(0, 0, new ColorByte(100), 1, 0.5);
 		ConnectedOrgan organ1 = new BodyPart(0, 0, new ColorByte(100), head, 0, 30, 1, 0);
 		Organ organ2 = new BodyPart(0, 0, new ColorByte(100), organ1, 0, -10, 1, 0);
+		
+		head.updateGeometry();
+		organ1.updateGeometry();
+		organ2.updateGeometry();
+		
 		assertEquals(20, organ2.getAbsoluteAngle(), 0);
 	}
 	
@@ -60,7 +68,8 @@ public class BodyPartTest extends ConnectedOrganTest {
 		Head head = new Head(10, 0, new ColorByte(100), 1, 0.5);
 		MovingOrgan organ = (MovingOrgan) head.addChild(new BodyPart(10, 0, new ColorByte(100), head, 0, 20, 1, 0));
 		// uses the current angle, not the angle at rest
-		organ.updateAngleToParent(45);
+		organ.setAngleToParent(45);
+		head.updateTree();
 		
 		fullyGrow(organ);
 		

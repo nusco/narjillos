@@ -43,6 +43,6 @@ public abstract class ConcreteOrganBuilderTest {
 	protected void fullyGrow(Organ bodyPart) {
 		while (!bodyPart.isFullyGrown())
 			bodyPart.grow();
-		bodyPart.updateCaches();
+		bodyPart.updateGeometry();
 	}
 }

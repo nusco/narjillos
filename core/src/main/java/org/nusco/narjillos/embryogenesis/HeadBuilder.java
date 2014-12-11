@@ -4,6 +4,7 @@ import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.*;
 
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
+import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.genomics.Chromosome;
 
 /**
@@ -25,7 +26,7 @@ class HeadBuilder extends ConcreteOrganBuilder {
 	}
 
 	@Override
-	public ConnectedOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
+	public MovingOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
 		return new Head(getLength(), getThickness(), getHue(), getMetabolicRate(), getPercentEnergyToChildren());
 	}
 }

@@ -7,15 +7,17 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 /**
  * A piece of body.
  * 
- * Contains all the geometry of the organ (length, thickness, mass and the like).
- * It also goes throughthe painstaking calculations needed to come up with
- * angles, etc.
+ * Contains all the geometry of the organ (length, thickness, mass and the
+ * like). It also goes throughthe painstaking calculations needed to come up
+ * with angles, etc.
  * 
  * It can grow from a short size at birth to adult size.
  * 
- * This code is not something I'm proud of. The caching code confuses the heck
- * out of me as much as it does to you. Try to understand... it's for
- * performance.
+ * This class is a micro-framework (sigh). In and by itself, it cannot change
+ * state (apart from the grow() method). Subclasses are supposed to override
+ * calculateStartPoint() and calculateAbsoluteAngle(), and then call either
+ * updateGeometry() or updatePosition() when they want to update the state of
+ * the Organ.
  */
 public abstract class Organ {
 
@@ -30,8 +32,9 @@ public abstract class Organ {
 	private double length;
 	private double thickness;
 
-	// Caching - ugly, but has huge performance benefits.
-	// All volatile, to avoid too much synchronization
+	// Caching - ugly, but has huge performance benefits. These will be updated
+	// at start, and in the update() methods.
+	// All volatile, to avoid too much synchronization.
 	private volatile double cachedAbsoluteAngle;
 	private volatile Vector cachedStartPoint;
 	private volatile Vector cachedVector;
@@ -49,10 +52,6 @@ public abstract class Organ {
 		this.thickness = Math.min(MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
 		this.color = color;
 
-		initCaches();
-	}
-
-	private void initCaches() {
 		this.cachedAbsoluteAngle = 0;
 		this.cachedStartPoint = Vector.ZERO;
 		this.cachedVector = Vector.polar(0, getLength());
@@ -62,7 +61,9 @@ public abstract class Organ {
 		this.cachedCenterOfMass = cachedVector.by(0.5);
 	}
 
-	public final void updateCaches() {
+	// Must be called to update the state of the organ. It will call into
+	// calculateAbsoluteAngle() and calculateStartPoint().
+	public final void updateGeometry() {
 		cachedAbsoluteAngle = calculateAbsoluteAngle();
 		cachedVector = calculateVector();
 		cachedStartPoint = calculateStartPoint();
@@ -72,12 +73,13 @@ public abstract class Organ {
 		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
-	public final double getLength() {
-		return length;
-	}
-
-	public double getThickness() {
-		return thickness;
+	// Like updateGeometry() but much cheaper. It can only be called after pure
+	// translations without any rotation.
+	public final void updatePosition() {
+		cachedStartPoint = calculateStartPoint();
+		cachedEndPoint = calculateEndPoint();
+		cachedPositionInSpace = calculatePositionInSpace();
+		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
 	public void grow() {
@@ -94,62 +96,8 @@ public abstract class Organ {
 		return getLength() >= adultLength && getThickness() >= adultThickness;
 	}
 
-	public double getMass() {
-		return cachedMass;
-	}
-
-	public double getAdultMass() {
-		return adultMass;
-	}
-
-	public ColorByte getColor() {
-		return color;
-	}
-
-	private Vector calculateVector() {
-		return Vector.polar(getAbsoluteAngle(), getLength());
-	}
-
-	public final double getAbsoluteAngle() {
-		return cachedAbsoluteAngle;
-	}
-
-	protected abstract double calculateAbsoluteAngle();
-
-	public final Vector getStartPoint() {
-		return cachedStartPoint;
-	}
-
-	protected abstract Vector calculateStartPoint();
-
-	private Vector calculateEndPoint() {
-		return getStartPoint().plus(getVector());
-	}
-
-	public final Vector getEndPoint() {
-		return cachedEndPoint;
-	}
-
-	final Vector getVector() {
-		return cachedVector;
-	}
-
-	public final Vector getCenterOfMass() {
-		return cachedCenterOfMass;
-	}
-
-	private double calculateMass() {
-		return Math.max(getLength() * getThickness(), 1);
-	}
-
-	protected abstract Vector calculateCenterOfMass();
-
 	public Segment getPositionInSpace() {
 		return cachedPositionInSpace;
-	}
-
-	private Segment calculatePositionInSpace() {
-		return new Segment(getStartPoint(), getVector());
 	}
 
 	public boolean isAtrophic() {
@@ -162,5 +110,74 @@ public abstract class Organ {
 
 	public int getAdultThickness() {
 		return adultThickness;
+	}
+
+	public final double getLength() {
+		return length;
+	}
+
+	public double getThickness() {
+		return thickness;
+	}
+
+	public double getMass() {
+		return cachedMass;
+	}
+
+	public double getAdultMass() {
+		return adultMass;
+	}
+
+	public ColorByte getColor() {
+		return color;
+	}
+
+	public final double getAbsoluteAngle() {
+		return cachedAbsoluteAngle;
+	}
+
+	public final Vector getStartPoint() {
+		return cachedStartPoint;
+	}
+
+	public final Vector getEndPoint() {
+		return cachedEndPoint;
+	}
+
+	public final Vector getCenterOfMass() {
+		return cachedCenterOfMass;
+	}
+
+	// The next two methods give subclasses a chance to change the geometry of
+	// the Organ. These are the only methods that can change the state of the
+	// Organ (apart from grow(). Everything else in the organ will be calculated
+	// after these.
+
+	protected abstract Vector calculateStartPoint();
+
+	protected abstract double calculateAbsoluteAngle();
+
+	private Vector calculateVector() {
+		return Vector.polar(getAbsoluteAngle(), getLength());
+	}
+
+	private Vector getVector() {
+		return cachedVector;
+	}
+
+	private Vector calculateEndPoint() {
+		return getStartPoint().plus(getVector());
+	}
+
+	private double calculateMass() {
+		return Math.max(getLength() * getThickness(), 1);
+	}
+
+	private Vector calculateCenterOfMass() {
+		return getStartPoint().plus(getVector().by(0.5));
+	}
+
+	private Segment calculatePositionInSpace() {
+		return new Segment(getStartPoint(), getVector());
 	}
 }

@@ -10,7 +10,7 @@ class MockOrgan extends MovingOrgan {
 	private final int sign;
 
 	public MockOrgan(int id, ConnectedOrgan parent, int sign) {
-		super(0, 0, new ColorByte(0), parent, null);
+		super(0, 0, new ColorByte(0), parent, null, 0);
 		this.id = id;
 		this.sign = sign;
 	}

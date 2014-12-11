@@ -5,8 +5,7 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
  * Adds the notion of the passing of time to the BodyPart hierarchy, embodied by
- * the tick() method. This means that it moves (see calculateAngleToParent())
- * and grows over time.
+ * the tick() method. This means that it moves (see calculateAngleToParent()).
  */
 public abstract class MovingOrgan extends ConnectedOrgan {
 

@@ -7,9 +7,11 @@ import org.nusco.narjillos.shared.utilities.ColorByte;
 /**
  * A piece of body.
  * 
- * Contains all the geometric qualities of the organ (like length, thickness
- * and mass), and does the painstaking calculations needed to come up with
+ * Contains all the geometry of the organ (length, thickness, mass and the like).
+ * It also goes throughthe painstaking calculations needed to come up with
  * angles, etc.
+ * 
+ * It can grow from a short size at birth to adult size.
  * 
  * This code is not something I'm proud of. The caching code confuses the heck
  * out of me as much as it does to you. Try to understand... it's for

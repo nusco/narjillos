@@ -14,10 +14,20 @@ public class DNA {
 	private static final int GENE_MUTATION_RANGE = 15;
 	private static DNAObserver observer = DNAObserver.NULL;
 
+	// TODO: This static makes testing difficult. Find another way.
 	private static long serial = 0;
 
-	private long id; // unique for each DNA instance in the same run of the
-						// program
+	// for testing
+	public static long getSerial() {
+		return serial;
+	}
+	
+	public static void setSerial(long value) {
+		serial = value;
+	}
+	
+	private long id;
+	
 	private final Integer[] genes;
 
 	public DNA(String dnaDocument) {

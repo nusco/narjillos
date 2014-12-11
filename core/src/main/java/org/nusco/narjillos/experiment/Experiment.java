@@ -92,6 +92,11 @@ public class Experiment {
 	public void stop() {
 		updateTotalRunningTime();
 	}
+	
+	// for testing
+	public void resetTotalRunningTime() {
+		totalRunningTime = 0;
+	}
 
 	private void updateTotalRunningTime() {
 		long updateTime = System.currentTimeMillis();

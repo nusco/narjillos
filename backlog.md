@@ -9,7 +9,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Fix code for growing organs and bodies (currently weird and probably worth optimizing) °
+* Auto-update number of background threads based on number of cores °°°
+* Pre-store angle when creating polar vector (it's a waste not to - but update the ticking test aftet that) °°
+* Lazily reverse-calculate x and y in polar vectors (see above) °°
+* Optimize physics engines by passing in angles instead of recalculating them °°
+* Fix code for growing organs and bodies (currently weird and probably worth optimizing) °°
 * Check speed under Linux
 
 ###Gamer
@@ -53,6 +57,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Motion blur °
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?) °
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode

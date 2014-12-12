@@ -56,8 +56,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
-* Fix motion blur toggling °
-* Give a sense of movement when following a locked-on Narjillo (speckles in liquid?) °
+* Fix motion blur toggling °°°
+* Give a sense of movement when following a locked-on Narjillo (speckles in liquid?) °°
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
 * Make food more visible in normal view

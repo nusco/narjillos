@@ -10,22 +10,22 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Pre-store angle when creating polar vector (it's a waste not to - but update the ticking test aftet that) °°
-* Lazily reverse-calculate x and y in polar vectors (see above) °°
-* Optimize physics engines by passing in angles instead of recalculating them °°
+* Pre-store angle when creating polar vector °°
+* Lazily reverse-calculate x and y in polar vectors °°
+* Optimize physics engines by passing angles instead of recalculating angles °°
 * Fix code for growing organs and bodies (currently weird and probably worth optimizing) °°
 * Check speed under Linux
 
 ###Gamer
 
-* Store max speed ever reached in experiment °
 * Externalize configurable parameters to YAML °
-* Lock on eggs and the narjillo that will be born out of them.
+* Lock on eggs and the narjillo that will be born out of them
+* Store max speed ever reached in experiment
 * Try scrolling/panning commands under Linux
 
 ###Genetist
 
-* Ancestry browser
+* Ancestry Browser
 * "Skip" instruction in body plan
 * "Repeat" instruction in body plan
 * DNA diff during ancestry analysis
@@ -41,6 +41,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Single zipped savefile for both experiment and genepool °°
 * Real arguments parsing (use --no-persistence together with other switches) °°
+* Remove ugly exceptions on forced exit
 * View locked narjillo (age, energy, times eaten, genome...)
 * Check git commit on experiment startup
 * Automatically purge experiment temp file
@@ -49,12 +50,13 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Ecologist
 
-* Conservation of energy in entire pond (with sun to give more energy)
+* Conservation of energy in entire dish (with sun to give more energy)
 * Multiple environments in multiple processes (with migration)
 * Plant-like creatures instead of food (minimal energy expenditure? photosyntesis?)
 
 ###Artist
 
+* Fix motion blur toggling °
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?) °
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode

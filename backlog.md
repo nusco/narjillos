@@ -5,7 +5,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* -
+* Viscosity for very fast speeds (makes the current watchdog unnecessary) °
+* Rewrite collision detection to be independent of max speed
 
 ###Speed Demon
 
@@ -17,36 +18,34 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
+* Store max speed ever reached in experiment °
 * Externalize configurable parameters to YAML °
 * Lock on eggs and the narjillo that will be born out of them.
 * Try scrolling/panning commands under Linux
 
 ###Genetist
 
-* Iterations in body plan °
-* Ancestry browser °
-* "Skip next" instruction in body plan °
+* Ancestry browser
+* "Skip" instruction in body plan
+* "Repeat" instruction in body plan
 * DNA diff during ancestry analysis
 * Separate RGB color genes
 * Whole-body size gene
 
 ###Ethologist
 
-* Drifting eggs
 * Narjillos eat eggs
 * Narjillos eat each other
 
 ###Lab Technician
 
-* Real arguments parsing (use --no-persistence together with other switches) °
-* Single zipped savefile for both experiment and genepool °
-* View locked narjillo (age, energy, times eaten, genome...) °
+* Single zipped savefile for both experiment and genepool °°
+* Real arguments parsing (use --no-persistence together with other switches) °°
+* View locked narjillo (age, energy, times eaten, genome...)
 * Check git commit on experiment startup
 * Automatically purge experiment temp file
 * Automatically recover missing experiment from temp file
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
-* Make food more visible in normal view
-* Make food more visible in infrared view
 
 ###Ecologist
 
@@ -59,10 +58,16 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Give a sense of movement when following a locked-on Narjillo (speckles in liquid?) °
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
+* Make food more visible in normal view
+* Make food more visible in infrared view
+
+###Theologist
+
+* Demiurge
 
 ##Neurologist
 
-* Brains with behaviours
+* Brains
 
 ##Daydreamer
 

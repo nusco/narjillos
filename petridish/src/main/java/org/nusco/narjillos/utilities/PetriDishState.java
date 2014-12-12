@@ -3,7 +3,7 @@ package org.nusco.narjillos.utilities;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class PetriDishState {
-	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 30;
+	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 60;
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_OFF = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_OFF;

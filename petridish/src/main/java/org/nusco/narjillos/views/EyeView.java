@@ -14,7 +14,7 @@ class EyeView extends RoundObjectView {
 	}
 
 	@Override
-	public Node toNode(double zoomLevel, boolean infraredOn) {
+	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 		getShape().setFill(toColor(zoomLevel));

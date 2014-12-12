@@ -28,7 +28,7 @@ class MouthView extends ThingView {
 	}
 
 	@Override
-	public Node toNode(double zoomLevel, boolean infraredOn) {
+	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 		

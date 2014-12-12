@@ -82,16 +82,8 @@ public class Vector {
 		return Vector.polar(other.getAngle(), resultLength);
 	}
 
-	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {
-		return getProjectionOn(other.getNormal());
-	}
-
 	public double getAngleWith(Vector other) throws ZeroVectorException {
 		return Angle.normalize(getAngle() - other.getAngle());
-	}
-
-	double getDistanceFrom(Vector other) {
-		return this.minus(other).getLength();
 	}
 
 	@Override
@@ -103,22 +95,15 @@ public class Vector {
 	public boolean equals(Object obj) {
 		if (obj == null)
 			return false;
+		if (obj == this)
+			return true;
 		Vector other = (Vector) obj;
-		return areExactlyEqual(x, other.x) && areExactlyEqual(y, other.y);
-	}
-
-	private boolean areExactlyEqual(double d1, double d2) {
-		return Double.doubleToLongBits(d1) == Double.doubleToLongBits(d2);
+		return equalsExactly(x, other.x) && equalsExactly(y, other.y);
 	}
 
 	public boolean almostEquals(Vector other) {
 		final double delta = 0.01;
 		return Math.abs(x - other.x) < delta && Math.abs(y - other.y) < delta;
-	}
-
-	private double approx(double n) {
-		final double decimals = 100.0;
-		return (Math.round(n * decimals)) / decimals;
 	}
 
 	public boolean isZero() {
@@ -128,5 +113,22 @@ public class Vector {
 	@Override
 	public String toString() {
 		return "(" + approx(x) + ", " + approx(y) + ")";
+	}
+
+	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {
+		return getProjectionOn(other.getNormal());
+	}
+
+	double getDistanceFrom(Vector other) {
+		return this.minus(other).getLength();
+	}
+
+	private double approx(double n) {
+		final double decimals = 100.0;
+		return (Math.round(n * decimals)) / decimals;
+	}
+
+	private static boolean equalsExactly(double d1, double d2) {
+		return Double.doubleToLongBits(d1) == Double.doubleToLongBits(d2);
 	}
 }

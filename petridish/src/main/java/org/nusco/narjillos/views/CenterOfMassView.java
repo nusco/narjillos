@@ -17,7 +17,7 @@ class CenterOfMassView extends RoundObjectView {
 	}
 
 	@Override
-	public Node toNode(double zoomLevel, boolean infraredOn) {
+	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
 		Vector position = ((Narjillo)getThing()).calculateCenterOfMass();
 		moveTo(position);
 		return getShape();

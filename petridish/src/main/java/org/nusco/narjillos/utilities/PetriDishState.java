@@ -11,6 +11,7 @@ public class PetriDishState {
 	private Light light = Light.ON;
 	private Speed speed = Speed.REALTIME;
 	private Thing lockedOn = Thing.NULL;
+	private MotionBlur motionBlur = MotionBlur.ON;
 
 	public Light getLight() {
 		return light;
@@ -80,5 +81,13 @@ public class PetriDishState {
 			return FRAMES_PERIOD_WITH_LIGHT_OFF;
 		else
 			return FRAMES_PERIOD_WITH_LIGHT_ON;
+	}
+
+	public void toggleMotionBlur() {
+		motionBlur = motionBlur.toggle();
+	}
+
+	public MotionBlur getMotionBlur() {
+		return motionBlur;
 	}
 }

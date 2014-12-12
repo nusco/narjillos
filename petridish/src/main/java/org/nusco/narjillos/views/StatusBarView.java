@@ -8,6 +8,7 @@ import org.nusco.narjillos.Lab;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
+import org.nusco.narjillos.utilities.MotionBlur;
 import org.nusco.narjillos.utilities.Speed;
 
 public class StatusBarView {
@@ -18,10 +19,10 @@ public class StatusBarView {
 		this.lab = lab;
 	}
 
-	public Node toNode(Speed speed, Chronometer chronometer, boolean locked, boolean isSaving) {
+	public Node toNode(Speed speed, MotionBlur motionBlur, Chronometer chronometer, boolean locked, boolean isSaving) {
 		String message = 	getStatisticsMessage() + "\n" +
 							getPerformanceMessage(speed, chronometer) + "\n" +
-							getSpeedMessage(speed) + "\n" +
+							getSpeedMessage(speed, motionBlur) + "\n" +
 							getModeMessage(locked) + "\n" +
 							getSavingMessage(isSaving);
 
@@ -49,8 +50,11 @@ public class StatusBarView {
 		return "Mode: Freeroam";
 	}
 
-	private String getSpeedMessage(Speed speed) {
-		return "Speed: " + speed.toString();
+	private String getSpeedMessage(Speed speed, MotionBlur motionBlur) {
+		String result = "Speed: " + speed.toString();
+		if (motionBlur == MotionBlur.OFF)
+			return result;
+		return result + " + motion blur";
 	}
 
 	private String getSavingMessage(boolean isSaving) {

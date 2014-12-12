@@ -25,6 +25,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 import org.nusco.narjillos.utilities.Light;
+import org.nusco.narjillos.utilities.MotionBlur;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Viewport;
 
@@ -65,16 +66,17 @@ public class EcosystemView {
 			return darkness;
 
 		boolean isInfrared = petriDishState.getLight() == Light.INFRARED;
+		boolean hasMotionBlur = petriDishState.getMotionBlur() == MotionBlur.ON;
 
 		Group result = new Group();
 		result.getChildren().add(getBackground(isInfrared));
-		result.getChildren().add(getThingsGroup(isInfrared));
+		result.getChildren().add(getThingsGroup(isInfrared, hasMotionBlur));
 		return result;
 	}
 
-	private Group getThingsGroup(boolean infraredOn) {
+	private Group getThingsGroup(boolean infraredOn, boolean motionBlurOn) {
 		Group things = new Group();
-		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn));
+		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn, motionBlurOn));
 
 		if (VisualDebugger.DEBUG)
 			things.getChildren().add(getVisualDebuggingSegments());
@@ -127,18 +129,18 @@ public class EcosystemView {
 		return background;
 	}
 
-	private List<Node> getNodesForThingsInOrder(boolean infraredOn) {
+	private List<Node> getNodesForThingsInOrder(boolean infraredOn, boolean motionBlurOn) {
 		List<Node> result = new LinkedList<>();
-		addNodesFor("food_piece", result, infraredOn);
-		addNodesFor("narjillo", result, infraredOn);
-		addNodesFor("egg", result, infraredOn);
+		addNodesFor("food_piece", result, infraredOn, motionBlurOn);
+		addNodesFor("narjillo", result, infraredOn, motionBlurOn);
+		addNodesFor("egg", result, infraredOn, motionBlurOn);
 		return result;
 	}
 
-	private void addNodesFor(String thingLabel, List<Node> result, boolean infraredOn) {
+	private void addNodesFor(String thingLabel, List<Node> result, boolean infraredOn, boolean motionBlurOn) {
 		for (ThingView view : getThingViews()) {
 			if (view.getThing().getLabel().equals(thingLabel)) {
-				Node node = view.toNode(viewport, infraredOn);
+				Node node = view.toNode(viewport, infraredOn, motionBlurOn);
 				if (node != null)
 					result.add(node);
 			}

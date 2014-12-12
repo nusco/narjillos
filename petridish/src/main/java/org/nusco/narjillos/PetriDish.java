@@ -149,7 +149,7 @@ public class PetriDish extends Application {
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(state.getSpeed(), framesChronometer, state.isLocked(), lab.isSaving());
+				Node statusInfo = statusBarView.toNode(state.getSpeed(), state.getMotionBlur(), framesChronometer, state.isLocked(), lab.isSaving());
 				root.getChildren().add(statusInfo);
 			}
 		};
@@ -197,11 +197,12 @@ public class PetriDish extends Application {
 					state.speedUp();
 				else if (keyEvent.getCode() == KeyCode.O)
 					state.speedDown();
-				else if (keyEvent.getCode() == KeyCode.L) {
+				else if (keyEvent.getCode() == KeyCode.L)
 					state.toggleLight();
-				} else if (keyEvent.getCode() == KeyCode.I) {
+				else if (keyEvent.getCode() == KeyCode.I)
 					state.toggleInfrared();
-				}
+				else if (keyEvent.getCode() == KeyCode.M)
+					state.toggleMotionBlur();
 			}
 
 			private void panViewport(long velocityX, long velocityY, KeyEvent event) {

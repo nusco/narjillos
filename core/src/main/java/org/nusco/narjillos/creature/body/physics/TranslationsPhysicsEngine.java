@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
  * The physics of translations.
@@ -32,7 +31,7 @@ public class TranslationsPhysicsEngine implements PhysicsEngine {
 
 	@Override
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
-		Vector linearVelocity = calculateLinearVelocity(initialPositionInSpace, finalPositionInSpace, mass);
+		Vector linearVelocity = finalPositionInSpace.getDistanceFrom(initialPositionInSpace);
 		Vector linearMomentum = linearVelocity.by(mass);
 		linearMomenta.add(linearMomentum);
 		translationEnergy += calculateTranslationEnergy(mass, linearVelocity);
@@ -45,30 +44,6 @@ public class TranslationsPhysicsEngine implements PhysicsEngine {
 	@Override
 	public double getEnergy() {
 		return translationEnergy * ENERGY_SCALE;
-	}
-
-	private Vector calculateLinearVelocity(Segment beforeMovement, Segment afterMovement, double mass) {
-		if (beforeMovement.getVector().isZero())
-			return Vector.ZERO;
-
-		Vector movement = getMovement(beforeMovement, afterMovement);
-
-		if (movement.isZero())
-			return Vector.ZERO;
-
-		try {
-			return movement.getNormalComponentOn(afterMovement.getVector());
-		} catch (ZeroVectorException e) {
-			// should never happen with the previous checks
-			return null;
-		}
-	}
-
-	private Vector getMovement(Segment beforeMovement, Segment afterMovement) {
-		Vector startPointMovement = afterMovement.getStartPoint().minus(beforeMovement.getStartPoint());
-		Vector endPointMovement = afterMovement.getEndPoint().minus(beforeMovement.getEndPoint());
-		Vector movement = startPointMovement.plus(endPointMovement).by(0.5);
-		return movement;
 	}
 
 	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {

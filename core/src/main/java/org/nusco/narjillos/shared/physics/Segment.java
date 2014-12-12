@@ -55,7 +55,26 @@ public class Segment {
 	public Vector getMidPoint() {
 		return startPoint.plus(vector.by(0.5));
 	}
-	
+
+	public Vector getDistanceFrom(Segment earlierPosition) {
+		if (earlierPosition.getVector().isZero())
+			return Vector.ZERO;
+		
+		Vector startPointMovement = getStartPoint().minus(earlierPosition.getStartPoint());
+		Vector endPointMovement = getEndPoint().minus(earlierPosition.getEndPoint());
+		Vector movement = startPointMovement.plus(endPointMovement).by(0.5);
+
+		if (movement.isZero())
+			return Vector.ZERO;
+
+		try {
+			return movement.getNormalComponentOn(getVector());
+		} catch (ZeroVectorException e) {
+			// should never happen with the previous checks
+			return null;
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "[" + startPoint + ", " + vector + "]";

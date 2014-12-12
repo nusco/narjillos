@@ -31,7 +31,7 @@ public class Ecosystem {
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 	private static final int AREAS_PER_EDGE = 80;
-
+	
 	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
 
@@ -39,7 +39,8 @@ public class Ecosystem {
 	private final Vector center;
 
 	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
-	private final ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+	private final ExecutorService executorService;
 
 	public Ecosystem(final long size) {
 		this.size = size;
@@ -51,6 +52,8 @@ public class Ecosystem {
 				executorService.shutdown();
 			}
 		});
+
+		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	}
 
 	public long getSize() {

@@ -9,7 +9,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Auto-update number of background threads based on number of cores °°°
 * Pre-store angle when creating polar vector (it's a waste not to - but update the ticking test aftet that) °°
 * Lazily reverse-calculate x and y in polar vectors (see above) °°
 * Optimize physics engines by passing in angles instead of recalculating them °°

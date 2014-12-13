@@ -5,7 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Viscosity for very fast speeds (makes the current watchdog unnecessary) °
+* Viscosity to limit maximum speed (makes the current watchdog unnecessary) °
 * Rewrite collision detection to be independent of max speed
 
 ###Speed Demon
@@ -17,16 +17,16 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Real arguments parsing (use --no-persistence together with other switches) °
+* Real arguments parsing (use --no-persistence together with other switches) °°°
+* Downloadable build °°°
+* Check speed under Linux °°
+* Try scrolling/panning commands under Linux °°
+* Batch to run on Windows °°
 * Externalize configurable parameters to YAML °
 * Command-line argument to disable graphic effects on slow computers
-* Downloadable build
 * Tutorial
 * Nice status bar
 * GUI
-* Windows start batch
-* Try scrolling/panning commands under Linux
-* Check speed under Linux
 
 ###Genetist
 

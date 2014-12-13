@@ -16,7 +16,7 @@ public class Experiment {
 	private final Ecosystem ecosystem;
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final RanGen ranGen;
-	
+
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
 
@@ -37,7 +37,7 @@ public class Experiment {
 	public final void timeStamp() {
 		lastRegisteredRunningTime = System.currentTimeMillis();
 	}
-	
+
 	public synchronized String getId() {
 		return id;
 	}
@@ -89,10 +89,6 @@ public class Experiment {
 		return totalRunningTime / 1000L;
 	}
 
-	public void stop() {
-		updateTotalRunningTime();
-	}
-	
 	// for testing
 	public void resetTotalRunningTime() {
 		totalRunningTime = 0;
@@ -102,5 +98,13 @@ public class Experiment {
 		long updateTime = System.currentTimeMillis();
 		totalRunningTime = totalRunningTime + (updateTime - lastRegisteredRunningTime);
 		lastRegisteredRunningTime = updateTime;
+	}
+
+	public String terminate() {
+		updateTotalRunningTime();
+		ecosystem.terminate();
+		return "Experiment " + getId() +
+				" ending at " + getTotalRunningTimeInSeconds() + " seconds, " +
+				getTicksChronometer().getTotalTicks() + " ticks";
 	}
 }

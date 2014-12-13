@@ -20,7 +20,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Real arguments parsing (use --no-persistence together with other switches) °°°
 * Downloadable build °°°
-* Remove ugly Java FX termination exception °°
 * Check speed under Linux °°
 * Try scrolling/panning commands under Linux °°
 * Batch to run on Windows °°

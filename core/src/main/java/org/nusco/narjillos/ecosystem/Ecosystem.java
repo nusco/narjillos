@@ -48,7 +48,6 @@ public class Ecosystem {
 		this.things = new Space(size, AREAS_PER_EDGE);
 		this.center = Vector.cartesian(size, size).by(0.5);
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		registerShutdownHook();
 	}
 
 	public long getSize() {
@@ -260,17 +259,12 @@ public class Ecosystem {
 		for (EcosystemEventListener ecosystemEvent : ecosystemEventListeners)
 			ecosystemEvent.thingRemoved(thing);
 	}
-
-	private void registerShutdownHook() {
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				try {
-					executorService.awaitTermination(500, TimeUnit.MILLISECONDS);
-				} catch (InterruptedException e) {
-				}
-				executorService.shutdown();
-			}
-		});
+	
+	public void terminate() {
+		executorService.shutdown();
+		try {
+			executorService.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+		}
 	}
 }

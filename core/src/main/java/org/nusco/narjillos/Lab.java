@@ -91,16 +91,8 @@ public class Lab {
 		String gitCommit = args.length == 0 ? "unknown" : args[0];
 		String secondArgument = args.length < 2 ? null : args[1];
 
-		final Experiment experiment = createExperiment(gitCommit, secondArgument);
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			public void run() {
-				experiment.stop();
-				reportEndOfExperiment();
-			}
-		});
-
+		Experiment experiment = createExperiment(gitCommit, secondArgument);
 		DNA.setObserver(genePool);
-
 		return experiment;
 	}
 
@@ -153,19 +145,33 @@ public class Lab {
 		}
 	}
 
-	private void reportEndOfExperiment() {
-		System.out.println("Experiment " + experiment.getId() + " ending at " + experiment.getTotalRunningTimeInSeconds() + " seconds, "
-				+ experiment.getTicksChronometer().getTotalTicks() + " ticks");
-	}
-
 	public boolean isSaving() {
 		return isSaving;
+	}
+
+	protected void terminate() {
+		while(isSaving()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+		}
+		String finalReport = experiment.terminate();
+		System.out.println(finalReport);
 	}
 
 	// arguments: [<git_commit>, <random_seed | dna_file | dna_document |
 	// experiment_file>]
 	public static void main(String... args) {
-		Lab lab = new Lab(args);
+		final Lab lab = new Lab(args);
+
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				lab.terminate();
+			}
+		});
+
 		while (lab.tick())
 			;
 		System.exit(0);

@@ -40,7 +40,7 @@ public class SpecklesView {
 	public Node toNode(boolean infraredOn) {
 		Node result = infraredOn ? infraredBackground : background;
 		
-		if (viewport.getZoomLevel() <= 0.30)
+		if (viewport.getZoomLevel() <= 0.25)
 			return null;
 
 		result.getTransforms().clear();

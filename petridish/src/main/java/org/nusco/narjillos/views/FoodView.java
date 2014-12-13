@@ -10,7 +10,7 @@ class FoodView extends RoundObjectView {
 	private static final double MINIMUM_ZOOM_LEVEL = 0.035;
 
 	public FoodView(FoodPiece food) {
-		super(food, 7);
+		super(food, FoodPiece.RADIUS);
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {

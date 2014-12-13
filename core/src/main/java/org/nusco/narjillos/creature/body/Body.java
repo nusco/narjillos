@@ -156,6 +156,10 @@ public class Body {
 		return getEnergyConsumed(rotationEnergy, translationEnergy);
 	}
 
+	public double calculateRadius() {
+		return calculateRadius(calculateCenterOfMass());
+	}
+
 	@Override
 	public String toString() {
 		return head.toString();

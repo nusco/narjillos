@@ -78,4 +78,9 @@ public class Egg implements Thing {
 	public int getAge() {
 		return age;
 	}
+
+	@Override
+	public double getRadius() {
+		return RADIUS;
+	}
 }

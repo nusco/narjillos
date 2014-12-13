@@ -2,7 +2,6 @@ package org.nusco.narjillos.utilities;
 
 import java.util.LinkedList;
 
-import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -23,8 +22,13 @@ public class Locator {
 	 * the size of the egg/narjillos involved. (Intuitively, bigger things are
 	 * "easier to find").
 	 */
-	public Thing findLivingThingNear(Vector position) {
-		Thing result = findEggNear(position);
+	public Thing findThingNear(Vector position) {
+		Thing result = findNear(position, "food");
+
+		if (result != null)
+			return result;
+
+		result = findNear(position, "egg");
 
 		if (result != null)
 			return result;
@@ -37,10 +41,11 @@ public class Locator {
 		double minDistance = Double.MAX_VALUE;
 
 		for (Narjillo narjillo : new LinkedList<>(ecosystem.getNarjillos())) {
+			// calculate from the center of mass, not the eye position
 			Vector centerOfMass = narjillo.calculateCenterOfMass();
 			double distance = centerOfMass.minus(position).getLength();
 			if (distance < minDistance) {
-				double maxFindDistance = Math.max(radiusOf(narjillo) * 1.2, MIN_FIND_RADIUS);
+				double maxFindDistance = Math.max(radiusOf(narjillo), MIN_FIND_RADIUS);
 				if (distance < maxFindDistance) {
 					minDistance = distance;
 					result = narjillo;
@@ -51,17 +56,17 @@ public class Locator {
 		return result;
 	}
 
-	private Thing findEggNear(Vector position) {
+	private Thing findNear(Vector position, String label) {
 		Thing result = null;
 		double minDistance = Double.MAX_VALUE;
 
-		for (Thing egg : new LinkedList<>(ecosystem.getThings("egg"))) {
-			double distance = egg.getPosition().minus(position).getLength();
+		for (Thing thing : new LinkedList<>(ecosystem.getThings(label))) {
+			double distance = thing.getPosition().minus(position).getLength();
 			if (distance < minDistance) {
-				double maxFindDistance = Math.max(Egg.RADIUS * 2, MIN_FIND_RADIUS);
+				double maxFindDistance = Math.max(thing.getRadius(), MIN_FIND_RADIUS);
 				if (distance < maxFindDistance) {
 					minDistance = distance;
-					result = egg;
+					result = thing;
 				}
 			}
 		}

@@ -5,9 +5,11 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class FoodPiece implements Thing {
 
+	public static final double RADIUS = 7;
 	private static final double ENERGY = 30_000;
 	
 	public Vector position;
+	private final Energy energy = new Energy(ENERGY, Double.MAX_VALUE);
 
 	public void setPosition(Vector position) {
 		this.position = position;
@@ -30,6 +32,11 @@ public class FoodPiece implements Thing {
 
 	@Override
 	public Energy getEnergy() {
-		return new Energy(ENERGY, Double.MAX_VALUE);
+		return energy;
+	}
+
+	@Override
+	public double getRadius() {
+		return RADIUS;
 	}
 }

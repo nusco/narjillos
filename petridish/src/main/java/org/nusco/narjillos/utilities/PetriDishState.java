@@ -1,6 +1,5 @@
 package org.nusco.narjillos.utilities;
 
-import org.nusco.narjillos.shared.things.Thing;
 
 public class PetriDishState {
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 60;
@@ -10,7 +9,6 @@ public class PetriDishState {
 
 	private Light light = Light.ON;
 	private Speed speed = Speed.REALTIME;
-	private Thing lockedOn = Thing.NULL;
 	private MotionBlur motionBlur = MotionBlur.ON;
 
 	public Light getLight() {
@@ -19,10 +17,6 @@ public class PetriDishState {
 
 	public Speed getSpeed() {
 		return speed;
-	}
-
-	public Thing getLockedOn() {
-		return lockedOn;
 	}
 
 	public void toggleLight() {
@@ -62,18 +56,6 @@ public class PetriDishState {
 	
 	public void speedDown() {
 		speed = speed.down();
-	}
-	
-	public void lockOn(Thing thing) {
-		lockedOn = thing;
-	}
-
-	public Thing unlock() {
-		return lockedOn = Thing.NULL;
-	}
-
-	public boolean isLocked() {
-		return lockedOn != Thing.NULL;
 	}
 
 	public int getFramesPeriod() {

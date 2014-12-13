@@ -14,15 +14,18 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Lazily reverse-calculate x and y in polar vectors °°
 * Optimize physics engines by passing angles instead of recalculating angles °°
 * Fix code for growing organs and bodies (currently weird and probably worth optimizing) °°
+* Adaptive graphics (disable effects when framerate plummets)
 
 ###Gamer
 
 * Real arguments parsing (use --no-persistence together with other switches) °°°
 * Downloadable build °°°
+* Remove ugly Java FX termination exception °°
 * Check speed under Linux °°
 * Try scrolling/panning commands under Linux °°
 * Batch to run on Windows °°
 * Externalize configurable parameters to YAML °
+* Lock on food
 * Command-line argument to disable graphic effects on slow computers
 * Tutorial
 * Nice status bar
@@ -45,7 +48,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Single zipped savefile for both experiment and genepool °°
-* View locked narjillo (age, energy, times eaten, genome...)
+* Switch commit and random seed in experiment id °
+* Switch to eater when followed food gets eaten
+* View stats for followed narjillo (age, energy, times eaten, genome...)
 * Check git commit on experiment startup
 * Automatically purge experiment temp file
 * Automatically recover missing experiment from temp file

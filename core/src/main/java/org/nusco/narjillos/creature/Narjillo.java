@@ -122,6 +122,11 @@ public class Narjillo implements Thing {
 		return age;
 	}
 
+	@Override
+	public double getRadius() {
+		return getBody().calculateRadius();
+	}
+
 	private void growOlder() {
 		age++;
 	}

@@ -19,15 +19,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
-import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.utilities.Locator;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Speed;
+import org.nusco.narjillos.utilities.ThingTracker;
 import org.nusco.narjillos.utilities.Viewport;
 import org.nusco.narjillos.views.EcosystemView;
 import org.nusco.narjillos.views.MicroscopeView;
@@ -50,6 +49,9 @@ public class PetriDish extends Application {
 	// them. So we can avoid synchronization altogether.
 	private PetriDishState state = new PetriDishState();
 	private Viewport viewport;
+	private Locator locator;
+	private ThingTracker tracker;
+
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -60,7 +62,9 @@ public class PetriDish extends Application {
 		System.gc(); // minimize GC during the first stages on animation
 
 		viewport = new Viewport(lab.getEcosystem());
-
+		locator = new Locator(lab.getEcosystem());
+		tracker = new ThingTracker(viewport, locator);
+		
 		final Group root = new Group();
 		startViewThread(root);
 
@@ -122,7 +126,7 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
-					followLockedThing();
+					tracker.track();
 
 					ecosystemView.tick();
 
@@ -140,46 +144,12 @@ public class PetriDish extends Application {
 				}
 			}
 
-			private void followLockedThing() {
-				if (!state.isLocked())
-					return;
-				
-				Thing thing = state.getLockedOn();
-				if (thing.getEnergy().isDepleted())
-					unlockFrom(thing);
-				else
-					centerOn(thing);
-			}
-
-			private void unlockFrom(Thing thing) {
-				if (thing.getLabel().equals("egg"))
-					lockOnHatchedNarjillo((Egg) thing);
-
-				state.unlock();
-			}
-
-			private void lockOnHatchedNarjillo(Egg egg) {
-				Narjillo newBorn = egg.getHatchedNarjillo();
-				
-				if (newBorn == null)
-					return; // in case of bad luck with threading
-
-				state.lockOn(newBorn);
-			}
-
-			private void centerOn(Thing thing) {
-				if (thing.getLabel().equals("narjillo"))
-					viewport.flyToTargetEC(((Narjillo) thing).calculateCenterOfMass());
-				else
-					viewport.flyToTargetEC(thing.getPosition());
-			}
-
 			private void update(final Group root) {
 				root.getChildren().clear();
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(state.getSpeed(), state.getMotionBlur(), framesChronometer, state.isLocked(), lab.isSaving());
+				Node statusInfo = statusBarView.toNode(state.getSpeed(), state.getMotionBlur(), framesChronometer, tracker.isTracking(), lab.isSaving());
 				root.getChildren().add(statusInfo);
 			}
 		};
@@ -236,7 +206,7 @@ public class PetriDish extends Application {
 			}
 
 			private void panViewport(long velocityX, long velocityY, KeyEvent event) {
-				state.unlock();
+				tracker.stopTracking();
 				viewport.moveBy(Vector.cartesian(velocityX, velocityY));
 				event.consume();
 			};
@@ -245,33 +215,17 @@ public class PetriDish extends Application {
 
 	private EventHandler<MouseEvent> createMouseHandler() {
 		return new EventHandler<MouseEvent>() {
-			private Locator locator = new Locator(lab.getEcosystem());
-
 			public void handle(MouseEvent event) {
 				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
 				viewport.flyToTargetSC(clickedPoint);
 
 				Vector clickedPointEC = viewport.toEC(clickedPoint);
-				Thing thing = locator.findLivingThingNear(clickedPointEC);
 
-				if (event.getClickCount() == 1) {
-					if (state.isLocked()) {
-						if (thing == null)
-							state.unlock();
-						else
-							state.lockOn(thing);
-					}
-					viewport.flyToNextZoomCloseupLevel();
-				}
-
-				if (event.getClickCount() >= 2) {
-					if (thing == null)
-						viewport.flyToNextZoomCloseupLevel();
-					else {
-						state.lockOn(thing);
-						viewport.flyToMaxZoomCloseupLevel();
-					}
-				}
+				if (event.getClickCount() == 1)
+					tracker.focusAt(clickedPointEC);
+				
+				if (event.getClickCount() >= 2)
+					tracker.startTrackingAt(clickedPointEC);
 
 				if (event.getClickCount() == 3)
 					copyIsolatedDNAToClipboard(clickedPoint);
@@ -300,7 +254,7 @@ public class PetriDish extends Application {
 				else {
 					viewport.zoomOut();
 					if (viewport.isZoomedOutCompletely())
-						state.unlock();
+						tracker.stopTracking();
 				}
 
 				event.consume();

@@ -48,6 +48,7 @@ public class Energy {
 
 	public void consume(Thing thing) {
 		increaseBy(thing.getEnergy().getValue());
+		thing.getEnergy().deplete();
 	}
 
 	private void increaseBy(double amount) {
@@ -65,5 +66,9 @@ public class Energy {
 
 	private void decreaseBy(double amount) {
 		increaseBy(-amount);
+	}
+
+	private void deplete() {
+		value = 0;
 	}
 }

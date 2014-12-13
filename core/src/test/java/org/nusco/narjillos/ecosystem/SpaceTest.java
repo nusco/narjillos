@@ -234,4 +234,9 @@ class MockThing implements Thing {
 	public Energy getEnergy() {
 		return null;
 	}
+
+	@Override
+	public double getRadius() {
+		return 0;
+	}
 }

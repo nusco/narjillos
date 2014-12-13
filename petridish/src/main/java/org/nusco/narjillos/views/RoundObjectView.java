@@ -10,9 +10,9 @@ import org.nusco.narjillos.utilities.Viewport;
 public abstract class RoundObjectView extends ThingView {
 
 	private final Circle shape;
-	private final int radius;
+	private final double radius;
 
-	public RoundObjectView(Thing thing, int radius) {
+	public RoundObjectView(Thing thing, double radius) {
 		super(thing);
 		this.shape = new Circle(radius);
 		this.radius = radius;

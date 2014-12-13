@@ -19,6 +19,11 @@ public interface Thing {
 		public Vector getPosition() {
 			return Vector.ZERO;
 		}
+
+		@Override
+		public double getRadius() {
+			return 0;
+		}
 		
 		@Override
 		public Energy getEnergy() {
@@ -36,6 +41,7 @@ public interface Thing {
 	 */
 	public Segment tick();
 	public Vector getPosition();
+	public double getRadius();
 	public Energy getEnergy();
 	public String getLabel();
 }

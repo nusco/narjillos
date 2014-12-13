@@ -30,7 +30,7 @@ public class Ecosystem {
 	private static final int MAX_EGG_INCUBATION_TIME = 800;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
-	private static final int AREAS_PER_EDGE = 60;
+	private static final int AREAS_PER_EDGE = 80;
 	
 	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());

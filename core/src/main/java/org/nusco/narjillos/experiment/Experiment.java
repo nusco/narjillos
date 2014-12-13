@@ -20,12 +20,12 @@ public class Experiment {
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
 
-	public Experiment(String gitCommit, long seed) {
-		this(gitCommit, seed, null);
+	public Experiment(long seed, String appVersion) {
+		this(seed, appVersion, null);
 	}
 
-	public Experiment(String gitCommit, long seed, DNA dna) {
-		id = gitCommit + "-" + seed;
+	public Experiment(long seed, String appVersion, DNA dna) {
+		id = "" + seed + "-" + appVersion;
 		if (dna == null)
 			System.out.println("Experiment " + id);
 		timeStamp();

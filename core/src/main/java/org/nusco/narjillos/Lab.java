@@ -88,38 +88,38 @@ public class Lab {
 	}
 
 	public Experiment initialize(String... args) {
-		String gitCommit = args.length == 0 ? "unknown" : args[0];
+		String appVersion = args.length == 0 ? "unknown" : args[0];
 		String secondArgument = args.length < 2 ? null : args[1];
 
-		Experiment experiment = createExperiment(gitCommit, secondArgument);
+		Experiment experiment = createExperiment(secondArgument, appVersion);
 		DNA.setObserver(genePool);
 		return experiment;
 	}
 
-	private Experiment createExperiment(String gitCommit, String secondArgument) {
-		if (secondArgument == null) {
+	private Experiment createExperiment(String argument, String appVersion) {
+		if (argument == null) {
 			System.out.println("Starting new experiment with random seed");
 			persistent = true;
-			return new Experiment(gitCommit, generateRandomSeed(), null);
-		} else if (secondArgument.equals("no-persistence")) {
+			return new Experiment(generateRandomSeed(), appVersion, null);
+		} else if (argument.equals("no-persistence")) {
 			System.out.println("Starting new non-persistent experiment with random seed");
-			return new Experiment(gitCommit, generateRandomSeed(), null);
-		} else if (isInteger(secondArgument)) {
-			long seed = Long.parseLong(secondArgument);
+			return new Experiment(generateRandomSeed(), appVersion, null);
+		} else if (isInteger(argument)) {
+			long seed = Long.parseLong(argument);
 			System.out.println("Starting experiment " + seed + " from scratch");
 			persistent = true;
-			return new Experiment(gitCommit, seed, null);
-		} else if (secondArgument.endsWith(".nrj")) {
-			DNA dna = Persistence.loadDNA(secondArgument);
+			return new Experiment(seed, appVersion, null);
+		} else if (argument.endsWith(".nrj")) {
+			DNA dna = Persistence.loadDNA(argument);
 			System.out.println("Observing DNA " + dna);
 			persistent = true;
-			return new Experiment(gitCommit, generateRandomSeed(), dna);
-		} else if (secondArgument.startsWith("{")) {
-			System.out.println("Observing DNA " + secondArgument);
+			return new Experiment(generateRandomSeed(), appVersion, dna);
+		} else if (argument.startsWith("{")) {
+			System.out.println("Observing DNA " + argument);
 			persistent = true;
-			return new Experiment(gitCommit, generateRandomSeed(), new DNA(secondArgument));
+			return new Experiment(generateRandomSeed(), appVersion, new DNA(argument));
 		} else {
-			String experimentId = stripFileExtension(secondArgument);
+			String experimentId = stripFileExtension(argument);
 			System.out.println("Picking up experiment from " + experimentId + ".exp");
 			persistent = true;
 			genePool = Persistence.loadGenePool(experimentId);

@@ -47,7 +47,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Single zipped savefile for both experiment and genepool °°
-* Switch commit and random seed in experiment id °
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * Check git commit on experiment startup
 * Automatically purge experiment temp file

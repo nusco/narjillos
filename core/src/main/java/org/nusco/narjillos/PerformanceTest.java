@@ -14,7 +14,7 @@ public class PerformanceTest {
 	public static void main(String[] args) {
 		FastMath.setUp(); // pay up front for the setup of FastMath
 
-		Experiment experiment = new Experiment("performance_test", 424242);
+		Experiment experiment = new Experiment(424242, "performance_test");
 
 		long startTimeMillis = System.currentTimeMillis();
 

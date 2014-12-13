@@ -263,7 +263,7 @@ public class Ecosystem {
 	public void terminate() {
 		executorService.shutdown();
 		try {
-			executorService.awaitTermination(5, TimeUnit.SECONDS);
+			executorService.awaitTermination(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 		}
 	}

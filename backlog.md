@@ -14,14 +14,19 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Lazily reverse-calculate x and y in polar vectors °°
 * Optimize physics engines by passing angles instead of recalculating angles °°
 * Fix code for growing organs and bodies (currently weird and probably worth optimizing) °°
-* Check speed under Linux
 
 ###Gamer
 
+* Real arguments parsing (use --no-persistence together with other switches) °
 * Externalize configurable parameters to YAML °
-* Lock on eggs and the narjillo that will be born out of them
-* Store max speed ever reached in experiment
+* Lock on eggs and the narjillo that will be born out of them °
+* Command-line argument to disable graphic effects on slow computers
+* Downloadable build
+* Nice status bar
+* GUI
+* Windows start batch
 * Try scrolling/panning commands under Linux
+* Check speed under Linux
 
 ###Genetist
 
@@ -40,8 +45,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Single zipped savefile for both experiment and genepool °°
-* Real arguments parsing (use --no-persistence together with other switches) °°
-* Remove ugly exceptions on forced exit
 * View locked narjillo (age, energy, times eaten, genome...)
 * Check git commit on experiment startup
 * Automatically purge experiment temp file

@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
@@ -46,14 +47,8 @@ public class Ecosystem {
 		this.size = size;
 		this.things = new Space(size, AREAS_PER_EDGE);
 		this.center = Vector.cartesian(size, size).by(0.5);
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				executorService.shutdown();
-			}
-		});
-
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		registerShutdownHook();
 	}
 
 	public long getSize() {
@@ -107,6 +102,61 @@ public class Ecosystem {
 			VisualDebugger.clear();
 	}
 
+	public final FoodPiece spawnFood(Vector position) {
+		FoodPiece newFood = new FoodPiece();
+		newFood.setPosition(position);
+		insert(newFood);
+		return newFood;
+	}
+
+	public void insert(Thing thing) {
+		things.add(thing);
+		notifyThingAdded(thing);
+	}
+
+	public void insertNarjillo(Narjillo narjillo) {
+		narjillos.add(narjillo);
+		notifyThingAdded(narjillo);
+	}
+
+	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
+		Egg egg = new Egg(genes, position, INITIAL_EGG_ENERGY, getRandomIncubationTime(ranGen));
+		insert(egg);
+		return egg;
+	}
+
+	public void addEventListener(EcosystemEventListener ecosystemEventListener) {
+		ecosystemEventListeners.add(ecosystemEventListener);
+	}
+
+	public int getNumberOfFoodPieces() {
+		return things.count("food_piece");
+	}
+
+	public int getNumberOfEggs() {
+		return things.count("egg");
+	}
+
+	public int getNumberOfNarjillos() {
+		return narjillos.size();
+	}
+
+	public Set<Thing> getNonNarjilloThings() {
+		return things.getAll("");
+	}
+
+	public Set<Narjillo> getNarjillos() {
+		return narjillos;
+	}
+
+	public void updateAllTargets() {
+		for (Thing creature : narjillos) {
+			Narjillo narjillo = (Narjillo) creature;
+			Vector closestTarget = findClosestFoodPiece(narjillo);
+			narjillo.setTarget(closestTarget);
+		}
+	}
+
 	private void tickEgg(Egg egg) {
 		egg.tick();
 		if (egg.hatch())
@@ -149,29 +199,6 @@ public class Ecosystem {
 		return Vector.cartesian(ranGen.nextDouble() * size, ranGen.nextDouble() * size);
 	}
 
-	public final FoodPiece spawnFood(Vector position) {
-		FoodPiece newFood = new FoodPiece();
-		newFood.setPosition(position);
-		insert(newFood);
-		return newFood;
-	}
-
-	public void insert(Thing thing) {
-		things.add(thing);
-		notifyThingAdded(thing);
-	}
-
-	public void insertNarjillo(Narjillo narjillo) {
-		narjillos.add(narjillo);
-		notifyThingAdded(narjillo);
-	}
-
-	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
-		Egg egg = new Egg(genes, position, INITIAL_EGG_ENERGY, getRandomIncubationTime(ranGen));
-		insert(egg);
-		return egg;
-	}
-
 	private int getRandomIncubationTime(RanGen ranGen) {
 		final int MAX_INCUBATION_INTERVAL = MAX_EGG_INCUBATION_TIME - MIN_EGG_INCUBATION_TIME;
 		int extraIncubation = (int)(MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
@@ -184,14 +211,6 @@ public class Ecosystem {
 				Vector closestTarget = findClosestFoodPiece(narjillo);
 				narjillo.setTarget(closestTarget);
 			}
-		}
-	}
-
-	public void updateAllTargets() {
-		for (Thing creature : narjillos) {
-			Narjillo narjillo = (Narjillo) creature;
-			Vector closestTarget = findClosestFoodPiece(narjillo);
-			narjillo.setTarget(closestTarget);
 		}
 	}
 
@@ -242,27 +261,16 @@ public class Ecosystem {
 			ecosystemEvent.thingRemoved(thing);
 	}
 
-	public void addEventListener(EcosystemEventListener ecosystemEventListener) {
-		ecosystemEventListeners.add(ecosystemEventListener);
-	}
-
-	public int getNumberOfFoodPieces() {
-		return things.count("food_piece");
-	}
-
-	public int getNumberOfEggs() {
-		return things.count("egg");
-	}
-
-	public int getNumberOfNarjillos() {
-		return narjillos.size();
-	}
-
-	public Set<Thing> getNonNarjilloThings() {
-		return things.getAll("");
-	}
-
-	public Set<Narjillo> getNarjillos() {
-		return narjillos;
+	private void registerShutdownHook() {
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				try {
+					executorService.awaitTermination(500, TimeUnit.MILLISECONDS);
+				} catch (InterruptedException e) {
+				}
+				executorService.shutdown();
+			}
+		});
 	}
 }

@@ -21,6 +21,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Externalize configurable parameters to YAML °
 * Command-line argument to disable graphic effects on slow computers
 * Downloadable build
+* Tutorial
 * Nice status bar
 * GUI
 * Windows start batch

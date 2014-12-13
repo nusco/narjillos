@@ -10,6 +10,7 @@ public class FoodPiece implements Thing {
 	
 	public Vector position;
 	private final Energy energy = new Energy(ENERGY, Double.MAX_VALUE);
+	private Thing eater;
 
 	public void setPosition(Vector position) {
 		this.position = position;
@@ -38,5 +39,13 @@ public class FoodPiece implements Thing {
 	@Override
 	public double getRadius() {
 		return RADIUS;
+	}
+
+	public Thing getEater() {
+		return eater;
+	}
+	
+	public void setEater(Thing eater) {
+		this.eater = eater;
 	}
 }

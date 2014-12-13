@@ -9,6 +9,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
@@ -67,8 +68,9 @@ public class Narjillo implements Thing {
 		this.target = target;
 	}
 
-	public void feedOn(Thing thing) {
+	public void feedOn(FoodPiece thing) {
 		energy.consume(thing);
+		thing.setEater(this);
 	}
 
 	public Egg layEgg(Vector position, RanGen ranGen) {

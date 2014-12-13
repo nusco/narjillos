@@ -49,7 +49,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Single zipped savefile for both experiment and genepool °°
 * Switch commit and random seed in experiment id °
-* Switch to eater when followed food gets eaten
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * Check git commit on experiment startup
 * Automatically purge experiment temp file

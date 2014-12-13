@@ -218,10 +218,10 @@ public class Ecosystem {
 		Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
 
 		for (Thing collidedFoodPiece : collidedFoodPieces)
-			consumeFood(narjillo, collidedFoodPiece, ranGen);
+			consumeFood(narjillo, (FoodPiece) collidedFoodPiece, ranGen);
 	}
 
-	private void consumeFood(Narjillo narjillo, Thing foodPiece, RanGen ranGen) {
+	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, RanGen ranGen) {
 		if (!things.contains(foodPiece))
 			return; // race condition: already consumed
 

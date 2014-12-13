@@ -27,14 +27,16 @@ public class ThingTracker {
 		}
 		
 		if (tracked.getLabel().equals("egg")) {
-			Narjillo hatchedNarjillo = ((Egg) tracked).getHatchedNarjillo();
-			if (hatchedNarjillo != null)
-				startTracking(hatchedNarjillo);
+			Narjillo hatched = ((Egg) tracked).getHatchedNarjillo();
+			if (hatched != null)
+				startTracking(hatched);
 			return;
 		}
 		
-		if (tracked.getLabel().equals("food_piece") && ((FoodPiece) tracked).getEnergy().isDepleted()) {
-			stopTracking();
+		if (tracked.getLabel().equals("food_piece")) {
+			Thing eater = ((FoodPiece) tracked).getEater();
+			if (eater != null)
+				startTracking(eater);
 			return;
 		}
 		

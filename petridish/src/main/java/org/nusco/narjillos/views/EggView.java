@@ -13,7 +13,6 @@ import org.nusco.narjillos.utilities.Viewport;
 class EggView extends ThingView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.02;
-	private static final double AVG_RADIUS = 25;
 	private static final double RADIUS_VARIATION = 1.5;
 	private static final double BLOBBING_SPEED = 3;
 	
@@ -23,7 +22,7 @@ class EggView extends ThingView {
 	
 	public EggView(Egg egg) {
 		super(egg);
-		shape = new Ellipse(AVG_RADIUS, AVG_RADIUS);
+		shape = new Ellipse(Egg.RADIUS, Egg.RADIUS);
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
@@ -31,8 +30,8 @@ class EggView extends ThingView {
 			return null;
 
 		waveAngle = Angle.normalize(waveAngle + BLOBBING_SPEED);
-		shape.setRadiusX(Math.min(getEgg().getAge(), AVG_RADIUS + RADIUS_VARIATION * FastMath.sin(waveAngle)));
-		shape.setRadiusY(Math.min(getEgg().getAge(), AVG_RADIUS + RADIUS_VARIATION * FastMath.cos(waveAngle)));
+		shape.setRadiusX(Math.min(getEgg().getAge(), Egg.RADIUS + RADIUS_VARIATION * FastMath.sin(waveAngle)));
+		shape.setRadiusY(Math.min(getEgg().getAge(), Egg.RADIUS + RADIUS_VARIATION * FastMath.cos(waveAngle)));
 
 		shape.setFill(getFillColor(infraredOn));
 
@@ -60,6 +59,6 @@ class EggView extends ThingView {
 
 	@Override
 	protected boolean isVisible(Viewport viewport) {
-		return viewport.isVisible(getThing().getPosition(), AVG_RADIUS + RADIUS_VARIATION);
+		return viewport.isVisible(getThing().getPosition(), Egg.RADIUS + RADIUS_VARIATION);
 	}
 }

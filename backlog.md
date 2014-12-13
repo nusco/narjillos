@@ -19,7 +19,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Real arguments parsing (use --no-persistence together with other switches) °
 * Externalize configurable parameters to YAML °
-* Lock on eggs and the narjillo that will be born out of them °
 * Command-line argument to disable graphic effects on slow computers
 * Downloadable build
 * Nice status bar

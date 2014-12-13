@@ -64,8 +64,8 @@ public class PetriDishState {
 		speed = speed.down();
 	}
 	
-	public void lockOn(Thing narjillo) {
-		lockedOn = narjillo;
+	public void lockOn(Thing thing) {
+		lockedOn = thing;
 	}
 
 	public Thing unlock() {

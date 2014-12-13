@@ -19,9 +19,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
+import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.utilities.Locator;
 import org.nusco.narjillos.utilities.PetriDishState;
@@ -120,13 +122,7 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
-					if (state.isLocked()) {
-						Narjillo narjillo = (Narjillo) state.getLockedOn();
-						if (narjillo.isDead())
-							state.unlock();
-						else
-							viewport.flyToTargetEC(narjillo.calculateCenterOfMass());
-					}
+					followLockedThing();
 
 					ecosystemView.tick();
 
@@ -142,6 +138,40 @@ public class PetriDish extends Application {
 						Thread.sleep(state.getFramesPeriod() * 2);
 					framesChronometer.tick();
 				}
+			}
+
+			private void followLockedThing() {
+				if (!state.isLocked())
+					return;
+				
+				Thing thing = state.getLockedOn();
+				if (thing.getEnergy().isDepleted())
+					unlockFrom(thing);
+				else
+					centerOn(thing);
+			}
+
+			private void unlockFrom(Thing thing) {
+				if (thing.getLabel().equals("egg"))
+					lockOnHatchedNarjillo((Egg) thing);
+
+				state.unlock();
+			}
+
+			private void lockOnHatchedNarjillo(Egg egg) {
+				Narjillo newBorn = egg.getHatchedNarjillo();
+				
+				if (newBorn == null)
+					return; // in case of bad luck with threading
+
+				state.lockOn(newBorn);
+			}
+
+			private void centerOn(Thing thing) {
+				if (thing.getLabel().equals("narjillo"))
+					viewport.flyToTargetEC(((Narjillo) thing).calculateCenterOfMass());
+				else
+					viewport.flyToTargetEC(thing.getPosition());
 			}
 
 			private void update(final Group root) {
@@ -222,23 +252,23 @@ public class PetriDish extends Application {
 				viewport.flyToTargetSC(clickedPoint);
 
 				Vector clickedPointEC = viewport.toEC(clickedPoint);
-				Narjillo narjillo = locator.findNarjilloNear(clickedPointEC);
+				Thing thing = locator.findLivingThingNear(clickedPointEC);
 
 				if (event.getClickCount() == 1) {
 					if (state.isLocked()) {
-						if (narjillo == null)
+						if (thing == null)
 							state.unlock();
 						else
-							state.lockOn(narjillo);
+							state.lockOn(thing);
 					}
 					viewport.flyToNextZoomCloseupLevel();
 				}
 
 				if (event.getClickCount() >= 2) {
-					if (narjillo == null)
+					if (thing == null)
 						viewport.flyToNextZoomCloseupLevel();
 					else {
-						state.lockOn(narjillo);
+						state.lockOn(thing);
 						viewport.flyToMaxZoomCloseupLevel();
 					}
 				}

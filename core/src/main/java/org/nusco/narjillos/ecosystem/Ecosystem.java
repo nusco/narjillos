@@ -81,16 +81,7 @@ public class Ecosystem {
 			if (narjillo.isDead())
 				removeNarjillo(narjillo);
 		
-		List<Future<Segment>> movements = tickAll(narjillos);
-
-		List<Narjillo> allNarjillos = new LinkedList<>(narjillos);
-		for (int i = 0; i < allNarjillos.size(); i++) {
-			Segment movement = waitUntilAvailable(movements, i);
-			checkForExcessiveSpeed(movement);
-
-			Narjillo narjillo = allNarjillos.get(i);
-			consumeCollidedFood(narjillo, movement, ranGen);
-		}
+		tickNarjillos(ranGen);
 
 		if (shouldSpawnFood(ranGen)) {
 			spawnFood(randomPosition(getSize(), ranGen));
@@ -162,6 +153,22 @@ public class Ecosystem {
 			insertNarjillo(egg.getHatchedNarjillo());
 		if (egg.isDecayed())
 			remove(egg);
+	}
+
+	private synchronized void tickNarjillos(RanGen ranGen) {
+		if (executorService.isShutdown())
+			return; // we're leaving, apparently
+		
+		List<Future<Segment>> movements = tickAll(narjillos);
+
+		List<Narjillo> allNarjillos = new LinkedList<>(narjillos);
+		for (int i = 0; i < allNarjillos.size(); i++) {
+			Segment movement = waitUntilAvailable(movements, i);
+			checkForExcessiveSpeed(movement);
+
+			Narjillo narjillo = allNarjillos.get(i);
+			consumeCollidedFood(narjillo, movement, ranGen);
+		}
 	}
 
 	private void checkForExcessiveSpeed(Segment movement) {
@@ -260,7 +267,7 @@ public class Ecosystem {
 			ecosystemEvent.thingRemoved(thing);
 	}
 	
-	public void terminate() {
+	public synchronized void terminate() {
 		executorService.shutdown();
 		try {
 			executorService.awaitTermination(10, TimeUnit.SECONDS);

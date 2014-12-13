@@ -20,9 +20,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Real arguments parsing (use --no-persistence together with other switches) °°°
 * Downloadable build °°°
+* Remove the stupid termination exception in Java FX °°
 * Check speed under Linux °°
 * Try scrolling/panning commands under Linux °°
 * Batch to run on Windows °°
+* Versioning system to replace Git commit °
 * Externalize configurable parameters to YAML °
 * Lock on food
 * Command-line argument to disable graphic effects on slow computers
@@ -61,7 +63,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
-* Give a sense of movement when following a locked-on Narjillo (speckles in liquid?) °°
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
 * Make food more visible in normal view

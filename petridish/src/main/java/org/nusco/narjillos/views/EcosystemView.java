@@ -13,6 +13,7 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -31,19 +32,32 @@ import org.nusco.narjillos.utilities.Viewport;
 
 public class EcosystemView {
 
+	static final Color BACKGROUND_COLOR = Color.ANTIQUEWHITE;
+	static final Paint INFRARED_BACKGROUND_COLOR = Color.DARKGRAY.darker();
+	
 	private final Viewport viewport;
-	private final Shape background;
-	private final Shape darkness;
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
-
 	private final PetriDishState petriDishState;
+	private final SpecklesView specklesView;
+	private final Shape emptySpace;
+	private final Shape infraredEmptySpace;
+	private final Shape darkness;
 
 	public EcosystemView(Ecosystem ecosystem, Viewport viewport, PetriDishState state) {
 		this.viewport = viewport;
 		this.petriDishState = state;
+
+		long size = ecosystem.getSize();
 		
-		background = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
-		darkness = new Rectangle(0, 0, ecosystem.getSize(), ecosystem.getSize());
+		emptySpace = new Rectangle(0, 0, size, size);
+		emptySpace.setFill(EcosystemView.BACKGROUND_COLOR);
+		
+		infraredEmptySpace = new Rectangle(0, 0, size, size);
+		infraredEmptySpace.setFill(EcosystemView.INFRARED_BACKGROUND_COLOR);
+		
+		darkness = new Rectangle(0, 0, size, size);
+
+		specklesView = new SpecklesView(viewport, size);
 
 		for (Thing thing : ecosystem.getThings(""))
 			addThingView(thing);
@@ -69,8 +83,21 @@ public class EcosystemView {
 		boolean hasMotionBlur = petriDishState.getMotionBlur() == MotionBlur.ON;
 
 		Group result = new Group();
-		result.getChildren().add(getBackground(isInfrared));
+
+		Node backgroundFill = isInfrared ? infraredEmptySpace : emptySpace;
+		darkenWithDistance(backgroundFill, viewport.getZoomLevel());
+		result.getChildren().add(backgroundFill);
+
+		Node speckles = specklesView.toNode(isInfrared);
+		if (speckles != null) {
+			darkenWithDistance(speckles, viewport.getZoomLevel());
+			result.getChildren().add(speckles);
+		}
+
 		result.getChildren().add(getThingsGroup(isInfrared, hasMotionBlur));
+
+		setZoomLevelEffects(result);
+		
 		return result;
 	}
 
@@ -84,8 +111,6 @@ public class EcosystemView {
 		things.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
 		things.getTransforms().add(
 				new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(), viewport.getPositionEC().x, viewport.getPositionEC().y));
-
-		setZoomLevelEffects(things);
 
 		return things;
 	}
@@ -115,18 +140,6 @@ public class EcosystemView {
 			return;
 
 		group.setEffect(getBlurEffect(zoomLevel));
-	}
-
-	private Shape getBackground(boolean infraredOn) {
-		if (infraredOn) {
-			background.setFill(Color.DARKGRAY.darker());
-			return background;
-		}
-
-		background.setFill(Color.ANTIQUEWHITE);
-		double brightnessAdjust = -viewport.getZoomLevel() / 5;
-		background.setEffect(new ColorAdjust(0, 0, brightnessAdjust, 0));
-		return background;
 	}
 
 	private List<Node> getNodesForThingsInOrder(boolean infraredOn, boolean motionBlurOn) {
@@ -166,5 +179,10 @@ public class EcosystemView {
 
 	public void tick() {
 		viewport.tick();
+	}
+
+	void darkenWithDistance(Node node, double zoomLevel) {
+		double brightnessAdjust = -zoomLevel / 5;
+		node.setEffect(new ColorAdjust(0, 0, brightnessAdjust, 0));
 	}
 }

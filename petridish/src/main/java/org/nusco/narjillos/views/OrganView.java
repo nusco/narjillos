@@ -85,7 +85,8 @@ class OrganView extends ThingView {
 
 		// rotate in position
 		rectangle.getTransforms().add(new Rotate(angle, OVERLAP, widthCenter));
-		
+
+		rectangle.setEffect(null);
 		if (motionBlurOn)
 			addMotionBlur(zoomLevel);
 		// store position for motion blur in the next frame

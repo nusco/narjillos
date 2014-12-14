@@ -10,6 +10,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
+* Parallelize rendering in petri instead of parallelizing calculations, for smoother framerates °°
 * Pre-store angle when creating polar vector °°
 * Lazily reverse-calculate x and y in polar vectors °°
 * Optimize physics engines by passing angles instead of recalculating angles °°
@@ -19,6 +20,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Gamer
 
 * Zoo mode (switch from narjillo to narjillo) °°°
+* Require double-click to start tracking °°°
 * Real arguments parsing (use --no-persistence together with other switches) °°°
 * Downloadable build °°°
 * Remove the stupid termination exception in Java FX °°

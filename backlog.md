@@ -18,6 +18,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
+* Zoo mode (switch from narjillo to narjillo) °°°
 * Real arguments parsing (use --no-persistence together with other switches) °°°
 * Downloadable build °°°
 * Remove the stupid termination exception in Java FX °°

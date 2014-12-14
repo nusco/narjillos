@@ -37,21 +37,21 @@ public class LocatorTest {
 		Narjillo narjillo2 = insertNarjillo(Vector.cartesian(998, 998));
 		insertNarjillo(Vector.cartesian(999, 999));
 		
-		assertEquals(narjillo1, locator.findNarjilloNear(Vector.cartesian(100, 100)));
-		assertEquals(narjillo2, locator.findNarjilloNear(Vector.cartesian(950, 980)));
+		assertEquals(narjillo1, locator.findNarjilloNear(Vector.cartesian(100, 100), 100));
+		assertEquals(narjillo2, locator.findNarjilloNear(Vector.cartesian(950, 980), 100));
 	}
 	
 	@Test
 	public void returnsNullIfNoNarjilloIsCloseEnough() {
 		insertNarjillo(Vector.cartesian(100, 10));
 		
-		assertNull(locator.findNarjilloNear(Vector.cartesian(500, 500)));
+		assertNull(locator.findNarjilloNear(Vector.cartesian(500, 500), 100));
 	}
 
 	@Test
 	public void returnsNullIfTheEcosystemContainsNoNarjillos() {
 		Locator emptyLocator = new Locator(new Ecosystem(1000));
 		
-		assertNull(emptyLocator.findNarjilloNear(Vector.cartesian(150, 150)));
+		assertNull(emptyLocator.findNarjilloNear(Vector.cartesian(150, 150), 100));
 	}
 }

@@ -9,7 +9,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class Locator {
 
-	final int MIN_FIND_RADIUS = 200;
+	public final static double MAX_FIND_DISTANCE = 200;
 
 	private final Ecosystem ecosystem;
 
@@ -33,10 +33,10 @@ public class Locator {
 		if (result != null)
 			return result;
 		
-		return findNarjilloNear(position);
+		return findNarjilloNear(position, MAX_FIND_DISTANCE);
 	}
 
-	public Narjillo findNarjilloNear(Vector position) {
+	public Narjillo findNarjilloNear(Vector position, double maxValue) {
 		Narjillo result = null;
 		double minDistance = Double.MAX_VALUE;
 
@@ -45,7 +45,7 @@ public class Locator {
 			Vector centerOfMass = narjillo.calculateCenterOfMass();
 			double distance = centerOfMass.minus(position).getLength();
 			if (distance < minDistance) {
-				double maxFindDistance = Math.max(radiusOf(narjillo), MIN_FIND_RADIUS);
+				double maxFindDistance = Math.max(radiusOf(narjillo), maxValue);
 				if (distance < maxFindDistance) {
 					minDistance = distance;
 					result = narjillo;
@@ -63,7 +63,7 @@ public class Locator {
 		for (Thing thing : new LinkedList<>(ecosystem.getThings(label))) {
 			double distance = thing.getPosition().minus(position).getLength();
 			if (distance < minDistance) {
-				double maxFindDistance = Math.max(thing.getRadius(), MIN_FIND_RADIUS);
+				double maxFindDistance = Math.max(thing.getRadius(), MAX_FIND_DISTANCE);
 				if (distance < maxFindDistance) {
 					minDistance = distance;
 					result = thing;

@@ -240,7 +240,7 @@ public class PetriDish extends Application {
 			}
 
 			private void copyIsolatedDNAToClipboard(Vector clickedPoint) {
-				Narjillo narjillo = locator.findNarjilloNear(viewport.toEC(clickedPoint));
+				Narjillo narjillo = locator.findNarjilloNear(viewport.toEC(clickedPoint), Locator.MAX_FIND_DISTANCE);
 
 				if (narjillo == null)
 					return;

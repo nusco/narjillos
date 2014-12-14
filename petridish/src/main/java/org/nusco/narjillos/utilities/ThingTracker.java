@@ -21,9 +21,16 @@ public class ThingTracker {
 		if (!isTracking())
 			return;
 		
-		if (tracked.getLabel().equals("narjillo") && ((Narjillo) tracked).isDead()) {
-			stopTracking();
-			return;
+		if (tracked.getLabel().equals("narjillo")) {
+			Narjillo narjillo = (Narjillo) tracked;
+			if (narjillo.isDead()) {
+				Narjillo nextClosestNarjillo = locator.findNarjilloNear(narjillo.getPosition(), Double.MAX_VALUE);
+				if (nextClosestNarjillo == null) {
+					stopTracking();
+					return;
+				} else
+					startTracking(nextClosestNarjillo);
+			}
 		}
 		
 		if (tracked.getLabel().equals("egg")) {

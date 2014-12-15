@@ -15,11 +15,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
+* Click-and-drag to move with the mouse (instead of just clicking) °°°
+* More intuitive track/untrack mouse commands °°°
 * Versioning system to replace Git commit °°°
 * Downloadable build °°°
-* Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°°
-* Check speed under Linux °°°
-* Try scrolling/panning commands under Linux °°°
+* Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°
 * Issue warning when Java 8 is not installed °°
 * Zoo mode (switch from narjillo to narjillo) °
 * Externalize configurable parameters to YAML °

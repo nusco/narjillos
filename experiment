@@ -1,3 +1,3 @@
 ./prepare
 
-java -Xmx4096M -Xms4096M -cp core/build/install/core/lib/narjillos-0.0.1.jar:core/build/install/core/lib/gson-2.3.jar org.nusco.narjillos.Lab `git rev-parse --short HEAD` $1
+java -Xmx4096M -Xms4096M -cp build/install/narjillos/lib/narjillos-core-1.0.0.jar:build/install/narjillos/lib/gson-2.3.jar org.nusco.narjillos.Lab `git rev-parse --short HEAD` $1

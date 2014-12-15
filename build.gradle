@@ -32,7 +32,7 @@ allprojects {
 
 project(':core') {
 	jar {
-		baseName = 'narjillos_core'
+		baseName = 'narjillos-core'
 	}
 
 	dependencies {
@@ -42,7 +42,7 @@ project(':core') {
 
 project(':petridish') {
 	jar {
-		baseName = 'narjillos_petridish'
+		baseName = 'narjillos-petridish'
 		mainClassName = 'org.nusco.narjillos.PetriDish'
 	}
 

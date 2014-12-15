@@ -10,9 +10,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Pre-store angle when creating polar vector °°
-* Lazily reverse-calculate x and y in polar vectors °°
-* Optimize physics engines by passing angles instead of recalculating angles °°
 * Fix code for growing organs and bodies (currently weird and probably worth optimizing) °°
 * Adaptive graphics (disable effects when framerate plummets)
 

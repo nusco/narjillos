@@ -19,7 +19,7 @@ import org.nusco.narjillos.shared.physics.Vector;
  * 
  * translation_energy = mass * linear_velocity^2 / 2;
  */
-public class TranslationsPhysicsEngine implements PhysicsEngine {
+public class TranslationsPhysicsEngine {
 
 	private final double bodyMass;
 	private final List<Vector> linearMomenta = new LinkedList<>();
@@ -29,7 +29,6 @@ public class TranslationsPhysicsEngine implements PhysicsEngine {
 		this.bodyMass = bodyMass;
 	}
 
-	@Override
 	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
 		Vector linearVelocity = finalPositionInSpace.getDistanceFrom(initialPositionInSpace);
 		Vector linearMomentum = linearVelocity.by(mass);
@@ -41,9 +40,8 @@ public class TranslationsPhysicsEngine implements PhysicsEngine {
 		return getTotalLinearMomentum().by(-1.0 / bodyMass);
 	}
 
-	@Override
 	public double getEnergy() {
-		return translationEnergy * ENERGY_SCALE;
+		return translationEnergy * PhysicsConstants.ENERGY_SCALE;
 	}
 
 	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {

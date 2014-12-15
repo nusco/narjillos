@@ -3,9 +3,9 @@ package org.nusco.narjillos.creature.body.physics;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
  * The physics of rotations.
@@ -33,7 +33,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  *                  
  * rotation_energy = moment_of_inertia * angular_velocity^2 / 2;
  */
-public class RotationsPhysicsEngine implements PhysicsEngine {
+public class RotationsPhysicsEngine {
 
 	private final double bodyMass;
 	private final double bodyRadius;
@@ -47,9 +47,8 @@ public class RotationsPhysicsEngine implements PhysicsEngine {
 		this.centerOfMass = centerOfMass;
 	}
 
-	@Override
-	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
-		double angularVelocity = calculateAngularVelocity(initialPositionInSpace, finalPositionInSpace);
+	public void registerMovement(double initialAngle, double finalAngle, Segment finalPositionInSpace, double mass) {
+		double angularVelocity = calculateAngularVelocity(initialAngle, finalAngle);
 		double momentOfInertia = calculateMomentOfInertia(finalPositionInSpace, mass);
 		double angularMomentum = momentOfInertia * angularVelocity;
 		angularMomenta.add(angularMomentum);
@@ -60,17 +59,12 @@ public class RotationsPhysicsEngine implements PhysicsEngine {
 		return -getTotalAngularMomentum() / (bodyMass * bodyRadius * bodyRadius / 4);
 	}
 
-	@Override
 	public double getEnergy() {
-		return rotationEnergy * ENERGY_SCALE;
+		return rotationEnergy * PhysicsConstants.ENERGY_SCALE;
 	}
 
-	private double calculateAngularVelocity(Segment initialPositionInSpace, Segment finalPositionInSpace) {
-		try {
-			return finalPositionInSpace.getVector().getAngleWith(initialPositionInSpace.getVector());
-		} catch (ZeroVectorException e) {
-			return 0;
-		}
+	private double calculateAngularVelocity(double initialAngle, double finalAngle) {
+		return Angle.normalize(finalAngle - initialAngle);
 	}
 
  	private double calculateMomentOfInertia(Segment positionInSpace, double mass) {

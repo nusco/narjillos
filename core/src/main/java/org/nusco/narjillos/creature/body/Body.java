@@ -124,8 +124,12 @@ public class Body {
 			mass = getMass();
 
 		// Before any movement, store away the current center of mass and the
-		// positions of all body parts. These will come useful later.
+		// angles and positions of all body parts. These will come useful later.
+		// (Note that we could calculate the angles from the positions, but
+		// computing angles is expensive - so it's faster to store the angles
+		// away now that we already have them).
 		Vector initialCenterOfMass = calculateCenterOfMass();
+		Map<Organ, Double> initialAnglesOfOrgans = calculateAnglesOfOrgans();
 		Map<Organ, Segment> initialPositionsOfOrgans = calculatePositionsOfOrgans();
 
 		// This first step happens as if the body where in a vacuum.
@@ -138,7 +142,7 @@ public class Body {
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep the body's
 		// moment of inertia equal to zero.
-		double rotationEnergy = tick_step2_rotate(initialPositionsOfOrgans, initialCenterOfMass, mass);
+		double rotationEnergy = tick_step2_rotate(initialAnglesOfOrgans, initialPositionsOfOrgans, initialCenterOfMass, mass);
 
 		// The previous updates moved the center of mass. Remember, we're
 		// in a vacuum - so the center of mass shouldn't move. Let's put it
@@ -170,10 +174,10 @@ public class Body {
 		getHead().tick(0, angleToTarget);
 	}
 
-	private double tick_step2_rotate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
+	private double tick_step2_rotate(Map<Organ, Double> initialAnglesOfOrgans, Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
 		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (Organ bodyPart : organs)
-			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
+			forceField.registerMovement(initialAnglesOfOrgans.get(bodyPart), bodyPart.getAbsoluteAngle(), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().rotateBy(forceField.getRotation());
 		return forceField.getEnergy();
 	}
@@ -221,6 +225,13 @@ public class Body {
 		Map<Organ, Segment> result = new LinkedHashMap<>();
 		for (Organ organ : getOrgans())
 			result.put(organ, organ.getPositionInSpace());
+		return result;
+	}
+
+	private Map<Organ, Double> calculateAnglesOfOrgans() {
+		Map<Organ, Double> result = new LinkedHashMap<>();
+		for (Organ organ : getOrgans())
+			result.put(organ, organ.getAbsoluteAngle());
 		return result;
 	}
 

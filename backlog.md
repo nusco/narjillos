@@ -5,7 +5,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Viscosity to limit maximum speed (makes the current watchdog unnecessary) °°°
+* Viscosity to limit maximum speed (makes the current watchdog unnecessary) °°
 * Rewrite collision detection to be independent of max speed
 
 ###Speed Demon
@@ -15,10 +15,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Click-and-drag to move with the mouse (instead of just clicking) °°°
-* More intuitive track/untrack mouse commands °°°
 * Versioning system to replace Git commit °°°
-* Downloadable build °°°
+* Click-and-drag to move with the mouse (instead of just clicking) °°
+* More intuitive track/untrack mouse commands °°
 * Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°
 * Issue warning when Java 8 is not installed °°
 * Zoo mode (switch from narjillo to narjillo) °

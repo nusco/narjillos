@@ -1,5 +1,5 @@
 allprojects {
-	version = '1.0.0'
+	version = new File('version').getText()
 
 	apply plugin: 'java'
 	apply plugin: 'application'

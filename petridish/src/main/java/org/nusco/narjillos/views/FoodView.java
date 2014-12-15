@@ -13,7 +13,7 @@ class FoodView extends RoundObjectView {
 		super(food, FoodPiece.RADIUS);
 	}
 
-	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
+	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 
@@ -28,7 +28,9 @@ class FoodView extends RoundObjectView {
 
 		moveToPosition();
 		
-		getShape().setEffect(getEffects(zoomLevel, infraredOn));
+		if (effectsOn)
+			getShape().setEffect(getEffects(zoomLevel, infraredOn));
+		
 		return getShape();
 	}
 

@@ -25,7 +25,7 @@ class EggView extends ThingView {
 		shape = new Ellipse(Egg.RADIUS, Egg.RADIUS);
 	}
 
-	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
+	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 
@@ -35,7 +35,8 @@ class EggView extends ThingView {
 
 		shape.setFill(getFillColor(infraredOn));
 
-		shape.setEffect(getEffects(zoomLevel, infraredOn));
+		if (effectsOn)
+			shape.setEffect(getEffects(zoomLevel, infraredOn));
 
 		shape.getTransforms().clear();
 		Translate translation = new Translate(getThing().getPosition().x, getThing().getPosition().y);

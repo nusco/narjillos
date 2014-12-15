@@ -28,32 +28,32 @@ class NarjilloView extends ThingView {
 	}
 
 	@Override
-	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
+	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		group.getChildren().clear();
 
-		group.getChildren().addAll(getOrganNodes(zoomLevel, infraredOn, motionBlurOn));
+		group.getChildren().addAll(getOrganNodes(zoomLevel, infraredOn, effectsOn));
 		
-		Node mouthNode = mouthView.toNode(zoomLevel, infraredOn, motionBlurOn);
+		Node mouthNode = mouthView.toNode(zoomLevel, infraredOn, effectsOn);
 		if (mouthNode != null)
 			group.getChildren().add(mouthNode);
 
-		Node eyeNode = eyeView.toNode(zoomLevel, infraredOn, motionBlurOn);
+		Node eyeNode = eyeView.toNode(zoomLevel, infraredOn, effectsOn);
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
 
 		if (VisualDebugger.DEBUG)
-			group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn, motionBlurOn));
+			group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn, effectsOn));
 
-		if (!group.getChildren().isEmpty())
+		if (effectsOn && !group.getChildren().isEmpty())
 			group.setEffect(getEffects(zoomLevel, infraredOn));
 
 		return group;
 	}
 
-	private List<Node> getOrganNodes(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
+	private List<Node> getOrganNodes(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		List<Node> result = new LinkedList<>();
 		for (OrganView view : organViews) {
-			Node node = view.toNode(zoomLevel, infraredOn, motionBlurOn);
+			Node node = view.toNode(zoomLevel, infraredOn, effectsOn);
 			if (node != null)
 				result.add(node);
 		}

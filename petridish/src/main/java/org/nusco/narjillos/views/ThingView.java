@@ -23,16 +23,16 @@ abstract class ThingView {
 		return thing;
 	}
 
-	public final Node toNode(Viewport viewport, boolean infraredOn, boolean motionBlurOn) {
+	public final Node toNode(Viewport viewport, boolean infraredOn, boolean effectsOn) {
 		if (!isVisible(viewport))
 			return null;
 		
-		return toNode(viewport.getZoomLevel(), infraredOn, motionBlurOn);
+		return toNode(viewport.getZoomLevel(), infraredOn, effectsOn);
 	}
 	
 	protected abstract boolean isVisible(Viewport viewport);
 
-	public abstract Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn);
+	public abstract Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn);
 	
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("narjillo"))

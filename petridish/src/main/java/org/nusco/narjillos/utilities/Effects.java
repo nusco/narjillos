@@ -1,10 +1,10 @@
 package org.nusco.narjillos.utilities;
 
-public enum MotionBlur {
+public enum Effects {
 	ON,
 	OFF;
 
-	public MotionBlur toggle() {
+	public Effects toggle() {
 		return (this == ON) ? OFF : ON;
 	}
 }

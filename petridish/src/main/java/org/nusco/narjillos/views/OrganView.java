@@ -52,7 +52,7 @@ class OrganView extends ThingView {
 		return result;
 	}
 
-	public Node toNode(double zoomLevel, boolean infraredOn, boolean motionBlurOn) {
+	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		if (organ.isAtrophic())
 			return null;
 
@@ -87,15 +87,17 @@ class OrganView extends ThingView {
 		rectangle.getTransforms().add(new Rotate(angle, OVERLAP, widthCenter));
 
 		rectangle.setEffect(null);
-		if (motionBlurOn)
-			addMotionBlur(zoomLevel);
+		addMotionBlur(zoomLevel, effectsOn);
 		// store position for motion blur in the next frame
 		previousOrganPosition = organ.getPositionInSpace();
 
 		return rectangle;
 	}
 
-	private void addMotionBlur(double zoomLevel) {
+	private void addMotionBlur(double zoomLevel, boolean effectsOn) {
+		if (!effectsOn)
+			return;
+		
 		if (zoomLevel < MOTION_BLUR_DISTANCE)
 			return;
 

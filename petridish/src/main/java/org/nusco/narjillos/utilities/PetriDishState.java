@@ -9,7 +9,7 @@ public class PetriDishState {
 
 	private Light light = Light.ON;
 	private Speed speed = Speed.REALTIME;
-	private MotionBlur motionBlur = MotionBlur.ON;
+	private Effects effects = Effects.ON;
 
 	public Light getLight() {
 		return light;
@@ -65,11 +65,11 @@ public class PetriDishState {
 			return FRAMES_PERIOD_WITH_LIGHT_ON;
 	}
 
-	public void toggleMotionBlur() {
-		motionBlur = motionBlur.toggle();
+	public void toggleEffects() {
+		effects = effects.toggle();
 	}
 
-	public MotionBlur getMotionBlur() {
-		return motionBlur;
+	public Effects getEffects() {
+		return effects;
 	}
 }

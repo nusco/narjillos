@@ -29,7 +29,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Versioning system to replace Git commit °
 * Externalize configurable parameters to YAML °
 * Lock on food
-* Command-line argument to disable graphic effects on slow computers
 * Tutorial
 * Nice status bar
 * GUI

@@ -26,7 +26,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 import org.nusco.narjillos.utilities.Light;
-import org.nusco.narjillos.utilities.MotionBlur;
+import org.nusco.narjillos.utilities.Effects;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Viewport;
 
@@ -80,7 +80,7 @@ public class EcosystemView {
 			return darkness;
 
 		boolean isInfrared = petriDishState.getLight() == Light.INFRARED;
-		boolean hasMotionBlur = petriDishState.getMotionBlur() == MotionBlur.ON;
+		boolean effectsOn = petriDishState.getEffects() == Effects.ON;
 
 		Group result = new Group();
 
@@ -94,16 +94,17 @@ public class EcosystemView {
 			result.getChildren().add(speckles);
 		}
 
-		result.getChildren().add(getThingsGroup(isInfrared, hasMotionBlur));
+		result.getChildren().add(getThingsGroup(isInfrared, effectsOn));
 
-		setZoomLevelEffects(result);
+		if (effectsOn)
+			setZoomLevelEffects(result);
 		
 		return result;
 	}
 
-	private Group getThingsGroup(boolean infraredOn, boolean motionBlurOn) {
+	private Group getThingsGroup(boolean infraredOn, boolean effectsOn) {
 		Group things = new Group();
-		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn, motionBlurOn));
+		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn, effectsOn));
 
 		if (VisualDebugger.DEBUG)
 			things.getChildren().add(getVisualDebuggingSegments());
@@ -142,18 +143,18 @@ public class EcosystemView {
 		group.setEffect(getBlurEffect(zoomLevel));
 	}
 
-	private List<Node> getNodesForThingsInOrder(boolean infraredOn, boolean motionBlurOn) {
+	private List<Node> getNodesForThingsInOrder(boolean infraredOn, boolean effectsOn) {
 		List<Node> result = new LinkedList<>();
-		addNodesFor("food_piece", result, infraredOn, motionBlurOn);
-		addNodesFor("narjillo", result, infraredOn, motionBlurOn);
-		addNodesFor("egg", result, infraredOn, motionBlurOn);
+		addNodesFor("food_piece", result, infraredOn, effectsOn);
+		addNodesFor("narjillo", result, infraredOn, effectsOn);
+		addNodesFor("egg", result, infraredOn, effectsOn);
 		return result;
 	}
 
-	private void addNodesFor(String thingLabel, List<Node> result, boolean infraredOn, boolean motionBlurOn) {
+	private void addNodesFor(String thingLabel, List<Node> result, boolean infraredOn, boolean effectsOn) {
 		for (ThingView view : getThingViews()) {
 			if (view.getThing().getLabel().equals(thingLabel)) {
-				Node node = view.toNode(viewport, infraredOn, motionBlurOn);
+				Node node = view.toNode(viewport, infraredOn, effectsOn);
 				if (node != null)
 					result.add(node);
 			}

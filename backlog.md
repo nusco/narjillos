@@ -16,12 +16,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Gamer
 
 * Versioning system to replace Git commit °°°
-* Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°°
-* User batches (don't require git) °°°
 * Downloadable build °°°
+* Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°°
 * Check speed under Linux °°°
 * Try scrolling/panning commands under Linux °°°
-* Batch to run on Windows °°°
+* Issue warning when Java 8 is not installed °°
 * Zoo mode (switch from narjillo to narjillo) °
 * Externalize configurable parameters to YAML °
 * Tutorial

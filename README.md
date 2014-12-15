@@ -1,6 +1,6 @@
 #Narjillos
 
-Narjillos are artificial creatures that mutate and evolve in a virtual microscope dish, under the pressure of natural selection. They don't have any predefined strategy for "swimming", apart from swinging their bodies around in response to an external target. Yet, they tend to evolve good swimming behaviours over time. See the [site](http://nusco.github.io/narjillos/) for more.
+Narjillos are artificial creatures that mutate and evolve in a virtual microscope dish, under the pressure of natural selection. They swim to reach food, but they don't really know what "swimming" means - they just flaunt their bodies around. Yet, they evolve good swimming behaviours over time.
 
-![Take a peek](./doc/narjillos.jpg)
+See the [site](http://nusco.github.io/narjillos/) for more.
 

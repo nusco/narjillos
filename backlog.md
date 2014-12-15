@@ -57,6 +57,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Get closer to show eggs at start °°
+* Disable input until viewport has stabilized at start °
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
 * Make food more visible in normal view

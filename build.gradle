@@ -27,7 +27,7 @@ allprojects {
 
   createStartScript('narjillos', project, 'org.nusco.narjillos.PetriDish', [])
   createStartScript('petri', project, 'org.nusco.narjillos.PetriDish', ['-Xmx4096M', '-Xms4096M'])
-  createStartScript('experiment', project, 'org.nusco.narjillos.experiment.Experiment', ['-Xmx4096M', '-Xms4096M'])
+  createStartScript('experiment', project, 'org.nusco.narjillos.Lab', ['-Xmx4096M', '-Xms4096M'])
 }
 
 project(':core') {

@@ -60,8 +60,6 @@ public class ThingTracker {
 
 		if (thing == null)
 			stopTracking();
-		else
-			startTracking(thing);
 
 		viewport.flyToTargetEC(position);
 	}

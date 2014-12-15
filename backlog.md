@@ -5,12 +5,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Viscosity to limit maximum speed (makes the current watchdog unnecessary) °
+* Viscosity to limit maximum speed (makes the current watchdog unnecessary) °°°
 * Rewrite collision detection to be independent of max speed
 
 ###Speed Demon
 
-* Parallelize rendering in petri instead of parallelizing calculations, for smoother framerates °°
 * Pre-store angle when creating polar vector °°
 * Lazily reverse-calculate x and y in polar vectors °°
 * Optimize physics engines by passing angles instead of recalculating angles °°
@@ -19,16 +18,15 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Zoo mode (switch from narjillo to narjillo) °°°
-* Require double-click to start tracking °°°
-* Real arguments parsing (use --no-persistence together with other switches) °°°
+* Versioning system to replace Git commit °°°
+* Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°°
+* User batches (don't require git) °°°
 * Downloadable build °°°
-* Check speed under Linux °°
-* Try scrolling/panning commands under Linux °°
-* Batch to run on Windows °°
-* Versioning system to replace Git commit °
+* Check speed under Linux °°°
+* Try scrolling/panning commands under Linux °°°
+* Batch to run on Windows °°°
+* Zoo mode (switch from narjillo to narjillo) °
 * Externalize configurable parameters to YAML °
-* Lock on food
 * Tutorial
 * Nice status bar
 * GUI
@@ -50,10 +48,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Single zipped savefile for both experiment and genepool °°
+* Generate eclipse/idea files from Gradle °
+* Check version commit on experiment startup °
+* Automatically purge experiment temp file °
+* Automatically recover missing experiment from temp file °
 * View stats for followed narjillo (age, energy, times eaten, genome...)
-* Check git commit on experiment startup
-* Automatically purge experiment temp file
-* Automatically recover missing experiment from temp file
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
 
 ###Ecologist

@@ -21,6 +21,7 @@ public class Lab {
 	private final Experiment experiment;
 	private GenePool genePool = new GenePool();
 	private volatile boolean isSaving = false;
+	private volatile boolean isTerminated = false;
 
 	public Lab(String... args) {
 		DNA.setObserver(genePool);
@@ -46,6 +47,9 @@ public class Lab {
 	}
 
 	public boolean tick() {
+		if (isTerminated)
+			return false;
+		
 		boolean thereAreSurvivors = experiment.tick();
 		if (experiment.getTicksChronometer().getTotalTicks() % PARSE_INTERVAL == 0)
 			executePerodicOperations();
@@ -156,6 +160,7 @@ public class Lab {
 			} catch (InterruptedException e) {
 			}
 		}
+		isTerminated = true;
 		String finalReport = experiment.terminate();
 		System.out.println(finalReport);
 	}

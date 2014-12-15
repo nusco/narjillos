@@ -8,7 +8,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -18,7 +17,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.FastMath;
@@ -53,16 +51,16 @@ public class PetriDish extends Application {
 	private Locator locator;
 	private ThingTracker tracker;
 
-	private volatile boolean stopThreads = false;
 	private Thread modelThread;
+	private Thread viewThread;
+	private volatile boolean stopThreads = false;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		FastMath.setUp();
+		Platform.setImplicitExit(true);
 		
-		modelThread = startModelThread(programArguments);
-
-		registerShutdownHooks(primaryStage);
+		startModelThread(programArguments);
 
 		System.gc(); // minimize GC during the first stages on animation
 
@@ -71,7 +69,7 @@ public class PetriDish extends Application {
 		tracker = new ThingTracker(viewport, locator);
 		
 		final Group root = new Group();
-		startViewTask(root);
+		startViewThread(root);
 
 		Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 		scene.setOnKeyPressed(createKeyboardHandler());
@@ -84,10 +82,10 @@ public class PetriDish extends Application {
 		primaryStage.show();
 	}
 
-	private Thread startModelThread(final String[] arguments) {
-		final boolean[] modelThreadRunning = new boolean[] { false };
+	private void startModelThread(final String[] arguments) {
+		final boolean[] isModelInitialized = new boolean[] { false };
 
-		Thread modelThread = new Thread() {
+		modelThread = new Thread() {
 			@Override
 			public void run() {
 				// We need to initialize the lab inside this thread, because
@@ -95,29 +93,28 @@ public class PetriDish extends Application {
 				// from different threads.
 				lab = new Lab(arguments);
 
-				modelThreadRunning[0] = true;
+				isModelInitialized[0] = true;
 
 				while (!stopThreads) {
 					long startTime = System.currentTimeMillis();
 					if (state.getSpeed() != Speed.PAUSED)
 						if (!lab.tick())
-							System.exit(0);
+							Platform.exit();
 					waitFor(state.getSpeed().getTicksPeriod(), startTime);
 				}
 			}
 		};
 
 		modelThread.start();
-		while (!modelThreadRunning[0])
+		while (!isModelInitialized[0])
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 			}
-		return modelThread;
 	}
 
-	private Task<Boolean> startViewTask(final Group root) {
-		Task<Boolean> viewThread = new Task<Boolean>() {
+	private void startViewThread(final Group root) {
+		viewThread = new Thread() {
 			private final Chronometer framesChronometer = new Chronometer();
 			private volatile boolean renderingFinished = false;
 
@@ -125,29 +122,34 @@ public class PetriDish extends Application {
 			private final EcosystemView ecosystemView = new EcosystemView(lab.getEcosystem(), viewport, state);
 			private StatusBarView statusBarView = new StatusBarView(lab);
 
-			@Override
-			public Boolean call() throws Exception {
-				while (true) {
+			public void run() {
+				while (!stopThreads) {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
 					tracker.track();
-
 					ecosystemView.tick();
 
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
+							if (stopThreads)
+								return;
+							
 							update(root);
 							renderingFinished = true;
 						}
 					});
+
 					waitFor(state.getFramesPeriod(), startTime);
-					while (!renderingFinished)
-						Thread.sleep(state.getFramesPeriod() * 2);
+					while (!renderingFinished && !stopThreads)
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+						}
 					framesChronometer.tick();
 				}
-			}
+			};
 
 			private void update(final Group root) {
 				root.getChildren().clear();
@@ -158,10 +160,7 @@ public class PetriDish extends Application {
 				root.getChildren().add(statusInfo);
 			}
 		};
-		Thread updateGUI = new Thread(viewThread);
-		updateGUI.setDaemon(true);
-		updateGUI.start();
-		return viewThread;
+		viewThread.start();
 	}
 
 	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
@@ -267,28 +266,18 @@ public class PetriDish extends Application {
 			}
 		};
 	}
-	
-	private void registerShutdownHooks(Stage primaryStage) {
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				stopThreads = true;
-				while (modelThread.isAlive())
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-					}
-				lab.terminate();
-				Platform.exit();
-			}
-		});
+
+	@Override
+	public void stop() throws Exception {
+		lab.terminate();
 		
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		    @Override
-		    public void handle(WindowEvent event) {
-		        System.exit(0);
-		    }
-		});
+		// exit threads cleanly to avoid rare exception
+		// when exiting Java FX application
+		stopThreads = true;
+		while (modelThread.isAlive());
+		while (viewThread.isAlive());
+
+		Platform.exit();
 	}
 
 	public static void main(String... args) throws Exception {

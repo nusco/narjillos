@@ -23,7 +23,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Require double-click to start tracking °°°
 * Real arguments parsing (use --no-persistence together with other switches) °°°
 * Downloadable build °°°
-* Remove the stupid termination exception in Java FX °°
 * Check speed under Linux °°
 * Try scrolling/panning commands under Linux °°
 * Batch to run on Windows °°

@@ -26,7 +26,7 @@ public class DeterministicExperimentTest {
 	@Test
 	public void experimentsAreDeterministic() {
 		// Run an experiment for a few ticks
-		Experiment experiment1 = new Experiment(1234, "x");
+		Experiment experiment1 = new Experiment(1234, "deterministic_experiment_test");
 		for (int i = 0; i < CYCLES; i++)
 			experiment1.tick();
 

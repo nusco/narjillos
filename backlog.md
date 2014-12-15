@@ -15,7 +15,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* Versioning system to replace Git commit °°°
 * Click-and-drag to move with the mouse (instead of just clicking) °°
 * More intuitive track/untrack mouse commands °°
 * Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°
@@ -42,9 +41,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
+* Check version on experiment startup °°
 * Single zipped savefile for both experiment and genepool °°
 * Generate eclipse/idea files from Gradle °
-* Check version commit on experiment startup °
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
 * View stats for followed narjillo (age, energy, times eaten, genome...)

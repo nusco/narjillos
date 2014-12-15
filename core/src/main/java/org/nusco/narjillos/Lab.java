@@ -23,9 +23,9 @@ public class Lab {
 	private volatile boolean isSaving = false;
 	private volatile boolean isTerminated = false;
 
-	public Lab(String... args) {
+	public Lab(String applicationVersion, String... args) {
 		DNA.setObserver(genePool);
-		experiment = initialize(args);
+		experiment = initialize(applicationVersion, args);
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
 	}
@@ -91,37 +91,38 @@ public class Lab {
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
 
-	public Experiment initialize(String... args) {
-		String appVersion = args.length == 0 ? "unknown" : args[0];
-		String secondArgument = args.length < 2 ? null : args[1];
+	private Experiment initialize(String applicationVersion, String... args) {
+		// TODO: real argument parsing
+		String argument = args.length == 0 ? null : args[0];
 
-		Experiment experiment = createExperiment(secondArgument, appVersion);
+		Experiment experiment = createExperiment(applicationVersion, argument);
 		DNA.setObserver(genePool);
 		return experiment;
 	}
 
-	private Experiment createExperiment(String argument, String appVersion) {
+	private Experiment createExperiment(String applicationVersion, String argument) {
+		// TODO: replace with real argument parsing
 		if (argument == null) {
 			System.out.println("Starting new experiment with random seed");
 			persistent = true;
-			return new Experiment(generateRandomSeed(), appVersion, null);
+			return new Experiment(generateRandomSeed(), applicationVersion, null);
 		} else if (argument.equals("no-persistence")) {
 			System.out.println("Starting new non-persistent experiment with random seed");
-			return new Experiment(generateRandomSeed(), appVersion, null);
+			return new Experiment(generateRandomSeed(), applicationVersion, null);
 		} else if (isInteger(argument)) {
 			long seed = Long.parseLong(argument);
 			System.out.println("Starting experiment " + seed + " from scratch");
 			persistent = true;
-			return new Experiment(seed, appVersion, null);
+			return new Experiment(seed, applicationVersion, null);
 		} else if (argument.endsWith(".nrj")) {
 			DNA dna = Persistence.loadDNA(argument);
 			System.out.println("Observing DNA " + dna);
 			persistent = true;
-			return new Experiment(generateRandomSeed(), appVersion, dna);
+			return new Experiment(generateRandomSeed(), applicationVersion, dna);
 		} else if (argument.startsWith("{")) {
 			System.out.println("Observing DNA " + argument);
 			persistent = true;
-			return new Experiment(generateRandomSeed(), appVersion, new DNA(argument));
+			return new Experiment(generateRandomSeed(), applicationVersion, new DNA(argument));
 		} else {
 			String experimentId = stripFileExtension(argument);
 			System.out.println("Picking up experiment from " + experimentId + ".exp");
@@ -165,10 +166,9 @@ public class Lab {
 		System.out.println(finalReport);
 	}
 
-	// arguments: [<git_commit>, <random_seed | dna_file | dna_document |
-	// experiment_file>]
+	// arguments: [<random_seed | dna_file | dna_document | experiment_file>]
 	public static void main(String... args) {
-		final Lab lab = new Lab(args);
+		final Lab lab = new Lab(Persistence.readApplicationVersion(), args);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

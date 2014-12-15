@@ -20,12 +20,12 @@ public class Experiment {
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
 
-	public Experiment(long seed, String appVersion) {
-		this(seed, appVersion, null);
+	public Experiment(long seed, String version) {
+		this(seed, version, null);
 	}
 
-	public Experiment(long seed, String appVersion, DNA dna) {
-		id = "" + seed + "-" + appVersion;
+	public Experiment(long seed, String version, DNA dna) {
+		id = "" + seed + "-" + version;
 		if (dna == null)
 			System.out.println("Experiment " + id);
 		timeStamp();

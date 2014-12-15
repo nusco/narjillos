@@ -33,6 +33,14 @@ public class Persistence {
 		return new DNA(load(fileName));
 	}
 
+	public static String readApplicationVersion() {
+		try {
+			return Files.readAllLines(Paths.get("version")).get(0);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private static String load(String fileName) {
 		try {
 			byte[] encoded = Files.readAllBytes(Paths.get(fileName));

@@ -15,6 +15,7 @@ import org.nusco.narjillos.genomics.GenePool;
 public class Persistence {
 
 	public static Experiment loadExperiment(String id) {
+		checkVersion(id);
 		Experiment result = JSON.fromJson(load(id + ".exp"), Experiment.class);
 		result.timeStamp();
 		return result;
@@ -68,6 +69,14 @@ public class Persistence {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static void checkVersion(String id) {
+		String experimentVersion = id.substring(id.indexOf("-") + 1);
+		System.out.println("VVVV: " + experimentVersion);
+		String applicationVersion = readApplicationVersion();
+		if (!experimentVersion.equals(applicationVersion))
+			System.out.println("WARNING: This experiment was started with version " + experimentVersion + ", not the current " + applicationVersion + ". The results might be non-deterministic.");
 	}
 
 	private static void moveFile(String source, String destination) throws IOException {

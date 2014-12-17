@@ -41,7 +41,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Check version on experiment startup °°
 * Single zipped savefile for both experiment and genepool °°
 * Generate eclipse/idea files from Gradle °
 * Automatically purge experiment temp file °

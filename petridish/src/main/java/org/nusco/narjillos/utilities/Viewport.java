@@ -15,7 +15,7 @@ public class Viewport {
 	static final double MAX_INITIAL_SIZE_SC = 800;
 	static final double MAX_ZOOM = 2;
 	private static final double ZOOM_VELOCITY = 1.03;
-	private static final double[] ZOOM_CLOSEUP_LEVELS = new double[] { 0.15, 0.6 };
+	static final double[] ZOOM_CLOSEUP_LEVELS = new double[] { 0.15, 0.6 };
 
 	private final double ecosystemSizeEC;
 	private Vector sizeSC;
@@ -25,8 +25,8 @@ public class Viewport {
 	private Vector targetCenterEC;
 	private double targetZoomLevel;
 	private final double fitAllZoomLevel;
-	private final double minZoomLevel;
 	private volatile boolean userIsZooming = false;
+	final double minZoomLevel;
 	
 	public Viewport(Ecosystem ecosystem) {
 		this.ecosystemSizeEC = ecosystem.getSize();
@@ -38,7 +38,8 @@ public class Viewport {
 		minZoomLevel = fitAllZoomLevel / 2.5;
 		
 		centerOnEcosystem();
-		zoomToFit();
+		zoomLevel = minZoomLevel;
+		flyToNextZoomCloseupLevel();
 	}
 
 	private Vector getEcosystemCenterEC() {
@@ -90,11 +91,6 @@ public class Viewport {
 			targetCenterEC = getEcosystemCenterEC();
 
 		setZoomLevel(zoomLevel / ZOOM_VELOCITY);
-	}
-
-	private void zoomToFit() {
-		targetZoomLevel = fitAllZoomLevel;
-		zoomLevel = targetZoomLevel / 10;
 	}
 
 	private void centerOnEcosystem() {
@@ -152,7 +148,7 @@ public class Viewport {
 	public void flyToMaxZoomCloseupLevel() {
 		targetZoomLevel = getMaxZoomLevel();
 	}
-
+	
 	private double getMaxZoomLevel() {
 		return ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
 	}

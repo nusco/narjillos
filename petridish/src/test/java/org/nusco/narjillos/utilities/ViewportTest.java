@@ -52,6 +52,7 @@ public class ViewportTest {
 	@Test
 	public void hasItsUpperCornerInTheOriginByDefault() {
 		Viewport viewport = new Viewport(new Ecosystem(100));
+		viewport.setZoomLevel(1);
 		stabilize(viewport);
 		
 		assertMoreOrLessEquals(Vector.ZERO, viewport.getPositionEC());
@@ -61,6 +62,7 @@ public class ViewportTest {
 	public void canBeRecentered() {
 		Viewport viewport = new Viewport(new Ecosystem(800));
 		viewport.setSizeSC(Vector.cartesian(100, 400));
+		viewport.setZoomLevel(1);
 		stabilize(viewport);
 		
 		assertMoreOrLessEquals(Vector.cartesian(350, 199), viewport.getPositionEC());
@@ -75,26 +77,26 @@ public class ViewportTest {
 	}
 
 	@Test
-	public void hasADefaultZoomLevelOfOne() {
-		Viewport viewport = new Viewport(new Ecosystem(100));
-		stabilize(viewport);
-
-		assertEquals(1, viewport.getZoomLevel(), 0.01);
+	public void zoomsFromALongDistanceAtTheBeginning() {
+		final long ecosystemSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
+		Viewport viewport = new Viewport(new Ecosystem(ecosystemSize));
+		
+		assertEquals(viewport.minZoomLevel, viewport.getZoomLevel(), 0.01);
 	}
 
 	@Test
-	public void zoomsToViewTheEntireEcosystemAtTheBeginning() {
-		final long ecosystemSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
-		Viewport viewport = new Viewport(new Ecosystem(ecosystemSize));
+	public void zoomsToTheMinimumCloseupLevelAtTheBeginning() {
+		Viewport viewport = new Viewport(new Ecosystem(100));
 		stabilize(viewport);
-		
-		assertEquals(0.1, viewport.getZoomLevel(), 0.01);
+
+		assertEquals(Viewport.ZOOM_CLOSEUP_LEVELS[0], viewport.getZoomLevel(), 0.01);
 	}
 
 	@Test
 	public void resizingItDoesNotChangeTheZoomLevel() {
 		final long ecosystemSize = (long)(Viewport.MAX_INITIAL_SIZE_SC * 10);
 		Viewport viewport = new Viewport(new Ecosystem(ecosystemSize));
+		viewport.setZoomLevel(0.1);
 		stabilize(viewport);
 		
 		viewport.setSizeSC(Vector.cartesian(100, 10000));
@@ -130,6 +132,7 @@ public class ViewportTest {
 		Viewport viewport = new Viewport(new Ecosystem(300));
 		viewport.setSizeSC(Vector.cartesian(50, 60));
 		viewport.setCenterEC(Vector.cartesian(100, 200));
+		viewport.setZoomLevel(1);
 		stabilize(viewport);
 		assertMoreOrLessEquals(Vector.cartesian(75, 170), viewport.getPositionEC());
 		

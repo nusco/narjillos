@@ -42,7 +42,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Single zipped savefile for both experiment and genepool °°
-* Generate eclipse/idea files from Gradle °
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
 * View stats for followed narjillo (age, energy, times eaten, genome...)

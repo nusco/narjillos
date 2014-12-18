@@ -3,6 +3,20 @@ allprojects {
 
 	apply plugin: 'java'
 	apply plugin: 'application'
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
+
+  sourceCompatibility = JavaVersion.VERSION_1_8
+  targetCompatibility = JavaVersion.VERSION_1_8
+
+	eclipse {
+	  jdt {
+		  // Eclipse will use JDK 1.8 if it's been configured for that,
+			// but it's still stuck in a Java 1.7 world
+			sourceCompatibility = JavaVersion.VERSION_1_7
+  		targetCompatibility = JavaVersion.VERSION_1_7
+	  }
+	}
 
 	startScripts.enabled = false
 	run.enabled = false
@@ -31,6 +45,9 @@ allprojects {
 }
 
 project(':core') {
+  sourceCompatibility = JavaVersion.VERSION_1_8
+  targetCompatibility = JavaVersion.VERSION_1_8
+
 	jar {
 		baseName = 'narjillos-core'
 	}

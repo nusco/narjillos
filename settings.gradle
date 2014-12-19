@@ -1,1 +1,1 @@
-include 'core', 'petridish'
+include 'narjillos-core', 'narjillos-petridish'

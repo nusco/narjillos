@@ -44,7 +44,7 @@ allprojects {
   createStartScript('experiment', project, 'org.nusco.narjillos.Lab', ['-Xmx4096M', '-Xms4096M'])
 }
 
-project(':core') {
+project(':narjillos-core') {
   sourceCompatibility = JavaVersion.VERSION_1_8
   targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -57,14 +57,14 @@ project(':core') {
 	}
 }
 
-project(':petridish') {
+project(':narjillos-petridish') {
 	jar {
 		baseName = 'narjillos-petridish'
 		mainClassName = 'org.nusco.narjillos.PetriDish'
 	}
 
 	dependencies {
-		compile project(':core')
+		compile project(':narjillos-core')
 	}
 }
 

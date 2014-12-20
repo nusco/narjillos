@@ -1,3 +1,0 @@
-./prepare
-
-java -cp narjillos-core/build/classes/main org.nusco.narjillos.PerformanceTest

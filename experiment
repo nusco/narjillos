@@ -1,3 +1,0 @@
-./prepare
-
-java -Xmx4096M -Xms4096M -cp narjillos-core/build/classes/main:narjillos-core/build/install/narjillos-core/lib/gson-2.3.jar org.nusco.narjillos.Lab $1

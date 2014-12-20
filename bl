@@ -1,3 +1,0 @@
-# Shows the backlog entries in priority order. Run with a number to limit output.
-
-java -cp narjillos-core/build/classes/main org.nusco.narjillos.Backlog $1

@@ -1,2 +1,0 @@
-# ensure that the code is up to date
-./gradlew --quiet install

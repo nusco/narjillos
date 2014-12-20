@@ -45,9 +45,6 @@ allprojects {
 }
 
 project(':narjillos-core') {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
-
 	jar {
 		baseName = 'narjillos-core'
 	}
@@ -87,3 +84,35 @@ def createStartScript(name, project, mainClass, jvmArgs) {
     }
   }
 }
+
+task(experiment, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.Lab'
+  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  maxHeapSize "4096M"
+}
+
+task(petri, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.PetriDish'
+  classpath = project('narjillos-petridish').sourceSets.main.runtimeClasspath
+  maxHeapSize "4096M"
+}
+
+task(perftest, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.PerformanceTest'
+  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+}
+
+task(backlog, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.Backlog'
+  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+	args "20"
+}
+
+task(bl, dependsOn: 'backlog')
+
+task(deterministicExperimentTest, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.DeterministicExperimentTest'
+  classpath = project('narjillos-core').sourceSets.test.runtimeClasspath
+}
+
+task prepareRelease(dependsOn: ['deterministicExperimentTest', 'installApp'])

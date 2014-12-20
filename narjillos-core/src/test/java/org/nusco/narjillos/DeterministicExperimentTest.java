@@ -14,20 +14,26 @@ import org.nusco.narjillos.serializer.JSON;
  * 
  * To check whether that's true, we run two experiments for a few thousands
  * cycles and compare the results. This is not particularly safe, because bugs
- * with non-deterministic behavior may only become visible after many thousands
- * of cycles (especially because the experiment must have the time to see eggs
- * hatch, and narjillos grow enough to get some food). Every now and then, it's
- * worth trying this test with 10_000 cycles , just in case.
+ * with non-deterministic behavior may only become visible after tens of
+ * thousands of cycles (especially because the experiment must have the time to
+ * see eggs hatch, and narjillos grow enough to get some food). Before releases,
+ * it's worth running this test from the main(), which uses a much higher number
+ * of cycles, but takes minutes.
  */
 public class DeterministicExperimentTest {
 
-	private static final int CYCLES = 3_000;
-
 	@Test
 	public void experimentsAreDeterministic() {
+		int CYCLES = 2000;
+		runTest(CYCLES);
+	}
+
+	public static void runTest(int cycles) {
+		int halfCycles = cycles / 2;
+		
 		// Run an experiment for a few ticks
 		Experiment experiment1 = new Experiment(1234, "deterministic_experiment_test");
-		for (int i = 0; i < CYCLES; i++)
+		for (int i = 0; i < halfCycles; i++)
 			experiment1.tick();
 
 		// Serialize and deserialize the experiment.
@@ -38,14 +44,14 @@ public class DeterministicExperimentTest {
 		// Reset the DNA serial in between, so that we get the same DNA ids for
 		// both experiments.
 		long lastDNAId = DNA.getSerial();
-		for (int i = 0; i < CYCLES; i++)
+		for (int i = 0; i < halfCycles; i++)
 			experiment1.tick();
 		DNA.setSerial(lastDNAId);
-		for (int i = 0; i < CYCLES; i++)
+		for (int i = 0; i < halfCycles; i++)
 			experiment2.tick();
 
-		// Reset the running time (it's OK for it to differ between
-		// experiments).
+		// Reset the running time (which is generally different between
+		// experiments, and that's OK).
 		experiment1.resetTotalRunningTime();
 		experiment2.resetTotalRunningTime();
 
@@ -54,5 +60,19 @@ public class DeterministicExperimentTest {
 		String json1 = JSON.toJson(experiment1, Experiment.class);
 		String json2 = JSON.toJson(experiment2, Experiment.class);
 		assertEquals(json1, json2);
+	}
+
+	// This test takes almost 10 minutes. Run before packaging a release for
+	// complete peace of mind.
+	public static void main(String[] args) {
+		System.out.println("Running long deterministic experiment test. This will take a few minutes...");
+		long startTime = System.currentTimeMillis();
+		int cycles = 30_000;
+
+		runTest(cycles);
+
+		long totalTime = (System.currentTimeMillis() - startTime) / 1000;
+		System.out.println("OK! (" + cycles + " cycles in " + totalTime +  " seconds)");
+		System.exit(0); // otherwise Gradle won't exit (god knows why)
 	}
 }

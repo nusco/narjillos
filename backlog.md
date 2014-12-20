@@ -6,6 +6,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Physicist
 
 * Viscosity to limit maximum speed (makes the current watchdog unnecessary) °°
+* Fix sketchy collision detection °
 * Rewrite collision detection to be independent of max speed
 
 ###Speed Demon
@@ -28,6 +29,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Genetist
 
 * Ancestry Browser
+* Duplicate during mutation instead of mirroring (to favour emergent complexity)
 * "Skip" instruction in body plan
 * "Repeat" instruction in body plan
 * DNA diff during ancestry analysis
@@ -41,7 +43,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Single zipped savefile for both experiment and genepool °°
+* Fix deterministic experiment °°°
+* Enable passing entire id to Lab instead of just the experiment seed °
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
 * View stats for followed narjillo (age, energy, times eaten, genome...)

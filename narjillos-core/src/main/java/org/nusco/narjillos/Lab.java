@@ -5,7 +5,6 @@ import java.util.Random;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.Persistence;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
@@ -19,12 +18,10 @@ public class Lab {
 	private static final int PARSE_INTERVAL = 10000;
 	private static boolean persistent = false;
 	private final Experiment experiment;
-	private GenePool genePool = new GenePool();
 	private volatile boolean isSaving = false;
 	private volatile boolean isTerminated = false;
 
 	public Lab(String applicationVersion, String... args) {
-		DNA.setObserver(genePool);
 		experiment = initialize(applicationVersion, args);
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
@@ -68,7 +65,7 @@ public class Lab {
 
 		if (persistent) {
 			isSaving = true;
-			Persistence.save(experiment, genePool);
+			Persistence.save(experiment);
 			isSaving = false;
 		}
 
@@ -94,10 +91,7 @@ public class Lab {
 	private Experiment initialize(String applicationVersion, String... args) {
 		// TODO: real argument parsing
 		String argument = args.length == 0 ? null : args[0];
-
-		Experiment experiment = createExperiment(applicationVersion, argument);
-		DNA.setObserver(genePool);
-		return experiment;
+		return createExperiment(applicationVersion, argument);
 	}
 
 	private Experiment createExperiment(String applicationVersion, String argument) {
@@ -105,36 +99,35 @@ public class Lab {
 		if (argument == null) {
 			System.out.println("Starting new experiment with random seed");
 			persistent = true;
-			return new Experiment(generateRandomSeed(), applicationVersion, null);
+			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, null);
+			System.out.println(result);
+			return result;
 		} else if (argument.equals("no-persistence")) {
 			System.out.println("Starting new non-persistent experiment with random seed");
-			return new Experiment(generateRandomSeed(), applicationVersion, null);
+			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, null);
+			return result;
 		} else if (isInteger(argument)) {
 			long seed = Long.parseLong(argument);
 			System.out.println("Starting experiment " + seed + " from scratch");
 			persistent = true;
-			return new Experiment(seed, applicationVersion, null);
-		} else if (argument.endsWith(".nrj")) {
+			Experiment result = new Experiment(seed, applicationVersion, null);
+			return result;
+		} else if (argument.endsWith(".dna")) {
 			DNA dna = Persistence.loadDNA(argument);
 			System.out.println("Observing DNA " + dna);
 			persistent = true;
-			return new Experiment(generateRandomSeed(), applicationVersion, dna);
+			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, dna);
+			return result;
 		} else if (argument.startsWith("{")) {
 			System.out.println("Observing DNA " + argument);
 			persistent = true;
-			return new Experiment(generateRandomSeed(), applicationVersion, new DNA(argument));
+			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, new DNA(argument));
+			return result;
 		} else {
-			String experimentId = stripFileExtension(argument);
-			System.out.println("Picking up experiment from " + experimentId + ".exp");
+			System.out.println("Picking up experiment from " + argument);
 			persistent = true;
-			genePool = Persistence.loadGenePool(experimentId);
-			return Persistence.loadExperiment(experimentId);
+			return Persistence.loadExperiment(argument);
 		}
-	}
-
-	private String stripFileExtension(String fileName) {
-		int extensionIndex = fileName.lastIndexOf('.');
-		return (extensionIndex < 0) ? fileName : fileName.substring(0, extensionIndex);
 	}
 
 	private long generateRandomSeed() {

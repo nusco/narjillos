@@ -21,7 +21,7 @@ import org.nusco.narjillos.serializer.JSON;
  */
 public class DeterministicExperimentTest {
 
-	private static final int CYCLES = 2000;
+	private static final int CYCLES = 3_000;
 
 	@Test
 	public void experimentsAreDeterministic() {
@@ -30,14 +30,13 @@ public class DeterministicExperimentTest {
 		for (int i = 0; i < CYCLES; i++)
 			experiment1.tick();
 
-		// Serialize and deserialize the experiment. Now we have two
-		// experiments.
+		// Serialize and deserialize the experiment.
 		String json = JSON.toJson(experiment1, Experiment.class);
 		Experiment experiment2 = JSON.fromJson(json, Experiment.class);
 
-		// Keep ticking both experiments for a few more cycles. Reset the
-		// DNA serial in between, so that we get the same DNA ids for both
-		// experiments.
+		// Now we have two experiments. Keep ticking both for a few more cycles.
+		// Reset the DNA serial in between, so that we get the same DNA ids for
+		// both experiments.
 		long lastDNAId = DNA.getSerial();
 		for (int i = 0; i < CYCLES; i++)
 			experiment1.tick();
@@ -45,7 +44,8 @@ public class DeterministicExperimentTest {
 		for (int i = 0; i < CYCLES; i++)
 			experiment2.tick();
 
-		// Reset the running time (it's OK for it to differ between experiments).
+		// Reset the running time (it's OK for it to differ between
+		// experiments).
 		experiment1.resetTotalRunningTime();
 		experiment2.resetTotalRunningTime();
 

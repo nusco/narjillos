@@ -1,14 +1,12 @@
 package org.nusco.narjillos;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
+import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.serializer.JSON;
+import org.nusco.narjillos.serializer.Persistence;
 
 /**
  * A utility program that reads a gene pool from a file, identifies the most
@@ -21,12 +19,11 @@ public class Ancestry {
 		printAncestry(args[0]);
 	}
 
-	private static void printAncestry(String genePoolFile) throws IOException {
-		System.out.println(">Reading file \"" + genePoolFile + "\"...");
-		String json = new String(Files.readAllBytes(Paths.get(genePoolFile)), Charset.defaultCharset());
+	private static void printAncestry(String experimentFile) throws IOException {
+		System.out.println(">Reading file \"" + experimentFile + "\"...");
+		Experiment experiment = Persistence.loadExperiment(experimentFile);
+		GenePool genePool = experiment.getGenePool();
 
-		System.out.println(">Deserializing gene pool from JSON...");
-		GenePool genePool = JSON.fromJson(json, GenePool.class);
 		System.out.println("  > Current gene pool size: " + genePool.getCurrentPoolSize());
 		System.out.println("  > Historical gene pool size: " + genePool.getHistoricalPoolSize());
 

@@ -2,6 +2,7 @@ package org.nusco.narjillos.experiment;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -19,15 +20,16 @@ public class Experiment {
 
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
+	private transient GenePool genePool = new GenePool();
 
 	public Experiment(long seed, String version) {
 		this(seed, version, null);
 	}
 
 	public Experiment(long seed, String version, DNA dna) {
+		DNA.setObserver(genePool);
+		
 		id = "" + seed + "-" + version;
-		if (dna == null)
-			System.out.println("Experiment " + id);
 		timeStamp();
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
@@ -103,8 +105,23 @@ public class Experiment {
 	public String terminate() {
 		updateTotalRunningTime();
 		ecosystem.terminate();
-		return "Experiment " + getId() +
-				" ending at " + getTotalRunningTimeInSeconds() + " seconds, " +
-				getTicksChronometer().getTotalTicks() + " ticks";
+		return toString() + " ending at " + getTotalRunningTimeInSeconds() + " seconds, "
+				+ getTicksChronometer().getTotalTicks() + " ticks";
+	}
+
+	public GenePool getGenePool() {
+		return genePool;
+	}
+
+	// For serialization only. Don't call this in other situations, if you don't
+	// want to make the experiment non-deterministic.
+	public void setGenePool(GenePool genePool) {
+		this.genePool = genePool;
+		DNA.setObserver(genePool);
+	}
+
+	@Override
+	public String toString() {
+		return "Experiment " + getId();
 	}
 }

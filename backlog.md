@@ -43,10 +43,10 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
-* Fix deterministic experiment °°°
 * Enable passing entire id to Lab instead of just the experiment seed °
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
+* Serialize ancestry and experiment together in one file, not two separate files
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
 
@@ -63,6 +63,11 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Smoother contours when zooming in infrared mode
 * Make food more visible in normal view
 * Make food more visible in infrared view
+
+###Developer
+
+* Run long deterministic experiment test before packaging a release
+* Convert development scripts to Gradle tasks
 
 ###Theologist
 

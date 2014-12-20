@@ -1,9 +1,12 @@
 package org.nusco.narjillos.ecosystem;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -159,35 +162,37 @@ public class Ecosystem {
 		if (executorService.isShutdown())
 			return; // we're leaving, apparently
 		
-		List<Future<Segment>> movements = tickAll(narjillos);
-
-		List<Narjillo> allNarjillos = new LinkedList<>(narjillos);
-		for (int i = 0; i < allNarjillos.size(); i++) {
-			Segment movement = waitUntilAvailable(movements, i);
+		Map<Narjillo, Segment> movements = calculateAllMovements(narjillos);
+		for (Entry<Narjillo, Segment> entry : movements.entrySet()) {
+			Narjillo narjillo = entry.getKey();
+			Segment movement = entry.getValue();
 			checkForExcessiveSpeed(movement);
-
-			Narjillo narjillo = allNarjillos.get(i);
 			consumeCollidedFood(narjillo, movement, ranGen);
 		}
 	}
 
-	private void checkForExcessiveSpeed(Segment movement) {
-		if (movement.getVector().getLength() > things.getAreaSize())
-			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of " + things.getAreaSize() + ". Could result in missed collisions.");
-	}
+	private Map<Narjillo, Segment> calculateAllMovements(Set<Narjillo> set) {
+		Map<Narjillo, Segment> result = new LinkedHashMap<>();
 
-	private Segment waitUntilAvailable(List<Future<Segment>> movements, int index) {
-		try {
-			return movements.get(index).get();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		// Calculate movements in parallel...
+		Map<Narjillo, Future<Segment>> movementFutures = tickAll(set);
+
+		// ...then collect the results in a predictable order.
+		for (Narjillo narjillo : movementFutures.keySet()) {
+			try {
+				result.put(narjillo, movementFutures.get(narjillo).get());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
+
+		return result;
 	}
 
-	private List<Future<Segment>> tickAll(Set<Narjillo> narjillos) {
-		List<Future<Segment>> result = new LinkedList<>();
+	private Map<Narjillo, Future<Segment>> tickAll(Set<Narjillo> narjillos) {
+		Map<Narjillo, Future<Segment>> result = new LinkedHashMap<>();
 		for (final Narjillo narjillo : narjillos) {
-			result.add(executorService.submit(new Callable<Segment>() {
+			result.put(narjillo, executorService.submit(new Callable<Segment>() {
 				@Override
 				public Segment call() throws Exception {
 					return narjillo.tick();
@@ -195,6 +200,11 @@ public class Ecosystem {
 			}));
 		}
 		return result;
+	}
+
+	private void checkForExcessiveSpeed(Segment movement) {
+		if (movement.getVector().getLength() > things.getAreaSize())
+			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of " + things.getAreaSize() + ". Could result in missed collisions.");
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {

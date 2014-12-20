@@ -35,7 +35,7 @@ public class Ecosystem {
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 	private static final int AREAS_PER_EDGE = 80;
-	
+
 	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
 
@@ -72,7 +72,7 @@ public class Ecosystem {
 
 		if (target == null)
 			return center;
-		
+
 		return target.getPosition();
 	}
 
@@ -83,7 +83,7 @@ public class Ecosystem {
 		for (Narjillo narjillo : new LinkedList<>(narjillos))
 			if (narjillo.isDead())
 				removeNarjillo(narjillo);
-		
+
 		tickNarjillos(ranGen);
 
 		if (shouldSpawnFood(ranGen)) {
@@ -161,26 +161,28 @@ public class Ecosystem {
 	private synchronized void tickNarjillos(RanGen ranGen) {
 		if (executorService.isShutdown())
 			return; // we're leaving, apparently
-		
-		Map<Narjillo, Segment> movements = calculateAllMovements(narjillos);
-		for (Entry<Narjillo, Segment> entry : movements.entrySet()) {
+
+		Map<Narjillo, Set<Thing>> narjillosToCollidedFood = calculateCollidedFood(narjillos);
+
+		// Consume food in a predictable order, to solve the situation where
+		// two narjillos collide with the same piece of food.
+		for (Entry<Narjillo, Set<Thing>> entry : narjillosToCollidedFood.entrySet()) {
 			Narjillo narjillo = entry.getKey();
-			Segment movement = entry.getValue();
-			checkForExcessiveSpeed(movement);
-			consumeCollidedFood(narjillo, movement, ranGen);
+			Set<Thing> collidedFood = entry.getValue();
+			consume(narjillo, collidedFood, ranGen);
 		}
 	}
 
-	private Map<Narjillo, Segment> calculateAllMovements(Set<Narjillo> set) {
-		Map<Narjillo, Segment> result = new LinkedHashMap<>();
+	private Map<Narjillo, Set<Thing>> calculateCollidedFood(Set<Narjillo> set) {
+		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();
 
-		// Calculate movements in parallel...
-		Map<Narjillo, Future<Segment>> movementFutures = tickAll(set);
+		// Calculate collided food in parallel...
+		Map<Narjillo, Future<Set<Thing>>> collidedFoodFutures = tickAll(set);
 
-		// ...then collect the results in a predictable order.
-		for (Narjillo narjillo : movementFutures.keySet()) {
+		// ...but collect the results in a predictable order
+		for (Narjillo narjillo : collidedFoodFutures.keySet()) {
 			try {
-				result.put(narjillo, movementFutures.get(narjillo).get());
+				result.put(narjillo, collidedFoodFutures.get(narjillo).get());
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -189,13 +191,16 @@ public class Ecosystem {
 		return result;
 	}
 
-	private Map<Narjillo, Future<Segment>> tickAll(Set<Narjillo> narjillos) {
-		Map<Narjillo, Future<Segment>> result = new LinkedHashMap<>();
+	private Map<Narjillo, Future<Set<Thing>>> tickAll(Set<Narjillo> narjillos) {
+		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
 		for (final Narjillo narjillo : narjillos) {
-			result.put(narjillo, executorService.submit(new Callable<Segment>() {
+			result.put(narjillo, executorService.submit(new Callable<Set<Thing>>() {
 				@Override
-				public Segment call() throws Exception {
-					return narjillo.tick();
+				public Set<Thing> call() throws Exception {
+					Segment movement = narjillo.tick();
+					checkForExcessiveSpeed(movement);
+					Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
+					return collidedFoodPieces;
 				}
 			}));
 		}
@@ -204,7 +209,8 @@ public class Ecosystem {
 
 	private void checkForExcessiveSpeed(Segment movement) {
 		if (movement.getVector().getLength() > things.getAreaSize())
-			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of " + things.getAreaSize() + ". Could result in missed collisions.");
+			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of "
+					+ things.getAreaSize() + ". Could result in missed collisions.");
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {
@@ -217,7 +223,7 @@ public class Ecosystem {
 
 	private int getRandomIncubationTime(RanGen ranGen) {
 		final int MAX_INCUBATION_INTERVAL = MAX_EGG_INCUBATION_TIME - MIN_EGG_INCUBATION_TIME;
-		int extraIncubation = (int)(MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
+		int extraIncubation = (int) (MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
 		return MIN_EGG_INCUBATION_TIME + extraIncubation;
 	}
 
@@ -230,11 +236,9 @@ public class Ecosystem {
 		}
 	}
 
-	private void consumeCollidedFood(Narjillo narjillo, Segment movement, RanGen ranGen) {
-		Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
-
-		for (Thing collidedFoodPiece : collidedFoodPieces)
-			consumeFood(narjillo, (FoodPiece) collidedFoodPiece, ranGen);
+	private void consume(Narjillo narjillo, Set<Thing> foodPieces, RanGen ranGen) {
+		for (Thing foodPiece : foodPieces)
+			consumeFood(narjillo, (FoodPiece) foodPiece, ranGen);
 	}
 
 	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, RanGen ranGen) {
@@ -276,7 +280,7 @@ public class Ecosystem {
 		for (EcosystemEventListener ecosystemEvent : ecosystemEventListeners)
 			ecosystemEvent.thingRemoved(thing);
 	}
-	
+
 	public synchronized void terminate() {
 		executorService.shutdown();
 		try {

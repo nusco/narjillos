@@ -1,5 +1,5 @@
 allprojects {
-	version = new File('version').getText()
+	version = new File('version').getText().trim()
 
 	apply plugin: 'java'
 	apply plugin: 'application'
@@ -31,8 +31,8 @@ allprojects {
 	}
 	
 	jar {
-			// skip empty JARs
-	    onlyIf { !sourceSets.main.allSource.files.isEmpty() }
+    // skip empty JARs
+    onlyIf { !sourceSets.main.allSource.files.isEmpty() }
 	}
 
   createStartScript('narjillos', project, 'org.nusco.narjillos.PetriDish', [])
@@ -41,21 +41,12 @@ allprojects {
 }
 
 project(':narjillos-core') {
-	jar {
-		baseName = 'narjillos-core'
-	}
-
 	dependencies {
 		compile 'com.google.code.gson:gson:2.3'
 	}
 }
 
 project(':narjillos-petridish') {
-	jar {
-		baseName = 'narjillos-petridish'
-		mainClassName = 'org.nusco.narjillos.PetriDish'
-	}
-
 	dependencies {
 		compile project(':narjillos-core')
 	}

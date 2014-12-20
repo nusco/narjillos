@@ -29,10 +29,6 @@ allprojects {
 		compile subprojects
 		testCompile 'junit:junit:4.11'
 	}
-
-	task wrapper(type: Wrapper) {
-		gradleVersion = '2.0'
-	}
 	
 	jar {
 			// skip empty JARs

@@ -177,6 +177,10 @@ public class Viewport {
 	}
 
 	public boolean isZoomedOutCompletely() {
-		return zoomLevel - minZoomLevel < 0.001;
+		return Math.abs(zoomLevel - minZoomLevel) < 0.001;
+	}
+
+	public boolean isZoomCloseToTarget() {
+		return Math.abs(zoomLevel - targetZoomLevel) < 0.1;
 	}
 }

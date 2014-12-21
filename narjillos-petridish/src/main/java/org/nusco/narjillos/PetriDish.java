@@ -55,12 +55,12 @@ public class PetriDish extends Application {
 	private Thread modelThread;
 	private Thread viewThread;
 	private volatile boolean stopThreads = false;
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 		FastMath.setUp();
 		Platform.setImplicitExit(true);
-		
+
 		startModelThread(programArguments);
 
 		System.gc(); // minimize GC during the first stages on animation
@@ -68,14 +68,14 @@ public class PetriDish extends Application {
 		viewport = new Viewport(lab.getEcosystem());
 		locator = new Locator(lab.getEcosystem());
 		tracker = new ThingTracker(viewport, locator);
-		
+
 		final Group root = new Group();
 		startViewThread(root);
 
-		Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
+		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 		scene.setOnKeyPressed(createKeyboardHandler());
 		scene.setOnMouseClicked(createMouseHandler());
-		scene.setOnScroll(createMouseScrollHandler());
+		registerMouseScrollHandler(scene);
 		bindViewportSizeToWindowSize(scene, viewport);
 
 		primaryStage.setScene(scene);
@@ -136,7 +136,7 @@ public class PetriDish extends Application {
 						public void run() {
 							if (stopThreads)
 								return;
-							
+
 							update(root);
 							renderingFinished = true;
 						}
@@ -157,7 +157,8 @@ public class PetriDish extends Application {
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(state.getSpeed(), state.getEffects(), framesChronometer, tracker.isTracking(), lab.isSaving());
+				Node statusInfo = statusBarView.toNode(state.getSpeed(), state.getEffects(), framesChronometer, tracker.isTracking(),
+						lab.isSaving());
 				root.getChildren().add(statusInfo);
 			}
 		};
@@ -229,7 +230,7 @@ public class PetriDish extends Application {
 
 				if (event.getClickCount() == 1)
 					tracker.focusAt(clickedPointEC);
-				
+
 				if (event.getClickCount() >= 2)
 					tracker.startTrackingAt(clickedPointEC);
 
@@ -251,32 +252,55 @@ public class PetriDish extends Application {
 		};
 	}
 
-	private EventHandler<ScrollEvent> createMouseScrollHandler() {
-		return new EventHandler<ScrollEvent>() {
+	private void registerMouseScrollHandler(final Scene scene) {
+		// Prevent scrolling until the eggs are visible, to avoid confusing the
+		// user who might be inadvertently scrolling out.
+		new Thread(new Runnable() {
 			@Override
-			public void handle(ScrollEvent event) {
-				if (event.getDeltaY() <= 0)
-					viewport.zoomIn();
-				else {
-					viewport.zoomOut();
-					if (viewport.isZoomedOutCompletely())
-						tracker.stopTracking();
-				}
-
-				event.consume();
+			public void run() {
+				waitUntilViewportHasZoomedToEggs();
+				scene.setOnScroll(createMouseScrollHandler());
 			}
-		};
+
+			private void waitUntilViewportHasZoomedToEggs() {
+				while (!viewport.isZoomCloseToTarget()) {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+
+			private EventHandler<ScrollEvent> createMouseScrollHandler() {
+				return new EventHandler<ScrollEvent>() {
+					@Override
+					public void handle(ScrollEvent event) {
+						if (event.getDeltaY() <= 0)
+							viewport.zoomIn();
+						else {
+							viewport.zoomOut();
+							if (viewport.isZoomedOutCompletely())
+								tracker.stopTracking();
+						}
+
+						event.consume();
+					}
+				};
+			}
+		}).start();
 	}
 
 	@Override
 	public void stop() throws Exception {
 		lab.terminate();
-		
+
 		// exit threads cleanly to avoid rare exception
 		// when exiting Java FX application
 		stopThreads = true;
-		while (modelThread.isAlive());
-		while (viewThread.isAlive());
+		while (modelThread.isAlive())
+			;
+		while (viewThread.isAlive())
+			;
 
 		Platform.exit();
 	}

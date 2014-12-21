@@ -22,6 +22,10 @@ public class Head extends MovingOrgan {
 		this.metabolicRate = metabolicRate;
 	}
 
+	public void tick(double angleToTarget) {
+		tick(angleToTarget, 0, 1);
+	}
+
 	@Override
 	public double getMetabolicRate() {
 		return metabolicRate;

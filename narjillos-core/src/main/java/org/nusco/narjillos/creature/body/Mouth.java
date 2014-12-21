@@ -9,7 +9,7 @@ import org.nusco.narjillos.shared.physics.ZeroVectorException;
  */
 public class Mouth {
 
-	private final double LATERAL_VIEWFIELD = 135;
+	private static final double LATERAL_VIEWFIELD = 135;
 
 	private double directionAngle = 0;
 	

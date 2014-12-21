@@ -82,14 +82,15 @@ public abstract class Organ {
 		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
-	public void grow() {
+	public void growBy(int amount) {
 		if (isFullyGrown())
 			return;
 
-		length = Math.min(adultLength, getLength() + GROWTH_RATE);
-		thickness = Math.min(adultThickness, getThickness() + GROWTH_RATE);
+		length = Math.min(adultLength, getLength() + GROWTH_RATE * amount);
+		thickness = Math.min(adultThickness, getThickness() + GROWTH_RATE * amount);
 
-		// optimization: let the client update the caches
+		// Optimization: don't recalculate geometry here. Instead, let the
+		// client do it - it knows when that's needed.
 	}
 
 	public boolean isFullyGrown() {

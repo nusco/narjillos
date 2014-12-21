@@ -171,7 +171,7 @@ public class Body {
 
 	private void tick_step1_updateAngles(Vector targetDirection) {
 		double angleToTarget = getAngleTo(targetDirection);
-		getHead().tick(0, angleToTarget);
+		getHead().tick(angleToTarget);
 	}
 
 	private double tick_step2_rotate(Map<Organ, Double> initialAnglesOfOrgans, Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {

@@ -19,7 +19,7 @@ public abstract class NeuralConnectionTest {
 		child1.addChild(new BodyPart(nerve2));
 		head.addChild(new BodyPart(nerve3));
 
-		head.tick(0, 0);
+		head.tick(0, 0, 1);
 		
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);

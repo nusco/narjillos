@@ -21,7 +21,7 @@ public class JSONBodyPartSerializationTest {
 		head.forcePosition(Vector.cartesian(6, 7), 8);
 
 		for (int i = 0; i < 10; i++)
-			head.tick(1, 20);
+			head.tick(20, 1, 1);
 		
 		String json = JSON.toJson(head, Organ.class);
 		Organ deserialized = (Head)JSON.fromJson(json, Organ.class);
@@ -41,7 +41,7 @@ public class JSONBodyPartSerializationTest {
 		BodyPart bodySegment = new BodyPart(1, 2, new ColorByte(3), parent, 4, -5, 6, 7);
 
 		for (int i = 0; i < 10; i++)
-			bodySegment.tick(1, 10);
+			bodySegment.tick(10, 1, 2);
 		
 		String json = JSON.toJson(bodySegment, Organ.class);
 		BodyPart deserialized = (BodyPart)JSON.fromJson(json, Organ.class);
@@ -77,8 +77,8 @@ public class JSONBodyPartSerializationTest {
 
 		// everything still works after ticking
 		for (int i = 0; i < 3; i++) {
-			parent.tick(10, 20);
-			deserializedParent.tick(10, 20);
+			parent.tick(20, 10, 1);
+			deserializedParent.tick(20, 10, 1);
 		}
 		assertEquals(child.getAbsoluteAngle(), deserializedChild.getAbsoluteAngle(), 0.0);
 	}

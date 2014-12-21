@@ -18,17 +18,18 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 		setAngleToParent(angleToParentAtRest);
 	}
 
-	public void tick(double percentOfAmplitude, double angleToTarget) {
-		recursivelyGrow();
+	public void tick(double angleToTarget, double percentOfAmplitude, int level) {
+		// Organs towards the head grow slower, organs towards the tail grow
+		// faster. This gives juveline narjillos a nice "infant" shape.
+		growBy(level);
 
 		double processedPercentOfAmplitude = getNerve().tick(percentOfAmplitude);
-
 		setAngleToParent(calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget));
 
 		updateGeometry();
 
 		for (ConnectedOrgan child : getChildren())
-			((MovingOrgan) child).tick(processedPercentOfAmplitude, angleToTarget);
+			((MovingOrgan) child).tick(angleToTarget, processedPercentOfAmplitude, level + 1);
 	}
 
 	protected final double getAngleToParent() {
@@ -40,15 +41,6 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 	}
 
 	protected abstract double calculateNewAngleToParent(double targetAngle, double angleToTarget);
-
-	private void recursivelyGrow() {
-		// FIXME: this needs to be rethought. In particular, children's grow()
-		// gets called many times (look at the tick() recursion)
-		grow();
-
-		for (ConnectedOrgan child : getChildren())
-			((MovingOrgan) child).recursivelyGrow();
-	}
 
 	protected void updateTree() {
 		updateGeometry();

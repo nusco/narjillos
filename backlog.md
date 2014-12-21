@@ -11,7 +11,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
-* Fix code for growing organs and bodies (currently weird and probably worth optimizing) °°
 * Adaptive graphics (disable effects when framerate plummets)
 
 ###Gamer
@@ -66,7 +65,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Developer
 
-* -
+* Pass parameters to gradle tasks for experiment, petri and ancestry
 
 ###Theologist
 

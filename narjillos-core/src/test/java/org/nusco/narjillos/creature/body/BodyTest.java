@@ -50,8 +50,8 @@ public class BodyTest {
 		// TODO: why doesn't it work if I just tick the body?
 //		for (int i = 0; i < 1000; i++)
 //			body.tick(Vector.polar(100, 100));
-		grow(head);
-		grow(child);
+		fullyGrow(head);
+		fullyGrow(child);
 		
 		// calculateRadius() needs an explicit center of mass, because of optimizations.
 		// So these two are better tested together: 
@@ -75,8 +75,8 @@ public class BodyTest {
 		assertEquals(0.42, body.getPercentEnergyToChildren(), 0.0);
 	}
 
-	private void grow(MovingOrgan organ) {
-		for (int i = 0; i < 1000; i++)
-			organ.tick(1, 0);
+	private void fullyGrow(MovingOrgan organ) {
+		organ.growBy(100_000);
+		organ.updateGeometry();
 	}	
 }

@@ -65,8 +65,7 @@ public abstract class OrganTest {
 	}
 
 	protected void fullyGrow(Organ bodyPart) {
-		while (!bodyPart.isFullyGrown())
-			bodyPart.grow();
+		bodyPart.growBy(100_000);
 		bodyPart.updateGeometry();
 	}
 }

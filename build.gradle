@@ -1,39 +1,39 @@
 allprojects {
-	version = new File('version').getText().trim()
+  version = new File('version').getText().trim()
 
-	apply plugin: 'java'
-	apply plugin: 'application'
-	apply plugin: 'eclipse'
-	apply plugin: 'idea'
+  apply plugin: 'java'
+  apply plugin: 'application'
+  apply plugin: 'eclipse'
+  apply plugin: 'idea'
 
   sourceCompatibility = JavaVersion.VERSION_1_8
   targetCompatibility = JavaVersion.VERSION_1_8
 
-	eclipse {
-	  jdt {
-		  // Eclipse will use JDK 1.8 if it's been configured for that,
-			// but it's still stuck in a Java 1.7 world
-			sourceCompatibility = JavaVersion.VERSION_1_7
-  		targetCompatibility = JavaVersion.VERSION_1_7
-	  }
-	}
+  eclipse {
+    jdt {
+      // Eclipse will use JDK 1.8 if it's been configured for that,
+      // but it's still stuck in a Java 1.7 world
+      sourceCompatibility = JavaVersion.VERSION_1_7
+      targetCompatibility = JavaVersion.VERSION_1_7
+    }
+  }
 
-	startScripts.enabled = false
-	run.enabled = false
+  startScripts.enabled = false
+  run.enabled = false
 
-	repositories {
-		mavenCentral()
-	}
+  repositories {
+    mavenCentral()
+  }
 
-	dependencies {
-		compile subprojects
-		testCompile 'junit:junit:4.11'
-	}
-	
-	jar {
+  dependencies {
+    compile subprojects
+    testCompile 'junit:junit:4.11'
+  }
+
+  jar {
     // skip empty JARs
     onlyIf { !sourceSets.main.allSource.files.isEmpty() }
-	}
+  }
 
   createStartScript('narjillos', project, 'org.nusco.narjillos.PetriDish', [])
   createStartScript('petri', project, 'org.nusco.narjillos.PetriDish', ['-Xmx4096M', '-Xms4096M'])
@@ -41,15 +41,15 @@ allprojects {
 }
 
 project(':narjillos-core') {
-	dependencies {
-		compile 'com.google.code.gson:gson:2.3'
-	}
+  dependencies {
+    compile 'com.google.code.gson:gson:2.3'
+  }
 }
 
 project(':narjillos-petridish') {
-	dependencies {
-		compile project(':narjillos-core')
-	}
+  dependencies {
+    compile project(':narjillos-core')
+  }
 }
 
 def createStartScript(name, project, mainClass, jvmArgs) {
@@ -61,7 +61,7 @@ def createStartScript(name, project, mainClass, jvmArgs) {
     classpath       = project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + project.configurations.runtime
     applicationDefaultJvmArgs = jvmArgs
   }
-	
+
   project.tasks[taskName].dependsOn(project.jar)
 
   project.applicationDistribution.with {
@@ -72,15 +72,31 @@ def createStartScript(name, project, mainClass, jvmArgs) {
   }
 }
 
+def commandLineArgsOr(defaultArgs) {
+  if(project.hasProperty('args'))
+    return project.args.split('\\s+')
+  else
+    return defaultArgs
+}
+
 task(experiment, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.Lab'
   classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  args commandLineArgsOr([])
+  maxHeapSize "4096M"
+}
+
+task(ancestry, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.Ancestry'
+  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  args commandLineArgsOr([])
   maxHeapSize "4096M"
 }
 
 task(petri, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.PetriDish'
   classpath = project('narjillos-petridish').sourceSets.main.runtimeClasspath
+  args commandLineArgsOr([])
   maxHeapSize "4096M"
 }
 
@@ -89,17 +105,17 @@ task(perftest, dependsOn: 'build', type: JavaExec) {
   classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
 }
 
-task(backlog, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.Backlog'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
-	args "20"
-}
-
-task(bl, dependsOn: 'backlog')
-
 task(deterministicExperimentTest, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.DeterministicExperimentTest'
   classpath = project('narjillos-core').sourceSets.test.runtimeClasspath
 }
+
+task(backlog, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.Backlog'
+  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  args commandLineArgsOr("2")
+}
+
+task(bl, dependsOn: 'backlog')
 
 task prepareRelease(dependsOn: ['deterministicExperimentTest', 'installApp'])

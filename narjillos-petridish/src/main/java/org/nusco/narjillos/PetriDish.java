@@ -19,7 +19,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.serializer.Persistence;
 import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
@@ -92,7 +91,7 @@ public class PetriDish extends Application {
 				// We need to initialize the lab inside this thread, because
 				// the random number generator will complain if it is called
 				// from different threads.
-				lab = new Lab(Persistence.readApplicationVersion(), arguments);
+				lab = new Lab(CommandLineOptions.parse(arguments));
 
 				isModelInitialized[0] = true;
 

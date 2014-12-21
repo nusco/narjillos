@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.utilities.NumberFormat;
 /**
  * The class that initialized and runs an Experiment. It can be run on its own
  * (the _experiment_ script does just that), or used in a larger system (as the
- * _petridish_ script does to provide graphics).
+ * _petri_ script does to provide graphics).
  */
 public class Lab {
 
@@ -21,8 +21,12 @@ public class Lab {
 	private volatile boolean isSaving = false;
 	private volatile boolean isTerminated = false;
 
-	public Lab(String applicationVersion, String... args) {
-		experiment = initialize(applicationVersion, args);
+	public Lab(CommandLineOptions options) {
+		String applicationVersion = Persistence.readApplicationVersion();
+		
+		experiment = createExperiment(applicationVersion, options);
+		persistent = extractPersistence(options);
+
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
 	}
@@ -46,7 +50,7 @@ public class Lab {
 	public boolean tick() {
 		if (isTerminated)
 			return false;
-		
+
 		boolean thereAreSurvivors = experiment.tick();
 		if (experiment.getTicksChronometer().getTotalTicks() % PARSE_INTERVAL == 0)
 			executePerodicOperations();
@@ -55,6 +59,53 @@ public class Lab {
 			System.out.println("*** Extinction happens. ***");
 
 		return thereAreSurvivors;
+	}
+
+	public boolean isSaving() {
+		return isSaving;
+	}
+
+	protected void terminate() {
+		while (isSaving()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+		}
+		isTerminated = true;
+		String finalReport = experiment.terminate();
+		System.out.println(finalReport);
+	}
+
+	private Experiment createExperiment(String applicationVersion, CommandLineOptions options) {
+		Experiment result;
+		
+		DNA dna = options.getDna();
+		if (dna != null) {
+			System.out.print("Observing DNA " + dna);
+			result = new Experiment(generateRandomSeed(), applicationVersion, dna);
+		} else if (options.getExperiment() != null) {
+			System.out.print("Continuining experiment " + options.getExperiment().getId());
+			result = options.getExperiment();
+		} else if (options.getSeed() == CommandLineOptions.NO_SEED) {
+			long randomSeed = generateRandomSeed();
+			System.out.print("Starting new experiment with random seed: " + randomSeed);
+			result = new Experiment(randomSeed, applicationVersion, null);
+		} else {
+			System.out.print("Starting experiment " + options.getSeed());
+			result = new Experiment(options.getSeed(), applicationVersion, null);
+		}
+		
+		return result;
+	}
+
+	private boolean extractPersistence(CommandLineOptions options) {
+		boolean isPersistent = options.isPersistent();
+		if (isPersistent)
+			System.out.println(" (persisted to file)");
+		else
+			System.out.println(" (no persistence)");
+		return isPersistent;
 	}
 
 	private void executePerodicOperations() {
@@ -88,80 +139,12 @@ public class Lab {
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
 
-	private Experiment initialize(String applicationVersion, String... args) {
-		// TODO: real argument parsing
-		String argument = args.length == 0 ? null : args[0];
-		return createExperiment(applicationVersion, argument);
-	}
-
-	private Experiment createExperiment(String applicationVersion, String argument) {
-		// TODO: replace with real argument parsing
-		if (argument == null) {
-			System.out.println("Starting new experiment with random seed");
-			persistent = true;
-			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, null);
-			System.out.println(result);
-			return result;
-		} else if (argument.equals("no-persistence")) {
-			System.out.println("Starting new non-persistent experiment with random seed");
-			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, null);
-			return result;
-		} else if (isInteger(argument)) {
-			long seed = Long.parseLong(argument);
-			System.out.println("Starting experiment " + seed + " from scratch");
-			persistent = true;
-			Experiment result = new Experiment(seed, applicationVersion, null);
-			return result;
-		} else if (argument.endsWith(".dna")) {
-			DNA dna = Persistence.loadDNA(argument);
-			System.out.println("Observing DNA " + dna);
-			persistent = true;
-			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, dna);
-			return result;
-		} else if (argument.startsWith("{")) {
-			System.out.println("Observing DNA " + argument);
-			persistent = true;
-			Experiment result = new Experiment(generateRandomSeed(), applicationVersion, new DNA(argument));
-			return result;
-		} else {
-			System.out.println("Picking up experiment from " + argument);
-			persistent = true;
-			return Persistence.loadExperiment(argument);
-		}
-	}
-
 	private long generateRandomSeed() {
 		return Math.abs(new Random().nextInt());
 	}
 
-	private boolean isInteger(String argument) {
-		try {
-			Integer.parseInt(argument);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
-	public boolean isSaving() {
-		return isSaving;
-	}
-
-	protected void terminate() {
-		while(isSaving()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
-		}
-		isTerminated = true;
-		String finalReport = experiment.terminate();
-		System.out.println(finalReport);
-	}
-
-	// arguments: [<random_seed | dna_file | dna_document | experiment_file>]
 	public static void main(String... args) {
-		final Lab lab = new Lab(Persistence.readApplicationVersion(), args);
+		final Lab lab = new Lab(CommandLineOptions.parse(args));
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

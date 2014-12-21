@@ -7,7 +7,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Viscosity to limit maximum speed (makes the current watchdog unnecessary) °°
 * Fix sketchy collision detection °
-* Rewrite collision detection to be independent of max speed
+* Rewrite collision detection to be independent of max speed °
 
 ###Speed Demon
 
@@ -17,13 +17,21 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * Click-and-drag to move with the mouse (instead of just clicking) °°
 * More intuitive track/untrack mouse commands °°
-* Real arguments parsing (default to no-persistence, use --persistent together with other switches) °°
-* Issue warning when Java 8 is not installed °°
-* Zoo mode (switch from narjillo to narjillo) °
-* Externalize configurable parameters to YAML °
+* Reliable tracking with double-click even at a distance °°
+* Limit panning inside space area °
+* Pinch to zoom
+* Start without ancestry by default (to avoid OutOfMemory errors in the long run)
+* Save/load experiment from menu
+* "About"/"Help" menus
+* Zoo mode (switch from narjillo to narjillo)
+* Externalize configurable parameters to YAML
 * Tutorial
+* Run in a browser
+* Package as native app for Mac
+* Package as native app for Windows
 * Nice status bar
 * GUI
+* Issue warning when Java 8 is not installed
 
 ###Genetist
 
@@ -42,10 +50,10 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Lab Technician
 
+* Serialize ancestry and experiment together in one file, not two separate files °°
 * Enable passing entire id to Lab instead of just the experiment seed °
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
-* Serialize ancestry and experiment together in one file, not two separate files
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
 
@@ -57,6 +65,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Make central area of dish visible at a distance
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode
 * Make food more visible in normal view

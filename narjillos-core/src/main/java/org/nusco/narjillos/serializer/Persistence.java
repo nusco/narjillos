@@ -39,7 +39,7 @@ public class Persistence {
 		}
 	}
 
-	public static Experiment loadExperiment(String fileName) {
+	public static Experiment loadExperimentWithGenePool(String fileName) {
 		Experiment experiment;
 		GenePool genePool;
 		

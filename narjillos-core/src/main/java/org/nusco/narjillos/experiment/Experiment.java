@@ -52,7 +52,7 @@ public class Experiment {
 			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
 				ecosystem.spawnEgg(DNA.random(ranGen), randomPosition(ecosystem.getSize()), ranGen);
 		} else {
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
 				ecosystem.spawnEgg(dna, randomPosition(ecosystem.getSize()), ranGen);
 		}
 	}

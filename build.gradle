@@ -113,7 +113,7 @@ task(deterministicExperimentTest, dependsOn: 'build', type: JavaExec) {
 task(backlog, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.Backlog'
   classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
-  args commandLineArgsOr("2")
+  args commandLineArgsOr("20")
 }
 
 task(bl, dependsOn: 'backlog')

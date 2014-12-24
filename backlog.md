@@ -17,7 +17,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * More intuitive track/untrack mouse commands °°
 * Reliable tracking with double-click even at a distance °°
-* Precise centering on newly tracked thing °°
 * Status bar
 * Limit panning inside space area °
 * Pinch to zoom °

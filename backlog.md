@@ -18,6 +18,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * More intuitive track/untrack mouse commands °°
 * Reliable tracking with double-click even at a distance °°
 * Precise centering on newly tracked thing °°
+* Status bar
 * Limit panning inside space area °
 * Pinch to zoom °
 * Start without ancestry by default (to avoid OutOfMemory errors in the long run)
@@ -29,7 +30,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Run in a browser
 * Package as native app for Mac
 * Package as native app for Windows
-* Nice status bar
 * GUI
 * Issue warning when Java 8 is not installed
 
@@ -54,6 +54,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Enable passing entire id to Lab instead of just the experiment seed °
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
+* "--serious" option to start with persistence, ancestry, and learge heap
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
 
@@ -73,7 +74,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Developer
 
-* Pass parameters to gradle tasks for experiment, petri and ancestry
+* -
 
 ###Theologist
 

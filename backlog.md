@@ -19,7 +19,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Reliable tracking with double-click even at a distance °°
 * Status bar
 * Limit panning inside space area °
-* Pinch to zoom °
 * Start without ancestry by default (to avoid OutOfMemory errors in the long run)
 * Save/load experiment from menu
 * "About"/"Help" menus

@@ -87,24 +87,24 @@ public class Viewport {
 
 	public void zoomIn() {
 		userIsZooming = true;
-		setZoomLevel(zoomLevel * ZOOM_VELOCITY);
+		zoomTo(zoomLevel * ZOOM_VELOCITY);
 	}
 
 	public void zoomOut() {
 		userIsZooming = true;
-		if (isZoomedOutCompletely()) 
-			targetCenterEC = getEcosystemCenterEC();
-
-		setZoomLevel(zoomLevel / ZOOM_VELOCITY);
+		zoomTo(zoomLevel / ZOOM_VELOCITY);
 	}
 
 	private void centerOnEcosystem() {
 		centerEC = getEcosystemCenterEC();
 	}
 
-	final void setZoomLevel(double zoomLevel) {
+
+	public final void zoomTo(double zoomLevel) {
 		this.zoomLevel = Math.min(Math.max(zoomLevel, minZoomLevel), MAX_ZOOM);
 		this.targetZoomLevel = zoomLevel;
+		if (isZoomedOutCompletely()) 
+			targetCenterEC = getEcosystemCenterEC();
 	}
 
 	public void tick() {

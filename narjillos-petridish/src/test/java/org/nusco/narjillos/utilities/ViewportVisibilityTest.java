@@ -41,7 +41,7 @@ public class ViewportVisibilityTest {
 		// (0, 200)                                                  (200, 200)      
 
 		viewport = new Viewport(new Ecosystem(200));
-		viewport.setZoomLevel(1);
+		viewport.zoomTo(1);
 		stabilizeViewport();
 		viewport.setSizeSC(Vector.cartesian(100, 40));
 		assertTrue(viewport.getCenterEC().almostEquals(Vector.cartesian(100, 100)));

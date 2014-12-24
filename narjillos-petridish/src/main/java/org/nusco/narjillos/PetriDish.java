@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.Narjillo;
@@ -55,10 +56,11 @@ public class PetriDish extends Application {
 	private Thread viewThread;
 	private volatile boolean stopThreads = false;
 
-	// pan-by-dragging controls
+	// mouse and gestures state
 	boolean isDragging = false;
 	private double mouseX;
 	private double mouseY;
+	private double initialZoomLevel;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -77,15 +79,20 @@ public class PetriDish extends Application {
 		startViewThread(root);
 
 		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
-		registerKeyboardHandler(scene);
-		registerMouseClickHandler(scene);
-		registerMouseDragHandlers(scene);
-		registerMouseScrollHandler(scene);
+		registerInteractionHandlers(scene);
 		bindViewportSizeToWindowSize(scene, viewport);
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Narjillos - Petri Dish");
 		primaryStage.show();
+	}
+
+	private void registerInteractionHandlers(final Scene scene) {
+		registerKeyboardHandlers(scene);
+		registerMouseClickHandlers(scene);
+		registerMouseDragHandlers(scene);
+		registerMouseScrollHandlers(scene);
+		registerTouchHandlers(scene);
 	}
 
 	private void startModelThread(final String[] arguments) {
@@ -194,7 +201,7 @@ public class PetriDish extends Application {
 		}
 	}
 
-	private void registerKeyboardHandler(final Scene scene) {
+	private void registerKeyboardHandlers(final Scene scene) {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
 				if (keyEvent.getCode() == KeyCode.RIGHT)
@@ -225,7 +232,7 @@ public class PetriDish extends Application {
 		});
 	}
 
-	private void registerMouseClickHandler(final Scene scene) {
+	private void registerMouseClickHandlers(final Scene scene) {
 		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				if (event.getClickCount() < 2)
@@ -278,7 +285,7 @@ public class PetriDish extends Application {
 		});
 	}
 
-	private void registerMouseScrollHandler(final Scene scene) {
+	private void registerMouseScrollHandlers(final Scene scene) {
 		// Prevent scrolling at start until the eggs are visible, to avoid
 		// confusing the user who might be inadvertently scrolling out.
 		new Thread(new Runnable() {
@@ -308,12 +315,26 @@ public class PetriDish extends Application {
 							if (viewport.isZoomedOutCompletely())
 								tracker.stopTracking();
 						}
-
-						event.consume();
 					}
 				};
 			}
 		}).start();
+	}
+
+	private void registerTouchHandlers(Scene scene) {
+		scene.setOnZoomStarted(new EventHandler<ZoomEvent>() {
+			@Override
+			public void handle(ZoomEvent event) {
+				initialZoomLevel = viewport.getZoomLevel();
+			}});
+		scene.setOnZoom(new EventHandler<ZoomEvent>() {
+			@Override
+			public void handle(ZoomEvent event) {
+				double zoomFactor = event.getTotalZoomFactor();
+				viewport.zoomTo(initialZoomLevel * zoomFactor);
+				if (viewport.isZoomedOutCompletely())
+					tracker.stopTracking();
+			}});
 	}
 
 	@Override

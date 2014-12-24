@@ -75,6 +75,7 @@ public class ThingTracker {
 		}
 
 		startTracking(thing);
+		viewport.flyToTargetEC(position);
 		viewport.flyToMaxZoomCloseupLevel();
 	}
 	

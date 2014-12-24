@@ -69,6 +69,7 @@ public class ThingTracker {
 
 		if (thing == null) {
 			stopTracking();
+			viewport.flyToTargetEC(position);
 			viewport.flyToNextZoomCloseupLevel();
 			return;
 		}

@@ -55,6 +55,11 @@ public class PetriDish extends Application {
 	private Thread viewThread;
 	private volatile boolean stopThreads = false;
 
+	// pan-by-dragging controls
+	boolean isDragging = false;
+	private double mouseX;
+	private double mouseY;
+
 	@Override
 	public void start(Stage primaryStage) {
 		FastMath.setUp();
@@ -72,8 +77,9 @@ public class PetriDish extends Application {
 		startViewThread(root);
 
 		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
-		scene.setOnKeyPressed(createKeyboardHandler());
-		scene.setOnMouseClicked(createMouseHandler());
+		registerKeyboardHandler(scene);
+		registerMouseClickHandler(scene);
+		registerMouseDragHandlers(scene);
 		registerMouseScrollHandler(scene);
 		bindViewportSizeToWindowSize(scene, viewport);
 
@@ -188,8 +194,8 @@ public class PetriDish extends Application {
 		}
 	}
 
-	private EventHandler<? super KeyEvent> createKeyboardHandler() {
-		return new EventHandler<KeyEvent>() {
+	private void registerKeyboardHandler(final Scene scene) {
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
 				if (keyEvent.getCode() == KeyCode.RIGHT)
 					panViewport(PAN_SPEED, 0, keyEvent);
@@ -216,27 +222,20 @@ public class PetriDish extends Application {
 				viewport.moveBy(Vector.cartesian(velocityX, velocityY));
 				event.consume();
 			};
-		};
+		});
 	}
 
-	private EventHandler<MouseEvent> createMouseHandler() {
-		return new EventHandler<MouseEvent>() {
+	private void registerMouseClickHandler(final Scene scene) {
+		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				Vector clickedPoint = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				viewport.flyToTargetSC(clickedPoint);
+				if (event.getClickCount() < 2)
+					return;
 
-				Vector clickedPointEC = viewport.toEC(clickedPoint);
-
-				if (event.getClickCount() == 1)
-					tracker.focusAt(clickedPointEC);
-
-				if (event.getClickCount() >= 2)
-					tracker.startTrackingAt(clickedPointEC);
+				Vector clickedPointSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
+				tracker.startTrackingAt(viewport.toEC(clickedPointSC));
 
 				if (event.getClickCount() == 3)
-					copyIsolatedDNAToClipboard(clickedPoint);
-
-				event.consume();
+					copyIsolatedDNAToClipboard(clickedPointSC);
 			}
 
 			private void copyIsolatedDNAToClipboard(Vector clickedPoint) {
@@ -248,12 +247,40 @@ public class PetriDish extends Application {
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 			}
-		};
+		});
+	}
+
+	private void registerMouseDragHandlers(final Scene scene) {
+		scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				isDragging = true;
+				mouseX = event.getX();
+				mouseY = event.getY();
+			}
+		});
+		scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				isDragging = false;
+			}
+		});
+		scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				tracker.stopTracking();
+				double translateX = event.getX() - mouseX;
+				double translateY = event.getY() - mouseY;
+				viewport.translateBy(Vector.cartesian(-translateX, -translateY));
+				mouseX = event.getX();
+				mouseY = event.getY();
+			}
+		});
 	}
 
 	private void registerMouseScrollHandler(final Scene scene) {
-		// Prevent scrolling until the eggs are visible, to avoid confusing the
-		// user who might be inadvertently scrolling out.
+		// Prevent scrolling at start until the eggs are visible, to avoid
+		// confusing the user who might be inadvertently scrolling out.
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

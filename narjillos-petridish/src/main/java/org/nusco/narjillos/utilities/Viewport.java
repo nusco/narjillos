@@ -76,6 +76,11 @@ public class Viewport {
 		targetCenterEC = centerEC.plus(Vector.cartesian(toLengthEC(velocitySC.x), toLengthEC(velocitySC.y)));
 	}
 
+	public void translateBy(Vector velocitySC) {
+		centerEC = centerEC.plus(Vector.cartesian(toLengthEC(velocitySC.x), toLengthEC(velocitySC.y)));
+		targetCenterEC = centerEC;
+	}
+
 	public double getZoomLevel() {
 		return zoomLevel;
 	}
@@ -148,7 +153,15 @@ public class Viewport {
 	public void flyToMaxZoomCloseupLevel() {
 		targetZoomLevel = getMaxZoomLevel();
 	}
-	
+
+	public boolean isZoomedOutCompletely() {
+		return Math.abs(zoomLevel - minZoomLevel) < 0.001;
+	}
+
+	public boolean isZoomCloseToTarget() {
+		return Math.abs(zoomLevel - targetZoomLevel) < 0.1;
+	}
+
 	private double getMaxZoomLevel() {
 		return ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
 	}
@@ -174,13 +187,5 @@ public class Viewport {
 			return;
 
 		this.zoomLevel = zoomLevel + differenceToTargetZoomLevel * 0.015;
-	}
-
-	public boolean isZoomedOutCompletely() {
-		return Math.abs(zoomLevel - minZoomLevel) < 0.001;
-	}
-
-	public boolean isZoomCloseToTarget() {
-		return Math.abs(zoomLevel - targetZoomLevel) < 0.1;
 	}
 }

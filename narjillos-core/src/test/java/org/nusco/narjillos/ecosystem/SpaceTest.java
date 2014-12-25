@@ -16,7 +16,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class SpaceTest {
 
-	Space space = new Space(10_000, 100);
+	Space space = new Space(8_000);
 
 	@Test
 	public void isDividedIntoAGridOfSquareAreas() {
@@ -63,12 +63,12 @@ public class SpaceTest {
 	}
 
 	@Test
-	public void canRemoveThings() {
+	public void removesThings() {
 		MockThing thingThatStays = new MockThing(Vector.cartesian(510, 310), 0); // area [5, 3]
 		MockThing thingThatGoes = new MockThing(Vector.cartesian(520, 320), 1);  // area [5, 3]
 		Thing[] things = new Thing[] {
-				thingThatStays,
-				thingThatGoes
+			thingThatStays,
+			thingThatGoes
 		};
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);
@@ -119,10 +119,10 @@ public class SpaceTest {
 	@Test
 	public void neighborsSearchWorksForEdgeAreas() {
 		Thing[] things = new Thing[] {
-				new MockThing(Vector.cartesian(010, 310), 0), // area [0, 3]
-				new MockThing(Vector.cartesian(020, 320), 1), // area [0, 3]
-				new MockThing(Vector.cartesian(010, 210), 2), // area [0, 2]
-				new MockThing(Vector.cartesian(110, 410), 3), // area [1, 4]
+			new MockThing(Vector.cartesian(010, 310), 0), // area [0, 3]
+			new MockThing(Vector.cartesian(020, 320), 1), // area [0, 3]
+			new MockThing(Vector.cartesian(010, 210), 2), // area [0, 2]
+			new MockThing(Vector.cartesian(110, 410), 3), // area [1, 4]
 		};
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);
@@ -140,10 +140,10 @@ public class SpaceTest {
 	@Test
 	public void neighborsSearchWorksForCornerAreas() {
 		Thing[] things = new Thing[] {
-				new MockThing(Vector.cartesian(9910, 9910), 0), // area [99, 99]
-				new MockThing(Vector.cartesian(9920, 9920), 1), // area [99, 99]
-				new MockThing(Vector.cartesian(9810, 9910), 2), // area [98, 99]
-				new MockThing(Vector.cartesian(9910, 9810), 3), // area [99, 98]
+			new MockThing(Vector.cartesian(9910, 9910), 0), // area [99, 99]
+			new MockThing(Vector.cartesian(9920, 9920), 1), // area [99, 99]
+			new MockThing(Vector.cartesian(9810, 9910), 2), // area [98, 99]
+			new MockThing(Vector.cartesian(9910, 9810), 3), // area [99, 98]
 		};
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);
@@ -152,16 +152,16 @@ public class SpaceTest {
 		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
 		assertEquals(3, neighbors.size());
 		Iterator<Thing> thingsIterator = neighbors.iterator();
+		assertEquals("1", thingsIterator.next().getLabel());
 		assertEquals("2", thingsIterator.next().getLabel());
 		assertEquals("3", thingsIterator.next().getLabel());
-		assertEquals("1", thingsIterator.next().getLabel());
 	}
 
 	@Test
 	public void thingsInOuterSpaceBelongToACommonArea() {
 		Thing[] things = new Thing[] {
-				new MockThing(Vector.cartesian(-1, -1), 0),     // outer space
-				new MockThing(Vector.cartesian(10_010, 10_010), 1), // outer space
+			new MockThing(Vector.cartesian(-1, -1), 0),     // outer space
+			new MockThing(Vector.cartesian(10_010, 10_010), 1), // outer space
 		};
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);
@@ -176,9 +176,9 @@ public class SpaceTest {
 	@Test
 	public void returnsAllTheThings() {
 		Thing[] things = new Thing[] {
-				new MockThing(Vector.cartesian(9910, 9910), 0),
-				new MockThing(Vector.cartesian(9920, 9920), 1),
-				new MockThing(Vector.cartesian(10_010, 10_010), 1),
+			new MockThing(Vector.cartesian(9910, 9910), 0),
+			new MockThing(Vector.cartesian(9920, 9920), 1),
+			new MockThing(Vector.cartesian(10_010, 10_010), 1),
 		};
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);

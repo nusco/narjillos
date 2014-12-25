@@ -15,10 +15,10 @@ import org.nusco.narjillos.shared.things.Thing;
  */
 class Space {
 
+	private static final int AREAS_PER_EDGE = 80;
 	private static final double COLLISION_DISTANCE = 60;
 
 	private final double areaSize;
-	private final int areasPerEdge;
 	private final Set<Thing>[][] areas;
 
 	private final Set<Thing> allTheThings = Collections.synchronizedSet(new LinkedHashSet<Thing>());
@@ -29,17 +29,12 @@ class Space {
 	private final Set<Thing> outerSpace = new LinkedHashSet<>();
 
 	@SuppressWarnings("unchecked")
-	public Space(long size, int areasPerEdge) {
-		this.areasPerEdge = areasPerEdge;
-		areaSize = ((double) size) / areasPerEdge;
-		this.areas = new Set[areasPerEdge][areasPerEdge];
+	public Space(long size) {
+		areaSize = ((double) size) / AREAS_PER_EDGE;
+		this.areas = new Set[AREAS_PER_EDGE][AREAS_PER_EDGE];
 		for (int i = 0; i < areas.length; i++)
 			for (int j = 0; j < areas[i].length; j++)
 				areas[i][j] = new LinkedHashSet<>();
-	}
-
-	double getAreaSize() {
-		return areaSize;
 	}
 
 	public int[] add(Thing thing) {
@@ -68,6 +63,59 @@ class Space {
 
 	public boolean contains(Thing thing) {
 		return getArea(thing).contains(thing);
+	}
+
+	public Thing findClosestTo(Thing thing, String labelRegExp) {
+		// Naive three-step approximation.
+		// (It can be replaced with spiral search if we ever need more
+		// performance).
+
+		if (isEmpty())
+			return null;
+
+		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing, labelRegExp);
+
+		if (!nearbyNeighbors.isEmpty())
+			return findClosestTo_Amongst(thing, nearbyNeighbors, labelRegExp);
+
+		return findClosestTo_Amongst(thing, allTheThings, labelRegExp);
+	}
+
+	/**
+	 * This only searches in the neibhoring areas. So, if the movement is able
+	 * to span more than one area, it will fail to check all potential
+	 * collisions. The assumption here is that movements are smaller than the
+	 * areaSize. If this assumption ever becomes limiting, then we'll have to
+	 * make this method smarter, and search all the areas that are intersecated
+	 * by the movement, plus their neighbors (potentially including outerSpace).
+	 */
+	public Set<Thing> detectCollisions(Segment movement, String label) {
+		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
+
+		for (Thing neighbor : getNearbyNeighbors(movement.getStartPoint(), label))
+			if (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= COLLISION_DISTANCE)
+				collidedFoodPieces.add(neighbor);
+
+		return collidedFoodPieces;
+	}
+
+	public Set<Thing> getAll(String label) {
+		return filterByLabel(allTheThings, label);
+	}
+
+	public boolean isEmpty() {
+		return allTheThings.isEmpty();
+	}
+
+	public int count(String label) {
+		Integer result = countsByLabel.get(label);
+		if (result == null)
+			return 0;
+		return result;
+	}
+
+	double getAreaSize() {
+		return areaSize;
 	}
 
 	Set<Thing> getNearbyNeighbors(Thing thing, String label) {
@@ -105,40 +153,6 @@ class Space {
 				collector.add(thing);
 	}
 
-	public Thing findClosestTo(Thing thing, String labelRegExp) {
-		// Naive three-step approximation.
-		// (It can be replaced with spiral search if we ever need more
-		// performance).
-
-		if (isEmpty())
-			return null;
-
-		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing, labelRegExp);
-
-		if (!nearbyNeighbors.isEmpty())
-			return findClosestTo_Amongst(thing, nearbyNeighbors, labelRegExp);
-
-		return findClosestTo_Amongst(thing, allTheThings, labelRegExp);
-	}
-
-	/**
-	 * This only searches in the neibhoring areas. So, if the movement is able
-	 * to span more than one area, it will fail to check all potential
-	 * collisions. The assumption here is that movements are smaller than the
-	 * areaSize. If this assumption ever becomes limiting, then we'll have to
-	 * make this method smarter, and search all the areas that are intersecated
-	 * by the movement, plus their neighbors (potentially including outerSpace).
-	 */
-	public Set<Thing> detectCollisions(Segment movement, String label) {
-		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
-
-		for (Thing neighbor : getNearbyNeighbors(movement.getStartPoint(), label))
-			if (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= COLLISION_DISTANCE)
-				collidedFoodPieces.add(neighbor);
-
-		return collidedFoodPieces;
-	}
-
 	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things, String label) {
 		double minDistance = Double.MAX_VALUE;
 		Thing result = null;
@@ -157,7 +171,7 @@ class Space {
 	}
 
 	private boolean isInOuterSpace(int x, int y) {
-		return x < 0 || x >= areasPerEdge || y < 0 || y >= areasPerEdge;
+		return x < 0 || x >= AREAS_PER_EDGE || y < 0 || y >= AREAS_PER_EDGE;
 	}
 
 	private Set<Thing> getArea(int x, int y) {
@@ -176,10 +190,6 @@ class Space {
 		return (int) Math.floor(x / areaSize);
 	}
 
-	public Set<Thing> getAll(String label) {
-		return filterByLabel(allTheThings, label);
-	}
-
 	private Set<Thing> filterByLabel(Set<Thing> things, String label) {
 		Set<Thing> result = new LinkedHashSet<>();
 		for (Thing thing : things)
@@ -190,16 +200,5 @@ class Space {
 
 	private boolean matches(Thing thing, String label) {
 		return thing.getLabel().contains(label);
-	}
-
-	public boolean isEmpty() {
-		return allTheThings.isEmpty();
-	}
-
-	public int count(String label) {
-		Integer result = countsByLabel.get(label);
-		if (result == null)
-			return 0;
-		return result;
 	}
 }

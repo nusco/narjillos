@@ -18,8 +18,8 @@ public class Locator {
 	}
 
 	/**
-	 * Finds eggs or narjillos within a limited radius, which is proportional to
-	 * the size of the egg/narjillos involved. (Intuitively, bigger things are
+	 * Finds things within a limited radius, which is proportional to the size
+	 * of the egg/narjillos involved. (Intuitively, bigger things are
 	 * "easier to find").
 	 */
 	public Thing findThingNear(Vector position) {
@@ -32,7 +32,7 @@ public class Locator {
 
 		if (result != null)
 			return result;
-		
+
 		return findNarjilloNear(position, MAX_FIND_DISTANCE);
 	}
 

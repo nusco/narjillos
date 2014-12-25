@@ -67,11 +67,6 @@ public class Viewport {
 		centerEC = toEC(centerSC);
 	}
 
-	final void setCenterEC(Vector centerEC) {
-		this.centerEC = centerEC;
-		this.targetCenterEC = centerEC;
-	}
-
 	public void moveBy(Vector velocitySC) {
 		targetCenterEC = centerEC.plus(Vector.cartesian(toLengthEC(velocitySC.x), toLengthEC(velocitySC.y)));
 	}
@@ -98,7 +93,6 @@ public class Viewport {
 	private void centerOnEcosystem() {
 		centerEC = getEcosystemCenterEC();
 	}
-
 
 	public final void zoomTo(double zoomLevel) {
 		this.zoomLevel = Math.min(Math.max(zoomLevel, minZoomLevel), MAX_ZOOM);
@@ -160,6 +154,11 @@ public class Viewport {
 
 	public boolean isZoomCloseToTarget() {
 		return Math.abs(zoomLevel - targetZoomLevel) < 0.1;
+	}
+
+	final void setCenterEC(Vector centerEC) {
+		this.centerEC = centerEC;
+		this.targetCenterEC = centerEC;
 	}
 
 	private double getMaxZoomLevel() {

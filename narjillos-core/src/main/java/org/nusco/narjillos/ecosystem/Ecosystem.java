@@ -34,7 +34,6 @@ public class Ecosystem {
 	private static final int MAX_EGG_INCUBATION_TIME = 800;
 	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
 	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
-	private static final int AREAS_PER_EDGE = 80;
 
 	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
@@ -48,7 +47,7 @@ public class Ecosystem {
 
 	public Ecosystem(final long size) {
 		this.size = size;
-		this.things = new Space(size, AREAS_PER_EDGE);
+		this.things = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	}
@@ -164,8 +163,9 @@ public class Ecosystem {
 
 		Map<Narjillo, Set<Thing>> narjillosToCollidedFood = calculateCollidedFood(narjillos);
 
-		// Consume food in a predictable order, to solve the situation where
-		// two narjillos collide with the same piece of food.
+		// Consume food in a predictable order, to avoid non-deterministic
+		// behavior or race conditions when multiple narjillos collide with the
+		// same piece of food.
 		for (Entry<Narjillo, Set<Thing>> entry : narjillosToCollidedFood.entrySet()) {
 			Narjillo narjillo = entry.getKey();
 			Set<Thing> collidedFood = entry.getValue();

@@ -133,10 +133,6 @@ public class Ecosystem {
 		return narjillos.size();
 	}
 
-	public Set<Thing> getNonNarjilloThings() {
-		return things.getAll("");
-	}
-
 	public Set<Narjillo> getNarjillos() {
 		return narjillos;
 	}

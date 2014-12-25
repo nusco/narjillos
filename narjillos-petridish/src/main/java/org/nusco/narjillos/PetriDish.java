@@ -98,12 +98,10 @@ public class PetriDish extends Application {
 	private void startModelThread(final String[] arguments) {
 		final boolean[] isModelInitialized = new boolean[] { false };
 
-		modelThread = new Thread() {
-			@Override
-			public void run() {
-				// We need to initialize the lab inside this thread, because
-				// the random number generator will complain if it is called
-				// from different threads.
+		modelThread = new Thread(() -> {
+			// We need to initialize the lab inside this thread, because
+			// the random number generator will complain if it is called
+			// from different threads.
 				lab = new Lab(CommandLineOptions.parse(arguments));
 
 				isModelInitialized[0] = true;
@@ -115,8 +113,7 @@ public class PetriDish extends Application {
 							Platform.exit();
 					waitFor(state.getSpeed().getTicksPeriod(), startTime);
 				}
-			}
-		};
+			});
 
 		modelThread.start();
 		while (!isModelInitialized[0])
@@ -326,7 +323,8 @@ public class PetriDish extends Application {
 			@Override
 			public void handle(ZoomEvent event) {
 				initialZoomLevel = viewport.getZoomLevel();
-			}});
+			}
+		});
 		scene.setOnZoom(new EventHandler<ZoomEvent>() {
 			@Override
 			public void handle(ZoomEvent event) {
@@ -334,7 +332,8 @@ public class PetriDish extends Application {
 				viewport.zoomTo(initialZoomLevel * zoomFactor);
 				if (viewport.isZoomedOutCompletely())
 					tracker.stopTracking();
-			}});
+			}
+		});
 	}
 
 	@Override

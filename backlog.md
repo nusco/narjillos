@@ -63,6 +63,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Different shapes for body segments
 * Visualize different speed settings
 * Make central area of dish visible at a distance
 * Light on/off visual and sound effects

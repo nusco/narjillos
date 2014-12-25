@@ -144,7 +144,11 @@ public class Lab {
 	}
 
 	public static void main(String... args) {
-		final Lab lab = new Lab(CommandLineOptions.parse(args));
+		CommandLineOptions options = CommandLineOptions.parse(args);
+		if (options == null)
+			System.exit(1);
+		
+		final Lab lab = new Lab(options);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

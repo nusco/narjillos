@@ -1,11 +1,15 @@
 package org.nusco.narjillos;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.UnrecognizedOptionException;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
@@ -22,63 +26,60 @@ class CommandLineOptions extends Options {
 	private long seed = NO_SEED;
 	private DNA dna = null;
 
-	private CommandLineOptions() {}
-
 	public static CommandLineOptions parse(String... args) {
-		CommandLineOptions options = new CommandLineOptions();
-		options.addOption("h", "help", false, "print this message");
-		options.addOption("p", "persistent", false, "periodically save experiment and ancestry to file");
-		options.addOption("seed", true, "start experiment with given seed");
-		options.addOption("dna", true, "populate experiment with specific dna at start (either the genes themselves, or a file containing them)");
+		try {
+			return new CommandLineOptions(args);
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
 
-	    CommandLineParser parser = new BasicParser();
-	    try {
-	        // parse the command line arguments
-	        CommandLine line = parser.parse(options, args);
+	CommandLineOptions(String... args) {
+		addOption("h", "help", false, "print this message");
+		addOption("p", "persistent", false, "periodically save experiment and ancestry to file");
+		addOption("seed", true, "start experiment with given seed");
+		addOption("dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
+
+		CommandLineParser parser = new BasicParser();
+		
+		try {
+			CommandLine line;
+			try {
+				line = parser.parse(this, args);
+			} catch (UnrecognizedOptionException e) {
+				throw new RuntimeException(e.getMessage() + "\n" + getHelpText());
+			}
+			
 	        if (line.hasOption("h")) {
-	        	printHelp(options);
+	        	System.out.println(getHelpText());
 	        	System.exit(0);
-	        	return null;
 	        }
 
-	        options.setPersistent(line.hasOption("p"));
+	        setPersistent(line.hasOption("p"));
 
 	        if (line.hasOption("seed")) {
-	        	if (line.hasOption("dna")) {
-	        		System.out.println("You cannot pick a seed and dna at the same time. It's either one, or the other.");
-	        		System.exit(1);
-	        		return null;
-	        	}
-	        	options.setSeed(line.getOptionValue("seed"));
+	        	if (line.hasOption("dna"))
+	        		throw new RuntimeException("You cannot pick a seed and dna at the same time. It's either one, or the other.");
+	        	setSeed(line.getOptionValue("seed"));
 	        }
 	        
 	        if (line.hasOption("dna"))
-	        	options.setDna(line.getOptionValue("dna"));
+	        	setDna(line.getOptionValue("dna"));
 
 	        if (line.getArgs().length == 0)
-	        	return options;
-
-	        if (line.getArgs().length > 1) {
-	        	System.out.println("I don't understand these arguments.");
-	        	printHelp(options);
-	        	System.exit(1);
-	        }
+	        	return;
 	        
-	        if (options.getDna() != null || options.getSeed() != NO_SEED) {
-	        	System.out.println("If you load the experiment from a file, then you cannot pick its seed or DNA.");
-	        	printHelp(options);
-	        	System.exit(1);
-	        }
+	        if (line.getArgs().length > 1)
+	        	throw new RuntimeException(getDontUnderstandText());
 	        
-	        options.setFile(line.getArgs()[0]);
+	        if (getDna() != null || getSeed() != NO_SEED)
+	        	throw new RuntimeException("If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
+	        
+	        setFile(line.getArgs()[0]);
+        } catch(ParseException e) {
+	        throw new RuntimeException(e);
 	    }
-	    catch(ParseException e) {
-	        System.err.println(e.getMessage());
-	        System.exit(1);
-	        return null;
-	    }
-	    
-	    return options;
 	}
 
 	public Experiment getExperiment() {
@@ -101,8 +102,14 @@ class CommandLineOptions extends Options {
 		return dna;
 	}
 
-	private static void printHelp(Options options) {
-		new HelpFormatter().printHelp(" ", options);
+	private String getHelpText() {
+		StringWriter stringWriter = new StringWriter();
+		new HelpFormatter().printHelp(new PrintWriter(stringWriter), 1000, " ", "", this, 2, 2, "");
+		return stringWriter.getBuffer().toString();
+	}
+
+	private String getDontUnderstandText() {
+		return "I don't understand these arguments.\n" + getHelpText();
 	}
 
 	private void setFile(String file) {

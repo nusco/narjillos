@@ -78,7 +78,7 @@ public class Persistence {
 		try {
 			return Files.readAllLines(Paths.get("version")).get(0);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			return "0.0.0";
 		}
 	}
 

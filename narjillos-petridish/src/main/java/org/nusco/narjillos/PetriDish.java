@@ -102,18 +102,23 @@ public class PetriDish extends Application {
 			// We need to initialize the lab inside this thread, because
 			// the random number generator will complain if it is called
 			// from different threads.
-				lab = new Lab(CommandLineOptions.parse(arguments));
+			
+			CommandLineOptions options = CommandLineOptions.parse(arguments);
+			if (options == null)
+				System.exit(1);
+			
+			lab = new Lab(options);
 
-				isModelInitialized[0] = true;
+			isModelInitialized[0] = true;
 
-				while (!stopThreads) {
-					long startTime = System.currentTimeMillis();
-					if (state.getSpeed() != Speed.PAUSED)
-						if (!lab.tick())
-							Platform.exit();
-					waitFor(state.getSpeed().getTicksPeriod(), startTime);
-				}
-			});
+			while (!stopThreads) {
+				long startTime = System.currentTimeMillis();
+				if (state.getSpeed() != Speed.PAUSED)
+					if (!lab.tick())
+						Platform.exit();
+				waitFor(state.getSpeed().getTicksPeriod(), startTime);
+			}
+		});
 
 		modelThread.start();
 		while (!isModelInitialized[0])

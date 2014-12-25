@@ -115,7 +115,8 @@ class CommandLineOptions extends Options {
 	}
 
 	private void setSeed(String seed) {
-		this.seed = Long.parseLong(seed);
+		String seedWithoutVersion = seed.split("-")[0];
+		this.seed = Long.parseLong(seedWithoutVersion);
 	}
 
 	private void setDna(String dna) {

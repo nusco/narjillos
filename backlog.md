@@ -17,8 +17,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * More intuitive track/untrack mouse commands °°
 * Reliable tracking with double-click even at a distance °°
-* Status bar
 * Limit panning inside space area °
+* Status bar
 * Start without ancestry by default (to avoid OutOfMemory errors in the long run)
 * Save/load experiment from menu
 * "About"/"Help" menus
@@ -49,7 +49,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Lab Technician
 
 * Serialize ancestry and experiment together in one file, not two separate files °°
-* Enable passing entire id to Lab instead of just the experiment seed °
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
 * "--serious" option to start with persistence, ancestry, and learge heap
@@ -64,6 +63,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Visualize different speed settings
 * Make central area of dish visible at a distance
 * Light on/off visual and sound effects
 * Smoother contours when zooming in infrared mode

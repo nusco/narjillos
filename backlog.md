@@ -5,9 +5,13 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Physicist
 
-* Viscosity to limit maximum speed (makes the current watchdog unnecessary) °°
 * Fix sketchy collision detection °
 * Rewrite collision detection to be independent of max speed °
+* Rotation inertia
+* Translation inertia
+* More realistic viscosity?
+* Viscosity per segment?
+* Limit rotation speed?
 
 ###Speed Demon
 
@@ -18,19 +22,19 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 * More intuitive track/untrack mouse commands °°
 * Reliable tracking with double-click even at a distance °°
+* Start without ancestry by default (to avoid OutOfMemory errors in the long run) °°
 * Limit panning inside space area °
+* Tutorial
 * Status bar
-* Start without ancestry by default (to avoid OutOfMemory errors in the long run)
 * Save/load experiment from menu
 * "About"/"Help" menus
+* Package as native app for Mac
 * Zoo mode (switch from narjillo to narjillo)
 * Externalize configurable parameters to YAML
-* Tutorial
 * Run in a browser
-* Package as native app for Mac
-* Package as native app for Windows
+* Package as native Windows app
 * GUI
-* Issue warning when Java 8 is not installed
+* Package Java runtime with command-line program?
 
 ###Genetist
 
@@ -52,7 +56,8 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 * Serialize ancestry and experiment together in one file, not two separate files °°
 * Automatically purge experiment temp file °
 * Automatically recover missing experiment from temp file °
-* "--serious" option to start with persistence, ancestry, and learge heap
+* "--serious" option to start with persistence, ancestry, and large heap °
+* Historical experiment stats (average lifespan, number of creatures, ...)
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
 
@@ -64,7 +69,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
-* Show speckles in infrared mode
+* Show speckles in infrared mode °
 * Different shapes for body segments
 * Visualize different speed settings
 * Make central area of dish visible at a distance

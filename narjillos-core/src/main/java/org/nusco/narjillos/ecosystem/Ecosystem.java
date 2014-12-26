@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -48,6 +49,12 @@ public class Ecosystem {
 	public Ecosystem(final long size) {
 		this.size = size;
 		this.things = new Space(size);
+
+		// check that things cannot move faster than a space area in a single
+		// tick (which would make collision detection unreliable)
+		if (things.getAreaSize() < Viscosity.MAX_VELOCITY)
+			throw new RuntimeException("Bug: Area size smaller than max velocity");
+		
 		this.center = Vector.cartesian(size, size).by(0.5);
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	}
@@ -194,19 +201,12 @@ public class Ecosystem {
 				@Override
 				public Set<Thing> call() throws Exception {
 					Segment movement = narjillo.tick();
-					checkForExcessiveSpeed(movement);
 					Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
 					return collidedFoodPieces;
 				}
 			}));
 		}
 		return result;
-	}
-
-	private void checkForExcessiveSpeed(Segment movement) {
-		if (movement.getVector().getLength() > things.getAreaSize())
-			System.out.println("WARNING: Excessive narjillo speed: " + movement.getVector().getLength() + " for Space area size of "
-					+ things.getAreaSize() + ". Could result in missed collisions.");
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {

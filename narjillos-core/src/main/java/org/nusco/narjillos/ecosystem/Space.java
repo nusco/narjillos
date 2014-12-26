@@ -15,7 +15,7 @@ import org.nusco.narjillos.shared.things.Thing;
  */
 class Space {
 
-	private static final int AREAS_PER_EDGE = 80;
+	private static final int AREAS_PER_EDGE = 100;
 	private static final double COLLISION_DISTANCE = 60;
 
 	private final double areaSize;

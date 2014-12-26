@@ -11,6 +11,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Speed Demon
 
+* Fast log calculations for viscosity °°
 * Adaptive graphics (disable effects when framerate plummets)
 
 ###Gamer
@@ -63,6 +64,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Show speckles in infrared mode
 * Different shapes for body segments
 * Visualize different speed settings
 * Make central area of dish visible at a distance

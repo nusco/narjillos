@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.physics.ZeroVectorException;
 
 /**
  * The physics of translations.
@@ -37,7 +38,17 @@ public class TranslationsPhysicsEngine {
 	}
 
 	public Vector getTranslation() {
-		return getTotalLinearMomentum().by(-1.0 / bodyMass);
+		Vector result = getTotalLinearMomentum().by(-1.0 / bodyMass);
+		double length = result.getLength();
+
+		if (length == 0)
+			return result;
+		
+		try {
+			return Vector.polar(result.getAngle(), Viscosity.limit(length));
+		} catch (ZeroVectorException e) {
+			throw new RuntimeException(e); // should never happen
+		}
 	}
 
 	public double getEnergy() {

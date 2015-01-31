@@ -34,6 +34,11 @@ public class FastMath {
 	// access. It will be initialized in the static initializer below.
 	private static final int ATAN_TABLE_LENGTH;
 
+	static final double LOG_MIN = 1;
+	public static final double LOG_MAX = 100;
+	private static final double LOG_RESOLUTION = 0.01;
+	private static final double[] LOG_TABLE;
+	
 	static {
 		// The tan table matches angles in the first quadrant to their tangent.
 		// We calculate it, use it to calculate the ATAN_TABLE, then throw it
@@ -81,6 +86,10 @@ public class FastMath {
 			double currentAngle = ((double) currentIndexInTanTable) / ANGLE_RESOLUTION;
 			ATAN_TABLE[i] = currentAngle;
 		}
+		
+		LOG_TABLE = new double[(int)((LOG_MAX - LOG_MIN) / LOG_RESOLUTION) + 1];
+		for (int currentIndexInLogTable = 0; currentIndexInLogTable < LOG_TABLE.length; currentIndexInLogTable++)
+			LOG_TABLE[currentIndexInLogTable] = Math.log(LOG_MIN + currentIndexInLogTable * LOG_RESOLUTION);
 	}
 
 	public static void setUp() {
@@ -187,6 +196,8 @@ public class FastMath {
 	}
 
 	public static double log(double n) {
-		return Math.log(n);
+		if (n < LOG_MIN || n > LOG_MAX)
+			throw new RuntimeException("Number out of range in FastMath.log(): " + n);
+		return LOG_TABLE[(int)((n - LOG_MIN) / LOG_RESOLUTION)];
 	}
 }

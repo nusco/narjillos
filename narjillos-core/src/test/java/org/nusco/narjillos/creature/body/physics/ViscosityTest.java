@@ -17,7 +17,7 @@ public class ViscosityTest {
 	@Test
 	public void limitsVelocityOverTheKickInValue() {
 		double previousVelocity = 0;
-		for (double velocity = KICK_IN_VELOCITY; velocity < Viscosity.getMaxVelocity(); velocity += 0.3) {
+		for (double velocity = KICK_IN_VELOCITY; velocity <= Viscosity.getMaxVelocity(); velocity += 0.3) {
 			assertTrue(velocity > previousVelocity);
 			previousVelocity = velocity;
 		}

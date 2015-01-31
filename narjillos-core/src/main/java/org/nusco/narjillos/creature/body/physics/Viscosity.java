@@ -5,7 +5,7 @@ import org.nusco.narjillos.shared.physics.FastMath;
 public class Viscosity {
 
 	public static final double KICK_IN_VELOCITY = 300;
-	public static final double VELOCITY_CLIPPING_VALUE = 400;
+	public static final double VELOCITY_CLIPPING_VALUE = KICK_IN_VELOCITY + FastMath.LOG_MAX;
 	
 	public static double limit(double velocity) {
 		velocity = Math.min(VELOCITY_CLIPPING_VALUE, velocity);
@@ -18,9 +18,5 @@ public class Viscosity {
 
 	public static double getMaxVelocity() {
 		return limit(VELOCITY_CLIPPING_VALUE);
-	}
-	
-	public static double getMaxLogValue() {
-		return VELOCITY_CLIPPING_VALUE - KICK_IN_VELOCITY;
 	}
 }

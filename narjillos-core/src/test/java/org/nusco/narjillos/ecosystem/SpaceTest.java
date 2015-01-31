@@ -16,7 +16,7 @@ import org.nusco.narjillos.shared.things.Thing;
 
 public class SpaceTest {
 
-	Space space = new Space(8_000);
+	Space space = new Space(10_000);
 
 	@Test
 	public void isDividedIntoAGridOfSquareAreas() {
@@ -152,9 +152,9 @@ public class SpaceTest {
 		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
 		assertEquals(3, neighbors.size());
 		Iterator<Thing> thingsIterator = neighbors.iterator();
-		assertEquals("1", thingsIterator.next().getLabel());
 		assertEquals("2", thingsIterator.next().getLabel());
 		assertEquals("3", thingsIterator.next().getLabel());
+		assertEquals("1", thingsIterator.next().getLabel());
 	}
 
 	@Test

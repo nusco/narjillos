@@ -16,7 +16,8 @@ import org.nusco.narjillos.utilities.Viewport;
 
 public class SpecklesView {
 
-	private static final double SPECKLE_RADIUS = 1.3;
+	private static final double NORMAL_SPECKLE_RADIUS = 1.3;
+	private static final double INFRARED_SPECKLE_RADIUS = 2;
 	private static final Color SPECKLE_COLOR = EcosystemView.BACKGROUND_COLOR.darker();
 	
 	private final Viewport viewport;
@@ -70,8 +71,8 @@ public class SpecklesView {
 		for (int i = 0; i < 5; i++) {
 			int x = getRandomCoordinate(textureSize);
 			int y = getRandomCoordinate(textureSize);
-			backgroundGroup.getChildren().add(createSpeckle(x, y));
-			infraredBackgroundGroup.getChildren().add(createSpeckle(x, y));
+			backgroundGroup.getChildren().add(createSpeckle(x, y, NORMAL_SPECKLE_RADIUS));
+			infraredBackgroundGroup.getChildren().add(createSpeckle(x, y, INFRARED_SPECKLE_RADIUS));
 		}
 
 		backgroundTexture = new WritableImage(textureSize, textureSize);
@@ -81,15 +82,16 @@ public class SpecklesView {
 		offScreenInfraredBackgroundScene.snapshot(infraredBackgroundTexture);
 	}
 
-	private Shape createSpeckle(int x, int y) {
-		Shape result = new Circle(SPECKLE_RADIUS);
+	private Shape createSpeckle(int x, int y, double radius) {
+		Shape result = new Circle(radius);
 		result.setFill(SPECKLE_COLOR);
 		result.getTransforms().add(new Translate(x, y));
 		return result;
 	}
 
 	private int getRandomCoordinate(int maxSize) {
+		double maxSpeckleRadius = Math.max(NORMAL_SPECKLE_RADIUS, INFRARED_SPECKLE_RADIUS);
 		// Don't get too close to the edges - we don't want half-speckles
-		return (int) (SPECKLE_RADIUS + Math.random() * (maxSize - (SPECKLE_RADIUS * 2)));
+		return (int) (maxSpeckleRadius + Math.random() * (maxSize - (maxSpeckleRadius * 2)));
 	}
 }

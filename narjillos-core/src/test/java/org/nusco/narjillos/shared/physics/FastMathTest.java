@@ -88,7 +88,7 @@ public class FastMathTest {
 	}
 	
 	// Very slow test, so keep it disabled by default
-//	@Test
+	//@Test
 	public void calculatesApproximatedArcTangent() {
 		for (double y = -6000; y <= 6000; y += 0.7)
 			for (double x = -100; x <= 100; x += 0.13)

@@ -38,7 +38,7 @@ public class Experiment {
 		
 		// check that things cannot move faster than a space area in a single
 		// tick (which would make collision detection unreliable)
-		if (ecosystem.getSpaceAreaSize() < Viscosity.MAX_VELOCITY)
+		if (ecosystem.getSpaceAreaSize() < Viscosity.getMaxVelocity())
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 

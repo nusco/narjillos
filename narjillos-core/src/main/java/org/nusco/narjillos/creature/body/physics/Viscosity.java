@@ -1,15 +1,26 @@
 package org.nusco.narjillos.creature.body.physics;
 
+import org.nusco.narjillos.shared.physics.FastMath;
+
 public class Viscosity {
 
 	public static final double KICK_IN_VELOCITY = 300;
-	public static final double MAX_VELOCITY = 400;
+	public static final double VELOCITY_CLIPPING_VALUE = 400;
 	
 	public static double limit(double velocity) {
+		velocity = Math.min(VELOCITY_CLIPPING_VALUE, velocity);
+
 		if (velocity <= KICK_IN_VELOCITY + 1)
 			return velocity;
+		
+		return KICK_IN_VELOCITY + 1 + FastMath.log(velocity - KICK_IN_VELOCITY);
+	}
 
-		double result = KICK_IN_VELOCITY + 1 + Math.log(velocity - KICK_IN_VELOCITY);
-		return Math.min(MAX_VELOCITY, result);
+	public static double getMaxVelocity() {
+		return limit(VELOCITY_CLIPPING_VALUE);
+	}
+	
+	public static double getMaxLogValue() {
+		return VELOCITY_CLIPPING_VALUE - KICK_IN_VELOCITY;
 	}
 }

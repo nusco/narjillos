@@ -185,4 +185,8 @@ public class FastMath {
 				atan(y, x);
 		System.out.println((double) (System.currentTimeMillis() - fastMathAtanStart) / 1000);
 	}
+
+	public static double log(double n) {
+		return Math.log(n);
+	}
 }

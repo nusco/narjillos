@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -49,12 +48,6 @@ public class Ecosystem {
 	public Ecosystem(final long size) {
 		this.size = size;
 		this.things = new Space(size);
-
-		// check that things cannot move faster than a space area in a single
-		// tick (which would make collision detection unreliable)
-		if (things.getAreaSize() < Viscosity.MAX_VELOCITY)
-			throw new RuntimeException("Bug: Area size smaller than max velocity");
-		
 		this.center = Vector.cartesian(size, size).by(0.5);
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	}
@@ -283,5 +276,9 @@ public class Ecosystem {
 			executorService.awaitTermination(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 		}
+	}
+
+	public double getSpaceAreaSize() {
+		return things.getAreaSize();
 	}
 }

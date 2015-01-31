@@ -1,5 +1,6 @@
 package org.nusco.narjillos.experiment;
 
+import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
@@ -34,6 +35,11 @@ public class Experiment {
 		ranGen = new RanGen(seed);
 		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
 		populate(ecosystem, dna);
+		
+		// check that things cannot move faster than a space area in a single
+		// tick (which would make collision detection unreliable)
+		if (ecosystem.getSpaceAreaSize() < Viscosity.MAX_VELOCITY)
+			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 
 	public final void timeStamp() {

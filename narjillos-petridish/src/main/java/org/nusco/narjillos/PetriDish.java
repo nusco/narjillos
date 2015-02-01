@@ -237,18 +237,15 @@ public class PetriDish extends Application {
 	private void registerMouseClickHandlers(final Scene scene) {
 		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if (event.getClickCount() < 2)
-					return;
-
 				Vector clickedPointSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				tracker.startTrackingAt(viewport.toEC(clickedPointSC));
+				tracker.startTrackingThingAt(viewport.toEC(clickedPointSC));
 
-				if (event.getClickCount() == 3)
+				if (event.getClickCount() == 2)
 					copyIsolatedDNAToClipboard(clickedPointSC);
 			}
 
 			private void copyIsolatedDNAToClipboard(Vector clickedPoint) {
-				Narjillo narjillo = locator.findNarjilloNear(viewport.toEC(clickedPoint), Locator.MAX_FIND_DISTANCE);
+				Narjillo narjillo = (Narjillo) locator.findNarjilloAt(viewport.toEC(clickedPoint));
 
 				if (narjillo == null)
 					return;

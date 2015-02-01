@@ -20,6 +20,11 @@ public class FoodPiece implements Thing {
 	public Vector getPosition() {
 		return position;
 	}
+	
+	@Override
+	public Vector getCenter() {
+		return getPosition();
+	}
 
 	@Override
 	public Segment tick() {

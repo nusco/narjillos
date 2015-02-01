@@ -25,33 +25,33 @@ public class LocatorTest {
 	}
 
 	private Narjillo insertNarjillo(Vector position) {
-		DNA dna = DNA.random(ranGen);
+		DNA dna = new DNA("{145_227_116_072_163_201_077_221_217}{060_227_157_252_209_149_056_114_167}{250_253_092_189_010_247_016_214_009}{027_039_203_179_042_042_175_110_008}");
 		Narjillo result = new Narjillo(dna, new Embryo(dna).develop(), position, 10000);
 		ecosystem.insertNarjillo(result);
 		return result;
 	}
 	
 	@Test
-	public void findsNarjillosNearAGivenPosition() {
+	public void findsThingsAtAGivenPosition() {
 		Narjillo narjillo1 = insertNarjillo(Vector.cartesian(101, 101));
 		Narjillo narjillo2 = insertNarjillo(Vector.cartesian(998, 998));
 		insertNarjillo(Vector.cartesian(999, 999));
 		
-		assertEquals(narjillo1, locator.findNarjilloNear(Vector.cartesian(100, 100), 100));
-		assertEquals(narjillo2, locator.findNarjilloNear(Vector.cartesian(950, 980), 100));
+		assertEquals(narjillo1, locator.findNarjilloAt(Vector.cartesian(106, 106)));
+		assertEquals(narjillo2, locator.findNarjilloAt(Vector.cartesian(1003, 1003)));
 	}
 	
 	@Test
-	public void returnsNullIfNoNarjilloIsCloseEnough() {
+	public void returnsNullIfNoThingIsCloseEnough() {
 		insertNarjillo(Vector.cartesian(100, 10));
 		
-		assertNull(locator.findNarjilloNear(Vector.cartesian(500, 500), 100));
+		assertNull(locator.findNarjilloAt(Vector.cartesian(500, 500)));
 	}
 
 	@Test
 	public void returnsNullIfTheEcosystemContainsNoNarjillos() {
 		Locator emptyLocator = new Locator(new Ecosystem(1000));
 		
-		assertNull(emptyLocator.findNarjilloNear(Vector.cartesian(150, 150), 100));
+		assertNull(emptyLocator.findNarjilloAt(Vector.cartesian(150, 150)));
 	}
 }

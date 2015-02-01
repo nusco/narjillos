@@ -24,7 +24,7 @@ public class ThingTracker {
 		if (tracked.getLabel().equals("narjillo")) {
 			Narjillo narjillo = (Narjillo) tracked;
 			if (narjillo.isDead()) {
-				Narjillo nextClosestNarjillo = locator.findNarjilloNear(narjillo.getPosition(), Double.MAX_VALUE);
+				Thing nextClosestNarjillo = locator.findNarjilloAt(narjillo.getPosition());
 				if (nextClosestNarjillo == null) {
 					stopTracking();
 					return;
@@ -50,22 +50,8 @@ public class ThingTracker {
 		centerViewportOn(tracked);
 	}
 
-	public synchronized void focusAt(Vector position) {
-		if (isTracking()) {
-			startTrackingAt(position);
-			return;
-		}
-		
-		Thing thing = locator.findThingNear(position);
-
-		if (thing == null)
-			stopTracking();
-
-		viewport.flyToTargetEC(position);
-	}
-
-	public synchronized void startTrackingAt(Vector position) {
-		Thing thing = locator.findThingNear(position);
+	public synchronized void startTrackingThingAt(Vector position) {
+		Thing thing = locator.findThingAt(position);
 
 		if (thing == null) {
 			stopTracking();

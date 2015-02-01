@@ -123,6 +123,11 @@ public class Narjillo implements Thing {
 	public int getAge() {
 		return age;
 	}
+	
+	@Override
+	public Vector getCenter() {
+		return getBody().calculateCenterOfMass();
+	}
 
 	@Override
 	public double getRadius() {

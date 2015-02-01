@@ -216,6 +216,11 @@ class MockThing implements Thing {
 	}
 	
 	@Override
+	public Vector getCenter() {
+		return getPosition();
+	}
+
+	@Override
 	public String getLabel() {
 		return label;
 	}

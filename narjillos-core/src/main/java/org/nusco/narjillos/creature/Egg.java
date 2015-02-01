@@ -52,6 +52,11 @@ public class Egg implements Thing {
 	public Vector getPosition() {
 		return position;
 	}
+	
+	@Override
+	public Vector getCenter() {
+		return getPosition();
+	}
 
 	@Override
 	public Energy getEnergy() {

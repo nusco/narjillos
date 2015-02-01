@@ -20,7 +20,6 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Gamer
 
 * More intuitive track/untrack mouse commands °°
-* Reliable tracking with double-click even at a distance °°
 * Start without ancestry by default (to avoid OutOfMemory errors in the long run) °°
 * Limit panning inside space area °
 * Tutorial

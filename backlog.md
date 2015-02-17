@@ -19,9 +19,9 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Gamer
 
-* More intuitive track/untrack mouse commands °°
 * Start without ancestry by default (to avoid OutOfMemory errors in the long run) °°
 * Limit panning inside space area °
+* Test track/untrack mouse commands with real user
 * Tutorial
 * Status bar
 * Save/load experiment from menu
@@ -37,7 +37,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 ###Genetist
 
 * Ancestry Browser
-* Duplicate during mutation instead of mirroring (to favour emergent complexity)
+* Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
 * "Skip" instruction in body plan
 * "Repeat" instruction in body plan
 * DNA diff during ancestry analysis
@@ -67,6 +67,7 @@ I generally work on the high-priority features, but I pick the "user" that tickl
 
 ###Artist
 
+* Some kind of effect when tracking/untracking
 * Different shapes for body segments
 * Visualize different speed settings
 * Make central area of dish visible at a distance

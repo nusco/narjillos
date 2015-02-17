@@ -142,7 +142,7 @@ public class PetriDish extends Application {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
-					tracker.track();
+					tracker.tick();
 					ecosystemView.tick();
 
 					Platform.runLater(new Runnable() {
@@ -237,15 +237,21 @@ public class PetriDish extends Application {
 	private void registerMouseClickHandlers(final Scene scene) {
 		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				Vector clickedPointSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				tracker.startTrackingThingAt(viewport.toEC(clickedPointSC));
+				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
+				Vector clickedPositionEC = viewport.toEC(clickedPositionSC);
+
+				if (event.getClickCount() == 1)
+					tracker.stopTracking();
 
 				if (event.getClickCount() == 2)
-					copyIsolatedDNAToClipboard(clickedPointSC);
+					tracker.startTracking(clickedPositionEC);
+
+				if (event.getClickCount() == 3)
+					copyIsolatedDNAToClipboard(clickedPositionEC);
 			}
 
-			private void copyIsolatedDNAToClipboard(Vector clickedPoint) {
-				Narjillo narjillo = (Narjillo) locator.findNarjilloAt(viewport.toEC(clickedPoint));
+			private void copyIsolatedDNAToClipboard(Vector clickedPositionEC) {
+				Narjillo narjillo = (Narjillo) locator.findNarjilloAt(clickedPositionEC);
 
 				if (narjillo == null)
 					return;

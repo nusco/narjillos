@@ -17,7 +17,7 @@ public class ThingTracker {
 		this.locator = locator;
 	}
 
-	public synchronized void track() {
+	public synchronized void tick() {
 		if (!isTracking())
 			return;
 		
@@ -50,27 +50,34 @@ public class ThingTracker {
 		centerViewportOn(tracked);
 	}
 
-	public synchronized void startTrackingThingAt(Vector position) {
+	public synchronized void startTracking(Vector position) {
+		startTrackingThingAt(position);
+		
+		if (!isTracking()) {
+			viewport.flyToTargetEC(position);
+			viewport.flyToNextZoomCloseupLevel();
+		}
+	}
+
+	public synchronized void stopTracking() {
+		tracked = null;
+	}
+
+	public synchronized boolean isTracking() {
+		return tracked != null;
+	}
+
+	private void startTrackingThingAt(Vector position) {
 		Thing thing = locator.findThingAt(position);
 
 		if (thing == null) {
 			stopTracking();
-			viewport.flyToTargetEC(position);
-			viewport.flyToNextZoomCloseupLevel();
 			return;
 		}
 
 		startTracking(thing);
 		viewport.flyToTargetEC(thing.getPosition());
 		viewport.flyToMaxZoomCloseupLevel();
-	}
-	
-	public synchronized boolean isTracking() {
-		return tracked != null;
-	}
-
-	public synchronized void stopTracking() {
-		tracked = null;
 	}
 
 	private void startTracking(Thing thing) {

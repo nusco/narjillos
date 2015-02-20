@@ -14,12 +14,7 @@ public class Backlog {
 	public static void main(String[] args) throws IOException {
 		final String BACKLOG_FILE = "backlog.md";
 		List<String> lines = loadEntries(BACKLOG_FILE);
-
-		System.out.println("=================");
-		System.out.println("Narjillos Backlog");
-		System.out.println("=================\n");
 		print(lines, getNumberOfEntriesToPrint(args));
-		System.out.println();
 	}
 
 	private static List<String> loadEntries(final String BACKLOG_FILE) throws IOException {
@@ -36,7 +31,7 @@ public class Backlog {
 			System.out.println(line);
 			if (line.startsWith("*"))
 				items++;
-			if (items > numberOfEntriesToPrint)
+			if (items >= numberOfEntriesToPrint)
 				return;
 		}
 	}

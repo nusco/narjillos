@@ -40,8 +40,18 @@ public class Persistence {
 	}
 
 	public static Experiment loadExperiment(String fileName) {
-		deletePartialTempFile(fileName);
+		File experimentFile = new File(stripExtension(fileName) + EXPERIMENT_EXT);
+		File tempFile = new File(stripExtension(fileName) + TEMP_EXT);
+
+		deletePotentiallyIncompleteTempFile(experimentFile, tempFile);
 		
+		if (recoverMissingExperiment(experimentFile, tempFile))
+			return deserializeExperimentFrom(stripExtension(fileName) + EXPERIMENT_EXT);
+
+		return deserializeExperimentFrom(fileName);
+	}
+
+	private static Experiment deserializeExperimentFrom(String fileName) {
 		Experiment experiment;
 		GenePool genePool;
 
@@ -66,9 +76,19 @@ public class Persistence {
 		return experiment;
 	}
 
-	private static void deletePartialTempFile(String fileName) {
-		File experimentFile = new File(stripExtension(fileName) + EXPERIMENT_EXT);
-		File tempFile = new File(stripExtension(fileName) + TEMP_EXT);
+	private static boolean recoverMissingExperiment(File experimentFile, File tempFile) {
+		try {
+			if (!experimentFile.exists() && tempFile.exists()) {
+				Files.move(Paths.get(tempFile.getName()), Paths.get(experimentFile.getName()));
+				return true;
+			}
+			return false;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static void deletePotentiallyIncompleteTempFile(File experimentFile, File tempFile) {
 		if (experimentFile.exists() && tempFile.exists())
 			tempFile.delete();
 	}

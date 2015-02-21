@@ -1,37 +1,38 @@
 package org.nusco.narjillos.serializer;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipInputStream;
 
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
 
 public class Persistence {
 
 	private static final String EXPERIMENT_EXT = ".exp";
-	private static final String PETRIDISH_EXT = ".petridish";
-	private static final String ANCESTRY_EXT = ".ancestry";
 	private static final String TEMP_EXT = ".tmp";
 
 	public static void save(Experiment experiment) {
 		try {
 			String tempFileName = experiment.getId() + TEMP_EXT;
-			ZipOutputStream zipFile = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(new File(tempFileName))));
-			writeZipEntry(zipFile, experiment.getId() + PETRIDISH_EXT, JSON.toJson(experiment, Experiment.class));
-			writeZipEntry(zipFile, experiment.getId() + ANCESTRY_EXT, JSON.toJson(experiment.getGenePool(), GenePool.class));
-			zipFile.close();
+
+			GZIPOutputStream outputStream = new GZIPOutputStream(
+					new BufferedOutputStream(
+							new FileOutputStream(new File(tempFileName))));
+			byte[] dataBytes = JSON.toJson(experiment, Experiment.class).getBytes(Charset.forName("UTF-8"));
+			outputStream.write(dataBytes);
+			outputStream.close();
 
 			forceMoveFile(tempFileName, experiment.getId() + EXPERIMENT_EXT);
 		} catch (Exception e) {
@@ -40,57 +41,20 @@ public class Persistence {
 	}
 
 	public static Experiment loadExperiment(String fileName) {
-		File experimentFile = new File(stripExtension(fileName) + EXPERIMENT_EXT);
+		File loadedFile = new File(fileName);
 		File tempFile = new File(stripExtension(fileName) + TEMP_EXT);
 
-		deletePotentiallyIncompleteTempFile(experimentFile, tempFile);
-		
-		if (recoverMissingExperiment(experimentFile, tempFile))
-			return deserializeExperimentFrom(stripExtension(fileName) + EXPERIMENT_EXT);
-
-		return deserializeExperimentFrom(fileName);
-	}
-
-	private static Experiment deserializeExperimentFrom(String fileName) {
-		Experiment experiment;
-		GenePool genePool;
-
-		try {
-			checkVersion(fileName);
-
-			ZipFile zipFile = new ZipFile(new File(fileName));
-
-			String experimentFileName = stripExtension(fileName) + PETRIDISH_EXT;
-			experiment = JSON.fromJson(readEntry(zipFile, experimentFileName), Experiment.class);
-			
-			String ancestryFileName = stripExtension(fileName) + ANCESTRY_EXT;
-			genePool = JSON.fromJson(readEntry(zipFile, ancestryFileName), GenePool.class);
-
-			zipFile.close();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-		experiment.timeStamp();
-		experiment.setGenePool(genePool);
-		return experiment;
-	}
-
-	private static boolean recoverMissingExperiment(File experimentFile, File tempFile) {
-		try {
-			if (!experimentFile.exists() && tempFile.exists()) {
-				Files.move(Paths.get(tempFile.getName()), Paths.get(experimentFile.getName()));
-				return true;
+		if (tempFile.exists()) {
+			if (!loadedFile.exists()) {
+				String experimentFile = stripExtension(fileName) + EXPERIMENT_EXT;
+				recoverExperimentFile(tempFile, new File(experimentFile));
+				return deserializeExperimentFrom(experimentFile);
 			}
-			return false;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			else if (!fileName.equals(tempFile.getName()))
+				tempFile.delete();
 		}
-	}
-
-	private static void deletePotentiallyIncompleteTempFile(File experimentFile, File tempFile) {
-		if (experimentFile.exists() && tempFile.exists())
-			tempFile.delete();
+		
+		return deserializeExperimentFrom(fileName);
 	}
 
 	public static DNA loadDNA(String fileName) {
@@ -111,6 +75,46 @@ public class Persistence {
 		}
 	}
 
+	private static void recoverExperimentFile(File tempFile, File experimentFile) {
+		try {
+			Files.move(Paths.get(tempFile.getName()), Paths.get(experimentFile.getName()));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static Experiment deserializeExperimentFrom(String fileName) {
+		Experiment experiment;
+
+			checkVersion(fileName);
+
+			String data = readExperimentData(fileName);
+
+			experiment = JSON.fromJson(data, Experiment.class);
+			
+		experiment.timeStamp();
+		return experiment;
+	}
+
+	private static String readExperimentData(String fileName) {
+		try {
+			GZIPInputStream inputStream = new GZIPInputStream(
+					new BufferedInputStream(
+							new FileInputStream(new File(fileName))));
+
+			// From "Stupid Scanner Tricks", weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
+			Scanner s = new Scanner(inputStream);
+			s.useDelimiter("\\A");
+			String data = s.next();
+			s.close();
+			
+			inputStream.close();
+			return data;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private static void checkVersion(String fileName) {
 		String fileNameWithoutExtension = stripExtension(fileName);
 		if (!fileNameWithoutExtension.matches("\\d+\\-\\d+\\.\\d+.\\d+")) {
@@ -124,25 +128,6 @@ public class Persistence {
 		if (!experimentVersion.equals(applicationVersion))
 			System.out.println("WARNING: This experiment was started with version " + experimentVersion + ", not the current "
 					+ applicationVersion + ". The results might be non-deterministic.");
-	}
-
-	private static void writeZipEntry(ZipOutputStream zip, String fileName, String data) throws IOException {
-		byte[] dataBytes = data.getBytes(Charset.forName("UTF-8"));
-		zip.putNextEntry(new ZipEntry(fileName));
-		zip.write(dataBytes, 0, dataBytes.length);
-		zip.closeEntry();
-	}
-
-	private static String readEntry(ZipFile zipFile, String name) throws IOException {
-		ZipEntry zipEntry = zipFile.getEntry(name);
-		InputStream inputStream = zipFile.getInputStream(zipEntry);
-		// From "Stupid Scanner Tricks", weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
-		Scanner s = new Scanner(inputStream);
-		s.useDelimiter("\\A");
-		String result = s.next();
-		s.close();
-		inputStream.close();
-		return result;
 	}
 
 	private static String extractVersion(String fileName) {

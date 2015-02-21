@@ -20,7 +20,7 @@ public class Experiment {
 	private final RanGen ranGen;
 
 	private long totalRunningTime = 0;
-	private transient GenePool genePool = new GenePool();
+	private GenePool genePool = new GenePool();
 	private transient long lastRegisteredRunningTime;
 
 	public Experiment(long seed, String version) {
@@ -28,9 +28,7 @@ public class Experiment {
 	}
 
 	public Experiment(long seed, String version, DNA dna, boolean trackGenePool) {
-		DNA.setObserver(genePool);
-		if (trackGenePool)
-			genePool.enableTracking();
+		initializeGenePool(trackGenePool, dna);
 		
 		id = "" + seed + "-" + version;
 		timeStamp();
@@ -42,6 +40,17 @@ public class Experiment {
 		// tick (which would make collision detection unreliable)
 		if (ecosystem.getSpaceAreaSize() < Viscosity.getMaxVelocity())
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
+	}
+
+	private void initializeGenePool(boolean trackGenePool, DNA dna) {
+		if (!trackGenePool)
+			return;
+
+		genePool.enableTracking();
+		DNA.setObserver(genePool);
+		
+		if (dna != null)
+			genePool.created(dna, null);
 	}
 
 	public final void timeStamp() {

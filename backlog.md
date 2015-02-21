@@ -2,11 +2,6 @@
 # Narjillos Backlog
 #===================
 
-##Solid Persistence
-* Serialize ancestry and experiment together in one file, not two separate files
-
---Release 0.2.0
-
 ##Plants and Animals
 * Encode color shift instead of hue
 * Blue fibers give extra push

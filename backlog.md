@@ -1,17 +1,16 @@
-=================
-Narjillos Backlog
-=================
+#===================
+# Narjillos Backlog
+#===================
 
-#Solid Persistence
+##Solid Persistence
 * Serialize ancestry and experiment together in one file, not two separate files
 * Automatically recover missing experiment from temp file
-* Automatically purge experiment temp file
 * Start without ancestry by default (to avoid OutOfMemory errors in the long run)
 * "--serious" option to start with persistence, ancestry, and large heap
 
 --Release 0.2.0
 
-#Plants and Animals
+##Plants and Animals
 * Encode color shift instead of hue
 * Blue fibers give extra push
 * Egg firing
@@ -19,13 +18,13 @@ Narjillos Backlog
 * Green fibers get energy from the environment
 * Externalize configurable parameters to YAML
 
-#Intuitive Navigation
-* Test track/untrack mouse commands with real user
+##Intuitive Navigation
+* Test track/untrack mouse commands with first-comer
 * Limit panning inside space area
 * Make central area of dish visible at a distance
 * Visual effect when tracking/untracking
 
-#Predators
+##Predators
 * Fix sketchy collision detection
 * Rewrite collision detection to be independent of max speed
 * Narjillos point at other narjillos
@@ -34,24 +33,14 @@ Narjillos Backlog
 * Identifiable species (DNA hashes?)
 * Decide direction based on other creatures' species
 
-#Realistic Physics
+##Realistic Physics
 * Rotation inertia
 * Translation inertia
 * Limit rotation speed?
 * More realistic viscosity?
 * Viscosity per segment?
 
-#Advanced Body Plans
-* Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
-* "Skip" instruction in body plan
-* "Repeat" instruction in body plan
-* Whole-body size gene
-
-#Ancestry Browser
-* Ancestry Browser
-* DNA diff during ancestry analysis
-
-#Gaming UI
+##Gaming UI
 * Zoo mode (switch from narjillo to narjillo)
 * Status bar
 * Tutorial
@@ -66,7 +55,17 @@ Narjillos Backlog
 * Make food more visible in normal view
 * Make food more visible in infrared view
 
-#Packaged Application
+##Ancestry Browser
+* Ancestry Browser
+* DNA diff during ancestry analysis
+
+##Advanced Body Plans
+* Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
+* "Skip" instruction in body plan
+* "Repeat" instruction in body plan
+* Whole-body size gene
+
+##Packaged Application
 * Native Mac app
 * Native Windows app
 * Run in a browser

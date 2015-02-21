@@ -113,7 +113,7 @@ class CommandLineOptions extends Options {
 	}
 
 	private void setFile(String file) {
-		this.experiment = Persistence.loadExperimentWithGenePool(file);
+		this.experiment = Persistence.loadExperiment(file);
 		this.genePool = this.experiment.getGenePool();
 	}
 

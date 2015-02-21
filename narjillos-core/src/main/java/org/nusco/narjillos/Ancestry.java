@@ -21,7 +21,7 @@ public class Ancestry {
 
 	private static void printAncestry(String experimentFile) throws IOException {
 		System.out.println(">Reading file \"" + experimentFile + "\"...");
-		Experiment experiment = Persistence.loadExperimentWithGenePool(experimentFile);
+		Experiment experiment = Persistence.loadExperiment(experimentFile);
 		GenePool genePool = experiment.getGenePool();
 
 		System.out.println("  > Current gene pool size: " + genePool.getCurrentPoolSize());

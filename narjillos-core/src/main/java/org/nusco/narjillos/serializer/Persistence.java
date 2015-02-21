@@ -39,10 +39,12 @@ public class Persistence {
 		}
 	}
 
-	public static Experiment loadExperimentWithGenePool(String fileName) {
+	public static Experiment loadExperiment(String fileName) {
+		deletePartialTempFile(fileName);
+		
 		Experiment experiment;
 		GenePool genePool;
-		
+
 		try {
 			checkVersion(fileName);
 
@@ -62,6 +64,13 @@ public class Persistence {
 		experiment.timeStamp();
 		experiment.setGenePool(genePool);
 		return experiment;
+	}
+
+	private static void deletePartialTempFile(String fileName) {
+		File experimentFile = new File(stripExtension(fileName) + EXPERIMENT_EXT);
+		File tempFile = new File(stripExtension(fileName) + TEMP_EXT);
+		if (experimentFile.exists() && tempFile.exists())
+			tempFile.delete();
 	}
 
 	public static DNA loadDNA(String fileName) {

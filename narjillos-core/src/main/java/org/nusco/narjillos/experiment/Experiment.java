@@ -20,8 +20,8 @@ public class Experiment {
 	private final RanGen ranGen;
 
 	private long totalRunningTime = 0;
-	private transient long lastRegisteredRunningTime;
 	private transient GenePool genePool = new GenePool();
+	private transient long lastRegisteredRunningTime;
 
 	public Experiment(long seed, String version) {
 		this(seed, version, null);

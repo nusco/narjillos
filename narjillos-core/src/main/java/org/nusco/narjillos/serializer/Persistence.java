@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipInputStream;
 
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.DNA;

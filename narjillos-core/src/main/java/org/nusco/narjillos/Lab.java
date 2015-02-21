@@ -25,7 +25,8 @@ public class Lab {
 		String applicationVersion = Persistence.readApplicationVersion();
 		
 		experiment = createExperiment(applicationVersion, options);
-		persistent = extractPersistence(options);
+		reportPersistenceOptions(options);
+		persistent = options.isPersistent();
 
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
@@ -81,31 +82,32 @@ public class Lab {
 		Experiment result;
 		
 		DNA dna = options.getDna();
+		boolean trackingGenePool = options.isTrackingGenePool();
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);
-			result = new Experiment(generateRandomSeed(), applicationVersion, dna);
+			result = new Experiment(generateRandomSeed(), applicationVersion, dna, trackingGenePool);
 		} else if (options.getExperiment() != null) {
 			System.out.print("Continuining experiment " + options.getExperiment().getId());
 			result = options.getExperiment();
 		} else if (options.getSeed() == CommandLineOptions.NO_SEED) {
 			long randomSeed = generateRandomSeed();
 			System.out.print("Starting new experiment with random seed: " + randomSeed);
-			result = new Experiment(randomSeed, applicationVersion, null);
+			result = new Experiment(randomSeed, applicationVersion, null, trackingGenePool);
 		} else {
 			System.out.print("Starting experiment " + options.getSeed());
-			result = new Experiment(options.getSeed(), applicationVersion, null);
+			result = new Experiment(options.getSeed(), applicationVersion, null, trackingGenePool);
 		}
 		
 		return result;
 	}
 
-	private boolean extractPersistence(CommandLineOptions options) {
-		boolean isPersistent = options.isPersistent();
-		if (isPersistent)
+	private void reportPersistenceOptions(CommandLineOptions options) {
+		if (options.isPersistent() && options.isTrackingGenePool())
+			System.out.println(" (persisted to file with ancestry)");
+		else if (options.isPersistent())
 			System.out.println(" (persisted to file)");
 		else
 			System.out.println(" (no persistence)");
-		return isPersistent;
 	}
 
 	private void executePerodicOperations() {

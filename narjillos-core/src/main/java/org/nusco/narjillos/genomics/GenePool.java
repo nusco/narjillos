@@ -15,8 +15,21 @@ public class GenePool implements DNAObserver {
 	private List<Long> currentPool = new LinkedList<>();
 	private Map<Long, Long> childrenToParents = new LinkedHashMap<>();
 
+	private boolean isTracking = false;
+
+	public void enableTracking() {
+		isTracking = true;
+	}
+
+	public boolean isTracking() {
+		return isTracking;
+	}
+
 	@Override
 	public void created(DNA newDNA, DNA parent) {
+		if (!isTracking())
+			return;
+		
 		dnaById.put(newDNA.getId(), newDNA);
 		currentPool.add(newDNA.getId());
 		if (parent == null)
@@ -27,6 +40,9 @@ public class GenePool implements DNAObserver {
 
 	@Override
 	public void removed(DNA dna) {
+		if (!isTracking())
+			return;
+
 		currentPool.remove(dna.getId());
 	}
 
@@ -40,6 +56,8 @@ public class GenePool implements DNAObserver {
 			// this can happen in very unlucky cases when the
 			// genepool file and the experiment file go out
 			// of synch
+			// TODO: it's never supposed to happen once I serialize
+			// both to the same file. Try removing it when I do that.
 			if (!childrenToParents.containsKey(currentDnaId))
 				throw new RuntimeException("Inconsistent ancestry - cannot find parent of DNA " + currentDnaId);
 
@@ -62,10 +80,6 @@ public class GenePool implements DNAObserver {
 			}
 		}
 		return result;
-	}
-
-	public Map<Long, Long> getChildrenToParents() {
-		return childrenToParents;
 	}
 
 	public int getCurrentPoolSize() {

@@ -20,17 +20,22 @@ public class Ancestry {
 	}
 
 	private static void printAncestry(String experimentFile) throws IOException {
-		System.out.println(">Reading file \"" + experimentFile + "\"...");
+		System.out.println("> Reading file \"" + experimentFile + "\"...");
 		Experiment experiment = Persistence.loadExperiment(experimentFile);
 		GenePool genePool = experiment.getGenePool();
 
 		System.out.println("  > Current gene pool size: " + genePool.getCurrentPoolSize());
 		System.out.println("  > Historical gene pool size: " + genePool.getHistoricalPoolSize());
+		
+		if (genePool.getHistoricalPoolSize() == 0) {
+			System.out.println(">Empty gene pool. Exiting...");
+			return;
+		}
 
-		System.out.println(">Identifying most successful DNA...");
+		System.out.println("> Identifying most successful DNA...");
 		DNA mostSuccessfulDNA = genePool.getMostSuccessfulDNA();
 
-		System.out.println(">Extracting ancestry...");
+		System.out.println("> Extracting ancestry...");
 		List<DNA> ancestry = genePool.getAncestry(mostSuccessfulDNA);
 
 		for (DNA dna : ancestry)

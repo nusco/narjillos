@@ -43,6 +43,13 @@ public class CommandLineOptionsTest {
 	}
 
 	@Test
+	public void acceptsAnAncestryOption() {
+		assertFalse(new CommandLineOptions().isTrackingGenePool());
+		assertTrue(new CommandLineOptions("-a").isTrackingGenePool());
+		assertTrue(new CommandLineOptions("--ancestry").isTrackingGenePool());
+	}
+
+	@Test
 	public void acceptsAnExperimentSeed() {
 		CommandLineOptions options = new CommandLineOptions("-seed", "1234");
 		

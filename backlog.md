@@ -4,8 +4,6 @@
 
 ##Solid Persistence
 * Serialize ancestry and experiment together in one file, not two separate files
-* Start without ancestry by default (to avoid OutOfMemory errors in the long run)
-* "--serious" option to start with persistence, ancestry, and large heap
 
 --Release 0.2.0
 

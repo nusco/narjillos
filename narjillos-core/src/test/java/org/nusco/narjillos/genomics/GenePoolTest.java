@@ -18,11 +18,22 @@ public class GenePoolTest {
 	@Before
 	public void setUpObserver() {
 		DNA.setObserver(genePool);
+		genePool.enableTracking();
 	}
 	
 	@After
 	public void tearDownObserver() {
 		DNA.setObserver(DNAObserver.NULL);
+	}
+	
+	@Test
+	public void doesNotTrackByDefault() {
+		GenePool disabledGenePool = new GenePool();
+		DNA.setObserver(disabledGenePool);
+
+		new DNA("{0}");
+
+		assertEquals(0, disabledGenePool.getCurrentPoolSize());
 	}
 	
 	@Test

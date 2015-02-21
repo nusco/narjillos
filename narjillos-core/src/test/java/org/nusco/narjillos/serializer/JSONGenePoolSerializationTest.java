@@ -2,6 +2,7 @@ package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class JSONGenePoolSerializationTest {
 		RanGen ranGen = new RanGen(1234);
 
 		DNA.setObserver(genePool);
+		genePool.enableTracking();
 		
 		DNA parent = DNA.random(ranGen);
 		DNA child1 = parent.copyWithMutations(ranGen);
@@ -39,7 +41,8 @@ public class JSONGenePoolSerializationTest {
 		
 		String json = JSON.toJson(genePool, GenePool.class);
 		GenePool deserialized = JSON.fromJson(json, GenePool.class);
-		
+
+		assertTrue(deserialized.isTracking());
 		assertArrayEquals(deserialized.getAncestry(child3).toArray(), genePool.getAncestry(child3).toArray());
 		assertEquals(deserialized.getMostSuccessfulDNA().toString(), genePool.getMostSuccessfulDNA().toString());
 	}

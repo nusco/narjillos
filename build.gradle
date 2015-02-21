@@ -74,7 +74,7 @@ def createStartScript(name, project, mainClass, jvmArgs) {
 }
 
 def commandLineArgsOr(defaultArgs) {
-  if(project.hasProperty('args'))
+  if(project.hasProperty('args') && project.getProperty('args').trim().length() > 0)
     return project.args.split('\\s+')
   else
     return defaultArgs

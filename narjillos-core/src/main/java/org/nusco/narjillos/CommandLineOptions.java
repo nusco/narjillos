@@ -23,6 +23,7 @@ class CommandLineOptions extends Options {
 	private Experiment experiment = null;
 	private GenePool genePool = null;
 	private boolean persistent = true;
+	private boolean trackingGenePool = false;
 	private long seed = NO_SEED;
 	private DNA dna = null;
 
@@ -37,7 +38,8 @@ class CommandLineOptions extends Options {
 
 	CommandLineOptions(String... args) {
 		addOption("h", "help", false, "print this message");
-		addOption("p", "persistent", false, "periodically save experiment and ancestry to file");
+		addOption("p", "persistent", false, "periodically save experiment to file");
+		addOption("a", "ancestry", false, "track genepool ancestry");
 		addOption("seed", true, "start experiment with given seed");
 		addOption("dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
 
@@ -57,6 +59,7 @@ class CommandLineOptions extends Options {
 	        }
 
 	        setPersistent(line.hasOption("p"));
+	        setTrackingGenePool(line.hasOption("a"));
 
 	        if (line.hasOption("seed")) {
 	        	if (line.hasOption("dna"))
@@ -76,7 +79,10 @@ class CommandLineOptions extends Options {
 	        if (getDna() != null || getSeed() != NO_SEED)
 	        	throw new RuntimeException("If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
 	        
-	        setFile(line.getArgs()[0]);
+        	if (line.hasOption("a"))
+        		System.out.println("WARNING: I'm loading an existing experiment, so I'm ignoring the --ancestry option.");
+
+        	setFile(line.getArgs()[0]);
         } catch(ParseException e) {
 	        throw new RuntimeException(e);
 	    }
@@ -92,6 +98,10 @@ class CommandLineOptions extends Options {
 	
 	public boolean isPersistent() {
 		return persistent;
+	}
+
+	public boolean isTrackingGenePool() {
+		return trackingGenePool;
 	}
 
 	public long getSeed() {
@@ -119,6 +129,10 @@ class CommandLineOptions extends Options {
 
 	private void setPersistent(boolean persistent) {
 		this.persistent = persistent;
+	}
+
+	private void setTrackingGenePool(boolean trackingGenePool) {
+		this.trackingGenePool = trackingGenePool;
 	}
 
 	private void setSeed(String seed) {

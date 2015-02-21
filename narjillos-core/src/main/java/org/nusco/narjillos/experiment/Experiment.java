@@ -24,11 +24,13 @@ public class Experiment {
 	private transient long lastRegisteredRunningTime;
 
 	public Experiment(long seed, String version) {
-		this(seed, version, null);
+		this(seed, version, null, true);
 	}
 
-	public Experiment(long seed, String version, DNA dna) {
+	public Experiment(long seed, String version, DNA dna, boolean trackGenePool) {
 		DNA.setObserver(genePool);
+		if (trackGenePool)
+			genePool.enableTracking();
 		
 		id = "" + seed + "-" + version;
 		timeStamp();

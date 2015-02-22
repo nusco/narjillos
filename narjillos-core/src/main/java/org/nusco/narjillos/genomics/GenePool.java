@@ -47,20 +47,11 @@ public class GenePool implements DNAObserver {
 	}
 
 	public List<DNA> getAncestry(DNA dna) {
-		LinkedList<DNA> result = new LinkedList<>();
+		List<DNA> result = new LinkedList<>();
 
 		Long currentDnaId = dna.getId();
 		while (currentDnaId != 0) {
 			result.add(dnaById.get(currentDnaId));
-
-			// this can happen in very unlucky cases when the
-			// genepool file and the experiment file go out
-			// of synch
-			// TODO: it's never supposed to happen once I serialize
-			// both to the same file. Try removing it when I do that.
-			if (!childrenToParents.containsKey(currentDnaId))
-				throw new RuntimeException("Inconsistent ancestry - cannot find parent of DNA " + currentDnaId);
-
 			currentDnaId = childrenToParents.get(currentDnaId);
 		}
 

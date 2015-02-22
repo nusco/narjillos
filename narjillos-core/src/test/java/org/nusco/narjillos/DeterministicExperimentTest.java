@@ -33,6 +33,8 @@ public class DeterministicExperimentTest {
 		
 		// Run an experiment for a few ticks
 		Experiment experiment1 = new Experiment(1234, "deterministic_experiment_test");
+		experiment1.getGenePool().enableTracking();
+		
 		for (int i = 0; i < halfCycles; i++)
 			experiment1.tick();
 

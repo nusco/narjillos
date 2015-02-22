@@ -5,8 +5,8 @@
 ##Plants and Animals
 * Egg firing
 * Egg firing distance is controlled by genes
+* Narjillos can lay eggs at any time, not just after feeding
 * Green fibers get energy from the environment
-* Externalize configurable parameters to YAML
 
 ##Intuitive Navigation
 * Test track/untrack mouse commands with first-comer
@@ -44,6 +44,7 @@
 * Smoother contours when zooming in infrared mode
 * Make food more visible in normal view
 * Make food more visible in infrared view
+* Externalize configurable parameters to YAML
 
 ##Ancestry Browser
 * Ancestry Browser

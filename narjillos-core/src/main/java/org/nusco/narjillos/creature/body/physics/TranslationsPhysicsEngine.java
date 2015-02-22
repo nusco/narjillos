@@ -30,9 +30,9 @@ public class TranslationsPhysicsEngine {
 		this.bodyMass = bodyMass;
 	}
 
-	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass) {
+	public void registerMovement(Segment initialPositionInSpace, Segment finalPositionInSpace, double mass, double push) {
 		Vector linearVelocity = finalPositionInSpace.getDistanceFrom(initialPositionInSpace);
-		Vector linearMomentum = linearVelocity.by(mass);
+		Vector linearMomentum = linearVelocity.by(mass * push);
 		linearMomenta.add(linearMomentum);
 		translationEnergy += calculateTranslationEnergy(mass, linearVelocity);
 	}

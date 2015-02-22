@@ -3,7 +3,6 @@
 #===================
 
 ##Plants and Animals
-* Blue fibers give extra push
 * Egg firing
 * Egg firing distance is controlled by genes
 * Green fibers get energy from the environment

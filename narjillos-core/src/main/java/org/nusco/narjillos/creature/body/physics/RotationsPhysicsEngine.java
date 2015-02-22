@@ -47,10 +47,10 @@ public class RotationsPhysicsEngine {
 		this.centerOfMass = centerOfMass;
 	}
 
-	public void registerMovement(double initialAngle, double finalAngle, Segment finalPositionInSpace, double mass) {
+	public void registerMovement(double initialAngle, double finalAngle, Segment finalPositionInSpace, double mass, double push) {
 		double angularVelocity = calculateAngularVelocity(initialAngle, finalAngle);
 		double momentOfInertia = calculateMomentOfInertia(finalPositionInSpace, mass);
-		double angularMomentum = momentOfInertia * angularVelocity;
+		double angularMomentum = momentOfInertia * angularVelocity * push;
 		angularMomenta.add(angularMomentum);
 		rotationEnergy += calculateRotationEnergy(momentOfInertia, angularVelocity);
 	}

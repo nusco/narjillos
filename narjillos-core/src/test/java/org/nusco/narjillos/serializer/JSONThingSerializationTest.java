@@ -28,7 +28,7 @@ public class JSONThingSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesEggs() {
-		DNA dna = new DNA("{1_2}");
+		DNA dna = new DNA(1, "{1_2}");
 		Egg egg = new Egg(dna, Vector.cartesian(10, 20), 101, 10);
 
 		String json = JSON.toJson(egg, Thing.class);
@@ -42,7 +42,7 @@ public class JSONThingSerializationTest {
 	@Test
 	public void serializesAndDeserializesNarjillos() {
 		String genes = "{001_002_003_004_005_006_007_008_009}{001_002_003_004_005_006_007_008_009}{001_002_003_004_005_006_007_008_009}{001_002_003_004_005_006_007_008_009}{001_002_003_004_005_006_007_008_009}";
-		DNA dna = new DNA(genes);
+		DNA dna = new DNA(1, genes);
 		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(10, 20), 10000);
 		narjillo.setTarget(Vector.cartesian(100, 200));
 		for (int i = 0; i < 10; i++)

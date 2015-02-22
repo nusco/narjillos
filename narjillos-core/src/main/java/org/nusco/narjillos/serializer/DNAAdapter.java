@@ -27,6 +27,6 @@ class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
 		JsonObject jsonObject = json.getAsJsonObject();
 		String genes = jsonObject.get("genes").getAsString();
 		long id = jsonObject.get("id").getAsLong();
-		return new DNA(genes, id);
+		return new DNA(id, genes);
 	}
 }

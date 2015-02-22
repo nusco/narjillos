@@ -2,7 +2,6 @@ package org.nusco.narjillos.experiment;
 
 import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
@@ -47,7 +46,6 @@ public class Experiment {
 			return;
 
 		genePool.enableTracking();
-		DNA.setObserver(genePool);
 	}
 
 	public final void timeStamp() {
@@ -64,10 +62,10 @@ public class Experiment {
 
 		if (dna == null) {
 			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
-				ecosystem.spawnEgg(DNA.random(ranGen), randomPosition(ecosystem.getSize()), ranGen);
+				ecosystem.spawnEgg(getGenePool().createRandomDNA(ranGen), randomPosition(ecosystem.getSize()), ranGen);
 		} else {
 			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
-				ecosystem.spawnEgg(new DNA(dna), randomPosition(ecosystem.getSize()), ranGen);
+				ecosystem.spawnEgg(getGenePool().createDNA(dna), randomPosition(ecosystem.getSize()), ranGen);
 		}
 	}
 
@@ -79,7 +77,7 @@ public class Experiment {
 		if (ticksChronometer.getTotalTicks() % 1000 == 0)
 			executePeriodicOperations();
 
-		getEcosystem().tick(ranGen);
+		getEcosystem().tick(genePool, ranGen);
 		ticksChronometer.tick();
 		return areThereSurvivors();
 	}
@@ -125,13 +123,6 @@ public class Experiment {
 
 	public GenePool getGenePool() {
 		return genePool;
-	}
-
-	// For serialization only. Don't call this in other situations, if you don't
-	// want to make the experiment non-deterministic.
-	public void setGenePool(GenePool genePool) {
-		this.genePool = genePool;
-		DNA.setObserver(genePool);
 	}
 
 	@Override

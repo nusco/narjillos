@@ -12,7 +12,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 
 public class EggTest {
 
-	DNA dna = new DNA("{1_2_3}");
+	DNA dna = new DNA(1, "{1_2_3}");
 	Egg egg = new Egg(dna, Vector.cartesian(10, 20), 100, 20);
 	
 	@Test

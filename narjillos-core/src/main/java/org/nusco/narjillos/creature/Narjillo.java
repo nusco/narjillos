@@ -11,7 +11,6 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 /**
  * A fully-formed, autonomous creature.
@@ -19,7 +18,6 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class Narjillo implements Thing {
 
 	static final double MAX_LIFESPAN = 30_000;
-	private static final int INCUBATION_TIME = 500;
 	
 	private final Body body;
 	private final DNA dna;
@@ -71,16 +69,6 @@ public class Narjillo implements Thing {
 	public void feedOn(FoodPiece thing) {
 		energy.consume(thing);
 		thing.setEater(this);
-	}
-
-	public Egg layEgg(Vector position, RanGen ranGen) {
-		double percentEnergyToChildren = body.getPercentEnergyToChildren();
-		double childEnergy = energy.chunkOff(percentEnergyToChildren);
-		if (childEnergy == 0)
-			return null;
-
-		DNA childDNA = getDNA().copyWithMutations(ranGen);
-		return new Egg(childDNA, getPosition(), childEnergy, INCUBATION_TIME);
 	}
 
 	@Override

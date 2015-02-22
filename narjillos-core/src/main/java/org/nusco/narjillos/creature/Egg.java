@@ -13,7 +13,8 @@ import org.nusco.narjillos.shared.things.Thing;
 public class Egg implements Thing {
 
 	public static final double RADIUS = 25;
-	
+	public static final int INCUBATION_TIME = 500;
+
 	private final DNA dna;
 	private int age = 0;
 	private Vector position;

@@ -12,44 +12,18 @@ public class DNA {
 
 	public static final double MUTATION_RATE = 0.055;
 	private static final int GENE_MUTATION_RANGE = 15;
-	private static DNAObserver observer = DNAObserver.NULL;
-
-	// TODO: This static makes testing difficult. Find another way.
-	private static long serial = 0;
-
-	// for testing
-	public static long getSerial() {
-		return serial;
-	}
-	
-	public static void setSerial(long value) {
-		serial = value;
-	}
-	
-	private long id;
+	private final long id;
 	
 	private final Integer[] genes;
 
-	public DNA(String dnaDocument) {
-		this(new DNADocument(dnaDocument).toGenes());
-	}
-
-	// Only use for deserialization.
-	public DNA(String dnaDocument, long id) {
+	public DNA(long id, String dnaDocument) {
+		this.id = id;
 		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
-		setId(id);
 	}
 
-	private DNA(Integer... genes) {
+	public DNA(long id, Integer[] genes) {
+		this.id = id;
 		this.genes = clipGenes(genes);
-		setId(serial + 1);
-		DNA.observer.created(this, null);
-	}
-
-	private DNA(DNA parent, Integer... genes) {
-		this.genes = clipGenes(genes);
-		setId(serial + 1);
-		DNA.observer.created(this, parent);
 	}
 
 	public long getId() {
@@ -60,11 +34,7 @@ public class DNA {
 		return genes;
 	}
 
-	public void destroy() {
-		DNA.observer.removed(this);
-	}
-
-	public DNA copyWithMutations(RanGen ranGen) {
+	public DNA copyWithMutations(long id, RanGen ranGen) {
 		List<Integer[]> resultChromosomes = new LinkedList<>();
 
 		DNAIterator iterator = new DNAIterator(this);
@@ -79,12 +49,12 @@ public class DNA {
 		}
 
 		Integer[] resultGenes = flatten(resultChromosomes);
-		return new DNA(this, resultGenes);
+		return new DNA(id, resultGenes);
 	}
 
-	public static DNA random(RanGen ranGen) {
+	public static DNA random(long id, RanGen ranGen) {
 		int size = Chromosome.SIZE * (Math.abs(ranGen.nextInt()) % 10 + 2);
-		return random(size, ranGen);
+		return random(id, ranGen, size);
 	}
 
 	// From: http://en.wikipedia.org/wiki/Levenshtein_distance,
@@ -129,10 +99,6 @@ public class DNA {
 		return v1[otherGenes.length];
 	}
 
-	public static void setObserver(DNAObserver dnaObserver) {
-		DNA.observer = dnaObserver;
-	}
-
 	@Override
 	public int hashCode() {
 		return (int) getId();
@@ -151,20 +117,6 @@ public class DNA {
 
 	private Integer[] clipGenes(Integer[] genes) {
 		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
-	}
-
-	private void setId(long id) {
-		this.id = id;
-		// This complicated mechanism guarantees that even
-		// after deserializing DNA, the serial will still
-		// contain the highest id in the system. (But
-		// if you generate DNA and *then* deserialize
-		// other DNA, then you might have duplicated
-		// DNA ids in the system. I assume that you
-		// will only deserialize DNA before ever creating
-		// it.
-		if (id > serial)
-			serial = id;
 	}
 
 	private Integer[] copyWithMutations(Chromosome chromosome, RanGen ranGen) {
@@ -210,9 +162,9 @@ public class DNA {
 		return Math.max(0, Math.min(255, number));
 	}
 
-	private static DNA random(int size, RanGen ranGen) {
+	private static DNA random(long id, RanGen ranGen, int size) {
 		Integer[] genes = randomGenes(size, ranGen);
-		return new DNA(genes);
+		return new DNA(id, genes);
 	}
 
 	private static Integer[] randomGenes(int size, RanGen ranGen) {

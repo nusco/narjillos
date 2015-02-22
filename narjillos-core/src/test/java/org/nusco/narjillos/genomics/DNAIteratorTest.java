@@ -11,7 +11,7 @@ public class DNAIteratorTest {
 	public void iteratesOverChromosomes() {
 		String genes = "{1_2_3_4_5_6_7_8_9}{10_11_12_13_14_15_16_17_18}";
 
-		DNA dna = new DNA(genes);
+		DNA dna = new DNA(1, genes);
 		DNAIterator iterator = new DNAIterator(dna);
 		
 		assertEquals(new Chromosome(1, 2, 3, 4, 5, 6, 7, 8, 9), iterator.nextChromosome());
@@ -23,7 +23,7 @@ public class DNAIteratorTest {
 	public void padsUnterminatedLastChromosome() {
 		String genes = "{1_2_3_4_5_6_7_8_9}{10_11}";
 
-		DNA dna = new DNA(genes);
+		DNA dna = new DNA(1, genes);
 		DNAIterator iterator = new DNAIterator(dna);
 		
 		assertEquals(new Chromosome(1, 2, 3, 4, 5, 6, 7, 8, 9), iterator.nextChromosome());
@@ -35,7 +35,7 @@ public class DNAIteratorTest {
 	public void padsUnterminatedSingleChromosome() {
 		String genes = "{1_2_3}";
 
-		DNA dna = new DNA(genes);
+		DNA dna = new DNA(1, genes);
 		DNAIterator iterator = new DNAIterator(dna);
 		
 		assertEquals(new Chromosome(new int[]{1, 2, 3, 0, 0, 0, 0}), iterator.nextChromosome());
@@ -43,7 +43,7 @@ public class DNAIteratorTest {
 	}
 
 	public void alwaysReturnsAtLeastOneChromosome() {
-		DNA dna = new DNA("{}");
+		DNA dna = new DNA(1, "{}");
 		DNAIterator iterator = new DNAIterator(dna);
 		
 		assertEquals(new Chromosome(new int[]{0, 0, 0, 0, 0, 0, 0}), iterator.nextChromosome());

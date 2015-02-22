@@ -10,6 +10,7 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
 
@@ -59,9 +60,8 @@ public class NarjilloTickingTest {
 
 	@Test
 	public void narjillosTickingIsDeterministic() {
-		// Create DNA with an id of 1.
-		DNA.setSerial(0);
-		DNA sampleDNA = new DNA(SAMPLE_DNA_DOCUMENT);
+		GenePool genePool = new GenePool();
+		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
 
 		// Create the sample narjillo.
 		Narjillo narjillo = new Narjillo(sampleDNA, new Embryo(sampleDNA).develop(), Vector.cartesian(100, 200), 10_000);
@@ -77,7 +77,6 @@ public class NarjilloTickingTest {
 		// updated at the end of the tick, even when no readers are around.
 		narjillo.tick();
 		
-		System.out.println(JSON.toJson(narjillo, Narjillo.class));
 		// Check that the narjillo's state is exactly what we expect. We use
 		// JSON to make the comparison easier, and also to make sure that we're
 		// not missing anything in the narjillo's state.

@@ -6,15 +6,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.nusco.narjillos.shared.utilities.RanGen;
+
 /**
  * A pool of DNA strands.
  */
-public class GenePool implements DNAObserver {
+public class GenePool {
 
-	private Map<Long, DNA> dnaById = new LinkedHashMap<>();
-	private List<Long> currentPool = new LinkedList<>();
-	private Map<Long, Long> childrenToParents = new LinkedHashMap<>();
+	private final Map<Long, DNA> dnaById = new LinkedHashMap<>();
+	private final List<Long> currentPool = new LinkedList<>();
+	private final Map<Long, Long> childrenToParents = new LinkedHashMap<>();
 
+	private long dnaSerial = 0;
 	private boolean isTracking = false;
 
 	public void enableTracking() {
@@ -23,27 +26,6 @@ public class GenePool implements DNAObserver {
 
 	public boolean isTracking() {
 		return isTracking;
-	}
-
-	@Override
-	public void created(DNA newDNA, DNA parent) {
-		if (!isTracking())
-			return;
-		
-		dnaById.put(newDNA.getId(), newDNA);
-		currentPool.add(newDNA.getId());
-		if (parent == null)
-			childrenToParents.put(newDNA.getId(), 0l);
-		else
-			childrenToParents.put(newDNA.getId(), parent.getId());
-	}
-
-	@Override
-	public void removed(DNA dna) {
-		if (!isTracking())
-			return;
-
-		currentPool.remove(dna.getId());
 	}
 
 	public List<DNA> getAncestry(DNA dna) {
@@ -81,6 +63,47 @@ public class GenePool implements DNAObserver {
 		return dnaById.size();
 	}
 
+	public DNA createDNA(String dna) {
+		DNA result = new DNA(nextId(), dna);
+		add(result, null);
+		return result;
+	}
+
+	public DNA createRandomDNA(RanGen ranGen) {
+		DNA result = DNA.random(nextId(), ranGen);
+		add(result, null);
+		return result;
+	}
+
+	public DNA mutateDNA(DNA parent, RanGen ranGen) {
+		DNA result = parent.copyWithMutations(nextId(), ranGen);
+		add(result, parent);
+		return result;
+	}
+
+	public void remove(DNA dna) {
+		if (!isTracking())
+			return;
+
+		currentPool.remove(dna.getId());
+	}
+
+	private long nextId() {
+		return ++dnaSerial;
+	}
+	
+	private void add(DNA dna, DNA parent) {
+		if (!isTracking())
+			return;
+		
+		dnaById.put(dna.getId(), dna);
+		currentPool.add(dna.getId());
+		if (parent == null)
+			childrenToParents.put(dna.getId(), 0l);
+		else
+			childrenToParents.put(dna.getId(), parent.getId());
+	}
+	
 	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
 		int result = 0;
 		for (Long otherDNAId : currentPool) {

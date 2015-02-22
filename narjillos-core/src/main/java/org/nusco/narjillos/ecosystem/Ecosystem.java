@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
@@ -75,15 +76,15 @@ public class Ecosystem {
 		return target.getPosition();
 	}
 
-	public void tick(RanGen ranGen) {
+	public void tick(GenePool genePool, RanGen ranGen) {
 		for (Thing thing : new LinkedList<>(things.getAll("egg")))
 			tickEgg((Egg) thing);
 
 		for (Narjillo narjillo : new LinkedList<>(narjillos))
 			if (narjillo.isDead())
-				removeNarjillo(narjillo);
+				removeNarjillo(narjillo, genePool);
 
-		tickNarjillos(ranGen);
+		tickNarjillos(genePool, ranGen);
 
 		if (shouldSpawnFood(ranGen)) {
 			spawnFood(randomPosition(getSize(), ranGen));
@@ -153,7 +154,7 @@ public class Ecosystem {
 			remove(egg);
 	}
 
-	private synchronized void tickNarjillos(RanGen ranGen) {
+	private synchronized void tickNarjillos(GenePool genePool, RanGen ranGen) {
 		if (executorService.isShutdown())
 			return; // we're leaving, apparently
 
@@ -165,7 +166,7 @@ public class Ecosystem {
 		for (Entry<Narjillo, Set<Thing>> entry : narjillosToCollidedFood.entrySet()) {
 			Narjillo narjillo = entry.getKey();
 			Set<Thing> collidedFood = entry.getValue();
-			consume(narjillo, collidedFood, ranGen);
+			consume(narjillo, collidedFood, genePool, ranGen);
 		}
 	}
 
@@ -225,12 +226,12 @@ public class Ecosystem {
 		}
 	}
 
-	private void consume(Narjillo narjillo, Set<Thing> foodPieces, RanGen ranGen) {
+	private void consume(Narjillo narjillo, Set<Thing> foodPieces, GenePool genePool, RanGen ranGen) {
 		for (Thing foodPiece : foodPieces)
-			consumeFood(narjillo, (FoodPiece) foodPiece, ranGen);
+			consumeFood(narjillo, (FoodPiece) foodPiece, genePool, ranGen);
 	}
 
-	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, RanGen ranGen) {
+	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, GenePool genePool, RanGen ranGen) {
 		if (!things.contains(foodPiece))
 			return; // race condition: already consumed
 
@@ -238,7 +239,7 @@ public class Ecosystem {
 
 		narjillo.feedOn(foodPiece);
 
-		layEgg(narjillo, ranGen);
+		layEgg(narjillo, genePool, ranGen);
 		updateTargets(foodPiece);
 	}
 
@@ -247,16 +248,21 @@ public class Ecosystem {
 		things.remove(thing);
 	}
 
-	private void removeNarjillo(Narjillo narjillo) {
+	private void removeNarjillo(Narjillo narjillo, GenePool genePool) {
 		notifyThingRemoved(narjillo);
 		narjillos.remove(narjillo);
-		narjillo.getDNA().destroy();
+		genePool.remove(narjillo.getDNA());
 	}
 
-	private void layEgg(Narjillo narjillo, RanGen ranGen) {
-		Egg egg = narjillo.layEgg(narjillo.getNeckLocation(), ranGen);
-		if (egg == null) // refused to lay egg
-			return;
+	private void layEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
+		double percentEnergyToChildren = narjillo.getBody().getPercentEnergyToChildren();
+		double childEnergy = narjillo.getEnergy().chunkOff(percentEnergyToChildren);
+		if (childEnergy == 0)
+			return; // refused to lay egg
+		DNA childDNA = genePool.mutateDNA(narjillo.getDNA(), ranGen);
+
+		Vector position = narjillo.getNeckLocation();
+		Egg egg = new Egg(childDNA, position, childEnergy, Egg.INCUBATION_TIME);
 		insert(egg);
 	}
 

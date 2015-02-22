@@ -22,9 +22,9 @@ public class JSONEcosystemSerializationTest {
 		Ecosystem ecosystem = new Ecosystem(123);
 		FoodPiece food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));
 		FoodPiece food2 = ecosystem.spawnFood(Vector.cartesian(20, 20));
-		Egg egg = ecosystem.spawnEgg(new DNA("{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new RanGen(0));
+		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new RanGen(0));
 
-		DNA dna = DNA.random(new RanGen(100));
+		DNA dna = DNA.random(1, new RanGen(100));
 		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(100, 101), 10000);
 		ecosystem.insertNarjillo(narjillo);
 		

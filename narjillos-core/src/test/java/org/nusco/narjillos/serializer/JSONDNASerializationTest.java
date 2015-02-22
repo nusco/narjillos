@@ -11,7 +11,7 @@ public class JSONDNASerializationTest {
 
 	@Test
 	public void serializesAndDeserializesDNA() {
-		DNA dna = new DNA("{001_002_003_004_005_006_007_008_009}{010_011_012_013_014_15_16_17_18}");
+		DNA dna = new DNA(1, "{001_002_003_004_005_006_007_008_009}{010_011_012_013_014_15_16_17_18}");
 		String json = JSON.toJson(dna, DNA.class);
 		DNA deserialized = JSON.fromJson(json, DNA.class);
 

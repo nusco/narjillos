@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.serializer.JSON;
 
 /**
@@ -42,14 +41,10 @@ public class DeterministicExperimentTest {
 		Experiment experiment2 = JSON.fromJson(json, Experiment.class);
 
 		// Now we have two experiments. Keep ticking both for a few more cycles.
-		// Reset the DNA serial in between, so that we get the same DNA ids for
-		// both experiments.
-		long lastDNAId = DNA.getSerial();
-		for (int i = 0; i < halfCycles; i++)
+		for (int i = 0; i < halfCycles; i++) {
 			experiment1.tick();
-		DNA.setSerial(lastDNAId);
-		for (int i = 0; i < halfCycles; i++)
 			experiment2.tick();
+		}
 
 		// Reset the running time (which is generally different between
 		// experiments, and that's OK).

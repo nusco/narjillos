@@ -2,14 +2,12 @@ package org.nusco.narjillos.shared.things;
 
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 public class FoodPiece implements Thing {
 
-	public static final double RADIUS = 7;
-	private static final double ENERGY = 30_000;
-	
 	public Vector position;
-	private final Energy energy = new Energy(ENERGY, Double.MAX_VALUE);
+	private final Energy energy = new Energy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
 	private Thing eater;
 
 	public void setPosition(Vector position) {
@@ -43,7 +41,7 @@ public class FoodPiece implements Thing {
 
 	@Override
 	public double getRadius() {
-		return RADIUS;
+		return Configuration.FOOD_RADIUS;
 	}
 
 	public Thing getEater() {

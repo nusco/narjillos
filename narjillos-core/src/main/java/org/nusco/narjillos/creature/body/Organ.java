@@ -2,6 +2,7 @@ package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * A piece of body.
@@ -19,10 +20,6 @@ import org.nusco.narjillos.shared.physics.Vector;
  * the Organ.
  */
 public abstract class Organ {
-
-	private static final int MINIMUM_LENGTH_AT_BIRTH = 5;
-	private static final int MINIMUM_THICKNESS_AT_BIRTH = 1;
-	private static final double GROWTH_RATE = 0.01;
 
 	private final double adultLength;
 	private final int adultThickness;
@@ -47,8 +44,8 @@ public abstract class Organ {
 		this.adultThickness = adultThickness;
 		this.adultMass = Math.max(adultLength * adultThickness, 1);
 
-		this.length = Math.min(MINIMUM_LENGTH_AT_BIRTH, adultLength);
-		this.thickness = Math.min(MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
+		this.length = Math.min(Configuration.ORGAN_MINIMUM_LENGTH_AT_BIRTH, adultLength);
+		this.thickness = Math.min(Configuration.ORGAN_MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
 		this.fiber = fiber;
 
 		this.cachedAbsoluteAngle = 0;
@@ -85,8 +82,8 @@ public abstract class Organ {
 		if (isFullyGrown())
 			return;
 
-		length = Math.min(adultLength, getLength() + GROWTH_RATE * amount);
-		thickness = Math.min(adultThickness, getThickness() + GROWTH_RATE * amount);
+		length = Math.min(adultLength, getLength() + Configuration.ORGAN_GROWTH_RATE * amount);
+		thickness = Math.min(adultThickness, getThickness() + Configuration.ORGAN_GROWTH_RATE * amount);
 
 		// Optimization: don't recalculate geometry here. Instead, let the
 		// client do it - it knows when that's needed.

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 public class EnergyTest {
 
@@ -55,7 +56,7 @@ public class EnergyTest {
 	public void increasesByConsumingThings() {
 		energy.consume(nutrient);
 
-		double expected = initialValue * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
+		double expected = initialValue * Configuration.CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY;
 		assertEquals(expected, energy.getValue(), 0.001);
 	}
 

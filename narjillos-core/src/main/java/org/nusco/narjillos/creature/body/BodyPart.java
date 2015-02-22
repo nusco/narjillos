@@ -2,14 +2,13 @@ package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * A segment in the body of a creature.
  */
 public class BodyPart extends MovingOrgan {
 
-	private static final double SKEWING_VELOCITY_RATIO = 0.1;
-	
 	private final double angleToParentAtRest;
 	private final int orientation; // -1 or 1
 	private final int amplitude;
@@ -81,7 +80,7 @@ public class BodyPart extends MovingOrgan {
 
 	private double getSkewingVelocity(double targetSkewing) {
 		double result = targetSkewing - currentSkewing;
-		double maxSkewingVelocity = getMetabolicRate() * SKEWING_VELOCITY_RATIO;
+		double maxSkewingVelocity = getMetabolicRate() * Configuration.CREATURE_SKEWING_VELOCITY_RATIO;
 		if (Math.abs(result) > maxSkewingVelocity)
 			return Math.signum(result) * maxSkewingVelocity;
 		return result;

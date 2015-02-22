@@ -5,13 +5,10 @@ import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
+import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class Experiment {
-
-	private final static int ECOSYSTEM_SIZE = 40_000;
-	private static final int INITIAL_NUMBER_OF_FOOD_PIECES = 400;
-	private static final int INITIAL_NUMBER_OF_NARJILLOS = 300;
 
 	private final String id;
 	private final Ecosystem ecosystem;
@@ -32,7 +29,7 @@ public class Experiment {
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);
-		ecosystem = new Ecosystem(ECOSYSTEM_SIZE);
+		ecosystem = new Ecosystem(Configuration.ECOSYSTEM_SIZE);
 		populate(ecosystem, dna);
 		
 		// check that things cannot move faster than a space area in a single
@@ -57,14 +54,14 @@ public class Experiment {
 	}
 
 	private void populate(Ecosystem ecosystem, String dna) {
-		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_PIECES; i++)
+		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_NUMBER_OF_FOOD_PIECES; i++)
 			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
 
 		if (dna == null) {
-			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
+			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_NUMBER_OF_EGGS; i++)
 				ecosystem.spawnEgg(getGenePool().createRandomDNA(ranGen), randomPosition(ecosystem.getSize()), ranGen);
 		} else {
-			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
+			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_NUMBER_OF_EGGS; i++)
 				ecosystem.spawnEgg(getGenePool().createDNA(dna), randomPosition(ecosystem.getSize()), ranGen);
 		}
 	}

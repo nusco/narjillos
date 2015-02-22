@@ -1,8 +1,8 @@
 package org.nusco.narjillos.shared.things;
 
-public class Energy {
-	static final double MAX_ENERGY_TO_INITIAL_ENERGY = 5;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
+public class Energy {
 	private final double initialValue;
 	private double value;
 	private double maxForAge;
@@ -11,7 +11,7 @@ public class Energy {
 	public Energy(double initialValue, double lifespan) {
 		this.initialValue = initialValue;
 		this.value = this.initialValue;
-		this.maxForAge = this.initialValue * Energy.MAX_ENERGY_TO_INITIAL_ENERGY;
+		this.maxForAge = this.initialValue * Configuration.CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY;
 		this.decay = maxForAge / lifespan;
 	}
 

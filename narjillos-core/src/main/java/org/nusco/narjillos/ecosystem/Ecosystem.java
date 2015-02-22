@@ -22,6 +22,7 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
@@ -29,12 +30,6 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
  * The place that Narjillos call "home".
  */
 public class Ecosystem {
-
-	private static final int INITIAL_EGG_ENERGY = 25_000;
-	private static final int MIN_EGG_INCUBATION_TIME = 400;
-	private static final int MAX_EGG_INCUBATION_TIME = 800;
-	private static final int MAX_NUMBER_OF_FOOD_PIECES = 600;
-	private static final int FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
 
 	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
@@ -113,7 +108,7 @@ public class Ecosystem {
 	}
 
 	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
-		Egg egg = new Egg(genes, position, INITIAL_EGG_ENERGY, getRandomIncubationTime(ranGen));
+		Egg egg = new Egg(genes, position, Configuration.EGG_INITIAL_ENERGY, getRandomIncubationTime(ranGen));
 		insert(egg);
 		return egg;
 	}
@@ -204,7 +199,7 @@ public class Ecosystem {
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {
-		return getNumberOfFoodPieces() < MAX_NUMBER_OF_FOOD_PIECES && ranGen.nextDouble() < 1.0 / FOOD_RESPAWN_AVERAGE_INTERVAL;
+		return getNumberOfFoodPieces() < Configuration.ECOSYSTEM_MAX_FOOD_PIECES && ranGen.nextDouble() < 1.0 / Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL;
 	}
 
 	private Vector randomPosition(long size, RanGen ranGen) {
@@ -212,9 +207,9 @@ public class Ecosystem {
 	}
 
 	private int getRandomIncubationTime(RanGen ranGen) {
-		final int MAX_INCUBATION_INTERVAL = MAX_EGG_INCUBATION_TIME - MIN_EGG_INCUBATION_TIME;
+		final int MAX_INCUBATION_INTERVAL = Configuration.EGG_MAX_INCUBATION_TIME - Configuration.EGG_MIN_INCUBATION_TIME;
 		int extraIncubation = (int) (MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
-		return MIN_EGG_INCUBATION_TIME + extraIncubation;
+		return Configuration.EGG_MIN_INCUBATION_TIME + extraIncubation;
 	}
 
 	private void updateTargets(Thing food) {
@@ -262,7 +257,7 @@ public class Ecosystem {
 		DNA childDNA = genePool.mutateDNA(narjillo.getDNA(), ranGen);
 
 		Vector position = narjillo.getNeckLocation();
-		Egg egg = new Egg(childDNA, position, childEnergy, Egg.INCUBATION_TIME);
+		Egg egg = new Egg(childDNA, position, childEnergy, Configuration.EGG_INCUBATION_TIME);
 		insert(egg);
 	}
 

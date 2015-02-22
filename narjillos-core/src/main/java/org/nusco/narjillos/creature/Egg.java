@@ -6,14 +6,12 @@ import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * A narjillo egg, that eventually hatches to spawn a cute baby narjillo.
  */
 public class Egg implements Thing {
-
-	public static final double RADIUS = 25;
-	public static final int INCUBATION_TIME = 500;
 
 	private final DNA dna;
 	private int age = 0;
@@ -87,6 +85,6 @@ public class Egg implements Thing {
 
 	@Override
 	public double getRadius() {
-		return RADIUS;
+		return Configuration.EGG_RADIUS;
 	}
 }

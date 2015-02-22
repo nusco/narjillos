@@ -6,6 +6,7 @@ import java.util.List;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * The physics of rotations.
@@ -60,7 +61,7 @@ public class RotationsPhysicsEngine {
 	}
 
 	public double getEnergy() {
-		return rotationEnergy * PhysicsConstants.ENERGY_SCALE;
+		return rotationEnergy * Configuration.PHYSICS_ENERGY_SCALE;
 	}
 
 	private double calculateAngularVelocity(double initialAngle, double finalAngle) {

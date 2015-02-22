@@ -12,6 +12,7 @@ import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * The physical body of a Narjillo, with all its organs and their position in
@@ -199,7 +200,7 @@ public class Body {
 	}
 
 	private double getPush(Organ bodyPart) {
-		return 1 + bodyPart.getFiber().getPercentOfBlue() * 0.5;
+		return 1 + bodyPart.getFiber().getPercentOfBlue() * Configuration.CREATURE_BLUE_FIBERS_EXTRA_PUSH;
 	}
 
 	private double getEnergyConsumed(double rotationEnergy, double translationEnergy) {

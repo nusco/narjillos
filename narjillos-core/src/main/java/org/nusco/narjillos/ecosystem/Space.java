@@ -9,14 +9,14 @@ import java.util.Set;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * Partitioned space for fast neighbor searching, collision detection, etc.
  */
 class Space {
 
-	private static final int AREAS_PER_EDGE = 100;
-	private static final double COLLISION_DISTANCE = 60;
+	private static final int SPACE_AREAS_PER_EDGE = 100;
 
 	private final double areaSize;
 	private final Set<Thing>[][] areas;
@@ -30,8 +30,8 @@ class Space {
 
 	@SuppressWarnings("unchecked")
 	public Space(long size) {
-		areaSize = ((double) size) / AREAS_PER_EDGE;
-		this.areas = new Set[AREAS_PER_EDGE][AREAS_PER_EDGE];
+		areaSize = ((double) size) / Space.SPACE_AREAS_PER_EDGE;
+		this.areas = new Set[Space.SPACE_AREAS_PER_EDGE][Space.SPACE_AREAS_PER_EDGE];
 		for (int i = 0; i < areas.length; i++)
 			for (int j = 0; j < areas[i].length; j++)
 				areas[i][j] = new LinkedHashSet<>();
@@ -93,7 +93,7 @@ class Space {
 		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
 
 		for (Thing neighbor : getNearbyNeighbors(movement.getStartPoint(), label))
-			if (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= COLLISION_DISTANCE)
+			if (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE)
 				collidedFoodPieces.add(neighbor);
 
 		return collidedFoodPieces;
@@ -171,7 +171,7 @@ class Space {
 	}
 
 	private boolean isInOuterSpace(int x, int y) {
-		return x < 0 || x >= AREAS_PER_EDGE || y < 0 || y >= AREAS_PER_EDGE;
+		return x < 0 || x >= Space.SPACE_AREAS_PER_EDGE || y < 0 || y >= Space.SPACE_AREAS_PER_EDGE;
 	}
 
 	private Set<Thing> getArea(int x, int y) {

@@ -3,6 +3,7 @@ package org.nusco.narjillos.genomics;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
 /**
@@ -10,8 +11,6 @@ import org.nusco.narjillos.shared.utilities.RanGen;
  */
 public class DNA {
 
-	public static final double MUTATION_RATE = 0.067;
-	private static final int GENE_MUTATION_RANGE = 15;
 	private final long id;
 	
 	private final Integer[] genes;
@@ -131,15 +130,15 @@ public class DNA {
 	}
 
 	private boolean isMutantGene(RanGen ranGen) {
-		return ranGen.nextDouble() < MUTATION_RATE;
+		return ranGen.nextDouble() < Configuration.MUTATION_RATE;
 	}
 
 	private boolean isChromosomeMutation(RanGen ranGen) {
-		return ranGen.nextDouble() < (MUTATION_RATE / (Chromosome.SIZE * 2));
+		return ranGen.nextDouble() < (Configuration.MUTATION_RATE / (Chromosome.SIZE * 2));
 	}
 
 	private int mutate(int gene, RanGen ranGen) {
-		int randomFactor = ((int) (ranGen.nextDouble() * GENE_MUTATION_RANGE * 2)) - GENE_MUTATION_RANGE;
+		int randomFactor = ((int) (ranGen.nextDouble() * Configuration.GENE_MUTATION_RANGE * 2)) - Configuration.GENE_MUTATION_RANGE;
 		return gene + randomFactor;
 	}
 

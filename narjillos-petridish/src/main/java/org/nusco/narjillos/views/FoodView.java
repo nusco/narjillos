@@ -4,13 +4,14 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.shared.things.FoodPiece;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 class FoodView extends RoundObjectView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.035;
 
 	public FoodView(FoodPiece food) {
-		super(food, FoodPiece.RADIUS);
+		super(food, Configuration.FOOD_RADIUS);
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {

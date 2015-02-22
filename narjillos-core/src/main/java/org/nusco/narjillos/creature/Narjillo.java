@@ -11,14 +11,13 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * A fully-formed, autonomous creature.
  */
 public class Narjillo implements Thing {
 
-	static final double MAX_LIFESPAN = 30_000;
-	
 	private final Body body;
 	private final DNA dna;
 	private Vector target = Vector.ZERO;
@@ -30,7 +29,7 @@ public class Narjillo implements Thing {
 		this.body = body;
 		body.teleportTo(position);
 		this.dna = genes;
-		energy = new Energy(energyAtBirth, MAX_LIFESPAN);
+		energy = new Energy(energyAtBirth, Configuration.CREATURE_MAX_LIFESPAN);
 	}
 
 	public DNA getDNA() {

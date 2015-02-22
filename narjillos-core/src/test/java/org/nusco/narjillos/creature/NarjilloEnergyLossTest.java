@@ -9,6 +9,7 @@ import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 public class NarjilloEnergyLossTest {
 
@@ -36,7 +37,7 @@ public class NarjilloEnergyLossTest {
 		DNA dna = new DNA(1, "{1_1_1_1_1_1_1_1");
 		Narjillo narjilloThatCannotMove = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, 10000);
 
-		for (int i = 0; i < Narjillo.MAX_LIFESPAN + 1; i++)
+		for (int i = 0; i < Configuration.CREATURE_MAX_LIFESPAN + 1; i++)
 			narjilloThatCannotMove.tick();
 
 		assertTrue(narjilloThatCannotMove.isDead());

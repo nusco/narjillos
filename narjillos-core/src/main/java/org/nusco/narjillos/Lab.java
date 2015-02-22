@@ -5,6 +5,7 @@ import java.util.Random;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
 /**
@@ -14,7 +15,6 @@ import org.nusco.narjillos.shared.utilities.NumberFormat;
  */
 public class Lab {
 
-	private static final int PARSE_INTERVAL = 10000;
 	private static boolean persistent = false;
 	private final Experiment experiment;
 	private volatile boolean isSaving = false;
@@ -52,7 +52,7 @@ public class Lab {
 			return false;
 
 		boolean thereAreSurvivors = experiment.tick();
-		if (experiment.getTicksChronometer().getTotalTicks() % PARSE_INTERVAL == 0)
+		if (experiment.getTicksChronometer().getTotalTicks() % Configuration.EXPERIMENT_SAMPLE_INTERVAL == 0)
 			executePerodicOperations();
 
 		if (!thereAreSurvivors)
@@ -112,7 +112,7 @@ public class Lab {
 	private void executePerodicOperations() {
 		long ticks = experiment.getTicksChronometer().getTotalTicks();
 
-		if (ticks % PARSE_INTERVAL != 0)
+		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL != 0)
 			return;
 
 		if (persistent) {

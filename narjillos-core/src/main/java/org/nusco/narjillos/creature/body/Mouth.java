@@ -3,13 +3,12 @@ package org.nusco.narjillos.creature.body;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * The mouth of a creature. It reactively points towards food.
  */
 public class Mouth {
-
-	private static final double LATERAL_VIEWFIELD = 135;
 
 	private double directionAngle = 0;
 	
@@ -18,15 +17,15 @@ public class Mouth {
 			double absoluteTargetAngle = target.minus(position).getAngle();
 			double relativeTargetAngle = Angle.normalize(absoluteTargetAngle - rotation);
 			
-			boolean targetIsInViewField = Math.abs(relativeTargetAngle) < LATERAL_VIEWFIELD;
+			boolean targetIsInViewField = Math.abs(relativeTargetAngle) < Configuration.CREATURE_LATERAL_VIEWFIELD;
 			if (targetIsInViewField) {
 				shiftSmoothlyTowards(absoluteTargetAngle);
 				return;
 			}
 			
-			boolean targetJustExitedTheViewField = Math.abs(directionAngle) < LATERAL_VIEWFIELD;
+			boolean targetJustExitedTheViewField = Math.abs(directionAngle) < Configuration.CREATURE_LATERAL_VIEWFIELD;
 			if (targetJustExitedTheViewField)
-				shiftSmoothlyTowards(rotation + LATERAL_VIEWFIELD * Math.signum(relativeTargetAngle));
+				shiftSmoothlyTowards(rotation + Configuration.CREATURE_LATERAL_VIEWFIELD * Math.signum(relativeTargetAngle));
 
 			// else keep pointing in the same direction
 		} catch (ZeroVectorException e) {

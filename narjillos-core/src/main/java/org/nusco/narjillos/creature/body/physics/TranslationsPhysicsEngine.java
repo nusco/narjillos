@@ -6,6 +6,7 @@ import java.util.List;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * The physics of translations.
@@ -52,7 +53,7 @@ public class TranslationsPhysicsEngine {
 	}
 
 	public double getEnergy() {
-		return translationEnergy * PhysicsConstants.ENERGY_SCALE;
+		return translationEnergy * Configuration.PHYSICS_ENERGY_SCALE;
 	}
 
 	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {

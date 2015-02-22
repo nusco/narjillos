@@ -8,6 +8,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.FastMath;
+import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.utilities.Viewport;
 
 class EggView extends ThingView {
@@ -22,7 +23,7 @@ class EggView extends ThingView {
 	
 	public EggView(Egg egg) {
 		super(egg);
-		shape = new Ellipse(Egg.RADIUS, Egg.RADIUS);
+		shape = new Ellipse(Configuration.EGG_RADIUS, Configuration.EGG_RADIUS);
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
@@ -30,8 +31,8 @@ class EggView extends ThingView {
 			return null;
 
 		waveAngle = Angle.normalize(waveAngle + BLOBBING_SPEED);
-		shape.setRadiusX(Math.min(getEgg().getAge(), Egg.RADIUS + RADIUS_VARIATION * FastMath.sin(waveAngle)));
-		shape.setRadiusY(Math.min(getEgg().getAge(), Egg.RADIUS + RADIUS_VARIATION * FastMath.cos(waveAngle)));
+		shape.setRadiusX(Math.min(getEgg().getAge(), Configuration.EGG_RADIUS + RADIUS_VARIATION * FastMath.sin(waveAngle)));
+		shape.setRadiusY(Math.min(getEgg().getAge(), Configuration.EGG_RADIUS + RADIUS_VARIATION * FastMath.cos(waveAngle)));
 
 		shape.setFill(getFillColor(infraredOn));
 
@@ -60,6 +61,6 @@ class EggView extends ThingView {
 
 	@Override
 	protected boolean isVisible(Viewport viewport) {
-		return viewport.isVisible(getThing().getPosition(), Egg.RADIUS + RADIUS_VARIATION);
+		return viewport.isVisible(getThing().getPosition(), Configuration.EGG_RADIUS + RADIUS_VARIATION);
 	}
 }

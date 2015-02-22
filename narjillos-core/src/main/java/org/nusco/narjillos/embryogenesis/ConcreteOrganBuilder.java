@@ -1,12 +1,16 @@
 package org.nusco.narjillos.embryogenesis;
 
-import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.*;
-import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.*;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.BODY_PLAN_INSTRUCTION;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.LENGTH;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.THICKNESS;
+import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.BRANCH;
+import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.CONTINUE;
+import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.MIRROR;
+import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.STOP;
 
 import org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction;
 import org.nusco.narjillos.embryogenesis.bodyplan.OrganBuilder;
 import org.nusco.narjillos.genomics.Chromosome;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 abstract class ConcreteOrganBuilder implements OrganBuilder {
 
@@ -28,10 +32,6 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 	int getThickness() {
 		final double MAX_THICKNESS = 50;
 		return (int)(getChromosome().getGene(THICKNESS) * (MAX_THICKNESS / 256)) + 1;
-	}
-	
-	ColorByte getHue() {
-		return new ColorByte(getChromosome().getGene(HUE));
 	}
 
 	@Override

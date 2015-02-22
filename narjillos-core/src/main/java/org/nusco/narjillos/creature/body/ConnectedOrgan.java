@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
  * A body part that is connected to other body parts in a tree to form a body.
@@ -16,8 +15,8 @@ public abstract class ConnectedOrgan extends Organ {
 	private final List<ConnectedOrgan> children = new ArrayList<>();
 	protected final Nerve nerve;
 
-	public ConnectedOrgan(int adultLength, int adultThickness, ColorByte color, ConnectedOrgan parent, Nerve nerve) {
-		super(adultLength, adultThickness, color);
+	public ConnectedOrgan(int adultLength, int adultThickness, Fiber fiber, ConnectedOrgan parent, Nerve nerve) {
+		super(adultLength, adultThickness, fiber);
 		setParent(parent);
 		this.nerve = nerve;
 	}

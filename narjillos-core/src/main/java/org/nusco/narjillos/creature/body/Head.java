@@ -2,7 +2,6 @@ package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
  * The head of a creature, and the root of a tree of Organs.
@@ -16,8 +15,8 @@ public class Head extends MovingOrgan {
 
 	private Vector startPoint = Vector.ZERO;
 	
-	public Head(int adultLength, int adultThickness, ColorByte hue, double metabolicRate, double percentEnergyToChildren) {
-		super(adultLength, adultThickness, hue, null, new WaveNerve(BASE_WAVE_FREQUENCY * metabolicRate), 0);
+	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, double percentEnergyToChildren) {
+		super(adultLength, adultThickness, new Fiber(red, green, blue), null, new WaveNerve(BASE_WAVE_FREQUENCY * metabolicRate), 0);
 		this.percentEnergyToChildren = percentEnergyToChildren;
 		this.metabolicRate = metabolicRate;
 	}

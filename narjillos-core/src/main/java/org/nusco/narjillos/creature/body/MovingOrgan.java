@@ -3,7 +3,6 @@ package org.nusco.narjillos.creature.body;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
  * Adds the notion of the passing of time to the BodyPart hierarchy, embodied by
@@ -13,8 +12,8 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 
 	private double angleToParent = 0;
 
-	protected MovingOrgan(int adultLength, int adultThickness, ColorByte color, ConnectedOrgan parent, Nerve nerve, int angleToParentAtRest) {
-		super(adultLength, adultThickness, color, parent, nerve);
+	protected MovingOrgan(int adultLength, int adultThickness, Fiber fiber, ConnectedOrgan parent, Nerve nerve, int angleToParentAtRest) {
+		super(adultLength, adultThickness, fiber, parent, nerve);
 		setAngleToParent(angleToParentAtRest);
 	}
 

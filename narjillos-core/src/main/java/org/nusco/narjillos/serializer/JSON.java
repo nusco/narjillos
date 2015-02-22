@@ -1,8 +1,9 @@
 package org.nusco.narjillos.serializer;
 
-import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
+import org.nusco.narjillos.creature.body.Fiber;
+import org.nusco.narjillos.creature.body.MovingOrgan;
+import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
@@ -18,6 +19,7 @@ public class JSON {
 		.registerTypeAdapter(Vector.class, new VectorAdapter())
 		.registerTypeAdapter(DNA.class, new DNAAdapter())
 		.registerTypeAdapter(Nerve.class, new NerveAdapter())
+		.registerTypeAdapter(Fiber.class, new FiberAdapter())
 		.registerTypeAdapter(Organ.class, new OrganAdapter())
 		.registerTypeAdapter(ConnectedOrgan.class, new OrganAdapter())
 		.registerTypeAdapter(MovingOrgan.class, new OrganAdapter())

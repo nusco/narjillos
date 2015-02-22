@@ -3,8 +3,6 @@
 #===================
 
 ##Plants and Animals
-* Encode color RGB components in separate genes
-* Encode color shift instead of hue
 * Blue fibers give extra push
 * Egg firing
 * Egg firing distance is controlled by genes

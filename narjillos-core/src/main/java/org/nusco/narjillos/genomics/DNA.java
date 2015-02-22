@@ -10,7 +10,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
  */
 public class DNA {
 
-	public static final double MUTATION_RATE = 0.055;
+	public static final double MUTATION_RATE = 0.067;
 	private static final int GENE_MUTATION_RANGE = 15;
 	private final long id;
 	

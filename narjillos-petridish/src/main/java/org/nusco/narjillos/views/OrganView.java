@@ -8,11 +8,11 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 import org.nusco.narjillos.utilities.Viewport;
 
 class OrganView extends ThingView {
@@ -37,7 +37,7 @@ class OrganView extends ThingView {
 	public OrganView(Organ bodyPart, Narjillo narjillo) {
 		super(narjillo);
 		this.organ = bodyPart;
-		color = toRGBColor(bodyPart.getColor());
+		color = toRGBColor(bodyPart.getFiber());
 		rectangle = createRectangle();
 		previousOrganPosition = organ.getPositionInSpace();
 	}
@@ -199,8 +199,8 @@ class OrganView extends ThingView {
 		return clipToRange(currentEnergyPercent * 10, 0, 1);
 	}
 
-	public static Color toRGBColor(ColorByte colorByte) {
-		return new Color(colorByte.getRed(), colorByte.getGreen(), colorByte.getBlue(), 1);
+	private Color toRGBColor(Fiber fiber) {
+		return new Color(fiber.getPercentOfRed(), fiber.getPercentOfGreen(), fiber.getPercentOfBlue(), 1);
 	}
 
 	@Override

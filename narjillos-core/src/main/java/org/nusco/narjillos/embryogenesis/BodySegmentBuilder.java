@@ -38,9 +38,21 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 	private int convertToRange(int gene, double maxAbsValue) {
 		return (int)((gene * ((maxAbsValue * 2 + 1) / 256)) - maxAbsValue);
 	}
+	
+	int getRedShift() {
+		return getChromosome().getGene(RED_SHIFT) - 127;
+	}
+	
+	int getGreenShift() {
+		return getChromosome().getGene(GREEN_SHIFT) - 127;
+	}
+	
+	int getBlueShift() {
+		return getChromosome().getGene(BLUE_SHIFT) - 127;
+	}
 
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int sign) {
-		return new BodyPart(getLength(), getThickness(), getHue(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing());
+		return new BodyPart(getLength(), getThickness(), getRedShift(), getGreenShift(), getBlueShift(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing());
 	}
 }

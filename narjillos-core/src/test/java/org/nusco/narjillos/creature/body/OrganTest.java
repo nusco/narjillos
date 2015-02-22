@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public abstract class OrganTest {
 	
@@ -48,7 +47,7 @@ public abstract class OrganTest {
 	
 	@Test
 	public void itsMassIsAlwaysAtLeast1() {
-		Organ verySmallBodyPart = new Organ(0, 0, new ColorByte(0)) {
+		Organ verySmallBodyPart = new Organ(0, 0, new Fiber(0, 0, 0)) {
 
 			@Override
 			protected double calculateAbsoluteAngle() {

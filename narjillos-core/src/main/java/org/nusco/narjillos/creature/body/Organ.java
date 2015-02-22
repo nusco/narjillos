@@ -2,7 +2,6 @@ package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 /**
  * A piece of body.
@@ -28,7 +27,7 @@ public abstract class Organ {
 	private final double adultLength;
 	private final int adultThickness;
 	private final double adultMass;
-	private final ColorByte color;
+	private final Fiber fiber;
 	private double length;
 	private double thickness;
 
@@ -43,14 +42,14 @@ public abstract class Organ {
 	private volatile Vector cachedCenterOfMass;
 	private volatile Segment cachedPositionInSpace;
 
-	public Organ(int adultLength, int adultThickness, ColorByte color) {
+	public Organ(int adultLength, int adultThickness, Fiber fiber) {
 		this.adultLength = adultLength;
 		this.adultThickness = adultThickness;
 		this.adultMass = Math.max(adultLength * adultThickness, 1);
 
 		this.length = Math.min(MINIMUM_LENGTH_AT_BIRTH, adultLength);
 		this.thickness = Math.min(MINIMUM_THICKNESS_AT_BIRTH, adultThickness);
-		this.color = color;
+		this.fiber = fiber;
 
 		this.cachedAbsoluteAngle = 0;
 		this.cachedStartPoint = Vector.ZERO;
@@ -121,16 +120,16 @@ public abstract class Organ {
 		return thickness;
 	}
 
+	public Fiber getFiber() {
+		return fiber;
+	}
+	
 	public double getMass() {
 		return cachedMass;
 	}
 
 	public double getAdultMass() {
 		return adultMass;
-	}
-
-	public ColorByte getColor() {
-		return color;
 	}
 
 	public final double getAbsoluteAngle() {

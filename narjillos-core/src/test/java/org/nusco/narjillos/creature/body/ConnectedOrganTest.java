@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public abstract class ConnectedOrganTest extends OrganTest {
 
@@ -22,9 +21,9 @@ public abstract class ConnectedOrganTest extends OrganTest {
 	@Test
 	public void knowsItsChildren() {
 		ConnectedOrgan r = getOrgan();
-		ConnectedOrgan child1 = r.addChild(new BodyPart(20, 10, new ColorByte(100), r, 0, 45, 0, 0));
+		ConnectedOrgan child1 = r.addChild(new BodyPart(20, 10, 0, 0, 0, r, 0, 45, 0, 0));
 		ConnectedOrgan r1 = getOrgan();
-		ConnectedOrgan child2 = r1.addChild(new BodyPart(20, 10, new ColorByte(100), r1, 0, -45, 0, 0));
+		ConnectedOrgan child2 = r1.addChild(new BodyPart(20, 10, 0, 0, 0, r1, 0, -45, 0, 0));
 
 		List<ConnectedOrgan> expected = new LinkedList<>();
 		expected.add(child1);

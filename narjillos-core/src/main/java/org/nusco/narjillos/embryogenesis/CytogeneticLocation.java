@@ -4,8 +4,8 @@ package org.nusco.narjillos.embryogenesis;
  * The encoding of phenotipic characters in a chromosome's genes.
  */
 interface CytogeneticLocation {
-	// Locations 4 and 5 are pleiotropic: they encode different characters,
-	// depending on whether they're in the head or a body segment.
+	// Some locations (such as 4 and 5) are pleiotropic: they encode different
+	// characters, depending on whether they're in the head or a body segment.
 	// (Strictly speaking, this is not what "pleiotropic" means - but I couldn't
 	// resist using the word).
 
@@ -39,7 +39,13 @@ interface CytogeneticLocation {
 	// to the side.
 	static final int SKEWING = 7;
 
-	// The hue of the segment. Combined with the previous segment's color, it
-	// gives the final color of the segment.
-	static final int HUE = 8;
+	// The fiber components of the segment.
+	static final int RED = 8;
+	static final int GREEN = 9;
+	static final int BLUE = 10;
+
+	// The fiber shift components of the segment.
+	static final int RED_SHIFT = 8;
+	static final int GREEN_SHIFT = 9;
+	static final int BLUE_SHIFT = 10;
 }

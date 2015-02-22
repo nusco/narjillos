@@ -9,7 +9,6 @@ import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 public class NarjilloEnergyLossTest {
 
@@ -18,7 +17,7 @@ public class NarjilloEnergyLossTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, new ColorByte(10), 1, 0.5)), Vector.ZERO, 10000);
+		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}"), new Body(new Head(10, 10, 10, 10, 10, 1, 0.5)), Vector.ZERO, 10000);
 		
 		DNA dna = new DNA(2, "{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}{0_255_255_255_255_255_255_255}");
 		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, 10000);

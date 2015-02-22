@@ -1,8 +1,8 @@
 package org.nusco.narjillos.embryogenesis.bodyplan;
 
+import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
-import org.nusco.narjillos.shared.utilities.ColorByte;
 
 class MockOrgan extends MovingOrgan {
 
@@ -10,7 +10,7 @@ class MockOrgan extends MovingOrgan {
 	private final int sign;
 
 	public MockOrgan(int id, ConnectedOrgan parent, int sign) {
-		super(0, 0, new ColorByte(0), parent, null, 0);
+		super(0, 0, new Fiber(0, 0, 0), parent, null, 0);
 		this.id = id;
 		this.sign = sign;
 	}

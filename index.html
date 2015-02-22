@@ -38,23 +38,23 @@
 
 <p>Narjillos are artificial creatures that mutate and evolve in a virtual microscope dish, under the pressure of natural selection. They swim to reach food, but they don't really know what "swimming" means - they just swing their bodies around. Yet, they evolve good swimming behaviours over time.</p>
 
-<p>If you have <a href="http://www.java.com/">Java 8</a> installed, you can put a dish full of narjillo eggs under your microscope. <a href="https://github.com/nusco/narjillos/releases/download/v0.2.0/narjillos-0.2.0.zip">Download Narjillos 0.2.0</a>, unzip it somewhere, and run the <em>narjillos</em> script. Then zoom in on an egg, and wait. It will hatch in a minute.</p>
+<p>If you have <a href="http://www.java.com/">Java 8</a> installed, you can put a dish full of narjillo eggs under your microscope. <a href="https://github.com/nusco/narjillos/releases/download/v0.2.0/narjillos-0.2.0.zip">Download Narjillos 0.2.0</a>, unzip it somewhere, and run the <em>narjillos</em> script. See those eggs? They'll hatch in a minute.</p>
 
 <h2>
 <a id="how-to-control-the-microscope" class="anchor" href="#how-to-control-the-microscope" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to control the microscope</h2>
 
-<p>Move around with your <strong>cursor keys</strong>, or <strong>click and drag</strong> the view. Zoom in/out by <strong>scrolling</strong> or <strong>pinching</strong>. To track a specific object or creature, <strong>double-click</strong> on it; to stop tracking, <strong>click</strong> anywhere else.
+<p>Move around with your <strong>cursor keys</strong>, or just <strong>click and drag</strong>. Zoom in/out by <strong>scrolling</strong> or <strong>pinching</strong>. To track a specific object or creature, <strong>double-click</strong> on it; to stop tracking, <strong>click</strong> somewhere else.
 
-<p>To shift the speed up, press <strong>P</strong>. To shift it down, press <strong>O</strong>.</p>
+<p>To crank up the speed, press <strong>P</strong>. To slow down, press <strong>O</strong>.</p>
 
 <p>To turn the lamp on/off, press <strong>L</strong>. With the lamp off, high speed is faster (because the program doesn't need to render the creatures).</p>
 
-<p>If you have trouble distinguishing the shapes of narjillos, try infrared light. It makes things more visible, though not as pretty as a regular lamp does. You can toggle infrared light by pressing <strong>I</strong>.</p>
+<p>If you have trouble distinguishing the shapes of narjillos, try infrared light. It makes shapes more visible, but it hides colors. You can toggle infrared light by pressing <strong>I</strong>.</p>
 
 <h2>
 <a id="but-what-the-heck-are-these-things" class="anchor" href="#but-what-the-heck-are-these-things" aria-hidden="true"><span class="octicon octicon-link"></span></a>But what the heck are these things?</h2>
 
-<p>There are three main ingredients to the Narjillos recipe: <em>phenotypic variation</em>, <em>selection</em> and <em>mutation</em>. They sound difficult, but you probably know about all three of them already. Let me tell how they work and what's their final result.</p>
+<p>There are three main ingredients to the Narjillos recipe: <em>phenotypic variation</em>, <em>selection</em> and <em>mutation</em>. They're simpler than they sound.</p>
 
 <h3>
 <a id="the-three-ingredients" class="anchor" href="#the-three-ingredients" aria-hidden="true"><span class="octicon octicon-link"></span></a>The three ingredients</h3>
@@ -62,48 +62,44 @@
 <h4>
 <a id="phenotypic-variation" class="anchor" href="#phenotypic-variation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Phenotypic variation</h4>
 
-<p>When you start an experiment, the program generates a few hundreds eggs, containing different strands of DNA. Each DNA is a random sequence of bytes. Each byte is a "gene", and genes are collected into "chromosomes".</p>
+<p>When you start an experiment, the program generates a few hundreds eggs. Each egg contains a strand of DNA—a random sequence of byte-sized "genes", organized into "chromosomes".</p>
 
-<p>Inside the egg, each DNA strand goes through a process called "embryology", which generates the physical body of a baby narjillo. Each chromosome roughly generates a segment in the narjillo's body, and the genes in the chromosome dictate that segment's appearance and behavior: its color, size, angle, and so on.</p>
+<p>Inside the egg, the DNA goes through a process called "embryology", which generates the body of a narjillo. Each chromosome generates a segment in the body, and the genes in the chromosome dictate that segment's appearance and behavior: its size, its color, how fast it moves, and so on.</p>
 
-<p>The DNA is also called the <em>genotype</em>, and the physical body is also called the <em>phenotype</em> --- so you can say that "the genotype generates the phenotype". Identical genotypes always generate identical phenotypes. Similar genotypes tend to generate similar phenotypes. Very different genotypes tend to generate very different phenotypes.</p>
+<p>The DNA is also called the <em>genotype</em>, and the body is also called the <em>phenotype</em>—so you can say that "the genotype generates the phenotype". Identical genotypes always generate identical phenotypes. Similar genotypes tend to generate similar phenotypes. Very different genotypes tend to generate very different phenotypes.</p>
 
-<p>All the eggs generated in the beginning are collected in a dish under your microscope. They soon hatch, giving birth to cute little baby narjillos. The babies are small in the beginning, but they keep growing until they reach their adult form. The dish is also filled with food --- the red dots. More food keeps spawning slowly as the experiment goes on.</p>
+<p>All the eggs are placed on a dish under your microscope. They soon hatch, giving birth to cute little baby narjillos. The babies are small in the beginning, but they keep growing until they reach their adult form. The dish also contains food—the red dots. More food keeps spawning as the experiment continues.</p>
 
 <h4>
 <a id="selection" class="anchor" href="#selection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Selection</h4>
 
-<p>Narjillos try to reach the food by swimming. You can look at their "mouths" (the thin green lines) to see which direction they're trying to go. Narjillos don't think --- they just oscillate mechanically in response to the direction of their target. These oscillations push them around in the dish.</p>
+<p>Narjillos try to reach the food by swimming. You can look at their "mouths" (the thin green lines) to see which direction they're aiming at. Narjillos don't think—they just oscillate mechanically in response to the direction of their target. These oscillations push them around in the dish.</p>
 
-<p>Some narjillos are decent swimmers, but most are not. You'll see many who cannot even move, or tend to move in the opposite direction they're aiming at. Those who cannot reach food will eventually get exhausted and die.</p>
+<p>Some narjillos are decent swimmers, but most are not. You'll see many who cannot even move, or move in the opposite direction they're aiming at. Narjillos who can't reach food will eventually exhaust their energy and die.</p>
 
-<p>Narjillos that are bigger or faster have the potential to move quicker, but they tend to consume more energy as they push their bodies around the dish. The maximum energy of a narjillo also decreases with age, so even narjillos who can't move will eventually lose energy and die.</p>
+<p>Narjillos that are bigger or quicker have the potential to reach food faster, but also consume more energy. The maximum energy of a narjillo also decreases with age, so even narjillos who can't move will eventually lose energy and die. Look at a narjillo's eye color to get a clue about its energy level. Fully healthy narjillos have a bright green eye, that becomes darker as they get exhausted. Also, they become transparent once they're nearing death.</p>
 
-<p>Look at a narjillo's eye color to get a clue about its energy level. Fully healthy, energized narjillos have a bright green eye, that becomes darker as they get exhausted. Also, they become transparent once they're nearing death.</p>
-
-<p>(A note for Artificial Life connoisseurs: narjillos have no "fitness function". The fitter narjillos are simply the ones that happen to be better at reaching food.)</p>
+<p>(A note for Artificial Life connoisseurs: narjillos have no "fitness function". The fitter narjillos are simply the ones that happen to be better at reaching food).</p>
 
 <h4>
 <a id="mutation" class="anchor" href="#mutation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mutation</h4>
 
-<p>Each time a narjillo eats a piece of food, its energy rises. If the energy is over a certain amount, the narjillo uses it to lay an egg that contains a full copy of the narjillo's own genotype. The egg hatches after a short while, giving birth to the phenotype --- a new baby narjillo.</p>
+<p>Each time a narjillo eats a piece of food, its energy rises. If it has enough energy, the narjillo lays an egg that contains a copy of its genotype. The egg hatches after a short while, giving birth to the phenotype—a new baby narjillo.</p>
 
-<p>However, here is a twist: when the parent's genotype is copied into the egg, random errors can happen. These errors (called "mutations") mean that, while the copy probably resembles the original, it also has a few differences --- which typically result in a child with slightly different body shape, movement style, or color.</p>
+<p>Here is a twist: the genotype in the egg is not a perfect copy of the parent's. Instead, it contains random errors (called "mutations"). Because of mutations, a child could have a slightly different body shape, movement style, or color than its parent's. However, the child is still going to resemble the parent, because it has a similar genotype. As grandma used to say, "the apple doesn't fall far from the tree".</p>
 
-<p>A child can also gain entirely new chromosomes, or lose some of the chromosomes of its parent. This generally results in more, or fewer, segments in the child's body compared to the parent. However, the same old rule applies: the child's genotype is similar to the parent's genotype, so the child is going to resemble the parent. As grandma used to say, "the apple doesn't fall far from the tree".</p>
-
-<p>Phenotypic variation, Selection, Mutation... done! Now that you know about the three ingredients, let's put them together.</p>
+<p>Phenotypic variation, Selection, Mutation... done! Now that we have the three ingredients, let's put them together.</p>
 
 <h3>
 <a id="the-circle-of-life" class="anchor" href="#the-circle-of-life" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Circle of Life</h3>
 
-<p>Because of <strong>phenotypic variation</strong>, some narjllos are better swimmers than others. Because of <strong>selection</strong>, the better swimmers tend to survive longer and reproduce more often than the worse swimmers. Their offspring tend to be themselves good swimmers --- but because of <strong>mutation</strong>, they can be a little better, or worse, than their parents. The better offspring tend to survive longer and reproduce faster than the worse offspring, and the cycle continues: bad swimmers tend to go extinct, while better swimmers tend to prosper, and go on to generate children that are even better than themselves.</p>
+<p>Because of <strong>phenotypic variation</strong>, some narjllos are better swimmers than others. Because of <strong>selection</strong>, the better swimmers tend to survive longer than the worse swimmers, and thus reproduce more. Their offspring of good swimmers to be themselves good swimmers—but because of <strong>mutation</strong>, they can be a little better, or worse, than their parents. The better offspring tend to survive longer and reproduce faster than the worse offspring, and the cycle continues: generation after generation, the bad swimmers tend to go extinct, while the good swimmers live to generate even better swimmers.</p>
 
 <p>We have a single word to describe this entire process: <em>evolution</em>.</p>
 
-<p>After a few tens of minutes of running an experiment (at high speed), you'll likely see one "family" of related narjillos emerge and slowly take over the pond, while less successful genotypes go extinct. As you keep the program running, possibly for a few hours, this dominating DNA strand will subtly mutate to generate bodies that are better and better at swimming.</p>
+<p>After a few tens of minutes of running an experiment (at high speed), you'll likely see one "species" of narjillos emerge and slowly take over the pond, while less successful species go extinct. As the experiment goes on, possibly for a few hours, this dominating genome will subtly mutate to generate bodies that are better and better at swimming. Eventually, you'll see creatures that are pretty damn good at moving around the dish.</p>
 
-<p>The resulting creatures are neither a result of my design, nor emerging by blind luck. On the one hand, I didn't design the individual creatures --- I just created the environment where their genes can evolve. On the other hand, you probably won't be able to generate good swimmers by shuffling genes randomly, as the program does on startup. There are literally more possible body plans than grain of sands in a desert --- vastly more so --- and only a few of them are good at swimming. This is neither a case of intelligent design, nor a case of blind luck. The narjillos are <em>evolving</em> their ability to swim well.</p>
+<p>These creatures are neither a result of my design, nor emerging by blind luck. On the one hand, I didn't design the individual creatures—I just designed the environment where they can evolve. On the other hand, you probably won't be able to generate good swimmers by shuffling genes randomly. There are literally more possible narjillo bodies than grain of sands in a desert—vastly more so—and only a few of them are good at swimming. This is neither a case of intelligent design, nor a case of blind luck. The narjillos are <em>evolving</em> their ability to swim well.</p>
 
 <h2>
 <a id="more" class="anchor" href="#more" aria-hidden="true"><span class="octicon octicon-link"></span></a>I Want to Know More!</h2>

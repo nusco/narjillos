@@ -1,6 +1,6 @@
 package org.nusco.narjillos.embryogenesis;
 
-import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.*;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.*;
 
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;

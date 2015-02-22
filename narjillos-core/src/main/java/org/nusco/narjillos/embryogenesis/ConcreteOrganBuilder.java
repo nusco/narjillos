@@ -1,8 +1,8 @@
 package org.nusco.narjillos.embryogenesis;
 
-import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.BODY_PLAN_INSTRUCTION;
-import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.LENGTH;
-import static org.nusco.narjillos.embryogenesis.CytogeneticLocation.THICKNESS;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.BODY_PLAN_INSTRUCTION;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.LENGTH;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.THICKNESS;
 import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.BRANCH;
 import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.CONTINUE;
 import static org.nusco.narjillos.embryogenesis.bodyplan.BodyPlanInstruction.MIRROR;
@@ -26,7 +26,7 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 	
 	int getLength() {
 		final int ATROPHY_LENGTH = 29;
-		return getChromosome().getGene(LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(CytogeneticLocation.LENGTH);
+		return getChromosome().getGene(LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(CytogeneticLocations.LENGTH);
 	}
 
 	int getThickness() {

@@ -130,11 +130,11 @@ public class DNA {
 	}
 
 	private boolean isMutantGene(RanGen ranGen) {
-		return ranGen.nextDouble() < Configuration.MUTATION_RATE;
+		return ranGen.nextDouble() < Configuration.GENE_MUTATION_RATE;
 	}
 
 	private boolean isChromosomeMutation(RanGen ranGen) {
-		return ranGen.nextDouble() < (Configuration.MUTATION_RATE / (Chromosome.SIZE * 2));
+		return ranGen.nextDouble() < (Configuration.GENE_MUTATION_RATE / (Chromosome.SIZE * 2));
 	}
 
 	private int mutate(int gene, RanGen ranGen) {

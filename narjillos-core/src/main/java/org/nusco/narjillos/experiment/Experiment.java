@@ -54,14 +54,14 @@ public class Experiment {
 	}
 
 	private void populate(Ecosystem ecosystem, String dna) {
-		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_NUMBER_OF_FOOD_PIECES; i++)
+		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_FOOD_PIECES; i++)
 			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
 
 		if (dna == null) {
-			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_NUMBER_OF_EGGS; i++)
+			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
 				ecosystem.spawnEgg(getGenePool().createRandomDNA(ranGen), randomPosition(ecosystem.getSize()), ranGen);
 		} else {
-			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_NUMBER_OF_EGGS; i++)
+			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
 				ecosystem.spawnEgg(getGenePool().createDNA(dna), randomPosition(ecosystem.getSize()), ranGen);
 		}
 	}
@@ -71,7 +71,7 @@ public class Experiment {
 	}
 
 	public boolean tick() {
-		if (ticksChronometer.getTotalTicks() % 1000 == 0)
+		if (ticksChronometer.getTotalTicks() % Configuration.ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL == 0)
 			executePeriodicOperations();
 
 		getEcosystem().tick(genePool, ranGen);

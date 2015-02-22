@@ -80,7 +80,7 @@ public class BodyPart extends MovingOrgan {
 
 	private double getSkewingVelocity(double targetSkewing) {
 		double result = targetSkewing - currentSkewing;
-		double maxSkewingVelocity = getMetabolicRate() * Configuration.CREATURE_SKEWING_VELOCITY_RATIO;
+		double maxSkewingVelocity = getMetabolicRate() * Configuration.CREATURE_BASE_SKEWING_VELOCITY;
 		if (Math.abs(result) > maxSkewingVelocity)
 			return Math.signum(result) * maxSkewingVelocity;
 		return result;

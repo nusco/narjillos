@@ -52,8 +52,7 @@ public class Lab {
 			return false;
 
 		boolean thereAreSurvivors = experiment.tick();
-		if (experiment.getTicksChronometer().getTotalTicks() % Configuration.EXPERIMENT_SAMPLE_INTERVAL == 0)
-			executePerodicOperations();
+		executePeriodOperations();
 
 		if (!thereAreSurvivors)
 			System.out.println("*** Extinction happens. ***");
@@ -109,7 +108,7 @@ public class Lab {
 			System.out.println(" (no persistence)");
 	}
 
-	private void executePerodicOperations() {
+	private void executePeriodOperations() {
 		long ticks = experiment.getTicksChronometer().getTotalTicks();
 
 		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL != 0)

@@ -54,13 +54,20 @@
 * Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
 * "Skip" instruction in body plan
 * "Repeat" instruction in body plan
-* Whole-body size gene
 
 ##Packaged Application
 * Native Mac app
 * Native Windows app
 * Run in a browser
 * Package Java runtime with command-line program?
+
+##Flexible Genes
+* Wave beat ratio is genetically determined
+* Max lifespan is geneticaly determined (within a limit)
+* Lateral viewfield is genetically determined?
+* Growth rate is genetically determined? (Takes energy?)
+* Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
+* Adult body size is genetically determined
 
 * Remove food
 * Adaptive graphics (disable effects when framerate plummets)

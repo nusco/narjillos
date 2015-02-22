@@ -108,7 +108,7 @@ public class Ecosystem {
 	}
 
 	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
-		Egg egg = new Egg(genes, position, Configuration.EGG_INITIAL_ENERGY, getRandomIncubationTime(ranGen));
+		Egg egg = new Egg(genes, position, Configuration.ENERGY_OF_SEED_CREATURES, getRandomIncubationTime(ranGen));
 		insert(egg);
 		return egg;
 	}
@@ -139,6 +139,18 @@ public class Ecosystem {
 			Vector closestTarget = findClosestFoodPiece(narjillo);
 			narjillo.setTarget(closestTarget);
 		}
+	}
+
+	public synchronized void terminate() {
+		executorService.shutdown();
+		try {
+			executorService.awaitTermination(10, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+		}
+	}
+
+	public double getSpaceAreaSize() {
+		return things.getAreaSize();
 	}
 
 	private void tickEgg(Egg egg) {
@@ -251,13 +263,13 @@ public class Ecosystem {
 
 	private void layEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
 		double percentEnergyToChildren = narjillo.getBody().getPercentEnergyToChildren();
-		double childEnergy = narjillo.getEnergy().chunkOff(percentEnergyToChildren);
+		double childEnergy = narjillo.getEnergy().transfer(percentEnergyToChildren);
 		if (childEnergy == 0)
 			return; // refused to lay egg
 		DNA childDNA = genePool.mutateDNA(narjillo.getDNA(), ranGen);
 
 		Vector position = narjillo.getNeckLocation();
-		Egg egg = new Egg(childDNA, position, childEnergy, Configuration.EGG_INCUBATION_TIME);
+		Egg egg = new Egg(childDNA, position, childEnergy, getRandomIncubationTime(ranGen));
 		insert(egg);
 	}
 
@@ -269,17 +281,5 @@ public class Ecosystem {
 	private final void notifyThingRemoved(Thing thing) {
 		for (EcosystemEventListener ecosystemEvent : ecosystemEventListeners)
 			ecosystemEvent.thingRemoved(thing);
-	}
-
-	public synchronized void terminate() {
-		executorService.shutdown();
-		try {
-			executorService.awaitTermination(10, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-		}
-	}
-
-	public double getSpaceAreaSize() {
-		return things.getAreaSize();
 	}
 }

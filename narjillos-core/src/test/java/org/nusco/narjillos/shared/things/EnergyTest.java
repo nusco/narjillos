@@ -107,7 +107,7 @@ public class EnergyTest {
 	@Test
 	public void canDonateAPercentOfItself() {
 		energy.tick(-10);
-		double donation = energy.chunkOff(0.25);
+		double donation = energy.transfer(0.25);
 
 		assertEquals(5, donation, 0.0);
 		assertEquals(15, energy.getValue(), 0.0);
@@ -116,7 +116,7 @@ public class EnergyTest {
 	@Test
 	public void refusesDonationsIfTheyResultInAValueBelowTheInitialValue() {
 		energy.tick(-10);
-		double donation = energy.chunkOff(51);
+		double donation = energy.transfer(51);
 
 		assertEquals(0, donation, 0.0);
 		assertEquals(20, energy.getValue(), 0.0);

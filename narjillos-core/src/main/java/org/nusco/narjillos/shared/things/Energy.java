@@ -56,12 +56,12 @@ public class Energy {
 		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
 	}
 
-	public double chunkOff(double percentFromZeroToOne) {
-		double donation = getValue() * percentFromZeroToOne;
-		if (getValue() - donation < getInitialValue())
-			return 0; // Short on energy. Refuse donation.
-		decreaseBy(donation);
-		return donation;
+	public double transfer(double percentFromZeroToOne) {
+		double transferredEnergy = getValue() * percentFromZeroToOne;
+		if (getValue() - transferredEnergy < getInitialValue())
+			return 0; // Short on energy. Refuse to transfer.
+		decreaseBy(transferredEnergy);
+		return transferredEnergy;
 	}
 
 	private void decreaseBy(double amount) {

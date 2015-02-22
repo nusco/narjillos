@@ -61,7 +61,7 @@ public class RotationsPhysicsEngine {
 	}
 
 	public double getEnergy() {
-		return rotationEnergy * Configuration.PHYSICS_ENERGY_SCALE;
+		return rotationEnergy * Configuration.ENERGY_PER_JOULE;
 	}
 
 	private double calculateAngularVelocity(double initialAngle, double finalAngle) {

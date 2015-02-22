@@ -4,7 +4,6 @@ package org.nusco.narjillos.shared.utilities;
 public class Configuration {
 
 	// physics
-	public static final double PHYSICS_ENERGY_SCALE = 1.0 / 75_000_000_000L;
 	public static final double PHYSICS_VISCOSITY_KICK_IN_VELOCITY = 300;
 	public static final double PHYSICS_COLLISION_DISTANCE = 60;
 
@@ -20,6 +19,11 @@ public class Configuration {
 	public static final double CREATURE_WAVE_BEAT_RATIO = 2;
 	public static final double CREATURE_SKEWING_VELOCITY_RATIO = 0.1;
 	public static final double CREATURE_LATERAL_VIEWFIELD = 135;
+
+	// energy
+	public static final double ENERGY_PER_JOULE = 1.0 / 75_000_000_000L;
+	public static final int ENERGY_OF_SEED_CREATURES = 25_000;
+	public static final double ENERGY_PER_FOOD_ITEM = 30_000;
 
 	// organs
 	public static final int ORGAN_MINIMUM_LENGTH_AT_BIRTH = 5;
@@ -38,13 +42,9 @@ public class Configuration {
 
 	// eggs
 	public static final double EGG_RADIUS = 25;
-	public static final int EGG_INCUBATION_TIME = 500;
-	public static final int EGG_INITIAL_ENERGY = 25_000;
 	public static final int EGG_MIN_INCUBATION_TIME = 400;
 	public static final int EGG_MAX_INCUBATION_TIME = 800;
 
 	// food
 	public static final double FOOD_RADIUS = 7;
-	public static final double FOOD_ENERGY = 30_000;
-
 }

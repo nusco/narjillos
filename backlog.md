@@ -2,8 +2,6 @@
 # Narjillos Backlog
 #===================
 
-* Fix genepool serialization
-
 ##Plants and Animals
 * Encode color RGB components in separate genes
 * Encode color shift instead of hue

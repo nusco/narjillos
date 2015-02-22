@@ -34,7 +34,7 @@ public class DNA {
 		this(new DNADocument(dnaDocument).toGenes());
 	}
 
-	// Doesn't notify observer. Only use for deserialization.
+	// Only use for deserialization.
 	public DNA(String dnaDocument, long id) {
 		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
 		setId(id);

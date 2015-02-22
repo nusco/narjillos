@@ -15,7 +15,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.genomics.DNA;
 
 public class Persistence {
 
@@ -56,11 +55,11 @@ public class Persistence {
 		return deserializeExperimentFrom(fileName);
 	}
 
-	public static DNA loadDNA(String fileName) {
+	public static String loadDNADocument(String fileName) {
 		try {
 			byte[] encoded = Files.readAllBytes(Paths.get(fileName));
 			String dnaDocument = new String(encoded, Charset.defaultCharset());
-			return new DNA(dnaDocument);
+			return dnaDocument;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

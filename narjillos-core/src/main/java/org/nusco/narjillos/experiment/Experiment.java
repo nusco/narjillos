@@ -27,8 +27,8 @@ public class Experiment {
 		this(seed, version, null, true);
 	}
 
-	public Experiment(long seed, String version, DNA dna, boolean trackGenePool) {
-		initializeGenePool(trackGenePool, dna);
+	public Experiment(long seed, String version, String dna, boolean trackGenePool) {
+		initializeGenePool(trackGenePool);
 		
 		id = "" + seed + "-" + version;
 		timeStamp();
@@ -42,15 +42,12 @@ public class Experiment {
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 
-	private void initializeGenePool(boolean trackGenePool, DNA dna) {
+	private void initializeGenePool(boolean trackGenePool) {
 		if (!trackGenePool)
 			return;
 
 		genePool.enableTracking();
 		DNA.setObserver(genePool);
-		
-		if (dna != null)
-			genePool.created(dna, null);
 	}
 
 	public final void timeStamp() {
@@ -61,7 +58,7 @@ public class Experiment {
 		return id;
 	}
 
-	private void populate(Ecosystem ecosystem, DNA dna) {
+	private void populate(Ecosystem ecosystem, String dna) {
 		for (int i = 0; i < INITIAL_NUMBER_OF_FOOD_PIECES; i++)
 			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
 
@@ -70,7 +67,7 @@ public class Experiment {
 				ecosystem.spawnEgg(DNA.random(ranGen), randomPosition(ecosystem.getSize()), ranGen);
 		} else {
 			for (int i = 0; i < INITIAL_NUMBER_OF_NARJILLOS; i++)
-				ecosystem.spawnEgg(dna, randomPosition(ecosystem.getSize()), ranGen);
+				ecosystem.spawnEgg(new DNA(dna), randomPosition(ecosystem.getSize()), ranGen);
 		}
 	}
 

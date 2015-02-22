@@ -6,7 +6,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.genomics.DNA;
 
 public class CommandLineOptionsTest {
 
@@ -85,7 +84,7 @@ public class CommandLineOptionsTest {
 	public void narjillosAcceptsADNADocument() {
 		CommandLineOptions options = new CommandLineOptions("-dna", "{1_2_3}");
 		
-		assertEquals(new DNA("{1_2_3}").toString(), options.getDna().toString());
+		assertEquals("{1_2_3}", options.getDna());
 	}
 
 	@Test

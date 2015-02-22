@@ -11,7 +11,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.Persistence;
 
@@ -25,7 +24,7 @@ class CommandLineOptions extends Options {
 	private boolean persistent = true;
 	private boolean trackingGenePool = false;
 	private long seed = NO_SEED;
-	private DNA dna = null;
+	private String dna = null;
 
 	public static CommandLineOptions parse(String... args) {
 		try {
@@ -108,7 +107,7 @@ class CommandLineOptions extends Options {
 		return seed;
 	}
 
-	public DNA getDna() {
+	public String getDna() {
 		return dna;
 	}
 
@@ -142,10 +141,11 @@ class CommandLineOptions extends Options {
 
 	private void setDna(String dna) {
 		if (dna.startsWith("{")) {
-			this.dna = new DNA(dna);
+			// inline DNA
+			this.dna = dna;
 			return;
 		}
-		// this must be a filename
-		this.dna = Persistence.loadDNA(dna);
+		// not inline DNA, so it must be a filename
+		this.dna = Persistence.loadDNADocument(dna);
 	}
 }

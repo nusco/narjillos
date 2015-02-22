@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.serializer.Persistence;
 import org.nusco.narjillos.shared.utilities.NumberFormat;
 
@@ -81,7 +80,7 @@ public class Lab {
 	private Experiment createExperiment(String applicationVersion, CommandLineOptions options) {
 		Experiment result;
 		
-		DNA dna = options.getDna();
+		String dna = options.getDna();
 		boolean trackingGenePool = options.isTrackingGenePool();
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);

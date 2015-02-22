@@ -3,14 +3,20 @@
 #===================
 
 ##Plants and Animals
+* Narjillos cannot lay egg if they're not mature
+* Narjillos can lay eggs at any time, not just after feeding
 * Egg firing
 * Egg firing distance is controlled by genes
-* Narjillos can lay eggs at any time, not just after feeding
 * Green fibers get energy from the environment
+
+##Dish Edges
+* Kill narjillos who touch outer space
+* Limit panning to inner space (with some margin)
+* Auto-scroll viewport to stay within inner space
+* (Remove the concept of outer space altogether)
 
 ##Intuitive Navigation
 * Test track/untrack mouse commands with first-comer
-* Limit panning inside space area
 * Make central area of dish visible at a distance
 * Visual effect when tracking/untracking
 
@@ -69,6 +75,7 @@
 * Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
 * Adult body size is genetically determined
 
+* Simpler senescence mechanism
 * Remove food
 * Adaptive graphics (disable effects when framerate plummets)
 * Narjillos eat eggs

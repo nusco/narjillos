@@ -1,18 +1,20 @@
 package org.nusco.narjillos.serializer;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.shared.utilities.RanGen;
+import org.nusco.narjillos.genomics.GenePool;
 
 public class JSONExperimentSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesExperiment() {
-		Experiment experiment = new Experiment(1234, "experiment_serialization_test", DNA.random(new RanGen(1)), true);
+		Experiment experiment = new Experiment(1234, "experiment_serialization_test");
+		assertTrue(experiment.getGenePool().isTracking());
+		
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
 		
@@ -25,7 +27,9 @@ public class JSONExperimentSerializationTest {
 		assertEquals(experiment.getEcosystem().getNumberOfFoodPieces(), deserialized.getEcosystem().getNumberOfFoodPieces());
 		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), deserialized.getEcosystem().getNumberOfNarjillos());
 		assertEquals(10, deserialized.getTicksChronometer().getTotalTicks());
-		assertNotNull(deserialized.getGenePool().getMostSuccessfulDNA());
-		assertEquals(experiment.getGenePool().getMostSuccessfulDNA(), deserialized.getGenePool().getMostSuccessfulDNA());
+		
+		GenePool genePool = experiment.getGenePool();
+		GenePool deserializedGenePool = deserialized.getGenePool();
+		assertArrayEquals(deserializedGenePool.getAncestry(deserializedGenePool.getMostSuccessfulDNA()).toArray(), genePool.getAncestry(genePool.getMostSuccessfulDNA()).toArray());
 	}
 }

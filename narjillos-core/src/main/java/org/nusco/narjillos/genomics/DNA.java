@@ -138,7 +138,7 @@ public class DNA {
 	}
 
 	private int mutate(int gene, RanGen ranGen) {
-		int randomFactor = ((int) (ranGen.nextDouble() * Configuration.GENE_MUTATION_RANGE * 2)) - Configuration.GENE_MUTATION_RANGE;
+		int randomFactor = (int) ((ranGen.nextDouble() * Configuration.GENE_MUTATION_RANGE * 2) - Configuration.GENE_MUTATION_RANGE);
 		return gene + randomFactor;
 	}
 

@@ -128,6 +128,9 @@ public class Narjillo implements Thing {
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
 	 */
 	public Egg layEgg(Ecosystem ecosystem, GenePool genePool, RanGen ranGen) {
+		if (isTooYoungToLayEggs())
+			return null;
+		
 		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
 		double childEnergy = getEnergy().transfer(percentEnergyToChildren);
 		if (childEnergy == 0)
@@ -137,6 +140,10 @@ public class Narjillo implements Thing {
 	
 		Vector position = getNeckLocation();
 		return new Egg(childDNA, position, childEnergy, ranGen);
+	}
+
+	private boolean isTooYoungToLayEggs(){
+		return getAge() < Configuration.CREATURE_MATURE_AGE;
 	}
 
 	private void growOlder() {

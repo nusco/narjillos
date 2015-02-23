@@ -3,7 +3,6 @@
 #===================
 
 ##Plants and Animals
-* Narjillos cannot lay egg if they're not mature
 * Narjillos can lay eggs at any time, not just after feeding
 * Egg firing
 * Egg firing costs energy

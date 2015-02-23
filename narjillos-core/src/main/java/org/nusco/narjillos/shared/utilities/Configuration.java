@@ -9,10 +9,11 @@ public class Configuration {
 
 	// genes
 	public static final double GENE_MUTATION_RATE = 0.067;
-	public static final int GENE_MUTATION_RANGE = 15;
+	public static final double GENE_MUTATION_RANGE = 15;
 	
 	// creatures
 	public static final double CREATURE_MAX_LIFESPAN = 30_000;
+	public static final double CREATURE_MATURE_AGE = 5_000;
 	public static final double CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY = 5;
 	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0.5;
 	public static final double CREATURE_BASE_WAVE_FREQUENCY = 0.01;
@@ -22,13 +23,13 @@ public class Configuration {
 
 	// energy
 	public static final double ENERGY_PER_JOULE = 1.0 / 75_000_000_000L;
-	public static final int ENERGY_OF_SEED_CREATURES = 25_000;
+	public static final double ENERGY_OF_SEED_CREATURES = 25_000;
 	public static final double ENERGY_PER_FOOD_ITEM = 30_000;
 	public static final double ENERGY_METABOLIC_CONSUMPTION_POW = 1.5;
 
 	// organs
-	public static final int ORGAN_MINIMUM_LENGTH_AT_BIRTH = 5;
-	public static final int ORGAN_MINIMUM_THICKNESS_AT_BIRTH = 1;
+	public static final double ORGAN_MINIMUM_LENGTH_AT_BIRTH = 5;
+	public static final double ORGAN_MINIMUM_THICKNESS_AT_BIRTH = 1;
 	public static final double ORGAN_GROWTH_RATE = 0.01;
 
 	// experiment

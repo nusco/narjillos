@@ -7,6 +7,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.shared.utilities.RanGen;
 
 /**
  * A narjillo egg, that eventually hatches to spawn a cute baby narjillo.
@@ -20,11 +21,11 @@ public class Egg implements Thing {
 	private double energy;
 	private final int incubationTime;
 	
-	public Egg(DNA dna, Vector position, double energy, int incubationTime) {
+	public Egg(DNA dna, Vector position, double energy, RanGen ranGen) {
 		this.dna = dna;
 		this.position = position;
 		this.energy = energy;
-		this.incubationTime = incubationTime;
+		this.incubationTime = calculateIncubationTime(ranGen);
 	}
 
 	public Segment tick() {
@@ -86,5 +87,15 @@ public class Egg implements Thing {
 	@Override
 	public double getRadius() {
 		return Configuration.EGG_RADIUS;
+	}
+
+	public int getIncubationTime() {
+		return incubationTime;
+	}
+	
+	private int calculateIncubationTime(RanGen ranGen) {
+		final int MAX_INCUBATION_INTERVAL = Configuration.EGG_MAX_INCUBATION_TIME - Configuration.EGG_MIN_INCUBATION_TIME;
+		int extraIncubation = (int) (MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
+		return Configuration.EGG_MIN_INCUBATION_TIME + extraIncubation;
 	}
 }

@@ -13,6 +13,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class JSONThingSerializationTest {
 
@@ -29,14 +30,15 @@ public class JSONThingSerializationTest {
 	@Test
 	public void serializesAndDeserializesEggs() {
 		DNA dna = new DNA(1, "{1_2}");
-		Egg egg = new Egg(dna, Vector.cartesian(10, 20), 101, 10);
+		Egg egg = new Egg(dna, Vector.cartesian(10, 20), 101, new RanGen(1));
 
 		String json = JSON.toJson(egg, Thing.class);
-		Thing deserialized = JSON.fromJson(json, Thing.class);
+		Egg deserialized = (Egg)JSON.fromJson(json, Thing.class);
 
 		assertEquals(dna.toString(), egg.getDNA().toString());
 		assertEquals(egg.getPosition(), deserialized.getPosition());
 		assertEquals(egg.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0);
+		assertEquals(egg.getIncubationTime(), deserialized.getIncubationTime(), 0);
 	}
 
 	@Test

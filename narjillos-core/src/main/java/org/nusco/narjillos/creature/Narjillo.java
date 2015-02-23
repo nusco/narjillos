@@ -5,13 +5,16 @@ import java.util.List;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.shared.utilities.RanGen;
 
 /**
  * A fully-formed, autonomous creature.
@@ -119,6 +122,21 @@ public class Narjillo implements Thing {
 	@Override
 	public double getRadius() {
 		return getBody().calculateRadius();
+	}
+
+	/**
+	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
+	 */
+	public Egg layEgg(Ecosystem ecosystem, GenePool genePool, RanGen ranGen) {
+		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
+		double childEnergy = getEnergy().transfer(percentEnergyToChildren);
+		if (childEnergy == 0)
+			return null; // refuse to lay egg
+		
+		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
+	
+		Vector position = getNeckLocation();
+		return new Egg(childDNA, position, childEnergy, ranGen);
 	}
 
 	private void growOlder() {

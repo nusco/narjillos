@@ -108,7 +108,7 @@ public class Ecosystem {
 	}
 
 	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
-		Egg egg = new Egg(genes, position, Configuration.ENERGY_OF_SEED_CREATURES, getRandomIncubationTime(ranGen));
+		Egg egg = new Egg(genes, position, Configuration.ENERGY_OF_SEED_CREATURES, ranGen);
 		insert(egg);
 		return egg;
 	}
@@ -218,12 +218,6 @@ public class Ecosystem {
 		return Vector.cartesian(ranGen.nextDouble() * size, ranGen.nextDouble() * size);
 	}
 
-	private int getRandomIncubationTime(RanGen ranGen) {
-		final int MAX_INCUBATION_INTERVAL = Configuration.EGG_MAX_INCUBATION_TIME - Configuration.EGG_MIN_INCUBATION_TIME;
-		int extraIncubation = (int) (MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
-		return Configuration.EGG_MIN_INCUBATION_TIME + extraIncubation;
-	}
-
 	private void updateTargets(Thing food) {
 		for (Narjillo narjillo : narjillos) {
 			if (narjillo.getTarget().equals(food.getPosition())) {
@@ -262,14 +256,9 @@ public class Ecosystem {
 	}
 
 	private void layEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
-		double percentEnergyToChildren = narjillo.getBody().getPercentEnergyToChildren();
-		double childEnergy = narjillo.getEnergy().transfer(percentEnergyToChildren);
-		if (childEnergy == 0)
-			return; // refused to lay egg
-		DNA childDNA = genePool.mutateDNA(narjillo.getDNA(), ranGen);
-
-		Vector position = narjillo.getNeckLocation();
-		Egg egg = new Egg(childDNA, position, childEnergy, getRandomIncubationTime(ranGen));
+		Egg egg = narjillo.layEgg(this, genePool, ranGen);
+		if (egg == null)
+			return;
 		insert(egg);
 	}
 

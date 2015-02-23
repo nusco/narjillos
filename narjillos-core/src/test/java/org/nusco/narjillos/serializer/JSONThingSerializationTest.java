@@ -30,13 +30,14 @@ public class JSONThingSerializationTest {
 	@Test
 	public void serializesAndDeserializesEggs() {
 		DNA dna = new DNA(1, "{1_2}");
-		Egg egg = new Egg(dna, Vector.cartesian(10, 20), 101, new RanGen(1));
+		Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.polar(10, 15), 101, new RanGen(1));
 
 		String json = JSON.toJson(egg, Thing.class);
 		Egg deserialized = (Egg)JSON.fromJson(json, Thing.class);
 
 		assertEquals(dna.toString(), egg.getDNA().toString());
 		assertEquals(egg.getPosition(), deserialized.getPosition());
+		assertEquals(egg.getVelocity(), deserialized.getVelocity());
 		assertEquals(egg.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0);
 		assertEquals(egg.getIncubationTime(), deserialized.getIncubationTime(), 0);
 	}

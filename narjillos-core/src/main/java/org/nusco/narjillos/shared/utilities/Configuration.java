@@ -48,6 +48,9 @@ public class Configuration {
 	public static final double EGG_RADIUS = 25;
 	public static final int EGG_MIN_INCUBATION_TIME = 400;
 	public static final int EGG_MAX_INCUBATION_TIME = 800;
+	public static final double EGG_MAX_VELOCITY = 300;
+	public static final double EGG_MIN_VELOCITY = 0.1;
+	public static final double EGG_VELOCITY_DECAY = 0.98;
 
 	// food
 	public static final double FOOD_RADIUS = 7;

@@ -142,7 +142,8 @@ public class Narjillo implements Thing {
 		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
 	
 		Vector position = getNeckLocation();
-		return new Egg(childDNA, position, childEnergy, ranGen);
+		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_MAX_VELOCITY * ranGen.nextDouble());
+		return new Egg(childDNA, position, velocity, childEnergy, ranGen);
 	}
 
 	private boolean isTooYoungToLayEggs(){

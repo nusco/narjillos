@@ -111,7 +111,7 @@ public class Ecosystem {
 	}
 
 	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
-		Egg egg = new Egg(genes, position, Configuration.ENERGY_OF_SEED_CREATURES, ranGen);
+		Egg egg = new Egg(genes, position, Vector.ZERO, Configuration.ENERGY_OF_SEED_CREATURES, ranGen);
 		insert(egg);
 		return egg;
 	}

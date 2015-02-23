@@ -3,7 +3,6 @@
 #===================
 
 ##Plants and Animals
-* Egg firing
 * Egg firing costs energy
 * Egg firing distance is controlled by genes
 * Green fibers get energy from the environment

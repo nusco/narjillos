@@ -14,7 +14,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 public class EggTest {
 
 	DNA dna = new DNA(1, "{1_2_3}");
-	Egg egg = new Egg(dna, Vector.cartesian(10, 20), 100, new RanGen(1));
+	Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.ZERO, 100, new RanGen(1));
 	
 	@Test
 	public void hatchesANarjilloAfterAnIncubationPeriod() {

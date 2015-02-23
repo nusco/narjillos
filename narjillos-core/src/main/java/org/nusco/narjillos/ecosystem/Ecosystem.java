@@ -86,6 +86,9 @@ public class Ecosystem {
 			updateAllTargets();
 		}
 
+		for (Narjillo narjillo : new LinkedList<>(narjillos))
+			layEgg(narjillo, genePool, ranGen);
+
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
 	}
@@ -237,10 +240,7 @@ public class Ecosystem {
 			return; // race condition: already consumed
 
 		remove(foodPiece);
-
 		narjillo.feedOn(foodPiece);
-
-		layEgg(narjillo, genePool, ranGen);
 		updateTargets(foodPiece);
 	}
 

@@ -3,7 +3,6 @@
 #===================
 
 ##Plants and Animals
-* Narjillos can lay eggs at any time, not just after feeding
 * Egg firing
 * Egg firing costs energy
 * Egg firing distance is controlled by genes

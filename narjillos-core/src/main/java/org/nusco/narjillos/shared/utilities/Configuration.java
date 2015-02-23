@@ -14,6 +14,7 @@ public class Configuration {
 	// creatures
 	public static final double CREATURE_MAX_LIFESPAN = 30_000;
 	public static final double CREATURE_MATURE_AGE = 5_000;
+	public static final double CREATURE_CHANCE_OF_LAYING_EGG = 0.3;
 	public static final double CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY = 5;
 	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0.5;
 	public static final double CREATURE_BASE_WAVE_FREQUENCY = 0.01;

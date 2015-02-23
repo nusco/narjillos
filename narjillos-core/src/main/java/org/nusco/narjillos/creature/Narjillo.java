@@ -131,6 +131,9 @@ public class Narjillo implements Thing {
 		if (isTooYoungToLayEggs())
 			return null;
 		
+		if (ranGen.nextDouble() > Configuration.CREATURE_CHANCE_OF_LAYING_EGG)
+			return null;
+		
 		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
 		double childEnergy = getEnergy().transfer(percentEnergyToChildren);
 		if (childEnergy == 0)

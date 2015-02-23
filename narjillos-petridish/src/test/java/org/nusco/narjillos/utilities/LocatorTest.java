@@ -2,6 +2,7 @@ package org.nusco.narjillos.utilities;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,19 +27,21 @@ public class LocatorTest {
 
 	private Narjillo insertNarjillo(Vector position) {
 		DNA dna = new DNA(1, "{145_227_116_072_163_201_077_221_217}{060_227_157_252_209_149_056_114_167}{250_253_092_189_010_247_016_214_009}{027_039_203_179_042_042_175_110_008}");
-		Narjillo result = new Narjillo(dna, new Embryo(dna).develop(), position, 10000);
-		ecosystem.insertNarjillo(result);
-		return result;
+		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), position, 10000);
+		ecosystem.insertNarjillo(narjillo);
+		return narjillo;
 	}
 	
 	@Test
 	public void findsThingsAtAGivenPosition() {
-		Narjillo narjillo1 = insertNarjillo(Vector.cartesian(101, 101));
-		Narjillo narjillo2 = insertNarjillo(Vector.cartesian(998, 998));
-		insertNarjillo(Vector.cartesian(999, 999));
-		
-		assertEquals(narjillo1, locator.findNarjilloAt(Vector.cartesian(106, 106)));
-		assertEquals(narjillo2, locator.findNarjilloAt(Vector.cartesian(1003, 1003)));
+		Narjillo narjillo1 = insertNarjillo(Vector.cartesian(1000, 1000));
+		Narjillo narjillo2 = insertNarjillo(Vector.cartesian(100, 100));
+		assertTrue(narjillo1.getRadius() > 4 && narjillo1.getRadius() < 300);
+		assertTrue(narjillo2.getRadius() > 4 && narjillo2.getRadius() < 300);
+
+		assertNull(locator.findNarjilloAt(Vector.cartesian(500, 500)));
+		assertEquals(narjillo2, locator.findNarjilloAt(Vector.cartesian(103, 103)));
+		assertEquals(narjillo1, locator.findNarjilloAt(Vector.cartesian(999, 1001)));
 	}
 	
 	@Test

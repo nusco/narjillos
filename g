@@ -6,5 +6,5 @@
 #
 #   gradle bl -Pargs="3"
 
-gradle --quiet $1 -Pargs="$2 $3 $4 $5 $6 $7"
+gradle --quiet --no-daemon $1 -Pargs="$2 $3 $4 $5 $6 $7"
 

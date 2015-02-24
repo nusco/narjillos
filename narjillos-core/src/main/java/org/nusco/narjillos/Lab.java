@@ -66,14 +66,19 @@ public class Lab {
 
 	protected void terminate() {
 		while (isSaving()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
+			sleepAWhile();
 		}
 		isTerminated = true;
 		String finalReport = experiment.terminate();
 		System.out.println(finalReport);
+	}
+
+	private void sleepAWhile() {
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private Experiment createExperiment(String applicationVersion, CommandLineOptions options) {
@@ -114,13 +119,16 @@ public class Lab {
 		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL != 0)
 			return;
 
-		if (persistent) {
-			isSaving = true;
-			Persistence.save(experiment);
-			isSaving = false;
-		}
+		if (persistent)
+			save();
 
 		System.out.println(getStatusString(ticks));
+	}
+
+	private void save() {
+		isSaving = true;
+		Persistence.save(experiment);
+		isSaving = false;
 	}
 
 	private String getHeadersString() {

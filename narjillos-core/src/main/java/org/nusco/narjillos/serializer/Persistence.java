@@ -137,9 +137,9 @@ public class Persistence {
 	}
 
 	private static void forceMoveFile(String source, String destination) throws IOException {
-		Path filePath = Paths.get(destination);
-		if (Files.exists(filePath))
-			Files.delete(filePath);
-		Files.move(Paths.get(source), filePath);
+		Path destinationPath = Paths.get(destination);
+		if (Files.exists(destinationPath))
+			Files.delete(destinationPath);
+		Files.move(Paths.get(source), destinationPath);
 	}
 }

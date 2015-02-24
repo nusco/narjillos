@@ -2,6 +2,22 @@
 # Narjillos Backlog
 #===================
 
+* Deleted experiment bug
+
+narjillos> g petri 1839631413-0.2.0.exp
+Continuining experiment 1839631413-0.2.0 (no persistence)
+    tick    time    eggs    narj    food
+   9.02M   64.3K      18     243       4
+Experiment 1839631413-0.2.0 ending at 64454 seconds, 9023218 ticks
+narjillos> g experiment 1839631413-0.2.0.exp -p -a
+WARNING: I'm loading an existing experiment, so I'm ignoring the --ancestry option.
+java.io.FileNotFoundException: 1839631413-0.2.0.exp (No such file or directory)
+
+(Why did the experiment terminate with a message when I pressed Ctrl-C, while sometimes it doesn't?)
+(And why did the experiment file get lost? Isn't it supposed to create a temp?)
+
+* Shutdown hooks not running bug
+
 ##Plants and Animals
 * Egg firing costs energy
 * Egg firing distance is controlled by genes

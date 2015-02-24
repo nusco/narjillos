@@ -152,7 +152,7 @@ public class Ecosystem {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	public double getSpaceAreaSize() {
 		return things.getAreaSize();
 	}

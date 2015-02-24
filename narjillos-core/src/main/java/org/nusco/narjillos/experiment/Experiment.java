@@ -114,7 +114,7 @@ public class Experiment {
 	public String terminate() {
 		updateTotalRunningTime();
 		ecosystem.terminate();
-		return toString() + " ending at " + getTotalRunningTimeInSeconds() + " seconds, "
+		return toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
 				+ getTicksChronometer().getTotalTicks() + " ticks";
 	}
 

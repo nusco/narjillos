@@ -16,6 +16,8 @@ java.io.FileNotFoundException: 1839631413-0.2.0.exp (No such file or directory)
 (Why did the experiment terminate with a message when I pressed Ctrl-C, while sometimes it doesn't?)
 (And why did the experiment file get lost? Isn't it supposed to create a temp?)
 
+* Shutdown hooks not running bug
+
 ##Plants and Animals
 * Encode color RGB components in separate genes
 * Encode color shift instead of hue

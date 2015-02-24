@@ -345,16 +345,18 @@ public class PetriDish extends Application {
 	}
 
 	@Override
-	public void stop() throws Exception {
+	public void stop() {
 		lab.terminate();
 
 		// exit threads cleanly to avoid rare exception
 		// when exiting Java FX application
 		stopThreads = true;
-		while (modelThread.isAlive())
-			;
-		while (viewThread.isAlive())
-			;
+		while (modelThread.isAlive() || viewThread.isAlive())
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 
 		Platform.exit();
 	}

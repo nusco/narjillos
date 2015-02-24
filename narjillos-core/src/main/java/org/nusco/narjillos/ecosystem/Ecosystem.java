@@ -281,6 +281,7 @@ public class Ecosystem {
 		try {
 			executorService.awaitTermination(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

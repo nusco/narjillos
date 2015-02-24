@@ -17,20 +17,22 @@ public class Egg implements Thing {
 	private static final int NOT_HATCHED_YET = -1;
 
 	private final DNA dna;
+	private final int incubationTime;
 	private int age = 0;
 	private Vector position;
 	private Vector velocity;
 	private double energy;
 	private final int incubationTime;
+	// FIXME: make transient?
 	private Narjillo hatchedNarjillo = null;
 	private int hatchAge = NOT_HATCHED_YET;
 	
 	public Egg(DNA dna, Vector position, Vector velocity, double energy, RanGen ranGen) {
 		this.dna = dna;
+		this.incubationTime = calculateIncubationTime(ranGen);
 		this.position = position;
 		this.velocity = velocity;
 		this.energy = energy;
-		this.incubationTime = calculateIncubationTime(ranGen);
 	}
 
 	public Segment tick() {

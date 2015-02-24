@@ -119,4 +119,6 @@ task(backlog, dependsOn: 'build', type: JavaExec) {
 
 task(bl, dependsOn: 'backlog')
 
-task prepareRelease(dependsOn: ['deterministicExperimentTest', 'installApp'])
+task allTests(dependsOn: ['test', 'deterministicExperimentTest'])
+
+task prepareRelease(dependsOn: ['allTests', 'installApp'])

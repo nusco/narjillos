@@ -20,6 +20,7 @@ public class Persistence {
 
 	private static final String EXPERIMENT_EXT = ".exp";
 	private static final String TEMP_EXT = ".tmp";
+	private static final String EXPERIMENT_FILE_REGEXP = "\\.exp$";
 
 	public static void save(Experiment experiment) {
 		try {
@@ -39,20 +40,31 @@ public class Persistence {
 	}
 
 	public static Experiment loadExperiment(String fileName) {
-		File loadedFile = new File(fileName);
-		File tempFile = new File(stripExtension(fileName) + TEMP_EXT);
+		String fileNameWithoutExperimentExtension = fileName.split(EXPERIMENT_FILE_REGEXP)[0];
+		File tempFile = new File(fileNameWithoutExperimentExtension + TEMP_EXT);
 
-		if (tempFile.exists()) {
-			if (!loadedFile.exists()) {
-				String experimentFile = stripExtension(fileName) + EXPERIMENT_EXT;
-				recoverExperimentFile(tempFile, new File(experimentFile));
-				return deserializeExperimentFrom(experimentFile);
-			}
-			else if (!fileName.equals(tempFile.getName()))
+		if (new File(fileName).exists()) {
+			Experiment result = deserializeExperimentFrom(fileName);
+
+			// Experiment loaded. Any temp file can be safely deleted.
+			if (tempFile.exists())
 				tempFile.delete();
+			
+			return result;
 		}
 		
-		return deserializeExperimentFrom(fileName);
+		// There is no file with the exact name requested. Try to recover the
+		// experiment from a matching temp file, if it exists.
+		String experimentFile = fileNameWithoutExperimentExtension + EXPERIMENT_EXT;
+
+		if (tempFile.exists())
+			recoverExperimentFile(tempFile, new File(experimentFile));
+
+		// At this point, our only hope is that the user skipped the file
+		// extension and only provided the experiment id. Try to load a file
+		// with that name, plus the experiment extension. Just fail if such
+		// a file doesn't exist.
+		return deserializeExperimentFrom(experimentFile);
 	}
 
 	public static String loadDNADocument(String fileName) {

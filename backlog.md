@@ -3,11 +3,11 @@
 #===================
 
 ##Plants and Animals
+* Egg firing interval is controlled by genes
+* Egg firing distance is controlled by genes
+* Egg firing costs energy (refuse to fire if not enough energy)
 * (refactor energy management)
 * (balance energy management in the presence of green fibers)
-* Egg firing costs energy
-* Egg firing distance is controlled by genes
-* (change policy for deciding when to fire egg)
 
 ##Predators
 * Fix sketchy collision detection
@@ -72,6 +72,7 @@
 
 ##Grab Bag
 * Simpler senescence mechanism
+* Report conflicts in command-line arguments (like -s and file used together)
 * Demo mode (switch from narjillo to narjillo)
 * Narjillos eat eggs
 * Smoother contours when zooming in infrared mode

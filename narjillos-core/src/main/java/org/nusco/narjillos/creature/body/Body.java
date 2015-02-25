@@ -66,6 +66,13 @@ public class Body {
 		return result;
 	}
 
+	public double getGreenMass() {
+		double result = 0;
+		for (Organ organ : getOrgans())
+			result += organ.getMass() * organ.getFiber().getPercentOfGreen();
+		return result;
+	}
+
 	public double getRadius() {
 		return calculateRadius(calculateCenterOfMass());
 	}

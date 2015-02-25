@@ -2,6 +2,7 @@ package org.nusco.narjillos.shared.things;
 
 import org.nusco.narjillos.shared.utilities.Configuration;
 
+// TODO: this needs some refactoring in the interface, method names, etc.
 public class Energy {
 	private final double initialValue;
 	private double value;
@@ -37,13 +38,13 @@ public class Energy {
 		return Math.min(1, value / initialValue);
 	}
 
-	public void tick(double energySpent) {
+	public void tick(double energySpent, double energyGained) {
 		maxForAge -= decay;
 
 		if (isDepleted())
 			return;
 
-		decreaseBy(energySpent);
+		increaseBy(energyGained - energySpent);
 	}
 
 	public void consume(Thing thing) {
@@ -60,12 +61,8 @@ public class Energy {
 		double transferredEnergy = getValue() * percentFromZeroToOne;
 		if (getValue() - transferredEnergy < getInitialValue())
 			return 0; // Short on energy. Refuse to transfer.
-		decreaseBy(transferredEnergy);
+		increaseBy(-transferredEnergy);
 		return transferredEnergy;
-	}
-
-	private void decreaseBy(double amount) {
-		increaseBy(-amount);
 	}
 
 	private void deplete() {

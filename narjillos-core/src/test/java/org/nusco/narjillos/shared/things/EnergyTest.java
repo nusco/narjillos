@@ -29,26 +29,26 @@ public class EnergyTest {
 	public void canBeDepleted() {
 		assertFalse(energy.isDepleted());
 
-		energy.tick(initialValue);
+		energy.tick(initialValue, 0);
 
 		assertTrue(energy.isDepleted());
 	}
 
 	@Test
 	public void cannotFallBelowZero() {
-		energy.tick(initialValue);
+		energy.tick(initialValue, 0);
 		assertEquals(0, energy.getValue(), 0.001);
 
-		energy.tick(-10);
+		energy.tick(-10, 0);
 		assertEquals(0, energy.getValue(), 0.001);
 	}
 
 	@Test
 	public void cannotIncreaseAgainAfterBeingDepleted() {
-		energy.tick(initialValue);
+		energy.tick(initialValue, 0);
 		assertEquals(0, energy.getValue(), 0.001);
 
-		energy.tick(10);
+		energy.tick(10, 0);
 		assertEquals(0, energy.getValue(), 0.001);
 	}
 
@@ -78,7 +78,7 @@ public class EnergyTest {
 		double fullEnergyWhenStillYoung = energy.getValue();
 
 		// get older
-		energy.tick(0);
+		energy.tick(0, 0);
 
 		energy.consume(nutrient);
 		double fullEnergyWhenSlightlyOlder = energy.getValue();
@@ -95,18 +95,18 @@ public class EnergyTest {
 		fillToTheMax();
 		
 		for (int i = 0; i < lifespan - 1; i++)
-			energy.tick(0);
+			energy.tick(0, 0);
 
 		assertFalse(energy.isDepleted());
 
-		energy.tick(0);
+		energy.tick(0, 0);
 
 		assertTrue(energy.isDepleted());
 	}
 
 	@Test
 	public void canDonateAPercentOfItself() {
-		energy.tick(-10);
+		energy.tick(-10, 0);
 		double donation = energy.transfer(0.25);
 
 		assertEquals(5, donation, 0.0);
@@ -115,7 +115,7 @@ public class EnergyTest {
 
 	@Test
 	public void refusesDonationsIfTheyResultInAValueBelowTheInitialValue() {
-		energy.tick(-10);
+		energy.tick(-10, 0);
 		double donation = energy.transfer(51);
 
 		assertEquals(0, donation, 0.0);

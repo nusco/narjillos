@@ -12,13 +12,13 @@ public class JSONEnergySerializationTest {
 	public void serializesAndDeserializesEnergy() {
 		Energy energy = new Energy(10, 20);
 		for (int i = 0; i < 10; i++)
-			energy.tick(i);
+			energy.tick(i, 0);
 		
 		String json = JSON.toJson(energy, Energy.class);
 		Energy deserialized = JSON.fromJson(json, Energy.class);
 
-		energy.tick(10);
-		deserialized.tick(10);
+		energy.tick(10, 0);
+		deserialized.tick(10, 0);
 
 		assertEquals(energy.getValue(), deserialized.getValue(), 0.0);
 		assertEquals(energy.getMax(), deserialized.getMax(), 0.0);

@@ -54,7 +54,8 @@ public class Narjillo implements Thing {
 
 		mouth.tick(getPosition(), target, getBody().getAngle());
 		double energySpent = body.tick(getMouth().getDirection());
-		energy.tick(energySpent);
+		double energyGained = body.getGreenMass() * Configuration.CREATURE_GREEN_FIBERS_EXTRA_ENERGY;
+		energy.tick(energySpent, energyGained);
 
 		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
 	}

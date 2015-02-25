@@ -3,9 +3,11 @@
 #===================
 
 ##Plants and Animals
+* (refactor energy management)
+* (balance energy management in the presence of green fibers)
 * Egg firing costs energy
 * Egg firing distance is controlled by genes
-* Green fibers get energy from the environment
+* (change policy for deciding when to fire egg)
 
 ##Predators
 * Fix sketchy collision detection

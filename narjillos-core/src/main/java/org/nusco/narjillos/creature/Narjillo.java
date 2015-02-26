@@ -129,10 +129,39 @@ public class Narjillo implements Thing {
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
 	 */
 	public Egg layEgg(Ecosystem ecosystem, GenePool genePool, RanGen ranGen) {
+		// TODO: this entire algorithm must be rethought
+		
 		if (isTooYoungToLayEggs())
 			return null;
 		
-		if (ranGen.nextDouble() > Configuration.CREATURE_CHANCE_OF_LAYING_EGG)
+//		if (ranGen.nextDouble() > Configuration.CREATURE_CHANCE_OF_LAYING_EGG)
+//			return null;
+		
+		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
+
+		// if the energy available is not close to the max, refuse to reproduce
+		if (getEnergy().getMax() - getEnergy().getValue() < 1000)
+			return null;
+		
+		double childEnergy = getEnergy().transfer(percentEnergyToChildren);
+		if (childEnergy == 0)
+			return null; // refuse to lay egg
+		
+		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
+	
+		Vector position = getNeckLocation();
+		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_MAX_VELOCITY * ranGen.nextDouble());
+		return new Egg(childDNA, position, velocity, childEnergy, ranGen);
+	}
+
+	/**
+	 * Forces the laying of an egg, no questions asked (except in a few
+	 * extreme cases).
+	 */
+	public Egg forceLayEgg(Ecosystem ecosystem, GenePool genePool, RanGen ranGen) {
+		// TODO: this will disappear once I have a good algorithm in layEgg()
+		
+		if (isTooYoungToLayEggs())
 			return null;
 		
 		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();

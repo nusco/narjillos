@@ -86,8 +86,9 @@ public class Ecosystem {
 			updateAllTargets();
 		}
 
-		for (Narjillo narjillo : new LinkedList<>(narjillos))
-			layEgg(narjillo, genePool, ranGen);
+		// TODO: put back
+//		for (Narjillo narjillo : new LinkedList<>(narjillos))
+//			layEgg(narjillo, genePool, ranGen);
 
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
@@ -242,7 +243,12 @@ public class Ecosystem {
 
 		remove(foodPiece);
 		narjillo.feedOn(foodPiece);
-		updateTargets(foodPiece);
+
+		// TODO: remove - instead, give a chance to lay an
+		// egg at every tick
+		layEgg(narjillo, genePool, ranGen);
+
+		updateTargets(foodPiece);		
 	}
 
 	private void remove(Thing thing) {
@@ -257,7 +263,8 @@ public class Ecosystem {
 	}
 
 	private void layEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
-		Egg egg = narjillo.layEgg(this, genePool, ranGen);
+		// TODO: use layEgg() instead
+		Egg egg = narjillo.forceLayEgg(this, genePool, ranGen);
 		if (egg == null)
 			return;
 		insert(egg);

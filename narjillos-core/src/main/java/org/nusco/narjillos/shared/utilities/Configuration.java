@@ -17,7 +17,7 @@ public class Configuration {
 	public static final double CREATURE_CHANCE_OF_LAYING_EGG = 0.001;
 	public static final double CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY = 5;
 	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0.5;
-	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 1.0 / 100_000_000;
+	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 1.0 / 1_000_000;
 	public static final double CREATURE_BASE_WAVE_FREQUENCY = 0.01;
 	public static final double CREATURE_WAVE_BEAT_RATIO = 2;
 	public static final double CREATURE_BASE_SKEWING_VELOCITY = 0.1;

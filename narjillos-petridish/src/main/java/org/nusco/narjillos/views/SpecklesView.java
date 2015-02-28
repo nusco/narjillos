@@ -16,8 +16,8 @@ import org.nusco.narjillos.utilities.Viewport;
 
 public class SpecklesView {
 
-	private static final double NORMAL_SPECKLE_RADIUS = 1.3;
-	private static final double INFRARED_SPECKLE_RADIUS = 2;
+	private static final double NORMAL_SPECKLE_RADIUS = 2;
+	private static final double INFRARED_SPECKLE_RADIUS = 2.5;
 	private static final Color SPECKLE_COLOR = EcosystemView.BACKGROUND_COLOR.darker();
 	
 	private final Viewport viewport;

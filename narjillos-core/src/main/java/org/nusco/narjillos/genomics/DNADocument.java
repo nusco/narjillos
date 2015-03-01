@@ -8,14 +8,14 @@ import java.util.List;
  */
 class DNADocument {
 
-	private final String dnaDocument;
+	private final String document;
 
-	public DNADocument(String dnaDocument) {
-		this.dnaDocument = dnaDocument;
+	public DNADocument(String document) {
+		this.document = document;
 	}
 
 	public Integer[] toGenes() {
-		String[] lines = dnaDocument.split("\n");
+		String[] lines = document.split("\n");
 		for (int i = 0; i < lines.length; i++) {
 			String cleanedUpLine = stripBraces(lines[i].trim());
 			if (cleanedUpLine.matches("_*\\d.*"))

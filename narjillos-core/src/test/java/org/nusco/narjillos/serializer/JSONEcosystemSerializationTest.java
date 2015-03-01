@@ -19,7 +19,7 @@ public class JSONEcosystemSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesEcosystem() {
-		Ecosystem ecosystem = new Ecosystem(123);
+		Ecosystem ecosystem = new Ecosystem(123, false);
 		FoodPiece food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));
 		FoodPiece food2 = ecosystem.spawnFood(Vector.cartesian(20, 20));
 		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new RanGen(0));

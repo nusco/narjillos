@@ -4,18 +4,14 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -29,29 +25,25 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
 /**
  * The place that Narjillos call "home".
  */
-public class Ecosystem {
+public class Ecosystem extends Environment {
 
-	private final long size;
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
 
 	private final Space things;
 	private final Vector center;
 
-	private final List<EcosystemEventListener> ecosystemEventListeners = new LinkedList<>();
-
-	private final ExecutorService executorService;
-
-	public Ecosystem(final long size) {
-		this.size = size;
+	public Ecosystem(final long size, boolean sizeCheck) {
+		super(size);
 		this.things = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
-		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+		// check that things cannot move faster than a space area in a single
+		// tick (which would make collision detection unreliable)
+		if (sizeCheck && things.getAreaSize() < Viscosity.getMaxVelocity())
+			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 
-	public long getSize() {
-		return size;
-	}
-
+	@Override
 	public Set<Thing> getThings(String label) {
 		Set<Thing> result = new LinkedHashSet<Thing>();
 		// this ugliness will stay until we have narjillos
@@ -71,6 +63,7 @@ public class Ecosystem {
 		return target.getPosition();
 	}
 
+	@Override
 	public void tick(GenePool genePool, RanGen ranGen) {
 		for (Thing thing : new LinkedList<>(things.getAll("egg")))
 			tickEgg((Egg) thing);
@@ -83,12 +76,12 @@ public class Ecosystem {
 
 		if (shouldSpawnFood(ranGen)) {
 			spawnFood(randomPosition(getSize(), ranGen));
-			updateAllTargets();
+			periodicUpdate();
 		}
 
 		// TODO: put back
-//		for (Narjillo narjillo : new LinkedList<>(narjillos))
-//			layEgg(narjillo, genePool, ranGen);
+		// for (Narjillo narjillo : new LinkedList<>(narjillos))
+		// layEgg(narjillo, genePool, ranGen);
 
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
@@ -117,10 +110,6 @@ public class Ecosystem {
 		return egg;
 	}
 
-	public void addEventListener(EcosystemEventListener ecosystemEventListener) {
-		ecosystemEventListeners.add(ecosystemEventListener);
-	}
-
 	public int getNumberOfFoodPieces() {
 		return things.count("food_piece");
 	}
@@ -137,7 +126,7 @@ public class Ecosystem {
 		return narjillos;
 	}
 
-	public void updateAllTargets() {
+	public void periodicUpdate() {
 		for (Thing creature : narjillos) {
 			Narjillo narjillo = (Narjillo) creature;
 			Vector closestTarget = findClosestFoodPiece(narjillo);
@@ -145,17 +134,34 @@ public class Ecosystem {
 		}
 	}
 
-	public synchronized void terminate() {
-		executorService.shutdown();
-		try {
-			executorService.awaitTermination(10, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+	public void populate(String dna, GenePool genePool, RanGen ranGen) {
+		spawnFood(ranGen);
+
+		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
+			spawnEgg(genePool.createDNA(dna), randomPosition(getSize(), ranGen), ranGen);
 	}
-	
-	public double getSpaceAreaSize() {
-		return things.getAreaSize();
+
+	public void populate(GenePool genePool, RanGen ranGen) {
+		spawnFood(ranGen);
+
+		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
+			spawnEgg(genePool.createRandomDNA(ranGen), randomPosition(getSize(), ranGen), ranGen);
+	}
+
+	@Override
+	public String getStatistics() {
+		return "Narj: " + getNumberOfNarjillos() + " / Eggs: " + getNumberOfEggs() + " / Food: " + getNumberOfFoodPieces();
+	}
+
+	@Override
+	protected Set<Thing> getCollisions(Segment movement) {
+		Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
+		return collidedFoodPieces;
+	}
+
+	private void spawnFood(RanGen ranGen) {
+		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_FOOD_PIECES; i++)
+			spawnFood(randomPosition(getSize(), ranGen));
 	}
 
 	private void tickEgg(Egg egg) {
@@ -167,10 +173,10 @@ public class Ecosystem {
 	}
 
 	private synchronized void tickNarjillos(GenePool genePool, RanGen ranGen) {
-		if (executorService.isShutdown())
+		if (isShuttingDown())
 			return; // we're leaving, apparently
 
-		Map<Narjillo, Set<Thing>> narjillosToCollidedFood = calculateCollidedFood(narjillos);
+		Map<Narjillo, Set<Thing>> narjillosToCollidedFood = calculateCollisions(narjillos);
 
 		// Consume food in a predictable order, to avoid non-deterministic
 		// behavior or race conditions when multiple narjillos collide with the
@@ -182,16 +188,16 @@ public class Ecosystem {
 		}
 	}
 
-	private Map<Narjillo, Set<Thing>> calculateCollidedFood(Set<Narjillo> set) {
+	private Map<Narjillo, Set<Thing>> calculateCollisions(Set<Narjillo> set) {
 		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();
 
-		// Calculate collided food in parallel...
-		Map<Narjillo, Future<Set<Thing>>> collidedFoodFutures = tickAll(set);
+		// Calculate collisions in parallel...
+		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickAll(set);
 
 		// ...but collect the results in a predictable order
-		for (Narjillo narjillo : collidedFoodFutures.keySet()) {
+		for (Narjillo narjillo : collisionFutures.keySet()) {
 			try {
-				result.put(narjillo, collidedFoodFutures.get(narjillo).get());
+				result.put(narjillo, collisionFutures.get(narjillo).get());
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -200,23 +206,9 @@ public class Ecosystem {
 		return result;
 	}
 
-	private Map<Narjillo, Future<Set<Thing>>> tickAll(Set<Narjillo> narjillos) {
-		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
-		for (final Narjillo narjillo : narjillos) {
-			result.put(narjillo, executorService.submit(new Callable<Set<Thing>>() {
-				@Override
-				public Set<Thing> call() throws Exception {
-					Segment movement = narjillo.tick();
-					Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
-					return collidedFoodPieces;
-				}
-			}));
-		}
-		return result;
-	}
-
 	private boolean shouldSpawnFood(RanGen ranGen) {
-		return getNumberOfFoodPieces() < Configuration.ECOSYSTEM_MAX_FOOD_PIECES && ranGen.nextDouble() < 1.0 / Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL;
+		return getNumberOfFoodPieces() < Configuration.ECOSYSTEM_MAX_FOOD_PIECES
+				&& ranGen.nextDouble() < 1.0 / Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL;
 	}
 
 	private Vector randomPosition(long size, RanGen ranGen) {
@@ -248,7 +240,7 @@ public class Ecosystem {
 		// egg at every tick
 		layEgg(narjillo, genePool, ranGen);
 
-		updateTargets(foodPiece);		
+		updateTargets(foodPiece);
 	}
 
 	private void remove(Thing thing) {
@@ -268,15 +260,5 @@ public class Ecosystem {
 		if (egg == null)
 			return;
 		insert(egg);
-	}
-
-	private final void notifyThingAdded(Thing thing) {
-		for (EcosystemEventListener ecosystemEvent : ecosystemEventListeners)
-			ecosystemEvent.thingAdded(thing);
-	}
-
-	private final void notifyThingRemoved(Thing thing) {
-		for (EcosystemEventListener ecosystemEvent : ecosystemEventListeners)
-			ecosystemEvent.thingRemoved(thing);
 	}
 }

@@ -3,6 +3,7 @@ package org.nusco.narjillos;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.serializer.JSON;
 
@@ -29,10 +30,10 @@ public class DeterministicExperimentTest {
 
 	public static void runTest(int cycles) {
 		int halfCycles = cycles / 2;
-		
+
 		// Run an experiment for a few ticks
-		Experiment experiment1 = new Experiment(1234, "deterministic_experiment_test");
-		
+		Experiment experiment1 = new Experiment(1234, new Ecosystem(10000, false), "deterministic_experiment_test");
+
 		for (int i = 0; i < halfCycles; i++)
 			experiment1.tick();
 
@@ -68,7 +69,7 @@ public class DeterministicExperimentTest {
 		runTest(cycles);
 
 		long totalTime = (System.currentTimeMillis() - startTime) / 1000;
-		System.out.println("OK! (" + cycles + " cycles in " + totalTime +  " seconds)");
+		System.out.println("OK! (" + cycles + " cycles in " + totalTime + " seconds)");
 		System.exit(0); // otherwise Gradle won't exit (god knows why)
 	}
 }

@@ -1,5 +1,6 @@
 package org.nusco.narjillos;
 
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.shared.physics.FastMath;
 
@@ -14,7 +15,7 @@ public class PerformanceTest {
 	public static void main(String[] args) {
 		FastMath.setUp(); // pay up front for the setup of FastMath
 
-		Experiment experiment = new Experiment(424242, "performance_test");
+		Experiment experiment = new Experiment(424242, new Ecosystem(10000, true), "performance_test");
 
 		long startTimeMillis = System.currentTimeMillis();
 

@@ -1,7 +1,7 @@
 package org.nusco.narjillos.utilities;
 
 
-public class PetriDishState {
+public class PetriDishState implements ViewState {
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 60;
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;
@@ -11,10 +11,17 @@ public class PetriDishState {
 	private Speed speed = Speed.REALTIME;
 	private Effects effects = Effects.ON;
 
+	@Override
 	public Light getLight() {
 		return light;
 	}
 
+	@Override
+	public Effects getEffects() {
+		return effects;
+	}
+
+	@Override
 	public Speed getSpeed() {
 		return speed;
 	}
@@ -58,6 +65,7 @@ public class PetriDishState {
 		speed = speed.down();
 	}
 
+	@Override
 	public int getFramesPeriod() {
 		if (getLight() == Light.OFF)
 			return FRAMES_PERIOD_WITH_LIGHT_OFF;
@@ -67,9 +75,5 @@ public class PetriDishState {
 
 	public void toggleEffects() {
 		effects = effects.toggle();
-	}
-
-	public Effects getEffects() {
-		return effects;
 	}
 }

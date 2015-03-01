@@ -4,10 +4,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -17,77 +14,40 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
-import javafx.stage.Stage;
 
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
-import org.nusco.narjillos.utilities.Locator;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Speed;
-import org.nusco.narjillos.utilities.ThingTracker;
-import org.nusco.narjillos.utilities.Viewport;
-import org.nusco.narjillos.views.EcosystemView;
+import org.nusco.narjillos.views.EnvirommentView;
 import org.nusco.narjillos.views.MicroscopeView;
-import org.nusco.narjillos.views.StatusBarView;
+import org.nusco.narjillos.views.PetriStatusView;
 
 /**
  * The main JavaFX Application class. It binds model and view together, and also
  * manages the user interface.
  */
-public class PetriDish extends Application {
+public class PetriDish extends ApplicationBase {
 
 	private static final long PAN_SPEED = 200;
 
 	private static String[] programArguments = new String[0];
 
-	private Lab lab;
-
-	// These fields are all just visualization stuff - no data will
-	// get corrupted if different threads see slightly outdated versions of
-	// them. So we can avoid synchronization altogether.
 	private PetriDishState state = new PetriDishState();
-	private Viewport viewport;
-	private Locator locator;
-	private ThingTracker tracker;
-
-	private Thread modelThread;
-	private Thread viewThread;
-	private volatile boolean stopThreads = false;
-
-	// mouse and gestures state
-	boolean isDragging = false;
-	private double mouseX;
-	private double mouseY;
-	private double initialZoomLevel;
 
 	@Override
-	public void start(Stage primaryStage) {
-		FastMath.setUp();
-		Platform.setImplicitExit(true);
-
-		startModelThread(programArguments);
-
-		System.gc(); // minimize GC during the first stages on animation
-
-		viewport = new Viewport(lab.getEcosystem());
-		locator = new Locator(lab.getEcosystem());
-		tracker = new ThingTracker(viewport, locator);
-
-		final Group root = new Group();
-		startViewThread(root);
-
-		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
-		registerInteractionHandlers(scene);
-		bindViewportSizeToWindowSize(scene, viewport);
-
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Narjillos - Petri Dish");
-		primaryStage.show();
+	protected String[] getProgramArguments() {
+		return PetriDish.programArguments;
 	}
 
-	private void registerInteractionHandlers(final Scene scene) {
+	@Override
+	protected String getName() {
+		return "Petri Dish";
+	}
+
+	@Override
+	protected void registerInteractionHandlers(final Scene scene) {
 		registerKeyboardHandlers(scene);
 		registerMouseClickHandlers(scene);
 		registerMouseDragHandlers(scene);
@@ -95,112 +55,76 @@ public class PetriDish extends Application {
 		registerTouchHandlers(scene);
 	}
 
-	private void startModelThread(final String[] arguments) {
-		final boolean[] isModelInitialized = new boolean[] { false };
+	@Override
+	protected Thread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
+		return new Thread() {
+			public void run() {
+				CommandLineOptions options = CommandLineOptions.parse(arguments);
+				if (options == null)
+					System.exit(1);
 
-		modelThread = new Thread(() -> {
-			// We need to initialize the lab inside this thread, because
-			// the random number generator will complain if it is called
-			// from different threads.
-			
-			CommandLineOptions options = CommandLineOptions.parse(arguments);
-			if (options == null)
-				System.exit(1);
-			
-			lab = new Lab(options);
+				setLab(new ExperimentalLab(options));
 
-			isModelInitialized[0] = true;
+				isModelInitialized[0] = true;
 
-			while (!stopThreads) {
-				long startTime = System.currentTimeMillis();
-				if (state.getSpeed() != Speed.PAUSED)
-					if (!lab.tick())
-						Platform.exit();
-				waitFor(state.getSpeed().getTicksPeriod(), startTime);
+				while (!isInterrupted()) {
+					long startTime = System.currentTimeMillis();
+					if (state.getSpeed() != Speed.PAUSED)
+						if (!tick())
+							Platform.exit();
+					waitFor(state.getSpeed().getTicksPeriod(), startTime);
+				}
 			}
-		});
-
-		modelThread.start();
-		while (!isModelInitialized[0])
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-			}
+		};
 	}
 
-	private void startViewThread(final Group root) {
-		viewThread = new Thread() {
+	@Override
+	protected Thread createViewThread(final Group root) {
+		return new Thread() {
 			private final Chronometer framesChronometer = new Chronometer();
 			private volatile boolean renderingFinished = false;
 
-			private final MicroscopeView foregroundView = new MicroscopeView(viewport);
-			private final EcosystemView ecosystemView = new EcosystemView(lab.getEcosystem(), viewport, state);
-			private StatusBarView statusBarView = new StatusBarView(lab);
+			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
+			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
+			private final PetriStatusView statusBarView = new PetriStatusView();
 
+			@Override
 			public void run() {
-				while (!stopThreads) {
+				while (!isInterrupted()) {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
-					tracker.tick();
+					getTracker().tick();
 					ecosystemView.tick();
 
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							if (stopThreads)
-								return;
-
 							update(root);
 							renderingFinished = true;
 						}
 					});
 
 					waitFor(state.getFramesPeriod(), startTime);
-					while (!renderingFinished && !stopThreads)
+					while (!renderingFinished && !isInterrupted())
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
 						}
 					framesChronometer.tick();
 				}
-			};
+			}
 
 			private void update(final Group root) {
 				root.getChildren().clear();
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(state.getSpeed(), state.getEffects(), framesChronometer, tracker.isTracking(),
-						lab.isSaving());
+				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(), getPerformanceStatistics(), state.getSpeed(), state.getEffects(),
+						getTracker().isTracking(), isBusy());
 				root.getChildren().add(statusInfo);
 			}
 		};
-		viewThread.start();
-	}
-
-	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
-		scene.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-				viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
-			}
-		});
-		scene.heightProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-				viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
-			}
-		});
-	}
-
-	void waitFor(int time, long since) {
-		long timeTaken = System.currentTimeMillis() - since;
-		long waitTime = Math.max(time - timeTaken, 1);
-		try {
-			Thread.sleep(waitTime);
-		} catch (InterruptedException e) {
-		}
 	}
 
 	private void registerKeyboardHandlers(final Scene scene) {
@@ -227,8 +151,8 @@ public class PetriDish extends Application {
 			}
 
 			private void panViewport(long velocityX, long velocityY, KeyEvent event) {
-				tracker.stopTracking();
-				viewport.moveBy(Vector.cartesian(velocityX, velocityY));
+				getTracker().stopTracking();
+				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
 				event.consume();
 			};
 		});
@@ -238,20 +162,20 @@ public class PetriDish extends Application {
 		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				Vector clickedPositionEC = viewport.toEC(clickedPositionSC);
+				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
 
 				if (event.getClickCount() == 1)
-					tracker.stopTracking();
+					getTracker().stopTracking();
 
 				if (event.getClickCount() == 2)
-					tracker.startTracking(clickedPositionEC);
+					getTracker().startTracking(clickedPositionEC);
 
 				if (event.getClickCount() == 3)
 					copyIsolatedDNAToClipboard(clickedPositionEC);
 			}
 
 			private void copyIsolatedDNAToClipboard(Vector clickedPositionEC) {
-				Narjillo narjillo = (Narjillo) locator.findNarjilloAt(clickedPositionEC);
+				Narjillo narjillo = (Narjillo) getLocator().findNarjilloAt(clickedPositionEC);
 
 				if (narjillo == null)
 					return;
@@ -263,29 +187,33 @@ public class PetriDish extends Application {
 	}
 
 	private void registerMouseDragHandlers(final Scene scene) {
+		final boolean[] isDragging = new boolean[] { false };
+		final double[] mouseX = new double[] { 0 };
+		final double[] mouseY = new double[] { 0 };
+
 		scene.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				isDragging = true;
-				mouseX = event.getX();
-				mouseY = event.getY();
+				isDragging[0] = true;
+				mouseX[0] = event.getX();
+				mouseY[0] = event.getY();
 			}
 		});
 		scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				isDragging = false;
+				isDragging[0] = false;
 			}
 		});
 		scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				tracker.stopTracking();
-				double translateX = event.getX() - mouseX;
-				double translateY = event.getY() - mouseY;
-				viewport.translateBy(Vector.cartesian(-translateX, -translateY));
-				mouseX = event.getX();
-				mouseY = event.getY();
+				getTracker().stopTracking();
+				double translateX = event.getX() - mouseX[0];
+				double translateY = event.getY() - mouseY[0];
+				getViewport().translateBy(Vector.cartesian(-translateX, -translateY));
+				mouseX[0] = event.getX();
+				mouseY[0] = event.getY();
 			}
 		});
 	}
@@ -301,7 +229,7 @@ public class PetriDish extends Application {
 			}
 
 			private void waitUntilViewportHasZoomedToEggs() {
-				while (!viewport.isZoomCloseToTarget()) {
+				while (!getViewport().isZoomCloseToTarget()) {
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
@@ -314,11 +242,11 @@ public class PetriDish extends Application {
 					@Override
 					public void handle(ScrollEvent event) {
 						if (event.getDeltaY() <= 0)
-							viewport.zoomIn();
+							getViewport().zoomIn();
 						else {
-							viewport.zoomOut();
-							if (viewport.isZoomedOutCompletely())
-								tracker.stopTracking();
+							getViewport().zoomOut();
+							if (getViewport().isZoomedOutCompletely())
+								getTracker().stopTracking();
 						}
 					}
 				};
@@ -327,38 +255,23 @@ public class PetriDish extends Application {
 	}
 
 	private void registerTouchHandlers(Scene scene) {
+		final double[] initialZoomLevel = new double[] { 0 };
+
 		scene.setOnZoomStarted(new EventHandler<ZoomEvent>() {
 			@Override
 			public void handle(ZoomEvent event) {
-				initialZoomLevel = viewport.getZoomLevel();
+				initialZoomLevel[0] = getViewport().getZoomLevel();
 			}
 		});
 		scene.setOnZoom(new EventHandler<ZoomEvent>() {
 			@Override
 			public void handle(ZoomEvent event) {
 				double zoomFactor = event.getTotalZoomFactor();
-				viewport.zoomTo(initialZoomLevel * zoomFactor);
-				if (viewport.isZoomedOutCompletely())
-					tracker.stopTracking();
+				getViewport().zoomTo(initialZoomLevel[0] * zoomFactor);
+				if (getViewport().isZoomedOutCompletely())
+					getTracker().stopTracking();
 			}
 		});
-	}
-
-	@Override
-	public void stop() {
-		lab.terminate();
-
-		// exit threads cleanly to avoid rare exception
-		// when exiting Java FX application
-		stopThreads = true;
-		while (modelThread.isAlive() || viewThread.isAlive())
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-
-		Platform.exit();
 	}
 
 	public static void main(String... args) throws Exception {

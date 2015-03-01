@@ -40,7 +40,7 @@ public class ViewportVisibilityTest {
 		//    ____________________________________________________________
 		// (0, 200)                                                  (200, 200)      
 
-		viewport = new Viewport(new Ecosystem(200));
+		viewport = new Viewport(new Ecosystem(200, false));
 		viewport.zoomTo(1);
 		stabilizeViewport();
 		viewport.setSizeSC(Vector.cartesian(100, 40));

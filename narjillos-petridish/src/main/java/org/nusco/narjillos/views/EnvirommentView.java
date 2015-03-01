@@ -20,49 +20,49 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
-import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.EcosystemEventListener;
+import org.nusco.narjillos.ecosystem.EnvironmentEventListener;
+import org.nusco.narjillos.ecosystem.Environment;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
-import org.nusco.narjillos.utilities.Light;
 import org.nusco.narjillos.utilities.Effects;
-import org.nusco.narjillos.utilities.PetriDishState;
+import org.nusco.narjillos.utilities.Light;
+import org.nusco.narjillos.utilities.ViewState;
 import org.nusco.narjillos.utilities.Viewport;
 
-public class EcosystemView {
+public class EnvirommentView {
 
 	static final Color BACKGROUND_COLOR = Color.ANTIQUEWHITE;
 	static final Paint INFRARED_BACKGROUND_COLOR = Color.DARKGRAY.darker();
 	
 	private final Viewport viewport;
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
-	private final PetriDishState petriDishState;
+	private final ViewState viewState;
 	private final SpecklesView specklesView;
 	private final Shape emptySpace;
 	private final Shape infraredEmptySpace;
 	private final Shape darkness;
 
-	public EcosystemView(Ecosystem ecosystem, Viewport viewport, PetriDishState state) {
+	public EnvirommentView(Environment environment, Viewport viewport, ViewState state) {
 		this.viewport = viewport;
-		this.petriDishState = state;
+		this.viewState = state;
 
-		long size = ecosystem.getSize();
+		long size = environment.getSize();
 		
 		emptySpace = new Rectangle(0, 0, size, size);
-		emptySpace.setFill(EcosystemView.BACKGROUND_COLOR);
+		emptySpace.setFill(EnvirommentView.BACKGROUND_COLOR);
 		
 		infraredEmptySpace = new Rectangle(0, 0, size, size);
-		infraredEmptySpace.setFill(EcosystemView.INFRARED_BACKGROUND_COLOR);
+		infraredEmptySpace.setFill(EnvirommentView.INFRARED_BACKGROUND_COLOR);
 		
 		darkness = new Rectangle(0, 0, size, size);
 
 		specklesView = new SpecklesView(viewport, size);
 
-		for (Thing thing : ecosystem.getThings(""))
+		for (Thing thing : environment.getThings(""))
 			addThingView(thing);
 
-		ecosystem.addEventListener(new EcosystemEventListener() {
+		environment.addEventListener(new EnvironmentEventListener() {
 			@Override
 			public void thingAdded(Thing thing) {
 				addThingView(thing);
@@ -76,11 +76,11 @@ public class EcosystemView {
 	}
 
 	public Node toNode() {
-		if (petriDishState.getLight() == Light.OFF)
+		if (viewState.getLight() == Light.OFF)
 			return darkness;
 
-		boolean isInfrared = petriDishState.getLight() == Light.INFRARED;
-		boolean effectsOn = petriDishState.getEffects() == Effects.ON;
+		boolean isInfrared = viewState.getLight() == Light.INFRARED;
+		boolean effectsOn = viewState.getEffects() == Effects.ON;
 
 		Group result = new Group();
 

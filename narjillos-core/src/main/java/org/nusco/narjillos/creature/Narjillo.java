@@ -5,7 +5,7 @@ import java.util.List;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.Environment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -128,7 +128,7 @@ public class Narjillo implements Thing {
 	/**
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
 	 */
-	public Egg layEgg(Ecosystem ecosystem, GenePool genePool, RanGen ranGen) {
+	public Egg layEgg(Environment ecosystem, GenePool genePool, RanGen ranGen) {
 		// TODO: this entire algorithm must be rethought
 		
 		if (isTooYoungToLayEggs())
@@ -158,7 +158,7 @@ public class Narjillo implements Thing {
 	 * Forces the laying of an egg, no questions asked (except in a few
 	 * extreme cases).
 	 */
-	public Egg forceLayEgg(Ecosystem ecosystem, GenePool genePool, RanGen ranGen) {
+	public Egg forceLayEgg(Environment ecosystem, GenePool genePool, RanGen ranGen) {
 		// TODO: this will disappear once I have a good algorithm in layEgg()
 		
 		if (isTooYoungToLayEggs())

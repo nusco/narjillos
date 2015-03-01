@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -12,7 +13,7 @@ public class JSONExperimentSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesExperiment() {
-		Experiment experiment = new Experiment(1234, "experiment_serialization_test");
+		Experiment experiment = new Experiment(1234, new Ecosystem(10000, false), "experiment_serialization_test");
 		assertTrue(experiment.getGenePool().isTracking());
 		
 		for (int i = 0; i < 10; i++)

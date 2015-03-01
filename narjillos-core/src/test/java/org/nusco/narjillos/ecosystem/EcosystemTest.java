@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.EcosystemEventListener;
+import org.nusco.narjillos.ecosystem.EnvironmentEventListener;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
@@ -29,7 +29,7 @@ public class EcosystemTest {
 	
 	@Before
 	public void initialize() {
-		ecosystem = new Ecosystem(1000);
+		ecosystem = new Ecosystem(1000, false);
 		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
 		foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
@@ -82,7 +82,7 @@ public class EcosystemTest {
 	@Test
 	public void sendsEventsWhenAddingThings() {
 		final boolean[] eventFired = {false};
-		ecosystem.addEventListener(new EcosystemEventListener() {
+		ecosystem.addEventListener(new EnvironmentEventListener() {
 
 			@Override
 			public void thingAdded(Thing thing) {
@@ -106,7 +106,7 @@ public class EcosystemTest {
 
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
-		Ecosystem emptyEcosystem = new Ecosystem(1000);
+		Ecosystem emptyEcosystem = new Ecosystem(1000, false);
 		Narjillo narjillo = insertNarjillo(Vector.cartesian(100, 100));
 		Vector target = emptyEcosystem.findClosestFoodPiece(narjillo);
 		assertEquals(Vector.cartesian(500, 500), target);

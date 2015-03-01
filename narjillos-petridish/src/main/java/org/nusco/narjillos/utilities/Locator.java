@@ -2,16 +2,16 @@ package org.nusco.narjillos.utilities;
 
 import java.util.LinkedList;
 
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.Environment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class Locator {
 
-	private final Ecosystem ecosystem;
+	private final Environment environment;
 
-	public Locator(Ecosystem ecosystem) {
-		this.ecosystem = ecosystem;
+	public Locator(Environment environment) {
+		this.environment = environment;
 	}
 
 	public Thing findThingAt(Vector position) {
@@ -36,7 +36,7 @@ public class Locator {
 		Thing result = null;
 		double minDistance = Double.MAX_VALUE;
 
-		for (Thing thing : new LinkedList<>(ecosystem.getThings(label))) {
+		for (Thing thing : new LinkedList<>(environment.getThings(label))) {
 			double distance = thing.getCenter().minus(position).getLength();
 			if (distance < thing.getRadius() && distance < minDistance) {
 				minDistance = distance;

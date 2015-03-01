@@ -18,7 +18,7 @@ public class SpecklesView {
 
 	private static final double NORMAL_SPECKLE_RADIUS = 2;
 	private static final double INFRARED_SPECKLE_RADIUS = 2.5;
-	private static final Color SPECKLE_COLOR = EcosystemView.BACKGROUND_COLOR.darker();
+	private static final Color SPECKLE_COLOR = EnvirommentView.BACKGROUND_COLOR.darker();
 	
 	private final Viewport viewport;
 	private final Shape background;
@@ -59,13 +59,13 @@ public class SpecklesView {
 		Group backgroundGroup = new Group();
 		Scene offScreenBackgroundScene = new Scene(backgroundGroup, textureSize, textureSize);
 		Shape emptySpace = new Rectangle(0, 0, textureSize, textureSize);
-		emptySpace.setFill(EcosystemView.BACKGROUND_COLOR);
+		emptySpace.setFill(EnvirommentView.BACKGROUND_COLOR);
 		backgroundGroup.getChildren().add(emptySpace);
 
 		Group infraredBackgroundGroup = new Group();
 		Scene offScreenInfraredBackgroundScene = new Scene(infraredBackgroundGroup, textureSize, textureSize);
 		Shape infraredEmptySpace = new Rectangle(0, 0, textureSize, textureSize);
-		infraredEmptySpace.setFill(EcosystemView.INFRARED_BACKGROUND_COLOR);
+		infraredEmptySpace.setFill(EnvirommentView.INFRARED_BACKGROUND_COLOR);
 		infraredBackgroundGroup.getChildren().add(infraredEmptySpace);
 		
 		for (int i = 0; i < 5; i++) {

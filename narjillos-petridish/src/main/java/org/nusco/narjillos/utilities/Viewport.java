@@ -1,6 +1,6 @@
 package org.nusco.narjillos.utilities;
 
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.Environment;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**
@@ -28,7 +28,7 @@ public class Viewport {
 	private volatile boolean userIsZooming = false;
 	final double minZoomLevel;
 	
-	public Viewport(Ecosystem ecosystem) {
+	public Viewport(Environment ecosystem) {
 		this.ecosystemSizeEC = ecosystem.getSize();
 		setCenterEC(getEcosystemCenterEC());
 

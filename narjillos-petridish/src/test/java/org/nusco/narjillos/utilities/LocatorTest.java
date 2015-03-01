@@ -21,7 +21,7 @@ public class LocatorTest {
 	
 	@Before
 	public void initialize() {
-		ecosystem = new Ecosystem(1000);
+		ecosystem = new Ecosystem(1000, false);
 		locator = new Locator(ecosystem);
 	}
 
@@ -53,7 +53,7 @@ public class LocatorTest {
 
 	@Test
 	public void returnsNullIfTheEcosystemContainsNoNarjillos() {
-		Locator emptyLocator = new Locator(new Ecosystem(1000));
+		Locator emptyLocator = new Locator(new Ecosystem(1000, false));
 		
 		assertNull(emptyLocator.findNarjilloAt(Vector.cartesian(150, 150)));
 	}

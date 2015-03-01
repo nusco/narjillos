@@ -6,8 +6,8 @@
 * Egg firing interval is controlled by genes
 * Egg firing distance is controlled by genes
 * Egg firing costs energy (refuse to fire if not enough energy)
+* (reintroduce arbitrary egg-laying)
 * (refactor energy management)
-* (balance energy management in the presence of green fibers)
 
 ##Predators
 * Fix sketchy collision detection
@@ -65,6 +65,8 @@
 * DNA diff during ancestry analysis
 
 ##Advanced Body Plans
+* Encode bodyplan instructions with modulo instead of bit checking
+* "Back" instruction in body plan
 * Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
 * "Skip" instruction in body plan
 * "Repeat" instruction in body plan

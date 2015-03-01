@@ -1,9 +1,7 @@
 package org.nusco.narjillos.experiment;
 
-import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -19,23 +17,26 @@ public class Experiment {
 	private GenePool genePool = new GenePool();
 	private transient long lastRegisteredRunningTime;
 
-	public Experiment(long seed, String version) {
-		this(seed, version, null, true);
+	public Experiment(long seed, Ecosystem ecosystem, String version) {
+		this(seed, ecosystem, version, true);
 	}
 
-	public Experiment(long seed, String version, String dna, boolean trackGenePool) {
+	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackGenePool, String dna) {
+		this(seed, version, ecosystem, trackGenePool);
+		ecosystem.populate(dna, genePool, ranGen);
+	}
+
+	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackGenePool) {
+		this(seed, version, ecosystem, trackGenePool);
+		ecosystem.populate(genePool, ranGen);
+	}
+
+	private Experiment(long seed, String version, Ecosystem ecosystem, boolean trackGenePool) {
 		initializeGenePool(trackGenePool);
-		
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);
-		ecosystem = new Ecosystem(Configuration.ECOSYSTEM_SIZE);
-		populate(ecosystem, dna);
-		
-		// check that things cannot move faster than a space area in a single
-		// tick (which would make collision detection unreliable)
-		if (ecosystem.getSpaceAreaSize() < Viscosity.getMaxVelocity())
-			throw new RuntimeException("Bug: Area size smaller than max velocity");
+		this.ecosystem = ecosystem;
 	}
 
 	private void initializeGenePool(boolean trackGenePool) {
@@ -53,34 +54,17 @@ public class Experiment {
 		return id;
 	}
 
-	private void populate(Ecosystem ecosystem, String dna) {
-		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_FOOD_PIECES; i++)
-			ecosystem.spawnFood(randomPosition(ecosystem.getSize()));
-
-		if (dna == null) {
-			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
-				ecosystem.spawnEgg(getGenePool().createRandomDNA(ranGen), randomPosition(ecosystem.getSize()), ranGen);
-		} else {
-			for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
-				ecosystem.spawnEgg(getGenePool().createDNA(dna), randomPosition(ecosystem.getSize()), ranGen);
-		}
-	}
-
-	private Vector randomPosition(long size) {
-		return Vector.cartesian(ranGen.nextDouble() * size, ranGen.nextDouble() * size);
-	}
-
 	public boolean tick() {
 		if (ticksChronometer.getTotalTicks() % Configuration.ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL == 0)
 			executePeriodicOperations();
 
-		getEcosystem().tick(genePool, ranGen);
+		ecosystem.tick(genePool, ranGen);
 		ticksChronometer.tick();
 		return areThereSurvivors();
 	}
 
 	private void executePeriodicOperations() {
-		getEcosystem().updateAllTargets();
+		ecosystem.periodicUpdate();
 		updateTotalRunningTime();
 	}
 
@@ -93,7 +77,7 @@ public class Experiment {
 	}
 
 	private boolean areThereSurvivors() {
-		return getEcosystem().getNumberOfNarjillos() > 0 || getEcosystem().getNumberOfEggs() > 0;
+		return ecosystem.getNumberOfNarjillos() > 0 || ecosystem.getNumberOfEggs() > 0;
 	}
 
 	public long getTotalRunningTimeInSeconds() {

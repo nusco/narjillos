@@ -40,7 +40,7 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 		JsonObject jsonObject = json.getAsJsonObject();
 
 		long size = jsonObject.get("size").getAsLong();
-		Ecosystem result = new Ecosystem(size);
+		Ecosystem result = new Ecosystem(size, false);
 
 		JsonArray foodPieces = jsonObject.get("foodPieces").getAsJsonArray();
 		for (int i = 0; i < foodPieces.size(); i++) {

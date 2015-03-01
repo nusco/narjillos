@@ -1,9 +1,8 @@
 package org.nusco.narjillos;
 
-import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.IsolationChamber;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class IsolationLab extends Lab {
@@ -16,10 +15,10 @@ public class IsolationLab extends Lab {
 		// TODO: I should check this when loading ancestry
 		//String applicationVersion = Persistence.readApplicationVersion();
 		
-		environment = new Ecosystem(Configuration.ECOSYSTEM_SIZE, false);
+		environment = new IsolationChamber(10_000, ranGen);
 
 		// TODO: report loading of ancestry
-		System.out.println("ancestry browser (TODO: report loading");
+		System.out.println("ancestry browser (TODO: report loading)");
 	}
 
 	public Environment getEnvironment() {

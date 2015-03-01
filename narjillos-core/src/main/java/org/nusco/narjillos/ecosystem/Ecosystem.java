@@ -20,7 +20,6 @@ import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.RanGen;
-import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 /**
  * The place that Narjillos call "home".
@@ -64,7 +63,7 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	public void tick(GenePool genePool, RanGen ranGen) {
+	protected void tickThings(GenePool genePool, RanGen ranGen) {
 		for (Thing thing : new LinkedList<>(things.getAll("egg")))
 			tickEgg((Egg) thing);
 
@@ -82,9 +81,6 @@ public class Ecosystem extends Environment {
 		// TODO: put back
 		// for (Narjillo narjillo : new LinkedList<>(narjillos))
 		// layEgg(narjillo, genePool, ranGen);
-
-		if (VisualDebugger.DEBUG)
-			VisualDebugger.clear();
 	}
 
 	public final FoodPiece spawnFood(Vector position) {
@@ -155,8 +151,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected Set<Thing> getCollisions(Segment movement) {
-		Set<Thing> collidedFoodPieces = things.detectCollisions(movement, "food_piece");
-		return collidedFoodPieces;
+		return things.detectCollisions(movement, "food_piece");
 	}
 
 	private void spawnFood(RanGen ranGen) {
@@ -173,9 +168,6 @@ public class Ecosystem extends Environment {
 	}
 
 	private synchronized void tickNarjillos(GenePool genePool, RanGen ranGen) {
-		if (isShuttingDown())
-			return; // we're leaving, apparently
-
 		Map<Narjillo, Set<Thing>> narjillosToCollidedFood = calculateCollisions(narjillos);
 
 		// Consume food in a predictable order, to avoid non-deterministic
@@ -192,7 +184,7 @@ public class Ecosystem extends Environment {
 		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();
 
 		// Calculate collisions in parallel...
-		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickAll(set);
+		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickNarjillos(set);
 
 		// ...but collect the results in a predictable order
 		for (Narjillo narjillo : collisionFutures.keySet()) {

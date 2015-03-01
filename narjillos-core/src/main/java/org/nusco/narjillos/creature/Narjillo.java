@@ -32,7 +32,10 @@ public class Narjillo implements Thing {
 		this.body = body;
 		body.teleportTo(position);
 		this.dna = genes;
-		energy = new Energy(energyAtBirth, Configuration.CREATURE_MAX_LIFESPAN);
+		if (energyAtBirth >= Double.MAX_VALUE)
+			energy = Energy.INFINITE;
+		else
+			energy = new Energy(energyAtBirth, Configuration.CREATURE_MAX_LIFESPAN);
 	}
 
 	public DNA getDNA() {

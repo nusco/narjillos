@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.utilities.AncestryBrowserState;
 import org.nusco.narjillos.utilities.Speed;
 import org.nusco.narjillos.utilities.ViewState;
@@ -55,6 +56,9 @@ public class AncestryBrowser extends ApplicationBase {
 			private AncestryStatusView statusBarView = new AncestryStatusView();
 
 			public void run() {
+				double size = getEcosystem().getSize();
+				getTracker().startTracking(Vector.cartesian(size, size).by(0.5));
+
 				while (!isInterrupted()) {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;

@@ -16,6 +16,7 @@ import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
+import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 public abstract class Environment {
 
@@ -30,6 +31,16 @@ public abstract class Environment {
 
 	public long getSize() {
 		return size;
+	}
+
+	public void tick(GenePool genePool, RanGen ranGen) {
+		if (isShuttingDown())
+			return; // we're leaving, apparently
+
+		tickThings(genePool, ranGen);
+
+		if (VisualDebugger.DEBUG)
+			VisualDebugger.clear();
 	}
 
 	public void addEventListener(EnvironmentEventListener eventListener) {
@@ -47,17 +58,15 @@ public abstract class Environment {
 		}
 	}
 
-	public abstract void tick(GenePool genePool, RanGen ranGen);
-
 	public abstract Set<Thing> getThings(String label);
-
-	protected abstract Set<Thing> getCollisions(Segment movement);
 
 	protected boolean isShuttingDown() {
 		return executorService.isShutdown();
 	}
 
-	protected Map<Narjillo, Future<Set<Thing>>> tickAll(Set<Narjillo> narjillos) {
+	protected abstract void tickThings(GenePool genePool, RanGen ranGen);
+
+	protected Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Set<Narjillo> narjillos) {
 		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
 		for (final Narjillo narjillo : narjillos) {
 			result.put(narjillo, executorService.submit(new Callable<Set<Thing>>() {
@@ -70,6 +79,8 @@ public abstract class Environment {
 		}
 		return result;
 	}
+
+	protected abstract Set<Thing> getCollisions(Segment movement);
 
 	protected final void notifyThingAdded(Thing thing) {
 		for (EnvironmentEventListener ecosystemEvent : eventListeners)

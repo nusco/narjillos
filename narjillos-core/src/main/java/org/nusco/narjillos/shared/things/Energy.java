@@ -4,6 +4,44 @@ import org.nusco.narjillos.shared.utilities.Configuration;
 
 // TODO: this needs some refactoring in the interface, method names, etc.
 public class Energy {
+	public static final Energy INFINITE = new Energy(1, 1) {
+		@Override
+		public double getValue() {
+			return 1;
+		};
+
+		@Override
+		public double getInitialValue() {
+			return 1;
+		};
+		
+		@Override
+		public double getMax() {
+			return 1;
+		};
+
+		@Override
+		public double getPercentOfInitialValue() {
+			return 1;
+		};
+		
+		@Override
+		public void tick(double energySpent, double energyGained) {};
+		
+		@Override
+		public void consume(Thing thing) {};
+		
+		@Override
+		public double transfer(double percentFromZeroToOne) {
+			return 0;
+		};
+
+		@Override
+		public boolean isDepleted() {
+			return false;
+		}
+	};
+	
 	private final double initialValue;
 	private double value;
 	private double maxForAge;
@@ -52,17 +90,17 @@ public class Energy {
 		thing.getEnergy().deplete();
 	}
 
-	private void increaseBy(double amount) {
-		value += amount;
-		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
-	}
-
 	public double transfer(double percentFromZeroToOne) {
 		double transferredEnergy = getValue() * percentFromZeroToOne;
 		if (getValue() - transferredEnergy < getInitialValue())
 			return 0; // Short on energy. Refuse to transfer.
 		increaseBy(-transferredEnergy);
 		return transferredEnergy;
+	}
+
+	private void increaseBy(double amount) {
+		value += amount;
+		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
 	}
 
 	private void deplete() {

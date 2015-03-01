@@ -4,8 +4,12 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.embryogenesis.Embryo;
+import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
+import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
@@ -16,22 +20,26 @@ public class IsolationChamber extends Environment {
 
 	private static final Set<Thing> EMPTY_SET = Collections.unmodifiableSet(new LinkedHashSet<Thing>());
 
-	private Set<Thing> narjillos = new LinkedHashSet<Thing>();
+	private Set<Narjillo> narjillos = new LinkedHashSet<>();
 
-	public IsolationChamber(long size) {
+	public IsolationChamber(long size, RanGen ranGen) {
 		super(size);
+	
+		DNA dna = DNA.random(1, ranGen);
+		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(size, size).by(0.5), Double.MAX_VALUE);
+		narjillos.add(narjillo);
 	}
 
 	@Override
 	public Set<Thing> getThings(String label) {
-		if (!label.equals("narjillo"))
-			return EMPTY_SET;
-		return narjillos ;
+		if (label.equals("narjillo") || label.equals(""))
+			return new LinkedHashSet<Thing>(narjillos);
+		return EMPTY_SET;
 	}
 
 	@Override
-	public void tick(GenePool genePool, RanGen ranGen) {
-		// TODO Auto-generated method stub
+	protected void tickThings(GenePool genePool, RanGen ranGen) {
+		tickNarjillos(narjillos);
 	}
 
 	@Override

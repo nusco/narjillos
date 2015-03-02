@@ -20,6 +20,7 @@ public class ExperimentalLab extends Lab {
 	private final Experiment experiment;
 	private volatile boolean isSaving = false;
 	private volatile boolean isTerminated = false;
+	private volatile long lastSaveTime = System.currentTimeMillis();
 
 	public ExperimentalLab(CommandLineOptions options) {
 		String applicationVersion = Persistence.readApplicationVersion();
@@ -108,13 +109,18 @@ public class ExperimentalLab extends Lab {
 	private void executePeriodOperations() {
 		long ticks = experiment.getTicksChronometer().getTotalTicks();
 
-		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL != 0)
+		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL_TICKS != 0)
 			return;
 
-		if (persistent)
-			save();
-
 		System.out.println(getStatusString(ticks));
+
+		if (!persistent)
+			return;
+		
+		if ((System.currentTimeMillis() - lastSaveTime) / 1000.0 > Configuration.EXPERIMENT_SAVE_INTERVAL_SECONDS) {
+			save();
+			lastSaveTime = System.currentTimeMillis();
+		}
 	}
 
 	private void save() {

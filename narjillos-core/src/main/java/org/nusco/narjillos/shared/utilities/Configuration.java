@@ -35,7 +35,8 @@ public class Configuration {
 	public static final double ORGAN_GROWTH_RATE = 0.01;
 
 	// experiment
-	public static final int EXPERIMENT_SAMPLE_INTERVAL = 10000;
+	public static final int EXPERIMENT_SAMPLE_INTERVAL_TICKS = 10000;
+	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = 600;
 
 	// ecosystem
 	public final static int ECOSYSTEM_SIZE = 40_000;

@@ -13,6 +13,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.LifeFormEnergy;
 
 /**
  * The code that moves Narjllos, and in particular the code in the Organ
@@ -64,7 +65,7 @@ public class NarjilloTickingTest {
 		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
 
 		// Create the sample narjillo.
-		Narjillo narjillo = new Narjillo(sampleDNA, new Embryo(sampleDNA).develop(), Vector.cartesian(100, 200), 10_000);
+		Narjillo narjillo = new Narjillo(sampleDNA, new Embryo(sampleDNA).develop(), Vector.cartesian(100, 200), new LifeFormEnergy(10000, 30000));
 
 		// Start a few reading threads to make things more interesting.
 		// Then tick the narjillo for a while, and stop the readers.
@@ -122,7 +123,7 @@ public class NarjilloTickingTest {
 				narjillo.getAge();
 				narjillo.getDNA();
 				narjillo.getEnergy().getValue();
-				narjillo.getEnergyPercent();
+				narjillo.getEnergyLevel();
 				narjillo.getMouth().getDirection();
 				narjillo.getNeckLocation();
 				narjillo.getPosition();

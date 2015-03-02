@@ -7,7 +7,7 @@ import org.nusco.narjillos.shared.utilities.Configuration;
 public class FoodPiece implements Thing {
 
 	public Vector position;
-	private final Energy energy = new Energy(Configuration.ENERGY_PER_FOOD_ITEM, Double.MAX_VALUE);
+	private final Energy energy = new LifeFormEnergy(Configuration.ENERGY_PER_FOOD_ITEM, Double.MAX_VALUE);
 	private Thing eater;
 
 	public void setPosition(Vector position) {

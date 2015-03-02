@@ -11,6 +11,7 @@ import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -25,7 +26,7 @@ public class JSONEcosystemSerializationTest {
 		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new RanGen(0));
 
 		DNA dna = DNA.random(1, new RanGen(100));
-		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(100, 101), 10000);
+		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(100, 101), Energy.INFINITE);
 		ecosystem.insertNarjillo(narjillo);
 		
 		String json = JSON.toJson(ecosystem, Ecosystem.class);

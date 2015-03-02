@@ -11,14 +11,9 @@ public class EnergyTest {
 
 	final double initialValue = 10;
 	final double lifespan = 100;
-	Energy energy = new Energy(initialValue, lifespan);
-	Energy biggerMassEnergy = new Energy(initialValue * 2, lifespan);
-	private Thing nutrient = new FoodPiece() {
-		@Override
-		public Energy getEnergy() {
-			return new Energy(1000, Double.MAX_VALUE);
-		}
-	};
+	Energy energy = new LifeFormEnergy(initialValue, lifespan);
+	Energy biggerMassEnergy = new LifeFormEnergy(initialValue * 2, lifespan);
+	private Energy otherEnergy = Energy.INFINITE;
 
 	@Test
 	public void itStartsWithTheInitialValue() {
@@ -27,11 +22,11 @@ public class EnergyTest {
 
 	@Test
 	public void canBeDepleted() {
-		assertFalse(energy.isDepleted());
+		assertFalse(energy.isZero());
 
 		energy.tick(initialValue, 0);
 
-		assertTrue(energy.isDepleted());
+		assertTrue(energy.isZero());
 	}
 
 	@Test
@@ -54,7 +49,7 @@ public class EnergyTest {
 
 	@Test
 	public void increasesByConsumingThings() {
-		energy.consume(nutrient);
+		energy.steal(otherEnergy);
 
 		double expected = initialValue * Configuration.CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY;
 		assertEquals(expected, energy.getValue(), 0.001);
@@ -65,10 +60,10 @@ public class EnergyTest {
 		fillToTheMax();
 		double initialEnergy = energy.getValue();
 
-		energy.consume(nutrient);
+		energy.steal(otherEnergy);
 
 		assertEquals(initialEnergy, energy.getValue(), 0.00001);
-		assertEquals(energy.getMax(), energy.getValue(), 0.00001);
+		assertEquals(energy.getMaximumValue(), energy.getValue(), 0.00001);
 	}
 
 	@Test
@@ -80,12 +75,12 @@ public class EnergyTest {
 		// get older
 		energy.tick(0, 0);
 
-		energy.consume(nutrient);
+		energy.steal(otherEnergy);
 		double fullEnergyWhenSlightlyOlder = energy.getValue();
 
 		assertTrue(fullEnergyWhenStillYoung > fullEnergyWhenSlightlyOlder);
 
-		energy.consume(nutrient);
+		energy.steal(otherEnergy);
 
 		assertEquals(fullEnergyWhenSlightlyOlder, energy.getValue(), 0.001);
 	}
@@ -97,17 +92,17 @@ public class EnergyTest {
 		for (int i = 0; i < lifespan - 1; i++)
 			energy.tick(0, 0);
 
-		assertFalse(energy.isDepleted());
+		assertFalse(energy.isZero());
 
 		energy.tick(0, 0);
 
-		assertTrue(energy.isDepleted());
+		assertTrue(energy.isZero());
 	}
 
 	@Test
 	public void canDonateAPercentOfItself() {
 		energy.tick(-10, 0);
-		double donation = energy.transfer(0.25);
+		double donation = energy.donate(0.25);
 
 		assertEquals(5, donation, 0.0);
 		assertEquals(15, energy.getValue(), 0.0);
@@ -116,7 +111,7 @@ public class EnergyTest {
 	@Test
 	public void refusesDonationsIfTheyResultInAValueBelowTheInitialValue() {
 		energy.tick(-10, 0);
-		double donation = energy.transfer(51);
+		double donation = energy.donate(51);
 
 		assertEquals(0, donation, 0.0);
 		assertEquals(20, energy.getValue(), 0.0);
@@ -126,7 +121,7 @@ public class EnergyTest {
 		double energyValue;
 		do {
 			energyValue = energy.getValue();
-			energy.consume(nutrient);
+			energy.steal(otherEnergy);
 		} while (energy.getValue() > energyValue);
 	}
 }

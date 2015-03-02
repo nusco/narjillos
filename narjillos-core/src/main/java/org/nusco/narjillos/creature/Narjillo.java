@@ -28,20 +28,18 @@ public class Narjillo implements Thing {
 	private Mouth mouth = new Mouth();
 	private int age = 0;
 	
-	public Narjillo(DNA genes, Body body, Vector position, double energyAtBirth) {
+	public Narjillo(DNA genes, Body body, Vector position, Energy energy) {
 		this.body = body;
 		body.teleportTo(position);
 		this.dna = genes;
-		if (energyAtBirth >= Double.MAX_VALUE)
-			energy = Energy.INFINITE;
-		else
-			energy = new Energy(energyAtBirth, Configuration.CREATURE_MAX_LIFESPAN);
+		this.energy = energy;
 	}
 
 	public DNA getDNA() {
 		return dna;
 	}
 
+	@Override
 	public Energy getEnergy() {
 		return energy;
 	}
@@ -73,7 +71,7 @@ public class Narjillo implements Thing {
 	}
 
 	public void feedOn(FoodPiece thing) {
-		energy.consume(thing);
+		energy.steal(thing.getEnergy());
 		thing.setEater(this);
 	}
 
@@ -83,7 +81,7 @@ public class Narjillo implements Thing {
 	}
 
 	public boolean isDead() {
-		return energy.isDepleted();
+		return energy.isZero();
 	}
 
 	public List<Organ> getOrgans() {
@@ -102,8 +100,8 @@ public class Narjillo implements Thing {
 		return body.calculateCenterOfMass();
 	}
 
-	public double getEnergyPercent() {
-		return energy.getPercentOfInitialValue();
+	public double getEnergyLevel() {
+		return energy.getLevel();
 	}
 
 	public Mouth getMouth() {
@@ -143,10 +141,10 @@ public class Narjillo implements Thing {
 		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
 
 		// if the energy available is not close to the max, refuse to reproduce
-		if (getEnergy().getMax() - getEnergy().getValue() < 1000)
+		if (getEnergy().getMaximumValue() - getEnergy().getValue() < 1000)
 			return null;
 		
-		double childEnergy = getEnergy().transfer(percentEnergyToChildren);
+		double childEnergy = getEnergy().donate(percentEnergyToChildren);
 		if (childEnergy == 0)
 			return null; // refuse to lay egg
 		
@@ -159,7 +157,7 @@ public class Narjillo implements Thing {
 
 	/**
 	 * Forces the laying of an egg, no questions asked (except in a few
-	 * extreme cases).
+	 * extreme cases - see the code).
 	 */
 	public Egg forceLayEgg(Environment ecosystem, GenePool genePool, RanGen ranGen) {
 		// TODO: this will disappear once I have a good algorithm in layEgg()
@@ -168,7 +166,7 @@ public class Narjillo implements Thing {
 			return null;
 		
 		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
-		double childEnergy = getEnergy().transfer(percentEnergyToChildren);
+		double childEnergy = getEnergy().donate(percentEnergyToChildren);
 		if (childEnergy == 0)
 			return null; // refuse to lay egg
 		

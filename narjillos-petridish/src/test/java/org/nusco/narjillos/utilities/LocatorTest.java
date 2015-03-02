@@ -11,6 +11,7 @@ import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class LocatorTest {
@@ -27,7 +28,7 @@ public class LocatorTest {
 
 	private Narjillo insertNarjillo(Vector position) {
 		DNA dna = new DNA(1, "{145_227_116_072_163_201_077_221_217}{060_227_157_252_209_149_056_114_167}{250_253_092_189_010_247_016_214_009}{027_039_203_179_042_042_175_110_008}");
-		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), position, 10000);
+		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), position, Energy.INFINITE);
 		ecosystem.insertNarjillo(narjillo);
 		return narjillo;
 	}

@@ -13,6 +13,7 @@ import org.nusco.narjillos.ecosystem.EnvironmentEventListener;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -39,7 +40,7 @@ public class EcosystemTest {
 
 	private Narjillo insertNarjillo(Vector position) {
 		DNA dna = DNA.random(1, ranGen);
-		Narjillo result = new Narjillo(dna, new Embryo(dna).develop(), position, 10000);
+		Narjillo result = new Narjillo(dna, new Embryo(dna).develop(), position, Energy.INFINITE);
 		ecosystem.insertNarjillo(result);
 		return result;
 	}

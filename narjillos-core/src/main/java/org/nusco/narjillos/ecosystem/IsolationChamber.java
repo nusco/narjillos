@@ -10,6 +10,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
@@ -26,7 +27,7 @@ public class IsolationChamber extends Environment {
 		super(size);
 	
 		DNA dna = DNA.random(1, ranGen);
-		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(size, size).by(0.5), Double.MAX_VALUE);
+		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(size, size).by(0.5), Energy.INFINITE);
 		narjillos.add(narjillo);
 	}
 

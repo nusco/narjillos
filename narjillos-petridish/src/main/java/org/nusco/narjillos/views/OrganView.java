@@ -195,7 +195,7 @@ class OrganView extends ThingView {
 	}
 
 	private double getEnergyAlpha() {
-		double currentEnergyPercent = getNarjillo().getEnergyPercent();
+		double currentEnergyPercent = getNarjillo().getEnergyLevel();
 		return clipToRange(currentEnergyPercent * 10, 0, 1);
 	}
 

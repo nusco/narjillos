@@ -5,6 +5,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.LifeFormEnergy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.shared.utilities.RanGen;
@@ -54,8 +55,9 @@ public class Egg implements Thing {
 		if (age < incubationTime)
 			return false;
 
+		
 		hatchAge = age;
-		hatchedNarjillo = new Narjillo(dna, new Embryo(dna).develop(), getPosition(), energy);
+		hatchedNarjillo = new Narjillo(dna, new Embryo(dna).develop(), getPosition(), new LifeFormEnergy(energy, Configuration.CREATURE_MAX_LIFESPAN));
 		energy = 0;
 		return true;
 	}
@@ -76,7 +78,7 @@ public class Egg implements Thing {
 
 	@Override
 	public Energy getEnergy() {
-		return new Energy(energy, Double.MAX_VALUE);
+		return new LifeFormEnergy(energy, Double.MAX_VALUE);
 	}
 
 	@Override

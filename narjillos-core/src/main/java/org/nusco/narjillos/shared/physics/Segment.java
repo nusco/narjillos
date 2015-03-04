@@ -26,7 +26,7 @@ public class Segment {
 	}
 	
 	public double getMinimumDistanceFromPoint(Vector point) {
-		// FIXME: thiswas probably meant to avoid zerovectorexceptions,
+		// FIXME: this was probably meant to avoid zerovectorexceptions,
 		// but it's just wrong. fix it.
 		if (vector.isZero())
 			return startPoint.getDistanceFrom(point);

@@ -23,9 +23,9 @@ public class Narjillo implements Thing {
 
 	private final Body body;
 	private final DNA dna;
+	private final Energy energy;
+	private final Mouth mouth = new Mouth();
 	private Vector target = Vector.ZERO;
-	private Energy energy;
-	private Mouth mouth = new Mouth();
 	private int age = 0;
 	
 	public Narjillo(DNA genes, Body body, Vector position, Energy energy) {

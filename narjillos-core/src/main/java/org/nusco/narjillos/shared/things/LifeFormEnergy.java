@@ -3,7 +3,7 @@ package org.nusco.narjillos.shared.things;
 import org.nusco.narjillos.shared.utilities.Configuration;
 
 public class LifeFormEnergy implements Energy {
-	
+
 	private final double initialValue;
 	private double value;
 	private double maxForAge;
@@ -13,7 +13,7 @@ public class LifeFormEnergy implements Energy {
 	public LifeFormEnergy() {
 		initialValue = decay = 0;
 	}
-	
+
 	public LifeFormEnergy(double initialValue, double lifespan) {
 		this.initialValue = initialValue;
 		this.value = this.initialValue;
@@ -76,5 +76,19 @@ public class LifeFormEnergy implements Energy {
 	private void increaseBy(double amount) {
 		value += amount;
 		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) initialValue;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		LifeFormEnergy other = (LifeFormEnergy) obj;
+		return Double.doubleToLongBits(decay) == Double.doubleToLongBits(other.decay)
+				&& Double.doubleToLongBits(initialValue) == Double.doubleToLongBits(other.initialValue)
+				&& Double.doubleToLongBits(maxForAge) == Double.doubleToLongBits(other.maxForAge)
+				&& Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
 	}
 }

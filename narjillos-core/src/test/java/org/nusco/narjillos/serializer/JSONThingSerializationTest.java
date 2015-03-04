@@ -11,8 +11,8 @@ import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.FoodPiece;
+import org.nusco.narjillos.shared.things.LifeFormEnergy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
@@ -47,7 +47,7 @@ public class JSONThingSerializationTest {
 	public void serializesAndDeserializesNarjillos() {
 		String genes = "{001_002_003_004_005_006_007_008_009_010_011}{001_002_003_004_005_006_007_008_009_010_011}{001_002_003_004_005_006_007_008_009_010_011}{001_002_003_004_005_006_007_008_009_010_011}{001_002_003_004_005_006_007_008_009_010_011}{001_002_003_004_005_006_007_008_009_010_011}";
 		DNA dna = new DNA(1, genes);
-		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(10, 20), Energy.INFINITE);
+		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(10, 20), new LifeFormEnergy(1000, 10_000));
 		narjillo.setTarget(Vector.cartesian(100, 200));
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();

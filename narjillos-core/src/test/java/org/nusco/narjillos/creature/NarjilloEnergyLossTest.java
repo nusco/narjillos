@@ -10,6 +10,7 @@ import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
+import org.nusco.narjillos.shared.things.LifeFormEnergy;
 import org.nusco.narjillos.shared.utilities.Configuration;
 
 public class NarjilloEnergyLossTest {
@@ -19,7 +20,7 @@ public class NarjilloEnergyLossTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}"), new Body(new Head(10, 10, 10, 10, 10, 1, 0.5)), Vector.ZERO, Energy.INFINITE);
+		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}"), new Body(new Head(10, 10, 10, 10, 10, 1, 0.5)), Vector.ZERO, new LifeFormEnergy(1000, 1000));
 		
 		DNA dna = new DNA(2, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}");
 		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, Energy.INFINITE);
@@ -35,10 +36,10 @@ public class NarjilloEnergyLossTest {
 
 	@Test
 	public void itsEnergyNaturallyDecreasesWithOldAgeEvenWhenItDoesntMove() {
-		DNA dna = new DNA(1, "{1_1_1_1_1_1_1_1");
-		Narjillo narjilloThatCannotMove = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, Energy.INFINITE);
+		DNA dna = new DNA(1, "{1_1_1_1_1_1_1_1_0_0_0}");
+		Narjillo narjilloThatCannotMove = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, new LifeFormEnergy(100, 100));
 
-		for (int i = 0; i < Configuration.CREATURE_MAX_LIFESPAN + 1; i++)
+		for (int i = 0; i < 101; i++)
 			narjilloThatCannotMove.tick();
 
 		assertTrue(narjilloThatCannotMove.isDead());

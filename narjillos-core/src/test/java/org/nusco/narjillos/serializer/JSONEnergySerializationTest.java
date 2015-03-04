@@ -1,7 +1,6 @@
 package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.shared.things.Energy;
@@ -10,19 +9,20 @@ import org.nusco.narjillos.shared.things.LifeFormEnergy;
 public class JSONEnergySerializationTest {
 
 	@Test
-	public void serializesAndDeserializesEnergy() {
+	public void serializesAndDeserializesLifeFormEnergy() {
 		Energy energy = new LifeFormEnergy(10, 20);
 		for (int i = 0; i < 10; i++)
 			energy.tick(i, 0);
 		
-		String json = JSON.toJson(energy, LifeFormEnergy.class);
-		Energy deserialized = JSON.fromJson(json, LifeFormEnergy.class);
+		String json = JSON.toJson(energy, Energy.class);
+		Energy deserialized = JSON.fromJson(json, Energy.class);
 
-		energy.tick(10, 0);
-		deserialized.tick(10, 0);
+		assertEquals(energy, deserialized);
+	}
 
-		assertTrue(energy instanceof LifeFormEnergy);
-		assertEquals(energy.getValue(), deserialized.getValue(), 0.0);
-		assertEquals(energy.getMaximumValue(), deserialized.getMaximumValue(), 0.0);
+	@Test(expected=RuntimeException.class)
+	public void throwsExceptionWhenDeserializingInfiniteEnergy() {
+		String json = JSON.toJson(Energy.INFINITE, Energy.class);
+		JSON.fromJson(json, Energy.class);
 	}
 }

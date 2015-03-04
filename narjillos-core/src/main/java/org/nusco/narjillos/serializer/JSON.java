@@ -8,6 +8,7 @@ import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 
 import com.google.gson.Gson;
@@ -20,6 +21,7 @@ public class JSON {
 		.registerTypeAdapter(DNA.class, new DNAAdapter())
 		.registerTypeAdapter(Nerve.class, new NerveAdapter())
 		.registerTypeAdapter(Fiber.class, new FiberAdapter())
+		.registerTypeAdapter(Energy.class, new EnergyAdapter())
 		.registerTypeAdapter(Organ.class, new OrganAdapter())
 		.registerTypeAdapter(ConnectedOrgan.class, new OrganAdapter())
 		.registerTypeAdapter(MovingOrgan.class, new OrganAdapter())

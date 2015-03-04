@@ -1,6 +1,5 @@
 package org.nusco.narjillos.ecosystem;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -26,19 +25,19 @@ import org.nusco.narjillos.shared.utilities.RanGen;
  */
 public class Ecosystem extends Environment {
 
-	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
+	private final Set<Narjillo> narjillos = new LinkedHashSet<Narjillo>();
 
-	private final Space things;
+	private final Space space;
 	private final Vector center;
 
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
-		this.things = new Space(size);
+		this.space = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
 
 		// check that things cannot move faster than a space area in a single
 		// tick (which would make collision detection unreliable)
-		if (sizeCheck && things.getAreaSize() < Viscosity.getMaxVelocity())
+		if (sizeCheck && space.getAreaSize() < Viscosity.getMaxVelocity())
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 
@@ -47,14 +46,17 @@ public class Ecosystem extends Environment {
 		Set<Thing> result = new LinkedHashSet<Thing>();
 		// this ugliness will stay until we have narjillos
 		// in the same space as other things
-		if (label.equals("narjillo") || label.equals(""))
-			result.addAll(narjillos);
-		result.addAll(things.getAll(label));
+		if (label.equals("narjillo") || label.equals("")) {
+			synchronized (narjillos) {
+				result.addAll(narjillos);
+			}
+		}
+		result.addAll(space.getAll(label));
 		return result;
 	}
 
 	public Vector findClosestFoodPiece(Thing thing) {
-		Thing target = things.findClosestTo(thing, "food_piece");
+		Thing target = space.findClosestTo(thing, "food_piece");
 
 		if (target == null)
 			return center;
@@ -64,12 +66,14 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		for (Thing thing : new LinkedList<>(things.getAll("egg")))
+		for (Thing thing : new LinkedList<>(space.getAll("egg")))
 			tickEgg((Egg) thing);
 
-		for (Narjillo narjillo : new LinkedList<>(narjillos))
-			if (narjillo.isDead())
-				removeNarjillo(narjillo, genePool);
+		synchronized (narjillos) {
+			for (Narjillo narjillo : new LinkedList<>(narjillos))
+				if (narjillo.isDead())
+					removeNarjillo(narjillo, genePool);
+		}
 
 		tickNarjillos(genePool, ranGen);
 
@@ -79,8 +83,10 @@ public class Ecosystem extends Environment {
 		}
 
 		// TODO: put back
-		// for (Narjillo narjillo : new LinkedList<>(narjillos))
-		// layEgg(narjillo, genePool, ranGen);
+		// synchronized (narjillos) {
+		// 	for (Narjillo narjillo : narjillos)
+		// 	layEgg(narjillo, genePool, ranGen);
+		// }
 	}
 
 	public final FoodPiece spawnFood(Vector position) {
@@ -91,13 +97,15 @@ public class Ecosystem extends Environment {
 	}
 
 	public void insert(Thing thing) {
-		things.add(thing);
+		space.add(thing);
 		notifyThingAdded(thing);
 	}
 
 	public void insertNarjillo(Narjillo narjillo) {
-		narjillos.add(narjillo);
-		notifyThingAdded(narjillo);
+		synchronized (narjillos) {
+			narjillos.add(narjillo);
+			notifyThingAdded(narjillo);
+		}
 	}
 
 	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
@@ -107,26 +115,32 @@ public class Ecosystem extends Environment {
 	}
 
 	public int getNumberOfFoodPieces() {
-		return things.count("food_piece");
+		return space.count("food_piece");
 	}
 
 	public int getNumberOfEggs() {
-		return things.count("egg");
+		return space.count("egg");
 	}
 
 	public int getNumberOfNarjillos() {
-		return narjillos.size();
+		synchronized (narjillos) {
+			return narjillos.size();
+		}
 	}
 
 	public Set<Narjillo> getNarjillos() {
-		return narjillos;
+		synchronized (narjillos) {
+			return new LinkedHashSet<Narjillo>(narjillos);
+		}
 	}
 
 	public void periodicUpdate() {
-		for (Thing creature : narjillos) {
-			Narjillo narjillo = (Narjillo) creature;
-			Vector closestTarget = findClosestFoodPiece(narjillo);
-			narjillo.setTarget(closestTarget);
+		synchronized (narjillos) {
+			for (Thing creature : narjillos) {
+				Narjillo narjillo = (Narjillo) creature;
+				Vector closestTarget = findClosestFoodPiece(narjillo);
+				narjillo.setTarget(closestTarget);
+			}
 		}
 	}
 
@@ -151,7 +165,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected Set<Thing> getCollisions(Segment movement) {
-		return things.detectCollisions(movement, "food_piece");
+		return space.detectCollisions(movement, "food_piece");
 	}
 
 	private void spawnFood(RanGen ranGen) {
@@ -168,8 +182,11 @@ public class Ecosystem extends Environment {
 	}
 
 	private synchronized void tickNarjillos(GenePool genePool, RanGen ranGen) {
-		Map<Narjillo, Set<Thing>> narjillosToCollidedFood = calculateCollisions(narjillos);
-
+		Map<Narjillo, Set<Thing>> narjillosToCollidedFood;
+		synchronized (narjillos) {
+			narjillosToCollidedFood = calculateCollisions(narjillos);
+		}
+		
 		// Consume food in a predictable order, to avoid non-deterministic
 		// behavior or race conditions when multiple narjillos collide with the
 		// same piece of food.
@@ -208,10 +225,12 @@ public class Ecosystem extends Environment {
 	}
 
 	private void updateTargets(Thing food) {
-		for (Narjillo narjillo : narjillos) {
-			if (narjillo.getTarget().equals(food.getPosition())) {
-				Vector closestTarget = findClosestFoodPiece(narjillo);
-				narjillo.setTarget(closestTarget);
+		synchronized (narjillos) {
+			for (Narjillo narjillo : narjillos) {
+				if (narjillo.getTarget().equals(food.getPosition())) {
+					Vector closestTarget = findClosestFoodPiece(narjillo);
+					narjillo.setTarget(closestTarget);
+				}
 			}
 		}
 	}
@@ -222,7 +241,7 @@ public class Ecosystem extends Environment {
 	}
 
 	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, GenePool genePool, RanGen ranGen) {
-		if (!things.contains(foodPiece))
+		if (!space.contains(foodPiece))
 			return; // race condition: already consumed
 
 		remove(foodPiece);
@@ -237,12 +256,14 @@ public class Ecosystem extends Environment {
 
 	private void remove(Thing thing) {
 		notifyThingRemoved(thing);
-		things.remove(thing);
+		space.remove(thing);
 	}
 
 	private void removeNarjillo(Narjillo narjillo, GenePool genePool) {
 		notifyThingRemoved(narjillo);
-		narjillos.remove(narjillo);
+		synchronized (narjillos) {
+			narjillos.remove(narjillo);
+		}
 		genePool.remove(narjillo.getDNA());
 	}
 

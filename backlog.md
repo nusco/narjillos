@@ -2,15 +2,15 @@
 # Narjillos Backlog
 #===================
 
-##Plants and Animals
+##Plant and Animals
+* (refactor energy management)
+* New rules to decide when to lay an egg
+* Egg firing costs energy (refuse to lay egg if not enough energy)
 * Egg firing interval is controlled by genes
 * Egg firing distance is controlled by genes
-* Egg firing costs energy (refuse to fire if not enough energy)
-* (reintroduce arbitrary egg-laying)
-* (refactor energy management)
 
 ##Predators
-* Fix sketchy collision detection
+* Fix sketchy collision detection (bug?)
 * Rewrite collision detection to be independent of max speed
 * Narjillos point at other narjillos
 * Narjillos eat other narjillos
@@ -26,8 +26,9 @@
 * (Remove the concept of outer space altogether)
 
 ##Intuitive Navigation
-* Test track/untrack mouse commands with first-comer
 * Visual effect when tracking/untracking
+* Scale based on creature size and window size when following
+* (Test navigation with first-comer)
 
 ##Flexible Genes
 * Wave beat ratio is genetically determined

@@ -2,17 +2,6 @@
 # Narjillos Backlog
 #===================
 
-When followed narjillo died:
-Exception in thread "Thread-6" java.util.ConcurrentModificationException
-	at java.util.LinkedHashMap$LinkedHashIterator.nextNode(LinkedHashMap.java:711)
-		at java.util.LinkedHashMap$LinkedKeyIterator.next(LinkedHashMap.java:734)
-			at java.util.AbstractCollection.addAll(AbstractCollection.java:343)
-				at org.nusco.narjillos.ecosystem.Ecosystem.getThings(Ecosystem.java:51)
-					at org.nusco.narjillos.utilities.Locator.findThingAt_WithLabel(Locator.java:39)
-						at org.nusco.narjillos.utilities.Locator.findNarjilloAt(Locator.java:32)
-							at org.nusco.narjillos.utilities.ThingTracker.tick(ThingTracker.java:27)
-								at org.nusco.narjillos.PetriDish$2.run(PetriDish.java:97)
-
 ##Plant and Animals
 * (refactor energy management)
 * New rules to decide when to lay an egg

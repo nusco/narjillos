@@ -1,6 +1,5 @@
 package org.nusco.narjillos.ecosystem;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -21,8 +20,8 @@ class Space {
 	private final double areaSize;
 	private final Set<Thing>[][] areas;
 
-	private final Set<Thing> allTheThings = Collections.synchronizedSet(new LinkedHashSet<Thing>());
-	private final Map<String, Integer> countsByLabel = Collections.synchronizedMap(new HashMap<String, Integer>());
+	private final Set<Thing> allTheThings = new LinkedHashSet<Thing>();
+	private final Map<String, Integer> countsByLabel = new HashMap<String, Integer>();
 
 	// TODO: right now there is no visibility to/from outer space. the first is
 	// easy, the second is hard
@@ -43,22 +42,32 @@ class Space {
 		Set<Thing> area = getArea(x, y);
 
 		area.add(thing);
-		allTheThings.add(thing);
+		
+		synchronized (allTheThings) {
+			allTheThings.add(thing);
+		}
 
 		String label = thing.getLabel();
-		if (countsByLabel.containsKey(label))
-			countsByLabel.put(label, countsByLabel.get(label) + 1);
-		else
-			countsByLabel.put(label, 1);
+		synchronized (countsByLabel) {
+			if (countsByLabel.containsKey(label))
+				countsByLabel.put(label, countsByLabel.get(label) + 1);
+			else
+				countsByLabel.put(label, 1);
+		}
 
 		return new int[] { x, y };
 	}
 
 	public void remove(Thing thing) {
 		getArea(thing).remove(thing);
-		allTheThings.remove(thing);
+		
+		synchronized (allTheThings) {
+			allTheThings.remove(thing);
+		}
 
-		countsByLabel.put(thing.getLabel(), countsByLabel.get(thing.getLabel()) - 1);
+		synchronized (countsByLabel) {
+			countsByLabel.put(thing.getLabel(), countsByLabel.get(thing.getLabel()) - 1);
+		}
 	}
 
 	public boolean contains(Thing thing) {
@@ -78,7 +87,9 @@ class Space {
 		if (!nearbyNeighbors.isEmpty())
 			return findClosestTo_Amongst(thing, nearbyNeighbors, labelRegExp);
 
-		return findClosestTo_Amongst(thing, allTheThings, labelRegExp);
+		synchronized (allTheThings) {
+			return findClosestTo_Amongst(thing, allTheThings, labelRegExp);
+		}
 	}
 
 	/**
@@ -100,18 +111,24 @@ class Space {
 	}
 
 	public Set<Thing> getAll(String label) {
-		return filterByLabel(allTheThings, label);
+		synchronized (allTheThings) {
+			return filterByLabel(allTheThings, label);
+		}
 	}
 
 	public boolean isEmpty() {
-		return allTheThings.isEmpty();
+		synchronized (allTheThings) {
+			return allTheThings.isEmpty();
+		}
 	}
 
 	public int count(String label) {
-		Integer result = countsByLabel.get(label);
-		if (result == null)
-			return 0;
-		return result;
+		synchronized (countsByLabel) {
+			Integer result = countsByLabel.get(label);
+			if (result == null)
+				return 0;
+			return result;
+		}
 	}
 
 	double getAreaSize() {

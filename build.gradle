@@ -95,7 +95,7 @@ task(petri, dependsOn: 'build', type: JavaExec) {
 }
 
 task(ancestry, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.AncestryBrowser'
+  main = 'org.nusco.narjillos.Ancestry'
   classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
   args commandLineArgsOr([])
   maxHeapSize "4096M"

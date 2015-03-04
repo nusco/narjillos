@@ -28,17 +28,17 @@ public class Ecosystem extends Environment {
 
 	private final Set<Narjillo> narjillos = Collections.synchronizedSet(new LinkedHashSet<Narjillo>());
 
-	private final Space things;
+	private final Space space;
 	private final Vector center;
 
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
-		this.things = new Space(size);
+		this.space = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
 
 		// check that things cannot move faster than a space area in a single
 		// tick (which would make collision detection unreliable)
-		if (sizeCheck && things.getAreaSize() < Viscosity.getMaxVelocity())
+		if (sizeCheck && space.getAreaSize() < Viscosity.getMaxVelocity())
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 
@@ -49,12 +49,12 @@ public class Ecosystem extends Environment {
 		// in the same space as other things
 		if (label.equals("narjillo") || label.equals(""))
 			result.addAll(narjillos);
-		result.addAll(things.getAll(label));
+		result.addAll(space.getAll(label));
 		return result;
 	}
 
 	public Vector findClosestFoodPiece(Thing thing) {
-		Thing target = things.findClosestTo(thing, "food_piece");
+		Thing target = space.findClosestTo(thing, "food_piece");
 
 		if (target == null)
 			return center;
@@ -64,7 +64,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		for (Thing thing : new LinkedList<>(things.getAll("egg")))
+		for (Thing thing : new LinkedList<>(space.getAll("egg")))
 			tickEgg((Egg) thing);
 
 		for (Narjillo narjillo : new LinkedList<>(narjillos))
@@ -91,7 +91,7 @@ public class Ecosystem extends Environment {
 	}
 
 	public void insert(Thing thing) {
-		things.add(thing);
+		space.add(thing);
 		notifyThingAdded(thing);
 	}
 
@@ -107,11 +107,11 @@ public class Ecosystem extends Environment {
 	}
 
 	public int getNumberOfFoodPieces() {
-		return things.count("food_piece");
+		return space.count("food_piece");
 	}
 
 	public int getNumberOfEggs() {
-		return things.count("egg");
+		return space.count("egg");
 	}
 
 	public int getNumberOfNarjillos() {
@@ -151,7 +151,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected Set<Thing> getCollisions(Segment movement) {
-		return things.detectCollisions(movement, "food_piece");
+		return space.detectCollisions(movement, "food_piece");
 	}
 
 	private void spawnFood(RanGen ranGen) {
@@ -222,7 +222,7 @@ public class Ecosystem extends Environment {
 	}
 
 	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, GenePool genePool, RanGen ranGen) {
-		if (!things.contains(foodPiece))
+		if (!space.contains(foodPiece))
 			return; // race condition: already consumed
 
 		remove(foodPiece);
@@ -237,7 +237,7 @@ public class Ecosystem extends Environment {
 
 	private void remove(Thing thing) {
 		notifyThingRemoved(thing);
-		things.remove(thing);
+		space.remove(thing);
 	}
 
 	private void removeNarjillo(Narjillo narjillo, GenePool genePool) {

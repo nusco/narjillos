@@ -2,15 +2,26 @@
 # Narjillos Backlog
 #===================
 
-##Plants and Animals
+When followed narjillo died:
+Exception in thread "Thread-6" java.util.ConcurrentModificationException
+	at java.util.LinkedHashMap$LinkedHashIterator.nextNode(LinkedHashMap.java:711)
+		at java.util.LinkedHashMap$LinkedKeyIterator.next(LinkedHashMap.java:734)
+			at java.util.AbstractCollection.addAll(AbstractCollection.java:343)
+				at org.nusco.narjillos.ecosystem.Ecosystem.getThings(Ecosystem.java:51)
+					at org.nusco.narjillos.utilities.Locator.findThingAt_WithLabel(Locator.java:39)
+						at org.nusco.narjillos.utilities.Locator.findNarjilloAt(Locator.java:32)
+							at org.nusco.narjillos.utilities.ThingTracker.tick(ThingTracker.java:27)
+								at org.nusco.narjillos.PetriDish$2.run(PetriDish.java:97)
+
+##Plant and Animals
+* (refactor energy management)
+* New rules to decide when to lay an egg
+* Egg firing costs energy (refuse to lay egg if not enough energy)
 * Egg firing interval is controlled by genes
 * Egg firing distance is controlled by genes
-* Egg firing costs energy (refuse to fire if not enough energy)
-* (reintroduce arbitrary egg-laying)
-* (refactor energy management)
 
 ##Predators
-* Fix sketchy collision detection
+* Fix sketchy collision detection (bug?)
 * Rewrite collision detection to be independent of max speed
 * Narjillos point at other narjillos
 * Narjillos eat other narjillos
@@ -26,8 +37,9 @@
 * (Remove the concept of outer space altogether)
 
 ##Intuitive Navigation
-* Test track/untrack mouse commands with first-comer
 * Visual effect when tracking/untracking
+* Scale based on creature size and window size when following
+* (Test navigation with first-comer)
 
 ##Flexible Genes
 * Wave beat ratio is genetically determined

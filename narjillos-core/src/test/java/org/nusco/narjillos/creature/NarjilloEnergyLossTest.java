@@ -11,7 +11,6 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.LifeFormEnergy;
-import org.nusco.narjillos.shared.utilities.Configuration;
 
 public class NarjilloEnergyLossTest {
 

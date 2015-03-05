@@ -2,8 +2,9 @@
 # Narjillos Backlog
 #===================
 
+* Fix closing application when you close the Petri window
+
 ##Plant and Animals
-* (refactor energy management)
 * New rules to decide when to lay an egg
 * Egg firing costs energy (refuse to lay egg if not enough energy)
 * Egg firing interval is controlled by genes
@@ -27,8 +28,16 @@
 
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
-* Scale based on creature size and window size when following
+* Scale zoom based on creature size and window size when following
 * (Test navigation with first-comer)
+
+##Realistic Physics
+* Fix "tail wiggles dog" effect?
+* Rotation inertia
+* Translation inertia
+* Limit rotation speed?
+* Realistic viscosity?
+* Viscosity per segment?
 
 ##Flexible Genes
 * Wave beat ratio is genetically determined
@@ -38,13 +47,6 @@
 * Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
 * Adult body size is genetically determined
 
-##Realistic Physics
-* Rotation inertia
-* Translation inertia
-* Limit rotation speed?
-* Realistic viscosity?
-* Viscosity per segment?
-
 ##Gaming UI
 * Status bar
 * Speed widget
@@ -52,6 +54,7 @@
 * Historical experiment stats (average lifespan, number of creatures, ...)
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * "About"/"Help" menus
+* Toggle effects with less obvious combination (CMD+E, or similar)
 * Save/load experiment from menu
 * Tutorial
 
@@ -81,10 +84,11 @@
 * Smoother contours when zooming in infrared mode
 * Externalize configurable parameters to YAML
 * Adaptive graphics (disable effects when framerate plummets)
-* Encode CPU floatpoint precision in the experiment id (instead of using strictfp)
+* Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
 * Conservation of energy in entire dish (with sun to give more energy)
 
 ##Crazy Ideas
+* Daisyworld-like ecosystem with chemicals influencing reproduction rate
 * Multiple environments in multiple processes (with migration)
 * Demiurge
 * Brains

@@ -36,8 +36,8 @@ allprojects {
   }
 
   createStartScript('narjillos', project, 'org.nusco.narjillos.PetriDish', [])
-  createStartScript('petri', project, 'org.nusco.narjillos.PetriDish', ['-Xmx4096M', '-Xms4096M'])
-  createStartScript('experiment', project, 'org.nusco.narjillos.ExperimentalLab', ['-Xmx4096M', '-Xms4096M'])
+  createStartScript('petri', project, 'org.nusco.narjillos.PetriDish', ['-Xmx8192M', '-Xms8192M'])
+  createStartScript('experiment', project, 'org.nusco.narjillos.ExperimentalLab', ['-Xmx8192M', '-Xms8192M'])
 }
 
 project(':narjillos-core') {
@@ -84,21 +84,21 @@ task(experiment, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.ExperimentalLab'
   classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
   args commandLineArgsOr([])
-  maxHeapSize "4096M"
+  maxHeapSize "8192M"
 }
 
 task(petri, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.PetriDish'
   classpath = project('narjillos-petridish').sourceSets.main.runtimeClasspath
   args commandLineArgsOr([])
-  maxHeapSize "4096M"
+  maxHeapSize "8192M"
 }
 
 task(ancestry, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.Ancestry'
   classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
   args commandLineArgsOr([])
-  maxHeapSize "4096M"
+  maxHeapSize "8192M"
 }
 
 task(perftest, dependsOn: 'build', type: JavaExec) {

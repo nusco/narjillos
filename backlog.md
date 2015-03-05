@@ -2,20 +2,30 @@
 # Narjillos Backlog
 #===================
 
-##Plant and Animals
-* New rules to decide when to lay an egg
-* Egg firing costs energy (refuse to lay egg if not enough energy)
-* Egg firing interval is controlled by genes
+##Smart Reproduction
+* New rules to decide when to lay an egg (min interval + energy check)
+* Firing eggs costs energy
 * Egg firing distance is controlled by genes
+
+##Chemistry
+* Identifiable species (DNA hashes)
+* Elements in environment (O, N)
+* Narjillos produce an element (based on visible body qualities - use DNA hashes?)
+* Narjillos consumes an element to reproduce faster (see above)
+* Tweak chemistry to encourage speciation
+
+##Istincts
+* Istinct genes: love, fear, hunger
+* Visualize istinct directions
+* Visualize istincts on other creatures when following a narjillo
+* Decide ideal direction based on istinct genes
+* Narjillos follow istinct direction (plus food)
 
 ##Predators
 * Fix sketchy collision detection (bug?)
 * Rewrite collision detection to be independent of max speed
-* Narjillos point at other narjillos
 * Narjillos eat other narjillos
 * Red fibers damage the attacker
-* Identifiable species (DNA hashes?)
-* Decide direction based on other creatures' species
 * Remove food
 
 ##Dish Edges
@@ -45,6 +55,10 @@
 * Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
 * Adult body size is genetically determined
 
+##Ancestry Browser
+* Ancestry Browser
+* DNA diff during ancestry analysis
+
 ##Gaming UI
 * Status bar
 * Speed widget
@@ -61,10 +75,6 @@
 * Native Windows app
 * Run in a browser
 * Package Java runtime with command-line program?
-
-##Ancestry Browser
-* Ancestry Browser
-* DNA diff during ancestry analysis
 
 ##Advanced Body Plans
 * Encode bodyplan instructions with modulo instead of bit checking
@@ -88,7 +98,6 @@
 * Fix memory leak
 
 ##Crazy Ideas
-* Daisyworld-like ecosystem with chemicals influencing reproduction rate
 * Multiple environments in multiple processes (with migration)
+* Neural networks for brains
 * Demiurge
-* Brains

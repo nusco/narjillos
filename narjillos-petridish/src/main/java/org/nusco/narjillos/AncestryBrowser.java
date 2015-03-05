@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.utilities.AncestryBrowserState;
 import org.nusco.narjillos.utilities.Speed;
+import org.nusco.narjillos.utilities.StoppableThread;
 import org.nusco.narjillos.utilities.ViewState;
 import org.nusco.narjillos.views.AncestryStatusView;
 import org.nusco.narjillos.views.EnvirommentView;
@@ -23,8 +24,8 @@ public class AncestryBrowser extends ApplicationBase {
 	private ViewState state = new AncestryBrowserState();
 
 	@Override
-	protected Thread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
-		return new Thread() {
+	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
+		return new StoppableThread() {
 			@Override
 			public void run() {
 				CommandLineOptions options = CommandLineOptions.parse(arguments);
@@ -35,7 +36,7 @@ public class AncestryBrowser extends ApplicationBase {
 
 				isModelInitialized[0] = true;
 
-				while (!isInterrupted()) {
+				while (!hasBeenAskedToStop()) {
 					long startTime = System.currentTimeMillis();
 					if (state.getSpeed() != Speed.PAUSED)
 						if (!tick())
@@ -47,8 +48,8 @@ public class AncestryBrowser extends ApplicationBase {
 	}
 
 	@Override
-	protected Thread createViewThread(final Group root) {
-		return new Thread() {
+	protected StoppableThread createViewThread(final Group root) {
+		return new StoppableThread() {
 			private volatile boolean renderingFinished = false;
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
@@ -59,7 +60,7 @@ public class AncestryBrowser extends ApplicationBase {
 				double size = getEcosystem().getSize();
 				getTracker().startTracking(Vector.cartesian(size, size).by(0.5));
 
-				while (!isInterrupted()) {
+				while (!hasBeenAskedToStop()) {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
@@ -75,7 +76,7 @@ public class AncestryBrowser extends ApplicationBase {
 					});
 
 					waitFor(state.getFramesPeriod(), startTime);
-					while (!renderingFinished && !isInterrupted())
+					while (!renderingFinished && !hasBeenAskedToStop())
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {

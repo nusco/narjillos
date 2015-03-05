@@ -20,6 +20,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Speed;
+import org.nusco.narjillos.utilities.StoppableThread;
 import org.nusco.narjillos.views.EnvirommentView;
 import org.nusco.narjillos.views.MicroscopeView;
 import org.nusco.narjillos.views.PetriStatusView;
@@ -56,8 +57,8 @@ public class PetriDish extends ApplicationBase {
 	}
 
 	@Override
-	protected Thread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
-		return new Thread() {
+	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
+		return new StoppableThread() {
 			public void run() {
 				CommandLineOptions options = CommandLineOptions.parse(arguments);
 				if (options == null)
@@ -67,7 +68,7 @@ public class PetriDish extends ApplicationBase {
 
 				isModelInitialized[0] = true;
 
-				while (!isInterrupted()) {
+				while (!hasBeenAskedToStop()) {
 					long startTime = System.currentTimeMillis();
 					if (state.getSpeed() != Speed.PAUSED)
 						if (!tick())
@@ -79,8 +80,8 @@ public class PetriDish extends ApplicationBase {
 	}
 
 	@Override
-	protected Thread createViewThread(final Group root) {
-		return new Thread() {
+	protected StoppableThread createViewThread(final Group root) {
+		return new StoppableThread() {
 			private final Chronometer framesChronometer = new Chronometer();
 			private volatile boolean renderingFinished = false;
 
@@ -90,7 +91,7 @@ public class PetriDish extends ApplicationBase {
 
 			@Override
 			public void run() {
-				while (!isInterrupted()) {
+				while (!hasBeenAskedToStop()) {
 					long startTime = System.currentTimeMillis();
 					renderingFinished = false;
 
@@ -106,7 +107,7 @@ public class PetriDish extends ApplicationBase {
 					});
 
 					waitFor(state.getFramesPeriod(), startTime);
-					while (!renderingFinished && !isInterrupted())
+					while (!renderingFinished && !hasBeenAskedToStop())
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
@@ -229,7 +230,7 @@ public class PetriDish extends ApplicationBase {
 			}
 
 			private void waitUntilViewportHasZoomedToEggs() {
-				while (!getViewport().isZoomCloseToTarget()) {
+				while (!getViewport().isZoomCloseToTarget() && !isMainApplicationStopped()) {
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
@@ -251,7 +252,7 @@ public class PetriDish extends ApplicationBase {
 					}
 				};
 			}
-		}).start();
+		}, "mouse scroll handler creator").start();
 	}
 
 	private void registerTouchHandlers(Scene scene) {

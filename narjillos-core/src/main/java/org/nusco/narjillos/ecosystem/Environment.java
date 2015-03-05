@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.nusco.narjillos.creature.Narjillo;
@@ -22,11 +23,18 @@ public abstract class Environment {
 
 	private final long size;
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
-	private final ExecutorService executorService;
-
+	private volatile ExecutorService executorService;
+	private volatile int tickWorkerCounter = 1;
+	
 	public Environment(long size) {
 		this.size = size;
-		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		ThreadFactory tickWorkerFactory = new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, "tick worker " + tickWorkerCounter++);
+			}
+		};
+		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), tickWorkerFactory);
 	}
 
 	public long getSize() {

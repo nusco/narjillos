@@ -2,8 +2,6 @@
 # Narjillos Backlog
 #===================
 
-* Fix closing application when you close the Petri window
-
 ##Plant and Animals
 * New rules to decide when to lay an egg
 * Egg firing costs energy (refuse to lay egg if not enough energy)
@@ -77,6 +75,7 @@
 * Different shapes for body segments
 
 ##Grab Bag
+* Show things as blips when zooming out in infrared mode
 * Simpler senescence mechanism
 * Report conflicts in command-line arguments (like -s and file used together)
 * Demo mode (switch from narjillo to narjillo)
@@ -86,6 +85,7 @@
 * Adaptive graphics (disable effects when framerate plummets)
 * Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
 * Conservation of energy in entire dish (with sun to give more energy)
+* Fix memory leak
 
 ##Crazy Ideas
 * Daisyworld-like ecosystem with chemicals influencing reproduction rate

@@ -12,10 +12,11 @@ import org.nusco.narjillos.ecosystem.Environment;
 import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.utilities.Locator;
+import org.nusco.narjillos.utilities.StoppableThread;
 import org.nusco.narjillos.utilities.ThingTracker;
 import org.nusco.narjillos.utilities.Viewport;
 
-public abstract class ApplicationBase extends Application {
+abstract class ApplicationBase extends Application {
 
 	// These fields are all just visualization stuff - no data will
 	// get corrupted if different threads see slightly outdated versions of
@@ -23,12 +24,15 @@ public abstract class ApplicationBase extends Application {
 
 	private Lab lab;
 
-	protected Thread modelThread;
-	protected Thread viewThread;
+	protected StoppableThread modelThread;
+	protected StoppableThread viewThread;
 
 	private Viewport viewport;
 	private Locator locator;
 	private ThingTracker tracker;
+
+	private volatile boolean[] isModelInitialized = new boolean[] { false };
+	private volatile boolean mainApplicationStopped = false;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -59,8 +63,9 @@ public abstract class ApplicationBase extends Application {
 	public void stop() {
 		// exit threads cleanly to avoid rare exception
 		// when exiting Java FX application
-		modelThread.interrupt();
-		viewThread.interrupt();
+		mainApplicationStopped = true;
+		modelThread.askToStop();
+		viewThread.askToStop();
 		while (modelThread.isAlive() || viewThread.isAlive())
 			try {
 				Thread.sleep(100);
@@ -82,10 +87,14 @@ public abstract class ApplicationBase extends Application {
 		}
 	}
 
+	protected boolean isMainApplicationStopped() {
+		return mainApplicationStopped;
+	}
+	
 	private void startModelThread(final String[] arguments) {
-		final boolean[] isModelInitialized = new boolean[] { false };
 
 		modelThread = createModelThread(arguments, isModelInitialized);
+		modelThread.setName("model thread");
 		modelThread.start();
 		while (!isModelInitialized[0])
 			try {
@@ -96,6 +105,7 @@ public abstract class ApplicationBase extends Application {
 
 	private void startViewThread(final Group root) {
 		viewThread = createViewThread(root);
+		viewThread.setName("view thread");
 		viewThread.start();
 	}
 
@@ -120,9 +130,9 @@ public abstract class ApplicationBase extends Application {
 
 	// Remember: we need to initialize the random number generator inside this
 	// thread, because it will complain if it is called from multiple threads.
-	protected abstract Thread createModelThread(String[] arguments, boolean[] isModelInitialized);
+	protected abstract StoppableThread createModelThread(String[] arguments, boolean[] isModelInitialized);
 
-	protected abstract Thread createViewThread(Group root);
+	protected abstract StoppableThread createViewThread(Group root);
 
 	protected abstract String getName();
 

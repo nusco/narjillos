@@ -176,6 +176,13 @@ public class Narjillo implements Thing {
 		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_MAX_VELOCITY * ranGen.nextDouble());
 		return new Egg(childDNA, position, velocity, childEnergy, ranGen);
 	}
+	
+	public String getVisualHash() {
+		StringBuffer result = new StringBuffer();
+		for (Organ organ : getOrgans())
+			result.append(organ.getVisualHash() + "_");
+		return result.toString().substring(0, result.length() - 2);
+	}
 
 	private boolean isTooYoungToLayEggs(){
 		return getAge() < Configuration.CREATURE_MATURE_AGE;

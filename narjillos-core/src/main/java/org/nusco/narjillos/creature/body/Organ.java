@@ -145,6 +145,12 @@ public abstract class Organ {
 		return cachedCenterOfMass;
 	}
 
+	public String getVisualHash() {
+		int approximateAdultLength = (int)(getAdultLength() / 25);
+		int approximateAdultThickness = (int)(getAdultThickness() / 5);
+		return getFiber().getVisualHash() + "_" + approximateAdultLength + "_" + approximateAdultThickness;
+	}
+	
 	// The next two methods give subclasses a chance to change the geometry of
 	// the Organ. These are the only methods that can change the state of the
 	// Organ (apart from grow(). Everything else in the organ will be calculated

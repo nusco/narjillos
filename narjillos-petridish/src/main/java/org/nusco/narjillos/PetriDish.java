@@ -16,7 +16,11 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.embryogenesis.Embryo;
+import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.SimHash;
 import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.utilities.Chronometer;
 import org.nusco.narjillos.utilities.PetriDishState;
 import org.nusco.narjillos.utilities.Speed;
@@ -181,6 +185,12 @@ public class PetriDish extends ApplicationBase {
 				if (narjillo == null)
 					return;
 
+				// TODO: remove
+				DNA dna = new DNA(100000, "{016_028_171_203_248_055_000_023_061_107_096}{246_091_059_197_047_114_131_198_045_220_123}{163_233_254_202_238_046_224_175_199_141_221}{090_058_060_010_103_152_070_152_071_210_157}{219_110_073_091_178_091_229_131_120_043_057}{031_048_118_079_087_033_109_108_118_253_130}");
+				Narjillo ref = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, Energy.INFINITE);
+				System.out.println("DIST: " + SimHash.getDistance(narjillo, ref) + ")");
+				//
+				
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 			}

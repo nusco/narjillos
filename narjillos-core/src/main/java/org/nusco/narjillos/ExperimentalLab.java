@@ -125,6 +125,7 @@ public class ExperimentalLab extends Lab {
 
 	private void save() {
 		isSaving = true;
+		System.out.println("> Saving...");
 		Persistence.save(experiment);
 		isSaving = false;
 	}

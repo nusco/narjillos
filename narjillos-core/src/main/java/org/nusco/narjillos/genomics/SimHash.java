@@ -8,10 +8,29 @@ public class SimHash {
 
 	private static final int HASH_SIZE = 30;
 
-	public static int hash(Narjillo narjillo) {
+	public static int simHash(Narjillo narjillo) {
+		int hash = hash(narjillo);
+		System.out.println(getDifferences(hash, 0) + " " + narjillo.getVisualHash());
+		return getDifferences(hash, Integer.MAX_VALUE);
+	}
+
+	public static int getDistance(Narjillo narjillo1, Narjillo narjillo2) {
+		return getDifferences(hash(narjillo1), hash(narjillo2));
+	}
+
+	private static int getDifferences(int simHash1, int simHash2) {
+		int result = 0;
+		int xorHash = simHash1 ^ simHash2;
+		for (int i = 0; i < HASH_SIZE; i++)
+			if (((xorHash >> i) & 1) == 1)
+				result++;
+		return result;
+	}
+	
+	private static int hash(Narjillo narjillo) {
 		int[] hashBits = new int[HASH_SIZE];
 
-		String[] words = narjillo.getVisualHash().split("_");
+		Integer[] words = narjillo.getDNA().getGenes();
 		for (int i = 0; i < words.length; i++) {
 			int geneHash = words[i].hashCode();
 			for (int j = 0; j < HASH_SIZE; j++) {
@@ -29,16 +48,4 @@ public class SimHash {
 		return result;
 	}
 
-	public static int getDistance(Narjillo narjillo1, Narjillo narjillo2) {
-		return getDifferences(hash(narjillo1), hash(narjillo2));
-	}
-
-	public static int getDifferences(int simHash1, int simHash2) {
-		int result = 0;
-		int xorHash = simHash1 ^ simHash2;
-		for (int i = 0; i < HASH_SIZE; i++)
-			if (((xorHash >> i) & 1) == 1)
-				result++;
-		return result;
-	}
 }

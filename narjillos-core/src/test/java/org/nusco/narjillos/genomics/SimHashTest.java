@@ -11,12 +11,14 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class SimHashTest {
 
-	RanGen ranGen = new RanGen(1);
+	RanGen ranGen = new RanGen(99);
 	
 	@Test
 	public void returnsAByteSizedHash() {
 		DNA dna = DNA.random(1, ranGen);
-		for (int i = 0; i < 100; i++) {
+		int min = 1000;
+		int max = 0;
+		for (int i = 0; i < 10_000; i++) {
 			DNA newDna = DNA.random(i + 2, ranGen);
 			//DNA newDna = dna.copyWithMutations(i + 2, ranGen);
 
@@ -24,14 +26,14 @@ public class SimHashTest {
 			Narjillo n2 = new Narjillo(newDna, new Embryo(newDna).develop(), Vector.ZERO, Energy.INFINITE);
 
 			int diff = SimHash.getDistance(n1, n2);
-			System.out.println(diff);
-			if (diff <= 1) {
-				System.out.println("1> " + dna);
-				System.out.println("2> " + newDna);
-			}
+			if (diff < min)
+				min = diff;
+			if (diff > max)
+				max = diff;
 			dna = newDna;
 //			assertTrue(hash >= 0);
 //			assertTrue(hash <= 255);
 		}
+		System.out.println("min: " + min +", max: " + max);
 	}
 }

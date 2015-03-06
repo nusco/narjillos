@@ -181,7 +181,7 @@ public class Narjillo implements Thing {
 		StringBuffer result = new StringBuffer();
 		for (Organ organ : getOrgans())
 			result.append(organ.getVisualHash() + "_");
-		return result.toString().substring(0, result.length() - 2);
+		return result.toString().substring(0, result.length() - 1);
 	}
 
 	private boolean isTooYoungToLayEggs(){

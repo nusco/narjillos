@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.serializer.JSON;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * Check that two Experiments with the same seed result in the same exact
@@ -18,21 +19,21 @@ import org.nusco.narjillos.serializer.JSON;
  * thousands of cycles (especially because the experiment must have the time to
  * see eggs hatch, and narjillos grow enough to get some food). Before releases,
  * it's worth running this test from the main(), which uses a much higher number
- * of cycles, but takes minutes.
+ * of cycles, but takes minutes even on a fast computer.
  */
 public class DeterministicExperimentTest {
 
 	@Test
 	public void experimentsAreDeterministic() {
-		int CYCLES = 2000;
-		runTest(CYCLES);
+		final int cycles = 2000;
+		runTest(cycles);
 	}
 
 	public static void runTest(int cycles) {
 		int halfCycles = cycles / 2;
 
 		// Run an experiment for a few ticks
-		Experiment experiment1 = new Experiment(1234, new Ecosystem(10000, false), "deterministic_experiment_test");
+		Experiment experiment1 = new Experiment(1234, new Ecosystem(Configuration.ECOSYSTEM_SIZE, false), "deterministic_experiment_test", true);
 
 		for (int i = 0; i < halfCycles; i++)
 			experiment1.tick();

@@ -39,11 +39,11 @@ public class Configuration {
 	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = 600;
 
 	// ecosystem
-	public final static int ECOSYSTEM_SIZE = 40_000;
-	public static final int ECOSYSTEM_INITIAL_EGGS = 300;
-	public static final int ECOSYSTEM_INITIAL_FOOD_PIECES = 400;
-	public static final int ECOSYSTEM_MAX_FOOD_PIECES = 600;
-	public static final int ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL = 100;
+	public final static int ECOSYSTEM_SIZE = 80_000;
+	public static final int ECOSYSTEM_INITIAL_EGGS = 1200;
+	public static final int ECOSYSTEM_INITIAL_FOOD_PIECES = 1600;
+	public static final int ECOSYSTEM_MAX_FOOD_PIECES = 2400;
+	public static final int ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL = 25;
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = 1000;
 
 	// eggs

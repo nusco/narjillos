@@ -17,10 +17,6 @@ public class Experiment {
 	private GenePool genePool = new GenePool();
 	private transient long lastRegisteredRunningTime;
 
-	public Experiment(long seed, Ecosystem ecosystem, String version) {
-		this(seed, ecosystem, version, true);
-	}
-
 	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackGenePool, String dna) {
 		this(seed, version, ecosystem, trackGenePool);
 		ecosystem.populate(dna, genePool, ranGen);

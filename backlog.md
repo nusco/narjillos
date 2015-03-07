@@ -2,13 +2,18 @@
 # Narjillos Backlog
 #===================
 
+##Species Tracker
+* Fix DNA length?
+* Identifiable species (DNA hashes)
+* Clustering algorithm to count species
+* Report number of species on the console
+
 ##Smart Reproduction
 * New rules to decide when to lay an egg (min interval + energy check)
 * Firing eggs costs energy
 * Egg firing distance is controlled by genes
 
 ##Chemistry
-* Identifiable species (DNA hashes)
 * Elements in environment (O, N)
 * Narjillos produce an element (based on visible body qualities - use DNA hashes?)
 * Narjillos consumes an element to reproduce faster (see above)
@@ -38,6 +43,11 @@
 * Visual effect when tracking/untracking
 * Scale zoom based on creature size and window size when following
 * (Test navigation with first-comer)
+
+##Sexual Reproduction
+* (a lot of stuff to define)
+* Species clustering control reproductive success? (to keep species apart)
+* Diploid creatures?
 
 ##Realistic Physics
 * Fix "tail wiggles dog" effect?
@@ -97,7 +107,19 @@
 * Conservation of energy in entire dish (with sun to give more energy)
 * Fix memory leak
 
-##Crazy Ideas
+##Epic Goals
+* Complex Interactions
+* Self-Regulating Ecosystem
+* Ecological Niches
+* Disruptive selection?
+* Sexual Reproduction
+* Assortative Mating
+* Sympatric Speciation
+* Asymmetrical Arms Races
+* Wide Usability
+* The "Wow" factor?
+
+##Big Goals Crazy Ideas
 * Multiple environments in multiple processes (with migration)
 * Neural networks for brains
 * Demiurge

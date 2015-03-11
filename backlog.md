@@ -2,29 +2,12 @@
 # Narjillos Backlog
 #===================
 
-##Species Tracker
-* Fix DNA length?
-* Identifiable species (DNA hashes)
-* Clustering algorithm to count species
-* Report number of species on the console
+* Re-think the relationships between features in the Grand Plan. Can I hope to get speciation withou sexual reproduction?
 
 ##Smart Reproduction
 * New rules to decide when to lay an egg (min interval + energy check)
 * Firing eggs costs energy
 * Egg firing distance is controlled by genes
-
-##Chemistry
-* Elements in environment (O, N)
-* Narjillos produce an element (based on visible body qualities - use DNA hashes?)
-* Narjillos consumes an element to reproduce faster (see above)
-* Tweak chemistry to encourage speciation
-
-##Istincts
-* Istinct genes: love, fear, hunger
-* Visualize istinct directions
-* Visualize istincts on other creatures when following a narjillo
-* Decide ideal direction based on istinct genes
-* Narjillos follow istinct direction (plus food)
 
 ##Predators
 * Fix sketchy collision detection (bug?)
@@ -32,6 +15,30 @@
 * Narjillos eat other narjillos
 * Red fibers damage the attacker
 * Remove food
+
+##Species Tracker
+* Fix DNA length?
+* Identifiable species (DNA hashes)
+* Clustering algorithm to count species
+* Report number of species on the console
+
+##Chemistry
+* Elements in environment (O, N)
+* Narjillos produce an element (based on visible body qualities - use DNA hashes?)
+* Narjillos consume an element to reproduce faster (see above)
+* Tweak chemistry to encourage speciation
+
+##Sexual Reproduction
+* (a lot of stuff to decide)
+* Species clustering control reproductive success? (to keep species apart)
+* Diploid creatures?
+
+##Istincts
+* Istinct genes: love, fear, hunger
+* Visualize istinct directions
+* Visualize istincts on other creatures when following a narjillo
+* Decide ideal direction based on istinct genes
+* Narjillos follow istinct direction (plus food)
 
 ##Dish Edges
 * Kill narjillos who touch outer space
@@ -43,11 +50,6 @@
 * Visual effect when tracking/untracking
 * Scale zoom based on creature size and window size when following
 * (Test navigation with first-comer)
-
-##Sexual Reproduction
-* (a lot of stuff to define)
-* Species clustering control reproductive success? (to keep species apart)
-* Diploid creatures?
 
 ##Realistic Physics
 * Fix "tail wiggles dog" effect?

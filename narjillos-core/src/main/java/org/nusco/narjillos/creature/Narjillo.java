@@ -64,12 +64,12 @@ public class Narjillo implements Thing {
 	
 	@Override
 	public Vector getCenter() {
-		return getBody().calculateCenterOfMass();
+		return getCenterOfMass();
 	}
 
 	@Override
 	public double getRadius() {
-		return getBody().calculateRadius();
+		return getBody().getRadius();
 	}
 
 	@Override
@@ -89,8 +89,8 @@ public class Narjillo implements Thing {
 		this.target = target;
 	}
 
-	public Vector calculateCenterOfMass() {
-		return body.calculateCenterOfMass();
+	public Vector getCenterOfMass() {
+		return body.getCenterOfMass();
 	}
 
 	public double getEnergyLevel() {

@@ -116,7 +116,7 @@ public class NarjilloTickingTest {
 		@Override
 		public void run() {
 			while (true && !stopped) {
-				narjillo.calculateCenterOfMass();
+				narjillo.getCenterOfMass();
 				narjillo.getAge();
 				narjillo.getDNA();
 				narjillo.getEnergy().getValue();

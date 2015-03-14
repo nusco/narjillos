@@ -2,44 +2,33 @@
 # Narjillos Backlog
 #===================
 
-* Re-think the relationships between features in the Grand Plan. Can I hope to get speciation withou sexual reproduction?
-* Run smaller ecosystem when running with "narjillo" (the big one is too demanding on slow computers)
+* Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)
 
 ##Smart Reproduction
 * New rules to decide when to lay an egg (min interval + energy check)
 * Firing eggs costs energy
 * Egg firing distance is controlled by genes
 
-##Predators
-* Fix sketchy collision detection (bug?)
+##Predators (Complex Interactions 1)
+* Fix sketchy collision detection (is this a bug?)
 * Rewrite collision detection to be independent of max speed
-* Narjillos eat other narjillos
+* Narjillos eat other narjillos (pick target at random)
 * Red fibers damage the attacker
-* Remove food
+* Remove food?
 
-##Species Tracker
-* Fix DNA length?
+##Self-Regulating Ecosystem
+* Elements in environment
+* Narjillos produce a molecule (based on visible body qualities - use DNA hashes?)
+* Narjillos consume a molecule (faster reproduction? lower energy expenditure?)
+* Ecological Niches (tweak chemistry to encourage speciation)
+
+##Istincts (Complex Interactions 2)
 * Identifiable species (DNA hashes)
-* Clustering algorithm to count species
-* Report number of species on the console
-
-##Chemistry
-* Elements in environment (O, N)
-* Narjillos produce an element (based on visible body qualities - use DNA hashes?)
-* Narjillos consume an element to reproduce faster (see above)
-* Tweak chemistry to encourage speciation
-
-##Sexual Reproduction
-* (a lot of stuff to decide)
-* Species clustering control reproductive success? (to keep species apart)
-* Diploid creatures?
-
-##Istincts
 * Istinct genes: love, fear, hunger
 * Visualize istinct directions
 * Visualize istincts on other creatures when following a narjillo
 * Decide ideal direction based on istinct genes
-* Narjillos follow istinct direction (plus food)
+* Narjillos follow istinct direction (plus food?)
 
 ##Dish Edges
 * Kill narjillos who touch outer space
@@ -50,12 +39,24 @@
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
 * Scale zoom based on creature size and window size when following
+* Position map?
 * (Test navigation with first-comer)
+
+##Species Tracker
+* Clustering algorithm to count species (any algo to do this with variable num of clusters *and* variable-length DNA?)
+* Report number of species on the console (or do it when analizing ancestry if too slow)
+
+##Sexual Reproduction
+* (a lot of things to decide. do I really need this stuff to get speciation? leave it for later in case I don't)
+* Basic Sexual Reproduction (just to set up for Assortative Mating)
+* Assortative Mating (this should get me speciation)
+* Species clustering control reproductive success? (to keep species apart)
+* Diploid creatures? (as a nice-to-have)
 
 ##Realistic Physics
 * Fix "tail wiggles dog" effect?
-* Rotation inertia
-* Translation inertia
+* Rotation inertia (but check comments in physics engine - it may break previous assumptions)
+* Translation inertia (see above)
 * Limit rotation speed?
 * Realistic viscosity?
 * Viscosity per segment?

@@ -54,7 +54,7 @@ public class BodyTest {
 		
 		// calculateRadius() needs an explicit center of mass, because of optimizations.
 		// So these two are better tested together: 
-		Vector centerOfMass = body.calculateCenterOfMass();
+		Vector centerOfMass = body.getCenterOfMass();
 		assertEquals(Vector.cartesian(12.5, 0), centerOfMass);
 		
 		assertEquals(17.5, body.getRadius(), 0.0);

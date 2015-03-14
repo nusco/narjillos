@@ -28,6 +28,9 @@ public class Body {
 	private final double adultMass;
 	private double mass;
 	private transient List<Organ> organs;
+	
+	private transient Vector cachedCenterOfMass = null;
+	private transient double cachedRadius = Double.NaN;
 
 	public Body(MovingOrgan head) {
 		this.head = head;
@@ -73,48 +76,26 @@ public class Body {
 		return result;
 	}
 
-	public double getRadius() {
-		return calculateRadius(calculateCenterOfMass());
-	}
-
 	public double getAdultMass() {
 		return adultMass;
 	}
 
-	public Vector calculateCenterOfMass() {
-		// TODO: any way to avoid recalculating this here?
-		// When I try to cache it, I get a weird bug with
-		// the mass staying too low and narjillos zipping
-		// around like crazy.
-		double mass = getMass();
+	public synchronized double getRadius() {
+		if (Double.isNaN(cachedRadius))
+			cachedRadius = calculateRadius(getCenterOfMass());
+		return cachedRadius ;
+	}
 
-		if (mass <= 0)
-			return getStartPoint();
-
-		// do it in one swoop instead of creating a lot of
-		// intermediate vectors
-
-		List<Organ> organs = getOrgans();
-		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<Organ> iterator = organs.iterator();
-		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			Organ organ = iterator.next();
-			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
-		}
-
-		double totalX = 0;
-		double totalY = 0;
-		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			totalX += weightedCentersOfMass[i].x;
-			totalY += weightedCentersOfMass[i].y;
-		}
-
-		return Vector.cartesian(totalX / mass, totalY / mass);
+	public synchronized Vector getCenterOfMass() {
+		if (cachedCenterOfMass  == null)
+			cachedCenterOfMass = calculateCenterOfMass();
+		return cachedCenterOfMass;
 	}
 
 	public void teleportTo(Vector position) {
 		final int northDirection = 90;
 		getHead().forcePosition(position, northDirection);
+		resetCaches();
 	}
 
 	/**
@@ -166,17 +147,47 @@ public class Body {
 		// these translations.
 		double translationEnergy = tick_step4_translate(initialPositionsOfOrgans, initialCenterOfMass, mass);
 
+		resetCaches();
+		
 		// We're done! Return the energy spent on the entire operation.
 		return getEnergyConsumed(rotationEnergy, translationEnergy);
-	}
-
-	public double calculateRadius() {
-		return calculateRadius(calculateCenterOfMass());
 	}
 
 	@Override
 	public String toString() {
 		return head.toString();
+	}
+
+	private synchronized void resetCaches() {
+		cachedCenterOfMass = null;
+		cachedRadius = Double.NaN;
+	}
+
+	private Vector calculateCenterOfMass() {
+		double mass = getMass();
+
+		if (mass <= 0)
+			return getStartPoint();
+
+		// do it in one swoop instead of creating a lot of
+		// intermediate vectors
+
+		List<Organ> organs = getOrgans();
+		Vector[] weightedCentersOfMass = new Vector[organs.size()];
+		Iterator<Organ> iterator = organs.iterator();
+		for (int i = 0; i < weightedCentersOfMass.length; i++) {
+			Organ organ = iterator.next();
+			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
+		}
+
+		double totalX = 0;
+		double totalY = 0;
+		for (int i = 0; i < weightedCentersOfMass.length; i++) {
+			totalX += weightedCentersOfMass[i].x;
+			totalY += weightedCentersOfMass[i].y;
+		}
+
+		return Vector.cartesian(totalX / mass, totalY / mass);
 	}
 
 	private void tick_step1_updateAngles(Vector targetDirection) {

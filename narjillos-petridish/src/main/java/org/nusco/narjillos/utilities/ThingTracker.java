@@ -86,7 +86,7 @@ public class ThingTracker {
 
 	private void centerViewportOn(Thing thing) {
 		if (thing.getLabel().equals("narjillo"))
-			viewport.flyToTargetEC(((Narjillo) thing).calculateCenterOfMass());
+			viewport.flyToTargetEC(((Narjillo) thing).getCenterOfMass());
 		else
 			viewport.flyToTargetEC(thing.getPosition());
 	}

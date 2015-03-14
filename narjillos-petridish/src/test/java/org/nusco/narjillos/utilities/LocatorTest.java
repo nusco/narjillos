@@ -37,12 +37,12 @@ public class LocatorTest {
 	public void findsThingsAtAGivenPosition() {
 		Narjillo narjillo1 = insertNarjillo(Vector.cartesian(1000, 1000));
 		Narjillo narjillo2 = insertNarjillo(Vector.cartesian(100, 100));
-		assertTrue(narjillo1.getRadius() > 4 && narjillo1.getRadius() < 300);
-		assertTrue(narjillo2.getRadius() > 4 && narjillo2.getRadius() < 300);
+		assertTrue(narjillo1.getRadius() > 2 && narjillo1.getRadius() < 3);
+		assertTrue(narjillo2.getRadius() > 2 && narjillo2.getRadius() < 3);
 
-		assertNull(locator.findNarjilloAt(Vector.cartesian(500, 500)));
-		assertEquals(narjillo2, locator.findNarjilloAt(Vector.cartesian(103, 103)));
-		assertEquals(narjillo1, locator.findNarjilloAt(Vector.cartesian(999, 1001)));
+		assertNull(locator.findNarjilloAt(Vector.cartesian(103, 103)));
+		assertEquals(narjillo2, locator.findNarjilloAt(Vector.cartesian(102, 102)));
+		assertEquals(narjillo1, locator.findNarjilloAt(Vector.cartesian(998, 1002)));
 	}
 	
 	@Test

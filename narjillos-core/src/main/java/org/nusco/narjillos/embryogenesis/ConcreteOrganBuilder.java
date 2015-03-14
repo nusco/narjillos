@@ -36,7 +36,7 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 
 	@Override
 	public BodyPlanInstruction getBodyPlanInstruction() {
-		int bodyPlan = getChromosome().getGene(BODY_PLAN_INSTRUCTION) & 0b00000111;
+		int bodyPlan = getChromosome().getGene(BODY_PLAN_INSTRUCTION) % 7;
 		if (bodyPlan == 0 || bodyPlan == 1)
 			return CONTINUE;
 		if (bodyPlan == 2 || bodyPlan == 3)

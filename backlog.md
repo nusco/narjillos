@@ -90,7 +90,6 @@
 * Package Java runtime with command-line program?
 
 ##Advanced Body Plans
-* Encode bodyplan instructions with modulo instead of bit checking
 * "Back" instruction in body plan
 * Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
 * "Skip" instruction in body plan

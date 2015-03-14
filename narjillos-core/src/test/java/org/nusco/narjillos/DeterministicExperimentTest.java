@@ -25,7 +25,7 @@ public class DeterministicExperimentTest {
 
 	@Test
 	public void experimentsAreDeterministic() {
-		final int cycles = 2000;
+		final int cycles = 1000;
 		runTest(cycles);
 	}
 

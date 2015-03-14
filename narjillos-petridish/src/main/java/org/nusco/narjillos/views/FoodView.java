@@ -5,39 +5,53 @@ import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.utilities.Viewport;
 
-class FoodView extends RoundObjectView {
+class FoodView extends ThingView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.035;
 
+	private final RoundObjectView roundObjectView;
+	
 	public FoodView(FoodPiece food) {
-		super(food, Configuration.FOOD_RADIUS);
+		super(food);
+		roundObjectView = new RoundObjectView(Configuration.FOOD_RADIUS) {
+			@Override
+			public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
+				if (zoomLevel < MINIMUM_ZOOM_LEVEL)
+					return null;
+
+				getShape().setFill(getColor(infraredOn));
+				
+				if (infraredOn) {
+					getShape().setStroke(Color.WHITE);
+					getShape().setStrokeWidth(3);
+				} else {
+					getShape().setStrokeWidth(0);
+				}
+
+				moveTo(getThing().getPosition());
+				
+				if (effectsOn)
+					getShape().setEffect(getEffects(zoomLevel, infraredOn));
+				
+				return getShape();
+			}
+
+			private Color getColor(boolean infraredOn) {
+				if (infraredOn)
+					return Color.RED;
+				return Color.BROWN;
+			}
+		};
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
-		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
-			return null;
-
-		getShape().setFill(getColor(infraredOn));
-		
-		if (infraredOn) {
-			getShape().setStroke(Color.WHITE);
-			getShape().setStrokeWidth(3);
-		} else {
-			getShape().setStrokeWidth(0);
-		}
-
-		moveToPosition();
-		
-		if (effectsOn)
-			getShape().setEffect(getEffects(zoomLevel, infraredOn));
-		
-		return getShape();
+		return roundObjectView.toNode(zoomLevel, infraredOn, effectsOn);
 	}
 
-	private Color getColor(boolean infraredOn) {
-		if (infraredOn)
-			return Color.RED;
-		return Color.BROWN;
+	@Override
+	public boolean isVisible(Viewport viewport) {
+		return roundObjectView.isVisible(viewport);
 	}
 }

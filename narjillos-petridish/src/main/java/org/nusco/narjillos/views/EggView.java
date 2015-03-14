@@ -60,7 +60,7 @@ class EggView extends ThingView {
 	}
 
 	@Override
-	protected boolean isVisible(Viewport viewport) {
+	public boolean isVisible(Viewport viewport) {
 		return viewport.isVisible(getThing().getPosition(), Configuration.EGG_RADIUS + RADIUS_VARIATION);
 	}
 }

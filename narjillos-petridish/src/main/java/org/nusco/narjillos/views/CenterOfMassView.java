@@ -11,14 +11,17 @@ import org.nusco.narjillos.shared.physics.Vector;
  */
 class CenterOfMassView extends RoundObjectView {
 
+	private final Narjillo narjillo;
+
 	public CenterOfMassView(Narjillo narjillo) {
-		super(narjillo, 6);
+		super(6);
+		this.narjillo = narjillo;
 		getShape().setFill(Color.BLACK);
 	}
 
 	@Override
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
-		Vector position = ((Narjillo)getThing()).calculateCenterOfMass();
+		Vector position = (narjillo.calculateCenterOfMass());
 		moveTo(position);
 		return getShape();
 	}

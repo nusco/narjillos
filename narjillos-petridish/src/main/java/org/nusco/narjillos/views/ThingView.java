@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.things.FoodPiece;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.utilities.Viewport;
 
-abstract class ThingView {
+abstract class ThingView implements ItemView {
 
 	private final Thing thing;
 
@@ -29,10 +29,13 @@ abstract class ThingView {
 		
 		return toNode(viewport.getZoomLevel(), infraredOn, effectsOn);
 	}
-	
-	protected abstract boolean isVisible(Viewport viewport);
 
-	public abstract Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn);
+	protected Effect getEffects(double zoomLevel, boolean infraredOn) {
+		if (infraredOn)
+			return getHaloEffect(zoomLevel * 1.5);
+		
+		return getHaloEffect(zoomLevel);
+	}
 	
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("narjillo"))
@@ -45,23 +48,13 @@ abstract class ThingView {
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}
 
-	protected Effect getEffects(double zoomLevel, boolean infraredOn) {
-		if (infraredOn)
-			return getHaloEffect(zoomLevel * 1.5);
-		
-		return getHaloEffect(zoomLevel);
-	}
-
 	private Effect getHaloEffect(double zoomLevel) {
 		double minZoomLevel = 0.2;
 		if (zoomLevel <= minZoomLevel)
 			return null;
-		double alpha = clipToRange((zoomLevel - minZoomLevel) * 2.5, 0, 1);
-		Color color = new Color(0.9, 0.9, 0.9, alpha);
+		double alpha = (zoomLevel - minZoomLevel) * 2.5;
+		double limitedAlpha = Math.max(0, Math.min(1, alpha));
+		Color color = new Color(0.9, 0.9, 0.9, limitedAlpha);
 		return new DropShadow(20, 7, 7, color);
-	}
-	
-	protected double clipToRange(double result, double min, double max) {
-		return Math.max(min, Math.min(max, result));
 	}
 }

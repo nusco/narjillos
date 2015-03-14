@@ -12,22 +12,22 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.utilities.Viewport;
 
-class MouthView extends ThingView {
+class MouthView implements ItemView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.1;
 
 	private static final int LENGTH = 50;
+	private final Narjillo narjillo;
 	private final Group group = new Group();
 	private final Line line1 = createLine();
 	private final Line line2 = createLine();
 
 	public MouthView(Narjillo narjillo) {
-		super(narjillo);
+		this.narjillo = narjillo;
 		group.getChildren().add(line1);
 		group.getChildren().add(line2);
 	}
 
-	@Override
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
@@ -46,6 +46,11 @@ class MouthView extends ThingView {
 		return group;
 	}
 
+	@Override
+	public boolean isVisible(Viewport viewport) {
+		return viewport.isVisible(getNarjillo().getPosition(), LENGTH);
+	}
+
 	private Color getColor(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
 			return Color.WHITE;
@@ -54,7 +59,8 @@ class MouthView extends ThingView {
 
 	private double getAlpha(double zoomLevel) {
 		double alphaBasedOnZoom = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 20;
-		return clipToRange(Math.min(alphaBasedOnZoom, getAlphaBasedOnAge()), 0, 1);
+		double alpha = Math.min(alphaBasedOnZoom, getAlphaBasedOnAge());
+		return Math.max(0, Math.min(1, alpha));
 	}
 
 	private double getAlphaBasedOnAge() {
@@ -87,11 +93,6 @@ class MouthView extends ThingView {
 	}
 
 	private Narjillo getNarjillo() {
-		return (Narjillo)getThing();
-	}
-
-	@Override
-	protected boolean isVisible(Viewport viewport) {
-		return viewport.isVisible(getNarjillo().getPosition(), LENGTH);
+		return narjillo;
 	}
 }

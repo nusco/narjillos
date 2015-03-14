@@ -9,8 +9,11 @@ class EyeView extends RoundObjectView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.12;
 
+	private final Narjillo narjillo;
+
 	public EyeView(Narjillo narjillo) {
-		super(narjillo, 6);
+		super(6);
+		this.narjillo = narjillo;
 	}
 
 	@Override
@@ -18,7 +21,7 @@ class EyeView extends RoundObjectView {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
 		getShape().setFill(toColor(zoomLevel));
-		moveToPosition();
+		moveTo(narjillo.getPosition());
 		return getShape();
 	}
 
@@ -27,7 +30,11 @@ class EyeView extends RoundObjectView {
 	}
 
 	private double getIntensity() {
-		return clipToRange(((Narjillo) getThing()).getEnergyLevel(), 0, 0.8);
+		return Math.max(0, Math.min(0.8, narjillo.getEnergyLevel()));
+	}
+	
+	protected double clipToRange(double result, double min, double max) {
+		return Math.max(min, Math.min(max, result));
 	}
 
 	private double getTransparency(double zoomLevel) {

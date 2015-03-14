@@ -72,7 +72,7 @@ class NarjilloView extends ThingView {
 	}
 
 	@Override
-	protected boolean isVisible(Viewport viewport) {
+	public boolean isVisible(Viewport viewport) {
 		for (OrganView organView : organViews)
 			if (organView.isVisible(viewport))
 				return true;

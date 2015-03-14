@@ -15,7 +15,7 @@ import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.physics.ZeroVectorException;
 import org.nusco.narjillos.utilities.Viewport;
 
-class OrganView extends ThingView {
+class OrganView implements ItemView {
 
 	private static final double VERY_LOW_MAGNIFICATION = 0.003;
 	private static final double LOW_MAGNIFICATION = 0.015;
@@ -28,6 +28,7 @@ class OrganView extends ThingView {
 
 	private final static int OVERLAP = 7;
 
+	private final Narjillo narjillo;
 	private final Organ organ;
 	private final Color color;
 	private final Rectangle rectangle;
@@ -35,7 +36,7 @@ class OrganView extends ThingView {
 	private Segment previousOrganPosition;
 
 	public OrganView(Organ bodyPart, Narjillo narjillo) {
-		super(narjillo);
+		this.narjillo = narjillo;
 		this.organ = bodyPart;
 		color = toRGBColor(bodyPart.getFiber());
 		rectangle = createRectangle();
@@ -196,7 +197,11 @@ class OrganView extends ThingView {
 
 	private double getEnergyAlpha() {
 		double currentEnergyPercent = getNarjillo().getEnergyLevel();
-		return clipToRange(currentEnergyPercent * 10, 0, 1);
+		return Math.max(0, Math.min(1, currentEnergyPercent * 10));
+	}
+	
+	protected double clipToRange(double result, double min, double max) {
+		return Math.max(min, Math.min(max, result));
 	}
 
 	private Color toRGBColor(Fiber fiber) {
@@ -204,7 +209,7 @@ class OrganView extends ThingView {
 	}
 
 	@Override
-	protected boolean isVisible(Viewport viewport) {
+	public boolean isVisible(Viewport viewport) {
 		double margin = Math.max(organ.getThickness() / 2, getLengthWithOverlapMargin(organ));
 		return viewport.isVisible(organ.getStartPoint(), margin);
 	}
@@ -214,6 +219,6 @@ class OrganView extends ThingView {
 	}
 
 	private Narjillo getNarjillo() {
-		return (Narjillo) getThing();
+		return narjillo;
 	}
 }

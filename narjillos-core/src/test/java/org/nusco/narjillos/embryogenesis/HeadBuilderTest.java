@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.genomics.Chromosome;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 
@@ -23,10 +24,10 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 	}
 
 	@Test
-	public void decodesAPercentEnergyToChildrenBetween0and1() {
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0)).getPercentEnergyToChildren(), 0.01);
-		assertEquals(0.5, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 126)).getPercentEnergyToChildren(), 0.01);
-		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 255)).getPercentEnergyToChildren(), 0.01);
+	public void decodesAPercentEnergyToChildrenBetweenOneTenthAnd1() {
+		assertEquals(Configuration.CREATURE_MIN_PERCENT_ENERGY_TO_CHILDREN, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0)).getPercentEnergyToChildren(), 0.0);
+		assertEquals(0.59, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 126)).getPercentEnergyToChildren(), 0.01);
+		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 255)).getPercentEnergyToChildren(), 0.0);
 	}
 
 	@Test

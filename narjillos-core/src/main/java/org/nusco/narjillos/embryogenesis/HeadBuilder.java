@@ -6,6 +6,7 @@ import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.genomics.Chromosome;
+import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * Builds a Head from a chromosome.
@@ -34,7 +35,9 @@ class HeadBuilder extends ConcreteOrganBuilder {
 	}
 
 	double getPercentEnergyToChildren() {
-		return (getChromosome().getGene(PERCENT_ENERGY_TO_CHILDREN) + 1) / 256.0;
+		final double maxEnergyToChildrenFromGene = 1 - Configuration.CREATURE_MIN_PERCENT_ENERGY_TO_CHILDREN;
+		double energyToChildrenFromGene = getChromosome().getGene(PERCENT_ENERGY_TO_CHILDREN) / 255.0 * maxEnergyToChildrenFromGene;
+		return energyToChildrenFromGene + Configuration.CREATURE_MIN_PERCENT_ENERGY_TO_CHILDREN;
 	}
 
 	int getEggVelocity() {

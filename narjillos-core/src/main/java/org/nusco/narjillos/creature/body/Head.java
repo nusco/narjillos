@@ -12,14 +12,16 @@ public class Head extends MovingOrgan {
 	private final double metabolicRate;
 	private final double percentEnergyToChildren;
 	private final int eggVelocity;
+	private final int eggInterval;
 
 	private Vector startPoint = Vector.ZERO;
 	
-	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, double percentEnergyToChildren, int eggVelocity) {
+	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, double percentEnergyToChildren, int eggVelocity, int eggInterval) {
 		super(adultLength, adultThickness, new Fiber(red, green, blue), null, new WaveNerve(Configuration.CREATURE_BASE_WAVE_FREQUENCY * metabolicRate), 0);
 		this.metabolicRate = metabolicRate;
 		this.percentEnergyToChildren = percentEnergyToChildren;
 		this.eggVelocity = eggVelocity;
+		this.eggInterval = eggInterval;
 	}
 
 	public void tick(double angleToTarget) {
@@ -35,8 +37,12 @@ public class Head extends MovingOrgan {
 		return percentEnergyToChildren;
 	}
 
-	public double getEggVelocity() {
+	public int getEggVelocity() {
 		return eggVelocity;
+	}
+
+	public int getEggInterval() {
+		return eggInterval;
 	}
 
 	public void forcePosition(Vector startPoint, double angle) {

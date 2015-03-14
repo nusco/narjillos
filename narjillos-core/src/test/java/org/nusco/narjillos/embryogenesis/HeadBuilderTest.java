@@ -32,8 +32,15 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 	@Test
 	public void decodesAnEggVelocityBetween0and255() {
 		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0)).getEggVelocity(), 0.01);
-		assertEquals(0.5, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 10)).getEggVelocity(), 0.01);
-		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 255)).getEggVelocity(), 0.01);
+		assertEquals(10, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 10)).getEggVelocity(), 0.01);
+		assertEquals(255, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 255)).getEggVelocity(), 0.01);
+	}
+
+	@Test
+	public void decodesAnEggLayingIntervalBetween0and25500() {
+		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0)).getEggInterval(), 0.01);
+		assertEquals(1000, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 10)).getEggInterval(), 0.01);
+		assertEquals(25500, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 255)).getEggInterval(), 0.01);
 	}
 
 	@Test

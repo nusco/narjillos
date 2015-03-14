@@ -9,13 +9,13 @@ public class BodyTest {
 
 	@Test
 	public void isPositionedAtZeroByDefault() {
-		Body body = new Body(new Head(1, 1, 1, 1, 1, 1, 0.5, 1));
+		Body body = new Body(new Head(1, 1, 1, 1, 1, 1, 0.5, 1, 0));
 		assertEquals(Vector.ZERO, body.getStartPoint());
 	}
 
 	@Test
 	public void canBeTeleportedToAGivenPosition() {
-		Body body = new Body(new Head(1, 1, 1, 1, 1, 1, 0.5, 1));
+		Body body = new Body(new Head(1, 1, 1, 1, 1, 1, 0.5, 1, 0));
 		
 		body.teleportTo(Vector.cartesian(10, -10));
 
@@ -26,7 +26,7 @@ public class BodyTest {
 	public void hasAMassProportionalToItsSize() {
 		int headLengthInMm = 3;
 		int headThicknessInMm = 4;
-		Head head = new Head(headLengthInMm, headThicknessInMm, 0, 0, 0, 1, 0.5, 1);
+		Head head = new Head(headLengthInMm, headThicknessInMm, 0, 0, 0, 1, 0.5, 1, 0);
 		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
@@ -39,7 +39,7 @@ public class BodyTest {
 	
 	@Test
 	public void hasACenterOfMassAndARadius() {
-		Head head = new Head(10, 10, 0, 0, 0, 1, 0.5, 1);
+		Head head = new Head(10, 10, 0, 0, 0, 1, 0.5, 1, 0);
 		
 		BodyPart child = new BodyPart(20, 5, 0, 0, 0, head, 0, 0, 0, 0);
 		head.addChild(child);
@@ -62,23 +62,30 @@ public class BodyTest {
 	
 	@Test
 	public void itsMinimumRadiusIsOne() {
-		Head head = new Head(0, 1, 0, 0, 0, 1, 0.5, 0);
+		Head head = new Head(0, 1, 0, 0, 0, 1, 0.5, 0, 0);
 		Body body = new Body(head);
 		assertEquals(1, body.getRadius(), 0.0);
 	}
 	
 	@Test
 	public void hasTheSamePercentEnergyToChildrenAsTheHead() {
-		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, 0.42, 0));
+		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, 0.42, 0, 0));
 
 		assertEquals(0.42, body.getPercentEnergyToChildren(), 0.0);
 	}
 	
 	@Test
 	public void hasTheSameEggVelocityAsTheHead() {
-		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, 0.42, 42));
+		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, 0.42, 42, 0));
 
 		assertEquals(42, body.getEggVelocity(), 0.0);
+	}
+	
+	@Test
+	public void hasTheSameEggIntervalAsTheHead() {
+		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, 0.42, 0, 10));
+
+		assertEquals(10, body.getEggInterval(), 0.0);
 	}
 
 	private void fullyGrow(MovingOrgan organ) {

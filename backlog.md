@@ -2,7 +2,11 @@
 # Narjillos Backlog
 #===================
 
-* Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)
+##Self-Regulating Ecosystem
+* Elements in environment
+* Narjillos produce a molecule (based on visible body qualities - metabolic rate?)
+* Narjillos consume a molecule (faster reproduction? lower energy expenditure?)
+* Ecological Niches (tweak chemistry to encourage speciation)
 
 ##Predators (Complex Interactions 1)
 * Fix sketchy collision detection (is this a bug?)
@@ -11,11 +15,8 @@
 * Red fibers damage the attacker
 * Remove food?
 
-##Self-Regulating Ecosystem
-* Elements in environment
-* Narjillos produce a molecule (based on visible body qualities - use DNA hashes?)
-* Narjillos consume a molecule (faster reproduction? lower energy expenditure?)
-* Ecological Niches (tweak chemistry to encourage speciation)
+##Before Release, remember to...
+* Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)
 
 ##Istincts (Complex Interactions 2)
 * Identifiable species (DNA hashes)

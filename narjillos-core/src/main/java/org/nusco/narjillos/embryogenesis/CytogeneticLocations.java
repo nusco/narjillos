@@ -33,11 +33,14 @@ interface CytogeneticLocations {
 	// In body parts: how wide the body segment's movement is
 	static final int AMPLITUDE = 5;
 
-	// In egg: the initial velocity of the creature's egg
+	// In head: the initial velocity of the creature's egg
 	static final int EGG_VELOCITY = 6;
 
 	// In body parts: the angle at rest with the previous body segment
 	static final int ANGLE_TO_PARENT = 6;
+
+	// In head: the average interval between laying eggs
+	static final int EGG_INTERVAL = 7;
 
 	// In body parts: how much the body part skews its movement when the
 	// creature's target is off to the side

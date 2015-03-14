@@ -12,7 +12,7 @@ public class HeadTest extends ConnectedOrganTest {
 
 	@Override
 	public Head createConcreteOrgan(int length, int thickness) {
-		return new Head(length, thickness, 100, 101, 102, 1, 0.5, 1);
+		return new Head(length, thickness, 100, 101, 102, 1, 0.5, 1, 0);
 	}
 
 	@Override
@@ -35,14 +35,14 @@ public class HeadTest extends ConnectedOrganTest {
 
 	@Test
 	public void hasAWaveNerve() {
-		Nerve nerve = new Head(0, 0, 0, 0, 0, 1, 0.5, 30).getNerve();
+		Nerve nerve = new Head(0, 0, 0, 0, 0, 1, 0.5, 30, 0).getNerve();
 				
 		assertEquals(WaveNerve.class, nerve.getClass());
 	}
 	
 	@Test
 	public void hasACenterOfMass() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, 0.5, 1);
+		Head head = new Head(10, 6, 0, 0, 0, 1, 0.5, 1, 0);
 		head.setAngleToParent(90);
 		head.updateGeometry();
 		
@@ -53,21 +53,28 @@ public class HeadTest extends ConnectedOrganTest {
 	
 	@Test
 	public void hasAPercentOfEnergyThatItPassesOnToChildren() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, 0.42, 1);
+		Head head = new Head(10, 6, 0, 0, 0, 1, 0.42, 1, 0);
 		
 		assertEquals(0.42, head.getPercentEnergyToChildren(), 0.0);
 	}
 	
 	@Test
 	public void hasAVelocityOfEggs() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, 0.42, 42);
+		Head head = new Head(10, 6, 0, 0, 0, 1, 0.42, 42, 0);
 		
-		assertEquals(0.42, head.getEggVelocity(), 42);
+		assertEquals(42, head.getEggVelocity());
+	}
+	
+	@Test
+	public void hasAnIntervalForLayingEggs() {
+		Head head = new Head(10, 6, 0, 0, 0, 1, 0.42, 42, 43);
+		
+		assertEquals(43, head.getEggInterval());
 	}
 	
 	@Test
 	public void hasAFiber() {
-		Head head = new Head(10, 6, 10, 20, 30, 1, 0.42, 30);
+		Head head = new Head(10, 6, 10, 20, 30, 1, 0.42, 30, 0);
 		
 		assertEquals(new Fiber(10, 20, 30), head.getFiber());
 	}

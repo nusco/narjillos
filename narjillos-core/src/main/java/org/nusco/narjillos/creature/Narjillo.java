@@ -136,7 +136,7 @@ public class Narjillo implements Thing {
 		
 		if (isTooYoungToLayEggs()) {
 			// too young - skip this chance to reproduce
-			decideWhenToTryLayingTheNextEgg(ranGen);
+			decideWhenToLayTheNextEgg();
 			return null;
 		}
 		
@@ -150,18 +150,14 @@ public class Narjillo implements Thing {
 		getEnergy().decreaseBy(energyToChild);
 		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
 
-		decideWhenToTryLayingTheNextEgg(ranGen);
+		decideWhenToLayTheNextEgg();
 		Vector position = getNeckLocation();
 		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), getBody().getEggVelocity());
 		return new Egg(childDNA, position, velocity, energyToChild, ranGen);
 	}
 
-	private void decideWhenToTryLayingTheNextEgg(RanGen ranGen) {
-		nextEggAge = getAge() + (long) (getAverageEggLayingInterval() * 2 * ranGen.nextDouble());
-	}
-
-	private double getAverageEggLayingInterval() {
-		return Configuration.CREATURE_AVERAGE_EGG_LAYING_INTERVAL;
+	private void decideWhenToLayTheNextEgg() {
+		nextEggAge = getAge() + getBody().getEggInterval();
 	}
 
 	private boolean isTooYoungToLayEggs(){

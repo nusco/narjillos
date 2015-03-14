@@ -41,8 +41,12 @@ class HeadBuilder extends ConcreteOrganBuilder {
 		return getChromosome().getGene(EGG_VELOCITY);
 	}
 
+	int getEggInterval() {
+		return getChromosome().getGene(EGG_INTERVAL) * 100;
+	}
+
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
-		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getPercentEnergyToChildren(), getEggVelocity());
+		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getPercentEnergyToChildren(), getEggVelocity(), getEggInterval());
 	}
 }

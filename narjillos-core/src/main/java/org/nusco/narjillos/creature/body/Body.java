@@ -62,8 +62,12 @@ public class Body {
 		return getHead().getPercentEnergyToChildren();
 	}
 
-	public double getEggVelocity() {
+	public int getEggVelocity() {
 		return getHead().getEggVelocity();
+	}
+
+	public int getEggInterval() {
+		return getHead().getEggInterval();
 	}
 
 	public double getMass() {

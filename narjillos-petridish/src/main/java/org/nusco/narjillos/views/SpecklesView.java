@@ -41,7 +41,8 @@ public class SpecklesView {
 	public Node toNode(boolean infraredOn) {
 		Node result = infraredOn ? infraredBackground : background;
 		
-		if (viewport.getZoomLevel() <= 0.25)
+		double minimumZoomLevelToSeeSpeckles = 0.20;
+		if (viewport.getZoomLevel() <= minimumZoomLevelToSeeSpeckles)
 			return null;
 
 		result.getTransforms().clear();
@@ -91,7 +92,7 @@ public class SpecklesView {
 
 	private int getRandomCoordinate(int maxSize) {
 		double maxSpeckleRadius = Math.max(NORMAL_SPECKLE_RADIUS, INFRARED_SPECKLE_RADIUS);
-		// Don't get too close to the edges - we don't want half-speckles
+		// Don't get too close to the edges of the tile - we don't want half-speckles
 		return (int) (maxSpeckleRadius + Math.random() * (maxSize - (maxSpeckleRadius * 2)));
 	}
 }

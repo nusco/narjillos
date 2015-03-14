@@ -17,6 +17,10 @@ import org.nusco.narjillos.views.AncestryStatusView;
 import org.nusco.narjillos.views.EnvirommentView;
 import org.nusco.narjillos.views.MicroscopeView;
 
+/**
+ * This is work in progress for an application that will load the ancestry out
+ * of an experiment and show the evolution of the most successfull genome.
+ */
 public class AncestryBrowser extends ApplicationBase {
 
 	private static String[] programArguments = new String[0];

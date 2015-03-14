@@ -25,6 +25,7 @@ public class Configuration {
 	public static final double CREATURE_BASE_SKEWING_VELOCITY = 0.1;
 	public static final double CREATURE_LATERAL_VIEWFIELD = 135;
 	public static final double CREATURE_MIN_PERCENT_ENERGY_TO_CHILDREN = 0.2;
+	public static final double CREATURE_MIN_ENERGY_TO_LAY_EGG = 10_000;
 
 	// energy
 	public static final double ENERGY_PER_JOULE = 1.0 / 75_000_000_000L;

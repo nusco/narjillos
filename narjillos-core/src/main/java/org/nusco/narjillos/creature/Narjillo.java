@@ -144,7 +144,7 @@ public class Narjillo implements Thing {
 		double energyToEgg = Math.pow(getBody().getEggVelocity() * Configuration.EGG_MASS, 2);
 		
 		double totalEnergyRequired = energyToChild + energyToEgg;
-		if (getEnergy().getValue() < totalEnergyRequired)
+		if (getEnergy().getValue() < totalEnergyRequired + Configuration.CREATURE_MIN_ENERGY_TO_LAY_EGG)
 			return null;
 		
 		getEnergy().decreaseBy(energyToChild);

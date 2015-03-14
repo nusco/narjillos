@@ -19,7 +19,7 @@ public class NarjilloEnergyLossTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}"), new Body(new Head(10, 10, 10, 10, 10, 1, 0.5)), Vector.ZERO, new LifeFormEnergy(1000, 1000));
+		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}"), new Body(new Head(10, 10, 10, 10, 10, 1, 0.5, 30)), Vector.ZERO, new LifeFormEnergy(1000, 1000));
 		
 		DNA dna = new DNA(2, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}");
 		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, Energy.INFINITE);

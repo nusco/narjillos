@@ -30,6 +30,13 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 	}
 
 	@Test
+	public void decodesAnEggVelocityBetween0and255() {
+		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0)).getEggVelocity(), 0.01);
+		assertEquals(0.5, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 10)).getEggVelocity(), 0.01);
+		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 255)).getEggVelocity(), 0.01);
+	}
+
+	@Test
 	public void decodesFiberComponents() {
 		Chromosome chromosome = new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 10, 20, 30);
 		assertEquals(10, getConcreteOrganBuilder(chromosome).getRed());

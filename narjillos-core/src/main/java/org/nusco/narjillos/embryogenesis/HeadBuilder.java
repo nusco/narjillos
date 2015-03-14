@@ -20,10 +20,6 @@ class HeadBuilder extends ConcreteOrganBuilder {
 		final double MAX_METABOLIC_RATE = 3;
 		return getChromosome().getGene(METABOLIC_RATE) * (MAX_METABOLIC_RATE / 255);
 	}
-
-	public double getPercentEnergyToChildren() {
-		return (getChromosome().getGene(PERCENT_ENERGY_TO_CHILDREN) + 1) / 256.0;
-	}
 	
 	int getRed() {
 		return getChromosome().getGene(RED);
@@ -37,8 +33,16 @@ class HeadBuilder extends ConcreteOrganBuilder {
 		return getChromosome().getGene(BLUE);
 	}
 
+	double getPercentEnergyToChildren() {
+		return (getChromosome().getGene(PERCENT_ENERGY_TO_CHILDREN) + 1) / 256.0;
+	}
+
+	int getEggVelocity() {
+		return getChromosome().getGene(EGG_VELOCITY);
+	}
+
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
-		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getPercentEnergyToChildren());
+		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getPercentEnergyToChildren(), getEggVelocity());
 	}
 }

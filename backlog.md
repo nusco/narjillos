@@ -4,9 +4,6 @@
 
 * Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)
 
-##Smart Reproduction
-* Egg firing distance is controlled by genes
-
 ##Predators (Complex Interactions 1)
 * Fix sketchy collision detection (is this a bug?)
 * Rewrite collision detection to be independent of max speed

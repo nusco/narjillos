@@ -62,6 +62,10 @@ public class Body {
 		return getHead().getPercentEnergyToChildren();
 	}
 
+	public double getEggVelocity() {
+		return getHead().getEggVelocity();
+	}
+
 	public double getMass() {
 		double result = 0;
 		for (Organ organ : getOrgans())

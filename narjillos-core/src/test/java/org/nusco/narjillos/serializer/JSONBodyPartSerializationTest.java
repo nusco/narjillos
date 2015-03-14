@@ -17,7 +17,7 @@ public class JSONBodyPartSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesHeads() {
-		Head head = new Head(1, 2, 10, 20, 30, 4, 0.5);
+		Head head = new Head(1, 2, 10, 20, 30, 4, 0.5, 30);
 		head.forcePosition(Vector.cartesian(6, 7), 8);
 
 		for (int i = 0; i < 10; i++)
@@ -28,16 +28,17 @@ public class JSONBodyPartSerializationTest {
 
 		assertEquals(head.getLength(), deserialized.getLength(), 0.0);
 		assertEquals(head.getThickness(), deserialized.getThickness(), 0.0);
+		assertEquals(Vector.cartesian(6, 7), deserialized.getStartPoint());
+		assertEquals(8, deserialized.getAbsoluteAngle(), 0.0);
 		assertEquals(new Fiber(10, 20, 30), deserialized.getFiber());
 		assertEquals(4, ((Head) deserialized).getMetabolicRate(), 0.0);
 		assertEquals(0.5, ((Head) deserialized).getPercentEnergyToChildren(), 0.0);
-		assertEquals(Vector.cartesian(6, 7), deserialized.getStartPoint());
-		assertEquals(8, deserialized.getAbsoluteAngle(), 0.0);
+		assertEquals(30, ((Head) deserialized).getEggVelocity(), 0.0);
 	}
 
 	@Test
 	public void serializesAndDeserializesBodySegments() {
-		ConnectedOrgan parent = new Head(10, 20, 0, 0, 0, 40, 0.5);
+		ConnectedOrgan parent = new Head(10, 20, 0, 0, 0, 40, 0.5, 30);
 		BodyPart bodySegment = new BodyPart(1, 2, 10, 20, 30, parent, 4, -5, 6, 7);
 
 		for (int i = 0; i < 10; i++)
@@ -62,7 +63,7 @@ public class JSONBodyPartSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesAnEntireTreeOfOrgans() {
-		MovingOrgan parent = new Head(100, 0, 0, 0, 0, 0, 0.5);
+		MovingOrgan parent = new Head(100, 0, 0, 0, 0, 0, 0.5, 30);
 		ConnectedOrgan child = new BodyPart(200, 0, 10, 20, 30, parent, 0, 0, 0, 0);
 		parent.addChild(child);
 		

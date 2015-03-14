@@ -82,7 +82,7 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		
 		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, delayGene, amplitudeGene, angleToParentGene, skewingGene, redShiftGene, greenShiftGene, blueShiftGene);
 		BodySegmentBuilder builder = getConcreteOrganBuilder(chromosome);
-		Head head = new Head(10, 10, 50, 60, 70, 10, 0.5);
+		Head head = new Head(10, 10, 50, 60, 70, 10, 0.5, 30);
 		BodyPart bodyPart = (BodyPart) builder.buildOrgan(head, 1);
 
 		head.updateGeometry();

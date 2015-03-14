@@ -15,7 +15,7 @@ public class JSONBodySerializationTest {
 
 	@Test
 	public void serializesAndDeserializesBody() {
-		Head head = new Head(1, 2, 30, 31, 32, 4, 0.5);
+		Head head = new Head(1, 2, 30, 31, 32, 4, 0.5, 30);
 		
 		BodyPart child1 = new BodyPart(11, 12, 130, 131, 132, head, 14, 15, 16, 17);
 		head.addChild(child1);

@@ -5,7 +5,6 @@
 * Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)
 
 ##Smart Reproduction
-* Firing eggs costs energy
 * Egg firing distance is controlled by genes
 
 ##Predators (Complex Interactions 1)

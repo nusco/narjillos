@@ -141,8 +141,8 @@ public class Narjillo implements Thing {
 		}
 		
 		double energyToChild = getEnergy().getValue() * getBody().getPercentEnergyToChildren();
-		double energyToEgg = 0; // TODO: will be > 0 when firing requires energy
-
+		double energyToEgg = Math.pow(Configuration.EGG_INITIAL_VELOCITY * Configuration.EGG_MASS, 2);
+		
 		double totalEnergyRequired = energyToChild + energyToEgg;
 		if (getEnergy().getValue() < totalEnergyRequired)
 			return null;
@@ -152,7 +152,7 @@ public class Narjillo implements Thing {
 
 		decideWhenToTryLayingTheNextEgg(ranGen);
 		Vector position = getNeckLocation();
-		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_INITIAL_VELOCITY * ranGen.nextDouble());
+		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_INITIAL_VELOCITY);
 		return new Egg(childDNA, position, velocity, energyToChild, ranGen);
 	}
 

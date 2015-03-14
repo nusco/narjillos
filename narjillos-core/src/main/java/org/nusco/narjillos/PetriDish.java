@@ -125,8 +125,9 @@ public class PetriDish extends Dish {
 
 	private void save() {
 		isSaving = true;
-		System.out.println("> Saving...");
+		System.out.print("> Saving...");
 		Persistence.save(experiment);
+		System.out.println(" Done.");
 		isSaving = false;
 	}
 

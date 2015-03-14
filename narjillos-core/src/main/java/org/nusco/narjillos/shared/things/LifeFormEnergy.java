@@ -1,6 +1,7 @@
 package org.nusco.narjillos.shared.things;
 
 import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.shared.utilities.NumberFormat;
 
 public class LifeFormEnergy implements Energy {
 
@@ -90,5 +91,10 @@ public class LifeFormEnergy implements Energy {
 				&& Double.doubleToLongBits(initialValue) == Double.doubleToLongBits(other.initialValue)
 				&& Double.doubleToLongBits(maxForAge) == Double.doubleToLongBits(other.maxForAge)
 				&& Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
+	}
+	
+	@Override
+	public String toString() {
+		return NumberFormat.format(getValue()) + " of " + NumberFormat.format(getMaximumValue());
 	}
 }

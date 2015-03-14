@@ -20,7 +20,7 @@ public class ThingTracker {
 	public synchronized void tick() {
 		if (!isTracking())
 			return;
-		
+
 		if (tracked.getLabel().equals("narjillo")) {
 			Narjillo narjillo = (Narjillo) tracked;
 			if (narjillo.isDead()) {

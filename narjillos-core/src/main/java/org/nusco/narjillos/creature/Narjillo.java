@@ -26,7 +26,8 @@ public class Narjillo implements Thing {
 	private final Energy energy;
 	private final Mouth mouth = new Mouth();
 	private Vector target = Vector.ZERO;
-	private int age = 0;
+	private long age = 0;
+	private long nextEggAge = 0;
 	
 	public Narjillo(DNA genes, Body body, Vector position, Energy energy) {
 		this.body = body;
@@ -122,7 +123,7 @@ public class Narjillo implements Thing {
 		return getBody().getHead().getEndPoint();
 	}
 
-	public int getAge() {
+	public long getAge() {
 		return age;
 	}
 
@@ -130,51 +131,37 @@ public class Narjillo implements Thing {
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
 	 */
 	public Egg layEgg(Culture ecosystem, GenePool genePool, RanGen ranGen) {
-		// TODO: this entire algorithm must be rethought
-		
-		if (isTooYoungToLayEggs())
+		if (getAge() < nextEggAge)
 			return null;
 		
-//		if (ranGen.nextDouble() > Configuration.CREATURE_CHANCE_OF_LAYING_EGG)
-//			return null;
+		if (isTooYoungToLayEggs()) {
+			// too young - skip this chance to reproduce
+			decideWhenToTryLayingTheNextEgg(ranGen);
+			return null;
+		}
 		
-		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
+		double energyToChild = getEnergy().getValue() * getBody().getPercentEnergyToChildren();
+		double energyToEgg = 0; // TODO: will be > 0 when firing requires energy
 
-		// if the energy available is not close to the max, refuse to reproduce
-		if (getEnergy().getMaximumValue() - getEnergy().getValue() < 1000)
+		double totalEnergyRequired = energyToChild + energyToEgg;
+		if (getEnergy().getValue() < totalEnergyRequired)
 			return null;
 		
-		double childEnergy = getEnergy().donate(percentEnergyToChildren);
-		if (childEnergy == 0)
-			return null; // refuse to lay egg
-		
+		getEnergy().decreaseBy(energyToChild);
 		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
-	
+
+		decideWhenToTryLayingTheNextEgg(ranGen);
 		Vector position = getNeckLocation();
-		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_MAX_VELOCITY * ranGen.nextDouble());
-		return new Egg(childDNA, position, velocity, childEnergy, ranGen);
+		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_INITIAL_VELOCITY * ranGen.nextDouble());
+		return new Egg(childDNA, position, velocity, energyToChild, ranGen);
 	}
 
-	/**
-	 * Forces the laying of an egg, no questions asked (except in a few
-	 * extreme cases - see the code).
-	 */
-	public Egg forceLayEgg(Culture ecosystem, GenePool genePool, RanGen ranGen) {
-		// TODO: this will disappear once I have a good algorithm in layEgg()
-		
-		if (isTooYoungToLayEggs())
-			return null;
-		
-		double percentEnergyToChildren = getBody().getPercentEnergyToChildren();
-		double childEnergy = getEnergy().donate(percentEnergyToChildren);
-		if (childEnergy == 0)
-			return null; // refuse to lay egg
-		
-		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
-	
-		Vector position = getNeckLocation();
-		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), Configuration.EGG_MAX_VELOCITY * ranGen.nextDouble());
-		return new Egg(childDNA, position, velocity, childEnergy, ranGen);
+	private void decideWhenToTryLayingTheNextEgg(RanGen ranGen) {
+		nextEggAge = getAge() + (long) (getAverageEggLayingInterval() * 2 * ranGen.nextDouble());
+	}
+
+	private double getAverageEggLayingInterval() {
+		return Configuration.CREATURE_AVERAGE_EGG_LAYING_INTERVAL;
 	}
 
 	private boolean isTooYoungToLayEggs(){

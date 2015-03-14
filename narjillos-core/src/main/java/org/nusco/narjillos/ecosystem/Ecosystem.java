@@ -82,11 +82,10 @@ public class Ecosystem extends Culture {
 			periodicUpdate();
 		}
 
-		// TODO: put back once I have the new egg-laying policy
-		// synchronized (narjillos) {
-		// 	for (Narjillo narjillo : narjillos)
-		// 	layEgg(narjillo, genePool, ranGen);
-		// }
+		synchronized (narjillos) {
+			for (Narjillo narjillo : narjillos)
+				maybeLayEgg(narjillo, genePool, ranGen);
+		}
 	}
 
 	public final FoodPiece spawnFood(Vector position) {
@@ -247,10 +246,6 @@ public class Ecosystem extends Culture {
 		remove(foodPiece);
 		narjillo.feedOn(foodPiece);
 
-		// TODO: remove - instead, give a chance to lay an
-		// egg at every tick
-		layEgg(narjillo, genePool, ranGen);
-
 		updateTargets(foodPiece);
 	}
 
@@ -267,9 +262,8 @@ public class Ecosystem extends Culture {
 		genePool.remove(narjillo.getDNA());
 	}
 
-	private void layEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
-		// TODO: use layEgg() instead
-		Egg egg = narjillo.forceLayEgg(this, genePool, ranGen);
+	private void maybeLayEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
+		Egg egg = narjillo.layEgg(this, genePool, ranGen);
 		if (egg == null)
 			return;
 		insert(egg);

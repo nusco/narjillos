@@ -99,24 +99,6 @@ public class EnergyTest {
 		assertTrue(energy.isZero());
 	}
 
-	@Test
-	public void canDonateAPercentOfItself() {
-		energy.tick(-10, 0);
-		double donation = energy.donate(0.25);
-
-		assertEquals(5, donation, 0.0);
-		assertEquals(15, energy.getValue(), 0.0);
-	}
-
-	@Test
-	public void refusesDonationsIfTheyResultInAValueBelowTheInitialValue() {
-		energy.tick(-10, 0);
-		double donation = energy.donate(51);
-
-		assertEquals(0, donation, 0.0);
-		assertEquals(20, energy.getValue(), 0.0);
-	}
-
 	private void fillToTheMax() {
 		double energyValue;
 		do {

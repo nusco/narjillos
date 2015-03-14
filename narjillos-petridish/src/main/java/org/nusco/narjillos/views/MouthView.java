@@ -64,13 +64,13 @@ class MouthView implements ItemView {
 	}
 
 	private double getAlphaBasedOnAge() {
-		final double AGE_OF_OPACITY = 100;
+		final double AGE_OF_COMPLETE_OPACITY = 100;
 
-		int age = getNarjillo().getAge();
-		if (age > AGE_OF_OPACITY)
+		long age = getNarjillo().getAge();
+		if (age > AGE_OF_COMPLETE_OPACITY)
 			return 1;
 		
-		return age / AGE_OF_OPACITY;
+		return age / AGE_OF_COMPLETE_OPACITY;
 	}
 	
 	private void rotate(Line line, int angle) {

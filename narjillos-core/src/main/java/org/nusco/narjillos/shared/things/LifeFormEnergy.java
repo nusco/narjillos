@@ -66,12 +66,8 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public double donate(double percent) {
-		double transferredEnergy = getValue() * percent;
-		if (getValue() - transferredEnergy < initialValue)
-			return 0; // Short on energy. Refuse to transfer.
-		increaseBy(-transferredEnergy);
-		return transferredEnergy;
+	public void decreaseBy(double energy) {
+		increaseBy(-energy);
 	}
 
 	private void increaseBy(double amount) {

@@ -25,6 +25,9 @@ public class RanGen {
 		authorizedThread = Thread.currentThread();
 	}
 
+	/**
+	 * Returns a value between 0.0 (inclusive) and 1.0 (exclusive).
+	 */
 	public double nextDouble() {
 		checkThreadIsAuthorized();
 		return random.nextDouble();

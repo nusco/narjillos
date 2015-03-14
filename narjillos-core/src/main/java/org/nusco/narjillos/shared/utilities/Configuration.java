@@ -14,7 +14,7 @@ public class Configuration {
 	// creatures
 	public static final double CREATURE_MAX_LIFESPAN = 100_000;
 	public static final double CREATURE_MATURE_AGE = 5_000;
-	public static final double CREATURE_CHANCE_OF_LAYING_EGG = 0.001;
+	public static final double CREATURE_AVERAGE_EGG_LAYING_INTERVAL = 10_000;
 	public static final double CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY = 5;
 	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0;
 	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 0;
@@ -53,7 +53,7 @@ public class Configuration {
 	public static final double EGG_RADIUS = 25;
 	public static final int EGG_MIN_INCUBATION_TIME = 400;
 	public static final int EGG_MAX_INCUBATION_TIME = 800;
-	public static final double EGG_MAX_VELOCITY = 300;
+	public static final double EGG_INITIAL_VELOCITY = 300;
 	public static final double EGG_MIN_VELOCITY = 0.1;
 	public static final double EGG_VELOCITY_DECAY = 0.98;
 

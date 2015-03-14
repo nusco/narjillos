@@ -5,7 +5,6 @@
 * Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)
 
 ##Smart Reproduction
-* New rules to decide when to lay an egg (min interval + energy check)
 * Firing eggs costs energy
 * Egg firing distance is controlled by genes
 

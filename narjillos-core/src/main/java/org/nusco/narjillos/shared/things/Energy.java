@@ -27,8 +27,7 @@ public interface Energy {
 		};
 		
 		@Override
-		public double donate(double percent) {
-			return Double.MAX_VALUE;
+		public void decreaseBy(double energy) {
 		};
 
 		@Override
@@ -56,7 +55,7 @@ public interface Energy {
 	
 	void steal(Energy other);
 	
-	public double donate(double percent);
+	public void decreaseBy(double energy);
 
 	public boolean isZero();
 

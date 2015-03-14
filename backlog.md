@@ -12,8 +12,11 @@
 * Fix sketchy collision detection (is this a bug?)
 * Rewrite collision detection to be independent of max speed
 * Narjillos eat other narjillos (pick target at random)
-* Red fibers damage the attacker
 * Remove food?
+
+##Fibers
+* Re-activate green and blue fibers
+* Red fibers damage the attacker
 
 ##Before Release, remember to...
 * Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)

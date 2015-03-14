@@ -146,14 +146,14 @@ public class Ecosystem extends Culture {
 	public void populate(String dna, GenePool genePool, RanGen ranGen) {
 		spawnFood(ranGen);
 
-		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS; i++)
 			spawnEgg(genePool.createDNA(dna), randomPosition(getSize(), ranGen), ranGen);
 	}
 
 	public void populate(GenePool genePool, RanGen ranGen) {
 		spawnFood(ranGen);
 
-		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_EGGS; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS; i++)
 			spawnEgg(genePool.createRandomDNA(ranGen), randomPosition(getSize(), ranGen), ranGen);
 	}
 
@@ -168,7 +168,7 @@ public class Ecosystem extends Culture {
 	}
 
 	private void spawnFood(RanGen ranGen) {
-		for (int i = 0; i < Configuration.ECOSYSTEM_INITIAL_FOOD_PIECES; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_1000_SQUARE_POINTS; i++)
 			spawnFood(randomPosition(getSize(), ranGen));
 	}
 
@@ -215,8 +215,12 @@ public class Ecosystem extends Culture {
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {
-		return getNumberOfFoodPieces() < Configuration.ECOSYSTEM_MAX_FOOD_PIECES
-				&& ranGen.nextDouble() < 1.0 / Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL;
+		double maxFoodPieces = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_SQUARE_POINTS;
+		if (getNumberOfFoodPieces() >= maxFoodPieces)
+			return false;
+		
+		double foodRespawnAverageInterval = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS;
+		return ranGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
 	}
 
 	private Vector randomPosition(long size, RanGen ranGen) {
@@ -267,5 +271,10 @@ public class Ecosystem extends Culture {
 		if (egg == null)
 			return;
 		insert(egg);
+	}
+	
+	private double getNumberOf1000SquarePointsBlocks() {
+		double blocksPerEdge = getSize() / 1000.0;
+		return blocksPerEdge * blocksPerEdge;
 	}
 }

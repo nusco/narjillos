@@ -44,10 +44,10 @@ public class Configuration {
 
 	// ecosystem
 	public final static int ECOSYSTEM_SIZE = 80_000;
-	public static final int ECOSYSTEM_INITIAL_EGGS = 1200;
-	public static final int ECOSYSTEM_INITIAL_FOOD_PIECES = 1600;
-	public static final int ECOSYSTEM_MAX_FOOD_PIECES = 2400;
-	public static final int ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL = 25;
+	public static final double ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS = 0.18;
+	public static final double ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.2;
+	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.35;
+	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS = 0.003;
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = 1000;
 
 	// eggs

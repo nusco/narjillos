@@ -1,10 +1,10 @@
 package org.nusco.narjillos;
 
-import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.Culture;
 
-public abstract class Lab {
+public abstract class Dish {
 
-	public abstract Environment getEnvironment();
+	public abstract Culture getCulture();
 
 	public abstract boolean tick();
 

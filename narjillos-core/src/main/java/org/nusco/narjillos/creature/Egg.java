@@ -23,9 +23,8 @@ public class Egg implements Thing {
 	private Vector position;
 	private Vector velocity;
 	private double energy;
-	// TODO: make transient?
-	private Narjillo hatchedNarjillo = null;
 	private int hatchAge = NOT_HATCHED_YET;
+	private transient Narjillo hatchedNarjillo = null;
 	
 	public Egg(DNA dna, Vector position, Vector velocity, double energy, RanGen ranGen) {
 		this.dna = dna;

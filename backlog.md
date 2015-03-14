@@ -3,6 +3,7 @@
 #===================
 
 * Re-think the relationships between features in the Grand Plan. Can I hope to get speciation withou sexual reproduction?
+* Run smaller ecosystem when running with "narjillo" (the big one is too demanding on slow computers)
 
 ##Smart Reproduction
 * New rules to decide when to lay an egg (min interval + energy check)

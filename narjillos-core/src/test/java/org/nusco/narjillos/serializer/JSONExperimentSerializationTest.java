@@ -14,7 +14,7 @@ public class JSONExperimentSerializationTest {
 	@Test
 	public void serializesAndDeserializesExperiment() {
 		Experiment experiment = new Experiment(1234, new Ecosystem(10000, false), "experiment_serialization_test", true);
-		assertTrue(experiment.getGenePool().isTracking());
+		assertTrue(experiment.getGenePool().hasAncestralMemory());
 		
 		for (int i = 0; i < 10; i++)
 			experiment.tick();

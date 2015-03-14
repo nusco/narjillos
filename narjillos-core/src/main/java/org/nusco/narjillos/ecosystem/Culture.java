@@ -19,14 +19,14 @@ import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
-public abstract class Environment {
+public abstract class Culture {
 
 	private final long size;
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
 	private volatile ExecutorService executorService;
 	private volatile int tickWorkerCounter = 1;
 	
-	public Environment(long size) {
+	public Culture(long size) {
 		this.size = size;
 		ThreadFactory tickWorkerFactory = new ThreadFactory() {
 			@Override

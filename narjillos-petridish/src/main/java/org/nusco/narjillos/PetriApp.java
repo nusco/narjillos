@@ -18,7 +18,7 @@ import javafx.scene.input.ZoomEvent;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
-import org.nusco.narjillos.utilities.PetriDishState;
+import org.nusco.narjillos.utilities.PetriDishAppState;
 import org.nusco.narjillos.utilities.Speed;
 import org.nusco.narjillos.utilities.StoppableThread;
 import org.nusco.narjillos.views.EnvirommentView;
@@ -29,17 +29,17 @@ import org.nusco.narjillos.views.PetriStatusView;
  * The main JavaFX Application class. It binds model and view together, and also
  * manages the user interface.
  */
-public class PetriDish extends ApplicationBase {
+public class PetriApp extends NarjillosApp {
 
 	private static final long PAN_SPEED = 200;
 
 	private static String[] programArguments = new String[0];
 
-	private PetriDishState state = new PetriDishState();
+	private PetriDishAppState state = new PetriDishAppState();
 
 	@Override
 	protected String[] getProgramArguments() {
-		return PetriDish.programArguments;
+		return PetriApp.programArguments;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class PetriDish extends ApplicationBase {
 				if (options == null)
 					System.exit(1);
 
-				setLab(new ExperimentalLab(options));
+				setLab(new PetriDish(options));
 
 				isModelInitialized[0] = true;
 
@@ -276,7 +276,7 @@ public class PetriDish extends ApplicationBase {
 	}
 
 	public static void main(String... args) throws Exception {
-		PetriDish.programArguments = args;
+		PetriApp.programArguments = args;
 		launch(args);
 	}
 }

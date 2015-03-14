@@ -5,8 +5,8 @@ import org.nusco.narjillos.shared.physics.Angle;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**
- * Adds the notion of the passing of time to the BodyPart hierarchy, embodied by
- * the tick() method. This means that it moves (see calculateAngleToParent()).
+ * Enahnces organs with the notion of time , embodied by the tick() method. This
+ * means that the organ moves (see calculateNewAngleToParent()).
  */
 public abstract class MovingOrgan extends ConnectedOrgan {
 

@@ -11,7 +11,7 @@ import org.nusco.narjillos.shared.utilities.Configuration;
 /**
  * The physics of translations.
  * 
- * Here are the formulas it uses. See RotationalForceField for details.
+ * Here are the formulas it uses. See RotationsPhysicsEngine for details.
  * 
  * Linear Momentum (for the body segments):
  * linear_momentum = mass * linear_velocity (in [pixelgrams points / tick])

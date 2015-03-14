@@ -39,7 +39,7 @@ public class Experiment {
 		if (!trackGenePool)
 			return;
 
-		genePool.enableTracking();
+		genePool.enableAncestralMemory();
 	}
 
 	public final void timeStamp() {

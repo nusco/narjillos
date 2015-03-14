@@ -1,6 +1,6 @@
 package org.nusco.narjillos.utilities;
 
-public interface ViewState {
+public interface AppState {
 
 	public Light getLight();
 

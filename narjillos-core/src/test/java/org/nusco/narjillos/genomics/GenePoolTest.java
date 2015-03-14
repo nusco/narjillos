@@ -16,7 +16,7 @@ public class GenePoolTest {
 
 	@Before
 	public void setUpGenePool() {
-		genePool.enableTracking();
+		genePool.enableAncestralMemory();
 	}
 	
 	@Test

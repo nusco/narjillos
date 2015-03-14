@@ -1,7 +1,7 @@
 package org.nusco.narjillos.utilities;
 
 
-public class PetriDishState implements ViewState {
+public class PetriDishAppState implements AppState {
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_ON = 60;
 	private static final int FRAMES_PER_SECOND_WITH_LIGHT_OFF = 5;
 	private static final int FRAMES_PERIOD_WITH_LIGHT_ON = 1000 / FRAMES_PER_SECOND_WITH_LIGHT_ON;

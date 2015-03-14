@@ -7,7 +7,7 @@ import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**
- * A body part that is connected to other body parts in a tree to form a body.
+ * An organ that is connected to other organs in a tree to form a body.
  */
 public abstract class ConnectedOrgan extends Organ {
 

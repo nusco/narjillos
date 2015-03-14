@@ -14,16 +14,13 @@ import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-/**
- * The place that Narjillos call "home".
- */
-public class IsolationChamber extends Environment {
+public class IsolationCulture extends Culture {
 
 	private static final Set<Thing> EMPTY_SET = Collections.unmodifiableSet(new LinkedHashSet<Thing>());
 
 	private Set<Narjillo> narjillos = new LinkedHashSet<>();
 
-	public IsolationChamber(long size, RanGen ranGen) {
+	public IsolationCulture(long size, RanGen ranGen) {
 		super(size);
 	
 		DNA dna = DNA.random(1, ranGen);

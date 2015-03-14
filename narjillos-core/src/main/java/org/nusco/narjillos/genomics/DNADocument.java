@@ -24,17 +24,15 @@ class DNADocument {
 		return new Integer[] {0};
 	}
 
-	private String stripBraces(String line) {
-		return line.replaceAll("[\\{\\}]", "_");
-	}
-
 	public static String toString(DNA dna) {
 		StringBuffer result = new StringBuffer();
-		DNAIterator iterator = new DNAIterator(dna);
-		Chromosome nextChromosome;
-		while ((nextChromosome = iterator.nextChromosome()) != null)
-			result.append(nextChromosome.toString());
+		for (Chromosome chromosome : dna)
+			result.append(chromosome.toString());
 		return result.toString();
+	}
+
+	private String stripBraces(String line) {
+		return line.replaceAll("[\\{\\}]", "_");
 	}
 
 	private Integer[] parseDNAString(String dnaString) {

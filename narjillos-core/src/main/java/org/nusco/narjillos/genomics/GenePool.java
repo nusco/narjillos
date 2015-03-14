@@ -18,14 +18,14 @@ public class GenePool {
 	private final Map<Long, Long> childrenToParents = new LinkedHashMap<>();
 
 	private long dnaSerial = 0;
-	private boolean isTracking = false;
+	private boolean ancestralMemory = false;
 
-	public void enableTracking() {
-		isTracking = true;
+	public void enableAncestralMemory() {
+		ancestralMemory = true;
 	}
 
-	public boolean isTracking() {
-		return isTracking;
+	public boolean hasAncestralMemory() {
+		return ancestralMemory;
 	}
 
 	public List<DNA> getAncestry(DNA dna) {
@@ -82,7 +82,7 @@ public class GenePool {
 	}
 
 	public void remove(DNA dna) {
-		if (!isTracking())
+		if (!hasAncestralMemory())
 			return;
 
 		currentPool.remove(dna.getId());
@@ -93,7 +93,7 @@ public class GenePool {
 	}
 	
 	private void add(DNA dna, DNA parent) {
-		if (!isTracking())
+		if (!hasAncestralMemory())
 			return;
 		
 		dnaById.put(dna.getId(), dna);

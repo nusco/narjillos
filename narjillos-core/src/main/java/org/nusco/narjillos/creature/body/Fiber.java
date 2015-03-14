@@ -1,7 +1,7 @@
 package org.nusco.narjillos.creature.body;
 
 /**
- * Stores a wide range of colors in a single byte-sized integer.
+ * The coloured fibers in the bodies or narjillos.
  */
 public class Fiber {
 

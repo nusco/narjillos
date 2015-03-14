@@ -1,15 +1,15 @@
 package org.nusco.narjillos.utilities;
 
-import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.things.Thing;
 
 public class Locator {
 
-	private final Environment environment;
+	private final Culture culture;
 
-	public Locator(Environment environment) {
-		this.environment = environment;
+	public Locator(Culture culture) {
+		this.culture = culture;
 	}
 
 	public Thing findThingAt(Vector position) {
@@ -34,7 +34,7 @@ public class Locator {
 		Thing result = null;
 		double minDistance = Double.MAX_VALUE;
 
-		for (Thing thing : environment.getThings(label)) {
+		for (Thing thing : culture.getThings(label)) {
 			double distance = thing.getCenter().minus(position).getLength();
 			if (distance < thing.getRadius() && distance < minDistance) {
 				minDistance = distance;

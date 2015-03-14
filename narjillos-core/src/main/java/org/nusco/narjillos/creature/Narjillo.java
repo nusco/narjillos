@@ -5,7 +5,7 @@ import java.util.List;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.physics.Segment;
@@ -34,15 +34,6 @@ public class Narjillo implements Thing {
 		this.dna = genes;
 		this.energy = energy;
 	}
-
-	public DNA getDNA() {
-		return dna;
-	}
-
-	@Override
-	public Energy getEnergy() {
-		return energy;
-	}
 	
 	@Override
 	public Segment tick() {
@@ -66,13 +57,19 @@ public class Narjillo implements Thing {
 		return body.getStartPoint();
 	}
 
-	public void setTarget(Vector target) {
-		this.target = target;
+	@Override
+	public Energy getEnergy() {
+		return energy;
+	}
+	
+	@Override
+	public Vector getCenter() {
+		return getBody().calculateCenterOfMass();
 	}
 
-	public void feedOn(FoodPiece thing) {
-		energy.steal(thing.getEnergy());
-		thing.setEater(this);
+	@Override
+	public double getRadius() {
+		return getBody().calculateRadius();
 	}
 
 	@Override
@@ -80,20 +77,16 @@ public class Narjillo implements Thing {
 		return "narjillo";
 	}
 
-	public boolean isDead() {
-		return energy.isZero();
-	}
-
-	public List<Organ> getOrgans() {
-		return body.getOrgans();
-	}
-
-	public Body getBody() {
-		return body;
+	public DNA getDNA() {
+		return dna;
 	}
 
 	public Vector getTarget() {
 		return target;
+	}
+
+	public void setTarget(Vector target) {
+		this.target = target;
 	}
 
 	public Vector calculateCenterOfMass() {
@@ -102,6 +95,23 @@ public class Narjillo implements Thing {
 
 	public double getEnergyLevel() {
 		return energy.getLevel();
+	}
+
+	public void feedOn(FoodPiece thing) {
+		energy.steal(thing.getEnergy());
+		thing.setEater(this);
+	}
+
+	public boolean isDead() {
+		return energy.isZero();
+	}
+
+	public Body getBody() {
+		return body;
+	}
+
+	public List<Organ> getOrgans() {
+		return body.getOrgans();
 	}
 
 	public Mouth getMouth() {
@@ -115,21 +125,11 @@ public class Narjillo implements Thing {
 	public int getAge() {
 		return age;
 	}
-	
-	@Override
-	public Vector getCenter() {
-		return getBody().calculateCenterOfMass();
-	}
-
-	@Override
-	public double getRadius() {
-		return getBody().calculateRadius();
-	}
 
 	/**
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
 	 */
-	public Egg layEgg(Environment ecosystem, GenePool genePool, RanGen ranGen) {
+	public Egg layEgg(Culture ecosystem, GenePool genePool, RanGen ranGen) {
 		// TODO: this entire algorithm must be rethought
 		
 		if (isTooYoungToLayEggs())
@@ -159,7 +159,7 @@ public class Narjillo implements Thing {
 	 * Forces the laying of an egg, no questions asked (except in a few
 	 * extreme cases - see the code).
 	 */
-	public Egg forceLayEgg(Environment ecosystem, GenePool genePool, RanGen ranGen) {
+	public Egg forceLayEgg(Culture ecosystem, GenePool genePool, RanGen ranGen) {
 		// TODO: this will disappear once I have a good algorithm in layEgg()
 		
 		if (isTooYoungToLayEggs())

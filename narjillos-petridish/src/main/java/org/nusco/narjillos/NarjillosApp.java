@@ -8,7 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.utilities.Locator;
@@ -16,13 +16,13 @@ import org.nusco.narjillos.utilities.StoppableThread;
 import org.nusco.narjillos.utilities.ThingTracker;
 import org.nusco.narjillos.utilities.Viewport;
 
-abstract class ApplicationBase extends Application {
+abstract class NarjillosApp extends Application {
 
 	// These fields are all just visualization stuff - no data will
 	// get corrupted if different threads see slightly outdated versions of
 	// them. So we can avoid synchronization altogether.
 
-	private Lab lab;
+	private Dish lab;
 
 	protected StoppableThread modelThread;
 	protected StoppableThread viewThread;
@@ -43,8 +43,8 @@ abstract class ApplicationBase extends Application {
 
 		System.gc(); // minimize GC during the first stages on animation
 
-		viewport = new Viewport(getLab().getEnvironment());
-		locator = new Locator(getLab().getEnvironment());
+		viewport = new Viewport(getLab().getCulture());
+		locator = new Locator(getLab().getCulture());
 		tracker = new ThingTracker(viewport, locator);
 
 		final Group root = new Group();
@@ -92,7 +92,6 @@ abstract class ApplicationBase extends Application {
 	}
 	
 	private void startModelThread(final String[] arguments) {
-
 		modelThread = createModelThread(arguments, isModelInitialized);
 		modelThread.setName("model thread");
 		modelThread.start();
@@ -100,7 +99,7 @@ abstract class ApplicationBase extends Application {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-			}
+		}
 	}
 
 	private void startViewThread(final Group root) {
@@ -148,16 +147,16 @@ abstract class ApplicationBase extends Application {
 		return tracker;
 	}
 
-	protected synchronized Lab getLab() {
+	protected synchronized Dish getLab() {
 		return lab;
 	}
 
-	protected synchronized void setLab(Lab lab) {
+	protected synchronized void setLab(Dish lab) {
 		this.lab = lab;
 	}
 
-	protected Environment getEcosystem() {
-		return getLab().getEnvironment();
+	protected Culture getEcosystem() {
+		return getLab().getCulture();
 	}
 
 	protected boolean tick() {
@@ -169,7 +168,7 @@ abstract class ApplicationBase extends Application {
 	}
 
 	protected String getEnvironmentStatistics() {
-		return getLab().getEnvironment().getStatistics();
+		return getLab().getCulture().getStatistics();
 	}
 
 	protected boolean isBusy() {

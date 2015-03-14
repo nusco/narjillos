@@ -23,7 +23,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 /**
  * The place that Narjillos call "home".
  */
-public class Ecosystem extends Environment {
+public class Ecosystem extends Culture {
 
 	private final Set<Narjillo> narjillos = new LinkedHashSet<Narjillo>();
 
@@ -82,7 +82,7 @@ public class Ecosystem extends Environment {
 			periodicUpdate();
 		}
 
-		// TODO: put back
+		// TODO: put back once I have the new egg-laying policy
 		// synchronized (narjillos) {
 		// 	for (Narjillo narjillo : narjillos)
 		// 	layEgg(narjillo, genePool, ranGen);

@@ -17,7 +17,7 @@ public class JSONGenePoolSerializationTest {
 	public void serializesAndDeserializesGenePools() {
 		RanGen ranGen = new RanGen(1234);
 
-		genePool.enableTracking();
+		genePool.enableAncestralMemory();
 		
 		DNA parent = genePool.createRandomDNA(ranGen);
 		DNA child1 = genePool.mutateDNA(parent, ranGen);
@@ -31,7 +31,7 @@ public class JSONGenePoolSerializationTest {
 		String json = JSON.toJson(genePool, GenePool.class);
 		GenePool deserialized = JSON.fromJson(json, GenePool.class);
 
-		assertTrue(deserialized.isTracking());
+		assertTrue(deserialized.hasAncestralMemory());
 		assertArrayEquals(deserialized.getAncestry(child3).toArray(), genePool.getAncestry(child3).toArray());
 		assertEquals(deserialized.getMostSuccessfulDNA().toString(), genePool.getMostSuccessfulDNA().toString());
 	}

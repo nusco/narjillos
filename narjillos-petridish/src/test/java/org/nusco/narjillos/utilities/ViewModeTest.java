@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class ViewModeTest {
 
-	PetriDishState viewMode = new PetriDishState();
+	PetriDishAppState viewMode = new PetriDishAppState();
 	
 	@Test
 	public void turningOffTheLightSwitchesToHighSpeed() {

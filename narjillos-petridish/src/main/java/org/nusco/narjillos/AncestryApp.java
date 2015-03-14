@@ -9,10 +9,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.utilities.AncestryBrowserState;
+import org.nusco.narjillos.utilities.AncestryAppState;
 import org.nusco.narjillos.utilities.Speed;
 import org.nusco.narjillos.utilities.StoppableThread;
-import org.nusco.narjillos.utilities.ViewState;
+import org.nusco.narjillos.utilities.AppState;
 import org.nusco.narjillos.views.AncestryStatusView;
 import org.nusco.narjillos.views.EnvirommentView;
 import org.nusco.narjillos.views.MicroscopeView;
@@ -21,11 +21,11 @@ import org.nusco.narjillos.views.MicroscopeView;
  * This is work in progress for an application that will load the ancestry out
  * of an experiment and show the evolution of the most successfull genome.
  */
-public class AncestryBrowser extends ApplicationBase {
+public class AncestryApp extends NarjillosApp {
 
 	private static String[] programArguments = new String[0];
 
-	private ViewState state = new AncestryBrowserState();
+	private AppState state = new AncestryAppState();
 
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
@@ -36,7 +36,7 @@ public class AncestryBrowser extends ApplicationBase {
 				if (options == null)
 					System.exit(1);
 
-				setLab(new IsolationLab(options));
+				setLab(new IsolationDish(options));
 
 				isModelInitialized[0] = true;
 
@@ -136,11 +136,11 @@ public class AncestryBrowser extends ApplicationBase {
 
 	@Override
 	protected String[] getProgramArguments() {
-		return AncestryBrowser.programArguments;
+		return AncestryApp.programArguments;
 	}
 
 	public static void main(String... args) throws Exception {
-		AncestryBrowser.programArguments = args;
+		AncestryApp.programArguments = args;
 		launch(args);
 	}
 }

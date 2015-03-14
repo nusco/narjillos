@@ -1,27 +1,30 @@
 package org.nusco.narjillos;
 
-import org.nusco.narjillos.ecosystem.Environment;
-import org.nusco.narjillos.ecosystem.IsolationChamber;
+import org.nusco.narjillos.ecosystem.Culture;
+import org.nusco.narjillos.ecosystem.IsolationCulture;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.shared.utilities.RanGen;
 
-public class IsolationLab extends Lab {
+/**
+ * A dish that isolates a single narjillo in its own dish.
+ */
+public class IsolationDish extends Dish {
 
-	private Environment environment;
+	private Culture environment;
 	private GenePool genePool = new GenePool();
 	private RanGen ranGen = new RanGen(1234);
 
-	public IsolationLab(CommandLineOptions options) {
+	public IsolationDish(CommandLineOptions options) {
 		// TODO: I should check this when loading ancestry
 		//String applicationVersion = Persistence.readApplicationVersion();
 		
-		environment = new IsolationChamber(10_000, ranGen);
+		environment = new IsolationCulture(10_000, ranGen);
 
 		// TODO: report loading of ancestry
 		System.out.println("ancestry browser (TODO: report loading)");
 	}
 
-	public Environment getEnvironment() {
+	public Culture getCulture() {
 		return environment;
 	}
 

@@ -45,10 +45,10 @@ public class LifeFormEnergy implements Energy {
 
 	@Override
 	public void tick(double energySpent, double energyGained) {
-		maxForAge -= decay;
-
 		if (isZero())
-			return;
+			return; // once it's gone, it's gone
+
+		maxForAge -= decay;
 
 		increaseBy(energyGained - energySpent);
 	}

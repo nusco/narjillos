@@ -1,7 +1,7 @@
 package org.nusco.narjillos.utilities;
 
 
-public class AncestryBrowserState implements ViewState {
+public class AncestryAppState implements AppState {
 	private static final int FRAMES_PERIOD = 1000 / 60;
 
 	@Override

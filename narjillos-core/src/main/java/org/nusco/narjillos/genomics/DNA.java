@@ -1,5 +1,6 @@
 package org.nusco.narjillos.genomics;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import org.nusco.narjillos.shared.utilities.RanGen;
 /**
  * A sequence of genes.
  */
-public class DNA {
+public class DNA implements Iterable<Chromosome> {
 
 	private final long id;
 	
@@ -36,12 +37,10 @@ public class DNA {
 	public DNA copyWithMutations(long id, RanGen ranGen) {
 		List<Integer[]> resultChromosomes = new LinkedList<>();
 
-		DNAIterator iterator = new DNAIterator(this);
-		Chromosome nextChromosome;
-		while ((nextChromosome = iterator.nextChromosome()) != null) {
+		for (Chromosome chromosome : this) {
 			// skip a chromosome every now and then
 			if (!isChromosomeMutation(ranGen))
-				resultChromosomes.add(copyWithMutations(nextChromosome, ranGen));
+				resultChromosomes.add(copyWithMutations(chromosome, ranGen));
 			// add a chromosome every now and then
 			if (isChromosomeMutation(ranGen))
 				resultChromosomes.add(randomGenes(Chromosome.SIZE, ranGen));
@@ -96,6 +95,30 @@ public class DNA {
 		}
 
 		return v1[otherGenes.length];
+	}
+	
+	@Override
+	public Iterator<Chromosome> iterator() {
+		return new Iterator<Chromosome>() {
+			private int indexInGenes = 0;
+
+			@Override
+			public boolean hasNext() {
+				return indexInGenes == 0 || indexInGenes < getGenes().length;
+			}
+
+			@Override
+			public Chromosome next() {
+				int[] result = new int[Chromosome.SIZE];
+				int index_in_result = 0;
+				while(index_in_result < result.length && indexInGenes < getGenes().length) {
+					result[index_in_result] = getGenes()[indexInGenes];
+					index_in_result++;
+					indexInGenes++;
+				}
+				return new Chromosome(result);
+			}
+		};
 	}
 
 	@Override

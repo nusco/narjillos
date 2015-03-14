@@ -3,7 +3,7 @@ package org.nusco.narjillos;
 import java.util.Random;
 
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.serializer.Persistence;
 import org.nusco.narjillos.shared.utilities.Configuration;
@@ -11,10 +11,10 @@ import org.nusco.narjillos.shared.utilities.NumberFormat;
 
 /**
  * The class that initializes and runs an Experiment. It can be run on its own
- * (the _experiment_ script does just that), or used in a larger system (as the
- * _petri_ script does to provide graphics).
+ * (the "experiment" script does just that), or used in a larger system (as the
+ * "petri" script does to provide graphics).
  */
-public class ExperimentalLab extends Lab {
+public class PetriDish extends Dish {
 
 	private static boolean persistent = false;
 	private final Experiment experiment;
@@ -22,7 +22,7 @@ public class ExperimentalLab extends Lab {
 	private volatile boolean isTerminated = false;
 	private volatile long lastSaveTime = System.currentTimeMillis();
 
-	public ExperimentalLab(CommandLineOptions options) {
+	public PetriDish(CommandLineOptions options) {
 		String applicationVersion = Persistence.readApplicationVersion();
 		
 		experiment = createExperiment(applicationVersion, options);
@@ -33,7 +33,7 @@ public class ExperimentalLab extends Lab {
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
 	}
 
-	public Environment getEnvironment() {
+	public Culture getCulture() {
 		return experiment.getEcosystem();
 	}
 
@@ -155,7 +155,7 @@ public class ExperimentalLab extends Lab {
 		if (options == null)
 			System.exit(1);
 		
-		final ExperimentalLab lab = new ExperimentalLab(options);
+		final PetriDish lab = new PetriDish(options);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

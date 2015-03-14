@@ -23,8 +23,9 @@ class Space {
 	private final Set<Thing> allTheThings = new LinkedHashSet<Thing>();
 	private final Map<String, Integer> countsByLabel = new HashMap<String, Integer>();
 
-	// TODO: right now there is no visibility to/from outer space. the first is
-	// easy, the second is hard
+	// There is no visibility to/from outer space. The first would be
+	// easy, the second would be hard. It's better to find simulation-level
+	// tricks to prevent Things from moving into outer space.
 	private final Set<Thing> outerSpace = new LinkedHashSet<>();
 
 	@SuppressWarnings("unchecked")

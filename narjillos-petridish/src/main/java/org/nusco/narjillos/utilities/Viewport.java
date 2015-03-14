@@ -1,6 +1,6 @@
 package org.nusco.narjillos.utilities;
 
-import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.shared.physics.Vector;
 
 /**
@@ -24,18 +24,18 @@ public class Viewport {
 
 	private Vector targetCenterEC;
 	private double targetZoomLevel;
-	private final double fitAllZoomLevel;
+	private final double fitInViewZoomLevel;
 	private volatile boolean userIsZooming = false;
 	final double minZoomLevel;
 	
-	public Viewport(Environment ecosystem) {
+	public Viewport(Culture ecosystem) {
 		this.ecosystemSizeEC = ecosystem.getSize();
 		setCenterEC(getEcosystemCenterEC());
 
 		double size = Math.min(ecosystem.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
-		fitAllZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / ecosystemSizeEC;
-		minZoomLevel = fitAllZoomLevel / 2.5;
+		fitInViewZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / ecosystemSizeEC;
+		minZoomLevel = fitInViewZoomLevel / 2.5;
 		
 		centerOnEcosystem();
 		zoomLevel = minZoomLevel;
@@ -185,6 +185,7 @@ public class Viewport {
 		if (Math.abs(differenceToTargetZoomLevel) < 0.001)
 			return;
 
-		this.zoomLevel = zoomLevel + differenceToTargetZoomLevel * 0.015;
+		final double zoomingSpeed = 0.015;
+		this.zoomLevel = zoomLevel + differenceToTargetZoomLevel * zoomingSpeed;
 	}
 }

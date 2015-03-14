@@ -7,14 +7,13 @@ import org.nusco.narjillos.shared.utilities.Configuration;
 /**
  * A piece of body.
  * 
- * Contains all the geometry of the organ (length, thickness, mass and the
- * like). It also goes throughthe painstaking calculations needed to come up
- * with angles, etc.
+ * Describes the geometry of the organ (length, thickness, mass, ...). It also
+ * goes through the calculations needed to come up with angles, etc.
  * 
- * It can grow from a short size at birth to adult size.
+ * It grows from a small minimum size at birth to adult size.
  * 
  * This class is a micro-framework (sigh). In and by itself, it cannot change
- * state (apart from the grow() method). Subclasses are supposed to override
+ * state (apart from the growBy() method). Subclasses are supposed to override
  * calculateStartPoint() and calculateAbsoluteAngle(), and then call either
  * updateGeometry() or updatePosition() when they want to update the state of
  * the Organ.
@@ -70,7 +69,8 @@ public abstract class Organ {
 	}
 
 	// Like updateGeometry() but much cheaper. It can only be called after pure
-	// translations without any rotation.
+	// translations. Don't call after a rotation, because it doesn't update
+	// angles.
 	public final void updatePosition() {
 		cachedStartPoint = calculateStartPoint();
 		cachedEndPoint = calculateEndPoint();
@@ -85,7 +85,7 @@ public abstract class Organ {
 		length = Math.min(adultLength, getLength() + Configuration.ORGAN_GROWTH_RATE * amount);
 		thickness = Math.min(adultThickness, getThickness() + Configuration.ORGAN_GROWTH_RATE * amount);
 
-		// Optimization: don't recalculate geometry here. Instead, let the
+		// Optimization: don't update the geometry here. Instead, let the
 		// client do it - it knows when that's needed.
 	}
 
@@ -120,7 +120,7 @@ public abstract class Organ {
 	public Fiber getFiber() {
 		return fiber;
 	}
-	
+
 	public double getMass() {
 		return cachedMass;
 	}
@@ -147,11 +147,9 @@ public abstract class Organ {
 
 	// The next two methods give subclasses a chance to change the geometry of
 	// the Organ. These are the only methods that can change the state of the
-	// Organ (apart from grow(). Everything else in the organ will be calculated
-	// after these.
-
+	// Organ (apart from growBy(). Everything else in the organ will be
+	// calculated after these.
 	protected abstract Vector calculateStartPoint();
-
 	protected abstract double calculateAbsoluteAngle();
 
 	private Vector calculateVector() {

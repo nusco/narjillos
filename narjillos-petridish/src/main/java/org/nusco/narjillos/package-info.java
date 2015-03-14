@@ -1,4 +1,4 @@
 /**
- * The main PetriDish application.
+ * The main applications.
  */
 package org.nusco.narjillos;

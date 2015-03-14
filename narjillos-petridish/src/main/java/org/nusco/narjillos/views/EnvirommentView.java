@@ -21,13 +21,13 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.ecosystem.EnvironmentEventListener;
-import org.nusco.narjillos.ecosystem.Environment;
+import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.shared.physics.Segment;
 import org.nusco.narjillos.shared.things.Thing;
 import org.nusco.narjillos.shared.utilities.VisualDebugger;
 import org.nusco.narjillos.utilities.Effects;
 import org.nusco.narjillos.utilities.Light;
-import org.nusco.narjillos.utilities.ViewState;
+import org.nusco.narjillos.utilities.AppState;
 import org.nusco.narjillos.utilities.Viewport;
 
 public class EnvirommentView {
@@ -37,13 +37,13 @@ public class EnvirommentView {
 	
 	private final Viewport viewport;
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
-	private final ViewState viewState;
+	private final AppState viewState;
 	private final SpecklesView specklesView;
 	private final Shape emptySpace;
 	private final Shape infraredEmptySpace;
 	private final Shape darkness;
 
-	public EnvirommentView(Environment environment, Viewport viewport, ViewState state) {
+	public EnvirommentView(Culture environment, Viewport viewport, AppState state) {
 		this.viewport = viewport;
 		this.viewState = state;
 

@@ -52,11 +52,11 @@ public class Ancestry {
 	private static void reportCreature(DNA dna) {
 		Narjillo specimen = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, Energy.INFINITE);
 		System.out.println("Typical successful creature:");
-		System.out.println("  Number of organs       =>" + specimen.getOrgans().size());
-		System.out.println("  Adult mass             =>" + NumberFormat.format(specimen.getBody().getAdultMass()));
-		System.out.println("  Energy to children (%) =>" + NumberFormat.format(specimen.getBody().getPercentEnergyToChildren()));
-		System.out.println("  Egg interval           =>" + specimen.getBody().getEggInterval());
-		System.out.println("  Egg velocity           =>" + specimen.getBody().getEggVelocity());
+		System.out.println("  Number of organs       => " + specimen.getOrgans().size());
+		System.out.println("  Adult mass             => " + NumberFormat.format(specimen.getBody().getAdultMass()));
+		System.out.println("  Energy to children (%) => " + NumberFormat.format(specimen.getBody().getPercentEnergyToChildren()));
+		System.out.println("  Egg interval           => " + specimen.getBody().getEggInterval());
+		System.out.println("  Egg velocity           => " + specimen.getBody().getEggVelocity());
 		System.out.println();
 	}
 }

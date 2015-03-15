@@ -2,6 +2,9 @@
 # Narjillos Backlog
 #===================
 
+* remember that I changed the ecosystem size
+* experiment with number of background threads and/or thread priorities in PetriDishApp for smoother animation at the cost of lower speed
+
 ##Self-Regulating Ecosystem
 * Elements in environment
 * Narjillos produce a molecule (based on visible body qualities - metabolic rate?)

@@ -27,6 +27,6 @@ public class NumberFormat {
 
 	public static String format(double number) {
 		// two decimals
-		return Double.toString(((long) number * 100) / 100.0);
+		return Double.toString(((long) (number * 100)) / 100.0);
 	}
 }

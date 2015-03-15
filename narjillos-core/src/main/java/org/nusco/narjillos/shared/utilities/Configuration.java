@@ -43,7 +43,7 @@ public class Configuration {
 	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = 600;
 
 	// ecosystem
-	public final static int ECOSYSTEM_SIZE = 80_000;
+	public final static int ECOSYSTEM_SIZE = 40_000;
 	public static final double ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS = 0.18;
 	public static final double ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.2;
 	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.35;

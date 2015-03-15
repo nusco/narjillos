@@ -9,7 +9,6 @@ import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
 import org.nusco.narjillos.shared.things.LifeFormEnergy;
 
 public class NarjilloEnergyLossTest {
@@ -19,10 +18,10 @@ public class NarjilloEnergyLossTest {
 	
 	@Before
 	public void initializeNarjillos() {
-		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}"), new Body(new Head(10, 10, 10, 10, 10, 1, 0.5, 30, 40)), Vector.ZERO, new LifeFormEnergy(1000, 1000));
+		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}"), new Body(new Head(10, 10, 10, 10, 10, 1, 0.5, 30, 40)), Vector.ZERO, new LifeFormEnergy(1000, Double.MAX_VALUE));
 		
 		DNA dna = new DNA(2, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}");
-		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, Energy.INFINITE);
+		biggerNarjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, new LifeFormEnergy(1000, Double.MAX_VALUE));
 	}
 	
 	@Test
@@ -47,7 +46,7 @@ public class NarjilloEnergyLossTest {
 	private double getEnergyLossWithMovement(Narjillo narjillo) {
 		double startingEnergy = narjillo.getEnergy().getValue();
 		narjillo.setTarget(Vector.cartesian(1000, 1000));
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 10000; i++)
 			narjillo.tick();
 		return startingEnergy - narjillo.getEnergy().getValue();
 	}

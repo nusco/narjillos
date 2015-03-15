@@ -38,13 +38,6 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public double getLevel() {
-		if (isZero())
-			return 0;
-		return Math.min(1, value / initialValue);
-	}
-
-	@Override
 	public void tick(double energySpent, double energyGained) {
 		if (isZero())
 			return; // once it's gone, it's gone

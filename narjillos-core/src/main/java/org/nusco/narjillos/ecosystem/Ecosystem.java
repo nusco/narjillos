@@ -219,7 +219,7 @@ public class Ecosystem extends Culture {
 		if (getNumberOfFoodPieces() >= maxFoodPieces)
 			return false;
 		
-		double foodRespawnAverageInterval = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS;
+		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS / getNumberOf1000SquarePointsBlocks();
 		return ranGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
 	}
 

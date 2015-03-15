@@ -1,9 +1,15 @@
 package org.nusco.narjillos.embryogenesis;
 
-import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.*;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.BLUE;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.EGG_INTERVAL;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.EGG_VELOCITY;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.ENERGY_TO_CHILDREN;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.GREEN;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.METABOLIC_RATE;
+import static org.nusco.narjillos.embryogenesis.CytogeneticLocations.RED;
 
-import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
+import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.genomics.Chromosome;
 import org.nusco.narjillos.shared.utilities.Configuration;
@@ -34,10 +40,8 @@ class HeadBuilder extends ConcreteOrganBuilder {
 		return getChromosome().getGene(BLUE);
 	}
 
-	double getPercentEnergyToChildren() {
-		final double maxEnergyToChildrenFromGene = 1 - Configuration.CREATURE_MIN_PERCENT_ENERGY_TO_CHILDREN;
-		double energyToChildrenFromGene = getChromosome().getGene(PERCENT_ENERGY_TO_CHILDREN) / 255.0 * maxEnergyToChildrenFromGene;
-		return energyToChildrenFromGene + Configuration.CREATURE_MIN_PERCENT_ENERGY_TO_CHILDREN;
+	double getEnergyToChildren() {
+		return getChromosome().getGene(ENERGY_TO_CHILDREN) * 100 + Configuration.ENERGY_MIN_TO_CHILDREN;
 	}
 
 	int getEggVelocity() {
@@ -50,6 +54,6 @@ class HeadBuilder extends ConcreteOrganBuilder {
 
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
-		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getPercentEnergyToChildren(), getEggVelocity(), getEggInterval());
+		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getEnergyToChildren(), getEggVelocity(), getEggInterval());
 	}
 }

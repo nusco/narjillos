@@ -127,7 +127,6 @@ public class NarjilloTickingTest {
 				narjillo.getAge();
 				narjillo.getDNA();
 				narjillo.getEnergy().getValue();
-				narjillo.getEnergyLevel();
 				narjillo.getMouth().getDirection();
 				narjillo.getNeckLocation();
 				narjillo.getPosition();

@@ -24,14 +24,13 @@ public class Configuration {
 	public static final double CREATURE_WAVE_BEAT_RATIO = 2;
 	public static final double CREATURE_BASE_SKEWING_VELOCITY = 0.1;
 	public static final double CREATURE_LATERAL_VIEWFIELD = 135;
-	public static final double CREATURE_MIN_PERCENT_ENERGY_TO_CHILDREN = 0.2;
-	public static final double CREATURE_MIN_ENERGY_TO_LAY_EGG = 10_000;
 
 	// energy
-	public static final double ENERGY_PER_JOULE = 1.0 / 75_000_000_000L;
+	public static final double ENERGY_EXPENSE_PER_JOULE = 1.0 / 10_000_000_000L;
 	public static final double ENERGY_OF_SEED_CREATURES = 25_000;
 	public static final double ENERGY_PER_FOOD_ITEM = 30_000;
 	public static final double ENERGY_METABOLIC_CONSUMPTION_POW = 1.5;
+	public static final double ENERGY_MIN_TO_CHILDREN = 10_000;
 
 	// organs
 	public static final double ORGAN_MINIMUM_LENGTH_AT_BIRTH = 5;
@@ -47,7 +46,7 @@ public class Configuration {
 	public static final double ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS = 0.18;
 	public static final double ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.2;
 	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.35;
-	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS = 0.003;
+	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS = 1_000_000;
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = 1000;
 
 	// eggs

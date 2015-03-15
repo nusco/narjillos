@@ -27,8 +27,8 @@ interface CytogeneticLocations {
 	// In body part: how fast the body segment reacts on the movement command
 	static final int DELAY = 4;
 
-	// In head: how much of its own energy the creature transfers to an egg.
-	static final int PERCENT_ENERGY_TO_CHILDREN = 5;
+	// In head: how much of its own energy the creature transfers to an egg
+	static final int ENERGY_TO_CHILDREN = 5;
 
 	// In body parts: how wide the body segment's movement is
 	static final int AMPLITUDE = 5;

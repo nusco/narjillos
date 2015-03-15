@@ -53,7 +53,7 @@ public class TranslationsPhysicsEngine {
 	}
 
 	public double getEnergy() {
-		return translationEnergy * Configuration.ENERGY_PER_JOULE;
+		return translationEnergy * Configuration.ENERGY_EXPENSE_PER_JOULE;
 	}
 
 	private double calculateTranslationEnergy(double mass, Vector linearVelocity) {

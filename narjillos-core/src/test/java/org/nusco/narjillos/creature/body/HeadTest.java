@@ -52,10 +52,10 @@ public class HeadTest extends ConnectedOrganTest {
 	}
 	
 	@Test
-	public void hasAPercentOfEnergyThatItPassesOnToChildren() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, 0.42, 1, 0);
+	public void hasAnAmountOfEnergyThatItPassesOnToChildren() {
+		Head head = new Head(10, 6, 0, 0, 0, 1, 1000, 1, 0);
 		
-		assertEquals(0.42, head.getPercentEnergyToChildren(), 0.0);
+		assertEquals(1000, head.getEnergyToChildren(), 0.0);
 	}
 	
 	@Test

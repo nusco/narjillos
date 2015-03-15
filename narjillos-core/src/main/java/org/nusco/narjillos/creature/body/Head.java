@@ -10,16 +10,16 @@ import org.nusco.narjillos.shared.utilities.Configuration;
 public class Head extends MovingOrgan {
 
 	private final double metabolicRate;
-	private final double percentEnergyToChildren;
+	private final double energyToChildren;
 	private final int eggVelocity;
 	private final int eggInterval;
 
 	private Vector startPoint = Vector.ZERO;
 	
-	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, double percentEnergyToChildren, int eggVelocity, int eggInterval) {
+	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, double energyToChildren, int eggVelocity, int eggInterval) {
 		super(adultLength, adultThickness, new Fiber(red, green, blue), null, new WaveNerve(Configuration.CREATURE_BASE_WAVE_FREQUENCY * metabolicRate), 0);
 		this.metabolicRate = metabolicRate;
-		this.percentEnergyToChildren = percentEnergyToChildren;
+		this.energyToChildren = energyToChildren;
 		this.eggVelocity = eggVelocity;
 		this.eggInterval = eggInterval;
 	}
@@ -33,8 +33,8 @@ public class Head extends MovingOrgan {
 		return metabolicRate;
 	}
 
-	public double getPercentEnergyToChildren() {
-		return percentEnergyToChildren;
+	public double getEnergyToChildren() {
+		return energyToChildren;
 	}
 
 	public int getEggVelocity() {

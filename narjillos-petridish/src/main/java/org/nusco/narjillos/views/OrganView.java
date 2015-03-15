@@ -196,8 +196,7 @@ class OrganView implements ItemView {
 	}
 
 	private double getEnergyAlpha() {
-		double currentEnergyPercent = getNarjillo().getEnergyLevel();
-		return Math.max(0, Math.min(1, currentEnergyPercent * 10));
+		return getNarjillo().getEnergy().getMaximumValue() / getNarjillo().getEnergy().getValue();
 	}
 	
 	protected double clipToRange(double result, double min, double max) {

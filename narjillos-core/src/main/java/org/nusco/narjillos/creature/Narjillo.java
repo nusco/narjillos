@@ -49,7 +49,7 @@ public class Narjillo implements Thing {
 		double energySpentByMoving = body.tick(getMouth().getDirection());
 		double energyGainedByGreenFibers = body.getGreenMass() * Configuration.CREATURE_GREEN_FIBERS_EXTRA_ENERGY;
 		energy.tick(energySpentByMoving, energyGainedByGreenFibers);
-
+		
 		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
 	}
 
@@ -94,10 +94,6 @@ public class Narjillo implements Thing {
 		return body.getCenterOfMass();
 	}
 
-	public double getEnergyLevel() {
-		return energy.getLevel();
-	}
-
 	public void feedOn(FoodPiece thing) {
 		energy.steal(thing.getEnergy());
 		thing.setEater(this);
@@ -135,16 +131,16 @@ public class Narjillo implements Thing {
 			return null;
 		
 		if (isTooYoungToLayEggs()) {
-			// too young - skip this chance to reproduce
+			// skip this chance to reproduce
 			decideWhenToLayTheNextEgg();
 			return null;
 		}
 		
-		double energyToChild = getEnergy().getValue() * getBody().getPercentEnergyToChildren();
+		double energyToChild = getBody().getEnergyToChildren();
 		double energyToEgg = Math.pow(getBody().getEggVelocity() * Configuration.EGG_MASS, 2);
 		
 		double totalEnergyRequired = energyToChild + energyToEgg;
-		if (getEnergy().getValue() < totalEnergyRequired + Configuration.CREATURE_MIN_ENERGY_TO_LAY_EGG)
+		if (getEnergy().getValue() < totalEnergyRequired)
 			return null;
 		
 		getEnergy().decreaseBy(energyToChild);

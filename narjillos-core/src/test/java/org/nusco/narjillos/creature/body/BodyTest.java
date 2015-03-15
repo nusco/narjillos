@@ -68,10 +68,10 @@ public class BodyTest {
 	}
 	
 	@Test
-	public void hasTheSamePercentEnergyToChildrenAsTheHead() {
+	public void hasTheSameEnergyToChildrenAsTheHead() {
 		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, 0.42, 0, 0));
 
-		assertEquals(0.42, body.getPercentEnergyToChildren(), 0.0);
+		assertEquals(0.42, body.getEnergyToChildren(), 0.0);
 	}
 	
 	@Test

@@ -58,8 +58,8 @@ public class Body {
 		return Angle.normalize(getHead().getAbsoluteAngle() + 180);
 	}
 
-	public double getPercentEnergyToChildren() {
-		return getHead().getPercentEnergyToChildren();
+	public double getEnergyToChildren() {
+		return getHead().getEnergyToChildren();
 	}
 
 	public int getEggVelocity() {

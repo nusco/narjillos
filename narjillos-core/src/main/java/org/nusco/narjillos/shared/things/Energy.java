@@ -14,11 +14,6 @@ public interface Energy {
 		};
 
 		@Override
-		public double getLevel() {
-			return 1;
-		};
-		
-		@Override
 		public void tick(double energySpent, double energyGained) {};
 		
 		@Override
@@ -46,13 +41,6 @@ public interface Energy {
 	
 	public double getMaximumValue();
 
-	/**
-	 * The current value in percent of the initial value (0 to 1).
-	 * If the current value is 0 or lower, it returns 0.
-	 * If the current value is over the initial value, it returns 1.
-	 */
-	public double getLevel();
-	
 	void steal(Energy other);
 	
 	public void decreaseBy(double energy);

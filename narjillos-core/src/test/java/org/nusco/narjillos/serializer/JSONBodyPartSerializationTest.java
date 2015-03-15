@@ -32,7 +32,7 @@ public class JSONBodyPartSerializationTest {
 		assertEquals(8, deserialized.getAbsoluteAngle(), 0.0);
 		assertEquals(new Fiber(10, 20, 30), deserialized.getFiber());
 		assertEquals(4, ((Head) deserialized).getMetabolicRate(), 0.0);
-		assertEquals(0.5, ((Head) deserialized).getPercentEnergyToChildren(), 0.0);
+		assertEquals(0.5, ((Head) deserialized).getEnergyToChildren(), 0.0);
 		assertEquals(30, ((Head) deserialized).getEggVelocity());
 		assertEquals(40, ((Head) deserialized).getEggInterval());
 	}

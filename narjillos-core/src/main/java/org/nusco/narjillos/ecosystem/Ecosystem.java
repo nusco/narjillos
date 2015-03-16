@@ -146,14 +146,14 @@ public class Ecosystem extends Culture {
 	public void populate(String dna, GenePool genePool, RanGen ranGen) {
 		spawnFood(ranGen);
 
-		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_BLOCK; i++)
 			spawnEgg(genePool.createDNA(dna), randomPosition(getSize(), ranGen), ranGen);
 	}
 
 	public void populate(GenePool genePool, RanGen ranGen) {
 		spawnFood(ranGen);
 
-		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_BLOCK; i++)
 			spawnEgg(genePool.createRandomDNA(ranGen), randomPosition(getSize(), ranGen), ranGen);
 	}
 
@@ -168,7 +168,7 @@ public class Ecosystem extends Culture {
 	}
 
 	private void spawnFood(RanGen ranGen) {
-		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_1000_SQUARE_POINTS; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_BLOCK; i++)
 			spawnFood(randomPosition(getSize(), ranGen));
 	}
 
@@ -215,11 +215,11 @@ public class Ecosystem extends Culture {
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {
-		double maxFoodPieces = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_SQUARE_POINTS;
+		double maxFoodPieces = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK;
 		if (getNumberOfFoodPieces() >= maxFoodPieces)
 			return false;
 		
-		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS / getNumberOf1000SquarePointsBlocks();
+		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK / getNumberOf1000SquarePointsBlocks();
 		return ranGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
 	}
 

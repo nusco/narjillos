@@ -20,9 +20,6 @@
 * Re-activate green and blue fibers
 * Red fibers damage the attacker
 
-##Before Release, remember to...
-* Run smaller ecosystem when starting with "narjillo" (the large one is too demanding on slow computers)
-
 ##Istincts (Complex Interactions 2)
 * Identifiable species (DNA hashes)
 * Istinct genes: love, fear, hunger

@@ -22,7 +22,7 @@ abstract class NarjillosApp extends Application {
 	// get corrupted if different threads see slightly outdated versions of
 	// them. So we can avoid synchronization altogether.
 
-	private Dish lab;
+	private Dish dish;
 
 	protected StoppableThread modelThread;
 	protected StoppableThread viewThread;
@@ -43,8 +43,8 @@ abstract class NarjillosApp extends Application {
 
 		System.gc(); // minimize GC during the first stages on animation
 
-		viewport = new Viewport(getLab().getCulture());
-		locator = new Locator(getLab().getCulture());
+		viewport = new Viewport(getDish().getCulture());
+		locator = new Locator(getDish().getCulture());
 		tracker = new ThingTracker(viewport, locator);
 
 		final Group root = new Group();
@@ -73,7 +73,7 @@ abstract class NarjillosApp extends Application {
 				throw new RuntimeException(e);
 			}
 
-		getLab().terminate();
+		getDish().terminate();
 
 		Platform.exit();
 	}
@@ -147,31 +147,31 @@ abstract class NarjillosApp extends Application {
 		return tracker;
 	}
 
-	protected synchronized Dish getLab() {
-		return lab;
+	protected synchronized Dish getDish() {
+		return dish;
 	}
 
-	protected synchronized void setLab(Dish lab) {
-		this.lab = lab;
+	protected synchronized void setDish(Dish dish) {
+		this.dish = dish;
 	}
 
 	protected Culture getEcosystem() {
-		return getLab().getCulture();
+		return getDish().getCulture();
 	}
 
 	protected boolean tick() {
-		return getLab().tick();
+		return getDish().tick();
 	}
 
 	protected String getPerformanceStatistics() {
-		return getLab().getPerformanceStatistics();
+		return getDish().getPerformanceStatistics();
 	}
 
 	protected String getEnvironmentStatistics() {
-		return getLab().getCulture().getStatistics();
+		return getDish().getCulture().getStatistics();
 	}
 
 	protected boolean isBusy() {
-		return getLab().isBusy();
+		return getDish().isBusy();
 	}
 }

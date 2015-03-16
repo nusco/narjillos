@@ -36,7 +36,7 @@ public class AncestryApp extends NarjillosApp {
 				if (options == null)
 					System.exit(1);
 
-				setLab(new IsolationDish(options));
+				setDish(new IsolationDish(options));
 
 				isModelInitialized[0] = true;
 

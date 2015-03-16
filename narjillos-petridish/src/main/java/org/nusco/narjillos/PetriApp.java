@@ -18,6 +18,7 @@ import javafx.scene.input.ZoomEvent;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.shared.physics.Vector;
 import org.nusco.narjillos.shared.utilities.Chronometer;
+import org.nusco.narjillos.shared.utilities.Configuration;
 import org.nusco.narjillos.utilities.PetriDishAppState;
 import org.nusco.narjillos.utilities.Speed;
 import org.nusco.narjillos.utilities.StoppableThread;
@@ -64,7 +65,7 @@ public class PetriApp extends NarjillosApp {
 				if (options == null)
 					System.exit(1);
 
-				setLab(new PetriDish(options));
+				setDish(new PetriDish(options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000));
 
 				isModelInitialized[0] = true;
 

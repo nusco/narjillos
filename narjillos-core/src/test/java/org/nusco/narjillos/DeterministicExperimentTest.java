@@ -33,7 +33,7 @@ public class DeterministicExperimentTest {
 		int halfCycles = cycles / 2;
 
 		// Run an experiment for a few ticks
-		Experiment experiment1 = new Experiment(1234, new Ecosystem(Configuration.ECOSYSTEM_SIZE, false), "deterministic_experiment_test", true);
+		Experiment experiment1 = new Experiment(1234, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "deterministic_experiment_test", true);
 
 		for (int i = 0; i < halfCycles; i++)
 			experiment1.tick();

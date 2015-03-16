@@ -16,7 +16,7 @@ public class PerformanceTest {
 	public static void main(String[] args) {
 		FastMath.setUp(); // pay up front for the setup of FastMath
 
-		Experiment experiment = new Experiment(424242, new Ecosystem(Configuration.ECOSYSTEM_SIZE, true), "performance_test", true);
+		Experiment experiment = new Experiment(424242, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, true), "performance_test", true);
 
 		long startTimeMillis = System.currentTimeMillis();
 

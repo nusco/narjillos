@@ -42,11 +42,12 @@ public class Configuration {
 	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = 600;
 
 	// ecosystem
-	public final static int ECOSYSTEM_SIZE = 40_000;
-	public static final double ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_1000_SQUARE_POINTS = 0.18;
-	public static final double ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.2;
-	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_SQUARE_POINTS = 0.35;
-	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_1000_SQUARE_POINTS = 1_000_000;
+	public final static int ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP = 40;
+	public final static int ECOSYSTEM_BLOCKS_PER_EDGE_IN_EXPERIMENT = 80;
+	public static final double ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_BLOCK = 0.18;
+	public static final double ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_BLOCK = 0.2;
+	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK = 0.35;
+	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = 1_000_000;
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = 1000;
 
 	// eggs

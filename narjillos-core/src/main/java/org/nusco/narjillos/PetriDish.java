@@ -22,10 +22,10 @@ public class PetriDish extends Dish {
 	private volatile boolean isTerminated = false;
 	private volatile long lastSaveTime = System.currentTimeMillis();
 
-	public PetriDish(CommandLineOptions options) {
+	public PetriDish(CommandLineOptions options, int size) {
 		String applicationVersion = Persistence.readApplicationVersion();
 		
-		experiment = createExperiment(applicationVersion, options);
+		experiment = createExperiment(applicationVersion, options, size);
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
 
@@ -72,10 +72,10 @@ public class PetriDish extends Dish {
 		}
 	}
 
-	private Experiment createExperiment(String applicationVersion, CommandLineOptions options) {
+	private Experiment createExperiment(String applicationVersion, CommandLineOptions options, int size) {
 		Experiment result;
 		
-		Ecosystem ecosystem = new Ecosystem(Configuration.ECOSYSTEM_SIZE, true);
+		Ecosystem ecosystem = new Ecosystem(size, true);
 		
 		String dna = options.getDna();
 		boolean trackingGenePool = options.isTrackingGenePool();
@@ -156,7 +156,7 @@ public class PetriDish extends Dish {
 		if (options == null)
 			System.exit(1);
 		
-		final PetriDish lab = new PetriDish(options);
+		final PetriDish lab = new PetriDish(options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_EXPERIMENT * 1000);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

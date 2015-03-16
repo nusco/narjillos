@@ -26,7 +26,7 @@ public class Configuration {
 	public static final double CREATURE_LATERAL_VIEWFIELD = 135;
 
 	// energy
-	public static final double ENERGY_EXPENSE_PER_JOULE = 1.0 / 10_000_000_000L;
+	public static final double ENERGY_EXPENSE_PER_PICOJOULE = 0.1;
 	public static final double ENERGY_OF_SEED_CREATURES = 25_000;
 	public static final double ENERGY_PER_FOOD_ITEM = 30_000;
 	public static final double ENERGY_METABOLIC_CONSUMPTION_POW = 1.5;

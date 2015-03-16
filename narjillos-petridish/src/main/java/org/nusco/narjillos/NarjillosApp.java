@@ -38,7 +38,14 @@ abstract class NarjillosApp extends Application {
 	public void start(Stage primaryStage) {
 		FastMath.setUp();
 		Platform.setImplicitExit(true);
-
+		
+		// Use a single thread to tick narjillos when running an app.
+		// The idea is that parallel processing is essential for speed
+		// when you run a command-line experiment - but when you run
+		// with graphics, normal realtime speed is adequate, and you
+		// want to save CPU cores for the graphics instead.
+		Culture.numberOfBackgroundThreads = 1;
+		
 		startModelThread(getProgramArguments());
 
 		System.gc(); // minimize GC during the first stages on animation
@@ -94,6 +101,11 @@ abstract class NarjillosApp extends Application {
 	private void startModelThread(final String[] arguments) {
 		modelThread = createModelThread(arguments, isModelInitialized);
 		modelThread.setName("model thread");
+		// Graphics are more important than simulation speed here
+		// (the current simulation runs just fine at 25 ticks per
+		// second on regular computers). So demote the priority
+		// of the simulation.
+		modelThread.setPriority(Thread.MIN_PRIORITY);	
 		modelThread.start();
 		while (!isModelInitialized[0])
 			try {

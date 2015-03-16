@@ -21,6 +21,8 @@ import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 public abstract class Culture {
 
+	public static volatile int numberOfBackgroundThreads = Runtime.getRuntime().availableProcessors();
+
 	private final long size;
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
 	private volatile ExecutorService executorService;
@@ -31,10 +33,12 @@ public abstract class Culture {
 		ThreadFactory tickWorkerFactory = new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable r) {
-				return new Thread(r, "tick worker " + tickWorkerCounter++);
+				Thread result = new Thread(r, "tick worker " + tickWorkerCounter++);
+				result.setPriority(Thread.currentThread().getPriority());
+				return result;
 			}
 		};
-		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), tickWorkerFactory);
+		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 	}
 
 	public long getSize() {

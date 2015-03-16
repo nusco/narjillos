@@ -10,7 +10,7 @@ import org.nusco.narjillos.utilities.Speed;
 public class PetriStatusView {
 
 	public Node toNode(int ticksInLastSecond, String environmentStatistics, String performanceStatistics, Speed speed, Effects effects, boolean locked, boolean isBusy) {
-		String message = 	"FPS: " + ticksInLastSecond + " " + performanceStatistics + "\n" +
+		String message = 	"FPS: " + ticksInLastSecond + " / " + performanceStatistics + "\n" +
 							environmentStatistics + "\n" +
 							getSpeedMessage(speed, effects) + "\n" +
 							getModeMessage(locked) + "\n" +

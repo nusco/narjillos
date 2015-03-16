@@ -172,8 +172,7 @@ public class PetriDish extends Dish {
 
 	@Override
 	public String getPerformanceStatistics() {
-		return "FPS: " + getTicksInLastSecond() + " / TPS: " + getTicksInLastSecond() + " / Ticks: "
-				+ NumberFormat.format(getTotalTicks());
+		return "TPS: " + getTicksInLastSecond() + " / Ticks: " + NumberFormat.format(getTotalTicks());
 	}
 
 	private int getTicksInLastSecond() {

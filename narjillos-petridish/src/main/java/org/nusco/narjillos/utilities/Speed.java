@@ -6,7 +6,7 @@ public enum Speed {
 
 	REALTIME("real time"), FAST("high speed"), SLOW("slow motion"), PAUSED("paused");
 
-	private static final int TICKS_PER_SECOND = 25;
+	private static final int TICKS_PER_SECOND = 30;
 
 	private String description;
 

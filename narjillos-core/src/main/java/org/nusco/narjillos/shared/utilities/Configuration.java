@@ -15,18 +15,18 @@ public class Configuration {
 	public static final double CREATURE_MAX_LIFESPAN = 100_000;
 	public static final double CREATURE_MATURE_AGE = 5_000;
 	public static final double CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY = 5;
-	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0;
-	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 0;
+//	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0;
+//	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 0;
 	// two reasonable values for when I want to experiment with fibers
-//	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0.5;
-//	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 4.0 / 1_000_000;
+	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0.5;
+	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 1.0 / 10_000_000;
 	public static final double CREATURE_BASE_WAVE_FREQUENCY = 0.01;
 	public static final double CREATURE_WAVE_BEAT_RATIO = 2;
 	public static final double CREATURE_BASE_SKEWING_VELOCITY = 0.1;
 	public static final double CREATURE_LATERAL_VIEWFIELD = 135;
 
 	// energy
-	public static final double ENERGY_EXPENSE_PER_PICOJOULE = 0.1;
+	public static final double ENERGY_EXPENSE_PER_JOULE = 0.1;
 	public static final double ENERGY_OF_SEED_CREATURES = 25_000;
 	public static final double ENERGY_PER_FOOD_ITEM = 30_000;
 	public static final double ENERGY_METABOLIC_CONSUMPTION_POW = 1.5;
@@ -43,7 +43,7 @@ public class Configuration {
 
 	// ecosystem
 	public final static int ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP = 40;
-	public final static int ECOSYSTEM_BLOCKS_PER_EDGE_IN_EXPERIMENT = 80;
+	public final static int ECOSYSTEM_BLOCKS_PER_EDGE_IN_EXPERIMENT = 40;
 	public static final double ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_BLOCK = 0.18;
 	public static final double ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_BLOCK = 0.2;
 	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK = 0.35;

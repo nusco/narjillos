@@ -15,11 +15,11 @@ public class Configuration {
 	public static final double CREATURE_MAX_LIFESPAN = 100_000;
 	public static final double CREATURE_MATURE_AGE = 5_000;
 	public static final double CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY = 5;
-//	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0;
-//	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 0;
+	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0;
+	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 0;
 	// two reasonable values for when I want to experiment with fibers
-	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0.5;
-	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 1.0 / 10_000_000;
+//	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = 0.5;
+//	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = 0.5 / 10_000_000;
 	public static final double CREATURE_BASE_WAVE_FREQUENCY = 0.01;
 	public static final double CREATURE_WAVE_BEAT_RATIO = 2;
 	public static final double CREATURE_BASE_SKEWING_VELOCITY = 0.1;
@@ -47,7 +47,7 @@ public class Configuration {
 	public static final double ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_BLOCK = 0.18;
 	public static final double ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_BLOCK = 0.2;
 	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK = 0.35;
-	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = 1_000_000;
+	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = 800_000;
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = 1000;
 
 	// eggs

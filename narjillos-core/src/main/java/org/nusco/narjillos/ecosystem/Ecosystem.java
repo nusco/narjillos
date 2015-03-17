@@ -108,7 +108,7 @@ public class Ecosystem extends Culture {
 	}
 
 	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
-		Egg egg = new Egg(genes, position, Vector.ZERO, Configuration.ENERGY_OF_SEED_CREATURES, ranGen);
+		Egg egg = new Egg(genes, position, Vector.ZERO, Configuration.CREATURE_SEED_ENERGY, ranGen);
 		insert(egg);
 		return egg;
 	}
@@ -146,14 +146,14 @@ public class Ecosystem extends Culture {
 	public void populate(String dna, GenePool genePool, RanGen ranGen) {
 		spawnFood(ranGen);
 
-		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_BLOCK; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
 			spawnEgg(genePool.createDNA(dna), randomPosition(getSize(), ranGen), ranGen);
 	}
 
 	public void populate(GenePool genePool, RanGen ranGen) {
 		spawnFood(ranGen);
 
-		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_EGGS_DENSITY_PER_BLOCK; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
 			spawnEgg(genePool.createRandomDNA(ranGen), randomPosition(getSize(), ranGen), ranGen);
 	}
 
@@ -168,7 +168,7 @@ public class Ecosystem extends Culture {
 	}
 
 	private void spawnFood(RanGen ranGen) {
-		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_INITIAL_FOOD_DENSITY_PER_BLOCK; i++)
+		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_FOOD_DENSITY_PER_BLOCK; i++)
 			spawnFood(randomPosition(getSize(), ranGen));
 	}
 

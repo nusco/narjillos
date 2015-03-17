@@ -35,7 +35,7 @@ public class Body {
 	public Body(MovingOrgan head) {
 		this.head = head;
 		adultMass = calculateAdultMass();
-		this.metabolicConsumption = Math.pow(getHead().getMetabolicRate(), Configuration.ENERGY_METABOLIC_CONSUMPTION_POW);
+		this.metabolicConsumption = Math.pow(getHead().getMetabolicRate(), Configuration.PHYSICS_METABOLIC_CONSUMPTION_POW);
 	}
 
 	public Head getHead() {

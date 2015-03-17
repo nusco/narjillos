@@ -153,15 +153,15 @@ public class DNA implements Iterable<Chromosome> {
 	}
 
 	private boolean isMutantGene(RanGen ranGen) {
-		return ranGen.nextDouble() < Configuration.GENE_MUTATION_RATE;
+		return ranGen.nextDouble() < Configuration.DNA_MUTATION_RATE;
 	}
 
 	private boolean isChromosomeMutation(RanGen ranGen) {
-		return ranGen.nextDouble() < (Configuration.GENE_MUTATION_RATE / (Chromosome.SIZE * 2));
+		return ranGen.nextDouble() < (Configuration.DNA_MUTATION_RATE / (Chromosome.SIZE * 2));
 	}
 
 	private int mutate(int gene, RanGen ranGen) {
-		int randomFactor = (int) ((ranGen.nextDouble() * Configuration.GENE_MUTATION_RANGE * 2) - Configuration.GENE_MUTATION_RANGE);
+		int randomFactor = (int) ((ranGen.nextDouble() * Configuration.DNA_MUTATION_RANGE * 2) - Configuration.DNA_MUTATION_RANGE);
 		return gene + randomFactor;
 	}
 

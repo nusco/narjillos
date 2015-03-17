@@ -44,6 +44,7 @@ project(':narjillos-core') {
   dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'commons-cli:commons-cli:1.2'
+    compile 'org.yaml:snakeyaml:1.15'
   }
 }
 

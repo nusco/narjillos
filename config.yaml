@@ -1,0 +1,47 @@
+dna:
+    mutation_rate: 0.067
+    mutation_range: 15.0
+physics:
+    energy_expense_per_joule: 0.1
+    viscosity_kickin_velocity: 300
+    metabolic_consumption_pow: 1.5
+    collision_distance: 60.0
+creature:
+    seed_energy: 25000.0
+    max_energy_to_initial_energy: 5.0
+    max_lifespan: 100000.0
+    mature_age: 5000.0
+    base_wave_frequency: 0.01
+    wave_beat_ratio: 2.0
+    lateral_viewfield: 135.0
+    base_skewing_velocity: 0.1
+    min_energy_to_children: 10000.0
+    blue_fibers_extra_push: 0.0
+    green_fibers_extra_energy: 0.0
+    # blue_fibers_extra_push: 0.5
+    # green_fibers_extra_energy: 0.00000005
+organ:
+    minimum_length_at_birth: 5
+    minimum_thickness_at_birth: 1
+    growth_rate: 0.01
+egg:
+    radius: 25
+    min_incubation_time: 400
+    max_incubation_time: 800
+    mass: 0.1
+    min_velocity: 0.1
+    velocity_decay: 0.98
+food:
+    radius: 7
+    energy: 30000
+ecosystem:
+    blocks_per_edge_in_app: 40
+    blocks_per_edge_in_experiment: 40
+    eggs_density_per_block: 0.18
+    food_density_per_block: 0.2
+    max_food_density_per_1000_blocks: 0.35
+    food_respawn_average_interval_per_block: 800000
+    update_food_targets_interval: 1000
+experiment:
+    sample_interval_ticks: 10000
+    save_interval_seconds: 600

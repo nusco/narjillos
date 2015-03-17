@@ -41,7 +41,7 @@ class HeadBuilder extends ConcreteOrganBuilder {
 	}
 
 	double getEnergyToChildren() {
-		return getChromosome().getGene(ENERGY_TO_CHILDREN) * 100 + Configuration.ENERGY_MIN_TO_CHILDREN;
+		return getChromosome().getGene(ENERGY_TO_CHILDREN) * 100 + Configuration.CREATURE_MIN_ENERGY_TO_CHILDREN;
 	}
 
 	int getEggVelocity() {

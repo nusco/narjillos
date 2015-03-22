@@ -1,47 +1,148 @@
 dna:
+	  # During copy, a gene can mutate. The likelyhood of that
+		# happening is mutation_rate. If it does mutate, then the
+		# gene's value is either incremented or decremented by a
+		# random amount in the range [0, mutation_range].
     mutation_rate: 0.067
     mutation_range: 15.0
+
 physics:
+	  # The effort of a creature moving is measured in an arbitrary
+		# unit - call it a "joule". This is the amount of energy that
+		# is needed for one such unit.
     energy_expense_per_joule: 0.1
+		
+		# Once a creature's tangential velocity gets over this value,
+		# it starts getting impacted by viscosity - which means that
+		# it will level off to its maximum value quick. This is to
+		# avoid creatures getting longer and faster forever. It doesn't
+		# impact rotation.
     viscosity_kickin_velocity: 300
+
+		# A higher metabolic rate has many advantages (mainly you move
+		# faster), but one disadvantage: it raises energy consumption
+		# by a non-linear factor. This factor equal to the metabolic 
+		# rate to the power of metabolic_consumption_pow.
     metabolic_consumption_pow: 1.5
+
+		# If two objects get closer than this, then they're colliding.
     collision_distance: 60.0
+
 creature:
+		# The dish is populate with seed creatures, with an energy of
+		# seed_energy. Their maximum energy is that value multiplied by
+		# max_energy_to_initial_energy.
     seed_energy: 25000.0
     max_energy_to_initial_energy: 5.0
+
+		# A creature cannot live more than max_lifespan ticks, and it
+		# cannot reproduce before mature_age ticks.
     max_lifespan: 100000.0
     mature_age: 5000.0
+
+		# The base frequency of a creature's wave is base_wave_frequency
+		# (this frequency is then multiplied by the creature's metabolic
+		# rate). The wave is actually not a real sinus wave - it's
+		# asymmetric, because the negative portion of the wave is
+		# wave_beat_ratio times faster than the positive portion. This
+		# generates natural-looking movements where the creatures "open
+		# slowly and close fast", or the opposite.
     base_wave_frequency: 0.01
     wave_beat_ratio: 2.0
+
+		# A creature "skews" its movements depending on the current angle
+		# of the target (up to a maximum absolute angle of lateral_viewfield).
+		# The skewing is not instantaneous - to change its skewing, a
+		# creature has a base_skewing_velocity, that is then multiplied
+		# by its metabolic rage.
     lateral_viewfield: 135.0
     base_skewing_velocity: 0.1
+
+		# A creature will give at least this amount of energy to its
+		# offspring, and refuse to reproduce if it doesn't have enough
+		# energy.
     min_energy_to_children: 10000.0
+
+		# Different types of "fibers" (that is, colors of a creature's
+		# organs) have different trade-offs. Blue fibers can give extra
+		# push in liquid for the same amount of energy. Green fibers
+		# provide extra energy by converting energy from the environment.
+		# The creatures will tend to evolve different fibers on
+		# different organs, depending on the organs' functions. For
+		# example, organs that do a lot of pushing around might evolve
+		# towards blue.
     blue_fibers_extra_push: 0.0
     green_fibers_extra_energy: 0.0
+		# The effect of fibers is currently disabled by default. Here are
+		# a couple of reasonable values in case you want to experiment with
+		# them.
     # blue_fibers_extra_push: 0.5
     # green_fibers_extra_energy: 0.00000005
+
 organ:
+		# At birth, an organ has a minimum length and thickness. Both
+		# grow at growth_rate until they reach their genetically
+		# determined values. (Note that the rate is not the same
+		# for all organs - organs farther away from the head grow
+		# faster).
     minimum_length_at_birth: 5
     minimum_thickness_at_birth: 1
     growth_rate: 0.01
+
 egg:
+		# Eggs have a radius (which is purely a graphical thing) and
+		# a mass (influencing how fast they move after being "fired"
+		# from a creature).
     radius: 25
+    mass: 0.1
+		
+		# An egg's incubation time varies randomly in this range.
     min_incubation_time: 400
     max_incubation_time: 800
-    mass: 0.1
-    min_velocity: 0.1
+
+		# As a newly laid egg moves, its velocity decays: with each
+		# tick, the velocity is multipled by velocity_decay. Once
+		# it gets below min_velocity, the velocity is zeroed. 
     velocity_decay: 0.98
+    min_velocity: 0.1
+
 food:
+		# Food pieces have a radius (which influences collisions)
+		# and provide a certain amount of energy to the creature
+		# that eats them.
     radius: 7
     energy: 30000
+
 ecosystem:
+		# A "block" is a 1000x1000 square. The entire dish is a
+		# square whose edges are measured in blocks. The default
+		# number of blocks per edge is different in the "narjillos"
+		# app (with graphics) and the "experiment" script (without
+		# graphics).
     blocks_per_edge_in_app: 40
     blocks_per_edge_in_experiment: 40
+
+		# The dish is populated with eggs and food. The density
+		# of both is calculated based on the total number of blocks. 
     eggs_density_per_block: 0.18
     food_density_per_block: 0.2
-    max_food_density_per_1000_blocks: 0.35
+
+		# Food keeps respawning with an average interval (which is
+		# calculated based on a single block - so the total interval
+		# is food_respawn_average_interval_per_block divided by the
+		# total number of blocks). If food density ever gets over
+		# a maximum (defined by max_food_density_per_1000_blocks),
+		# then food stops respawing.
     food_respawn_average_interval_per_block: 800000
+    max_food_density_per_1000_blocks: 0.35
+
+		# Every update_food_targets_interval ticks, the creatures
+		# get a chance to point at a new target.
     update_food_targets_interval: 1000
+
 experiment:
+		# Every sample_interval_ticks, an experiment reports its
+		# current status on the console. Every save_interval_seconds,
+		# it saves its state to an .exp file.
     sample_interval_ticks: 10000
     save_interval_seconds: 600

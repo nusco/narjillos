@@ -6,7 +6,7 @@ import org.nusco.narjillos.shared.physics.FastMath;
 import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
- * The program run by the _perftest_ script. Runs a short experiment for a few
+ * The program run by the "perftest" script. Runs a short experiment for a few
  * thousands ticks and times the result.
  */
 public class PerformanceTest {

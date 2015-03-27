@@ -2,12 +2,14 @@ package org.nusco.narjillos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.serializer.Persistence;
 
 public class CommandLineOptionsTest {
+
+	String EXPERIMENT_ID = "1234-" + Persistence.readApplicationVersion();
 
 	@Test
 	public void acceptsEmptyArguments() {
@@ -27,10 +29,10 @@ public class CommandLineOptionsTest {
 	@Test
 	public void acceptsAFile() {
 		try {
-			new CommandLineOptions("1234-0.0.0.exp");
+			new CommandLineOptions(EXPERIMENT_ID + ".exp");
 		} catch (RuntimeException e) {
 			// the file is not there, so this is OK
-			assertTrue(e.getMessage().contains("1234-0.0.0.exp (No such file or directory)"));
+			assertTrue(e.getMessage().contains(EXPERIMENT_ID + ".exp (No such file or directory)"));
 		}
 	}
 
@@ -57,7 +59,7 @@ public class CommandLineOptionsTest {
 
 	@Test
 	public void stripsVersionFromExperimentSeed() {
-		CommandLineOptions options = new CommandLineOptions("-seed", "1234-0.0.0");
+		CommandLineOptions options = new CommandLineOptions("-seed", EXPERIMENT_ID);
 		
 		assertEquals(1234, options.getSeed());
 	}
@@ -74,7 +76,7 @@ public class CommandLineOptionsTest {
 	@Test
 	public void refusesSeedAndFileTogether() {
 		try {
-			new CommandLineOptions("-seed", "1234", "123-0.0.0.exp");
+			new CommandLineOptions("-seed", "1234", EXPERIMENT_ID + ".exp");
 		} catch (RuntimeException e) {
 			assertTrue(e.getMessage().contains("If you load the experiment from a file, then you cannot"));
 		}
@@ -100,7 +102,7 @@ public class CommandLineOptionsTest {
 	@Test
 	public void refusesDnaAndFileTogether() {
 		try {
-			new CommandLineOptions("-dna", "{1_2_3}", "123-0.0.0.exp");
+			new CommandLineOptions("-dna", "{1_2_3}", EXPERIMENT_ID + ".exp");
 		} catch (RuntimeException e) {
 			assertTrue(e.getMessage().contains("If you load the experiment from a file, then you cannot"));
 		}

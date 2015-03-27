@@ -56,10 +56,7 @@ public class Configuration {
 	}
 
 	private static File findConfigurationFile() {
-		File result = new File("config.yaml");
-		if (result.exists())
-			return result;
-		return new File("../config.yaml");
+		return new File(System.getProperty("user.dir") + "/config.yaml");
 	}
 	
 	private static double getDouble(String configSection, String configKey) {

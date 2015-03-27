@@ -1,10 +1,7 @@
 *.exp
-*.gpl
 .classpath
 .project
 .settings/
-bin/
-example/
-.gradle/
-build/
 .DS_Store
+target/
+reports/

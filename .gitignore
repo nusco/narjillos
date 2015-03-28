@@ -1,10 +1,22 @@
+# Experiment files:
 *.exp
-*.gpl
+
+# Eclipse files:
 .classpath
 .project
 .settings/
-bin/
-example/
-.gradle/
 build/
+bin/
+
+# IntelliJ Idea files:
+narjillos.iml
+narjillos.ipr
+
+# OS X files:
+.DS_Store
+
+# Gradle files:
+.gradle/
+
+# OS files:
 .DS_Store

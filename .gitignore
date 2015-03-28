@@ -1,7 +1,18 @@
+# Experiment files:
 *.exp
+
+# Eclipse files:
 .classpath
 .project
 .settings/
+
+# IntelliJ Idea files:
+narjillos.iml
+narjillos.ipr
+
+# OS X files:
 .DS_Store
+
+# Buildr files:
 target/
 reports/

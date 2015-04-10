@@ -3,59 +3,29 @@ package org.nusco.narjillos.core.utilities;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
-
 
 public class Configuration {
 
 	private static Map<String, Map<String, Double>> data = loadConfigurationData();
 	
 	@SuppressWarnings("unchecked")
-	private static Map<String, Map<String, Double>> loadConfigurationData() {
-		Map<String, Map<String, Double>> data = new HashMap<>();
-		
-		Map<String, Double> physics = new HashMap<>();
-		physics.put("viscosity_kick_in_velocity", 300.0);
-		physics.put("collision_distance", 60.0);
-		physics.put("energy_expense_per_joule", 0.1);
-		physics.put("metabolic_consumption_pow", 1.5);
-		data.put("physics", physics);
-
-		Map<String, Double> dna = new HashMap<>();
-		dna.put("mutation_rate", 0.067);
-		dna.put("mutation_range", 15.0);
-		data.put("dna", dna);
-
-		Map<String, Double> creature = new HashMap<>();
-		creature.put("max_lifespan", 100_000.0);
-		creature.put("mature_age", 5000.0);
-		creature.put("max_energy_to_initial_energy", 5.0);
-		creature.put("base_wave_frequency", 0.01);
-		creature.put("wave_beat_ratio", 2.0);
-		creature.put("base_skewing_velocity", 0.1);
-		creature.put("lateral_viewfield", 135.0);
-		creature.put("seed_energy", 25_000.0);
-		creature.put("min_energy_to_children", 10_000.0);
-		creature.put("blue_fibers_extra_push", 0.0);
-		creature.put("green_fibers_extra_energy", 0.0);
-//		creature.put("blue_fibers_extra_push", 0.5);
-//		creature.put("green_fibers_extra_energy", 0.5 / 10_000_000);
-		data.put("creature", creature);
-		
+	private static Map<String, Map<String, Double>> loadConfigurationData() {		
+		File configurationFile = locateConfigurationFile();
 		try {
-			File configurationFile = findConfigurationFile();
 			return (Map<String, Map<String, Double>>) new Yaml().load(new FileReader(configurationFile));
 		} catch (FileNotFoundException e) {
-			System.out.println("Cannot find configuration file (config.yaml)");
-			System.exit(1);
-			throw new RuntimeException(e); // shut up, compiler
+			fail("cannot find a configuration file (config.yaml) in the current working directory");
+			return null;
+		} catch (Exception e) {
+			fail("cannot parse the config.yaml file: " + e.getMessage());
+			return null;
 		}
 	}
 
-	private static File findConfigurationFile() {
+	private static File locateConfigurationFile() {
 		return new File(System.getProperty("user.dir") + "/config.yaml");
 	}
 	
@@ -66,9 +36,8 @@ public class Configuration {
 				return (Double) result;
 			return new Double((int) result);
 		} catch (ClassCastException e) {
-			System.out.println("I expected " + configSection + ":" + configKey + " to be a number. It's not.");
-			System.exit(1);
-			throw new RuntimeException(e);
+			fail("\"" + configSection + ":" + configKey + "\" in config.yaml is not a number");
+			return 0;
 		}
 	}
 	
@@ -77,24 +46,26 @@ public class Configuration {
 		try {
 			return (int) result;
 		} catch (ClassCastException e) {
-			System.out.println("I expected " + configSection + ":" + configKey + " to be an integer number. It's not.");
-			System.exit(1);
-			throw new RuntimeException(e);
+			fail("\"" + configSection + ":" + configKey + "\" in config.yaml is not an integer number");
+			return 0;
 		}
 	}
 
 	private static Object get(String configSection, String configKey) {
 		Map<String, Double> section = data.get(configSection);
 		if (section == null) {
-			System.out.println("Cannot find section " + configSection + " in configuration. Exiting...");
-			System.exit(1);
+			fail("cannot find section \"" + configSection + "\" in config.yaml");
 		}
 		Object result = section.get(configKey);
 		if (result == null) {
-			System.out.println("Cannot find value " + configSection + ":" + configKey + " in configuration. Exiting...");
-			System.exit(1);
+			fail("cannot find value \"" + configSection + ":" + configKey + "\" in config.yaml");
 		}
 		return result;
+	}
+
+	private static void fail(String errorMessage) {
+		System.out.println("Error: " + errorMessage);
+		System.exit(1);
 	}
 
 	// physics

@@ -2,9 +2,6 @@
 # Narjillos Backlog
 #===================
 
-* More explicit warning when the config.yaml is not found
-* Explicit error message when the config.yaml contains tabs
-
 ##Self-Regulating Ecosystem
 * Elements in environment
 * Narjillos produce a molecule (based on visible body qualities - metabolic rate?)

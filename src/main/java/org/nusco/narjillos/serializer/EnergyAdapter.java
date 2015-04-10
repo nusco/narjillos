@@ -1,7 +1,7 @@
 package org.nusco.narjillos.serializer;
 
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.LifeFormEnergy;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.things.LifeFormEnergy;
 
 import com.google.gson.JsonParseException;
 

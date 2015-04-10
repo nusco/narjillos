@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.nusco.narjillos.shared.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.RanGen;
 
 /**
  * A pool of DNA strands.

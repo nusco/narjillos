@@ -1,9 +1,9 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.shared.physics.Angle;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.physics.ZeroVectorException;
-import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.core.physics.Angle;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * The mouth of a creature. It reactively points towards food.

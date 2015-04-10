@@ -1,14 +1,13 @@
 package org.nusco.narjillos.creature;
 
-import org.nusco.narjillos.embryogenesis.Embryo;
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.things.LifeFormEnergy;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.LifeFormEnergy;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.Configuration;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 /**
  * A narjillo egg, that eventually hatches to spawn a cute baby narjillo.
@@ -56,7 +55,7 @@ public class Egg implements Thing {
 
 		
 		hatchAge = age;
-		hatchedNarjillo = new Narjillo(dna, new Embryo(dna).develop(), getPosition(), new LifeFormEnergy(energy, Configuration.CREATURE_MAX_LIFESPAN));
+		hatchedNarjillo = new Narjillo(dna, getPosition(), new LifeFormEnergy(energy, Configuration.CREATURE_MAX_LIFESPAN));
 		energy = 0;
 		return true;
 	}

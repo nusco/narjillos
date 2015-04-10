@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.shared.utilities.Configuration;
-import org.nusco.narjillos.shared.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.utilities.RanGen;
 
 /**
  * A sequence of genes.

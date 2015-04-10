@@ -2,19 +2,19 @@ package org.nusco.narjillos.creature;
 
 import java.util.List;
 
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.ecosystem.Culture;
+import org.nusco.narjillos.creature.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.Configuration;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 /**
  * A fully-formed, autonomous creature.
@@ -29,10 +29,10 @@ public class Narjillo implements Thing {
 	private long age = 0;
 	private long nextEggAge = 0;
 	
-	public Narjillo(DNA genes, Body body, Vector position, Energy energy) {
-		this.body = body;
+	public Narjillo(DNA dna, Vector position, Energy energy) {
+		this.body = new Embryo(dna).develop();
 		body.teleportTo(position);
-		this.dna = genes;
+		this.dna = dna;
 		this.energy = energy;
 	}
 	
@@ -126,7 +126,7 @@ public class Narjillo implements Thing {
 	/**
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
 	 */
-	public Egg layEgg(Culture ecosystem, GenePool genePool, RanGen ranGen) {
+	public Egg layEgg(GenePool genePool, RanGen ranGen) {
 		if (getAge() < nextEggAge)
 			return null;
 		

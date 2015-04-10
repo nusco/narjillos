@@ -1,9 +1,9 @@
 package org.nusco.narjillos.serializer;
 
+import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Thing;
 
 import com.google.gson.JsonParseException;
 

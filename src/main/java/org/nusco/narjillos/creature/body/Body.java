@@ -6,13 +6,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nusco.narjillos.core.physics.Angle;
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.physics.RotationsPhysicsEngine;
 import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
-import org.nusco.narjillos.shared.physics.Angle;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.physics.ZeroVectorException;
-import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * The physical body of a Narjillo, with all its organs and their position in

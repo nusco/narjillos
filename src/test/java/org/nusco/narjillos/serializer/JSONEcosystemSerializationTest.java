@@ -5,16 +5,15 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class JSONEcosystemSerializationTest {
 
@@ -26,7 +25,7 @@ public class JSONEcosystemSerializationTest {
 		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new RanGen(0));
 
 		DNA dna = DNA.random(1, new RanGen(100));
-		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(100, 101), Energy.INFINITE);
+		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(100, 101), Energy.INFINITE);
 		ecosystem.insertNarjillo(narjillo);
 		
 		String json = JSON.toJson(ecosystem, Ecosystem.class);

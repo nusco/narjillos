@@ -3,8 +3,8 @@ package org.nusco.narjillos.serializer;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.creature.body.Mouth;
-import org.nusco.narjillos.shared.physics.Vector;
 
 public class JSONMouthSerializationTest {
 

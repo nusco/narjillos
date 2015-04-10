@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature.body;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.shared.physics.Vector;
+import org.nusco.narjillos.core.physics.Vector;
 
 public class BodyTest {
 

@@ -2,7 +2,6 @@
 # Narjillos Backlog
 #===================
 
-* Re-organize classes in root package after the merging of core and petridish
 * More explicit warning when the config.yaml is not found
 * Explicit error message when the config.yaml contains tabs
 
@@ -122,7 +121,7 @@
 * Wide Usability
 * The "Wow" factor?
 
-##Big Goals Crazy Ideas
+##Crazy Ideas
 * Multiple environments in multiple processes (with migration)
 * Neural networks for brains
 * Demiurge

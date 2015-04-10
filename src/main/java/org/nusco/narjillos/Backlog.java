@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Utility program to print the top of the backlog.
+ * A utility program to print the top of the backlog.
  */
 public class Backlog {
 	public static void main(String[] args) throws IOException {

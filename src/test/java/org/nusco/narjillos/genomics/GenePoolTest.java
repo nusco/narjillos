@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.shared.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.RanGen;
 
 public class GenePoolTest {
 	

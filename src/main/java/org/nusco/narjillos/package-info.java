@@ -1,5 +1,5 @@
 /**
- * The main applications.
+ * Entry points to the programs.
  */
 package org.nusco.narjillos;
 

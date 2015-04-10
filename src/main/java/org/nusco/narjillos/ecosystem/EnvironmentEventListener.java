@@ -1,6 +1,6 @@
 package org.nusco.narjillos.ecosystem;
 
-import org.nusco.narjillos.shared.things.Thing;
+import org.nusco.narjillos.core.things.Thing;
 
 public interface EnvironmentEventListener {
 

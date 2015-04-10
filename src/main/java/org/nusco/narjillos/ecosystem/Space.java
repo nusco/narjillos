@@ -5,10 +5,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * Partitioned space for fast neighbor searching, collision detection, etc.

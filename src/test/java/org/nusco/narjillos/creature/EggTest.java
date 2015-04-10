@@ -7,9 +7,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class EggTest {
 

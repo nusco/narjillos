@@ -3,10 +3,10 @@ package org.nusco.narjillos;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.ecosystem.Experiment;
 import org.nusco.narjillos.serializer.JSON;
-import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * Check that two Experiments with the same seed result in the same exact

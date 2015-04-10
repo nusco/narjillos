@@ -3,10 +3,10 @@ package org.nusco.narjillos.creature.body.physics;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.shared.physics.Angle;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.core.physics.Angle;
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * The physics of rotations.

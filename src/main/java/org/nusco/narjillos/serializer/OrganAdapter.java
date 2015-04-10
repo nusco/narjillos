@@ -1,9 +1,9 @@
 package org.nusco.narjillos.serializer;
 
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.MovingOrgan;
-import org.nusco.narjillos.creature.body.ConnectedOrgan;
+import org.nusco.narjillos.creature.body.Organ;
 
 import com.google.gson.JsonParseException;
 

@@ -3,15 +3,14 @@ package org.nusco.narjillos;
 import java.io.IOException;
 import java.util.List;
 
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.embryogenesis.Embryo;
-import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.ecosystem.Experiment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.Persistence;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.utilities.NumberFormat;
 
 /**
  * A utility program that reads a gene pool from a file, identifies the most
@@ -50,7 +49,7 @@ public class Ancestry {
 	}
 
 	private static void reportCreature(DNA dna) {
-		Narjillo specimen = new Narjillo(dna, new Embryo(dna).develop(), Vector.ZERO, Energy.INFINITE);
+		Narjillo specimen = new Narjillo(dna, Vector.ZERO, Energy.INFINITE);
 		System.out.println("Typical successful creature:");
 		System.out.println("  Number of organs   => " + specimen.getOrgans().size());
 		System.out.println("  Adult mass         => " + NumberFormat.format(specimen.getBody().getAdultMass()));

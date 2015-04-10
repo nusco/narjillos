@@ -1,8 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.Configuration;
 
 /**
  * The head of a creature, and the root of a tree of Organs.

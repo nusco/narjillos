@@ -3,8 +3,8 @@ package org.nusco.narjillos.creature.body;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.shared.physics.Vector;
 
 /**
  * An organ that is connected to other organs in a tree to form a body.

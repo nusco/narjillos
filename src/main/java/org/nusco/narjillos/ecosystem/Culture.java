@@ -12,12 +12,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.RanGen;
-import org.nusco.narjillos.shared.utilities.VisualDebugger;
 
 public abstract class Culture {
 

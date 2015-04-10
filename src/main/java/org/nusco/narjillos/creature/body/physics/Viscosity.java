@@ -1,7 +1,7 @@
 package org.nusco.narjillos.creature.body.physics;
 
-import org.nusco.narjillos.shared.physics.FastMath;
-import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.core.physics.FastMath;
+import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * Quick hacky functions to calculate limited velocity in a viscous fluid. No

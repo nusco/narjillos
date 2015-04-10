@@ -7,16 +7,13 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.EnvironmentEventListener;
-import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class EcosystemTest {
 	
@@ -40,7 +37,7 @@ public class EcosystemTest {
 
 	private Narjillo insertNarjillo(Vector position) {
 		DNA dna = DNA.random(1, ranGen);
-		Narjillo result = new Narjillo(dna, new Embryo(dna).develop(), position, Energy.INFINITE);
+		Narjillo result = new Narjillo(dna, position, Energy.INFINITE);
 		ecosystem.insertNarjillo(result);
 		return result;
 	}

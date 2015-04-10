@@ -1,8 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
+import org.nusco.narjillos.core.physics.Angle;
+import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.shared.physics.Angle;
-import org.nusco.narjillos.shared.physics.Vector;
 
 /**
  * Enahnces organs with the notion of time , embodied by the tick() method. This

@@ -4,15 +4,14 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.Energy;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class IsolationCulture extends Culture {
 
@@ -24,7 +23,7 @@ public class IsolationCulture extends Culture {
 		super(size);
 	
 		DNA dna = DNA.random(1, ranGen);
-		Narjillo narjillo = new Narjillo(dna, new Embryo(dna).develop(), Vector.cartesian(size, size).by(0.5), Energy.INFINITE);
+		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(size, size).by(0.5), Energy.INFINITE);
 		narjillos.add(narjillo);
 	}
 

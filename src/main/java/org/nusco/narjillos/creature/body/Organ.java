@@ -1,8 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.utilities.Configuration;
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * A piece of body.

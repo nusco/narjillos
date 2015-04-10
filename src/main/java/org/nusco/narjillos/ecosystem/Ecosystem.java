@@ -8,17 +8,17 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.shared.physics.Segment;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.FoodPiece;
-import org.nusco.narjillos.shared.things.Thing;
-import org.nusco.narjillos.shared.utilities.Configuration;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 /**
  * The place that Narjillos call "home".
@@ -62,30 +62,6 @@ public class Ecosystem extends Culture {
 			return center;
 
 		return target.getPosition();
-	}
-
-	@Override
-	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		for (Thing thing : new LinkedList<>(space.getAll("egg")))
-			tickEgg((Egg) thing);
-
-		synchronized (narjillos) {
-			for (Narjillo narjillo : new LinkedList<>(narjillos))
-				if (narjillo.isDead())
-					removeNarjillo(narjillo, genePool);
-		}
-
-		tickNarjillos(genePool, ranGen);
-
-		if (shouldSpawnFood(ranGen)) {
-			spawnFood(randomPosition(getSize(), ranGen));
-			periodicUpdate();
-		}
-
-		synchronized (narjillos) {
-			for (Narjillo narjillo : narjillos)
-				maybeLayEgg(narjillo, genePool, ranGen);
-		}
 	}
 
 	public final FoodPiece spawnFood(Vector position) {
@@ -160,6 +136,30 @@ public class Ecosystem extends Culture {
 	@Override
 	public String getStatistics() {
 		return "Narj: " + getNumberOfNarjillos() + " / Eggs: " + getNumberOfEggs() + " / Food: " + getNumberOfFoodPieces();
+	}
+
+	@Override
+	protected void tickThings(GenePool genePool, RanGen ranGen) {
+		for (Thing thing : new LinkedList<>(space.getAll("egg")))
+			tickEgg((Egg) thing);
+
+		synchronized (narjillos) {
+			for (Narjillo narjillo : new LinkedList<>(narjillos))
+				if (narjillo.isDead())
+					removeNarjillo(narjillo, genePool);
+		}
+
+		tickNarjillos(genePool, ranGen);
+
+		if (shouldSpawnFood(ranGen)) {
+			spawnFood(randomPosition(getSize(), ranGen));
+			periodicUpdate();
+		}
+
+		synchronized (narjillos) {
+			for (Narjillo narjillo : narjillos)
+				maybeLayEgg(narjillo, genePool, ranGen);
+		}
 	}
 
 	@Override
@@ -267,7 +267,7 @@ public class Ecosystem extends Culture {
 	}
 
 	private void maybeLayEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
-		Egg egg = narjillo.layEgg(this, genePool, ranGen);
+		Egg egg = narjillo.layEgg(genePool, ranGen);
 		if (egg == null)
 			return;
 		insert(egg);

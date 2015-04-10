@@ -5,9 +5,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.shared.utilities.RanGen;
 
 public class JSONGenePoolSerializationTest {
 

@@ -6,14 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
-import org.nusco.narjillos.shared.physics.Vector;
-import org.nusco.narjillos.shared.things.LifeFormEnergy;
 
 /**
  * The code that moves Narjllos, and in particular the code in the Organ
@@ -64,7 +63,7 @@ public class NarjilloTickingTest {
 		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
 
 		// Create the sample narjillo.
-		Narjillo narjillo = new Narjillo(sampleDNA, new Embryo(sampleDNA).develop(), Vector.cartesian(100, 200), new LifeFormEnergy(10000, 30000));
+		Narjillo narjillo = new Narjillo(sampleDNA, Vector.cartesian(100, 200), new LifeFormEnergy(10000, 30000));
 
 		// Start a few reading threads to make things more interesting.
 		// Then tick the narjillo for a while, and stop the readers.

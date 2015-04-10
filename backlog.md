@@ -118,7 +118,7 @@
 * Wide Usability
 * The "Wow" factor?
 
-##Big Goals Crazy Ideas
+##Crazy Ideas
 * Multiple environments in multiple processes (with migration)
 * Neural networks for brains
 * Demiurge

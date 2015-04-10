@@ -1,60 +1,29 @@
-allprojects {
-  version = new File('version').getText().trim()
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-  apply plugin: 'java'
-  apply plugin: 'application'
-  apply plugin: 'eclipse'
-  apply plugin: 'idea'
+version = new File('version').getText().trim()
+sourceCompatibility = JavaVersion.VERSION_1_8
 
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
-
-  eclipse {
-    jdt {
-      // Eclipse will use JDK 1.8 if it's been configured for that,
-      // but it's still stuck in a Java 1.7 world
-      sourceCompatibility = JavaVersion.VERSION_1_8
-      targetCompatibility = JavaVersion.VERSION_1_8
-    }
-  }
-
-  startScripts.enabled = false
-  run.enabled = false
-
-  repositories {
+repositories {
     mavenCentral()
-  }
-
-  dependencies {
-    compile subprojects
-    testCompile 'junit:junit:4.11'
-  }
-
-  jar {
-    // skip empty JARs
-    onlyIf { !sourceSets.main.allSource.files.isEmpty() }
-  }
-
-  createStartScript('narjillos', project, 'org.nusco.narjillos.PetriApp', [])
-  createStartScript('petri', project, 'org.nusco.narjillos.PetriApp', ['-Xmx8192M', '-Xms8192M'])
-  createStartScript('experiment', project, 'org.nusco.narjillos.PetriDish', ['-Xmx8192M', '-Xms8192M'])
 }
 
-project(':narjillos-core') {
-  dependencies {
+dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'commons-cli:commons-cli:1.2'
     compile 'org.yaml:snakeyaml:1.15'
-  }
+    testCompile 'junit:junit:4.11'
 }
 
-project(':narjillos-petridish') {
-  dependencies {
-    compile project(':narjillos-core')
-  }
-}
+startScripts.enabled = false
+run.enabled = false
 
-def createStartScript(name, project, mainClass, jvmArgs) {
+createStartScripts('narjillos', project, 'org.nusco.narjillos.NarjillosRunner', ['-Xmx4g'])
+createStartScripts('experiment', project, 'org.nusco.narjillos.ExperimentRunner', ['-Xmx4g'])
+
+def createStartScripts(name, project, mainClass, jvmArgs) {
   def taskName = name + "StartScript"
   project.tasks.create(name: taskName, type: CreateStartScripts) {
     outputDir       = new File(project.buildDir, 'scripts')
@@ -82,39 +51,39 @@ def commandLineArgsOr(defaultArgs) {
 }
 
 task(experiment, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.PetriDish'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  main = 'org.nusco.narjillos.ExperimentRunner'
+  classpath = sourceSets.main.runtimeClasspath
   args commandLineArgsOr([])
-  maxHeapSize "8192M"
+  maxHeapSize "4g"
 }
 
-task(petri, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.PetriApp'
-  classpath = project('narjillos-petridish').sourceSets.main.runtimeClasspath
+task(narjillos, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.NarjillosRunner'
+  classpath = sourceSets.main.runtimeClasspath
   args commandLineArgsOr([])
-  maxHeapSize "8192M"
+  maxHeapSize "4g"
 }
 
 task(ancestry, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.Ancestry'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  classpath = sourceSets.main.runtimeClasspath
   args commandLineArgsOr([])
-  maxHeapSize "8192M"
+  maxHeapSize "4g"
 }
 
 task(perftest, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.PerformanceTest'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  classpath = sourceSets.main.runtimeClasspath
 }
 
 task(deterministicExperimentTest, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.DeterministicExperimentTest'
-  classpath = project('narjillos-core').sourceSets.test.runtimeClasspath
+  classpath = sourceSets.test.runtimeClasspath
 }
 
 task(backlog, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.Backlog'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
+  classpath = sourceSets.main.runtimeClasspath
   args commandLineArgsOr("10")
 }
 

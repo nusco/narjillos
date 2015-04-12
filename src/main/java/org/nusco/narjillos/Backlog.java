@@ -25,6 +25,7 @@ public class Backlog {
 	}
 
 	private static void print(List<String> lines, int minimumNumberOfEntriesToPrint) {
+		System.out.println();
 		int items = 0;
 		for (String line : lines) {
 			System.out.println(line);

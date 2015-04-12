@@ -20,6 +20,10 @@ import org.nusco.narjillos.serializer.Persistence;
 public class Ancestry {
 
 	public static void main(String[] args) throws IOException {
+		if (args.length == 0) {
+			System.out.println("Usage: ancestry <experiment_file.exp>");
+			System.exit(0);
+		}
 		printAncestry(args[0]);
 	}
 

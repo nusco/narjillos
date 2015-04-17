@@ -30,27 +30,27 @@ end
 # TODO: pass command-line arguments (incl. empty)
 desc 'Runs an experiment (without graphics)'
 task 'experiment' => :compile do
-  javaclasses.org.nusco.narjillos.ExperimentRunner.main([])  #, :java_args => ['-Xmx8192M', '-Xms8192M']
+  javaclasses.org.nusco.narjillos.ExperimentRunner.main([])
 end
 
 desc 'Runs ancestry analysis on an .exp file'
 task 'ancestry', [:file] => :compile do |t, args|
-  javaclasses.org.nusco.narjillos.Ancestry.main([args[:file]]) #, :java_args => ['-Xmx8192M', '-Xms8192M']
+  javaclasses.org.nusco.narjillos.Ancestry.main([args[:file]])
 end
 
-desc "Prints the current backlog (usage: backlog[min_lines])"
-task 'backlog', [:min_lines] => :compile do |t, args|
-  javaclasses.org.nusco.narjillos.Backlog.main([args[:min_lines] || "10"])
+# Backlog
+
+desc "Prints the top of the backlog"
+task 'backlog' => :compile do
+  javaclasses.org.nusco.narjillos.Backlog.main(["10"])
 end
 
-desc "Prints the first few lines of the current backlog"
-task 'bl' => :backlog
-
-def javaclasses()
-  Java.classpath << LIBS + ["target/classes"]
-  Java.load
-  Java
+desc "Prints the whole backlog"
+task 'backlog:all' => :compile do
+  javaclasses.org.nusco.narjillos.Backlog.main([])
 end
+
+# Testing
 
 desc 'Runs the performance test'
 task 'test:performance' => :compile do
@@ -62,14 +62,15 @@ task 'test:deterministic' => :compile do
   javaclasses.org.nusco.narjillos.DeterministicExperimentTest
 end
 
-# TODO: override the normal test and call it test:unit. Do something similar for test:failed
 desc 'Runs all the tests'
 task 'test:all' => ['test', 'test:deterministic', 'test:performance']
 
-# TODO: package JAR with scripts (in BIN) and other files (in root) in a ZIP
-#       files: 'config.yaml', 'LICENSE', 'README.md', 'version'
+# Helpers
 
-# TODO: add generated scripts from previous builds with '-Xmx8192M', maybe '-Xms8192M' for 'narjllos'
-# (PetriApp) and 'experiment' (PetriDish)
+def javaclasses()
+  ENV['JAVA_OPTS'] ||= '-Xmx4g' # Large heap. Some tasks (like "experiment") need it.
+  Java.classpath << LIBS + ["target/classes"]
+  Java.load
+  Java
+end
 
-# TODO: do I really need both Xmx and Xms in the run tasks?

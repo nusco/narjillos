@@ -1,8 +1,6 @@
 # this buildfile is still broken. I'm fixing it a bit at a time, but for now
 # your best option is to generate project files for your favourite IDE (either
-# with "buildr eclipse" or "buildr idea") and use the IDE. To run stuff,
-# you'll find dedicated scripts in the project root ("narjillos", "experiment",
-# etc.
+# with "buildr eclipse" or "buildr idea") and use the IDE.
 
 repositories.remote << 'http://repo1.maven.org/maven2'
 
@@ -19,17 +17,19 @@ define 'narjillos' do
   compile.with LIBS
 
   # TODO: pass command-line arguments (incl. empty)
-  run.using :main => 'org.nusco.narjillos.NarjillosRunner', :java_args => ['-Xmx8192M', '-Xms8192M']
+  run.using :main => 'org.nusco.narjillos.NarjillosRunner', :java_args => ['-Xmx4g']
 
   package :jar
 
-  #ROOT_FILES = 'version', 'LICENSE', 'README.md', 'config.yaml'
-  #package(:zip).include(ROOT_FILES, _('bin/'), _('target/narjillos-*.jar'), artifacts(LIBS))
+  # FIXME: packaging is broken
+  ROOT_FILES = 'version', 'LICENSE', 'README.md', 'config.yaml', 'narjillos', 'narjillos.bat', 'experiment', 'experiment.bat'
+  package(:zip).include(ROOT_FILES, _('target/narjillos-*.jar'), artifacts(LIBS))
 end
 
 # TODO: pass command-line arguments (incl. empty)
 desc 'Runs an experiment (without graphics)'
 task 'experiment' => :compile do
+  # FIXME: why does this line break the package task?
   javaclasses.org.nusco.narjillos.ExperimentRunner.main([])
 end
 

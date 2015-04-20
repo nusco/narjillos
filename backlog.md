@@ -100,7 +100,6 @@
 * Demo mode (switch from narjillo to narjillo)
 * Narjillos eat eggs
 * Smoother contours when zooming in infrared mode
-* Externalize configurable parameters to YAML
 * Adaptive graphics (disable effects when framerate plummets)
 * Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
 * Conservation of energy in entire dish (with sun to give more energy)

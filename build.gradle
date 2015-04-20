@@ -87,7 +87,7 @@ task release(dependsOn: ['testAll', 'createStartupScripts', 'assembleMainDist'])
   group = 'distribution'
 }
 
-task createStartupScripts(dependsOn: 'installApp') {
+task createStartupScripts(dependsOn: 'installDist') {
   createStartupScript('experiment', 'org.nusco.narjillos.ExperimentRunner', ['-Xmx4g'])
 }
 

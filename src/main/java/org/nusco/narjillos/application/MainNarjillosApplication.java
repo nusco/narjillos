@@ -39,7 +39,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 
 	@Override
 	protected String getName() {
-		return "Petri Dish";
+		return "Narjillos";
 	}
 
 	@Override

@@ -18,6 +18,10 @@
 * Re-activate green and blue fibers
 * Red fibers damage the attacker
 
+##Ancestry Browser
+* Ancestry Browser
+* DNA diff during ancestry analysis
+
 ##Istincts (Complex Interactions 2)
 * Identifiable species (DNA hashes)
 * Istinct genes: love, fear, hunger
@@ -36,7 +40,7 @@
 * Visual effect when tracking/untracking
 * Scale zoom based on creature size and window size when following
 * Position map?
-* (Test navigation with first-comer)
+* (Test navigation with first-time user)
 
 ##Species Tracker
 * Clustering algorithm to count species (any algo to do this with variable num of clusters *and* variable-length DNA?)
@@ -65,10 +69,6 @@
 * Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
 * Adult body size is genetically determined
 
-##Ancestry Browser
-* Ancestry Browser
-* DNA diff during ancestry analysis
-
 ##Gaming UI
 * Status bar
 * Speed widget
@@ -76,7 +76,6 @@
 * Historical experiment stats (average lifespan, number of creatures, ...)
 * View stats for followed narjillo (age, energy, times eaten, genome...)
 * "About"/"Help" menus
-* Toggle effects with less obvious combination (CMD+E, or similar)
 * Save/load experiment from menu
 * Tutorial
 

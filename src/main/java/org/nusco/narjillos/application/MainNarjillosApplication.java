@@ -143,7 +143,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 					state.toggleLight();
 				else if (keyEvent.getCode() == KeyCode.I)
 					state.toggleInfrared();
-				else if (keyEvent.getCode() == KeyCode.E)
+				else if (keyEvent.getCode() == KeyCode.E && keyEvent.isControlDown())
 					state.toggleEffects();
 			}
 

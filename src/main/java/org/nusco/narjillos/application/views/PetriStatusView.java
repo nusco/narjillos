@@ -9,11 +9,11 @@ import org.nusco.narjillos.application.utilities.Speed;
 
 public class PetriStatusView {
 
-	public Node toNode(int ticksInLastSecond, String environmentStatistics, String performanceStatistics, Speed speed, Effects effects, boolean locked, boolean isBusy) {
+	public Node toNode(int ticksInLastSecond, String environmentStatistics, String performanceStatistics, Speed speed, Effects effects, String trackingStatus, boolean isBusy) {
 		String message = 	"FPS: " + ticksInLastSecond + " / " + performanceStatistics + "\n" +
 							environmentStatistics + "\n" +
 							getSpeedMessage(speed, effects) + "\n" +
-							getModeMessage(locked) + "\n" +
+							"Mode: " + trackingStatus + "\n" +
 							getBusyMessage(isBusy);
 
 		Text result = new Text(message);
@@ -22,12 +22,6 @@ public class PetriStatusView {
 		result.setTranslateX(5);
 		result.setTranslateY(15);
 		return result;
-	}
-
-	private String getModeMessage(boolean locked) {
-		if (locked)
-			return "Mode: Follow";
-		return "Mode: Freeroam";
 	}
 
 	private String getSpeedMessage(Speed speed, Effects effects) {

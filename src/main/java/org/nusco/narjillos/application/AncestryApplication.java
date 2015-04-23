@@ -62,7 +62,7 @@ public class AncestryApplication extends NarjillosApplication {
 
 			public void run() {
 				double size = getEcosystem().getSize();
-				getTracker().startTracking(Vector.cartesian(size, size).by(0.5));
+				getTracker().startFollowing(Vector.cartesian(size, size).by(0.5));
 
 				while (!hasBeenAskedToStop()) {
 					long startTime = System.currentTimeMillis();

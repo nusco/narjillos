@@ -8,9 +8,13 @@ import org.nusco.narjillos.creature.Narjillo;
 
 public class ThingTracker {
 
+	private static final long DEMO_MODE_FOCUS_TIME_IN_SECONDS = 12;
+
 	private final Viewport viewport;
 	private final Locator locator;
-	private Thing tracked;
+	private Thing target;
+	private boolean demoMode;
+	private long lastRefocusingTimeInDemoMode;
 
 	public ThingTracker(Viewport viewport, Locator locator) {
 		this.viewport = viewport;
@@ -18,70 +22,109 @@ public class ThingTracker {
 	}
 
 	public synchronized void tick() {
-		if (!isTracking())
+		if (!isFollowing())
 			return;
 
-		if (tracked.getLabel().equals("narjillo")) {
-			Narjillo narjillo = (Narjillo) tracked;
+		if (isDemoMode() && hasBeenFollowingTheSameThingForSomeTime())
+				refocusOnRandomThing();
+		
+		if (target.getLabel().equals("narjillo")) {
+			Narjillo narjillo = (Narjillo) target;
 			if (narjillo.isDead()) {
-				Thing nextClosestNarjillo = locator.findNarjilloAt(narjillo.getPosition());
-				if (nextClosestNarjillo == null) {
-					stopTracking();
-					return;
-				} else
-					startTracking(nextClosestNarjillo);
+				if (isDemoMode())
+					refocusOnRandomThing();
+				else {
+					Thing nextClosestNarjillo = locator.findNarjilloAt(narjillo.getPosition());
+					if (nextClosestNarjillo == null) {
+						stopFollowing();
+						return;
+					} else
+						startFollowing(nextClosestNarjillo);
+				}
 			}
 		}
 		
-		if (tracked.getLabel().equals("egg")) {
-			Narjillo hatched = ((Egg) tracked).getHatchedNarjillo();
+		if (target.getLabel().equals("egg")) {
+			Narjillo hatched = ((Egg) target).getHatchedNarjillo();
 			if (hatched != null)
-				startTracking(hatched);
+				startFollowing(hatched);
 			return;
 		}
 		
-		if (tracked.getLabel().equals("food_piece")) {
-			Thing eater = ((FoodPiece) tracked).getEater();
+		if (target.getLabel().equals("food_piece")) {
+			Thing eater = ((FoodPiece) target).getEater();
 			if (eater != null)
-				startTracking(eater);
+				startFollowing(eater);
 			return;
 		}
 		
-		centerViewportOn(tracked);
+		centerViewportOn(target);
 	}
 
-	public synchronized void startTracking(Vector position) {
-		startTrackingThingAt(position);
+	public synchronized void startFollowing(Vector position) {
+		startFollowingThingAt(position);
 		
-		if (!isTracking()) {
+		if (!isFollowing()) {
 			viewport.flyToTargetEC(position);
 			viewport.flyToNextZoomCloseupLevel();
 		}
 	}
 
-	public synchronized void stopTracking() {
-		tracked = null;
+	public synchronized void stopFollowing() {
+		target = null;
+		demoMode = false;
 	}
 
-	public synchronized boolean isTracking() {
-		return tracked != null;
+	public synchronized boolean isFollowing() {
+		return target != null;
 	}
 
-	private void startTrackingThingAt(Vector position) {
-		Thing thing = locator.findThingAt(position);
+	public void toggleDemoMode() {
+		demoMode = !demoMode;
+		if (!isDemoMode())
+			return;
+		viewport.flyToMaxZoomCloseupLevel();
+		refocusOnRandomThing();
+	}
 
-		if (thing == null) {
-			stopTracking();
+	public String getStatus() {
+		if (isDemoMode())
+			return "demo";
+		if (isFollowing())
+			return "following";
+		return "freeroam";
+	}
+
+	private boolean hasBeenFollowingTheSameThingForSomeTime() {
+		long secondsSinceLastRefocus = (System.currentTimeMillis() - lastRefocusingTimeInDemoMode) / 1000;
+		return secondsSinceLastRefocus > DEMO_MODE_FOCUS_TIME_IN_SECONDS;
+	}
+
+	private void refocusOnRandomThing() {
+		Thing target = locator.findRandomLivingThing();
+		if (target == null) {
+			stopFollowing();
+			return;
+		}
+		startFollowing(target);
+		lastRefocusingTimeInDemoMode = System.currentTimeMillis();
+	}
+
+	private void startFollowingThingAt(Vector position) {
+		Thing target = locator.findThingAt(position);
+
+		if (target == null) {
+			stopFollowing();
 			return;
 		}
 
-		startTracking(thing);
-		viewport.flyToTargetEC(thing.getPosition());
-		viewport.flyToMaxZoomCloseupLevel();
+		startFollowing(target);
 	}
 
-	private void startTracking(Thing thing) {
-		tracked = thing;
+	private void startFollowing(Thing target) {
+		this.target = target;
+		viewport.flyToTargetEC(target.getPosition());
+		viewport.flyToMaxZoomCloseupLevel();
 	}
 
 	private void centerViewportOn(Thing thing) {
@@ -89,5 +132,9 @@ public class ThingTracker {
 			viewport.flyToTargetEC(((Narjillo) thing).getCenterOfMass());
 		else
 			viewport.flyToTargetEC(thing.getPosition());
+	}
+
+	private boolean isDemoMode() {
+		return demoMode;
 	}
 }

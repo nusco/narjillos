@@ -14,13 +14,13 @@
 * Narjillos eat other narjillos (pick target at random)
 * Remove food?
 
-##Fibers
-* Re-activate green and blue fibers
-* Red fibers damage the attacker
-
 ##Ancestry Browser
 * Ancestry Browser
 * DNA diff during ancestry analysis
+
+##Fibers
+* Re-activate green and blue fibers
+* Red fibers damage the attacker
 
 ##Istincts (Complex Interactions 2)
 * Identifiable species (DNA hashes)
@@ -46,6 +46,22 @@
 * Clustering algorithm to count species (any algo to do this with variable num of clusters *and* variable-length DNA?)
 * Report number of species on the console (or do it when analizing ancestry if too slow)
 
+##Gaming UI
+* Status bar
+* Speed widget
+* Light switches for normal/infrared light
+* Historical experiment stats (average lifespan, number of creatures, ...)
+* View stats for followed narjillo (age, energy, times eaten, genome...)
+* "About"/"Help" menus
+* Save/load experiment from menu
+* Tutorial
+
+##Packaged Application
+* Native Mac app
+* Native Windows app
+* Run in a browser
+* Package Java runtime with command-line program?
+
 ##Sexual Reproduction
 * (a lot of things to decide. do I really need this stuff to get speciation? leave it for later in case I don't)
 * Basic Sexual Reproduction (just to set up for Assortative Mating)
@@ -69,22 +85,6 @@
 * Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
 * Adult body size is genetically determined
 
-##Gaming UI
-* Status bar
-* Speed widget
-* Light switches for normal/infrared light
-* Historical experiment stats (average lifespan, number of creatures, ...)
-* View stats for followed narjillo (age, energy, times eaten, genome...)
-* "About"/"Help" menus
-* Save/load experiment from menu
-* Tutorial
-
-##Packaged Application
-* Native Mac app
-* Native Windows app
-* Run in a browser
-* Package Java runtime with command-line program?
-
 ##Advanced Body Plans
 * "Back" instruction in body plan
 * Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
@@ -93,10 +93,10 @@
 * Different shapes for body segments
 
 ##Grab Bag
+* Skip quickly over less interesting creatures in Demo Mode
 * Show things as blips when zooming out in infrared mode
 * Simpler senescence mechanism
 * Report conflicts in command-line arguments (like -s and file used together)
-* Demo mode (switch from narjillo to narjillo)
 * Narjillos eat eggs
 * Smoother contours when zooming in infrared mode
 * Adaptive graphics (disable effects when framerate plummets)
@@ -108,12 +108,12 @@
 * Complex Interactions
 * Self-Regulating Ecosystem
 * Ecological Niches
-* Disruptive selection?
+* Disruptive Selection?
 * Sexual Reproduction
 * Assortative Mating
 * Sympatric Speciation
 * Asymmetrical Arms Races
-* Wide Usability
+* Broad Usability
 * The "Wow" factor?
 
 ##Crazy Ideas

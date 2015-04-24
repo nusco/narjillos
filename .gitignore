@@ -2,3 +2,8 @@
 build/
 core/
 petridish/
+.classpath
+.project
+.settings/
+bin/
+.DS_Store

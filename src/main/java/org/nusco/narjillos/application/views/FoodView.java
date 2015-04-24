@@ -15,6 +15,7 @@ class FoodView extends ThingView {
 	
 	public FoodView(FoodPiece food) {
 		super(food);
+		
 		roundObjectView = new RoundObjectView(Configuration.FOOD_RADIUS) {
 			@Override
 			public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
@@ -29,8 +30,6 @@ class FoodView extends ThingView {
 				} else {
 					getShape().setStrokeWidth(0);
 				}
-
-				moveTo(getThing().getPosition());
 				
 				if (effectsOn)
 					getShape().setEffect(getEffects(zoomLevel, infraredOn));
@@ -44,6 +43,7 @@ class FoodView extends ThingView {
 				return Color.BROWN;
 			}
 		};
+		roundObjectView.moveTo(food.getPosition());
 	}
 
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {

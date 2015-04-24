@@ -9,6 +9,7 @@ import org.nusco.narjillos.creature.Narjillo;
 public class ThingTracker {
 
 	private static final long DEMO_MODE_FOCUS_TIME_IN_SECONDS = 12;
+	private static final long DEMO_MODE_ZOOM_TIME_IN_SECONDS = 3;
 
 	private final Viewport viewport;
 	private final Locator locator;
@@ -25,14 +26,18 @@ public class ThingTracker {
 		if (!isFollowing())
 			return;
 
-		if (isDemoMode() && hasBeenFollowingTheSameThingForSomeTime())
-				refocusOnRandomThing();
+		if (isDemoMode()) {
+			if (hasBeenFocusingFor(DEMO_MODE_FOCUS_TIME_IN_SECONDS + DEMO_MODE_ZOOM_TIME_IN_SECONDS))
+				refocusOnRandomLivingThing();
+			else if (hasBeenFocusingFor(DEMO_MODE_FOCUS_TIME_IN_SECONDS))
+				viewport.zoomOut();
+		}
 		
 		if (target.getLabel().equals("narjillo")) {
 			Narjillo narjillo = (Narjillo) target;
 			if (narjillo.isDead()) {
 				if (isDemoMode())
-					refocusOnRandomThing();
+					refocusOnRandomLivingThing();
 				else {
 					Thing nextClosestNarjillo = locator.findNarjilloAt(narjillo.getPosition());
 					if (nextClosestNarjillo == null) {
@@ -84,7 +89,7 @@ public class ThingTracker {
 		if (!isDemoMode())
 			return;
 		viewport.flyToMaxZoomCloseupLevel();
-		refocusOnRandomThing();
+		refocusOnRandomLivingThing();
 	}
 
 	public String getStatus() {
@@ -95,12 +100,12 @@ public class ThingTracker {
 		return "freeroam";
 	}
 
-	private boolean hasBeenFollowingTheSameThingForSomeTime() {
+	private boolean hasBeenFocusingFor(long seconds) {
 		long secondsSinceLastRefocus = (System.currentTimeMillis() - lastRefocusingTimeInDemoMode) / 1000;
-		return secondsSinceLastRefocus > DEMO_MODE_FOCUS_TIME_IN_SECONDS;
+		return secondsSinceLastRefocus > seconds;
 	}
 
-	private void refocusOnRandomThing() {
+	private void refocusOnRandomLivingThing() {
 		Thing target = locator.findRandomLivingThing();
 		if (target == null) {
 			stopFollowing();

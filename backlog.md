@@ -38,6 +38,8 @@
 
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
+* Fix: cannot focus on really small (radius 1) creatures
+* Fix: zooming out in demo mode shouldn't be relative to initial zoom
 * Position map?
 * (Test navigation with first-time user)
 

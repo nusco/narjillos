@@ -14,6 +14,12 @@
 * Narjillos eat other narjillos (pick target at random)
 * Remove food?
 
+##Dish Edges
+* Kill narjillos who touch outer space
+* Limit panning to inner space (with some margin)
+* Auto-scroll viewport to stay within inner space
+* (Remove the concept of outer space altogether)
+
 ##Ancestry Browser
 * Ancestry Browser
 * DNA diff during ancestry analysis
@@ -30,15 +36,8 @@
 * Decide ideal direction based on istinct genes
 * Narjillos follow istinct direction (plus food?)
 
-##Dish Edges
-* Kill narjillos who touch outer space
-* Limit panning to inner space (with some margin)
-* Auto-scroll viewport to stay within inner space
-* (Remove the concept of outer space altogether)
-
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
-* Scale zoom based on creature size and window size when following
 * Position map?
 * (Test navigation with first-time user)
 
@@ -51,7 +50,7 @@
 * Speed widget
 * Light switches for normal/infrared light
 * Historical experiment stats (average lifespan, number of creatures, ...)
-* View stats for followed narjillo (age, energy, times eaten, genome...)
+* View stats for followed narjillo (age, energy, radius, times eaten, genome...)
 * "About"/"Help" menus
 * Save/load experiment from menu
 * Tutorial
@@ -97,9 +96,9 @@
 * Show things as blips when zooming out in infrared mode
 * Simpler senescence mechanism
 * Report conflicts in command-line arguments (like -s and file used together)
+* Command-line argument to start without visual effects
 * Narjillos eat eggs
 * Smoother contours when zooming in infrared mode
-* Adaptive graphics (disable effects when framerate plummets)
 * Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
 * Conservation of energy in entire dish (with sun to give more energy)
 * Fix memory leak

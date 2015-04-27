@@ -1,6 +1,7 @@
 package org.nusco.narjillos.application.utilities;
 
 import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.ecosystem.Culture;
 
 /**
@@ -39,7 +40,7 @@ public class Viewport {
 		
 		centerOnEcosystem();
 		zoomLevel = minZoomLevel;
-		flyToNextZoomCloseupLevel();
+		zoomToNextLevel();
 	}
 
 	private Vector getEcosystemCenterEC() {
@@ -63,7 +64,7 @@ public class Viewport {
 		return centerEC;
 	}
 
-	public void setCenterSC(Vector centerSC) {
+	void setCenterSC(Vector centerSC) {
 		centerEC = toEC(centerSC);
 	}
 
@@ -88,10 +89,6 @@ public class Viewport {
 	public void zoomOut() {
 		userIsZooming = true;
 		zoomTo(zoomLevel / ZOOM_VELOCITY);
-	}
-
-	private void centerOnEcosystem() {
-		centerEC = getEcosystemCenterEC();
 	}
 
 	public final void zoomTo(double zoomLevel) {
@@ -132,19 +129,20 @@ public class Viewport {
 		return getPositionEC().plus(pointSC.by(1.0 / zoomLevel));
 	}
 
-	public void flyToTargetSC(Vector targetSC) {
-		targetCenterEC = toEC(targetSC);
+	public void centerOn(Thing target) {
+		targetCenterEC = target.getCenter();
+	}
+	
+	public void centerAndZoomOn(Thing target) {
+		centerOn(target);
+		targetZoomLevel = Math.min(getMaxZoomLevel(), getZoomToFitLevel(target.getRadius()));
 	}
 
-	public void flyToTargetEC(Vector targetEC) {
-		targetCenterEC = targetEC;
-	}
-
-	public void flyToNextZoomCloseupLevel() {
+	public void zoomToNextLevel() {
 		targetZoomLevel = nextZoomCloseupLevel();
 	}
 
-	public void flyToMaxZoomCloseupLevel() {
+	public void zoomToMaxLevel() {
 		targetZoomLevel = getMaxZoomLevel();
 	}
 
@@ -156,9 +154,23 @@ public class Viewport {
 		return Math.abs(zoomLevel - targetZoomLevel) < 0.1;
 	}
 
-	final void setCenterEC(Vector centerEC) {
+	void setCenterEC(Vector centerEC) {
 		this.centerEC = centerEC;
 		this.targetCenterEC = centerEC;
+	}
+
+	private void centerOnEcosystem() {
+		centerEC = getEcosystemCenterEC();
+	}
+
+	private double getZoomToFitLevel(double radius) {
+		double diameter = radius * 2;
+		final double margin = 2;
+		return getMinSizeSC() / (diameter * margin);
+	}
+
+	private double getMinSizeSC() {
+		return Math.min(getSizeSC().x, getSizeSC().x);
 	}
 
 	private double getMaxZoomLevel() {

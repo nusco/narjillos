@@ -150,7 +150,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 			}
 
 			private void panViewport(long velocityX, long velocityY, KeyEvent event) {
-				getTracker().stopFollowing();
+				getTracker().stopTracking();
 				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
 				event.consume();
 			};
@@ -164,10 +164,10 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
 
 				if (event.getClickCount() == 1)
-					getTracker().stopFollowing();
+					getTracker().stopTracking();
 
 				if (event.getClickCount() == 2)
-					getTracker().startFollowing(clickedPositionEC);
+					getTracker().startTrackingThingAt(clickedPositionEC);
 
 				if (event.getClickCount() == 3)
 					copyIsolatedDNAToClipboard(clickedPositionEC);
@@ -207,7 +207,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 		scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				getTracker().stopFollowing();
+				getTracker().stopTracking();
 				double translateX = event.getX() - mouseX[0];
 				double translateY = event.getY() - mouseY[0];
 				getViewport().translateBy(Vector.cartesian(-translateX, -translateY));
@@ -245,7 +245,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 						else {
 							getViewport().zoomOut();
 							if (getViewport().isZoomedOutCompletely())
-								getTracker().stopFollowing();
+								getTracker().stopTracking();
 						}
 					}
 				};
@@ -268,7 +268,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 				double zoomFactor = event.getTotalZoomFactor();
 				getViewport().zoomTo(initialZoomLevel[0] * zoomFactor);
 				if (getViewport().isZoomedOutCompletely())
-					getTracker().stopFollowing();
+					getTracker().stopTracking();
 			}
 		});
 	}

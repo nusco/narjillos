@@ -1,75 +1,127 @@
-allprojects {
-  version = new File('version').getText().trim()
+// Plugins
 
-  apply plugin: 'java'
-  apply plugin: 'application'
-  apply plugin: 'eclipse'
-  apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
 
-  eclipse {
-    jdt {
-      // Eclipse will use JDK 1.8 if it's been configured for that,
-      // but it's still stuck in a Java 1.7 world
-      sourceCompatibility = JavaVersion.VERSION_1_8
-      targetCompatibility = JavaVersion.VERSION_1_8
+// Basic Configuration
+
+version = new File('version').getText().trim()
+sourceCompatibility = JavaVersion.VERSION_1_8
+mainClassName = 'org.nusco.narjillos.NarjillosRunner'
+
+// Dependencies
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'com.google.code.gson:gson:2.3'
+  compile 'commons-cli:commons-cli:1.2'
+  compile 'org.yaml:snakeyaml:1.15'
+  testCompile 'junit:junit:4.11'
+}
+
+
+// Programs
+
+createProgramTask('experiment', 'org.nusco.narjillos.ExperimentRunner', 'Runs an experiment (same arguments as the \'experiment\' script).')
+createProgramTask('narjillos', 'org.nusco.narjillos.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
+createProgramTask('ancestry', 'org.nusco.narjillos.Ancestry', 'Runs ancestry analysis (pass it the *.exp filename).')
+
+
+// Tests
+
+task(performanceTest, dependsOn: 'build', type: JavaExec) {
+  description = 'Runs performance test.'
+  group = 'verification'
+  main = 'org.nusco.narjillos.PerformanceTest'
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+task(testDeterministicBehavior, dependsOn: 'build', type: JavaExec) {
+  description = 'Runs the (slow) test that checks whether the system is deterministic.'
+  group = 'verification'
+  main = 'org.nusco.narjillos.DeterministicExperimentTest'
+  classpath = sourceSets.test.runtimeClasspath
+}
+
+task testAll(dependsOn: ['test', 'testDeterministicBehavior']) {
+  description = 'Runs all the tests, including the slow ones.'
+  group = 'verification'
+}
+
+
+// Backlog Management
+
+task(bl, dependsOn: 'build', type: JavaExec) {
+  main = 'org.nusco.narjillos.Backlog'
+  classpath = sourceSets.main.runtimeClasspath
+  args commandLineArgsOr('10') // show minimum 10 lines unless the user specifies something else
+}
+
+task(backlog, dependsOn: 'bl') {
+  description = 'Prints the top of the backlog. Also aliased to \'bl\'.'
+  group = 'development'
+}
+
+
+// Packaging
+
+distributions {
+  main {
+    contents {
+        from { 'version' }
+        from { 'LICENSE' }
+        from { 'README.md' }
+        from { 'config.yaml' }
     }
   }
-
-  startScripts.enabled = false
-  run.enabled = false
-
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    compile subprojects
-    testCompile 'junit:junit:4.11'
-  }
-
-  jar {
-    // skip empty JARs
-    onlyIf { !sourceSets.main.allSource.files.isEmpty() }
-  }
-
-  createStartScript('narjillos', project, 'org.nusco.narjillos.PetriDish', [])
-  createStartScript('petri', project, 'org.nusco.narjillos.PetriDish', ['-Xmx8192M', '-Xms8192M'])
-  createStartScript('experiment', project, 'org.nusco.narjillos.ExperimentalLab', ['-Xmx8192M', '-Xms8192M'])
 }
 
-project(':narjillos-core') {
-  dependencies {
-    compile 'com.google.code.gson:gson:2.3'
-    compile 'commons-cli:commons-cli:1.2'
-  }
+task release(dependsOn: ['testAll', 'createStartupScripts', 'assembleMainDist']) {
+  description = 'Runs all tests and packages a release.'
+  group = 'distribution'
 }
 
-project(':narjillos-petridish') {
-  dependencies {
-    compile project(':narjillos-core')
-  }
+task createStartupScripts(dependsOn: 'installDist') {
+  createStartupScript('experiment', 'org.nusco.narjillos.ExperimentRunner', ['-Xmx4g'])
 }
 
-def createStartScript(name, project, mainClass, jvmArgs) {
-  def taskName = name + "StartScript"
-  project.tasks.create(name: taskName, type: CreateStartScripts) {
-    outputDir       = new File(project.buildDir, 'scripts')
-    mainClassName   = mainClass
+
+// Helpers
+
+def createStartupScript(name, mainClass, jvmArgs) {
+  def taskName = name + 'StartScript'
+  tasks.create(name: taskName, type: CreateStartScripts) {
+    outputDir = new File(buildDir, 'scripts')
+    mainClassName = mainClass
     applicationName = name
-    classpath       = project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + project.configurations.runtime
+    classpath = tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + configurations.runtime
     applicationDefaultJvmArgs = jvmArgs
   }
 
-  project.tasks[taskName].dependsOn(project.jar)
+  tasks[taskName].dependsOn(project.jar)
 
-  project.applicationDistribution.with {
-    into("bin") {
-      from(project.tasks[taskName])
+  applicationDistribution.with {
+    into('bin/') {
+      from(tasks[taskName])
       fileMode = 0755
     }
+  }
+}
+
+def createProgramTask(taskName, taskMainClassName, taskDescription) {
+  tasks.create(name: taskName, type: JavaExec) {
+    description = taskDescription
+    group = 'programs'
+    main = taskMainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    args commandLineArgsOr([])
+    maxHeapSize '4g'
   }
 }
 
@@ -79,46 +131,3 @@ def commandLineArgsOr(defaultArgs) {
   else
     return defaultArgs
 }
-
-task(experiment, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.ExperimentalLab'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
-  args commandLineArgsOr([])
-  maxHeapSize "8192M"
-}
-
-task(petri, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.PetriDish'
-  classpath = project('narjillos-petridish').sourceSets.main.runtimeClasspath
-  args commandLineArgsOr([])
-  maxHeapSize "8192M"
-}
-
-task(ancestry, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.Ancestry'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
-  args commandLineArgsOr([])
-  maxHeapSize "8192M"
-}
-
-task(perftest, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.PerformanceTest'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
-}
-
-task(deterministicExperimentTest, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.DeterministicExperimentTest'
-  classpath = project('narjillos-core').sourceSets.test.runtimeClasspath
-}
-
-task(backlog, dependsOn: 'build', type: JavaExec) {
-  main = 'org.nusco.narjillos.Backlog'
-  classpath = project('narjillos-core').sourceSets.main.runtimeClasspath
-  args commandLineArgsOr("10")
-}
-
-task(bl, dependsOn: 'backlog')
-
-task allTests(dependsOn: ['test', 'deterministicExperimentTest'])
-
-task prepareRelease(dependsOn: ['allTests', 'installApp'])

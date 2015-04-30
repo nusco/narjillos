@@ -1,1 +1,1 @@
-.\bin\narjillos %1 %2 %3 %4 %5 %6 %7
+bin\narjillos.bat %1 %2 %3 %4 %5 %6 %7

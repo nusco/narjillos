@@ -2,31 +2,17 @@
 # Narjillos Backlog
 #===================
 
-##Smart Reproduction
-* New rules to decide when to lay an egg (min interval + energy check)
-* Firing eggs costs energy
-* Egg firing distance is controlled by genes
+##Self-Regulating Ecosystem
+* Elements in environment
+* Narjillos produce a molecule (based on visible body qualities - metabolic rate?)
+* Narjillos consume a molecule (faster reproduction? lower energy expenditure?)
+* Ecological Niches (tweak chemistry to encourage speciation)
 
-##Chemistry
-* Identifiable species (DNA hashes)
-* Elements in environment (O, N)
-* Narjillos produce an element (based on visible body qualities - use DNA hashes?)
-* Narjillos consumes an element to reproduce faster (see above)
-* Tweak chemistry to encourage speciation
-
-##Istincts
-* Istinct genes: love, fear, hunger
-* Visualize istinct directions
-* Visualize istincts on other creatures when following a narjillo
-* Decide ideal direction based on istinct genes
-* Narjillos follow istinct direction (plus food)
-
-##Predators
-* Fix sketchy collision detection (bug?)
+##Predators (Complex Interactions 1)
+* Fix sketchy collision detection (is this a bug?)
 * Rewrite collision detection to be independent of max speed
-* Narjillos eat other narjillos
-* Red fibers damage the attacker
-* Remove food
+* Narjillos eat other narjillos (pick target at random)
+* Remove food?
 
 ##Dish Edges
 * Kill narjillos who touch outer space
@@ -34,15 +20,60 @@
 * Auto-scroll viewport to stay within inner space
 * (Remove the concept of outer space altogether)
 
+##Ancestry Browser
+* Ancestry Browser
+* DNA diff during ancestry analysis
+
+##Fibers
+* Re-activate green and blue fibers
+* Red fibers damage the attacker
+
+##Istincts (Complex Interactions 2)
+* Identifiable species (DNA hashes)
+* Istinct genes: love, fear, hunger
+* Visualize istinct directions
+* Visualize istincts on other creatures when following a narjillo
+* Decide ideal direction based on istinct genes
+* Narjillos follow istinct direction (plus food?)
+
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
-* Scale zoom based on creature size and window size when following
-* (Test navigation with first-comer)
+* Fix: cannot focus on really small (radius 1) creatures
+* Fix: zooming out in demo mode shouldn't be relative to initial zoom
+* Position map?
+* (Test navigation with first-time user)
+
+##Species Tracker
+* Clustering algorithm to count species (any algo to do this with variable num of clusters *and* variable-length DNA?)
+* Report number of species on the console (or do it when analizing ancestry if too slow)
+
+##Gaming UI
+* Status bar
+* Speed widget
+* Light switches for normal/infrared light
+* Historical experiment stats (average lifespan, number of creatures, ...)
+* View stats for followed narjillo (age, energy, radius, times eaten, genome...)
+* "About"/"Help" menus
+* Save/load experiment from menu
+* Tutorial
+
+##Packaged Application
+* Native Mac app
+* Native Windows app
+* Run in a browser
+* Package Java runtime with command-line program?
+
+##Sexual Reproduction
+* (a lot of things to decide. do I really need this stuff to get speciation? leave it for later in case I don't)
+* Basic Sexual Reproduction (just to set up for Assortative Mating)
+* Assortative Mating (this should get me speciation)
+* Species clustering control reproductive success? (to keep species apart)
+* Diploid creatures? (as a nice-to-have)
 
 ##Realistic Physics
 * Fix "tail wiggles dog" effect?
-* Rotation inertia
-* Translation inertia
+* Rotation inertia (but check comments in physics engine - it may break previous assumptions)
+* Translation inertia (see above)
 * Limit rotation speed?
 * Realistic viscosity?
 * Viscosity per segment?
@@ -55,29 +86,7 @@
 * Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
 * Adult body size is genetically determined
 
-##Ancestry Browser
-* Ancestry Browser
-* DNA diff during ancestry analysis
-
-##Gaming UI
-* Status bar
-* Speed widget
-* Light switches for normal/infrared light
-* Historical experiment stats (average lifespan, number of creatures, ...)
-* View stats for followed narjillo (age, energy, times eaten, genome...)
-* "About"/"Help" menus
-* Toggle effects with less obvious combination (CMD+E, or similar)
-* Save/load experiment from menu
-* Tutorial
-
-##Packaged Application
-* Native Mac app
-* Native Windows app
-* Run in a browser
-* Package Java runtime with command-line program?
-
 ##Advanced Body Plans
-* Encode bodyplan instructions with modulo instead of bit checking
 * "Back" instruction in body plan
 * Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
 * "Skip" instruction in body plan
@@ -85,17 +94,28 @@
 * Different shapes for body segments
 
 ##Grab Bag
+* Skip quickly over less interesting creatures in Demo Mode
 * Show things as blips when zooming out in infrared mode
 * Simpler senescence mechanism
 * Report conflicts in command-line arguments (like -s and file used together)
-* Demo mode (switch from narjillo to narjillo)
+* Command-line argument to start without visual effects
 * Narjillos eat eggs
 * Smoother contours when zooming in infrared mode
-* Externalize configurable parameters to YAML
-* Adaptive graphics (disable effects when framerate plummets)
 * Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
 * Conservation of energy in entire dish (with sun to give more energy)
 * Fix memory leak
+
+##Epic Goals
+* Complex Interactions
+* Self-Regulating Ecosystem
+* Ecological Niches
+* Disruptive Selection?
+* Sexual Reproduction
+* Assortative Mating
+* Sympatric Speciation
+* Asymmetrical Arms Races
+* Broad Usability
+* The "Wow" factor?
 
 ##Crazy Ideas
 * Multiple environments in multiple processes (with migration)

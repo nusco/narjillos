@@ -173,20 +173,14 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 					getTracker().startTrackingThingAt(clickedPositionEC);
 
 				if (event.getClickCount() == 3)
-					copyIsolatedDNAToClipboard(clickedPositionEC);
+					copyDNAToClipboard(clickedPositionEC);
 			}
 
-			private void copyIsolatedDNAToClipboard(Vector clickedPositionEC) {
+			private void copyDNAToClipboard(Vector clickedPositionEC) {
 				Narjillo narjillo = (Narjillo) getLocator().findNarjilloAt(clickedPositionEC);
 
 				if (narjillo == null)
 					return;
-
-				// TODO: remove
-				DNA dna = new DNA(100000, "{016_028_171_203_248_055_000_023_061_107_096}{246_091_059_197_047_114_131_198_045_220_123}{163_233_254_202_238_046_224_175_199_141_221}{090_058_060_010_103_152_070_152_071_210_157}{219_110_073_091_178_091_229_131_120_043_057}{031_048_118_079_087_033_109_108_118_253_130}");
-				Narjillo ref = new Narjillo(dna, Vector.ZERO, Energy.INFINITE);
-				System.out.println("DIST: " + SimHash.getDistance(narjillo, ref) + ")");
-				//
 				
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);

@@ -195,4 +195,17 @@ public class DNA implements Iterable<Chromosome> {
 			genes[i] = ranGen.nextByte();
 		return genes;
 	}
+
+	public Codon[] toCodons() {
+		Codon[] result = new Codon[(int) Math.ceil(genes.length / 3.0)];
+		for (int i = 0; i < result.length; i++)
+			result[i] = new Codon(safeGetGene(i * 3), safeGetGene(i * 3 + 1), safeGetGene(i * 3 + 2));
+		return result;
+	}
+
+	private Integer safeGetGene(int i) {
+		if (i >= genes.length)
+			return 0;
+		return genes[i];
+	}
 }

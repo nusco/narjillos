@@ -68,4 +68,31 @@ public class DNATest {
 
 		assertArrayEquals(new Integer[] {1, 22, 255}, dna.getGenes());
 	}
+
+	@Test
+	public void splitsIntoCodons() {
+		DNA dna = new DNA(1, "1_2_3_4_5_6_7_8_9_10_11_12");
+
+		Codon[] expected = new Codon[] {
+				new Codon(1, 2, 3),
+				new Codon(4, 5, 6),
+				new Codon(7, 8, 9),
+				new Codon(10, 11, 12),
+		};
+		assertArrayEquals(expected, dna.toCodons());
+	}
+
+	@Test
+	public void padsCodonsWhenSplitting() {
+		DNA dna = new DNA(1, "1_2_3_4_5_6_7_8_9_10_11_12_13");
+
+		Codon[] expected = new Codon[] {
+				new Codon(1, 2, 3),
+				new Codon(4, 5, 6),
+				new Codon(7, 8, 9),
+				new Codon(10, 11, 12),
+				new Codon(13, 0, 0)
+		};
+		assertArrayEquals(expected, dna.toCodons());
+	}
 }

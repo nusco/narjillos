@@ -3,7 +3,7 @@ dna:
   # happening is mutation_rate. If it does mutate, then the
   # gene's value is either incremented or decremented by a
   # random amount in the range [0, mutation_range].
-  mutation_rate: 0.067
+  mutation_rate: 0.073
   mutation_range: 15.0
 
 physics:

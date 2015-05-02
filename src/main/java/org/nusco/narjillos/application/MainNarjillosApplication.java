@@ -22,12 +22,9 @@ import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.PetriStatusView;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.SimHash;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**

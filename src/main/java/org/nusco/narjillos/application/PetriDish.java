@@ -55,9 +55,9 @@ public class PetriDish extends Dish {
 		while (isBusy()) {
 			sleepAWhile();
 		}
-		isTerminated = true;
 		String finalReport = experiment.terminate();
 		System.out.println(finalReport);
+		isTerminated = true;
 	}
 
 	private void sleepAWhile() {

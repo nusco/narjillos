@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class ViewModeTest {
 
-	PetriDishAppState viewMode = new PetriDishAppState();
+	NarjillosApplicationState viewMode = new NarjillosApplicationState();
 	
 	@Test
 	public void turningOffTheLightSwitchesToHighSpeed() {

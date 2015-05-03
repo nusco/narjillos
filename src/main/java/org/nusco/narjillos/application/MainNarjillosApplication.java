@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 
-import org.nusco.narjillos.application.utilities.PetriDishAppState;
+import org.nusco.narjillos.application.utilities.NarjillosApplicationState;
 import org.nusco.narjillos.application.utilities.Speed;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
@@ -35,7 +35,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 
 	private static final long PAN_SPEED = 200;
 
-	private PetriDishAppState state = new PetriDishAppState();
+	private NarjillosApplicationState state = new NarjillosApplicationState();
 
 	@Override
 	protected String getName() {

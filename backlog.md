@@ -94,8 +94,6 @@
 * Different shapes for body segments
 
 ##Grab Bag
-* Fix bug with termination report sometimes not showing up on console
-* Give creatures a random orientation at birth
 * Fix memory leak
 * Skip quickly over less interesting creatures in Demo Mode
 * Show heat cloud when zooming out in infrared mode

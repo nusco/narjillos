@@ -1,13 +1,14 @@
 dna:
   # A creature's DNA contains a fixed number of chromosomes.
   number_of_chromosomes: 12
-  
+
   # During copy, a gene can mutate. The likelyhood of that
   # happening is mutation_rate. If it does mutate, then the
   # gene's value is either incremented or decremented by a
   # random amount in the range [0, mutation_range].
   mutation_rate: 0.073
   mutation_range: 15.0
+
 physics:
   # The effort of a creature moving is measured in an arbitrary
   # unit - call it a "joule". This is the amount of energy that
@@ -23,7 +24,7 @@ physics:
 
   # A higher metabolic rate has many advantages (mainly you move
   # faster), but one disadvantage: it raises energy consumption
-  # by a non-linear factor. This factor equal to the metabolic 
+  # by a non-linear factor. This factor equals the metabolic
   # rate to the power of metabolic_consumption_pow.
   metabolic_consumption_pow: 1.5
 
@@ -31,7 +32,7 @@ physics:
   collision_distance: 60.0
 
 creature:
-  # The dish is populate with seed creatures, with an energy of
+  # The dish is populated with seed creatures, with an energy of
   # seed_energy. Their maximum energy is that value multiplied by
   # max_energy_to_initial_energy.
   seed_energy: 25000.0

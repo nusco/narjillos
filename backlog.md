@@ -2,6 +2,15 @@
 # Narjillos Backlog
 #===================
 
+##Advanced Body Plans
+* Reintroduce chromosome insertion/deletion
+* "Skip" instruction in body plan
+* "Jump" instruction in body plan
+* "Call" instruction in body plan
+* "Loop" instruction in body plan
+* Different shapes for body segments
+* Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
+
 ##Species Tracker
 * Clustering algorithm to count species
 * Report number of species on the console (or do it when analizing ancestry if too slow)
@@ -84,13 +93,6 @@
 * Growth rate is genetically determined? (Takes energy?)
 * Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)
 * Adult body size is genetically determined
-
-##Advanced Body Plans
-* "Back" instruction in body plan
-* Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
-* "Skip" instruction in body plan
-* "Loop" instruction in body plan
-* Different shapes for body segments
 
 ##Grab Bag
 * Fix memory leak

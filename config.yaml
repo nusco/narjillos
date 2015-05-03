@@ -1,6 +1,6 @@
 dna:
   # A creature's DNA contains a fixed number of chromosomes.
-  number_of_chromosomes: 12
+  number_of_chromosomes: 16
 
   # During copy, a gene can mutate. The likelyhood of that
   # happening is mutation_rate. If it does mutate, then the

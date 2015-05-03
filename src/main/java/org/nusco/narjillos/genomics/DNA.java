@@ -55,6 +55,43 @@ public class DNA implements Iterable<Chromosome> {
 		return result;
 	}
 
+	// From: http://en.wikipedia.org/wiki/Levenshtein_distance,
+	// with slight changes.
+	public int getGeneticDistanceFrom(DNA other) {
+		Integer[] theseGenes = getGenes();
+		Integer[] otherGenes = other.getGenes();
+
+		if (theseGenes.length == 0 || otherGenes.length == 0)
+			return Math.max(theseGenes.length, otherGenes.length);
+
+		int[] previousDistances = new int[otherGenes.length + 1];
+		// the distance is just the number of characters to delete from t
+		for (int i = 0; i < previousDistances.length; i++)
+			previousDistances[i] = i;
+
+		int[] currentDistances = new int[otherGenes.length + 1];
+
+		for (int i = 0; i < theseGenes.length; i++) {
+			// calculate current distances from previous distances
+
+			// first element of v1 is A[i+1][0]
+			// edit distance is delete (i+1) chars from s to match empty t
+			currentDistances[0] = i + 1;
+
+			// use formula to fill in the rest of the row
+			for (int j = 0; j < otherGenes.length; j++) {
+				int cost = (theseGenes[i] == otherGenes[j]) ? 0 : 1;
+				currentDistances[j + 1] = Math.min(Math.min(currentDistances[j] + 1, previousDistances[j + 1] + 1), previousDistances[j] + cost);
+			}
+
+			// copy v1 (current row) to v0 (previous row) for next iteration
+			for (int j = 0; j < previousDistances.length; j++)
+				previousDistances[j] = currentDistances[j];
+		}
+
+		return currentDistances[otherGenes.length];
+	}
+
 	@Override
 	public Iterator<Chromosome> iterator() {
 		return new Iterator<Chromosome>() {

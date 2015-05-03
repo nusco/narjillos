@@ -49,7 +49,7 @@ public class SimHashTest {
 	}
 
 	@Test
-	public void calculatesSimHashedDistanceBetweenDNAs() {
+	public void calculatesLevenshteinDistanceBetweenDNAs() {
 		int gene1 = 0b00000000;
 		int gene2 = 0b00001111;
 		int gene3 = 0b11111111;

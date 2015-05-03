@@ -34,9 +34,7 @@
 * Red fibers damage the attacker
 
 ##Istincts (Complex Interactions 2)
-* Double-check SimHash algorithm (it's probably not working right yet)
 * Identifiable species (DNA hashes)
-* Replace Levensthein distance with SimHash distance?
 * Istinct genes: love, fear, hunger
 * Visualize istinct directions
 * Visualize istincts on other creatures when following a narjillo

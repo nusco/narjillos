@@ -46,7 +46,7 @@ public class GenePool {
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
 		for (Long dnaId : currentPool) {
 			DNA dna = dnaById.get(dnaId);
-			int currentLevenshteinDistance = totalLevenshteinDistanceFromTheRestOfThePool(dna);
+			int currentLevenshteinDistance = totalSimHashedDistanceFromTheRestOfThePool(dna);
 			if (currentLevenshteinDistance < lowestLevenshteinDistance) {
 				result = dna;
 				lowestLevenshteinDistance = currentLevenshteinDistance;
@@ -104,12 +104,12 @@ public class GenePool {
 			childrenToParents.put(dna.getId(), parent.getId());
 	}
 	
-	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
+	private int totalSimHashedDistanceFromTheRestOfThePool(DNA dna) {
 		int result = 0;
 		for (Long otherDNAId : currentPool) {
 			DNA otherDNA = dnaById.get(otherDNAId);
 			if (!otherDNA.equals(dna))
-				result += dna.getLevenshteinDistanceFrom(otherDNA);
+				result += dna.getSimHashedDistanceFrom(otherDNA);
 		}
 		return result;
 	}

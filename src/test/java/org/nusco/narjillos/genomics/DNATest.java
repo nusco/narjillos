@@ -2,7 +2,7 @@ package org.nusco.narjillos.genomics;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
@@ -20,16 +20,6 @@ public class DNATest {
 		DNA dna = new DNA(1, "{1_2_255}");
 		
 		assertArrayEquals(new Integer[] {1, 2, 255}, dna.getGenes());
-	}
-
-	@Test
-	public void isOnlyEqualIfItHasTheSameId() {
-		DNA dna1 = new DNA(1, "{1_2_3}");
-		DNA dna2 = new DNA(2, "{1_2_3}");
-		DNA dna3 = new DNA(1, "{4_5_6}");
-		
-		assertFalse(dna1.equals(dna2));
-		assertEquals(dna3, dna1);
 	}
 
 	@Test
@@ -94,5 +84,12 @@ public class DNATest {
 				new Codon(13, 0, 0)
 		};
 		assertArrayEquals(expected, dna.toCodons());
+	}
+
+	@Test
+	public void isEqualToAnotherDNAWithTheSameId() {
+		assertEquals(new DNA(1, "1_2_3"), new DNA(1, "1_2_3"));
+		assertEquals(new DNA(1, "1_2_3"), new DNA(1, "1_2_4"));
+		assertNotEquals(new DNA(1, "1_2_3"), new DNA(2, "1_2_3"));
 	}
 }

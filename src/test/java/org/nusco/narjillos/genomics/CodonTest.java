@@ -29,9 +29,17 @@ public class CodonTest {
 
 	@Test
 	public void hasA24BitHashCode() {
-		assertEquals(0, new Codon(0, 0, 0).hashCode(), 0.0);
-		assertEquals(255, new Codon(255, 0, 0).hashCode(), 0.0);
-		assertEquals(65535, new Codon(255, 255, 0).hashCode(), 0.0);
-		assertEquals(Math.pow(2, 24) - 1, new Codon(255, 255, 255).hashCode(), 0.0);
+		assertEquals(0b000000000000000000000000, new Codon(0, 0, 0).hashCode(), 0.0);
+		assertEquals(0b000000010000001100000111, new Codon(1, 3, 7).hashCode(), 0.0);
+		assertEquals(0b111111110000000000000000, new Codon(255, 0, 0).hashCode(), 0.0);
+		assertEquals(0b111111111111111100000000, new Codon(255, 255, 0).hashCode(), 0.0);
+		assertEquals(0b111111111111111111111111, new Codon(255, 255, 255).hashCode(), 0.0);
+	}
+
+	@Test
+	public void convertsToAString() {
+		assertEquals("Codon:000000000000000000000000", new Codon(0, 0, 0).toString());
+		assertEquals("Codon:000000010000001100000111", new Codon(1, 3, 7).toString());
+		assertEquals("Codon:111111110000000011111111", new Codon(255, 0, 255).toString());
 	}
 }

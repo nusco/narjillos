@@ -23,7 +23,7 @@ public class Codon {
 
 	@Override
 	public int hashCode() {
-		return genes[0] + genes[1] * 256 + genes[2] * 65536;
+		return genes[0] * 65536 + genes[1] * 256 + genes[2];
 	}
 
 	@Override
@@ -33,5 +33,12 @@ public class Codon {
 			if (genes[i] != other.genes[i])
 				return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		String binaryString = "000000000000000000000000" + Integer.toBinaryString(hashCode());
+		String trimmedBinaryString = binaryString.substring(binaryString.length() - HASH_SIZE);
+		return "Codon:" + trimmedBinaryString;
 	}
 }

@@ -161,7 +161,7 @@ public class ViewportTest {
 
 	@Test
 	public void canZoomOut() {
-		Viewport viewport = new Viewport(new Ecosystem(100, false));
+		Viewport viewport = new Viewport(new Ecosystem(10000, false));
 		stabilize(viewport);
 		
 		viewport.zoomTo(0.2);
@@ -203,10 +203,10 @@ public class ViewportTest {
 	public void zoomsOverTheMaxRegressToAStableState() {
 		Viewport viewport = new Viewport(new Ecosystem(100, false));
 		viewport.setSizeSC(Vector.cartesian(50, 50));
-		viewport.zoomTo(Viewport.MAX_ZOOM + 0.2);
+		viewport.zoomTo(Viewport.ZOOM_MAX + 0.2);
 		stabilize(viewport);
 		
-		assertTrue(viewport.getZoomLevel() < Viewport.MAX_ZOOM);
+		assertTrue(viewport.getZoomLevel() < Viewport.ZOOM_MAX);
 	}
 
 	@Test

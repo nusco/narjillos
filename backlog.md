@@ -94,7 +94,6 @@
 * Different shapes for body segments
 
 ##Grab Bag
-* Fix bug with full scroll out in viewport
 * Fix bug with termination report sometimes not showing up on console
 * Give creatures a random orientation at birth
 * Fix memory leak

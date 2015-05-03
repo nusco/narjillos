@@ -14,9 +14,10 @@ import org.nusco.narjillos.ecosystem.Culture;
 public class Viewport {
 
 	static final double MAX_INITIAL_SIZE_SC = 800;
-	static final double MAX_ZOOM = 2;
-	private static final double ZOOM_VELOCITY = 1.03;
+	static final double ZOOM_MAX = 2;
+	private static final double ZOOM_OVERZOOMING_LEVEL = 1;
 	static final double[] ZOOM_CLOSEUP_LEVELS = new double[] { 0.15, 0.6 };
+	private static final double ZOOM_VELOCITY = 1.03;
 
 	private final double ecosystemSizeEC;
 	private Vector sizeSC;
@@ -91,10 +92,10 @@ public class Viewport {
 		zoomTo(zoomLevel / ZOOM_VELOCITY);
 	}
 
-	public final void zoomTo(double zoomLevel) {
-		this.zoomLevel = Math.min(Math.max(zoomLevel, minZoomLevel), MAX_ZOOM);
-		this.targetZoomLevel = zoomLevel;
-		if (isZoomedOutCompletely()) 
+	public void zoomTo(double zoomLevel) {
+		this.zoomLevel = Math.min(Math.max(zoomLevel, minZoomLevel), ZOOM_MAX);
+		this.targetZoomLevel = this.zoomLevel;
+		if (isZoomedOutCompletely())
 			targetCenterEC = getEcosystemCenterEC();
 	}
 
@@ -108,7 +109,7 @@ public class Viewport {
 	}
 
 	private void correctOverzooming() {
-		if (zoomLevel > 1) {
+		if (zoomLevel > ZOOM_OVERZOOMING_LEVEL) {
 			double highestCloseupLevel = getMaxZoomLevel();
 			targetZoomLevel = highestCloseupLevel;
 		}

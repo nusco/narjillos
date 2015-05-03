@@ -2,23 +2,28 @@
 # Narjillos Backlog
 #===================
 
+##Species Tracker
+* Clustering algorithm to count species
+* Report number of species on the console (or do it when analizing ancestry if too slow)
+
 ##Self-Regulating Ecosystem
-* Elements in environment
+* Atmosphere chemistry
 * Narjillos produce a molecule (based on visible body qualities - metabolic rate?)
 * Narjillos consume a molecule (faster reproduction? lower energy expenditure?)
 * Ecological Niches (tweak chemistry to encourage speciation)
-
-##Predators (Complex Interactions 1)
-* Fix sketchy collision detection (is this a bug?)
-* Rewrite collision detection to be independent of max speed
-* Narjillos eat other narjillos (pick target at random)
-* Remove food?
+* (did I get sympatric speciation yet? if not, then maybe I need sexual reproduction)
 
 ##Dish Edges
 * Kill narjillos who touch outer space
 * Limit panning to inner space (with some margin)
 * Auto-scroll viewport to stay within inner space
 * (Remove the concept of outer space altogether)
+
+##Predators (Complex Interactions 1)
+* Fix sketchy collision detection (is this a bug?)
+* Rewrite collision detection to be independent of max speed
+* Narjillos eat other narjillos (pick target at random)
+* Remove food?
 
 ##Ancestry Browser
 * Ancestry Browser
@@ -29,7 +34,9 @@
 * Red fibers damage the attacker
 
 ##Istincts (Complex Interactions 2)
+* Double-check SimHash algorithm (it's probably not working right yet)
 * Identifiable species (DNA hashes)
+* Replace Levensthein distance with SimHash distance?
 * Istinct genes: love, fear, hunger
 * Visualize istinct directions
 * Visualize istincts on other creatures when following a narjillo
@@ -39,13 +46,8 @@
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
 * Fix: cannot focus on really small (radius 1) creatures
-* Fix: zooming out in demo mode shouldn't be relative to initial zoom
 * Position map?
 * (Test navigation with first-time user)
-
-##Species Tracker
-* Clustering algorithm to count species (any algo to do this with variable num of clusters *and* variable-length DNA?)
-* Report number of species on the console (or do it when analizing ancestry if too slow)
 
 ##Gaming UI
 * Status bar
@@ -66,7 +68,7 @@
 ##Sexual Reproduction
 * (a lot of things to decide. do I really need this stuff to get speciation? leave it for later in case I don't)
 * Basic Sexual Reproduction (just to set up for Assortative Mating)
-* Assortative Mating (this should get me speciation)
+* Assortative Mating (to encourage speciation)
 * Species clustering control reproductive success? (to keep species apart)
 * Diploid creatures? (as a nice-to-have)
 
@@ -90,12 +92,15 @@
 * "Back" instruction in body plan
 * Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
 * "Skip" instruction in body plan
-* "Repeat" instruction in body plan
+* "Loop" instruction in body plan
 * Different shapes for body segments
 
 ##Grab Bag
+* Fix bug with full scroll out in viewport
+* Give creatures a random orientation at birth
+* Fix memory leak
 * Skip quickly over less interesting creatures in Demo Mode
-* Show things as blips when zooming out in infrared mode
+* Show heat cloud when zooming out in infrared mode
 * Simpler senescence mechanism
 * Report conflicts in command-line arguments (like -s and file used together)
 * Command-line argument to start without visual effects
@@ -103,7 +108,6 @@
 * Smoother contours when zooming in infrared mode
 * Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
 * Conservation of energy in entire dish (with sun to give more energy)
-* Fix memory leak
 
 ##Epic Goals
 * Complex Interactions

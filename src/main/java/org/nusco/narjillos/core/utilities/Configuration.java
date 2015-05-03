@@ -74,10 +74,11 @@ public class Configuration {
 	public static final double PHYSICS_ENERGY_EXPENSE_PER_JOULE = getDouble("physics", "energy_expense_per_joule");
 	public static final double PHYSICS_METABOLIC_CONSUMPTION_POW = getDouble("physics", "metabolic_consumption_pow");
 
-	// genes
+	// dna
 	public static final double DNA_MUTATION_RATE = getDouble("dna", "mutation_rate");
 	public static final double DNA_MUTATION_RANGE = getDouble("dna", "mutation_range");
-	
+	public static final int DNA_NUMBER_OF_CHROMOSOMES = getInt("dna", "number_of_chromosomes");
+
 	// creatures
 	public static final double CREATURE_MAX_LIFESPAN = getDouble("creature", "max_lifespan");
 	public static final double CREATURE_MATURE_AGE = getDouble("creature", "mature_age");

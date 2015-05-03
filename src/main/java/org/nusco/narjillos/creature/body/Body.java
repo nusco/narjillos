@@ -100,9 +100,8 @@ public class Body {
 		return cachedCenterOfMass;
 	}
 
-	public void teleportTo(Vector position) {
-		final int northDirection = 90;
-		getHead().forcePosition(position, northDirection);
+	public void forcePosition(Vector position, double angle) {
+		getHead().forcePosition(position, angle);
 		resetCaches();
 	}
 

@@ -25,7 +25,7 @@ public class JSONEcosystemSerializationTest {
 		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new RanGen(0));
 
 		DNA dna = DNA.random(1, new RanGen(100));
-		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(100, 101), Energy.INFINITE);
+		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(100, 101), 90, Energy.INFINITE);
 		ecosystem.insertNarjillo(narjillo);
 		
 		String json = JSON.toJson(ecosystem, Ecosystem.class);

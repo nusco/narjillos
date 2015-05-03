@@ -46,7 +46,7 @@ public class JSONThingSerializationTest {
 	public void serializesAndDeserializesNarjillos() {
 		String genes = "{001_002_003_004_005_006_007_008_009_010_011_012}{001_002_003_004_005_006_007_008_009_010_011_012}{001_002_003_004_005_006_007_008_009_010_011_012}{001_002_003_004_005_006_007_008_009_010_011_012}{001_002_003_004_005_006_007_008_009_010_011_012}{001_002_003_004_005_006_007_008_009_010_011_012}";
 		DNA dna = new DNA(1, genes);
-		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(10, 20), new LifeFormEnergy(1000, 10_000));
+		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(10, 20), 90, new LifeFormEnergy(1000, 10_000));
 		narjillo.setTarget(Vector.cartesian(100, 200));
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();

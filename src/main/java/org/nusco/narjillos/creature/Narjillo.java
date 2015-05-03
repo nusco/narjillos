@@ -29,9 +29,9 @@ public class Narjillo implements Thing {
 	private long age = 0;
 	private long nextEggAge = 0;
 	
-	public Narjillo(DNA dna, Vector position, Energy energy) {
+	public Narjillo(DNA dna, Vector position, double angle, Energy energy) {
 		this.body = new Embryo(dna).develop();
-		body.teleportTo(position);
+		body.forcePosition(position, angle);
 		this.dna = dna;
 		this.energy = energy;
 	}

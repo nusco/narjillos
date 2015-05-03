@@ -14,10 +14,10 @@ public class BodyTest {
 	}
 
 	@Test
-	public void canBeTeleportedToAGivenPosition() {
+	public void canBeForcedAtAGivenPosition() {
 		Body body = new Body(new Head(1, 1, 1, 1, 1, 1, 0.5, 1, 0));
 		
-		body.teleportTo(Vector.cartesian(10, -10));
+		body.forcePosition(Vector.cartesian(10, -10), 15);
 
 		assertEquals(Vector.cartesian(10, -10), body.getStartPoint());
 	}

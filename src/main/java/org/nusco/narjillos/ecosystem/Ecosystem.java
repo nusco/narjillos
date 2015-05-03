@@ -141,7 +141,7 @@ public class Ecosystem extends Culture {
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
 		for (Thing thing : new LinkedList<>(space.getAll("egg")))
-			tickEgg((Egg) thing);
+			tickEgg((Egg) thing, ranGen);
 
 		synchronized (narjillos) {
 			for (Narjillo narjillo : new LinkedList<>(narjillos))
@@ -172,9 +172,9 @@ public class Ecosystem extends Culture {
 			spawnFood(randomPosition(getSize(), ranGen));
 	}
 
-	private void tickEgg(Egg egg) {
+	private void tickEgg(Egg egg, RanGen ranGen) {
 		egg.tick();
-		if (egg.hatch())
+		if (egg.hatch(ranGen))
 			insertNarjillo(egg.getHatchedNarjillo());
 		if (egg.isDecayed())
 			remove(egg);

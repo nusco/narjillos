@@ -63,7 +63,7 @@ public class NarjilloTickingTest {
 		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
 
 		// Create the sample narjillo.
-		Narjillo narjillo = new Narjillo(sampleDNA, Vector.cartesian(100, 200), new LifeFormEnergy(10000, 30000));
+		Narjillo narjillo = new Narjillo(sampleDNA, Vector.cartesian(100, 200), 90, new LifeFormEnergy(10000, 30000));
 
 		// Start a few reading threads to make things more interesting.
 		// Then tick the narjillo for a while, and stop the readers.

@@ -23,7 +23,7 @@ public class IsolationCulture extends Culture {
 		super(size);
 	
 		DNA dna = DNA.random(1, ranGen);
-		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(size, size).by(0.5), Energy.INFINITE);
+		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(size, size).by(0.5), 180, Energy.INFINITE);
 		narjillos.add(narjillo);
 	}
 

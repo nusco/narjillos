@@ -45,7 +45,7 @@ public class Egg implements Thing {
 		return new Segment(position, velocity);
 	}
 
-	public boolean hatch() {
+	public boolean hatch(RanGen ranGen) {
 		if (hasHatched())
 			return false;
 		if (!hasStopped())
@@ -55,7 +55,8 @@ public class Egg implements Thing {
 
 		
 		hatchAge = age;
-		hatchedNarjillo = new Narjillo(dna, getPosition(), new LifeFormEnergy(energy, Configuration.CREATURE_MAX_LIFESPAN));
+		double angle = ranGen.nextInt() % 360;
+		hatchedNarjillo = new Narjillo(dna, getPosition(), angle, new LifeFormEnergy(energy, Configuration.CREATURE_MAX_LIFESPAN));
 		energy = 0;
 		return true;
 	}

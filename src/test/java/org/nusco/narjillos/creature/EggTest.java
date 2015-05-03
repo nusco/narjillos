@@ -33,7 +33,7 @@ public class EggTest {
 	public void onlyHatchesOnce() {
 		waitUntilItHatches(egg);
 		
-		assertFalse(egg.hatch());
+		assertFalse(egg.hatch(new RanGen(1)));
 	}
 	
 	@Test
@@ -76,7 +76,8 @@ public class EggTest {
 	}
 
 	private void waitUntilItHatches(Egg egg) {
-		while (!egg.hatch())
+		RanGen ranGen = new RanGen(1);
+		while (!egg.hatch(ranGen))
 			egg.tick();
 	}
 }

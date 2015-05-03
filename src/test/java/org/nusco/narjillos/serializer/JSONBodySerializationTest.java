@@ -27,7 +27,7 @@ public class JSONBodySerializationTest {
 		child1.addChild(child2_2);
 		
 		Body body = new Body(head);
-		body.teleportTo(Vector.cartesian(100, 200));
+		body.forcePosition(Vector.cartesian(100, 200), 90);
 
 		String json = JSON.toJson(body, Body.class);
 		Body deserialized = JSON.fromJson(json, Body.class);

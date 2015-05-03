@@ -37,7 +37,7 @@ public class EcosystemTest {
 
 	private Narjillo insertNarjillo(Vector position) {
 		DNA dna = DNA.random(1, ranGen);
-		Narjillo result = new Narjillo(dna, position, Energy.INFINITE);
+		Narjillo result = new Narjillo(dna, position, 90, Energy.INFINITE);
 		ecosystem.insertNarjillo(result);
 		return result;
 	}

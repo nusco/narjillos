@@ -53,7 +53,7 @@ public class Ancestry {
 	}
 
 	private static void reportCreature(DNA dna) {
-		Narjillo specimen = new Narjillo(dna, Vector.ZERO, Energy.INFINITE);
+		Narjillo specimen = new Narjillo(dna, Vector.ZERO, 90, Energy.INFINITE);
 		System.out.println("Typical successful creature:");
 		System.out.println("  Number of organs   => " + specimen.getOrgans().size());
 		System.out.println("  Adult mass         => " + NumberFormat.format(specimen.getBody().getAdultMass()));

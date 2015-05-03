@@ -43,7 +43,6 @@
 
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
-* Fix: cannot focus on really small (radius 1) creatures
 * Position map?
 * (Test navigation with first-time user)
 

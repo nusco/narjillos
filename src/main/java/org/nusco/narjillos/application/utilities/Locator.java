@@ -46,7 +46,8 @@ public class Locator {
 
 		for (Thing thing : culture.getThings(label)) {
 			double distance = thing.getCenter().minus(position).getLength();
-			if (distance < thing.getRadius() && distance < minDistance) {
+			double radius = Math.max(thing.getRadius(), 100);
+			if (distance < radius && distance < minDistance) {
 				minDistance = distance;
 				result = thing;
 			}

@@ -1,11 +1,11 @@
 package org.nusco.narjillos;
 
-import org.nusco.narjillos.application.MainNarjillosApplication;
+import org.nusco.narjillos.application.DefaultNarjillosApplication;
 
 /**
  * The entry point to "narjllos".
  */
-public class NarjillosRunner extends MainNarjillosApplication {
+public class NarjillosRunner extends DefaultNarjillosApplication {
 
 	public static String[] programArguments = new String[0];
 

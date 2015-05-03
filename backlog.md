@@ -97,6 +97,7 @@
 
 ##Grab Bag
 * Fix bug with full scroll out in viewport
+* Fix bug with termination report sometimes not showing up on console
 * Give creatures a random orientation at birth
 * Fix memory leak
 * Skip quickly over less interesting creatures in Demo Mode

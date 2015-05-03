@@ -120,5 +120,5 @@ public class Configuration {
 
 	// experiment
 	public static final int EXPERIMENT_SAMPLE_INTERVAL_TICKS = getInt("experiment", "sample_interval_ticks");
-	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = getInt("experiment", "sample_interval_ticks");
+	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = getInt("experiment", "save_interval_seconds");
 }

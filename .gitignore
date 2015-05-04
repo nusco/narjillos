@@ -12,6 +12,10 @@ bin/
 narjillos.iml
 narjillos.ipr
 
+# NetBeans files
+.nb-gradle/
+.nb-gradle-properties
+
 # OS X files:
 .DS_Store
 

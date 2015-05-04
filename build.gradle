@@ -1,7 +1,7 @@
 // Plugins
 
 apply plugin: 'java'
-apply plugin: 'application'
+apply plugin: 'application'     // loads also the 'distribution' plugin
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
@@ -9,8 +9,11 @@ apply plugin: 'idea'
 // Basic Configuration
 
 version = file('version').getText().trim()
+
 sourceCompatibility = JavaVersion.VERSION_1_8
+
 mainClassName = 'org.nusco.narjillos.NarjillosRunner'
+
 
 // Dependencies
 
@@ -71,16 +74,14 @@ task(backlog, dependsOn: 'bl') {
 
 // Packaging
 
-distributions {
-  main {
-    contents {
-        from { 'version' }
-        from { 'LICENSE' }
-        from { 'README.md' }
-        from { 'config.yaml' }
-    }
-  }
-}
+applicationDistribution.from(
+    files(
+        'version',
+        'LICENSE',
+        'README.md',
+        'config.yaml'
+    )
+)
 
 task release(dependsOn: ['testAll', 'createStartupScripts', 'assembleMainDist']) {
   description = 'Runs all tests and packages a release.'

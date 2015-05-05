@@ -3,7 +3,7 @@ package org.nusco.narjillos;
 import org.nusco.narjillos.application.DefaultNarjillosApplication;
 
 /**
- * The entry point to "narjllos".
+ * The entry point to the narjillos program.
  */
 public class NarjillosRunner extends DefaultNarjillosApplication {
 

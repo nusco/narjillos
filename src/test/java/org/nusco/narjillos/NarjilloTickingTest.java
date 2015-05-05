@@ -15,7 +15,7 @@ import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.JSON;
 
 /**
- * The code that moves Narjllos, and in particular the code in the Organ
+ * The code that moves Narjillos, and in particular the code in the Organ
  * hierarchy, is quite complicated. Blame it on difficult, conflicting
  * requirements:
  * 

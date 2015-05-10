@@ -124,4 +124,16 @@ public class BodyPlanTest {
 		String expectedBodyPlan = "1-3-4-7";
 		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
+
+	@Test
+	public void neverSkipsTheHead() {
+		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+				new MockOrganBuilder(1, BodyPlanInstruction.SKIP),
+				new MockOrganBuilder(2, BodyPlanInstruction.SKIP),
+				new MockOrganBuilder(3, BodyPlanInstruction.CONTINUE),
+		});
+
+		String expectedBodyPlan = "1-3";
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+	}
 }

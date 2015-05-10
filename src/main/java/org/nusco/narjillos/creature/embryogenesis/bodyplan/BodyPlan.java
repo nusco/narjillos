@@ -48,10 +48,11 @@ public class BodyPlan {
 			buildChild(result, buildersQueue, sign);
 			break;
 		case SKIP:
-			if (parent == null)
+			if (parent == null) {
 				// never skip the first organ (it's the head)
 				result = nextBuilder.buildOrgan(parent, sign);
-			else
+				buildChild(result, buildersQueue, sign);
+			} else
 				result = buildBodyTree(parent, buildersQueue, sign);
 			break;
 		}

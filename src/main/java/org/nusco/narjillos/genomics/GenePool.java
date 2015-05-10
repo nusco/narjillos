@@ -76,7 +76,7 @@ public class GenePool {
 	}
 
 	public DNA mutateDNA(DNA parent, RanGen ranGen) {
-		DNA result = parent.copyWithMutations(nextId(), ranGen);
+		DNA result = parent.mutate(nextId(), ranGen);
 		add(result, parent);
 		return result;
 	}

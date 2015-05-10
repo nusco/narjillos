@@ -31,9 +31,10 @@ public class DNA implements Iterable<Chromosome> {
 		return genes;
 	}
 
-	public DNA copyWithMutations(long id, RanGen ranGen) {
-		Integer[] resultGenes = new Integer[genes.length];
-		for (int i = 0; i < resultGenes.length; i++) {
+	public DNA mutate(long id, RanGen ranGen) {
+		Integer[] resultGenes = new Integer[getDefaultSize()];
+		int numberOfGenes = Math.min(resultGenes.length, genes.length);
+		for (int i = 0; i < numberOfGenes; i++) {
 			if (ranGen.nextDouble() < Configuration.DNA_MUTATION_RATE)
 				resultGenes[i] = mutate(genes[i], ranGen);
 			else
@@ -43,8 +44,7 @@ public class DNA implements Iterable<Chromosome> {
 	}
 
 	public static DNA random(long id, RanGen ranGen) {
-		int size = Chromosome.SIZE * Configuration.DNA_NUMBER_OF_CHROMOSOMES;
-		return random(id, ranGen, size);
+		return new DNA(id, randomGenes(getDefaultSize(), ranGen));
 	}
 
 	public int getSimHashedDistanceFrom(DNA other) {
@@ -139,6 +139,10 @@ public class DNA implements Iterable<Chromosome> {
 		return result;
 	}
 
+	private static int getDefaultSize() {
+		return Chromosome.SIZE * Configuration.DNA_NUMBER_OF_CHROMOSOMES;
+	}
+
 	private Integer[] clipGenes(Integer[] genes) {
 		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
 	}
@@ -157,11 +161,6 @@ public class DNA implements Iterable<Chromosome> {
 
 	private int clipToByteSize(int number) {
 		return Math.max(0, Math.min(255, number));
-	}
-
-	private static DNA random(long id, RanGen ranGen, int size) {
-		Integer[] genes = randomGenes(size, ranGen);
-		return new DNA(id, genes);
 	}
 
 	private static Integer[] randomGenes(int size, RanGen ranGen) {

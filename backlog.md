@@ -3,13 +3,13 @@
 #===================
 
 ##Advanced Body Plans
-* Reintroduce chromosome insertion/deletion
+* Reintroduce mutations that insert/delete chromosomes
 * "Skip" instruction in body plan
 * "Jump" instruction in body plan
 * "Call" instruction in body plan
 * "Loop" instruction in body plan
-* Different shapes for body segments
 * Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
+* Different shapes for body segments
 
 ##Species Tracker
 * Clustering algorithm to count species

@@ -25,13 +25,6 @@ public class PetriDish extends Dish {
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				terminate();
-			}
-		});
-
 		System.out.println(getHeadersString());
 		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
 	}

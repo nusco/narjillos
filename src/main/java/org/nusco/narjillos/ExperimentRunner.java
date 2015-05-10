@@ -17,6 +17,13 @@ public class ExperimentRunner {
 		String applicationVersion = Persistence.readApplicationVersion();
 		final PetriDish dish = new PetriDish(applicationVersion, options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_EXPERIMENT * 1000);
 
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				dish.terminate();
+			}
+		});
+
 		while (dish.tick())
 			;
 		System.exit(0);

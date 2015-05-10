@@ -107,4 +107,21 @@ public class BodyPlanTest {
 		String expectedBodyPlan = "1-(2-(3, ^3, 4), ^2-(^3, 3, ^4), 5)";
 		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
 	}
+
+	@Test
+	public void executesSkips() {
+		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+				new MockOrganBuilder(1, BodyPlanInstruction.CONTINUE),
+				new MockOrganBuilder(2, BodyPlanInstruction.SKIP),
+				new MockOrganBuilder(3, BodyPlanInstruction.CONTINUE),
+				new MockOrganBuilder(4, BodyPlanInstruction.CONTINUE),
+				new MockOrganBuilder(5, BodyPlanInstruction.SKIP),
+				new MockOrganBuilder(6, BodyPlanInstruction.SKIP),
+				new MockOrganBuilder(7, BodyPlanInstruction.CONTINUE),
+				new MockOrganBuilder(8, BodyPlanInstruction.SKIP),
+		});
+
+		String expectedBodyPlan = "1-3-4-7";
+		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+	}
 }

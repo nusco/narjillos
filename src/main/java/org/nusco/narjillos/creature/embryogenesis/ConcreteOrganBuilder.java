@@ -6,6 +6,7 @@ import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.TH
 import static org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction.BRANCH;
 import static org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction.CONTINUE;
 import static org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction.MIRROR;
+import static org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction.SKIP;
 import static org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction.STOP;
 
 import org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction;
@@ -37,8 +38,10 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 	@Override
 	public BodyPlanInstruction getBodyPlanInstruction() {
 		int bodyPlan = getChromosome().getGene(BODY_PLAN_INSTRUCTION) % 7;
-		if (bodyPlan == 0 || bodyPlan == 1)
+		if (bodyPlan == 0)
 			return CONTINUE;
+		if (bodyPlan == 1)
+			return SKIP;
 		if (bodyPlan == 2 || bodyPlan == 3)
 			return BRANCH;
 		if (bodyPlan == 4)

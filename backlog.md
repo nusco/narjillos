@@ -4,7 +4,6 @@
 
 ##Advanced Body Plans
 * Reintroduce mutations that insert/delete chromosomes
-* "Skip" instruction in body plan
 * "Jump" instruction in body plan
 * "Call" instruction in body plan
 * "Loop" instruction in body plan

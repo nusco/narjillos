@@ -4,11 +4,25 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction;
 import org.nusco.narjillos.genomics.Chromosome;
 
 public abstract class ConcreteOrganBuilderTest {
 
 	protected abstract ConcreteOrganBuilder getConcreteOrganBuilder(Chromosome chromosome);
+
+	@Test
+	public void decodesABodyPlanInstruction() {
+		assertEquals(BodyPlanInstruction.CONTINUE, getConcreteOrganBuilder(new Chromosome(0)).getBodyPlanInstruction());
+		assertEquals(BodyPlanInstruction.SKIP, getConcreteOrganBuilder(new Chromosome(1)).getBodyPlanInstruction());
+		assertEquals(BodyPlanInstruction.BRANCH, getConcreteOrganBuilder(new Chromosome(2)).getBodyPlanInstruction());
+		assertEquals(BodyPlanInstruction.BRANCH, getConcreteOrganBuilder(new Chromosome(3)).getBodyPlanInstruction());
+		assertEquals(BodyPlanInstruction.MIRROR, getConcreteOrganBuilder(new Chromosome(4)).getBodyPlanInstruction());
+		assertEquals(BodyPlanInstruction.STOP, getConcreteOrganBuilder(new Chromosome(5)).getBodyPlanInstruction());
+		assertEquals(BodyPlanInstruction.STOP, getConcreteOrganBuilder(new Chromosome(6)).getBodyPlanInstruction());
+		// roll over to 0
+		assertEquals(BodyPlanInstruction.CONTINUE, getConcreteOrganBuilder(new Chromosome(7)).getBodyPlanInstruction());
+	}
 
 	@Test
 	public void decodesALengthBetween1And255() {

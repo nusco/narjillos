@@ -20,4 +20,7 @@ public enum BodyPlanInstruction {
 	// Branch this segment into two separate limbs, one of which is the mirror
 	// image of the other.
 	MIRROR,
+	
+	// Skip this segment (unless it's the head)
+	SKIP,
 }

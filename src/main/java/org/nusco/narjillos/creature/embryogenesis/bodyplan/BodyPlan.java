@@ -26,23 +26,33 @@ public class BodyPlan {
 		if (buildersQueue.isEmpty())
 			return null;
 
+		MovingOrgan result = null;
 		OrganBuilder nextBuilder = buildersQueue.pop();
-		MovingOrgan result = nextBuilder.buildOrgan(parent, sign);
-
 		switch (nextBuilder.getBodyPlanInstruction()) {
 		case STOP:
+			result = nextBuilder.buildOrgan(parent, sign);
 			break;
 		case CONTINUE:
+			result = nextBuilder.buildOrgan(parent, sign);
 			buildChild(result, buildersQueue, sign);
 			break;
 		case BRANCH:
+			result = nextBuilder.buildOrgan(parent, sign);
 			buildChild(result, buildersQueue, sign);
 			buildChild(result, buildersQueue, sign);
 			break;
 		case MIRROR:
+			result = nextBuilder.buildOrgan(parent, sign);
 			buildChild(result, copyOf(buildersQueue), sign);
 			buildChild(result, buildersQueue, -sign);
 			buildChild(result, buildersQueue, sign);
+			break;
+		case SKIP:
+			if (parent == null)
+				// never skip the first organ (it's the head)
+				result = nextBuilder.buildOrgan(parent, sign);
+			else
+				result = buildBodyTree(parent, buildersQueue, sign);
 			break;
 		}
 		return result;

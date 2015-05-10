@@ -32,7 +32,7 @@ public class DNA implements Iterable<Chromosome> {
 	}
 
 	public DNA mutate(long id, RanGen ranGen) {
-		Integer[] resultGenes = new Integer[getDefaultSize()];
+		Integer[] resultGenes = new Integer[genes.length];
 		int numberOfGenes = Math.min(resultGenes.length, genes.length);
 		for (int i = 0; i < numberOfGenes; i++) {
 			if (ranGen.nextDouble() < Configuration.DNA_MUTATION_RATE)

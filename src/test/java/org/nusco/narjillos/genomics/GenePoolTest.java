@@ -57,7 +57,7 @@ public class GenePoolTest {
 
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
-		assertEquals("{111_111_111_222_111_000_000_000_000_000_000_000}", mostSuccessful.toString());
+		assertEquals("{111_111_111_111_111_000_000_000_000_000_000_000}", mostSuccessful.toString());
 	}
 	
 	@Test

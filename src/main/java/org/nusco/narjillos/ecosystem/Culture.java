@@ -28,11 +28,10 @@ public abstract class Culture {
 
 	private final long size;
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
-
 	private final ExecutorService executorService;
 
 	/** Counter used by the ThreadFactory to name threads. */
-	private AtomicInteger tickWorkerCounter = new AtomicInteger(1);
+	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
 
 	public Culture(long size) {
 		this.size = size;
@@ -48,9 +47,7 @@ public abstract class Culture {
 
 	public abstract Set<Thing> getThings(String label);
 
-	/**
-	 * Runs a tick of the simulation.
-	 */
+	/** Runs one simulation tick */
 	public void tick(GenePool genePool, RanGen ranGen) {
 		if (isShuttingDown())
 			return;		// we're leaving, apparently

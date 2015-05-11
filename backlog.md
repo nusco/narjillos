@@ -94,6 +94,7 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
+* Fix permissions on distribution startup scripts (has problem starting in Ubuntu)
 * Fix memory leak
 * Skip quickly over less interesting creatures in Demo Mode
 * Show heat cloud when zooming out in infrared mode

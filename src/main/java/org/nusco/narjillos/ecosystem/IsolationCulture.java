@@ -17,11 +17,11 @@ public class IsolationCulture extends Culture {
 
 	private static final Set<Thing> EMPTY_SET = Collections.unmodifiableSet(new LinkedHashSet<Thing>());
 
-	private Set<Narjillo> narjillos = new LinkedHashSet<>();
+	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
 	public IsolationCulture(long size, RanGen ranGen) {
 		super(size);
-	
+
 		DNA dna = DNA.random(1, ranGen);
 		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(size, size).by(0.5), 180, Energy.INFINITE);
 		narjillos.add(narjillo);
@@ -30,7 +30,7 @@ public class IsolationCulture extends Culture {
 	@Override
 	public Set<Thing> getThings(String label) {
 		if (label.equals("narjillo") || label.equals(""))
-			return new LinkedHashSet<Thing>(narjillos);
+			return new LinkedHashSet<>(narjillos);
 		return EMPTY_SET;
 	}
 

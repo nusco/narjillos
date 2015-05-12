@@ -20,8 +20,8 @@ class Space {
 	private final double areaSize;
 	private final Set<Thing>[][] areas;
 
-	private final Set<Thing> allTheThings = new LinkedHashSet<Thing>();
-	private final Map<String, Integer> countsByLabel = new HashMap<String, Integer>();
+	private final Set<Thing> allTheThings = new LinkedHashSet<>();
+	private final Map<String, Integer> countsByLabel = new HashMap<>();
 
 	// There is no visibility to/from outer space. The first would be
 	// easy, the second would be hard. It's better to find simulation-level
@@ -32,9 +32,11 @@ class Space {
 	public Space(long size) {
 		areaSize = ((double) size) / Space.SPACE_AREAS_PER_EDGE;
 		this.areas = new Set[Space.SPACE_AREAS_PER_EDGE][Space.SPACE_AREAS_PER_EDGE];
-		for (int i = 0; i < areas.length; i++)
-			for (int j = 0; j < areas[i].length; j++)
-				areas[i][j] = new LinkedHashSet<>();
+		for (Set<Thing>[] area : areas) {
+			for (int j = 0; j < area.length; j++) {
+				area[j] = new LinkedHashSet<>();
+			}
+		}
 	}
 
 	public int[] add(Thing thing) {
@@ -43,12 +45,13 @@ class Space {
 		Set<Thing> area = getArea(x, y);
 
 		area.add(thing);
-		
+
 		synchronized (allTheThings) {
 			allTheThings.add(thing);
 		}
 
 		String label = thing.getLabel();
+
 		synchronized (countsByLabel) {
 			if (countsByLabel.containsKey(label))
 				countsByLabel.put(label, countsByLabel.get(label) + 1);
@@ -61,7 +64,7 @@ class Space {
 
 	public void remove(Thing thing) {
 		getArea(thing).remove(thing);
-		
+
 		synchronized (allTheThings) {
 			allTheThings.remove(thing);
 		}
@@ -104,9 +107,11 @@ class Space {
 	public Set<Thing> detectCollisions(Segment movement, String label) {
 		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
 
-		for (Thing neighbor : getNearbyNeighbors(movement.getStartPoint(), label))
-			if (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE)
+		getNearbyNeighbors(movement.getStartPoint(), label).stream()
+			.filter((neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
+			.forEach((neighbor) -> {
 				collidedFoodPieces.add(neighbor);
+			});
 
 		return collidedFoodPieces;
 	}
@@ -166,9 +171,11 @@ class Space {
 	}
 
 	private void populateWithFilteredArea(Set<Thing> collector, String label, Set<Thing> area) {
-		for (Thing thing : area)
-			if (thing.getLabel().contains(label))
+		area.stream()
+			.filter((thing) -> (thing.getLabel().contains(label)))
+			.forEach((thing) -> {
 				collector.add(thing);
+			});
 	}
 
 	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things, String label) {
@@ -210,9 +217,11 @@ class Space {
 
 	private Set<Thing> filterByLabel(Set<Thing> things, String label) {
 		Set<Thing> result = new LinkedHashSet<>();
-		for (Thing thing : things)
-			if (matches(thing, label))
+		things.stream()
+			.filter((thing) -> (matches(thing, label)))
+			.forEach((thing) -> {
 				result.add(thing);
+			});
 		return result;
 	}
 

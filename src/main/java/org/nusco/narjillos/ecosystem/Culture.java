@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.things.Thing;
@@ -19,47 +19,47 @@ import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.GenePool;
 
+/**
+ * Base class for all the environments where Narjillos can live.
+ */
 public abstract class Culture {
 
-	public static volatile int numberOfBackgroundThreads = Runtime.getRuntime().availableProcessors();
+	public static int numberOfBackgroundThreads = Runtime.getRuntime().availableProcessors();
 
 	private final long size;
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
-	private volatile ExecutorService executorService;
-	private volatile int tickWorkerCounter = 1;
-	
+
+	private final ExecutorService executorService;
+
+	/** Counter used by the ThreadFactory to name threads. */
+	private AtomicInteger tickWorkerCounter = new AtomicInteger(1);
+
 	public Culture(long size) {
 		this.size = size;
-		ThreadFactory tickWorkerFactory = new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable r) {
-				Thread result = new Thread(r, "tick worker " + tickWorkerCounter++);
-				result.setPriority(Thread.currentThread().getPriority());
-				return result;
-			}
+		ThreadFactory tickWorkerFactory = (Runnable r) -> {
+			Thread result = new Thread(r, "tick-worker-" + tickWorkerCounter.getAndIncrement());
+			result.setPriority(Thread.currentThread().getPriority());
+			return result;
 		};
 		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 	}
 
-	public long getSize() {
-		return size;
-	}
+	public abstract String getStatistics();
 
+	public abstract Set<Thing> getThings(String label);
+
+	/**
+	 * Runs a tick of the simulation.
+	 */
 	public void tick(GenePool genePool, RanGen ranGen) {
 		if (isShuttingDown())
-			return; // we're leaving, apparently
+			return;		// we're leaving, apparently
 
 		tickThings(genePool, ranGen);
 
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
 	}
-
-	public void addEventListener(EnvironmentEventListener eventListener) {
-		eventListeners.add(eventListener);
-	}
-
-	public abstract String getStatistics();
 
 	public synchronized void terminate() {
 		executorService.shutdown();
@@ -70,37 +70,42 @@ public abstract class Culture {
 		}
 	}
 
-	public abstract Set<Thing> getThings(String label);
+	public long getSize() {
+		return size;
+	}
+
+	public void addEventListener(EnvironmentEventListener eventListener) {
+		eventListeners.add(eventListener);
+	}
+
+	protected abstract Set<Thing> getCollisions(Segment movement);
+
+	protected abstract void tickThings(GenePool genePool, RanGen ranGen);
 
 	protected boolean isShuttingDown() {
 		return executorService.isShutdown();
 	}
 
-	protected abstract void tickThings(GenePool genePool, RanGen ranGen);
-
 	protected Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Set<Narjillo> narjillos) {
 		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
 		for (final Narjillo narjillo : narjillos) {
-			result.put(narjillo, executorService.submit(new Callable<Set<Thing>>() {
-				@Override
-				public Set<Thing> call() throws Exception {
-					Segment movement = narjillo.tick();
-					return getCollisions(movement);
-				}
+			result.put(narjillo, executorService.submit(() -> {
+				Segment movement = narjillo.tick();
+				return getCollisions(movement);
 			}));
 		}
 		return result;
 	}
 
-	protected abstract Set<Thing> getCollisions(Segment movement);
-
 	protected final void notifyThingAdded(Thing thing) {
-		for (EnvironmentEventListener ecosystemEvent : eventListeners)
+		eventListeners.stream().forEach((ecosystemEvent) -> {
 			ecosystemEvent.thingAdded(thing);
+		});
 	}
 
 	protected final void notifyThingRemoved(Thing thing) {
-		for (EnvironmentEventListener ecosystemEvent : eventListeners)
+		eventListeners.stream().forEach((ecosystemEvent) -> {
 			ecosystemEvent.thingRemoved(thing);
+		});
 	}
 }

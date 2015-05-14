@@ -11,9 +11,10 @@ public class Experiment {
 	private final Ecosystem ecosystem;
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final RanGen ranGen;
+	private final GenePool genePool = new GenePool();
 
 	private long totalRunningTime = 0;
-	private GenePool genePool = new GenePool();
+
 	private transient long lastRegisteredRunningTime;
 
 	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackGenePool, String dna) {
@@ -94,7 +95,7 @@ public class Experiment {
 		updateTotalRunningTime();
 		ecosystem.terminate();
 		return toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
-				+ getTicksChronometer().getTotalTicks() + " ticks";
+			+ getTicksChronometer().getTotalTicks() + " ticks";
 	}
 
 	public GenePool getGenePool() {

@@ -4,8 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.nusco.narjillos.core.physics.Segment;
@@ -25,7 +25,7 @@ import org.nusco.narjillos.genomics.GenePool;
  */
 public class Ecosystem extends Culture {
 
-	private final Set<Narjillo> narjillos = new LinkedHashSet<Narjillo>();
+	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
 	private final Space space;
 	private final Vector center;
@@ -43,7 +43,7 @@ public class Ecosystem extends Culture {
 
 	@Override
 	public Set<Thing> getThings(String label) {
-		Set<Thing> result = new LinkedHashSet<Thing>();
+		Set<Thing> result = new LinkedHashSet<>();
 		// this ugliness will stay until we have narjillos
 		// in the same space as other things
 		if (label.equals("narjillo") || label.equals("")) {
@@ -105,17 +105,18 @@ public class Ecosystem extends Culture {
 
 	public Set<Narjillo> getNarjillos() {
 		synchronized (narjillos) {
-			return new LinkedHashSet<Narjillo>(narjillos);
+			return new LinkedHashSet<>(narjillos);
 		}
 	}
 
 	public void periodicUpdate() {
 		synchronized (narjillos) {
-			for (Thing creature : narjillos) {
-				Narjillo narjillo = (Narjillo) creature;
-				Vector closestTarget = findClosestFoodPiece(narjillo);
-				narjillo.setTarget(closestTarget);
-			}
+			narjillos.stream()
+				.map((creature) -> (Narjillo) creature)
+				.forEach((narjillo) -> {
+					Vector closestTarget = findClosestFoodPiece(narjillo);
+					narjillo.setTarget(closestTarget);
+				});
 		}
 	}
 
@@ -140,13 +141,16 @@ public class Ecosystem extends Culture {
 
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		for (Thing thing : new LinkedList<>(space.getAll("egg")))
+		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> {
 			tickEgg((Egg) thing, ranGen);
+		});
 
 		synchronized (narjillos) {
-			for (Narjillo narjillo : new LinkedList<>(narjillos))
-				if (narjillo.isDead())
+			new LinkedList<>(narjillos).stream()
+				.filter((narjillo) -> (narjillo.isDead()))
+				.forEach((narjillo) -> {
 					removeNarjillo(narjillo, genePool);
+				});
 		}
 
 		tickNarjillos(genePool, ranGen);
@@ -157,8 +161,9 @@ public class Ecosystem extends Culture {
 		}
 
 		synchronized (narjillos) {
-			for (Narjillo narjillo : narjillos)
+			narjillos.stream().forEach((narjillo) -> {
 				maybeLayEgg(narjillo, genePool, ranGen);
+			});
 		}
 	}
 
@@ -185,15 +190,16 @@ public class Ecosystem extends Culture {
 		synchronized (narjillos) {
 			narjillosToCollidedFood = calculateCollisions(narjillos);
 		}
-		
+
 		// Consume food in a predictable order, to avoid non-deterministic
 		// behavior or race conditions when multiple narjillos collide with the
 		// same piece of food.
-		for (Entry<Narjillo, Set<Thing>> entry : narjillosToCollidedFood.entrySet()) {
-			Narjillo narjillo = entry.getKey();
-			Set<Thing> collidedFood = entry.getValue();
-			consume(narjillo, collidedFood, genePool, ranGen);
-		}
+		narjillosToCollidedFood.entrySet().stream()
+			.forEach((entry) -> {
+				Narjillo narjillo = entry.getKey();
+				Set<Thing> collidedFood = entry.getValue();
+				consume(narjillo, collidedFood, genePool, ranGen);
+			});
 	}
 
 	private Map<Narjillo, Set<Thing>> calculateCollisions(Set<Narjillo> set) {
@@ -206,7 +212,7 @@ public class Ecosystem extends Culture {
 		for (Narjillo narjillo : collisionFutures.keySet()) {
 			try {
 				result.put(narjillo, collisionFutures.get(narjillo).get());
-			} catch (Exception e) {
+			} catch (InterruptedException | ExecutionException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -218,7 +224,7 @@ public class Ecosystem extends Culture {
 		double maxFoodPieces = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK;
 		if (getNumberOfFoodPieces() >= maxFoodPieces)
 			return false;
-		
+
 		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK / getNumberOf1000SquarePointsBlocks();
 		return ranGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
 	}
@@ -229,23 +235,24 @@ public class Ecosystem extends Culture {
 
 	private void updateTargets(Thing food) {
 		synchronized (narjillos) {
-			for (Narjillo narjillo : narjillos) {
-				if (narjillo.getTarget().equals(food.getPosition())) {
+			narjillos.stream()
+				.filter((narjillo) -> (narjillo.getTarget().equals(food.getPosition())))
+				.forEach((narjillo) -> {
 					Vector closestTarget = findClosestFoodPiece(narjillo);
 					narjillo.setTarget(closestTarget);
-				}
-			}
+				});
 		}
 	}
 
 	private void consume(Narjillo narjillo, Set<Thing> foodPieces, GenePool genePool, RanGen ranGen) {
-		for (Thing foodPiece : foodPieces)
+		foodPieces.stream().forEach((foodPiece) -> {
 			consumeFood(narjillo, (FoodPiece) foodPiece, genePool, ranGen);
+		});
 	}
 
 	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, GenePool genePool, RanGen ranGen) {
 		if (!space.contains(foodPiece))
-			return; // race condition: already consumed
+			return;		// race condition: already consumed
 
 		remove(foodPiece);
 		narjillo.feedOn(foodPiece);
@@ -270,9 +277,10 @@ public class Ecosystem extends Culture {
 		Egg egg = narjillo.layEgg(genePool, ranGen);
 		if (egg == null)
 			return;
+
 		insert(egg);
 	}
-	
+
 	private double getNumberOf1000SquarePointsBlocks() {
 		double blocksPerEdge = getSize() / 1000.0;
 		return blocksPerEdge * blocksPerEdge;

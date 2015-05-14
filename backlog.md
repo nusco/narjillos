@@ -2,17 +2,9 @@
 # Narjillos Backlog
 #===================
 
-##Advanced Body Plans
-* "Jump" instruction in body plan
-* "Call" instruction in body plan
-* "Loop" instruction in body plan
-* Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
-* Different shapes for body segments
-
 ##Species Tracker
 * Simple clustering algorithm to count species
-* Report number of species on the console (or do it when analizing ancestry if too slow)
-* Advanced clustering algorithm (based on Shannon's theory to evaluate gene distribution)
+* Report number of species on the console (or do it when analyzing ancestry if too slow)
 
 ##Self-Regulating Ecosystem
 * Atmosphere chemistry
@@ -20,6 +12,13 @@
 * Narjillos consume a molecule (faster reproduction? lower energy expenditure?)
 * Ecological Niches (tweak chemistry to encourage speciation)
 * (did I get sympatric speciation yet? if not, then maybe I need sexual reproduction)
+
+##Advanced Body Plans
+* "Jump" instruction in body plan
+* "Call" instruction in body plan
+* "Loop" instruction in body plan
+* Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)
+* Different shapes for body segments
 
 ##Dish Edges
 * Kill narjillos who touch outer space
@@ -64,6 +63,15 @@
 * Save/load experiment from menu
 * Tutorial
 
+##Lab Analysis
+* Track status of experiment together with ancestry: eggs/creatures/food/etc.
+* Measure creature/dish efficiency (somehow)
+* Advanced clustering algorithm (based on Shannon's theory to evaluate gene distribution)
+* Advanced ancestry analysis (study related papers)
+* Store historical data in a database rather than in memory
+* Optionally move entire persistence to a database
+* Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
+
 ##Packaged Application
 * Native Mac app
 * Native Windows app
@@ -102,8 +110,7 @@
 * Command-line argument to start without visual effects
 * Narjillos eat eggs
 * Smoother contours when zooming in infrared mode
-* Encode CPU floatpoint precision in the experiment id (rather than use strictfp)
-* Conservation of energy in entire dish (with sun to give more energy)
+* Conservation of energy in entire dish (with an external source of energy)
 
 ##Epic Goals
 * Complex Interactions

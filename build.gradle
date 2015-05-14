@@ -14,6 +14,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 mainClassName = 'org.nusco.narjillos.NarjillosRunner'
 
+applicationDefaultJvmArgs = ['-Xmx4g']
 
 // Dependencies
 
@@ -89,20 +90,13 @@ task release(dependsOn: ['testAll', 'createStartupScripts', 'assembleMainDist'])
 }
 
 task createStartupScripts(dependsOn: 'installDist') {
-  createStartupScript('experiment', 'org.nusco.narjillos.ExperimentRunner', ['-Xmx4g'])
-}
-
-
-// Helpers
-
-def createStartupScript(name, mainClass, jvmArgs) {
-  def taskName = name + 'StartScript'
+  def taskName = 'experimentStartScript'
   tasks.create(name: taskName, type: CreateStartScripts) {
     outputDir = new File(buildDir, 'scripts')
-    mainClassName = mainClass
-    applicationName = name
+    mainClassName = 'org.nusco.narjillos.ExperimentRunner'
+    applicationName = 'experiment'
     classpath = tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + configurations.runtime
-    applicationDefaultJvmArgs = jvmArgs
+    defaultJvmOpts = ['-Xmx4g']
   }
 
   tasks[taskName].dependsOn(project.jar)
@@ -114,6 +108,9 @@ def createStartupScript(name, mainClass, jvmArgs) {
     }
   }
 }
+
+
+// Helpers
 
 def createProgramTask(taskName, taskMainClassName, taskDescription) {
   tasks.create(name: taskName, type: JavaExec) {

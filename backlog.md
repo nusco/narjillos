@@ -10,8 +10,9 @@
 * Different shapes for body segments
 
 ##Species Tracker
-* Clustering algorithm to count species
+* Simple clustering algorithm to count species
 * Report number of species on the console (or do it when analizing ancestry if too slow)
+* Advanced clustering algorithm (based on Shannon's theory to evaluate gene distribution)
 
 ##Self-Regulating Ecosystem
 * Atmosphere chemistry
@@ -41,7 +42,7 @@
 * Red fibers damage the attacker
 
 ##Istincts (Complex Interactions 2)
-* Identifiable species (DNA hashes)
+* Species identification (based on DNA hashes?)
 * Istinct genes: love, fear, hunger
 * Visualize istinct directions
 * Visualize istincts on other creatures when following a narjillo
@@ -67,6 +68,7 @@
 * Native Mac app
 * Native Windows app
 * Run in a browser
+* Fix permissions on distribution startup scripts (has problem starting in Ubuntu)
 * Package Java runtime with command-line program?
 
 ##Sexual Reproduction
@@ -93,8 +95,6 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
-* Fix permissions on distribution startup scripts (has problem starting in Ubuntu)
-* Fix memory leak
 * Skip quickly over less interesting creatures in Demo Mode
 * Show heat cloud when zooming out in infrared mode
 * Simpler senescence mechanism

@@ -38,7 +38,7 @@ public class CommandLineOptions extends Options {
 	CommandLineOptions(String... args) {
 		addOption("h", "help", false, "print this message");
 		addOption("p", "persistent", false, "periodically save experiment to file");
-		addOption("a", "ancestry", false, "track genepool ancestry");
+		addOption("a", "ancestry", false, "track genepool ancestry (needs a lot of memory)");
 		addOption("s", "seed", true, "start experiment with given seed");
 		addOption("dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
 

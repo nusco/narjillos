@@ -40,8 +40,8 @@ creature:
 
   # A creature cannot live more than max_lifespan ticks, and it
   # cannot reproduce before mature_age ticks.
-  max_lifespan: 100000.0
-  mature_age: 5000.0
+  max_lifespan: 100000
+  mature_age: 5000
 
   # The base frequency of a creature's wave is base_wave_frequency
   # (this frequency is then multiplied by the creature's metabolic

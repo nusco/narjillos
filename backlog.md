@@ -47,21 +47,25 @@
 * Visualize istincts on other creatures when following a narjillo
 * Decide ideal direction based on istinct genes
 * Narjillos follow istinct direction (plus food?)
+* Atmosphere map with local chemistry
 
 ##Intuitive Navigation
 * Visual effect when tracking/untracking
-* Position map?
+* Mini map?
 * (Test navigation with first-time user)
 
 ##Gaming UI
 * Status bar
+* Save/load experiment from menu
+* Optionally save when quitting application
+* Start new experiment from menu
+* "About"/"Help" menus
 * Speed widget
 * Light switches for normal/infrared light
 * Historical experiment stats (average lifespan, number of creatures, ...)
 * View stats for followed narjillo (age, energy, radius, times eaten, genome...)
-* "About"/"Help" menus
-* Save/load experiment from menu
 * Tutorial
+* In-app configuration
 
 ##Lab Analysis
 * Track status of experiment together with ancestry: eggs/creatures/food/etc.
@@ -103,13 +107,13 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
-* Skip quickly over less interesting creatures in Demo Mode
-* Show heat cloud when zooming out in infrared mode
 * Simpler senescence mechanism
 * Report conflicts in command-line arguments (like -s and file used together)
+* Smoother contours when zooming in infrared mode
+* Show heat cloud when zooming out in infrared mode
+* Skip quickly over less interesting creatures in Demo Mode
 * Command-line argument to start without visual effects
 * Narjillos eat eggs
-* Smoother contours when zooming in infrared mode
 * Conservation of energy in entire dish (with an external source of energy)
 
 ##Epic Goals

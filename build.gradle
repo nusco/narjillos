@@ -1,10 +1,32 @@
 // Plugins
 
+plugins {
+  id "edu.sc.seis.macAppBundle" version "2.1.0"
+}
+
 apply plugin: 'java'
 apply plugin: 'application'     // loads also the 'distribution' plugin
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
+///////
+// Work in progress. This is not fully working yet. I can fix a
+// distribution by manually adding the "config.yaml" file to the
+// Contents directory inside the app. I should find a way to do
+// this automatically.
+// The current procedure is:
+//   gradle createApp
+//   (manually copy config.yaml, version and other files to <approot>/Content)
+//   gradle createDmg
+// This sucks of course. TODO: find a way to automate this.
+macAppBundle {
+    mainClassName = "org.nusco.narjillos.NarjillosRunner"
+    icon = "narjillos.icns"
+    bundleJRE = true
+    // the "best" way I've found to tell the app where it's starting from
+    javaExtras.put ('-Dnarjillos.home', '$APP_ROOT/Contents/')
+}
+///////
 
 // Basic Configuration
 

@@ -26,7 +26,15 @@ public class Configuration {
 	}
 
 	private static File locateConfigurationFile() {
-		return new File(System.getProperty("user.dir") + "/config.yaml");
+		// First, look in the working folder
+		File defaultPath = new File(System.getProperty("user.dir") + "/config.yaml");
+		if (defaultPath.exists())
+			return defaultPath;
+			
+		// The working folder mechanism is unreliable in a Mac app bundle,
+		// so try an alternative. The "narjillos.home" system variable
+		// is set manually in the Info.plist file of the packaged app.
+		return new File(System.getProperty("narjillos.home") + "/config.yaml");
 	}
 	
 	private static double getDouble(String configSection, String configKey) {

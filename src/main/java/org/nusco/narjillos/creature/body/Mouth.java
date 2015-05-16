@@ -37,16 +37,6 @@ public class Mouth {
 		return Vector.polar(directionAngle, 1);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		return directionAngle == ((Mouth)obj).directionAngle;
-	}
-	
-	@Override
-	public int hashCode() {
-		return (int)directionAngle;
-	}
-
 	private void shiftSmoothlyTowards(double angle) {
 		double angleDifference = Angle.normalize(angle) - directionAngle;
 		if (Math.abs(angleDifference) < 1)

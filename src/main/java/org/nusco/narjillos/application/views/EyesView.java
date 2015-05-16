@@ -9,6 +9,7 @@ import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.physics.ZeroVectorException;
 import org.nusco.narjillos.creature.Narjillo;
 
 class EyesView implements ItemView {
@@ -21,6 +22,8 @@ class EyesView implements ItemView {
 	private final Circle pupil1;
 	private final Circle pupil2;
 	private final Group group = new Group();
+
+	private final double pupilTranslation;
 
 	public EyesView(Narjillo narjillo) {
 		this.narjillo = narjillo;
@@ -35,10 +38,10 @@ class EyesView implements ItemView {
 		this.pupil1 = new Circle(Math.min(eye1.getRadius() - 2, someRandomQuality % 3 + 1));
 		this.pupil2 = new Circle(Math.min(eye1.getRadius() - 2, someOtherRandomQuality % 3 + 1));
 
+		pupilTranslation = Math.min(eye2.getRadius() - pupil2.getRadius(), eye1.getRadius() - pupil1.getRadius());
+
 		this.eye1.getTransforms().add(new Translate(-eye1.getRadius() + 1, 0));
 		this.eye2.getTransforms().add(new Translate(eye2.getRadius() - 1, 0));
-		this.pupil1.getTransforms().add(new Translate(-eye1.getRadius() + 1, 0));
-		this.pupil2.getTransforms().add(new Translate(eye2.getRadius() - 1, 0));
 	}
 
 	@Override
@@ -55,11 +58,28 @@ class EyesView implements ItemView {
 		group.getChildren().add(eye1);
 		group.getChildren().add(eye2);
 
+		double eyesDirection = narjillo.getBody().getHead().getAbsoluteAngle() + 90;
+
 		if (!infraredOn) {
 			Color pupilColor = toPupilColor(zoomLevel);
 			pupil1.setFill(pupilColor);
 			pupil2.setFill(pupilColor);
+
+			double pupilDirection;
+			try {
+				pupilDirection = narjillo.getMouth().getDirection().getAngle() - eyesDirection - 90;
+			} catch (ZeroVectorException e) {
+				pupilDirection = 0;
+			}
 			
+			pupil1.getTransforms().clear();
+			pupil1.getTransforms().add(new Translate(-eye1.getRadius() + 1, pupilTranslation));
+			pupil1.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
+
+			pupil2.getTransforms().clear();
+			pupil2.getTransforms().add(new Translate(eye2.getRadius() - 1, pupilTranslation));
+			pupil2.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
+
 			group.getChildren().add(pupil1);
 			group.getChildren().add(pupil2);
 		}
@@ -67,7 +87,7 @@ class EyesView implements ItemView {
 		group.getTransforms().clear();
 		Vector position = narjillo.getPosition();
 		group.getTransforms().add(new Translate(position.x, position.y));
-		group.getTransforms().add(new Rotate(narjillo.getBody().getHead().getAbsoluteAngle() + 90));
+		group.getTransforms().add(new Rotate(eyesDirection));
 		
 		return group;
 	}

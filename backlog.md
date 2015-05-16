@@ -107,7 +107,7 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
-* Eye pupils shift towards goal
+* Indipendent eye pupils
 * Change mouth graphics?
 * Optimize graphics again
 * Simpler senescence mechanism

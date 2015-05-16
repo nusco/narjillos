@@ -16,7 +16,7 @@ class MouthView implements ItemView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.1;
 
-	private static final int LENGTH = 50;
+	private static final int LENGTH = 30;
 	private final Narjillo narjillo;
 	private final Group group = new Group();
 	private final Line line1 = createLine();

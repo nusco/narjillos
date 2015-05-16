@@ -14,7 +14,7 @@ import org.nusco.narjillos.creature.Narjillo;
 
 class EyesView implements ItemView {
 
-	private static final double MINIMUM_ZOOM_LEVEL = 0.18;
+	private static final double MINIMUM_ZOOM_LEVEL = 0.15;
 
 	private final Narjillo narjillo;
 	private final Circle eye1;
@@ -23,6 +23,7 @@ class EyesView implements ItemView {
 	private final Circle pupil2;
 	private final Group group = new Group();
 
+	private final double eyeCenteringTranslation;
 	private final double pupilTranslation;
 
 	public EyesView(Narjillo narjillo) {
@@ -33,15 +34,16 @@ class EyesView implements ItemView {
 		double someRandomQuality = narjillo.getBody().getAdultMass();
 		double someOtherRandomQuality = narjillo.getBody().getEnergyToChildren();
 		
-		this.eye1 = new Circle(someRandomQuality % 6 + 4);
-		this.eye2 = new Circle(someOtherRandomQuality % 6 + 4);
-		this.pupil1 = new Circle(Math.min(eye1.getRadius() - 2, someRandomQuality % 3 + 1));
-		this.pupil2 = new Circle(Math.min(eye1.getRadius() - 2, someOtherRandomQuality % 3 + 1));
+		this.eye1 = new Circle(someRandomQuality % 5 + 7);
+		this.eye2 = new Circle(someOtherRandomQuality % 5 + 7);
+		this.pupil1 = new Circle(Math.min(eye1.getRadius() - 2, someRandomQuality % 6 + 1));
+		this.pupil2 = new Circle(Math.min(eye1.getRadius() - 2, someOtherRandomQuality % 6 + 1));
 
+		eyeCenteringTranslation = eye1.getRadius() - eye2.getRadius();
 		pupilTranslation = Math.min(eye2.getRadius() - pupil2.getRadius(), eye1.getRadius() - pupil1.getRadius());
 
-		this.eye1.getTransforms().add(new Translate(-eye1.getRadius() + 1, 0));
-		this.eye2.getTransforms().add(new Translate(eye2.getRadius() - 1, 0));
+		this.eye1.getTransforms().add(new Translate(eyeCenteringTranslation - eye1.getRadius() + 1, 0));
+		this.eye2.getTransforms().add(new Translate(eyeCenteringTranslation + eye2.getRadius() - 1, 0));
 	}
 
 	@Override
@@ -73,11 +75,11 @@ class EyesView implements ItemView {
 			}
 			
 			pupil1.getTransforms().clear();
-			pupil1.getTransforms().add(new Translate(-eye1.getRadius() + 1, pupilTranslation));
+			pupil1.getTransforms().add(new Translate(eyeCenteringTranslation - eye1.getRadius() + 1, pupilTranslation));
 			pupil1.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
 
 			pupil2.getTransforms().clear();
-			pupil2.getTransforms().add(new Translate(eye2.getRadius() - 1, pupilTranslation));
+			pupil2.getTransforms().add(new Translate(eyeCenteringTranslation + eye2.getRadius() - 1, pupilTranslation));
 			pupil2.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
 
 			group.getChildren().add(pupil1);

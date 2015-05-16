@@ -78,7 +78,7 @@ class NarjilloView extends ThingView {
 				return true;
 		OrganView organView = organs.get(0);
 		organView.isVisible(viewport);
-		// ignore the mouth and eye, too small to make a visible difference
+		// ignore the mouth and eyes, too small to make a visible difference
 		return false;
 	}
 }

@@ -3,7 +3,7 @@ package org.nusco.narjillos.genomics;
 // An implementation of Google's SimHash algorithm to hash DNA.
 // Similar DNAs get similar hashes. See:
 // http://matpalm.com/resemblance/simhash/
-class SimHash {
+public class SimHash {
 	
 	public static int[] calculateSimHash(DNA dna) {
 		int[] bitDensity = calculateBitDensity(dna.toCodons());

@@ -48,10 +48,10 @@ class EggView extends ThingView {
 
 	private Color getFillColor(boolean infraredOn) {
 		Color color = (infraredOn ? Color.RED : Color.BURLYWOOD);
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(), getAlpha());
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), getOpacity());
 	}
 
-	private double getAlpha() {
+	private double getOpacity() {
 		return 1 - getEgg().getDecay();
 	}
 

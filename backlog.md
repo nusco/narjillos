@@ -107,6 +107,9 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
+* Eye pupils shift towards goal
+* Change mouth graphics?
+* Optimize graphics again
 * Simpler senescence mechanism
 * Report conflicts in command-line arguments (like -s and file used together)
 * Smoother contours when zooming in infrared mode

@@ -54,23 +54,23 @@ class MouthView implements ItemView {
 	private Color getColor(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
 			return Color.WHITE;
-		return new Color(0, 0.6, 0, getAlpha(zoomLevel));
+		return new Color(0, 0.6, 0, getOpacity(zoomLevel));
 	}
 
-	private double getAlpha(double zoomLevel) {
-		double alphaBasedOnZoom = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 20;
-		double alpha = Math.min(alphaBasedOnZoom, getAlphaBasedOnAge());
-		return Math.max(0, Math.min(1, alpha));
+	private double getOpacity(double zoomLevel) {
+		double opacityBasedOnZoom = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 20;
+		double opacity = Math.min(opacityBasedOnZoom, getOpacityBasedOnAge());
+		return Math.max(0, Math.min(1, opacity));
 	}
 
-	private double getAlphaBasedOnAge() {
-		final double AGE_OF_COMPLETE_OPACITY = 100;
+	private double getOpacityBasedOnAge() {
+		final double AGE_OF_FULL_OPACITY = 100;
 
 		long age = getNarjillo().getAge();
-		if (age > AGE_OF_COMPLETE_OPACITY)
+		if (age > AGE_OF_FULL_OPACITY)
 			return 1;
 		
-		return age / AGE_OF_COMPLETE_OPACITY;
+		return age / AGE_OF_FULL_OPACITY;
 	}
 	
 	private void rotate(Line line, int angle) {

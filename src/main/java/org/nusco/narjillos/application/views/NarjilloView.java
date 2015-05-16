@@ -9,22 +9,22 @@ import javafx.scene.Node;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 
 class NarjilloView extends ThingView {
 	
 	private final Group group = new Group();
-	private final List<OrganView> organViews;
-	private final MouthView mouthView;
-	private final RoundObjectView eyeView;
-	private final CenterOfMassView centerOfMassView;
+	private final List<OrganView> organs;
+	private final MouthView mouth;
+	private final ItemView eyes;
+	private final CenterOfMassView centerOfMass;
 
 	public NarjilloView(Narjillo narjillo) {
 		super(narjillo);
-		organViews = createOrganViews();
-		mouthView = new MouthView(narjillo);
-		eyeView = new EyeView(narjillo);
-		centerOfMassView = new CenterOfMassView(narjillo);
+		organs = createOrganViews();
+		mouth = new MouthView(narjillo);
+		eyes = new EyesView(narjillo);
+		centerOfMass = new CenterOfMassView(narjillo);
 	}
 
 	@Override
@@ -33,16 +33,16 @@ class NarjilloView extends ThingView {
 
 		group.getChildren().addAll(getOrganNodes(zoomLevel, infraredOn, effectsOn));
 		
-		Node mouthNode = mouthView.toNode(zoomLevel, infraredOn, effectsOn);
+		Node mouthNode = mouth.toNode(zoomLevel, infraredOn, effectsOn);
 		if (mouthNode != null)
 			group.getChildren().add(mouthNode);
 
-		Node eyeNode = eyeView.toNode(zoomLevel, infraredOn, effectsOn);
+		Node eyeNode = eyes.toNode(zoomLevel, infraredOn, effectsOn);
 		if (eyeNode != null)
 			group.getChildren().add(eyeNode);
 
 		if (VisualDebugger.DEBUG)
-			group.getChildren().add(centerOfMassView.toNode(zoomLevel, infraredOn, effectsOn));
+			group.getChildren().add(centerOfMass.toNode(zoomLevel, infraredOn, effectsOn));
 
 		if (effectsOn && !group.getChildren().isEmpty())
 			group.setEffect(getEffects(zoomLevel, infraredOn));
@@ -52,7 +52,7 @@ class NarjilloView extends ThingView {
 
 	private List<Node> getOrganNodes(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		List<Node> result = new LinkedList<>();
-		for (OrganView view : organViews) {
+		for (OrganView view : organs) {
 			Node node = view.toNode(zoomLevel, infraredOn, effectsOn);
 			if (node != null)
 				result.add(node);
@@ -62,7 +62,7 @@ class NarjilloView extends ThingView {
 
 	private List<OrganView> createOrganViews() {
 		List<OrganView> result = new LinkedList<>();
-		for (Organ bodyPart : getNarjillo().getOrgans())
+		for (ConnectedOrgan bodyPart : getNarjillo().getOrgans())
 			result.add(new OrganView(bodyPart, getNarjillo()));
 		return result;
 	}
@@ -73,10 +73,10 @@ class NarjilloView extends ThingView {
 
 	@Override
 	public boolean isVisible(Viewport viewport) {
-		for (OrganView organView : organViews)
+		for (OrganView organView : organs)
 			if (organView.isVisible(viewport))
 				return true;
-		OrganView organView = organViews.get(0);
+		OrganView organView = organs.get(0);
 		organView.isVisible(viewport);
 		// ignore the mouth and eye, too small to make a visible difference
 		return false;

@@ -27,7 +27,7 @@ public class Body {
 	private final double metabolicConsumption;
 	private final double adultMass;
 	private double mass;
-	private transient List<Organ> organs;
+	private transient List<ConnectedOrgan> organs;
 	
 	private transient Vector cachedCenterOfMass = null;
 	private transient double cachedRadius = Double.NaN;
@@ -42,7 +42,7 @@ public class Body {
 		return (Head) head;
 	}
 
-	public List<Organ> getOrgans() {
+	public List<ConnectedOrgan> getOrgans() {
 		if (organs == null) {
 			organs = new ArrayList<>();
 			addWithChildren(organs, head);
@@ -118,7 +118,7 @@ public class Body {
 	 */
 	public double tick(Vector targetDirection) {
 		// Update the mass of a still-developing body.
-		if (isStillGrowing())
+		if (!hasStoppedGrowing())
 			mass = getMass();
 
 		// Before any movement, store away the current center of mass and the
@@ -179,9 +179,9 @@ public class Body {
 		// do it in one swoop instead of creating a lot of
 		// intermediate vectors
 
-		List<Organ> organs = getOrgans();
+		List<ConnectedOrgan> organs = getOrgans();
 		Vector[] weightedCentersOfMass = new Vector[organs.size()];
-		Iterator<Organ> iterator = organs.iterator();
+		Iterator<ConnectedOrgan> iterator = organs.iterator();
 		for (int i = 0; i < weightedCentersOfMass.length; i++) {
 			Organ organ = iterator.next();
 			weightedCentersOfMass[i] = organ.getCenterOfMass().by(organ.getMass());
@@ -234,15 +234,15 @@ public class Body {
 		return (rotationEnergy + translationEnergy) * metabolicConsumption;
 	}
 
-	private void addWithChildren(List<Organ> result, MovingOrgan organ) {
+	private void addWithChildren(List<ConnectedOrgan> result, MovingOrgan organ) {
 		// children first
 		for (ConnectedOrgan child : organ.getChildren())
 			addWithChildren(result, (MovingOrgan) child);
 		result.add(organ);
 	}
 
-	private boolean isStillGrowing() {
-		return mass < getAdultMass();
+	public boolean hasStoppedGrowing() {
+		return mass >= getAdultMass();
 	}
 
 	private double getAngleTo(Vector direction) {

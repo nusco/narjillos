@@ -10,8 +10,8 @@ import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.body.Body;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Mouth;
-import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
@@ -107,7 +107,7 @@ public class Narjillo implements Thing {
 		return body;
 	}
 
-	public List<Organ> getOrgans() {
+	public List<ConnectedOrgan> getOrgans() {
 		return body.getOrgans();
 	}
 

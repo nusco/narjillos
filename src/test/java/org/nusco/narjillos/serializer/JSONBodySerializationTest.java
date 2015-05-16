@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.body.Organ;
 
 public class JSONBodySerializationTest {
 
@@ -39,8 +39,8 @@ public class JSONBodySerializationTest {
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
 		
-		List<Organ> organs = body.getOrgans();
-		List<Organ> deserializedOrgans = deserialized.getOrgans();
+		List<ConnectedOrgan> organs = body.getOrgans();
+		List<ConnectedOrgan> deserializedOrgans = deserialized.getOrgans();
 		for (int i = 0; i < organs.size(); i++)
 			assertEquals(organs.get(i).getLength(), deserializedOrgans.get(i).getLength(), 0);
 	}

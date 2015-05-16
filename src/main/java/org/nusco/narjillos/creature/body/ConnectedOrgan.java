@@ -43,6 +43,10 @@ public abstract class ConnectedOrgan extends Organ {
 		return child;
 	}
 
+	public boolean isLeaf() {
+		return getChildren().isEmpty();
+	}
+
 	protected abstract double getMetabolicRate();
 
 	protected Nerve getNerve() {

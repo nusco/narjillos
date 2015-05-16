@@ -1,6 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -20,16 +22,27 @@ public abstract class ConnectedOrganTest extends OrganTest {
 
 	@Test
 	public void knowsItsChildren() {
-		ConnectedOrgan r = getOrgan();
-		ConnectedOrgan child1 = r.addChild(new BodyPart(20, 10, 0, 0, 0, r, 0, 45, 0, 0));
-		ConnectedOrgan r1 = getOrgan();
-		ConnectedOrgan child2 = r1.addChild(new BodyPart(20, 10, 0, 0, 0, r1, 0, -45, 0, 0));
+		ConnectedOrgan organ = getOrgan();
+		ConnectedOrgan child1 = organ.addChild(new BodyPart(20, 10, 0, 0, 0, organ, 0, 45, 0, 0));
+		ConnectedOrgan child2 = organ.addChild(new BodyPart(20, 10, 0, 0, 0, organ, 0, -45, 0, 0));
 
 		List<ConnectedOrgan> expected = new LinkedList<>();
 		expected.add(child1);
 		expected.add(child2);
 		
 		assertEquals(expected, getOrgan().getChildren());
+	}
+	
+	@Test
+	public void canBeALeaf() {
+		assertTrue(getOrgan().isLeaf());
+	}
+	
+	@Test
+	public void canBeANonLeaf() {
+		ConnectedOrgan organ = getOrgan();
+		organ.addChild(new BodyPart(20, 10, 0, 0, 0, organ, 0, 45, 0, 0));
+		assertFalse(organ.isLeaf());
 	}
 
 	protected ConnectedOrgan getOrgan() {

@@ -12,7 +12,7 @@ import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.genomics.DNA;
 
 public class JSONThingSerializationTest {
@@ -63,8 +63,8 @@ public class JSONThingSerializationTest {
 		assertEquals(narjillo.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0.0);
 		assertEquals(narjillo.getMouth(), deserialized.getMouth());
 
-		List<Organ> organs = narjillo.getOrgans();
-		List<Organ> deserializedOrgans = deserialized.getOrgans();
+		List<ConnectedOrgan> organs = narjillo.getOrgans();
+		List<ConnectedOrgan> deserializedOrgans = deserialized.getOrgans();
 		for (int i = 0; i < organs.size(); i++)
 			assertEquals(organs.get(i).getLength(), deserializedOrgans.get(i).getLength(), 0);
 	}

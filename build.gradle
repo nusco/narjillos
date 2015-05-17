@@ -61,14 +61,14 @@ createProgramTask('ancestry', 'org.nusco.narjillos.Ancestry', 'Runs ancestry ana
 
 // Tests
 
-task(testPerformance, dependsOn: 'build', type: JavaExec) {
+task(testPerformance, dependsOn: 'compileJava', type: JavaExec) {
   description = 'Runs performance test.'
   group = 'verification'
   main = 'org.nusco.narjillos.PerformanceTest'
   classpath = sourceSets.test.runtimeClasspath
 }
 
-task(testDeterministicBehavior, dependsOn: 'build', type: JavaExec) {
+task(testDeterministicBehavior, dependsOn: 'compileJava', type: JavaExec) {
   description = 'Runs the (slow) test that checks whether the system is deterministic.'
   group = 'verification'
   main = 'org.nusco.narjillos.DeterministicExperimentTest'

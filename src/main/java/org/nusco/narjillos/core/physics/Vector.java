@@ -5,7 +5,7 @@ package org.nusco.narjillos.core.physics;
  */
 public class Vector {
 
-	public static final Vector ZERO = Vector.cartesian(0, 0);
+	public static final Vector ZERO = new Vector(0, 0);
 
 	static {
 		FastMath.setUp();
@@ -17,9 +17,7 @@ public class Vector {
 	// cached fields (for performance)
 	private double angle = Double.NaN;
 	private double length = Double.NaN;
-	private Vector inverted = null;
-	private Vector normal = null;
-	
+		
 	public static Vector polar(double degrees, double length) {
 		double sin = FastMath.sin(degrees);
 		double cos = FastMath.cos(degrees);
@@ -33,6 +31,10 @@ public class Vector {
 	private Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public boolean isZero() {
+		return x == 0 && y == 0;
 	}
 
 	public double getAngle() throws ZeroVectorException {
@@ -61,29 +63,14 @@ public class Vector {
 		return Vector.cartesian(x * scalar, y * scalar);
 	}
 
-	public Vector invert() {
-		if (inverted == null)
-			inverted  = this.by(-1);
-		return inverted;
+	double getDistanceFrom(Vector other) {
+		return this.minus(other).getLength();
 	}
 
-	public Vector normalize(double length) throws ZeroVectorException {
-		return Vector.polar(getAngle(), length);
-	}
-
-	public Vector getNormal() throws ZeroVectorException {
-		if (normal == null)
-			normal = Vector.polar(getAngle() - 90, 1);
-		return normal;
-	}
-
-	public Vector getProjectionOn(Vector other) throws ZeroVectorException {
-		double resultLength = FastMath.cos(getAngleWith(other)) * getLength();
-		return Vector.polar(other.getAngle(), resultLength);
-	}
-
-	public double getAngleWith(Vector other) throws ZeroVectorException {
-		return Angle.normalize(getAngle() - other.getAngle());
+	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {
+		double resultAngle = other.getAngle() - 90;
+		double resultLength = FastMath.cos(getAngle() - resultAngle) * getLength();
+		return Vector.polar(resultAngle, resultLength);
 	}
 
 	@Override
@@ -95,8 +82,6 @@ public class Vector {
 	public boolean equals(Object obj) {
 		if (obj == null)
 			return false;
-		if (obj == this)
-			return true;
 		Vector other = (Vector) obj;
 		return equalsExactly(x, other.x) && equalsExactly(y, other.y);
 	}
@@ -105,22 +90,10 @@ public class Vector {
 		final double delta = 0.01;
 		return Math.abs(x - other.x) < delta && Math.abs(y - other.y) < delta;
 	}
-
-	public boolean isZero() {
-		return x == 0 && y == 0;
-	}
 	
 	@Override
 	public String toString() {
 		return "(" + approx(x) + ", " + approx(y) + ")";
-	}
-
-	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {
-		return getProjectionOn(other.getNormal());
-	}
-
-	double getDistanceFrom(Vector other) {
-		return this.minus(other).getLength();
 	}
 
 	private double approx(double n) {

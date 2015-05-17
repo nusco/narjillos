@@ -17,21 +17,21 @@ public class Segment {
 		return startPoint;
 	}
 
+	public Vector getEndPoint() {
+		return startPoint.plus(vector);
+	}
+
 	public Vector getVector() {
 		return vector;
 	}
 
-	public double getLength() {
-		return vector.getLength();
-	}
-	
 	public double getMinimumDistanceFromPoint(Vector point) {
 		// FIXME: this was probably meant to avoid zerovectorexceptions,
 		// but it's just wrong. fix it.
 		if (vector.isZero())
 			return startPoint.getDistanceFrom(point);
 		
-		double length = getLength();
+		double length = vector.getLength();
 
 		// FIXME: do we need this?
 		if (length < 0.0001)
@@ -51,20 +51,13 @@ public class Segment {
 		return projection.minus(point).getLength();
 	}
 
-	public Vector getEndPoint() {
-		return startPoint.plus(vector);
-	}
-
-	public Vector getMidPoint() {
-		return startPoint.plus(vector.by(0.5));
-	}
-
-	public Vector getDistanceFrom(Segment earlierPosition) {
-		if (earlierPosition.getVector().isZero())
+	public Vector getDistanceFrom(Segment other) {
+		// FIXME: why did I do this? surely it's conceptually wrong?
+		if (other.getVector().isZero())
 			return Vector.ZERO;
 		
-		Vector startPointMovement = getStartPoint().minus(earlierPosition.getStartPoint());
-		Vector endPointMovement = getEndPoint().minus(earlierPosition.getEndPoint());
+		Vector startPointMovement = getStartPoint().minus(other.getStartPoint());
+		Vector endPointMovement = getEndPoint().minus(other.getEndPoint());
 		Vector movement = startPointMovement.plus(endPointMovement).by(0.5);
 
 		if (movement.isZero())

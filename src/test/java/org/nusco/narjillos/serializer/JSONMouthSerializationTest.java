@@ -16,6 +16,6 @@ public class JSONMouthSerializationTest {
 		String json = JSON.toJson(mouth, Mouth.class);
 		Mouth deserialized = JSON.fromJson(json, Mouth.class);
 
-		assertEquals(mouth, deserialized);
+		assertEquals(mouth.getDirection(), deserialized.getDirection());
 	}
 }

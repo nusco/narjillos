@@ -68,14 +68,14 @@ task(testPerformance, dependsOn: 'compileJava', type: JavaExec) {
   classpath = sourceSets.test.runtimeClasspath
 }
 
-task(testDeterministicBehavior, dependsOn: 'compileJava', type: JavaExec) {
+task(testDeterministic, dependsOn: 'compileJava', type: JavaExec) {
   description = 'Runs the (slow) test that checks whether the system is deterministic.'
   group = 'verification'
   main = 'org.nusco.narjillos.DeterministicExperimentTest'
   classpath = sourceSets.test.runtimeClasspath
 }
 
-task testAll(dependsOn: ['test', 'testDeterministicBehavior']) {
+task testAll(dependsOn: ['testPerformance', 'test', 'testDeterministic']) {
   description = 'Runs all the tests, including the slow ones.'
   group = 'verification'
 }

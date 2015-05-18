@@ -60,12 +60,12 @@ public class DeterministicExperimentTest {
 		assertEquals(json1, json2);
 	}
 
-	// This test takes almost 10 minutes. Run before packaging a release for
+	// This test takes a few minutes. Run before packaging a release for
 	// complete peace of mind.
 	public static void main(String[] args) {
 		System.out.println("Running long deterministic experiment test. This will take a few minutes...");
 		long startTime = System.currentTimeMillis();
-		int cycles = 30_000;
+		int cycles = 50_000;
 
 		runTest(cycles);
 

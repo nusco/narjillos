@@ -13,15 +13,18 @@ import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
- * A utility program that reads a gene pool from a file, identifies the most
- * successfull DNA in the pool, and prints out its entire ancestry - from the
- * first randomly generates ancestor onwards.
+ * The "laboratory" program. It reads data from an experiment and outputs it in
+ * various formats.
+ * 
+ * At the moment, it only does ancestry analysis: it reads the gene pool,
+ * identifies the most successfull DNA in the pool, and prints out its entire
+ * ancestry - from the first randomly generates ancestor onwards.
  */
-public class Ancestry {
+public class Lab {
 
 	public static void main(String[] args) throws IOException {
 		if (args.length == 0) {
-			System.out.println("Usage: ancestry <experiment_file.exp>");
+			System.out.println("Usage: lab <experiment_file.exp>");
 			System.exit(0);
 		}
 		printAncestry(args[0]);
@@ -34,7 +37,7 @@ public class Ancestry {
 
 		System.out.println("  > Current gene pool size: " + genePool.getCurrentPoolSize());
 		System.out.println("  > Historical gene pool size: " + genePool.getHistoricalPoolSize());
-		
+
 		if (genePool.getHistoricalPoolSize() == 0) {
 			System.out.println(">Empty gene pool. Exiting...");
 			return;
@@ -42,7 +45,7 @@ public class Ancestry {
 
 		System.out.println("> Identifying most successful DNA...");
 		DNA mostSuccessfulDNA = genePool.getMostSuccessfulDNA();
-		
+
 		System.out.println("> Extracting ancestry...");
 		List<DNA> ancestry = genePool.getAncestry(mostSuccessfulDNA);
 

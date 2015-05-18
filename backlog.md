@@ -2,9 +2,15 @@
 # Narjillos Backlog
 #===================
 
-##Species Tracker
-* Simple clustering algorithm to count species
-* Report number of species on the console (or do it when analyzing ancestry if too slow)
+##Basic Lab Analysis
+* Make ancestry analysis an option of the lab program (--ancestry)
+* Fail with explicit error if running ancestry analysis on a file without ancestry
+* Track basic experimental data together with ancestry: eggs/creatures/food/etc.
+* Run analysis with --history to dump a CSV file of history
+* Generate lab script for packaged distribution
+* Count species with simple clustering algorithm
+* Track genera/species/mutations separately (different cluster size)
+* Report number of species on the console/history (or during lab analysis if too slow)
 
 ##Self-Regulating Ecosystem
 * Atmosphere chemistry
@@ -68,8 +74,8 @@
 * Tutorial
 * In-app configuration
 
-##Lab Analysis
-* Track status of experiment together with ancestry: eggs/creatures/food/etc.
+##Advanced Lab Analysis
+* Track advanced experimental data together with ancestry: avg lifetime/avg descendants/etc.
 * Measure creature/dish efficiency (somehow)
 * Advanced clustering algorithm (based on Shannon's theory to evaluate gene distribution)
 * Advanced ancestry analysis (study related papers)
@@ -108,7 +114,8 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
-* Indipendent eye pupils
+* Independent eye pupils
+* Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml
 * Change mouth graphics?
 * Optimize graphics again
 * Simpler senescence mechanism

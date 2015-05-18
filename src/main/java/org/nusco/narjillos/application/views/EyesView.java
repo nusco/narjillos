@@ -11,6 +11,7 @@ import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.physics.ZeroVectorException;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.creature.body.Fiber;
 
 class EyesView implements ItemView {
 
@@ -26,9 +27,18 @@ class EyesView implements ItemView {
 	private final double eyeCenteringTranslation;
 	private final double pupilTranslation;
 
+	private final double eyeRed;
+	private final double eyeGreen;
+	private final double eyeBlue;
+
 	public EyesView(Narjillo narjillo) {
 		this.narjillo = narjillo;
 
+		Fiber fiber = narjillo.getBody().getHead().getFiber();
+		this.eyeRed = fiber.getPercentOfRed();
+		this.eyeGreen = fiber.getPercentOfGreen();
+		this.eyeBlue = fiber.getPercentOfBlue();
+		
 		// "Random qualities": we want something that looks random across narjillos,
 		// but stays the same for the same narjillo even after saving and reloading
 		double someRandomQuality = narjillo.getBody().getAdultMass();
@@ -53,7 +63,7 @@ class EyesView implements ItemView {
 		
 		group.getChildren().clear();
 		
-		Color eyeColor = toEyeColor(zoomLevel);
+		Color eyeColor = toEyeColor(zoomLevel, infraredOn);
 		eye1.setFill(eyeColor);
 		eye2.setFill(eyeColor);
 		
@@ -62,29 +72,27 @@ class EyesView implements ItemView {
 
 		double eyesDirection = narjillo.getBody().getHead().getAbsoluteAngle() + 90;
 
-		if (!infraredOn) {
-			Color pupilColor = toPupilColor(zoomLevel);
-			pupil1.setFill(pupilColor);
-			pupil2.setFill(pupilColor);
+		Color pupilColor = toPupilColor(zoomLevel);
+		pupil1.setFill(pupilColor);
+		pupil2.setFill(pupilColor);
 
-			double pupilDirection;
-			try {
-				pupilDirection = narjillo.getMouth().getDirection().getAngle() - eyesDirection - 90;
-			} catch (ZeroVectorException e) {
-				pupilDirection = 0;
-			}
-			
-			pupil1.getTransforms().clear();
-			pupil1.getTransforms().add(new Translate(eyeCenteringTranslation - eye1.getRadius() + 1, pupilTranslation));
-			pupil1.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
-
-			pupil2.getTransforms().clear();
-			pupil2.getTransforms().add(new Translate(eyeCenteringTranslation + eye2.getRadius() - 1, pupilTranslation));
-			pupil2.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
-
-			group.getChildren().add(pupil1);
-			group.getChildren().add(pupil2);
+		double pupilDirection;
+		try {
+			pupilDirection = narjillo.getMouth().getDirection().getAngle() - eyesDirection - 90;
+		} catch (ZeroVectorException e) {
+			pupilDirection = 0;
 		}
+		
+		pupil1.getTransforms().clear();
+		pupil1.getTransforms().add(new Translate(eyeCenteringTranslation - eye1.getRadius() + 1, pupilTranslation));
+		pupil1.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
+
+		pupil2.getTransforms().clear();
+		pupil2.getTransforms().add(new Translate(eyeCenteringTranslation + eye2.getRadius() - 1, pupilTranslation));
+		pupil2.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
+
+		group.getChildren().add(pupil1);
+		group.getChildren().add(pupil2);
 		
 		group.getTransforms().clear();
 		Vector position = narjillo.getPosition();
@@ -100,8 +108,10 @@ class EyesView implements ItemView {
 		return viewport.isVisible(narjillo.getPosition(), margin);
 	}
 
-	private Color toEyeColor(double zoomLevel) {
-		return new Color(1.0, 1.0, 1.0, getZoomOpacity(zoomLevel));
+	private Color toEyeColor(double zoomLevel, boolean infraredOn) {
+		if (infraredOn)
+			return Color.WHITE;
+		return new Color(eyeRed, eyeGreen, eyeBlue, getZoomOpacity(zoomLevel));
 	}
 
 	private Color toPupilColor(double zoomLevel) {

@@ -38,7 +38,7 @@ public class PerformanceTest {
 			throw e;
 		}
 		reportTicks();
-		System.exit(0);
+		System.exit(0); // exit Gradle
 	}
 
 	private static void reportTicks() {

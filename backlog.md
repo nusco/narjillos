@@ -50,6 +50,7 @@
 * Atmosphere map with local chemistry
 
 ##Intuitive Navigation
+* Forward/Back commands during demo
 * Visual effect when tracking/untracking
 * Mini map?
 * (Test navigation with first-time user)

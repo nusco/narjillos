@@ -108,7 +108,8 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
-* Indipendent eye pupils
+* Independent eye pupils
+* Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml
 * Change mouth graphics?
 * Optimize graphics again
 * Simpler senescence mechanism

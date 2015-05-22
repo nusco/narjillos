@@ -3,7 +3,6 @@
 #===================
 
 ##Basic Lab Analysis
-* Make ancestry analysis an option of the lab program (--ancestry)
 * Fail with explicit error if running ancestry analysis on a file without ancestry
 * Track basic experimental data together with ancestry: eggs/creatures/food/etc.
 * Run analysis with --history to dump a CSV file of history
@@ -114,6 +113,7 @@
 * Adult body size is genetically determined
 
 ##Grab Bag
+* Seasons (cycles in food availability to stimulate evolution)
 * Independent eye pupils
 * Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml
 * Change mouth graphics?

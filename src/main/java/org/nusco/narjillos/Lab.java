@@ -3,6 +3,11 @@ package org.nusco.narjillos;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
@@ -23,11 +28,32 @@ import org.nusco.narjillos.serializer.Persistence;
 public class Lab {
 
 	public static void main(String[] args) throws IOException {
-		if (args.length == 0) {
-			System.out.println("Usage: lab <experiment_file.exp>");
-			System.exit(0);
+		Options options = new Options();
+		options.addOption("h", "help", false, "print this message");
+		options.addOption("a", "ancestry", false, "analyze ancestry");
+
+		CommandLine commandLine;
+		try {
+			commandLine = new BasicParser().parse(options, args);
+        } catch(ParseException e) {
+        	printHelpText(options);
+	        return;
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+			return;
 		}
-		printAncestry(args[0]);
+
+		if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("h")) {
+	    	printHelpText(options);
+			return;
+		}
+		
+		if (commandLine.hasOption("a")) {
+			printAncestry(args[0]);
+			return;
+		}
+
+    	printHelpText(options);
 	}
 
 	private static void printAncestry(String experimentFile) throws IOException {
@@ -49,13 +75,13 @@ public class Lab {
 		System.out.println("> Extracting ancestry...");
 		List<DNA> ancestry = genePool.getAncestry(mostSuccessfulDNA);
 
-		reportCreature(mostSuccessfulDNA);
+		reportAncestryCreature(mostSuccessfulDNA);
 
 		for (DNA dna : ancestry)
 			System.out.println(" " + dna);
 	}
 
-	private static void reportCreature(DNA dna) {
+	private static void reportAncestryCreature(DNA dna) {
 		Narjillo specimen = new Narjillo(dna, Vector.ZERO, 90, Energy.INFINITE);
 		System.out.println("Typical successful creature:");
 		System.out.println("  Number of organs   => " + specimen.getOrgans().size());
@@ -64,5 +90,9 @@ public class Lab {
 		System.out.println("  Egg interval       => " + specimen.getBody().getEggInterval());
 		System.out.println("  Egg velocity       => " + specimen.getBody().getEggVelocity());
 		System.out.println();
+	}
+	
+	private static void printHelpText(Options commandLineOptions) {
+		new HelpFormatter().printHelp("lab <experiment_file.exp> <options>", commandLineOptions);
 	}
 }

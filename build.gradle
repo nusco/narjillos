@@ -86,7 +86,7 @@ task testAll(dependsOn: ['testPerformance', 'test', 'testDeterministic']) {
 task(bl, dependsOn: 'build', type: JavaExec) {
   main = 'org.nusco.narjillos.Backlog'
   classpath = sourceSets.main.runtimeClasspath
-  args commandLineArgsOr('10') // show minimum 10 lines unless the user specifies something else
+  args commandLineArgsOr('all')
 }
 
 task(backlog, dependsOn: 'bl') {

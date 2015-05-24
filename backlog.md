@@ -5,8 +5,8 @@
 Use clustering algorithms to automatically count the number of different "species" in the ecosystem.
 
 * Count species with simple clustering algorithm
-  > do this next
-  > test_parameter : 42
+  > do this next  
+  > test_parameter : 42  
   
   This one should use Levenshtein distances.
 

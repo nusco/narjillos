@@ -36,7 +36,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 mainClassName = 'org.nusco.narjillos.NarjillosRunner'
 
-applicationDefaultJvmArgs = ['-Xmx4g']
+applicationDefaultJvmArgs = ['-Xmx8g']
 
 // Dependencies
 
@@ -118,7 +118,7 @@ task createStartupScripts(dependsOn: 'installDist') {
     mainClassName = 'org.nusco.narjillos.ExperimentRunner'
     applicationName = 'experiment'
     classpath = tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + configurations.runtime
-    defaultJvmOpts = ['-Xmx4g']
+    defaultJvmOpts = ['-Xmx8g']
   }
 
   tasks[taskName].dependsOn(project.jar)

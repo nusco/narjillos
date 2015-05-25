@@ -28,28 +28,53 @@ Here is the meaning of different types of User Stories inside a Feature:
 
 Features are sorted by highest priority first, but their priorities shift all the time. Once the Mandatory stuff is done, a Feature might slip down into lower priorities.
 
+
+##Basic Lab Analysis
+
+    Track historical data in experiment for offline analysis in a spreadsheet.
+
+xxx Add evolution-speed to history data  
+ By averaging Levenshtein distances of all creatures to their 10th-generation ancestor.  
+xxx Track history data together with ancestry: eggs/creatures/food/evolution-speed/etc.  
+xxx Run analysis with --history to dump a CSV file of history  
+xx Add standard deviation of gene pool to history data  
+xx Fail with explicit error if running ancestry analysis on a file without ancestry  
+xx Warning in case of conflicting command-line arguments of main apps (like -s and experiment file used together)  
+xx Require less memory to persist experiment  
+  Change call to getBytes() in Persistence.save() to delay OutOfMemoryErrors (if possible).
+  Try it with the very long experiment that is currently failing with an OutOfMemoryError.
+x Generate lab script for packaged distribution  
+
+
+##Seasons
+
+    Cyclically vary the amount of food that spawns.
+    Studies show that evolution works best if there are enough resources (food), but not too many.
+    The problem is that it's hard to know what "enough but not many" means. So I want to try this:
+    food amount is cyclical. I'm hoping that along the way from "almost starving" to "economy of
+    abundance", the system will hit a few evolutionary sweet spots.
+
+xxx Seasons  
+xxx Configurable seasonal cycle  
+   Max, min and period in config.yaml  
+
+
 ##Species Analysis
 
     Use clustering algorithms to automatically count the number of different "species"  
     in the ecosystem.
 
 xxx Count species with simple clustering algorithm (Levenshtein-based)  
-xx Cache distances for fast continuous clustering  
+xx "Next in cluster" and "Next cluster" buttons while following  
+  Also during demo.
+xx Continuous clustering  
+   Needs a fast clustering process. Obvious way: cache Levenshtein distances.  
+   Also look for other ways to optimize.  
 xx Compare clustering performance with Levenshtein and SimHash distances  
 xxx Track number of species clusters in history (or during lab analysis if too slow)  
 x Track composition of species clusters in history  
-x Track multiple cluster groups with different sizes (genera/species/mutations)  
-
-
-##Basic Lab Analysis
-
-    Track historical data in experiment for offline analysis in a spreadsheet.
-
-xxx Track historical data together with ancestry: eggs/creatures/food/clusters/etc.  
-xxx Run analysis with --history to dump a CSV file of history  
-xx Fail with explicit error if running ancestry analysis on a file without ancestry  
-x Generate lab script for packaged distribution  
-xx Warning in case of conflicting command-line arguments of main apps (like -s and experiment file used together)  
+x Track genera/species/mutations separately  
+   They are just different cluster radiuses.  
 
 
 ##Self-Regulating Ecosystem
@@ -71,7 +96,7 @@ xx Atmosphere composition "heat map"
     Make it easier to move around the dish in a graphical run.
     I should also test navigation with a first-time user.
 
-xx Next/previous commands during demo  
+xx "Previous" command during demo/following  
 xx Visual effect when tracking/untracking  
 x Mini-map  
 
@@ -121,18 +146,6 @@ x Different shapes for body segments
 xxx Kill narjillos who touch outer space  
 xx Limit panning to inner space (with some margin)  
 xx Auto-scroll viewport to stay within inner space  
-
-
-##Seasons
-
-    Cyclically vary the amount of food that spawns.
-    Studies show that evolution works best if there are enough resources (food), but not too many.
-    The problem is that it's hard to know what "enough but not many" means. So I want to try this:
-    food amount is cyclical. I'm hoping that along the way from "almost starving" to "economy of
-    abundance", the system will hit a few evolutionary sweet spots.
-
-xxx Seasons  
-xxx Seasonal cycle max, min and period can be configured in config.yaml  
 
 
 ##Eye Candy

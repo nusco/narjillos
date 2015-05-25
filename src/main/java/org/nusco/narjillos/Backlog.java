@@ -46,7 +46,6 @@ public class Backlog {
 	private static List<Feature> toFeatures(List<String> lines) {
 		ArrayList<Feature> result = new ArrayList<Feature>();
 		LinkedList<String> linesQueue = new LinkedList<>(lines);
-		linesQueue.pop(); // ignore first line
 		while(!linesQueue.isEmpty()) {
 			String line = linesQueue.pop();
 			if (isFeature(line))
@@ -114,9 +113,9 @@ public class Backlog {
 			result.append(ANSI_GREEN + name + ANSI_RESET + "\n");
 			for (String userStory : this) {
 				String storyName = userStory
-						.replaceFirst("\\*", "")
-						.replaceFirst("\\+", "")
-						.replaceFirst("\\-", "")
+						.replaceFirst("^\\*", "")
+						.replaceFirst("^\\+", "")
+						.replaceFirst("^\\-", "")
 						.trim();
 				result.append(toColor(userStory) + "    " + storyName + ANSI_RESET + "\n");
 			}

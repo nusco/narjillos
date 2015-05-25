@@ -137,23 +137,4 @@ public class GenePool {
 		}
 		return result;
 	}
-	
-	public static void main(String[] args) {
-		GenePool genePool = new GenePool();
-		genePool.enableAncestralMemory();
-		RanGen ranGen = new RanGen(131253454);
-
-		DNA[] dnas = new DNA[500];
-		for (int i = 0; i < dnas.length; i++)
-			dnas[i] = genePool.createRandomDNA(ranGen);
-
-		while (true) {
-			for (int i = 0; i < dnas.length; i++) {
-				DNA mutating = dnas[i];
-				dnas[i] = genePool.mutateDNA(dnas[i], ranGen);
-				genePool.remove(mutating);
-			}
-			System.out.println(genePool.getMutationSpeedOverLast10Generations());
-		}
-	}
 }

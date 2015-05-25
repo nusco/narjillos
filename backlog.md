@@ -16,11 +16,16 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Add evolution-speed to history data  
   By averaging Levenshtein distances of all creatures to their 10th-generation ancestor.
 
-* Track history data together with ancestry: eggs/creatures/food/evolution-speed/etc.  
-* Run analysis with --history to dump a CSV file of history  
+* Track history data together with ancestry
+  eggs/creatures/food/evolution-speed/etc.  
+
+* Dump to CSV  
+  Run analysis with --history to dump a CSV file of history  
+
 + Add standard deviation of gene pool to history data  
 + Fail with explicit error if running ancestry analysis on a file without ancestry  
-+ Warning in case of conflicting command-line arguments of main apps (like -s and experiment file used together)  
++ Warning in case of conflicting command-line arguments of main apps  
+  like -s and experiment file used together  
 + Require less memory to persist experiment  
   Change call to getBytes() in Persistence.save() to delay OutOfMemoryErrors (if possible).  
   Try it with the very long experiment I have stored, that is currently failing with an OutOfMemoryError after a few saves.
@@ -46,16 +51,19 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Use clustering algorithms to automatically count the number of "species".
 
-* Count species with simple clustering algorithm (Levenshtein-based)  
+* Count species with simple clustering algorithm  
+  Levenshtein-based  
 + "Next in cluster" and "Next cluster" buttons while following  
-  Also during demo.
+  Without this, it becomes very hard to understand how the creatures are clustered.  
+  Also apply during demo.
 
 + Continuous clustering  
   Needs a fast clustering process. Obvious way: cache Levenshtein distances.  
+  Compare clustering performance with Levenshtein and SimHash distances.  
   Also look for other ways to optimize.  
 
-+ Compare clustering performance with Levenshtein and SimHash distances  
-* Track number of species clusters in history (or during lab analysis if too slow)  
+* Track number of species clusters in history  
+  Or during lab analysis if too slow.  
 - Track composition of species clusters in history  
 - Track genera/species/mutations separately  
   They are just different cluster radiuses.  
@@ -69,10 +77,18 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     something more. Sexual reproduction, maybe?
 
 * Atmosphere chemistry  
-* Narjillos produce a molecule (based on visible body qualities - metabolic rate?)  
-* Narjillos consume a molecule (faster reproduction? lower energy expenditure?)  
-* Ecological Niches (tweak chemistry to encourage speciation)  
-+ Local atmosphere (atmosphere composition is a map instead of a global value)  
+* Narjillos produce a molecule  
+  based on visible body qualities - metabolic rate?  
+
+* Narjillos consume a molecule  
+  faster reproduction? lower energy expenditure?
+    
+* Ecological Niches  
+  tweak chemistry to encourage speciation
+    
++ Local atmosphere  
+  atmosphere composition is a map instead of a global value  
+  
 + Atmosphere composition "heat map"  
 
 
@@ -98,11 +114,15 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Start new experiment from menu  
 + "About"/"Help" menus  
 - Speed widget  
-- "Screensaver mode" (no menus or status bar)  
+- "Screensaver mode"  
+  no menus or status bar
+    
 - Light switches for normal/infrared light  
 + Show historical data  
 - Show graphs for historical data  
-+ View stats for followed narjillo (age, energy, radius, times eaten, genome...)  
++ View stats for followed narjillo  
+  age, energy, radius, times eaten, genome...  
+  
 - Tutorial  
 + In-app configuration panel  
 
@@ -114,7 +134,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * "Loop" instruction in body plan  
 + "Jump" instruction in body plan  
 + "Call" instruction in body plan  
-- Duplicate organs during mutation instead of mirroring them (to favour emergent complexity)  
+- Duplicate organs during mutation instead of mirroring them  
+  To favour emergent complexity. There are studies who say it would, at least.  
+    
 - Different shapes for body segments  
 
 
@@ -131,7 +153,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     After implementing this, I can probably remove the concept of "outer space" (the area outside the space-partitioned center of the dish).
 
 * Kill narjillos who touch outer space  
-+ Limit panning to inner space (with some margin)  
++ Limit panning to inner space  
+  with some margin.  
+  
 + Auto-scroll viewport to stay within inner space  
 
 
@@ -157,7 +181,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Native Windows app  
 + Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
 - Run in a browser  
-+ Fix permissions on distribution startup scripts (has problem starting in Ubuntu?)  
++ Fix permissions on distribution startup scripts
+  has problem starting in Ubuntu? If not, then remove this story  
 
 
 ##Predators (Complex Interactions 1)
@@ -167,9 +192,13 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     This is a complex direct interaction that might pave the road to an arms race amongst species.
     I should consider removing food by default after this is implemented.
 
-* Fix sketchy collision detection (is this a bug?)  
+* Fix sketchy collision detection  
+  is this a bug?  
+  
 + Rewrite collision detection to be independent of max speed  
-* Narjillos eat other narjillos (pick target at random)  
+* Narjillos eat other narjillos  
+  pick target at random  
+  
 - Narjillos eat eggs  
 
 
@@ -179,9 +208,17 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     
     This is another factor that can encourage disruptive evolution and speciation.
 
-* Re-activate green fibers ("plant fibers", get energy from environment)  
-* Re-activate blue fibers ("runner fibers", generate more push when moving)  
-+ Add red fibers ("killer fibers", damage collided creatures)  
+* Green fibers  
+  "Plant fibers", get energy from environment.  
+  Reactivate (I disabled them in config).  
+  
+* Re-activate blue fibers  
+  "Runner fibers", generate more push when moving.  
+  Reactivate (I disabled them in config).  
+    
++ Add red fibers  
+  "Killer fibers", damage collided creatures  
+  These are new.
 
 
 ##Ancestry Browser
@@ -203,7 +240,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     This is another example of complex interactions. It might result in interesting behaviors and  
     "smart" species.
 
-* Species identification (based on DNA hashes?)  
+* Species identification  
+  Probably based on DNA SimHashes?  
+  
 * Istinct genes: love, fear, hunger  
 - Visualize istinct directions  
 - Visualize istincts on other creatures when following a narjillo  
@@ -219,11 +258,20 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Move entire persistence to a database  
   I have to try, but this might not even make sense. It might destroy performance or reliability.
 
-+ Track advanced experimental data together with ancestry: avg lifetime/avg descendants/etc.  
-+ Measure creature/dish efficiency (somehow)  
-- Advanced clustering algorithm (based on Shannon's theory to evaluate gene distribution)  
-+ Advanced ancestry analysis (study related papers)  
-- Encode CPU floatpoint precision in the experiment id (rather than use strictfp)  
++ Track advanced experimental data together with ancestry  
+  avg lifetime/avg descendants/etc.  
+  
++ Measure creature/dish efficiency  
+  somehow. for now, I don't know what this is :)  
+  
+- Advanced clustering algorithm  
+  based on Shannon's theory to evaluate gene distribution. see related study.  
+  
++ Advanced ancestry analysis  
+  study related papers  
+
+- Encode CPU floatpoint precision in the experiment id  
+  rather than use strictfp, that harms performance  
 
 
 ##Sexual Reproduction
@@ -233,22 +281,37 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     A lot of things to decide here. do I really need this stuff to get speciation? Probably  
     not – so I'll leave it as a low priority for now.
 
-* Basic Sexual Reproduction (just to set up for Assortative Mating)  
-* Assortative Mating (to encourage speciation)  
-+ Species clustering control reproductive success? (to keep species apart)  
-- Diploid creatures?  
+* Basic Sexual Reproduction  
+  just to set up for Assortative Mating  
 
+* Assortative Mating  
+  to encourage speciation  
+
++ Species clustering control reproductive success  
+  maybe. (to keep species apart)  
+  
+- Diploid creatures  
+  maybe. is it useful?
 
 ##Realistic Physics
 
     More realistic behavior of body to avoid body shapes that "exploit" the current naive physics.
 
 + Fix "tail wiggles dog" effect  
-+ Rotation inertia (but check comments in physics engine - it may break previous assumptions)  
-+ Translation inertia (see above)  
-+ Limit rotation speed?  
-- Realistic viscosity?  
-- Viscosity per segment?  
++ Rotation inertia  
+  but check comments in physics engine - it may break previous assumptions  
+  
++ Translation inertia  
+  but check comments in physics engine - it may break previous assumptions  
+  
++ Limit rotation speed  
+  is this a good idea?  
+
+- Realistic viscosity  
+  is this a good idea?  
+
+- Viscosity per segment  
+  is this a good idea?  
 
 
 ##Flexible Genes
@@ -256,10 +319,16 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     More qualities of the creatures are determined by genes instead of being hard-coded.
 
 + Wave beat ratio is genetically determined  
-+ Max lifespan is geneticaly determined (within a limit)  
++ Max lifespan is geneticaly determined  
+  within a limit  
+  
 - Lateral viewfield is genetically determined  
-- Growth rate is genetically determined? (Takes energy?)  
-- Egg incubation time is genetically determined? (Makes sense if egg contains green fibers)  
+- Growth rate is genetically determined  
+  maybe? (Takes energy?)  
+  
+- Egg incubation time is genetically determined  
+  maybe. (Makes sense if egg contains green fibers)  
+  
 - Adult body size is genetically determined  
 
 

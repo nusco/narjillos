@@ -9,20 +9,24 @@ import java.text.DecimalFormat;
  */
 public class NumberFormat {
 
-	private final static DecimalFormat THOUSANDS_FORMAT = new DecimalFormat("##.#K");
-	private final static DecimalFormat MILLIONS_FORMAT = new DecimalFormat("#.##M");
+	private final static DecimalFormat FORMAT = new DecimalFormat("###.##");
 
 	public static String format(long number) {
 		if (number < 1_000)
 			return String.valueOf(number);
 
-		if (number < 999_999) {
-			double thousands = (double) number / 1000;
-			return THOUSANDS_FORMAT.format(thousands);
+		if (number <= 999_999) {
+			double thousands = Math.floor(number / 10) / 100.0;
+			return FORMAT.format(thousands) + "K";
 		}
 
-		double millions = (double) number / 1_000_000;
-		return MILLIONS_FORMAT.format(millions);
+		if (number <= 999_999_999L) {
+			double millions = Math.floor(number / 10_000.0) / 100.0;
+			return FORMAT.format(millions) + "M";
+		}
+
+		double billions = Math.floor(number / 10_000_000.0) / 100.0;
+		return FORMAT.format(billions) + "G";
 	}
 
 	public static String format(double number) {

@@ -1,5 +1,6 @@
 package org.nusco.narjillos.genomics;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -53,6 +54,32 @@ public class GenePool {
 			}
 		}
 		return result;
+	}
+
+	public double getMutationSpeedOverLast10Generations() {
+		Collection<DNA> dnas = dnaById.values();
+
+		if (dnas.isEmpty())
+			return 0;
+		
+		double result = 0;
+		for (long dnaId : currentPool) {
+			DNA dna = dnaById.get(dnaId);
+			DNA tenthGenerationAncestor = getAncestor(dna, 10);
+			result += dna.getLevenshteinDistanceFrom(tenthGenerationAncestor);
+		}
+		return result / currentPool.size();
+	}
+	
+	DNA getAncestor(DNA dna, int generations) {
+		DNA currentAncestor = dna;
+		for (int i = 1; i < generations; i++) {
+			Long parentId = childrenToParents.get(currentAncestor.getId());
+			if (parentId == 0)
+				return currentAncestor;
+			currentAncestor = dnaById.get(parentId);
+		}
+		return currentAncestor;
 	}
 
 	public int getCurrentPoolSize() {
@@ -109,7 +136,7 @@ public class GenePool {
 		for (Long otherDNAId : currentPool) {
 			DNA otherDNA = dnaById.get(otherDNAId);
 			if (!otherDNA.equals(dna))
-				result += dna.getGeneticDistanceFrom(otherDNA);
+				result += dna.getLevenshteinDistanceFrom(otherDNA);
 		}
 		return result;
 	}

@@ -10,11 +10,12 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     g backlog N          prints the topmost N features
 
 ##Basic Lab Analysis
+>goal: faster evolution
 
     Track historical data in experiment for offline analysis in a spreadsheet.
 
-* Add evolution-speed to history data  
-  By averaging Levenshtein distances of all creatures to their 10th-generation ancestor.
+* Measure evolution speed  
+  This seems to be hard. The mutation rate solutions seems useless. Any help from existing papers?
 
 * Track history data together with ancestry
   eggs/creatures/food/evolution-speed/etc.  
@@ -34,12 +35,14 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Seasons
+>goal: faster evolution  
 
     Cyclically vary the amount of food that spawns.
     
-    Studies show that evolution works best if there are enough resources (food), but not too many.
-    The problem is that it's hard to know what "enough but not many" means. So I want to try this:
-    food amount is cyclical. I'm hoping that along the way from "almost starving" to "economy of
+    Studies show that evolution works best if there are enough resources (food),
+    but not too many. The problem is that it's hard to know what "enough but 
+    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    hoping that along the way from "almost starving" to "economy of
     abundance", the system will hit a few evolutionary sweet spots.
 
 * Seasons  
@@ -48,11 +51,13 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Species Analysis
-
+>goal: multiple species  
+   
     Use clustering algorithms to automatically count the number of "species".
 
 * Count species with simple clustering algorithm  
   Levenshtein-based  
+
 + "Next in cluster" and "Next cluster" buttons while following  
   Without this, it becomes very hard to understand how the creatures are clustered.  
   Also apply during demo.
@@ -70,6 +75,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Self-Regulating Ecosystem
+>goal: multiple species  
 
     Encourage disruptive evolution, which should result in sympatric speciation.
     
@@ -93,6 +99,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Intuitive Navigation
+>goal: nice user experience  
 
     Make it easier to move around the dish in a graphical run.
     
@@ -104,6 +111,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##GUI
+>goal: nice user experience  
 
     Make the program accessible to people who don't like to learn keyboard shortcuts.
 
@@ -116,7 +124,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Speed widget  
 - "Screensaver mode"  
   no menus or status bar
-    
+
 - Light switches for normal/infrared light  
 + Show historical data  
 - Show graphs for historical data  
@@ -127,20 +135,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + In-app configuration panel  
 
 
-##Advanced Body Plans
-
-    Give evolution more power to shape interesting creature bodies.
-
-* "Loop" instruction in body plan  
-+ "Jump" instruction in body plan  
-+ "Call" instruction in body plan  
-- Duplicate organs during mutation instead of mirroring them  
-  To favour emergent complexity. There are studies who say it would, at least.  
-    
-- Different shapes for body segments  
-
-
 ##Dish Edges
+>goal: complex interactions  
 
     Constrain the "world" inside defined edges.
     
@@ -159,33 +155,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Auto-scroll viewport to stay within inner space  
 
 
-##Eye Candy
-
-    Smoother, nicer graphics.
-
-- Moving mouths  
-- Independent eye pupils  
-+ Optimize graphics  
-+ Simpler senescence mechanism  
-+ Smoother contours when zooming in infrared mode  
-- Show heat cloud when zooming out in infrared mode  
-- Skip quickly over less interesting creatures in Demo Mode  
-+ Command-line argument to start without visual effects  
-
-
-##Packaged Application
-
-    Download-and-run user experience.
-
-* Native Mac app  
-+ Native Windows app  
-+ Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
-- Run in a browser  
-+ Fix permissions on distribution startup scripts
-  has problem starting in Ubuntu? If not, then remove this story  
-
-
-##Predators (Complex Interactions 1)
+##Predators
+>goal: complex interactions  
 
     Narjillos can eat each other.
     
@@ -202,7 +173,49 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Narjillos eat eggs  
 
 
+##Eye Candy
+>goal: nice user experience  
+
+    Smoother, nicer graphics.
+
+- Moving mouths  
+- Independent eye pupils  
++ Optimize graphics  
++ Smoother contours when zooming in infrared mode  
+- Show heat cloud when zooming out in infrared mode  
+- Skip quickly over less interesting creatures in Demo Mode  
++ Command-line argument to start without visual effects  
+
+
+##Packaged Application
+>goal: nice user experience  
+
+    Download-and-run user experience.
+
+* Native Mac app  
++ Native Windows app  
++ Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
+- Run in a browser  
++ Fix permissions on distribution startup scripts  
+  Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
+
+
+##Advanced Body Plans
+>goal: specialized creatures  
+
+    Give evolution more power to shape interesting creature bodies.
+
+* "Loop" instruction in body plan  
++ "Jump" instruction in body plan  
++ "Call" instruction in body plan  
+- Duplicate organs during mutation instead of mirroring them  
+  To favour emergent complexity. There are studies who say it would, at least.  
+    
+- Different shapes for body segments  
+
+
 ##Fibers
+>goal: specialized creatures  
 
     Creature specialize in different survival strategies depending on the color of their organs.
     
@@ -222,6 +235,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Ancestry Browser
+>goal: ancestry browser  
 
     Analyze DNA ancestry in separate program.
     
@@ -233,7 +247,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - DNA diff during ancestry analysis  
 
 
-##Istincts (Complex Interactions 2)
+##Istincts
+>goal: complex interactions  
 
     Narjillos decide where to go based on their attraction/repulsion to other creatures and things.
     
@@ -251,6 +266,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Advanced Lab Analysis
+>goal: advanced analysis  
 
     Science-level analysis of experimental data.
 
@@ -275,6 +291,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Sexual Reproduction
+>goal: different species  
 
     Creatures mate and generate mixed-DNA offsprings.
     
@@ -293,7 +310,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Diploid creatures  
   maybe. is it useful?
 
+
 ##Realistic Physics
+>goal: specialized creatures  
 
     More realistic behavior of body to avoid body shapes that "exploit" the current naive physics.
 
@@ -313,9 +332,13 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Viscosity per segment  
   is this a good idea?  
 
++ Simpler senescence mechanism  
+  the current one feels too complicated for its own good
+
 
 ##Flexible Genes
-
+>goal: specialized creatures  
+ 
     More qualities of the creatures are determined by genes instead of being hard-coded.
 
 + Wave beat ratio is genetically determined  
@@ -332,23 +355,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Adult body size is genetically determined  
 
 
----
+##Crazy Ideas
 
-Project Goals:
-
- Complex Interactions  
- Self-Regulating Ecosystem  
- Ecological Niches  
- Disruptive Selection?  
- Sexual Reproduction  
- Assortative Mating  
- Sympatric Speciation  
- Asymmetrical Arms Races  
- Broad Usability  
- The "Wow" factor?  
-
-Some crazy ideas which I might never get around to:
-
- Multiple environments in multiple processes (with migration)  
- Creatures have neural networks for brains  
- Demiurge (an entity that dynamically tweaks the environment to maximize evolutionary speed)  
+- Multiple environments in multiple processes (with migration)  
+- Creatures have neural networks for brains  
+- Demiurge (an entity that dynamically tweaks the environment to maximize evolutionary speed)  

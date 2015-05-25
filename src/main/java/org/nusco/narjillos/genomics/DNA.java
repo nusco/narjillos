@@ -54,7 +54,7 @@ public class DNA implements Iterable<Chromosome> {
 
 	// From: http://en.wikipedia.org/wiki/Levenshtein_distance,
 	// with slight changes.
-	public int getGeneticDistanceFrom(DNA other) {
+	public int getLevenshteinDistanceFrom(DNA other) {
 		Integer[] theseGenes = getGenes();
 		Integer[] otherGenes = other.getGenes();
 

@@ -128,17 +128,17 @@ public class PetriDish extends Dish {
 	}
 
 	private String getHeadersString() {
-		return alignLeft("tick") + alignLeft("time") + alignLeft("eggs") + alignLeft("narj") + alignLeft("food");
+		return alignLeft("tick") + alignLeft("time") + alignLeft("eggs") + alignLeft("narj") + alignLeft("food") + alignLeft("mutaspeed");
 	}
 
 	private String getStatusString(long tick) {
 		return alignLeft(NumberFormat.format(tick)) + alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
 				+ alignLeft(experiment.getEcosystem().getNumberOfEggs()) + alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
-				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces());
+				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces()) + alignLeft(NumberFormat.format(experiment.getGenePool().getMutationSpeedOverLast10Generations()));
 	}
 
 	private String alignLeft(Object label) {
-		final String padding = "        ";
+		final String padding = "            ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}

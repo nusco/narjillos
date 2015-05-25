@@ -90,4 +90,35 @@ public class GenePoolTest {
 		assertEquals(50, genePool.getCurrentPoolSize());
 		assertEquals(100, genePool.getHistoricalPoolSize());
 	}
+	
+	
+	@Test
+	public void findsAncestor() {
+		DNA ancestor = genePool.createRandomDNA(ranGen);
+
+		DNA descendant1 = genePool.mutateDNA(ancestor, ranGen);
+		DNA descendant2 = genePool.mutateDNA(descendant1, ranGen);
+		
+		assertEquals(ancestor, genePool.getAncestor(descendant2, 3));
+	}
+	
+	
+	@Test
+	public void stopsAncestorSearchAtTheTopOfTheAncestorsChain() {
+		DNA ancestor = genePool.createRandomDNA(ranGen);
+
+		DNA descendant1 = genePool.mutateDNA(ancestor, ranGen);
+		DNA descendant2 = genePool.mutateDNA(descendant1, ranGen);
+		
+		assertEquals(ancestor, genePool.getAncestor(descendant2, 10));
+	}
+	
+	
+	@Test
+	public void stopsAncestorSearchAtTheFirstLevelIfTheDnaHasNoAncestors() {
+		DNA dna = genePool.createRandomDNA(ranGen);
+
+		assertEquals(dna, genePool.getAncestor(dna, 10));
+	}
+	
 }

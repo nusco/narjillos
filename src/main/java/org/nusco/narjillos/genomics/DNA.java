@@ -52,7 +52,7 @@ public class DNA implements Iterable<Chromosome> {
 		return result;
 	}
 
-	// From: http://en.wikipedia.org/wiki/Levenshtein_distance,
+	// From: http://rosettacode.org/wiki/Levenshtein_distance#Java,
 	// with slight changes.
 	public int getLevenshteinDistanceFrom(DNA other) {
 		Integer[] theseGenes = getGenes();
@@ -61,32 +61,23 @@ public class DNA implements Iterable<Chromosome> {
 		if (theseGenes.length == 0 || otherGenes.length == 0)
 			return Math.max(theseGenes.length, otherGenes.length);
 
-		int[] previousDistances = new int[otherGenes.length + 1];
+		int[] costs = new int[otherGenes.length + 1];
 		// the distance is just the number of characters to delete from t
-		for (int i = 0; i < previousDistances.length; i++)
-			previousDistances[i] = i;
+		for (int i = 0; i < costs.length; i++)
+			costs[i] = i;
 
-		int[] currentDistances = new int[otherGenes.length + 1];
-
-		for (int i = 0; i < theseGenes.length; i++) {
-			// calculate current distances from previous distances
-
-			// first element of v1 is A[i+1][0]
-			// edit distance is delete (i+1) chars from s to match empty t
-			currentDistances[0] = i + 1;
-
-			// use formula to fill in the rest of the row
-			for (int j = 0; j < otherGenes.length; j++) {
-				int cost = (theseGenes[i] == otherGenes[j]) ? 0 : 1;
-				currentDistances[j + 1] = Math.min(Math.min(currentDistances[j] + 1, previousDistances[j + 1] + 1), previousDistances[j] + cost);
-			}
-
-			// copy v1 (current row) to v0 (previous row) for next iteration
-			for (int j = 0; j < previousDistances.length; j++)
-				previousDistances[j] = currentDistances[j];
+		for (int i = 1; i <= theseGenes.length; i++) {
+			costs[0] = i;
+			int nw = i - 1;
+			for (int j = 1; j <= otherGenes.length; j++) {
+				boolean equalGenes = theseGenes[i - 1].equals(otherGenes[j - 1]);
+				int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), equalGenes ? nw : nw + 1);
+                nw = costs[j];
+                costs[j] = cj;
+            }
 		}
 
-		return currentDistances[otherGenes.length];
+		return costs[otherGenes.length];
 	}
 
 	@Override

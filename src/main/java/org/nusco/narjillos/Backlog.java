@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A utility program to print the top of the backlog.
+ * A utility program to print the top of the backlog. Just an ugly Java hack
+ * until backlog.txt has its own Python utilities.
+ * (See https://github.com/nusco/backlog.txt).
  */
 public class Backlog {
 	private static final String ANSI_RED = "\u001B[31m";
@@ -50,19 +52,21 @@ public class Backlog {
 			if (isFeature(line))
 				result.add(new Feature(line));
 			else {
-				Feature currentMarketFeature = result.get(result.size() - 1);
-				currentMarketFeature.add(line);
+				if (result.size() > 0) {
+					Feature currentMarketFeature = result.get(result.size() - 1);
+					currentMarketFeature.add(line);
+				}
 			}
 		}
 		return result;
 	}
 
 	private static boolean isFeature(String line) {
-		return line.startsWith("#");
+		return line.startsWith("##");
 	}
 
 	private static boolean isUserStory(String line) {
-		return line.startsWith("x");
+		return line.startsWith("*") || line.startsWith("+") || line.startsWith("-");
 	}
 
 	private static boolean isComment(String line) {
@@ -101,22 +105,28 @@ public class Backlog {
 		public final String name;
 
 		public Feature(String name) {
-			this.name = name.replaceAll("#", "");
+			this.name = name.replaceAll("#", "").trim();
 		}
-		
+
 		@Override
 		public String toString() {
 			StringBuffer result = new StringBuffer();
 			result.append(ANSI_GREEN + name + ANSI_RESET + "\n");
-			for (String userStory : this)
-				result.append(toColor(userStory) + "    " + userStory.replaceFirst("x+\\s", "") + ANSI_RESET + "\n");
+			for (String userStory : this) {
+				String storyName = userStory
+						.replaceFirst("\\*", "")
+						.replaceFirst("\\+", "")
+						.replaceFirst("\\-", "")
+						.trim();
+				result.append(toColor(userStory) + "    " + storyName + ANSI_RESET + "\n");
+			}
 			return result.toString();
 		}
 
 		private String toColor(String userStory) {
-			if (userStory.startsWith("xxx"))
+			if (userStory.startsWith("*"))
 				return ANSI_RED;
-			else if (userStory.startsWith("xx"))
+			else if (userStory.startsWith("+"))
 				return ANSI_YELLOW;
 			else
 				return ANSI_CYAN;

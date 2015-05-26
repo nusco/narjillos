@@ -31,6 +31,7 @@ public class Lab {
 		Options options = new Options();
 		options.addOption("h", "help", false, "print this message");
 		options.addOption("a", "ancestry", false, "analyze ancestry");
+		options.addOption("t", "tree", false, "print phylogenetic tree in Nexus format");
 
 		CommandLine commandLine;
 		try {
@@ -50,6 +51,11 @@ public class Lab {
 		
 		if (commandLine.hasOption("a")) {
 			printAncestry(args[0]);
+			return;
+		}
+		
+		if (commandLine.hasOption("t")) {
+			printNexusTree(args[0]);
 			return;
 		}
 
@@ -79,6 +85,12 @@ public class Lab {
 
 		for (DNA dna : ancestry)
 			System.out.println(" " + dna);
+	}
+
+	private static void printNexusTree(String experimentFile) {
+		Experiment experiment = Persistence.loadExperiment(experimentFile);
+		GenePool genePool = experiment.getGenePool();
+		System.out.println(genePool.toNexusFormat());
 	}
 
 	private static void reportAncestryCreature(DNA dna) {

@@ -14,6 +14,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Track historical data in experiment for offline analysis in a spreadsheet.
 
+* Start Lab utility with deep stack  
+  Otherwise it overflows when exporting huge phylogenetic trees. I tried to do this in Gradle, but I failed (it works in Eclipse)
 * Measure evolution speed  
   This seems to be hard. The mutation rate solutions seems useless. Any help from existing papers?
 

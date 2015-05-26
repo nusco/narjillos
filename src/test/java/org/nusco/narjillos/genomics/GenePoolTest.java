@@ -57,7 +57,7 @@ public class GenePoolTest {
 
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
-		assertEquals("{111_111_111_111_111_000_000_000_000_000_000_000}", mostSuccessful.toString());
+		assertEquals("{111_111_111_222_111_000_000_000_000_000_000_000}", mostSuccessful.toString());
 	}
 	
 	@Test
@@ -76,7 +76,7 @@ public class GenePoolTest {
 		genePool.remove(thisOneWillDie);
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
-		assertEquals("{111_111_111_222_111_000_000_000_000_000_000_000}", mostSuccessful.toString());
+		assertEquals("{111_111_111_222_222_000_000_000_000_000_000_000}", mostSuccessful.toString());
 	}
 	
 	@Test
@@ -91,7 +91,6 @@ public class GenePoolTest {
 		assertEquals(100, genePool.getHistoricalPoolSize());
 	}
 	
-	
 	@Test
 	public void findsAncestor() {
 		DNA ancestor = genePool.createRandomDNA(ranGen);
@@ -102,7 +101,6 @@ public class GenePoolTest {
 		assertEquals(ancestor, genePool.getAncestor(descendant2, 3));
 	}
 	
-	
 	@Test
 	public void stopsAncestorSearchAtTheTopOfTheAncestorsChain() {
 		DNA ancestor = genePool.createRandomDNA(ranGen);
@@ -112,8 +110,7 @@ public class GenePoolTest {
 		
 		assertEquals(ancestor, genePool.getAncestor(descendant2, 10));
 	}
-	
-	
+		
 	@Test
 	public void stopsAncestorSearchAtTheFirstLevelIfTheDnaHasNoAncestors() {
 		DNA dna = genePool.createRandomDNA(ranGen);
@@ -121,4 +118,21 @@ public class GenePoolTest {
 		assertEquals(dna, genePool.getAncestor(dna, 10));
 	}
 	
+	@Test
+	public void canBeConvertedToANexusFormatTree() {
+		DNA dna1 = genePool.createRandomDNA(ranGen); // 1
+		
+		DNA dna2 = genePool.mutateDNA(dna1, ranGen); // 2
+		genePool.mutateDNA(dna1, ranGen); // 3
+		
+		genePool.mutateDNA(dna2, ranGen); // 4
+		
+		DNA dna5 = genePool.createRandomDNA(ranGen); // 5
+		genePool.mutateDNA(dna5, ranGen); // 6
+
+		String expected = "begin trees;\n" +
+				"tree genotypes = (((4)2,3)1,(6)5)0;\n" + 
+				"end;";	
+		assertEquals(expected, genePool.toNexusFormat());
+	}
 }

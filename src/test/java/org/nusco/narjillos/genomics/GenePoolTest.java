@@ -117,22 +117,4 @@ public class GenePoolTest {
 
 		assertEquals(dna, genePool.getAncestor(dna, 10));
 	}
-	
-	@Test
-	public void canBeConvertedToANexusFormatTree() {
-		DNA dna1 = genePool.createRandomDNA(ranGen); // 1
-		
-		DNA dna2 = genePool.mutateDNA(dna1, ranGen); // 2
-		genePool.mutateDNA(dna1, ranGen); // 3
-		
-		genePool.mutateDNA(dna2, ranGen); // 4
-		
-		DNA dna5 = genePool.createRandomDNA(ranGen); // 5
-		genePool.mutateDNA(dna5, ranGen); // 6
-
-		String expected = "begin trees;\n" +
-				"tree genotypes = (((4)2,3)1,(6)5)0;\n" + 
-				"end;";	
-		assertEquals(expected, genePool.toNexusFormat());
-	}
 }

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.nusco.narjillos.core.utilities.RanGen;
 
@@ -140,7 +141,22 @@ public class GenePool {
 		return result;
 	}
 
-	public String toNexusFormat() {
+	// When converting the gene pool to a tree, add an artifical zero
+	// node that acts as a root to the root nodes.
+	// This creates a single big tree (with the caveat that the first
+	// level actually representes unrelated genotypes). A single tree
+	// is more convenient to analyze in most tools that a bunch of
+	// separate unrelated trees.
+
+	// TODO: conversions should move to their own class or classes
+	public String toCSVFormat() {
+		StringBuffer result = new StringBuffer();
+		for (Entry<Long, Long> entry : childrenToParents.entrySet())
+			result.append(entry.getValue() + ";" + entry.getKey() + "\n");
+		return result.toString();
+	}
+
+	public String toNEXUSFormat() {
 		StringBuffer result = new StringBuffer();
 		result.append("begin trees;\n");
 
@@ -169,11 +185,6 @@ public class GenePool {
 	private LinkedHashMap<Long, List<Long>> calculateParentsToChildren() {
 		LinkedHashMap<Long, List<Long>> parentsToChildren = new LinkedHashMap<>();
 
-		// Add an artifical zero node that acts as a root to the root nodes.
-		// This creates a single big tree (with the caveat that the first
-		// level actually representes unrelated genotypes). A single tree
-		// is more convenient to analyze in most tools that a bunch of
-		// separate unrelated trees.
 		parentsToChildren.put(new Long(0), new LinkedList<Long>());
 
 		for (Long dnaId : childrenToParents.keySet())

@@ -30,8 +30,9 @@ public class Lab {
 	public static void main(String[] args) throws IOException {
 		Options options = new Options();
 		options.addOption("h", "help", false, "print this message");
-		options.addOption("a", "ancestry", false, "analyze ancestry");
-		options.addOption("t", "tree", false, "print phylogenetic tree in Nexus format");
+		options.addOption("a", "ancestry", false, "print ancestry statistics");
+		options.addOption("csv", false, "output ancestry in CSV format");
+		options.addOption("nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
 
 		CommandLine commandLine;
 		try {
@@ -54,7 +55,12 @@ public class Lab {
 			return;
 		}
 		
-		if (commandLine.hasOption("t")) {
+		if (commandLine.hasOption("csv")) {
+			printCSVTree(args[0]);
+			return;
+		}
+		
+		if (commandLine.hasOption("nexus")) {
 			printNexusTree(args[0]);
 			return;
 		}
@@ -87,10 +93,16 @@ public class Lab {
 			System.out.println(" " + dna);
 	}
 
+	private static void printCSVTree(String experimentFile) {
+		Experiment experiment = Persistence.loadExperiment(experimentFile);
+		GenePool genePool = experiment.getGenePool();
+		System.out.println(genePool.toCSVFormat());
+	}
+
 	private static void printNexusTree(String experimentFile) {
 		Experiment experiment = Persistence.loadExperiment(experimentFile);
 		GenePool genePool = experiment.getGenePool();
-		System.out.println(genePool.toNexusFormat());
+		System.out.println(genePool.toNEXUSFormat());
 	}
 
 	private static void reportAncestryCreature(DNA dna) {

@@ -14,16 +14,21 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Track historical data in experiment for offline analysis in a spreadsheet.
 
-* Start Lab utility with deep stack  
-  Otherwise it overflows when exporting huge phylogenetic trees. I tried to do this in Gradle, but I failed (it works in Eclipse)
 * Measure evolution speed  
   This seems to be hard. The mutation rate solutions seems useless. Any help from existing papers?
 
 * Track history data together with ancestry
   eggs/creatures/food/evolution-speed/etc.  
 
-* Dump to CSV  
+* Dump history to CSV  
   Run analysis with --history to dump a CSV file of history  
+
++ Measure extinctions in Lab
+  Assuming they are important, and they can be measure effectively. Check existing papers.
+
++ Measure min/max generations in Lab
++ Measure distance of common ancestor in Lab
++ Measure longest dead branch in Lab
 
 + Add standard deviation of gene pool to history data  
 + Fail with explicit error if running ancestry analysis on a file without ancestry  
@@ -34,6 +39,11 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Try it with the very long experiment I have stored, that is currently failing with an OutOfMemoryError after a few saves.
 
 - Generate lab script for packaged distribution  
+
+- Start Lab utility with deep stack  
+  Otherwise it overflows when exporting huge phylogenetic trees.
+  I tried to do this in Gradle, but I failed (it works in Eclipse).
+  It's documented in the help, so not really important.
 
 
 ##Seasons

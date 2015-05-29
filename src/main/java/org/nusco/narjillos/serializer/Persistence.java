@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,12 +27,13 @@ public class Persistence {
 		try {
 			String tempFileName = experiment.getId() + TEMP_EXT;
 
-			GZIPOutputStream outputStream = new GZIPOutputStream(
-					new BufferedOutputStream(
-							new FileOutputStream(new File(tempFileName))));
-			byte[] dataBytes = JSON.toJson(experiment, Experiment.class).getBytes(Charset.forName("UTF-8"));
-			outputStream.write(dataBytes);
-			outputStream.close();
+			PrintStream printStream = new PrintStream(
+					new GZIPOutputStream(
+							new BufferedOutputStream(
+									new FileOutputStream(new File(tempFileName)))));
+			String json = JSON.toJson(experiment, Experiment.class);
+			printStream.print(json);
+			printStream.close();
 
 			forceMoveFile(tempFileName, experiment.getId() + EXPERIMENT_EXT);
 		} catch (Exception e) {

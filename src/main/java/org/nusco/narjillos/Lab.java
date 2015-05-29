@@ -30,7 +30,11 @@ public class Lab {
 	public static void main(String[] args) throws IOException {
 		Options options = new Options();
 		options.addOption("h", "help", false, "print this message");
-		options.addOption("a", "ancestry", false, "print ancestry statistics");
+		options.addOption("poolstats", false, "print genepool statistics");
+		options.addOption("d", "dna", true, "print DNA (takes a DNA id)");
+		options.addOption("dnastats", true, "print DNA stats (takes a DNA id)");
+		options.addOption("a", "ancestry", true, "print DNA ancestry (takes a DNA id)");
+		options.addOption("primary", false, "print id of primary (most successful) DNA");
 		options.addOption("csv", false, "output ancestry in CSV format");
 		options.addOption("nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
 
@@ -50,72 +54,78 @@ public class Lab {
 			return;
 		}
 		
+		String experimentFile = args[0];
+		Experiment experiment = Persistence.loadExperiment(experimentFile);
+		GenePool genePool = experiment.getGenePool();
+
+		if (commandLine.hasOption("poolstats")) {
+			System.out.println(getPoolStatistics(genePool));
+			return;
+		}
+
+		if (commandLine.hasOption("d")) {
+			System.out.println(getDNA(genePool, commandLine.getOptionValue("d")));
+			return;
+		}
+
+		if (commandLine.hasOption("dnastats")) {
+			System.out.println(getDNAStatistics(genePool, commandLine.getOptionValue("dnastats")));
+			return;
+		}
+
 		if (commandLine.hasOption("a")) {
-			printAncestry(args[0]);
+			for (DNA dna : getAncestry(genePool, commandLine.getOptionValue("a")))
+				System.out.println(dna);
+			return;
+		}
+		
+		if (commandLine.hasOption("primary")) {
+			System.out.println(genePool.getMostSuccessfulDNA().getId());
 			return;
 		}
 		
 		if (commandLine.hasOption("csv")) {
-			printCSVTree(args[0]);
+			System.out.print(genePool.toCSVFormat());
 			return;
 		}
 		
 		if (commandLine.hasOption("nexus")) {
-			printNexusTree(args[0]);
+			System.out.println(genePool.toNEXUSFormat());
 			return;
 		}
 
     	printHelpText(options);
 	}
 
-	private static void printAncestry(String experimentFile) throws IOException {
-		System.out.println("> Reading file \"" + experimentFile + "\"...");
-		Experiment experiment = Persistence.loadExperiment(experimentFile);
-		GenePool genePool = experiment.getGenePool();
-
-		System.out.println("  > Current gene pool size: " + genePool.getCurrentPoolSize());
-		System.out.println("  > Historical gene pool size: " + genePool.getHistoricalPoolSize());
-
-		if (genePool.getHistoricalPoolSize() == 0) {
-			System.out.println(">Empty gene pool. Exiting...");
-			return;
-		}
-
-		System.out.println("> Identifying most successful DNA...");
-		DNA mostSuccessfulDNA = genePool.getMostSuccessfulDNA();
-
-		System.out.println("> Extracting ancestry...");
-		List<DNA> ancestry = genePool.getAncestry(mostSuccessfulDNA);
-
-		reportAncestryCreature(mostSuccessfulDNA);
-
-		for (DNA dna : ancestry)
-			System.out.println(" " + dna);
+	private static String getPoolStatistics(GenePool genePool) {
+		StringBuffer result = new StringBuffer();
+		result.append("Current gene pool size     => " + genePool.getCurrentPoolSize() + "\n");
+		result.append("Historical gene pool size  => " + genePool.getHistoricalPoolSize() + "\n");
+		return result.toString();
 	}
 
-	private static void printCSVTree(String experimentFile) {
-		Experiment experiment = Persistence.loadExperiment(experimentFile);
-		GenePool genePool = experiment.getGenePool();
-		System.out.println(genePool.toCSVFormat());
+	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {
+		DNA dna = getDNA(genePool, dnaId);
+		return genePool.getAncestry(dna);
 	}
 
-	private static void printNexusTree(String experimentFile) {
-		Experiment experiment = Persistence.loadExperiment(experimentFile);
-		GenePool genePool = experiment.getGenePool();
-		System.out.println(genePool.toNEXUSFormat());
-	}
-
-	private static void reportAncestryCreature(DNA dna) {
+	private static String getDNAStatistics(GenePool genePool, String dnaId) {
+		DNA dna = getDNA(genePool, dnaId);
 		Narjillo specimen = new Narjillo(dna, Vector.ZERO, 90, Energy.INFINITE);
-		System.out.println("Typical successful creature:");
-		System.out.println("  Number of organs   => " + specimen.getOrgans().size());
-		System.out.println("  Adult mass         => " + NumberFormat.format(specimen.getBody().getAdultMass()));
-		System.out.println("  Energy to children => " + NumberFormat.format(specimen.getBody().getEnergyToChildren()));
-		System.out.println("  Egg interval       => " + specimen.getBody().getEggInterval());
-		System.out.println("  Egg velocity       => " + specimen.getBody().getEggVelocity());
-		System.out.println();
+		StringBuffer result = new StringBuffer();
+		result.append("Number of organs   => " + specimen.getOrgans().size() + "\n");
+		result.append("Adult mass         => " + NumberFormat.format(specimen.getBody().getAdultMass()) + "\n");
+		result.append("Energy to children => " + NumberFormat.format(specimen.getBody().getEnergyToChildren()) + "\n");
+		result.append("Egg interval       => " + specimen.getBody().getEggInterval() + "\n");
+		result.append("Egg velocity       => " + specimen.getBody().getEggVelocity() + "\n");
+		return result.toString();
 	}
-	
+
+	private static DNA getDNA(GenePool genePool, String dnaId) {
+		DNA dna = genePool.getDNA(Long.parseLong(dnaId));
+		return dna;
+	}
+
 	private static void printHelpText(Options commandLineOptions) {
 		new HelpFormatter().printHelp("lab <experiment_file.exp> <options>", commandLineOptions);
 	}

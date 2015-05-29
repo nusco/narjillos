@@ -31,6 +31,10 @@ public class GenePool {
 		return ancestralMemory;
 	}
 
+	public DNA getDNA(long id) {
+		return dnaById.get(new Long(id));
+	}
+
 	public List<DNA> getAncestry(DNA dna) {
 		List<DNA> result = new LinkedList<>();
 

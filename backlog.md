@@ -10,27 +10,28 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     g backlog N          prints the topmost N features
 
 ##Basic Lab Analysis
->goal: faster evolution
+>goal: understand what is happening in the dish  
 
-    Track historical data in experiment for offline analysis in a spreadsheet.
+    Track historical data in experiment for analysis.
 
 * Track history data together with ancestry
-  eggs/creatures/food/evolution-speed/etc.  
+  creatures/food/etc.  
 
 * Dump history to CSV  
-  Run analysis with --history to dump a CSV file of history  
+  Run analysis with --history to dump a CSV file of history.  
+  This should be good for analysis in a spreadsheet.
 
-+ Measure extinctions in Lab
-  Assuming they are important, and they can be measure effectively. Check existing papers.
-
-+ Measure evolution speed  
+* Measure evolution speed  
   This seems to be hard. The mutation rate solutions seems useless. Any help from existing papers?
 
-+ Measure min/max generations in Lab
-+ Measure distance of common ancestor in Lab
-+ Measure longest dead branch in Lab
++ Measure extinctions  
+  Assuming they are important, and they can be measured effectively. Check existing papers.
 
-+ Add standard deviation of gene pool to history data  
++ Measure min/max generations in Lab and history  
++ Measure longest dead branch in Lab 
++ Measure distance of common ancestor in Lab and history  
++ Measure standard deviation of gene pool in Lab and history    
+
 + Fail with explicit error if running ancestry analysis on a file without ancestry  
 + Warning in case of conflicting command-line arguments of main apps  
   like -s and experiment file used together  
@@ -40,7 +41,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Start Lab utility with deep stack  
   Otherwise it overflows when exporting huge phylogenetic trees.
   I tried to do this in Gradle, but I failed (it works in Eclipse).
-  It's documented in the help, so not really crucial.
+  It's documented in the help, so not really important.
 
 
 ##Seasons
@@ -55,6 +56,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     abundance", the system will hit a few evolutionary sweet spots.
 
 * Seasons  
+
 * Configurable seasonal cycle  
   Max, min and period in config.yaml  
 
@@ -67,44 +69,59 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Count species with simple clustering algorithm  
   Levenshtein-based  
 
-+ "Next in cluster" and "Next cluster" buttons while following  
+* "Next in cluster" and "Next cluster" buttons while following  
   Without this, it becomes very hard to understand how the creatures are clustered.  
   Also apply during demo.
 
-+ Continuous clustering  
+* Continuous clustering  
   Needs a fast clustering process. Obvious way: cache Levenshtein distances.  
   Compare clustering performance with Levenshtein and SimHash distances.  
   Also look for other ways to optimize.  
 
 * Track number of species clusters in history  
   Or during lab analysis if too slow.  
+  
 - Track composition of species clusters in history  
+
 - Track genera/species/mutations separately  
   They are just different cluster radiuses.  
 
 
-##Self-Regulating Ecosystem
+##Ecological Niches
 >goal: multiple species  
 
-    Encourage disruptive evolution, which should result in sympatric speciation.
+    Use different kinds of food to encourage sympatric speciation.
     
-    If I don't get sympatric speciation after implementing this, then maybe I need  
-    something more. Sexual reproduction, maybe?
-
-* Atmosphere chemistry  
-* Narjillos produce a molecule  
-  based on visible body qualities - metabolic rate?  
-
-* Narjillos consume a molecule  
-  faster reproduction? lower energy expenditure?
+    If I don't get sympatric speciation after implementing this, then try the
+    Self-Regulating Ecosystem feature.
     
-* Ecological Niches  
-  tweak chemistry to encourage speciation
-    
-+ Local atmosphere  
-  atmosphere composition is a map instead of a global value  
+* Different kinds of food  
+  probably over a 1- or 2-dimensional continuum. (1-dimensional is easier to graph,
+  2-dimensional has more space for niches).
+  for example, red to green, and all the intermediate colors.
   
-+ Atmosphere composition "heat map"  
+* Narjillos consume food based on their body shape  
+  how exactly? I need to come up with some kind of 1-dimensional relationship here.
+  Maybe body size? or color?
+  
+* Narjillos select food  
+  this could be tricky. how does a creature decide that food is "good enough"?
+  most likely, they pick the food that they "like" best. but what if better 
+  food appears nearby? there is a risk that a creature will starve
+  while trying to reach better and better food.
+  another totally different approach is mixing this with Geographical Food
+  Distribution (a separate story), and having narjillos have a favourite direction
+  (genetically determined) that they use to look for food instead of a favourite
+  type of food. Each Narjillos would eat any kind of food, but only find nutrients
+  in the "right" kind. Narjillos who tend towards the wrong direction will likely
+  die.
+  
++ Phenogenealogical trees  
+  Like in the paper by Woehrer, Hougen and Schlupp. They are a great way to understand
+  what is happening and how species are diverging.
+  
++ Geographical food distribution  
+  For example, red is higher up in the culture, green is lower down.
 
 
 ##Intuitive Navigation
@@ -275,7 +292,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Advanced Lab Analysis
->goal: advanced analysis  
+>goal: understand what is happening in the dish  
 
     Science-level analysis of experimental data.
 
@@ -297,6 +314,32 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 - Encode CPU floatpoint precision in the experiment id  
   rather than use strictfp, that harms performance  
+
+
+##Self-Regulating Ecosystem
+>goal: specialized creatures  
+
+    Encourage speciation by creating a self-enforcing reciprocal need between creatures.
+    
+    This feature should leverage disruptive evolution to push narjillos to specialize.
+    
+    If I still don't get sympatric speciation after implementing this, then maybe I need  
+    something even more radical. Sexual reproduction with assortative mating, maybe?
+
+* Atmosphere chemistry  
+* Narjillos produce a molecule  
+  based on visible body qualities - metabolic rate?  
+
+* Narjillos consume a molecule  
+  faster reproduction? lower energy expenditure?
+    
+* Ecological Niches  
+  tweak chemistry to encourage speciation
+    
++ Local atmosphere  
+  atmosphere composition is a map instead of a global value  
+  
++ Atmosphere composition "heat map"  
 
 
 ##Sexual Reproduction
@@ -362,6 +405,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   maybe. (Makes sense if egg contains green fibers)  
   
 - Adult body size is genetically determined  
+
++ Gene mutation rate itself is determined by genes
+  This is a very interesting concept, and something that I should think about carefully.
 
 
 ##Crazy Ideas

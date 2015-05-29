@@ -62,19 +62,6 @@ public class GenePool {
 		return result;
 	}
 
-	public double getMutationSpeedOverLast10Generations() {
-		if (currentPool.isEmpty())
-			return 0;
-
-		double result = 0;
-		for (long dnaId : currentPool) {
-			DNA dna = dnaById.get(dnaId);
-			DNA tenthGenerationAncestor = getAncestor(dna, 10);
-			result += dna.getLevenshteinDistanceFrom(tenthGenerationAncestor);
-		}
-		return result / currentPool.size();
-	}
-
 	DNA getAncestor(DNA dna, int generations) {
 		DNA currentAncestor = dna;
 		for (int i = 1; i < generations; i++) {

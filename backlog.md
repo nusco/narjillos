@@ -193,6 +193,13 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   is this a bug?  
   
 + Rewrite collision detection to be independent of max speed  
+  This can be almost as simple as it is now, but we should probably aim for generalized
+  collision detection on all organs. Here are a few links from Cipster:
+  http://www.dyn4j.org
+  http://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects
+  http://blog.sklambert.com/html5-canvas-game-2d-collision-detection
+  http://number-none.com/blow/papers/practical_collision_detection.pdf
+  
 * Narjillos eat other narjillos  
   pick target at random  
   
@@ -204,7 +211,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Smoother, nicer graphics.
 
-- Moving mouths  
 - Independent eye pupils  
 + Optimize graphics  
 + Smoother contours when zooming in infrared mode  
@@ -218,7 +224,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Download-and-run user experience.
 
-* Native Mac app  
+* Native Mac app
+  See https://bitbucket.org/infinitekind/appbundler (from Cipster)
+    
 + Native Windows app  
 + Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
 - Run in a browser  

@@ -75,4 +75,8 @@ public class Head extends MovingOrgan {
 		// explicitly repositioned by its client.
 		return getAngleToParent();
 	}
+
+	double getBrainWaveAngle() {
+		return ((WaveNerve) getNerve()).getAngle();
+	}
 }

@@ -288,4 +288,8 @@ public class Body {
 		}
 		return result;
 	}
+
+	public double getBrainWaveAngle() {
+		return getHead().getBrainWaveAngle();
+	}
 }

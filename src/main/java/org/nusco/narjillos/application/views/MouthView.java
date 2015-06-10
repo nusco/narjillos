@@ -8,6 +8,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.application.utilities.Viewport;
+import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.physics.ZeroVectorException;
 import org.nusco.narjillos.creature.Narjillo;
@@ -15,29 +16,33 @@ import org.nusco.narjillos.creature.Narjillo;
 class MouthView implements ItemView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.1;
+	private static final int NUMBER_OF_LINES = 3;
+	private static final int LINE_LENGTH = 30;
+	private static final int MAX_LINE_ANGLE = 25;
 
-	private static final int LENGTH = 30;
 	private final Narjillo narjillo;
 	private final Group group = new Group();
-	private final Line line1 = createLine();
-	private final Line line2 = createLine();
-
+	private final Line[] lines = new Line[NUMBER_OF_LINES];
+	
 	public MouthView(Narjillo narjillo) {
 		this.narjillo = narjillo;
-		group.getChildren().add(line1);
-		group.getChildren().add(line2);
+		
+		for (int i = 0; i < lines.length; i++) {
+			lines[i] = createLine();
+			group.getChildren().add(lines[i]);
+		}
 	}
 
+	@Override
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 			return null;
-		
-		Color color = getColor(zoomLevel, infraredOn);
-		line1.setStroke(color);
-		line2.setStroke(color);
 
-		rotate(line1, 10);
-		rotate(line2, -10);
+		Color color = getColor(zoomLevel, infraredOn);
+		for (int i = 0; i < lines.length; i++) {
+			lines[i].setStroke(color);
+			rotateLine(i);
+		}
 		
 		Vector position = getNarjillo().getPosition();
 		group.getTransforms().clear();
@@ -48,7 +53,14 @@ class MouthView implements ItemView {
 
 	@Override
 	public boolean isVisible(Viewport viewport) {
-		return viewport.isVisible(getNarjillo().getPosition(), LENGTH);
+		return viewport.isVisible(getNarjillo().getPosition(), LINE_LENGTH);
+	}
+	
+	private void rotateLine(int index) {
+		double lineLag = (360 / (lines.length + 1) * index) % 360;
+		double lineAngle = FastMath.sin(getNarjillo().getBrainWaveAngle() - lineLag) * MAX_LINE_ANGLE;
+		lines[index].getTransforms().clear();
+		lines[index].getTransforms().add(new Rotate(getMouthAngle() + lineAngle));
 	}
 
 	private Color getColor(double zoomLevel, boolean infraredOn) {
@@ -73,11 +85,6 @@ class MouthView implements ItemView {
 		return age / AGE_OF_FULL_OPACITY;
 	}
 	
-	private void rotate(Line line, int angle) {
-		line.getTransforms().clear();
-		line.getTransforms().add(new Rotate(getMouthAngle() + angle));
-	}
-
 	private double getMouthAngle() {
 		try {
 			return getNarjillo().getMouth().getDirection().getAngle();
@@ -87,7 +94,7 @@ class MouthView implements ItemView {
 	}
 
 	private Line createLine() {
-		Line result = new Line(0, 0, LENGTH, 2);
+		Line result = new Line(0, 0, LINE_LENGTH, 2);
 		result.setStrokeWidth(2);
 		return result;
 	}

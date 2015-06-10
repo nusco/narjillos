@@ -152,6 +152,10 @@ public class Narjillo implements Thing {
 		return new Egg(childDNA, position, velocity, energyToChild, ranGen);
 	}
 
+	public double getBrainWaveAngle() {
+		return body.getBrainWaveAngle();
+	}
+
 	private void decideWhenToLayTheNextEgg() {
 		nextEggAge = getAge() + getBody().getEggInterval();
 	}
@@ -162,10 +166,5 @@ public class Narjillo implements Thing {
 
 	private void growOlder() {
 		age++;
-	}
-
-	public int getVisualHash() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

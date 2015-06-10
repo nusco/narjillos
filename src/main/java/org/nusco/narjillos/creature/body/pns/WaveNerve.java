@@ -33,6 +33,10 @@ public class WaveNerve implements Nerve {
 		return result;
 	}
 
+	public double getAngle() {
+		return angle;
+	}
+
 	private double update(double currentAngle) {
 		double multiplicationFactor = isInLeftSemiplane(currentAngle) ? Configuration.CREATURE_WAVE_BEAT_RATIO : 1;
 		return (currentAngle + 360 * frequency * multiplicationFactor) % 360;

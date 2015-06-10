@@ -46,6 +46,7 @@ class FoodView extends ThingView {
 		roundObjectView.moveTo(food.getPosition());
 	}
 
+	@Override
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		return roundObjectView.toNode(zoomLevel, infraredOn, effectsOn);
 	}

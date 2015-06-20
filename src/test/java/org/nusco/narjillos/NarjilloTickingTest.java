@@ -12,6 +12,7 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.GenePoolWithHistory;
 import org.nusco.narjillos.serializer.JSON;
 
 /**
@@ -59,7 +60,7 @@ public class NarjilloTickingTest {
 
 	@Test
 	public void narjillosTickingIsDeterministic() {
-		GenePool genePool = new GenePool();
+		GenePool genePool = new GenePoolWithHistory();
 		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
 
 		// Create the sample narjillo.

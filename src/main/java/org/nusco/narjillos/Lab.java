@@ -65,7 +65,11 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("d")) {
-			System.out.println(getDNA(genePool, commandLine.getOptionValue("d")));
+			DNA dna = getDNA(genePool, commandLine.getOptionValue("d"));
+			if (dna == null)
+				System.out.println("DNA not found");
+			else
+				System.out.println(dna);
 			return;
 		}
 
@@ -81,7 +85,11 @@ public class Lab {
 		}
 		
 		if (commandLine.hasOption("primary")) {
-			System.out.println(genePool.getMostSuccessfulDNA().getId());
+			DNA dna = genePool.getMostSuccessfulDNA();
+			if (dna == null)
+				System.out.println("DNA not found");
+			else
+				System.out.println(dna.getId());
 			return;
 		}
 		
@@ -100,8 +108,8 @@ public class Lab {
 
 	private static String getPoolStatistics(GenePool genePool) {
 		StringBuffer result = new StringBuffer();
-		result.append("Current gene pool size     => " + genePool.getCurrentPoolSize() + "\n");
-		result.append("Historical gene pool size  => " + genePool.getHistoricalPoolSize() + "\n");
+		result.append("Current gene pool size     => " + genePool.getCurrentSize() + "\n");
+		result.append("Historical gene pool size  => " + genePool.getHistoricalSize() + "\n");
 		return result.toString();
 	}
 
@@ -112,6 +120,10 @@ public class Lab {
 
 	private static String getDNAStatistics(GenePool genePool, String dnaId) {
 		DNA dna = getDNA(genePool, dnaId);
+		
+		if (dna == null)
+			return "Cannot retrieve DNA";
+
 		Narjillo specimen = new Narjillo(dna, Vector.ZERO, 90, Energy.INFINITE);
 		StringBuffer result = new StringBuffer();
 		result.append("Number of organs   => " + specimen.getOrgans().size() + "\n");
@@ -123,8 +135,7 @@ public class Lab {
 	}
 
 	private static DNA getDNA(GenePool genePool, String dnaId) {
-		DNA dna = genePool.getDNA(Long.parseLong(dnaId));
-		return dna;
+		return genePool.getDNA(Long.parseLong(dnaId));
 	}
 
 	private static void printHelpText(Options commandLineOptions) {

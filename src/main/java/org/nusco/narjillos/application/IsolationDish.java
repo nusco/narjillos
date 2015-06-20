@@ -4,6 +4,7 @@ import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.ecosystem.IsolationCulture;
 import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.SimpleGenePool;
 
 /**
  * A dish that isolates a single narjillo in its own dish.
@@ -11,7 +12,7 @@ import org.nusco.narjillos.genomics.GenePool;
 class IsolationDish extends Dish {
 
 	private Culture environment;
-	private GenePool genePool = new GenePool();
+	private GenePool genePool = new SimpleGenePool();
 	private RanGen ranGen = new RanGen(1234);
 
 	public IsolationDish(CommandLineOptions options) {

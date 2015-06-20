@@ -8,17 +8,16 @@ import org.junit.Test;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.GenePoolWithHistory;
+import org.nusco.narjillos.genomics.SimpleGenePool;
 
 public class JSONGenePoolSerializationTest {
 
-	GenePool genePool = new GenePool();
-	
 	@Test
 	public void serializesAndDeserializesGenePools() {
 		RanGen ranGen = new RanGen(1234);
+		GenePool genePool = new GenePoolWithHistory();
 
-		genePool.enableAncestralMemory();
-		
 		DNA parent = genePool.createRandomDNA(ranGen);
 		DNA child1 = genePool.mutateDNA(parent, ranGen);
 		DNA child2 = genePool.mutateDNA(parent, ranGen);
@@ -31,8 +30,20 @@ public class JSONGenePoolSerializationTest {
 		String json = JSON.toJson(genePool, GenePool.class);
 		GenePool deserialized = JSON.fromJson(json, GenePool.class);
 
-		assertTrue(deserialized.hasAncestralMemory());
+		assertTrue(deserialized instanceof GenePoolWithHistory);
+		assertEquals(deserialized.getCurrentSerialId(), genePool.getCurrentSerialId());
 		assertArrayEquals(deserialized.getAncestry(child3).toArray(), genePool.getAncestry(child3).toArray());
 		assertEquals(deserialized.getMostSuccessfulDNA().toString(), genePool.getMostSuccessfulDNA().toString());
+	}
+
+	@Test
+	public void serializesAndDeserializesSimpleGenePools() {
+		GenePool genePool = new SimpleGenePool();
+
+		String json = JSON.toJson(genePool, GenePool.class);
+		GenePool deserialized = JSON.fromJson(json, GenePool.class);
+
+		assertTrue(deserialized instanceof SimpleGenePool);
+		assertEquals(deserialized.getCurrentSerialId(), genePool.getCurrentSerialId());
 	}
 }

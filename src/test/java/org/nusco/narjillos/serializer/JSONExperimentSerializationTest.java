@@ -8,13 +8,14 @@ import org.junit.Test;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.Experiment;
 import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.GenePoolWithHistory;
 
 public class JSONExperimentSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesExperiment() {
 		Experiment experiment = new Experiment(1234, new Ecosystem(10000, false), "experiment_serialization_test", true);
-		assertTrue(experiment.getGenePool().hasAncestralMemory());
+		assertTrue(experiment.getGenePool() instanceof GenePoolWithHistory);
 		
 		for (int i = 0; i < 10; i++)
 			experiment.tick();

@@ -4,6 +4,8 @@ import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.GenePoolWithHistory;
+import org.nusco.narjillos.genomics.SimpleGenePool;
 
 public class Experiment {
 
@@ -11,7 +13,7 @@ public class Experiment {
 	private final Ecosystem ecosystem;
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final RanGen ranGen;
-	private final GenePool genePool = new GenePool();
+	private final GenePool genePool;
 
 	private long totalRunningTime = 0;
 
@@ -28,18 +30,18 @@ public class Experiment {
 	}
 
 	private Experiment(long seed, String version, Ecosystem ecosystem, boolean trackGenePool) {
-		initializeGenePool(trackGenePool);
+		genePool = initializeGenePool(trackGenePool);
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);
 		this.ecosystem = ecosystem;
 	}
 
-	private void initializeGenePool(boolean trackGenePool) {
+	private GenePool initializeGenePool(boolean trackGenePool) {
 		if (!trackGenePool)
-			return;
+			return new SimpleGenePool();
 
-		genePool.enableAncestralMemory();
+		return new GenePoolWithHistory();
 	}
 
 	public final void timeStamp() {

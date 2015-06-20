@@ -5,31 +5,16 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.RanGen;
 
-public class GenePoolTest {
+public class GenePoolWithHistoryTest {
 	
 	RanGen ranGen = new RanGen(1234);
-	GenePool genePool = new GenePool();
-
-	@Before
-	public void setUpGenePool() {
-		genePool.enableAncestralMemory();
-	}
-	
-	@Test
-	public void doesNotTrackByDefault() {
-		GenePool disabledGenePool = new GenePool();
+	GenePool genePool = new GenePoolWithHistory();
 		
-		disabledGenePool.createDNA("{0}");
-
-		assertEquals(0, disabledGenePool.getCurrentPoolSize());
-	}
-	
 	@Test
-	public void tracksAncestry() {
+	public void hasHistory() {
 		DNA parent1 = genePool.createDNA("{0}");
 		genePool.mutateDNA(parent1, ranGen);
 
@@ -87,34 +72,7 @@ public class GenePoolTest {
 				genePool.remove(dna);
 		}
 		
-		assertEquals(50, genePool.getCurrentPoolSize());
-		assertEquals(100, genePool.getHistoricalPoolSize());
-	}
-	
-	@Test
-	public void findsAncestor() {
-		DNA ancestor = genePool.createRandomDNA(ranGen);
-
-		DNA descendant1 = genePool.mutateDNA(ancestor, ranGen);
-		DNA descendant2 = genePool.mutateDNA(descendant1, ranGen);
-		
-		assertEquals(ancestor, genePool.getAncestor(descendant2, 3));
-	}
-	
-	@Test
-	public void stopsAncestorSearchAtTheTopOfTheAncestorsChain() {
-		DNA ancestor = genePool.createRandomDNA(ranGen);
-
-		DNA descendant1 = genePool.mutateDNA(ancestor, ranGen);
-		DNA descendant2 = genePool.mutateDNA(descendant1, ranGen);
-		
-		assertEquals(ancestor, genePool.getAncestor(descendant2, 10));
-	}
-		
-	@Test
-	public void stopsAncestorSearchAtTheFirstLevelIfTheDnaHasNoAncestors() {
-		DNA dna = genePool.createRandomDNA(ranGen);
-
-		assertEquals(dna, genePool.getAncestor(dna, 10));
+		assertEquals(50, genePool.getCurrentSize());
+		assertEquals(100, genePool.getHistoricalSize());
 	}
 }

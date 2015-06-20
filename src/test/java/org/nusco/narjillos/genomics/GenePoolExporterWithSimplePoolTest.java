@@ -6,10 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.RanGen;
 
-public class GenePoolExporterTest {
+public class GenePoolExporterWithSimplePoolTest {
 	
 	RanGen ranGen = new RanGen(1234);
-	GenePool genePool = new GenePoolWithHistory();
+	GenePool genePool = new SimpleGenePool();
 
 	@Before
 	public void setUpGenePool() {
@@ -25,24 +25,18 @@ public class GenePoolExporterTest {
 	}
 	
 	@Test
-	public void convertsGenePoolToACSVTree() {
+	public void convertsASimpleGenePoolToAnEmptyCSVTree() {
 		GenePoolExporter genePoolExporter = new GenePoolExporter(genePool);
 
-		String expected = "0;1\n"
-				+ "1;2\n"
-				+ "1;3\n"
-				+ "2;4\n"
-				+ "0;5\n"
-				+ "5;6\n";	
-		assertEquals(expected, genePoolExporter.toCSVFormat());
+		assertEquals("", genePoolExporter.toCSVFormat());
 	}
 	
 	@Test
-	public void convertsGenePoolToANEXUSTree() {
+	public void convertsASimpleGenePoolToAnEmptyTree() {
 		GenePoolExporter genePoolExporter = new GenePoolExporter(genePool);
 
 		String expected = "begin trees;\n" +
-				"tree genotypes = (((4)2,3)1,(6)5)0;\n" + 
+				"tree genotypes = 0;\n" + 
 				"end;";	
 		assertEquals(expected, genePoolExporter.toNEXUSFormat());
 	}

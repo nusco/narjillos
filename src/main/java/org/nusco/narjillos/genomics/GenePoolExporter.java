@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Export a GenePool to various formats.
+ * Export a GenePool as a tree, in various formats.
  * 
  * When converting the gene pool to a tree, it adds an artifical zero node that
  * acts as a root to the root nodes. This creates a single big tree (with the
- * caveat that the first level actually representes unrelated genotypes). A
- * single tree is more convenient to analyze in most tools that a bunch of
- * separate unrelated trees.
+ * caveat that the first level actually representes unrelated genotypes). The
+ * reason for this trickery is that a singly-rooted tree is easier to analyze in
+ * most tools that a bunch of separate unrelated trees.
  */
 public class GenePoolExporter {
 
@@ -41,8 +41,8 @@ public class GenePoolExporter {
 		return result.toString();
 	}
 
-	// Use a large Java stack when running this - otherwise, it will blow up
-	// the stack on very deep phylogenetic trees.
+	// You need a large Java stack when running this - otherwise, it will blow
+	// up the stack on very deep phylogenetic trees.
 	private String toNewickTree(Long rootId, Map<Long, List<Long>> parentsToChildren) {
 		List<Long> children = parentsToChildren.get(rootId);
 		if (children.isEmpty())
@@ -63,7 +63,7 @@ public class GenePoolExporter {
 
 		Map<Long, Long> childrenToParents = genePool.getChildrenToParents();
 
-		for (Long dnaId : childrenToParents .keySet())
+		for (Long dnaId : childrenToParents.keySet())
 			parentsToChildren.put(dnaId, new LinkedList<Long>());
 
 		for (Long childId : childrenToParents.keySet())

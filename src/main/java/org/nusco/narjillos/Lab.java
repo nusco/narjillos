@@ -15,6 +15,7 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Experiment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.GenePoolExporter;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
@@ -85,12 +86,12 @@ public class Lab {
 		}
 		
 		if (commandLine.hasOption("csv")) {
-			System.out.print(genePool.toCSVFormat());
+			System.out.print(new GenePoolExporter(genePool).toCSVFormat());
 			return;
 		}
 		
 		if (commandLine.hasOption("nexus")) {
-			System.out.println(genePool.toNEXUSFormat());
+			System.out.println(new GenePoolExporter(genePool).toNEXUSFormat());
 			return;
 		}
 

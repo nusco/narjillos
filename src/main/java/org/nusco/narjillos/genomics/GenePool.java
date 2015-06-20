@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.nusco.narjillos.core.utilities.RanGen;
 
@@ -62,17 +61,6 @@ public class GenePool {
 		return result;
 	}
 
-	DNA getAncestor(DNA dna, int generations) {
-		DNA currentAncestor = dna;
-		for (int i = 1; i < generations; i++) {
-			Long parentId = childrenToParents.get(currentAncestor.getId());
-			if (parentId == 0)
-				return currentAncestor;
-			currentAncestor = dnaById.get(parentId);
-		}
-		return currentAncestor;
-	}
-
 	public int getCurrentPoolSize() {
 		return currentPool.size();
 	}
@@ -99,17 +87,6 @@ public class GenePool {
 		return result;
 	}
 
-	public void remove(DNA dna) {
-		if (!hasAncestralMemory())
-			return;
-
-		currentPool.remove(dna.getId());
-	}
-
-	private long nextId() {
-		return ++dnaSerial;
-	}
-
 	private void add(DNA dna, DNA parent) {
 		if (!hasAncestralMemory())
 			return;
@@ -122,6 +99,17 @@ public class GenePool {
 			childrenToParents.put(dna.getId(), parent.getId());
 	}
 
+	public void remove(DNA dna) {
+		if (!hasAncestralMemory())
+			return;
+
+		currentPool.remove(dna.getId());
+	}
+
+	private long nextId() {
+		return ++dnaSerial;
+	}
+
 	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
 		int result = 0;
 		for (Long otherDNAId : currentPool) {
@@ -132,57 +120,18 @@ public class GenePool {
 		return result;
 	}
 
-	// When converting the gene pool to a tree, add an artifical zero
-	// node that acts as a root to the root nodes.
-	// This creates a single big tree (with the caveat that the first
-	// level actually representes unrelated genotypes). A single tree
-	// is more convenient to analyze in most tools that a bunch of
-	// separate unrelated trees.
-
-	// TODO: conversions should move to their own class or classes
-	public String toCSVFormat() {
-		StringBuffer result = new StringBuffer();
-		for (Entry<Long, Long> entry : childrenToParents.entrySet())
-			result.append(entry.getValue() + ";" + entry.getKey() + "\n");
-		return result.toString();
+	DNA getAncestor(DNA dna, int generations) {
+		DNA currentAncestor = dna;
+		for (int i = 1; i < generations; i++) {
+			Long parentId = childrenToParents.get(currentAncestor.getId());
+			if (parentId == 0)
+				return currentAncestor;
+			currentAncestor = dnaById.get(parentId);
+		}
+		return currentAncestor;
 	}
 
-	public String toNEXUSFormat() {
-		StringBuffer result = new StringBuffer();
-		result.append("begin trees;\n");
-
-		Map<Long, List<Long>> parentsToChildren = calculateParentsToChildren();
-		String toNewickTree = toNewickTree(new Long(0), parentsToChildren);
-		result.append("tree genotypes = " + toNewickTree + ";\n");
-		result.append("end;");
-		return result.toString();
-	}
-	
-	// Use a large Java stack when running this - otherwise, it will blow up
-	// the stack on very deep phylogenetic trees.
-	private String toNewickTree(Long rootId, Map<Long, List<Long>> parentsToChildren) {
-		List<Long> children = parentsToChildren.get(rootId);
-		if (children.isEmpty())
-			return rootId.toString();
-
-		StringBuffer childrenTreeBuffer = new StringBuffer();
-		for (Long childId : children)
-			childrenTreeBuffer.append(toNewickTree(childId, parentsToChildren) + ",");
-		String childrenTree = childrenTreeBuffer.toString();
-		String trimmedChildrenTree = childrenTree.substring(0, childrenTree.length() - 1);
-		return "(" + trimmedChildrenTree + ")" + rootId;
-	}
-
-	private LinkedHashMap<Long, List<Long>> calculateParentsToChildren() {
-		LinkedHashMap<Long, List<Long>> parentsToChildren = new LinkedHashMap<>();
-
-		parentsToChildren.put(new Long(0), new LinkedList<Long>());
-
-		for (Long dnaId : childrenToParents.keySet())
-			parentsToChildren.put(dnaId, new LinkedList<Long>());
-
-		for (Long childId : childrenToParents.keySet())
-			parentsToChildren.get(childrenToParents.get(childId)).add(childId);
-		return parentsToChildren;
+	Map<Long, Long> getChildrenToParents() {
+		return childrenToParents;
 	}
 }

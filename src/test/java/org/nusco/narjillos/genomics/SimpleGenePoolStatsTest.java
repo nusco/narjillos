@@ -21,9 +21,14 @@ public class SimpleGenePoolStatsTest {
 	}
 	
 	@Test
-	public void calculatesStats() {
+	public void hasEmptyStats() {
 		assertEquals(0, stats.getCurrentPoolSize());
 		assertEquals(0, stats.getHistoricalPoolSize());
 		assertEquals(0.0, stats.getAverageGeneration(), 0.0);
+	}
+	
+	@Test
+	public void convertsToAnEmptyCSVLine() {
+		assertEquals("0, 0, 0.0", stats.toCSVLine());
 	}
 }

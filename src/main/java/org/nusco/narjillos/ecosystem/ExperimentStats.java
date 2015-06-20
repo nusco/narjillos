@@ -7,14 +7,14 @@ public class ExperimentStats {
 
 	private final long ticks;
 	private final long runningTime;
-	private final GenePoolStats genePoolStats;
 	private final int numberOfFoodPieces;
+	private final GenePoolStats genePoolStats;
 
 	public ExperimentStats(Experiment experiment) {
 		this.ticks = experiment.getTicksChronometer().getTotalTicks();
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
-		this.genePoolStats = new GenePoolStats(experiment.getGenePool());
 		this.numberOfFoodPieces = experiment.getEcosystem().getNumberOfFoodPieces();
+		this.genePoolStats = new GenePoolStats(experiment.getGenePool());
 	}
 
 	public static String getHeadersString() {
@@ -23,6 +23,13 @@ public class ExperimentStats {
 				+ alignLeft("narj")
 				+ alignLeft("food")
 				+ alignLeft("avg_gen");
+	}
+
+	public String toCsvLine() {
+		return "" + ticks + ", "
+				+ runningTime + ", "
+				+ numberOfFoodPieces + ", "
+				+ genePoolStats.toCSVLine();
 	}
 
 	@Override
@@ -53,8 +60,13 @@ public class ExperimentStats {
 		return true;
 	}
 
+	public static String getCsvHeader() {
+		return "ticks, running_time, food, " + GenePoolStats.getCsvHeader();
+	}
+	
 	private static String alignLeft(Object label) {
 		final String padding = "              ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
-	}}
+	}
+}

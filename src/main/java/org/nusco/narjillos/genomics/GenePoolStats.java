@@ -2,6 +2,8 @@ package org.nusco.narjillos.genomics;
 
 import java.util.List;
 
+import org.nusco.narjillos.core.utilities.NumberFormat;
+
 /**
  * Gets statistics from a GenePool.
  */
@@ -63,5 +65,15 @@ public class GenePoolStats {
 			generationsSum += genePool.getGenerationOf(dna);
 		}
 		return generationsSum / currentPool.size();
+	}
+
+	public String toCSVLine() {
+		return "" + getCurrentPoolSize() + ", "
+				+ getHistoricalPoolSize() + ", "
+				+ NumberFormat.format(getAverageGeneration());
+	}
+
+	public static String getCsvHeader() {
+		return "population, historical_pool_size, average_generation";
 	}
 }

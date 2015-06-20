@@ -9,48 +9,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     g backlog top        prints the topmost priority feature
     g backlog N          prints the topmost N features
 
-##Lab Analysis
->goal: understand what is happening in the dish  
-
-    Track historical data in experiment for analysis.
-
-* Dump history to CSV  
-  Run analysis with --history to dump a CSV file of history.  
-  This should be good for analysis in a spreadsheet.
-
-+ Fail with explicit error if running ancestry analysis on a file without ancestry  
-
-+ Warning in case of conflicting command-line arguments of main apps  
-  like -s and experiment file used together  
-
-+ Generate lab script for packaged distribution  
-
-+ Measure speed of population centroid movement  
-  See Burtsev, "Measuring the Dynamics of Artificial Evolution".
-
-+ Show graph of differences in phase space of population centroid movement  
-  To spot (and hopefully avoid) cycles in evolution. See Burtsev, "Measuring the Dynamics of Artificial Evolution".
-
-+ Measure longest dead branch in Lab  
-
-+ Measure distance of common ancestor in Lab and history  
-  
-+ Show graph of phenogenealogic tree  
-  See "Sexual Selection, Resource Distribution, and Population Size in Synthetic Sympatric Speciation".
-  (Woehrer, Hougen, Schlupp)
-  
-+ Measure creature/dish efficiency  
-  somehow. Right now, I don't really know what "efficienty" really means :)  
-
-- Start Lab utility with deep stack  
-  Otherwise it overflows when exporting huge phylogenetic trees.
-  I tried to do this in Gradle, but I failed (it works in Eclipse).
-  It's documented in the help, so not really important.
-
-+ Issue warning when running on CPU with the "wrong" word size
-  We don't use strictfp, because it harms performance. So you could get non-deterministic results if you run
-  on a CPU with a different flotpoint precision than the expected one.  
-
 
 ##Ecological Niches
 >goal: multiple species  
@@ -119,44 +77,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   one number for the whole gene pool.  
 
 
-##Database Persistence
->goal: save experiment history to a database  
-
-    For advanced analysis of experimental data.
-    This also removes the memory cap on extremely long experiments.  
-
-* Store historical data in a database rather than in memory  
-  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
-  Maybe track only DNA and birth/date events, and have an external program, possibly in Ruby, to process stats?
-  
-+ Move entire persistence to a database  
-  Consider this, but be aware that it might effect usability, performance or reliability.  
-  So I might decide to stick with files.  
-  
-+ Move entire persistence to a database  
-  Consider this, but be aware that it might effect usability, performance or reliability.  
-  So I might decide to stick with files.  
-
-+ Save to remote database  
-  If the DB is configurable, then it's easier to run experiments in the cloud.
-
-
-##Seasons
->goal: faster evolution  
-
-    Cyclically vary the amount of food that spawns.
-    
-    Studies show that evolution works best if there are enough resources (food),
-    but not too many. The problem is that it's hard to know what "enough but 
-    not too many" means. So I want to try this: food amount is cyclical. I'm 
-    hoping that along the way from "almost starving" to "economy of
-    abundance", the system will hit a few evolutionary sweet spots.
-
-* Seasons  
-
-* Configurable seasonal cycle  
-  Max, min and period in config.yaml  
-
 
 ##Intuitive Navigation
 >goal: nice user experience  
@@ -211,7 +131,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Dish Edges
->goal: complex interactions  
+>goal: nice user experience  
 
     Constrain the "world" inside defined edges.
     
@@ -266,6 +186,45 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Show heat cloud when zooming out in infrared mode  
 - Skip quickly over less interesting creatures in Demo Mode  
 + Command-line argument to start without visual effects  
+
+
+##Database Persistence
+>goal: save experiment history to a database  
+
+    For advanced analysis of experimental data.
+    This also removes the memory cap on extremely long experiments.  
+
+* Store historical data in a database rather than in memory  
+  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
+  Maybe track only DNA and birth/date events, and have an external program, possibly in Ruby, to process stats?
+  
++ Move entire persistence to a database  
+  Consider this, but be aware that it might effect usability, performance or reliability.  
+  So I might decide to stick with files.  
+  
++ Move entire persistence to a database  
+  Consider this, but be aware that it might effect usability, performance or reliability.  
+  So I might decide to stick with files.  
+
++ Save to remote database  
+  If the DB is configurable, then it's easier to run experiments in the cloud.
+
+
+##Seasons
+>goal: faster evolution  
+
+    Cyclically vary the amount of food that spawns.
+    
+    Studies show that evolution works best if there are enough resources (food),
+    but not too many. The problem is that it's hard to know what "enough but 
+    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    hoping that along the way from "almost starving" to "economy of
+    abundance", the system will hit a few evolutionary sweet spots.
+
+* Seasons  
+
+* Configurable seasonal cycle  
+  Max, min and period in config.yaml  
 
 
 ##Advanced Body Plans
@@ -357,6 +316,49 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   atmosphere composition is a map instead of a global value  
   
 + Atmosphere composition "heat map"  
+
+
+##Lab Analysis
+>goal: understand what is happening in the dish  
+
+    Track historical data in experiment for analysis.
+
++ Fail with explicit error if running ancestry/history analysis on a file without history  
+
++ Warning in case of conflicting command-line arguments of main apps  
+  like -s and experiment file used together  
+
++ Generate lab script for packaged distribution  
+
++ Measure speed of population centroid movement  
+  See Burtsev, "Measuring the Dynamics of Artificial Evolution".
+  This seems to be a good way to measure evolution speed, that is otherwise a problem.
+  But be aware that I tried something similar (with Levenshtein distance of current dominant
+  organism from previous generations), and it didn't really work. The junk DNA seems to dominate
+  over meaningful changes.
+
++ Show graph of differences in phase space of population centroid movement  
+  To spot (and hopefully avoid) cycles in evolution. See Burtsev, "Measuring the Dynamics of Artificial Evolution".
+
++ Measure longest dead branch in Lab  
+
++ Measure distance of common ancestor in Lab and history  
+  
++ Show graph of phenogenealogic tree  
+  See "Sexual Selection, Resource Distribution, and Population Size in Synthetic Sympatric Speciation".
+  (Woehrer, Hougen, Schlupp). I need one (or more) 1-dimensional phenotypic trait for these graphs to make sense.
+  
++ Measure creature/dish efficiency  
+  Somehow. Right now, I don't really know what "efficiency" really means :)  
+
+- Start Lab utility with deep stack  
+  Otherwise it overflows when exporting huge phylogenetic trees.
+  I tried to do this in Gradle, but I failed (it works in Eclipse).
+  It's documented in the command-line help, so not really important.
+
++ Issue warning when running on CPU with the "wrong" word size
+  We don't use strictfp, because it harms performance. So you could get non-deterministic results if you run
+  on a CPU with a different flotpoint precision than the expected one.  
 
 
 ##Sexual Reproduction

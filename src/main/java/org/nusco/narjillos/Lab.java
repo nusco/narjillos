@@ -13,6 +13,7 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Experiment;
+import org.nusco.narjillos.ecosystem.ExperimentStats;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
@@ -32,12 +33,13 @@ public class Lab {
 	public static void main(String[] args) throws IOException {
 		Options options = new Options();
 		options.addOption("h", "help", false, "print this message");
-		options.addOption("poolstats", false, "print genepool statistics");
 		options.addOption("d", "dna", true, "print DNA (takes a DNA id)");
 		options.addOption("dnastats", true, "print DNA stats (takes a DNA id)");
 		options.addOption("a", "ancestry", true, "print DNA ancestry (takes a DNA id)");
 		options.addOption("primary", false, "print id of primary (most successful) DNA");
-		options.addOption("csv", false, "output ancestry in CSV format");
+		options.addOption("poolstats", false, "print genepool statistics");
+		options.addOption("history", false, "output history in CSV format");
+		options.addOption("ancestry", false, "output ancestry in CSV format");
 		options.addOption("nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
 
 		CommandLine commandLine;
@@ -94,8 +96,15 @@ public class Lab {
 			return;
 		}
 		
-		if (commandLine.hasOption("csv")) {
+		if (commandLine.hasOption("ancestry")) {
 			System.out.print(new GenePoolExporter(genePool).toCSVFormat());
+			return;
+		}
+		
+		if (commandLine.hasOption("history")) {
+			System.out.println(ExperimentStats.getCsvHeader());
+			for (ExperimentStats experimentStats : experiment.getHistory())
+				System.out.println(experimentStats.toCsvLine());
 			return;
 		}
 		

@@ -35,4 +35,11 @@ public class GenePoolWithHistoryStatsTest {
 		assertEquals(7, stats.getHistoricalPoolSize());
 		assertEquals(1.83, stats.getAverageGeneration(), 0.01);
 	}
+	
+	@Test
+	public void convertsToACSVLine() {
+		GenePoolStats stats = new GenePoolStats(genePool);
+
+		assertEquals("6, 7, 1.83", stats.toCSVLine());
+	}
 }

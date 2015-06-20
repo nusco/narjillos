@@ -5,11 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.nusco.narjillos.core.utilities.RanGen;
 
 /**
- * A pool of DNA strands.
+ * A GenePool that tracks ancestry history.
  */
 public class GenePoolWithHistory extends GenePool {
 
@@ -17,12 +18,43 @@ public class GenePoolWithHistory extends GenePool {
 	private final List<Long> currentPool = new LinkedList<>();
 	private final Map<Long, Long> childrenToParents = new LinkedHashMap<>();
 
-	public DNA getDNA(long id) {
+	@Override
+	public DNA createDNA(String dna) {
+		DNA result = super.createDNA(dna);
+		add(result, null);
+		return result;
+	}
+
+	@Override
+	public DNA createRandomDNA(RanGen ranGen) {
+		DNA result = super.createRandomDNA(ranGen);
+		add(result, null);
+		return result;
+	}
+
+	@Override
+	public DNA mutateDNA(DNA parent, RanGen ranGen) {
+		DNA result = super.mutateDNA(parent, ranGen);
+		add(result, parent);
+		return result;
+	}
+
+	@Override
+	public void remove(DNA dna) {
+		currentPool.remove(dna.getId());
+	}
+
+	@Override
+	public DNA getDna(Long id) {
 		return dnaById.get(new Long(id));
 	}
 
+	@Override
 	public List<DNA> getAncestry(DNA dna) {
 		List<DNA> result = new LinkedList<>();
+
+		if (dna == null)
+			return result;
 
 		Long currentDnaId = dna.getId();
 		while (currentDnaId != 0) {
@@ -34,6 +66,7 @@ public class GenePoolWithHistory extends GenePool {
 		return result;
 	}
 
+	@Override
 	public DNA getMostSuccessfulDNA() {
 		DNA result = null;
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
@@ -48,30 +81,19 @@ public class GenePoolWithHistory extends GenePool {
 		return result;
 	}
 
-	public int getCurrentSize() {
-		return currentPool.size();
+	@Override
+	List<Long> getCurrentPool() {
+		return currentPool;
 	}
 
-	public int getHistoricalSize() {
-		return dnaById.size();
+	@Override
+	Set<Long> getHistoricalPool() {
+		return dnaById.keySet();
 	}
 
-	public DNA createDNA(String dna) {
-		DNA result = super.createDNA(dna);
-		add(result, null);
-		return result;
-	}
-
-	public DNA createRandomDNA(RanGen ranGen) {
-		DNA result = super.createRandomDNA(ranGen);
-		add(result, null);
-		return result;
-	}
-
-	public DNA mutateDNA(DNA parent, RanGen ranGen) {
-		DNA result = super.mutateDNA(parent, ranGen);
-		add(result, parent);
-		return result;
+	@Override
+	Map<Long, Long> getChildrenToParents() {
+		return childrenToParents;
 	}
 
 	private void add(DNA dna, DNA parent) {
@@ -83,10 +105,6 @@ public class GenePoolWithHistory extends GenePool {
 			childrenToParents.put(dna.getId(), parent.getId());
 	}
 
-	public void remove(DNA dna) {
-		currentPool.remove(dna.getId());
-	}
-
 	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
 		int result = 0;
 		for (Long otherDNAId : currentPool) {
@@ -95,9 +113,5 @@ public class GenePoolWithHistory extends GenePool {
 				result += dna.getLevenshteinDistanceFrom(otherDNA);
 		}
 		return result;
-	}
-
-	Map<Long, Long> getChildrenToParents() {
-		return childrenToParents;
 	}
 }

@@ -16,6 +16,7 @@ import org.nusco.narjillos.ecosystem.Experiment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
+import org.nusco.narjillos.genomics.GenePoolStats;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
@@ -60,7 +61,7 @@ public class Lab {
 		GenePool genePool = experiment.getGenePool();
 
 		if (commandLine.hasOption("poolstats")) {
-			System.out.println(getPoolStatistics(genePool));
+			System.out.println(new GenePoolStats(genePool));
 			return;
 		}
 
@@ -106,13 +107,6 @@ public class Lab {
     	printHelpText(options);
 	}
 
-	private static String getPoolStatistics(GenePool genePool) {
-		StringBuffer result = new StringBuffer();
-		result.append("Current gene pool size     => " + genePool.getCurrentSize() + "\n");
-		result.append("Historical gene pool size  => " + genePool.getHistoricalSize() + "\n");
-		return result.toString();
-	}
-
 	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {
 		DNA dna = getDNA(genePool, dnaId);
 		return genePool.getAncestry(dna);
@@ -135,7 +129,7 @@ public class Lab {
 	}
 
 	private static DNA getDNA(GenePool genePool, String dnaId) {
-		return genePool.getDNA(Long.parseLong(dnaId));
+		return genePool.getDna(new Long(Long.parseLong(dnaId)));
 	}
 
 	private static void printHelpText(Options commandLineOptions) {

@@ -7,6 +7,7 @@ import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.ecosystem.Culture;
 import org.nusco.narjillos.ecosystem.Ecosystem;
 import org.nusco.narjillos.ecosystem.Experiment;
+import org.nusco.narjillos.ecosystem.ExperimentStats;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
@@ -25,8 +26,7 @@ public class PetriDish extends Dish {
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
 
-		System.out.println(getHeadersString());
-		System.out.println(getStatusString(experiment.getTicksChronometer().getTotalTicks()));
+		System.out.println(ExperimentStats.getHeadersString());
 	}
 
 	public Culture getCulture() {
@@ -37,13 +37,12 @@ public class PetriDish extends Dish {
 		if (isTerminated)
 			return false;
 
-		boolean thereAreSurvivors = experiment.tick();
 		executePeriodOperations();
+		
+		if (experiment.thereAreSurvivors())
+			experiment.tick();
 
-		if (!thereAreSurvivors)
-			System.out.println("*** Extinction happens. ***");
-
-		return thereAreSurvivors;
+		return true;
 	}
 
 	public boolean isBusy() {
@@ -52,9 +51,8 @@ public class PetriDish extends Dish {
 
 	@Override
 	public void terminate() {
-		while (isBusy()) {
+		while (isBusy())
 			sleepAWhile();
-		}
 		String finalReport = experiment.terminate();
 		System.out.println(finalReport);
 		isTerminated = true;
@@ -108,7 +106,8 @@ public class PetriDish extends Dish {
 		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL_TICKS != 0)
 			return;
 
-		System.out.println(getStatusString(ticks));
+		experiment.updateStats();
+		System.out.println(experiment.getStats());
 
 		if (!persistent)
 			return;
@@ -117,6 +116,9 @@ public class PetriDish extends Dish {
 			save();
 			lastSaveTime = System.currentTimeMillis();
 		}
+
+		if (!experiment.thereAreSurvivors())
+			isTerminated = true;
 	}
 
 	private void save() {
@@ -125,23 +127,6 @@ public class PetriDish extends Dish {
 		Persistence.save(experiment);
 		System.out.println(" Done.");
 		isSaving = false;
-	}
-
-	private String getHeadersString() {
-		return alignLeft("tick") + alignLeft("time") + alignLeft("narj") + alignLeft("food");
-	}
-
-	private String getStatusString(long tick) {
-		return alignLeft(NumberFormat.format(tick))
-				+ alignLeft(NumberFormat.format(experiment.getTotalRunningTimeInSeconds()))
-				+ alignLeft(experiment.getEcosystem().getNumberOfNarjillos())
-				+ alignLeft(experiment.getEcosystem().getNumberOfFoodPieces());
-	}
-
-	private String alignLeft(Object label) {
-		final String padding = "              ";
-		String paddedLabel = padding + label.toString();
-		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}
 
 	private long generateRandomSeed() {

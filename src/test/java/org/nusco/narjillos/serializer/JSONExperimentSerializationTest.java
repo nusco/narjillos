@@ -17,8 +17,10 @@ public class JSONExperimentSerializationTest {
 		Experiment experiment = new Experiment(1234, new Ecosystem(10000, false), "experiment_serialization_test", true);
 		assertTrue(experiment.getGenePool() instanceof GenePoolWithHistory);
 		
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 10; i++) {
 			experiment.tick();
+			experiment.updateStats();
+		}
 		
 		String json = JSON.toJson(experiment, Experiment.class);
 		Experiment deserialized = JSON.fromJson(json, Experiment.class);
@@ -32,6 +34,9 @@ public class JSONExperimentSerializationTest {
 		
 		GenePool genePool = experiment.getGenePool();
 		GenePool deserializedGenePool = deserialized.getGenePool();
+		
 		assertArrayEquals(deserializedGenePool.getAncestry(deserializedGenePool.getMostSuccessfulDNA()).toArray(), genePool.getAncestry(genePool.getMostSuccessfulDNA()).toArray());
+		assertEquals(10, deserialized.getHistory().size());
+		assertEquals(deserialized.getHistory(), experiment.getHistory());
 	}
 }

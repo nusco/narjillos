@@ -89,14 +89,17 @@ public class Ecosystem extends Culture {
 		return egg;
 	}
 
+	@Override
 	public int getNumberOfFoodPieces() {
 		return space.count("food_piece");
 	}
 
+	@Override
 	public int getNumberOfEggs() {
 		return space.count("egg");
 	}
 
+	@Override
 	public int getNumberOfNarjillos() {
 		synchronized (narjillos) {
 			return narjillos.size();
@@ -109,7 +112,7 @@ public class Ecosystem extends Culture {
 		}
 	}
 
-	public void periodicUpdate() {
+	public void updateTargets() {
 		synchronized (narjillos) {
 			narjillos.stream()
 				.map((creature) -> (Narjillo) creature)
@@ -135,11 +138,6 @@ public class Ecosystem extends Culture {
 	}
 
 	@Override
-	public String getStatistics() {
-		return "Narj: " + getNumberOfNarjillos() + " / Eggs: " + getNumberOfEggs() + " / Food: " + getNumberOfFoodPieces();
-	}
-
-	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
 		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> {
 			tickEgg((Egg) thing, ranGen);
@@ -157,7 +155,7 @@ public class Ecosystem extends Culture {
 
 		if (shouldSpawnFood(ranGen)) {
 			spawnFood(randomPosition(getSize(), ranGen));
-			periodicUpdate();
+			updateTargets();
 		}
 
 		synchronized (narjillos) {

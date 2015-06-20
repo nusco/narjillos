@@ -14,9 +14,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Track historical data in experiment for analysis.
 
-* Track historical population data together with ancestry  
-  creatures/food/etc.  
-
 * Dump history to CSV  
   Run analysis with --history to dump a CSV file of history.  
   This should be good for analysis in a spreadsheet.

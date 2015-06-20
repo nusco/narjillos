@@ -43,9 +43,13 @@ public abstract class Culture {
 		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 	}
 
-	public abstract String getStatistics();
-
 	public abstract Set<Thing> getThings(String label);
+
+	public abstract int getNumberOfNarjillos();
+
+	public abstract int getNumberOfEggs();
+
+	public abstract int getNumberOfFoodPieces();
 
 	/** Runs one simulation tick */
 	public void tick(GenePool genePool, RanGen ranGen) {

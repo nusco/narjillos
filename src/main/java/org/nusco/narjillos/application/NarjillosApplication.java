@@ -180,7 +180,10 @@ abstract class NarjillosApplication extends Application {
 	}
 
 	protected String getEnvironmentStatistics() {
-		return getDish().getCulture().getStatistics();
+		Culture culture = getDish().getCulture();
+		return "Narj: " + culture.getNumberOfNarjillos()
+				+ " / Eggs: " + culture.getNumberOfEggs()
+				+ " / Food: " + culture.getNumberOfFoodPieces();
 	}
 
 	protected boolean isBusy() {

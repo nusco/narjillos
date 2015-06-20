@@ -1,5 +1,8 @@
 package org.nusco.narjillos.ecosystem;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
@@ -14,31 +17,34 @@ public class Experiment {
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final RanGen ranGen;
 	private final GenePool genePool;
+	private final boolean trackHistory;
+	private final LinkedList<ExperimentStats> stats = new LinkedList<>();
 
 	private long totalRunningTime = 0;
 
 	private transient long lastRegisteredRunningTime;
 
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackGenePool, String dna) {
-		this(seed, version, ecosystem, trackGenePool);
+	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackHistory, String dna) {
+		this(seed, version, ecosystem, trackHistory);
 		ecosystem.populate(dna, genePool, ranGen);
 	}
 
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackGenePool) {
-		this(seed, version, ecosystem, trackGenePool);
+	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackHistory) {
+		this(seed, version, ecosystem, trackHistory);
 		ecosystem.populate(genePool, ranGen);
 	}
 
-	private Experiment(long seed, String version, Ecosystem ecosystem, boolean trackGenePool) {
-		genePool = initializeGenePool(trackGenePool);
+	private Experiment(long seed, String version, Ecosystem ecosystem, boolean trackHistory) {
+		genePool = initializeGenePool(trackHistory);
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);
 		this.ecosystem = ecosystem;
+		this.trackHistory = trackHistory;
 	}
 
-	private GenePool initializeGenePool(boolean trackGenePool) {
-		if (!trackGenePool)
+	private GenePool initializeGenePool(boolean trackHistory) {
+		if (!trackHistory)
 			return new SimpleGenePool();
 
 		return new GenePoolWithHistory();
@@ -52,18 +58,12 @@ public class Experiment {
 		return id;
 	}
 
-	public boolean tick() {
+	public void tick() {
 		if (ticksChronometer.getTotalTicks() % Configuration.ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL == 0)
-			executePeriodicOperations();
+			ecosystem.updateTargets();
 
 		ecosystem.tick(genePool, ranGen);
 		ticksChronometer.tick();
-		return areThereSurvivors();
-	}
-
-	private void executePeriodicOperations() {
-		ecosystem.periodicUpdate();
-		updateTotalRunningTime();
 	}
 
 	public Ecosystem getEcosystem() {
@@ -74,12 +74,42 @@ public class Experiment {
 		return ticksChronometer;
 	}
 
-	private boolean areThereSurvivors() {
-		return ecosystem.getNumberOfNarjillos() > 0 || ecosystem.getNumberOfEggs() > 0;
-	}
-
 	public long getTotalRunningTimeInSeconds() {
 		return totalRunningTime / 1000L;
+	}
+
+	public ExperimentStats getStats() {
+		return stats.getLast();
+	}
+
+	public List<ExperimentStats> getHistory() {
+		return stats;
+	}
+
+	public String terminate() {
+		updateTotalRunningTime();
+		ecosystem.terminate();
+		String result = toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
+			+ getTicksChronometer().getTotalTicks() + " ticks";
+		if (!thereAreSurvivors())
+			result += " (EXTINCTION)";
+		return result;
+	}
+
+	public GenePool getGenePool() {
+		return genePool;
+	}
+
+	public void updateStats() {
+		if (!trackHistory)
+			stats.clear();
+		
+		updateTotalRunningTime();
+		stats.add(new ExperimentStats(this));
+	}
+
+	public boolean thereAreSurvivors() {
+		return ecosystem.getNumberOfNarjillos() > 0 || ecosystem.getNumberOfEggs() > 0;
 	}
 
 	// for testing
@@ -87,25 +117,14 @@ public class Experiment {
 		totalRunningTime = 0;
 	}
 
+	@Override
+	public String toString() {
+		return "Experiment " + getId();
+	}
+
 	private void updateTotalRunningTime() {
 		long updateTime = System.currentTimeMillis();
 		totalRunningTime = totalRunningTime + (updateTime - lastRegisteredRunningTime);
 		lastRegisteredRunningTime = updateTime;
-	}
-
-	public String terminate() {
-		updateTotalRunningTime();
-		ecosystem.terminate();
-		return toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
-			+ getTicksChronometer().getTotalTicks() + " ticks";
-	}
-
-	public GenePool getGenePool() {
-		return genePool;
-	}
-
-	@Override
-	public String toString() {
-		return "Experiment " + getId();
 	}
 }

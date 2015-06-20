@@ -35,6 +35,21 @@ public class IsolationCulture extends Culture {
 	}
 
 	@Override
+	public int getNumberOfNarjillos() {
+		return 1;
+	}
+
+	@Override
+	public int getNumberOfEggs() {
+		return 0;
+	}
+
+	@Override
+	public int getNumberOfFoodPieces() {
+		return 0;
+	}
+
+	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
 		tickNarjillos(narjillos);
 	}
@@ -42,10 +57,5 @@ public class IsolationCulture extends Culture {
 	@Override
 	protected Set<Thing> getCollisions(Segment movement) {
 		return EMPTY_SET;
-	}
-
-	@Override
-	public String getStatistics() {
-		return "TODO: statistics in IsolationEnvironment";
 	}
 }

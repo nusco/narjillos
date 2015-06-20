@@ -51,7 +51,7 @@ public class GenePoolWithHistoryTest {
 	}
 	
 	@Test
-	public void canRemoveDNA() {
+	public void removesDNA() {
 		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000");
 		DNA thisOneWillDie = genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000");
 		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000");
@@ -74,5 +74,16 @@ public class GenePoolWithHistoryTest {
 		
 		assertEquals(50, genePool.getCurrentPool().size());
 		assertEquals(100, genePool.getHistoricalPool().size());
+	}
+	
+	@Test
+	public void getsDNAGeneration() {
+		DNA gen1 = genePool.createDNA("{0}");
+		DNA gen2 = genePool.mutateDNA(gen1, ranGen);
+		DNA gen3 = genePool.mutateDNA(gen2, ranGen);
+		
+		assertEquals(1, genePool.getGenerationOf(gen1));
+		assertEquals(2, genePool.getGenerationOf(gen2));
+		assertEquals(3, genePool.getGenerationOf(gen3));
 	}
 }

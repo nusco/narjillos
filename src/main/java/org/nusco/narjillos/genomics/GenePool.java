@@ -37,6 +37,8 @@ public abstract class GenePool {
 	
 	public abstract DNA getMostSuccessfulDNA();
 
+	public abstract int getGenerationOf(DNA dna);
+
 	abstract Map<Long, Long> getChildrenToParents();
 
 	public long getCurrentSerialId() {

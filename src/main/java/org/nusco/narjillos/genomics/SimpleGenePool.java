@@ -45,4 +45,9 @@ public class SimpleGenePool extends GenePool {
 	Map<Long, Long> getChildrenToParents() {
 		return new LinkedHashMap<>();
 	}
+
+	@Override
+	public int getGenerationOf(DNA dna) {
+		return 0;
+	}
 }

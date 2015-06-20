@@ -1,16 +1,20 @@
 package org.nusco.narjillos.genomics;
 
+import java.util.List;
+
 /**
  * Gets statistics from a GenePool.
  */
 public class GenePoolStats {
 
-	private int currentPoolSize;
-	private int historicalPoolSize;
+	private final int currentPoolSize;
+	private final int historicalPoolSize;
+	private final double averageGeneration;
 
 	public GenePoolStats(GenePool genePool) {
 		this.currentPoolSize = genePool.getCurrentPool().size();
 		this.historicalPoolSize = genePool.getHistoricalPool().size();
+		this.averageGeneration = calculateAverageGeneration(genePool);
 	}
 
 	public int getCurrentPoolSize() {
@@ -42,5 +46,22 @@ public class GenePoolStats {
 		if (historicalPoolSize != other.historicalPoolSize)
 			return false;
 		return true;
+	}
+
+	public double getAverageGeneration() {
+		return averageGeneration;
+	}
+
+	private double calculateAverageGeneration(GenePool genePool) {
+		if (currentPoolSize == 0)
+			return 0;
+		
+		List<Long> currentPool = genePool.getCurrentPool();
+		double generationsSum = 0;
+		for (Long id : currentPool) {
+			DNA dna = genePool.getDna(id);
+			generationsSum += genePool.getGenerationOf(dna);
+		}
+		return generationsSum / currentPool.size();
 	}
 }

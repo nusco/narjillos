@@ -18,10 +18,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Run analysis with --history to dump a CSV file of history.  
   This should be good for analysis in a spreadsheet.
 
-+ Track average generations in history  
-  The slope of the resulting graph is a nice indicator of evolution speed.
-  See Burtsev, "Measuring the Dynamics of Artificial Evolution".  
-
 + Fail with explicit error if running ancestry analysis on a file without ancestry  
 
 + Warning in case of conflicting command-line arguments of main apps  
@@ -54,23 +50,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Issue warning when running on CPU with the "wrong" word size
   We don't use strictfp, because it harms performance. So you could get non-deterministic results if you run
   on a CPU with a different flotpoint precision than the expected one.  
-
-
-##Seasons
->goal: faster evolution  
-
-    Cyclically vary the amount of food that spawns.
-    
-    Studies show that evolution works best if there are enough resources (food),
-    but not too many. The problem is that it's hard to know what "enough but 
-    not too many" means. So I want to try this: food amount is cyclical. I'm 
-    hoping that along the way from "almost starving" to "economy of
-    abundance", the system will hit a few evolutionary sweet spots.
-
-* Seasons  
-
-* Configurable seasonal cycle  
-  Max, min and period in config.yaml  
 
 
 ##Ecological Niches
@@ -148,6 +127,11 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 * Store historical data in a database rather than in memory  
   Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
+  Maybe track only DNA and birth/date events, and have an external program, possibly in Ruby, to process stats?
+  
++ Move entire persistence to a database  
+  Consider this, but be aware that it might effect usability, performance or reliability.  
+  So I might decide to stick with files.  
   
 + Move entire persistence to a database  
   Consider this, but be aware that it might effect usability, performance or reliability.  
@@ -155,6 +139,23 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 + Save to remote database  
   If the DB is configurable, then it's easier to run experiments in the cloud.
+
+
+##Seasons
+>goal: faster evolution  
+
+    Cyclically vary the amount of food that spawns.
+    
+    Studies show that evolution works best if there are enough resources (food),
+    but not too many. The problem is that it's hard to know what "enough but 
+    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    hoping that along the way from "almost starving" to "economy of
+    abundance", the system will hit a few evolutionary sweet spots.
+
+* Seasons  
+
+* Configurable seasonal cycle  
+  Max, min and period in config.yaml  
 
 
 ##Intuitive Navigation

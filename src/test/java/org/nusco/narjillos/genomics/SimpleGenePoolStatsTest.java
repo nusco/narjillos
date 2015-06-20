@@ -16,20 +16,14 @@ public class SimpleGenePoolStatsTest {
 	public void setUpGenePool() {
 		DNA dna1 = genePool.createRandomDNA(ranGen); // 1
 		
-		DNA dna2 = genePool.mutateDNA(dna1, ranGen); // 2
+		genePool.mutateDNA(dna1, ranGen); // 2
 		genePool.mutateDNA(dna1, ranGen); // 3
-		
-		genePool.mutateDNA(dna2, ranGen); // 4
-		
-		DNA dna5 = genePool.createRandomDNA(ranGen); // 5
-		genePool.mutateDNA(dna5, ranGen); // 6
-
-		genePool.remove(dna1); // remove 1
 	}
 	
 	@Test
 	public void calculatesStats() {
 		assertEquals(0, stats.getCurrentPoolSize());
 		assertEquals(0, stats.getHistoricalPoolSize());
+		assertEquals(0.0, stats.getAverageGeneration(), 0.0);
 	}
 }

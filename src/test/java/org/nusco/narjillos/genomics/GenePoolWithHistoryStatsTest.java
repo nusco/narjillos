@@ -23,13 +23,16 @@ public class GenePoolWithHistoryStatsTest {
 		DNA dna5 = genePool.createRandomDNA(ranGen); // 5
 		genePool.mutateDNA(dna5, ranGen); // 6
 
+		genePool.createRandomDNA(ranGen); // 7
+
 		genePool.remove(dna1); // remove 1
 	}
 	
 	@Test
 	public void calculatesStats() {
 		GenePoolStats stats = new GenePoolStats(genePool);
-		assertEquals(5, stats.getCurrentPoolSize());
-		assertEquals(6, stats.getHistoricalPoolSize());
+		assertEquals(6, stats.getCurrentPoolSize());
+		assertEquals(7, stats.getHistoricalPoolSize());
+		assertEquals(1.83, stats.getAverageGeneration(), 0.01);
 	}
 }

@@ -18,7 +18,11 @@ public class ExperimentStats {
 	}
 
 	public static String getHeadersString() {
-		return alignLeft("tick") + alignLeft("time") + alignLeft("narj") + alignLeft("food");
+		return alignLeft("tick")
+				+ alignLeft("time")
+				+ alignLeft("narj")
+				+ alignLeft("food")
+				+ alignLeft("avg_gen");
 	}
 
 	@Override
@@ -26,7 +30,8 @@ public class ExperimentStats {
 		return alignLeft(NumberFormat.format(ticks))
 				+ alignLeft(NumberFormat.format(runningTime))
 				+ alignLeft(genePoolStats.getCurrentPoolSize())
-				+ alignLeft(numberOfFoodPieces);
+				+ alignLeft(numberOfFoodPieces)
+				+ alignLeft(NumberFormat.format(genePoolStats.getAverageGeneration()));
 	}
 
 	@Override

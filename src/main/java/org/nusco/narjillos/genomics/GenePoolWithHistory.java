@@ -17,6 +17,7 @@ public class GenePoolWithHistory extends GenePool {
 	private final Map<Long, DNA> dnaById = new LinkedHashMap<>();
 	private final List<Long> currentPool = new LinkedList<>();
 	private final Map<Long, Long> childrenToParents = new LinkedHashMap<>();
+	private final Map<Long, Integer> dnaToGeneration = new LinkedHashMap<>();
 
 	@Override
 	public DNA createDNA(String dna) {
@@ -96,8 +97,19 @@ public class GenePoolWithHistory extends GenePool {
 		return childrenToParents;
 	}
 
+	@Override
+	public int getGenerationOf(DNA dna) {
+		return dnaToGeneration.get(dna.getId());
+	}
+
 	private void add(DNA dna, DNA parent) {
 		dnaById.put(dna.getId(), dna);
+		
+		if (parent == null)
+			dnaToGeneration.put(dna.getId(), 1);
+		else
+			dnaToGeneration.put(dna.getId(), getGenerationOf(parent) + 1);
+			
 		currentPool.add(dna.getId());
 		if (parent == null)
 			childrenToParents.put(dna.getId(), 0l);

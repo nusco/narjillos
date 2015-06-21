@@ -1,7 +1,12 @@
 package org.nusco.narjillos;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -37,7 +42,7 @@ public class Lab {
 		options.addOption("dnastats", true, "print DNA stats (takes a DNA id)");
 		options.addOption("a", "ancestry", true, "print DNA ancestry (takes a DNA id)");
 		options.addOption("primary", false, "print id of primary (most successful) DNA");
-		options.addOption("poolstats", false, "print genepool statistics");
+		options.addOption("s", "stats", false, "print current statistics");
 		options.addOption("history", false, "output history in CSV format");
 		options.addOption("ancestry", false, "output ancestry in CSV format");
 		options.addOption("nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
@@ -62,8 +67,10 @@ public class Lab {
 		Experiment experiment = Persistence.loadExperiment(experimentFile);
 		GenePool genePool = experiment.getGenePool();
 
-		if (commandLine.hasOption("poolstats")) {
+		if (commandLine.hasOption("d") || commandLine.hasOption("stats")) {
 			System.out.println(new GenePoolStats(genePool));
+			System.out.println();
+			printConversions(experiment);
 			return;
 		}
 
@@ -114,6 +121,24 @@ public class Lab {
 		}
 
     	printHelpText(options);
+	}
+
+	private static void printConversions(Experiment experiment) {
+		Set<Narjillo> narjillos = experiment.getEcosystem().getNarjillos();
+		Map<String, Integer> conversionsToNumberOfSpecimen = new LinkedHashMap<>();
+		for (Narjillo narjillo : narjillos) {
+			String conversion = "" + narjillo.getBreathedElement() + "->" + narjillo.getByproduct();
+			if (conversionsToNumberOfSpecimen.containsKey(conversion))
+				conversionsToNumberOfSpecimen.put(conversion, conversionsToNumberOfSpecimen.get(conversion) + 1);
+			else
+				conversionsToNumberOfSpecimen.put(conversion, 1);
+		}
+		
+		System.out.println("Conversions:");
+		LinkedList<String> conversions = new LinkedList<>(conversionsToNumberOfSpecimen.keySet());
+		Collections.sort(conversions);
+		for (String conversion : conversions)
+			System.out.println("  " + conversion + ": " + conversionsToNumberOfSpecimen.get(conversion));
 	}
 
 	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {

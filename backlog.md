@@ -20,7 +20,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     If I still don't get sympatric speciation after implementing this, then maybe I need  
     something even more radical. Sexual reproduction with assortative mating, maybe?
 
-* Bind chemical consumption to phenotypic characters
+* Give Narjillos a smooth evolutionary path from one element to another
+  Instead of the abrupt switch from element to element that we have now.
     
 * Ecological Niches  
   tweak chemistry to encourage speciation

@@ -67,10 +67,12 @@ public class Lab {
 		Experiment experiment = Persistence.loadExperiment(experimentFile);
 		GenePool genePool = experiment.getGenePool();
 
-		if (commandLine.hasOption("d") || commandLine.hasOption("stats")) {
+		if (commandLine.hasOption("s") || commandLine.hasOption("stats")) {
 			System.out.println(new GenePoolStats(genePool));
+			System.out.println(ExperimentStats.getConsoleHeader());
+			System.out.println(new ExperimentStats(experiment));
 			System.out.println();
-			printConversions(experiment);
+			printChemicalCycles(experiment);
 			return;
 		}
 
@@ -123,22 +125,22 @@ public class Lab {
     	printHelpText(options);
 	}
 
-	private static void printConversions(Experiment experiment) {
+	private static void printChemicalCycles(Experiment experiment) {
 		Set<Narjillo> narjillos = experiment.getEcosystem().getNarjillos();
-		Map<String, Integer> conversionsToNumberOfSpecimen = new LinkedHashMap<>();
+		Map<String, Integer> cyclesToNumberOfSpecimen = new LinkedHashMap<>();
 		for (Narjillo narjillo : narjillos) {
-			String conversion = "" + narjillo.getBreathedElement() + "->" + narjillo.getByproduct();
-			if (conversionsToNumberOfSpecimen.containsKey(conversion))
-				conversionsToNumberOfSpecimen.put(conversion, conversionsToNumberOfSpecimen.get(conversion) + 1);
+			String cycles = "" + narjillo.getBreathedElement() + "->" + narjillo.getByproduct();
+			if (cyclesToNumberOfSpecimen.containsKey(cycles))
+				cyclesToNumberOfSpecimen.put(cycles, cyclesToNumberOfSpecimen.get(cycles) + 1);
 			else
-				conversionsToNumberOfSpecimen.put(conversion, 1);
+				cyclesToNumberOfSpecimen.put(cycles, 1);
 		}
 		
-		System.out.println("Conversions:");
-		LinkedList<String> conversions = new LinkedList<>(conversionsToNumberOfSpecimen.keySet());
-		Collections.sort(conversions);
-		for (String conversion : conversions)
-			System.out.println("  " + conversion + ": " + conversionsToNumberOfSpecimen.get(conversion));
+		System.out.println("Chemical cycles:");
+		LinkedList<String> cycles = new LinkedList<>(cyclesToNumberOfSpecimen.keySet());
+		Collections.sort(cycles);
+		for (String cycle : cycles)
+			System.out.println("  " + cycle + "\tspecimen: " + cyclesToNumberOfSpecimen.get(cycle));
 	}
 
 	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {

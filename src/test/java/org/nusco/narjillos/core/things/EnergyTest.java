@@ -26,26 +26,26 @@ public class EnergyTest {
 	public void canBeDepleted() {
 		assertFalse(energy.isZero());
 
-		energy.tick(initialValue, 0);
+		energy.tick(initialValue);
 
 		assertTrue(energy.isZero());
 	}
 
 	@Test
 	public void cannotFallBelowZero() {
-		energy.tick(initialValue, 0);
+		energy.tick(initialValue);
 		assertEquals(0, energy.getValue(), 0.001);
 
-		energy.tick(-10, 0);
+		energy.tick(-10);
 		assertEquals(0, energy.getValue(), 0.001);
 	}
 
 	@Test
 	public void cannotIncreaseAgainAfterBeingDepleted() {
-		energy.tick(initialValue, 0);
+		energy.tick(initialValue);
 		assertEquals(0, energy.getValue(), 0.001);
 
-		energy.tick(10, 0);
+		energy.tick(10);
 		assertEquals(0, energy.getValue(), 0.001);
 	}
 
@@ -75,7 +75,7 @@ public class EnergyTest {
 		double fullEnergyWhenStillYoung = energy.getValue();
 
 		// get older
-		energy.tick(0, 0);
+		energy.tick(0);
 
 		energy.steal(otherEnergy);
 		double fullEnergyWhenSlightlyOlder = energy.getValue();
@@ -92,11 +92,11 @@ public class EnergyTest {
 		fillToTheMax();
 		
 		for (int i = 0; i < lifespan - 1; i++)
-			energy.tick(0, 0);
+			energy.tick(0);
 
 		assertFalse(energy.isZero());
 
-		energy.tick(0, 0);
+		energy.tick(0);
 
 		assertTrue(energy.isZero());
 	}

@@ -12,7 +12,7 @@ public class JSONEnergySerializationTest {
 	public void serializesAndDeserializesLifeFormEnergy() {
 		Energy energy = new LifeFormEnergy(10, 20);
 		for (int i = 0; i < 10; i++)
-			energy.tick(i, 0);
+			energy.tick(i);
 		
 		String json = JSON.toJson(energy, Energy.class);
 		Energy deserialized = JSON.fromJson(json, Energy.class);

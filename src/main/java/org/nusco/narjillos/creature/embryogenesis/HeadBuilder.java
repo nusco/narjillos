@@ -19,7 +19,7 @@ class HeadBuilder extends ConcreteOrganBuilder {
 	}
 
 	public Element getByproduct() {
-		return Element.values()[getChromosome().getGene(BYPRODUCT) % 3];
+		return Element.fromInteger(getChromosome().getGene(BYPRODUCT));
 	}
 
 	public double getMetabolicRate() {

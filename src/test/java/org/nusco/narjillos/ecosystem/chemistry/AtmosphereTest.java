@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.nusco.narjillos.ecosystem.chemistry.Element.HYDROGEN;
 import static org.nusco.narjillos.ecosystem.chemistry.Element.NITROGEN;
 import static org.nusco.narjillos.ecosystem.chemistry.Element.OXYGEN;
+import static org.nusco.narjillos.ecosystem.chemistry.Element.ZERO;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.Configuration;
@@ -11,12 +12,12 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public class AtmosphereTest {
 
 	@Test
-	public void hasAnElementLevelsAtStart() {
+	public void hasAnElementAmountsAtStart() {
 		Atmosphere atmosphere = new Atmosphere(10);
 		
-		assertEquals(10, atmosphere.getElementLevel(OXYGEN), 0.0);
-		assertEquals(10, atmosphere.getElementLevel(HYDROGEN), 0.0);
-		assertEquals(10, atmosphere.getElementLevel(NITROGEN), 0.0);
+		assertEquals(10, atmosphere.getAmountOf(OXYGEN), 0.0);
+		assertEquals(10, atmosphere.getAmountOf(HYDROGEN), 0.0);
+		assertEquals(10, atmosphere.getAmountOf(NITROGEN), 0.0);
 	}
 
 	@Test
@@ -32,7 +33,7 @@ public class AtmosphereTest {
 	public void theDefaultInitialLevelIsReadFromConfiguration() {
 		Atmosphere atmosphere = new Atmosphere();
 		
-		assertEquals(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL, atmosphere.getElementLevel(OXYGEN), 0.0);
+		assertEquals(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL, atmosphere.getAmountOf(OXYGEN), 0.0);
 	}
 
 	@Test
@@ -42,6 +43,14 @@ public class AtmosphereTest {
 		assertEquals(0.33, atmosphere.getDensityOf(OXYGEN), 0.01);
 		assertEquals(0.33, atmosphere.getDensityOf(HYDROGEN), 0.01);
 		assertEquals(0.33, atmosphere.getDensityOf(NITROGEN), 0.01);
+	}
+
+	@Test
+	public void hasNoElementZero() {
+		Atmosphere atmosphere = new Atmosphere(10);
+		
+		assertEquals(0, atmosphere.getAmountOf(ZERO));
+		assertEquals(0.0, atmosphere.getDensityOf(ZERO), 0.0);
 	}
 	
 	@Test
@@ -55,6 +64,17 @@ public class AtmosphereTest {
 		
 		double sumOfDensities = atmosphere.getDensityOf(OXYGEN) + atmosphere.getDensityOf(HYDROGEN) + atmosphere.getDensityOf(NITROGEN);
 		assertEquals(1.0, sumOfDensities, 0.0001);
+	}
+	
+	@Test
+	public void convertsElements() {
+		Atmosphere atmosphere = new Atmosphere(10);
+		
+		atmosphere.convert(OXYGEN, HYDROGEN);
+		
+		assertEquals(9, atmosphere.getAmountOf(OXYGEN));
+		assertEquals(11, atmosphere.getAmountOf(HYDROGEN), 0.0);
+		assertEquals(10, atmosphere.getAmountOf(NITROGEN), 0.0);
 	}
 
 	@Test
@@ -72,26 +92,36 @@ public class AtmosphereTest {
 	}
 	
 	@Test
-	public void convertsElements() {
+	public void neverConvertsFromTheZeroElement() {
 		Atmosphere atmosphere = new Atmosphere(10);
 		
-		for (int i = 0; i < 11; i++)
-			atmosphere.convert(OXYGEN, HYDROGEN);
+		atmosphere.convert(ZERO, HYDROGEN);
 		
-		assertEquals(0, atmosphere.getElementLevel(OXYGEN));
-		assertEquals(20, atmosphere.getElementLevel(HYDROGEN), 0.0);
-		assertEquals(10, atmosphere.getElementLevel(NITROGEN), 0.0);
+		assertEquals(0, atmosphere.getAmountOf(ZERO));
+		assertEquals(10, atmosphere.getAmountOf(HYDROGEN));
+	}
+	
+	@Test
+	public void neverConvertsToTheZeroElement() {
+		Atmosphere atmosphere = new Atmosphere(10);
+		
+		atmosphere.convert(OXYGEN, ZERO);
+		
+		assertEquals(10, atmosphere.getAmountOf(OXYGEN));
+		assertEquals(0, atmosphere.getAmountOf(ZERO));
 	}
 	
 	@Test
 	public void stopsConvertingDepletedElements() {
 		Atmosphere atmosphere = new Atmosphere(10);
 		
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i < 20; i++) {
 			atmosphere.convert(OXYGEN, HYDROGEN);
 			atmosphere.convert(OXYGEN, NITROGEN);
 		}
 		
-		assertEquals(0, atmosphere.getDensityOf(OXYGEN), 0.0);
+		assertEquals(0, atmosphere.getAmountOf(OXYGEN), 0.0);
+		assertEquals(15, atmosphere.getAmountOf(HYDROGEN), 0.0);
+		assertEquals(15, atmosphere.getAmountOf(NITROGEN), 0.0);
 	}
 }

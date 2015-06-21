@@ -47,11 +47,11 @@ public class BodyTest {
 
 		Body body = new Body(head);
 
-		// TODO: why doesn't it work if I just tick the body?
-//		for (int i = 0; i < 1000; i++)
-//			body.tick(Vector.polar(100, 100));
+		// We cannot just tick the body, because if we do, it will move
+		// around.
 		fullyGrow(head);
 		fullyGrow(child);
+		body.updateMasses();
 		
 		// calculateRadius() needs an explicit center of mass, because of optimizations.
 		// So these two are better tested together: 

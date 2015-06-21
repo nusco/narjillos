@@ -22,8 +22,8 @@ public class JSONAtmosphereSerializationTest {
 		String json = JSON.toJson(atmosphere, Atmosphere.class);
 		Atmosphere deserialized = (Atmosphere) JSON.fromJson(json, Atmosphere.class);
 
-		assertEquals(atmosphere.getElementLevel(OXYGEN), deserialized.getElementLevel(OXYGEN));
-		assertEquals(atmosphere.getElementLevel(HYDROGEN), deserialized.getElementLevel(HYDROGEN));
-		assertEquals(atmosphere.getElementLevel(NITROGEN), deserialized.getElementLevel(NITROGEN));
+		assertEquals(atmosphere.getAmountOf(OXYGEN), deserialized.getAmountOf(OXYGEN));
+		assertEquals(atmosphere.getAmountOf(HYDROGEN), deserialized.getAmountOf(HYDROGEN));
+		assertEquals(atmosphere.getAmountOf(NITROGEN), deserialized.getAmountOf(NITROGEN));
 	}
 }

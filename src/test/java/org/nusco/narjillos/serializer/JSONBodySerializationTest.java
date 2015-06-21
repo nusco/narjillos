@@ -39,6 +39,9 @@ public class JSONBodySerializationTest {
 		
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
+		assertEquals(body.getRedMass(), deserialized.getRedMass(), 0.0);
+		assertEquals(body.getGreenMass(), deserialized.getGreenMass(), 0.0);
+		assertEquals(body.getBlueMass(), deserialized.getBlueMass(), 0.0);
 		
 		List<ConnectedOrgan> organs = body.getOrgans();
 		List<ConnectedOrgan> deserializedOrgans = deserialized.getOrgans();

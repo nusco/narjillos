@@ -23,20 +23,29 @@ public class Atmosphere {
 		levels.put(NITROGEN, initialElementLevels);
 	}
 
-	public int getElementLevel(Element element) {
+	public int getAmountOf(Element element) {
+		if (element == ZERO)
+			return 0;
+		
 		return levels.get(element);
 	}
 
 	public void convert(Element fromElement, Element toElement) {
+		if (fromElement == ZERO || toElement == ZERO)
+			return;
+		
 		Integer fromLevel = levels.get(fromElement);
 		if (fromLevel > 0) {
-			levels.put(fromElement, Math.max(0, fromLevel - 1));
-			
-			levels.put(toElement, Math.min(saturationElementLevels, levels.get(toElement) + 1));
+			Integer toLevel = levels.get(toElement);
+			levels.put(fromElement, fromLevel - 1);
+			levels.put(toElement, toLevel + 1);
 		}
 	}
 
 	public double getDensityOf(Element element) {
+		if (element == ZERO)
+			return 0;
+
 		return ((double) levels.get(element)) / saturationElementLevels;
 	}
 

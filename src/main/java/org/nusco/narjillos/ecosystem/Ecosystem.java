@@ -17,7 +17,6 @@ import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.physics.Viscosity;
-import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -217,11 +216,8 @@ public class Ecosystem extends Culture {
 		}
 
 		// Finally, go through the breathing loop
-		for (Narjillo narjillo : narjillos) {
-			Element breathedElement = narjillo.getBreathedElement();
-			if (breathedElement != null)
-				getAtmosphere().convert(breathedElement, narjillo.getByproduct());
-		}
+		for (Narjillo narjillo : narjillos)
+			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
 		
 		return result;
 	}

@@ -14,7 +14,7 @@ public interface Energy {
 		};
 
 		@Override
-		public void tick(double energySpent, double energyGained) {};
+		public void tick(double energySpent) {};
 		
 		@Override
 		public void steal(Energy other) {
@@ -37,7 +37,7 @@ public interface Energy {
 
 	public double getValue();
 	
-	public void tick(double energySpent, double energyGained);
+	public void tick(double energySpent);
 	
 	public double getMaximumValue();
 

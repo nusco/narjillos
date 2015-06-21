@@ -1,12 +1,7 @@
 package org.nusco.narjillos;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -69,10 +64,12 @@ public class Lab {
 
 		if (commandLine.hasOption("s") || commandLine.hasOption("stats")) {
 			System.out.println(new GenePoolStats(genePool));
+			
+			ExperimentStats stats = new ExperimentStats(experiment);
 			System.out.println(ExperimentStats.getConsoleHeader());
-			System.out.println(new ExperimentStats(experiment));
+			System.out.println(stats);
 			System.out.println();
-			printChemicalCycles(experiment);
+			System.out.println(stats.getChemicalCyclesReport());
 			return;
 		}
 
@@ -123,24 +120,6 @@ public class Lab {
 		}
 
     	printHelpText(options);
-	}
-
-	private static void printChemicalCycles(Experiment experiment) {
-		Set<Narjillo> narjillos = experiment.getEcosystem().getNarjillos();
-		Map<String, Integer> cyclesToNumberOfSpecimen = new LinkedHashMap<>();
-		for (Narjillo narjillo : narjillos) {
-			String cycles = "" + narjillo.getBreathedElement() + "->" + narjillo.getByproduct();
-			if (cyclesToNumberOfSpecimen.containsKey(cycles))
-				cyclesToNumberOfSpecimen.put(cycles, cyclesToNumberOfSpecimen.get(cycles) + 1);
-			else
-				cyclesToNumberOfSpecimen.put(cycles, 1);
-		}
-		
-		System.out.println("Chemical cycles:");
-		LinkedList<String> cycles = new LinkedList<>(cyclesToNumberOfSpecimen.keySet());
-		Collections.sort(cycles);
-		for (String cycle : cycles)
-			System.out.println("  " + cycle + "\tspecimen: " + cyclesToNumberOfSpecimen.get(cycle));
 	}
 
 	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {

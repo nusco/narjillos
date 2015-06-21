@@ -17,6 +17,7 @@ import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 import org.nusco.narjillos.genomics.GenePool;
 
 /**
@@ -29,7 +30,8 @@ public abstract class Culture {
 	private final long size;
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
 	private final ExecutorService executorService;
-
+	private final Atmosphere atmosphere = new Atmosphere();
+	
 	/** Counter used by the ThreadFactory to name threads. */
 	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
 
@@ -79,6 +81,10 @@ public abstract class Culture {
 		eventListeners.add(eventListener);
 	}
 
+	public Atmosphere getAtmosphere() {
+		return atmosphere;
+	}
+	
 	protected abstract Set<Thing> getCollisions(Segment movement);
 
 	protected abstract void tickThings(GenePool genePool, RanGen ranGen);

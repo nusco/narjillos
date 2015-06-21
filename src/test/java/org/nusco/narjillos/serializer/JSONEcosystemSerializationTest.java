@@ -1,6 +1,9 @@
 package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertEquals;
+import static org.nusco.narjillos.ecosystem.chemistry.Element.HYDROGEN;
+import static org.nusco.narjillos.ecosystem.chemistry.Element.NITROGEN;
+import static org.nusco.narjillos.ecosystem.chemistry.Element.OXYGEN;
 
 import java.util.Iterator;
 
@@ -35,6 +38,10 @@ public class JSONEcosystemSerializationTest {
 		assertEquals(4, deserialized.getThings("").size());
 		assertEquals(1, deserialized.getNarjillos().size());
 
+		assertEquals(deserialized.getAtmosphere().getElementLevel(OXYGEN), ecosystem.getAtmosphere().getElementLevel(OXYGEN));
+		assertEquals(deserialized.getAtmosphere().getElementLevel(HYDROGEN), ecosystem.getAtmosphere().getElementLevel(HYDROGEN));
+		assertEquals(deserialized.getAtmosphere().getElementLevel(NITROGEN), ecosystem.getAtmosphere().getElementLevel(NITROGEN));
+		
 		Iterator<Thing> thingsIterator = deserialized.getThings("").iterator();
 		assertEquals(narjillo.getPosition(), thingsIterator.next().getPosition());
 		assertEquals(food1.getPosition(), thingsIterator.next().getPosition());

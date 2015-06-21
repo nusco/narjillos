@@ -10,37 +10,29 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     g backlog N          prints the topmost N features
 
 
-##Ecological Niches
->goal: multiple species  
+##Self-Regulating Ecosystem
+>goal: specialized creatures  
 
-    Use different kinds of food to encourage sympatric speciation.
+    Encourage speciation by creating a self-enforcing reciprocal need between creatures.
     
-    If I don't get sympatric speciation after implementing this, then try the
-    Self-Regulating Ecosystem feature.
+    This feature should leverage disruptive evolution to push narjillos to specialize.
     
-* Different kinds of food  
-  probably over a 1- or 2-dimensional continuum. (1-dimensional is easier to graph,
-  2-dimensional has more space for niches).
-  for example, red to green, and all the intermediate colors.
+    If I still don't get sympatric speciation after implementing this, then maybe I need  
+    something even more radical. Sexual reproduction with assortative mating, maybe?
+
+* Narjillos produce a molecule  
+  based on visible body qualities - metabolic rate?  
+
+* Narjillos consume a molecule  
+  faster reproduction? lower energy expenditure?
+    
+* Ecological Niches  
+  tweak chemistry to encourage speciation
+    
++ Local atmosphere  
+  atmosphere composition is a map instead of a global value  
   
-* Narjillos consume food based on their phenotype  
-  how exactly? I need to come up with some kind of 1-dimensional relationship here.
-  Maybe body size? or color?
-  
-* Narjillos select food  
-  this could be tricky. how does a creature decide that food is "good enough"?
-  most likely, they pick the food that they "like" best. but what if better 
-  food appears nearby? there is a risk that a creature will starve
-  while trying to reach better and better food.
-  another totally different approach is mixing this with Geographical Food
-  Distribution (a separate story), and having narjillos have a favourite direction
-  (genetically determined) that they use to look for food instead of a favourite
-  type of food. Each Narjillos would eat any kind of food, but only find nutrients
-  in the "right" kind. Narjillos who tend towards the wrong direction will likely
-  die.
-  
-+ Geographical food distribution  
-  For example, red is in the upper left corner of the culture, green is in lower right.
++ Atmosphere composition "heat map"  
 
 
 ##Species Analysis
@@ -227,6 +219,36 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Max, min and period in config.yaml  
 
 
+##Ecological Niches
+>goal: multiple species  
+
+    Use different kinds of food to encourage sympatric speciation.
+
+* Different kinds of food  
+  probably over a 1- or 2-dimensional continuum. (1-dimensional is easier to graph,
+  2-dimensional has more space for niches).
+  for example, red to green, and all the intermediate colors.
+  
+* Narjillos consume food based on their phenotype  
+  how exactly? I need to come up with some kind of 1-dimensional relationship here.
+  Maybe body size? or color?
+  
+* Narjillos select food  
+  this could be tricky. how does a creature decide that food is "good enough"?
+  most likely, they pick the food that they "like" best. but what if better 
+  food appears nearby? there is a risk that a creature will starve
+  while trying to reach better and better food.
+  another totally different approach is mixing this with Geographical Food
+  Distribution (a separate story), and having narjillos have a favourite direction
+  (genetically determined) that they use to look for food instead of a favourite
+  type of food. Each Narjillos would eat any kind of food, but only find nutrients
+  in the "right" kind. Narjillos who tend towards the wrong direction will likely
+  die.
+  
++ Geographical food distribution  
+  For example, red is in the upper left corner of the culture, green is in lower right.
+
+
 ##Advanced Body Plans
 >goal: specialized creatures  
 
@@ -290,32 +312,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Visualize istincts on other creatures when following a narjillo  
 * Decide ideal direction based on istinct genes  
 + Attach istincts to all things – in particular, food  
-
-
-##Self-Regulating Ecosystem
->goal: specialized creatures  
-
-    Encourage speciation by creating a self-enforcing reciprocal need between creatures.
-    
-    This feature should leverage disruptive evolution to push narjillos to specialize.
-    
-    If I still don't get sympatric speciation after implementing this, then maybe I need  
-    something even more radical. Sexual reproduction with assortative mating, maybe?
-
-* Atmosphere chemistry  
-* Narjillos produce a molecule  
-  based on visible body qualities - metabolic rate?  
-
-* Narjillos consume a molecule  
-  faster reproduction? lower energy expenditure?
-    
-* Ecological Niches  
-  tweak chemistry to encourage speciation
-    
-+ Local atmosphere  
-  atmosphere composition is a map instead of a global value  
-  
-+ Atmosphere composition "heat map"  
 
 
 ##Lab Analysis

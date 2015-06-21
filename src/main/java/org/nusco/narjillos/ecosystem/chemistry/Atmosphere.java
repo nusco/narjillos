@@ -23,18 +23,18 @@ public class Atmosphere {
 		levels.put(NITROGEN, initialElementLevels);
 	}
 
-	public int getAmountOf(Element element) {
+	public synchronized int getAmountOf(Element element) {
 		if (element == ZERO)
 			return 0;
 		
 		return levels.get(element);
 	}
 
-	public void convert(Element fromElement, Element toElement) {
+	public synchronized void convert(Element fromElement, Element toElement) {
 		if (fromElement == ZERO || toElement == ZERO)
 			return;
-		
-		Integer fromLevel = levels.get(fromElement);
+
+		int fromLevel = levels.get(fromElement);
 		if (fromLevel > 0) {
 			Integer toLevel = levels.get(toElement);
 			levels.put(fromElement, fromLevel - 1);
@@ -42,9 +42,9 @@ public class Atmosphere {
 		}
 	}
 
-	public double getDensityOf(Element element) {
+	public synchronized double getDensityOf(Element element) {
 		if (element == ZERO)
-			return 0;
+			return 0.0;
 
 		return ((double) levels.get(element)) / saturationElementLevels;
 	}
@@ -55,5 +55,10 @@ public class Atmosphere {
 		result.levels.put(HYDROGEN, levels.get(HYDROGEN));
 		result.levels.put(NITROGEN, levels.get(NITROGEN));
 		return result;
+	}
+	
+	@Override
+	public synchronized String toString() {
+		return "O: " + levels.get(OXYGEN) + ", H: " + levels.get(HYDROGEN) + ", N: " + levels.get(NITROGEN);
 	}
 }

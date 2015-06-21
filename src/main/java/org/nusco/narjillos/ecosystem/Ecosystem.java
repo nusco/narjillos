@@ -186,7 +186,7 @@ public class Ecosystem extends Culture {
 	private synchronized void tickNarjillos(GenePool genePool, RanGen ranGen) {
 		Map<Narjillo, Set<Thing>> narjillosToCollidedFood;
 		synchronized (narjillos) {
-			narjillosToCollidedFood = calculateCollisions(narjillos);
+			narjillosToCollidedFood = tick(narjillos);
 		}
 
 		// Consume food in a predictable order, to avoid non-deterministic
@@ -200,13 +200,13 @@ public class Ecosystem extends Culture {
 			});
 	}
 
-	private Map<Narjillo, Set<Thing>> calculateCollisions(Set<Narjillo> narjillos) {
+	private Map<Narjillo, Set<Thing>> tick(Set<Narjillo> narjillos) {
 		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();
 
 		// Calculate collisions in parallel...
 		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickNarjillos(narjillos);
 
-		// ...but collect the results in a predictable order
+		// ...but collect the results in a predictable sequential order
 		for (Narjillo narjillo : collisionFutures.keySet()) {
 			try {
 				result.put(narjillo, collisionFutures.get(narjillo).get());
@@ -215,7 +215,7 @@ public class Ecosystem extends Culture {
 			}
 		}
 
-		// Finally, go through the breathing loop
+		// Finally, go through the breathing loop (also sequential)
 		for (Narjillo narjillo : narjillos)
 			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
 		

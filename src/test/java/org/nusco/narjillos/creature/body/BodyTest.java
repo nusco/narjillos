@@ -69,10 +69,12 @@ public class BodyTest {
 	}
 	
 	@Test
-	public void hasTheSameConsumedElementAsTheHead() {
-		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, Element.NITROGEN, 0.42, 0, 10));
+	public void hasTheSameByproductAsTheHead() {
+		Head head = new Head(0, 1, 0, 0, 0, 1, Element.OXYGEN, 0.42, 0, 10);
+		Body body = new Body(head);
 
-		assertEquals(Element.NITROGEN, body.getConsumedElement());
+		assertEquals(Element.OXYGEN, head.getByproduct());
+		assertEquals(Element.OXYGEN, body.getByproduct());
 	}
 
 	@Test

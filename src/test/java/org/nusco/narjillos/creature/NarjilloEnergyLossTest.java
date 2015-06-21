@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 import org.nusco.narjillos.genomics.DNA;
 
 public class NarjilloEnergyLossTest {
@@ -34,8 +35,9 @@ public class NarjilloEnergyLossTest {
 		DNA dna = new DNA(1, "{1_1_1_1_1_1_1_1_0_0_0}");
 		Narjillo narjilloThatCannotMove = new Narjillo(dna, Vector.ZERO, 90, new LifeFormEnergy(100, 100));
 
+		Atmosphere atmosphere = new Atmosphere();
 		for (int i = 0; i < 101; i++)
-			narjilloThatCannotMove.tick();
+			narjilloThatCannotMove.tick(atmosphere);
 
 		assertTrue(narjilloThatCannotMove.isDead());
 	}
@@ -43,8 +45,9 @@ public class NarjilloEnergyLossTest {
 	private double getEnergyLossWithMovement(Narjillo narjillo) {
 		double startingEnergy = narjillo.getEnergy().getValue();
 		narjillo.setTarget(Vector.cartesian(1000, 1000));
+		Atmosphere atmosphere = new Atmosphere();
 		for (int i = 0; i < 10000; i++)
-			narjillo.tick();
+			narjillo.tick(atmosphere);
 		return startingEnergy - narjillo.getEnergy().getValue();
 	}
 }

@@ -146,7 +146,7 @@ ecosystem:
   # The initial level for each element (Oxygen, Hydrogen and Nitrogen)
   # in the atmosphere. Each element can be converted into another, so
   # the maximum level is three times the initial level.
-  initial_element_level: 100000
+  initial_element_level: 10000000
 
 experiment:
   # Every sample_interval_ticks, an experiment reports its

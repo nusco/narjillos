@@ -102,9 +102,9 @@ public class Lab {
 		}
 		
 		if (commandLine.hasOption("history")) {
-			System.out.println(ExperimentStats.getCsvHeader());
+			System.out.println(ExperimentStats.getCSVHeader());
 			for (ExperimentStats experimentStats : experiment.getHistory())
-				System.out.println(experimentStats.toCsvLine());
+				System.out.println(experimentStats.toCSVLine());
 			return;
 		}
 		

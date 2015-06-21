@@ -30,7 +30,7 @@ public abstract class Culture {
 	private final long size;
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
 	private final ExecutorService executorService;
-	private final Atmosphere atmosphere = new Atmosphere();
+	private Atmosphere atmosphere;
 	
 	/** Counter used by the ThreadFactory to name threads. */
 	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
@@ -42,7 +42,8 @@ public abstract class Culture {
 			result.setPriority(Thread.currentThread().getPriority());
 			return result;
 		};
-		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
+		 atmosphere = new Atmosphere();
+		 executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 	}
 
 	public abstract Set<Thing> getThings(String label);
@@ -84,7 +85,11 @@ public abstract class Culture {
 	public Atmosphere getAtmosphere() {
 		return atmosphere;
 	}
-	
+
+	public void setAtmosphere(Atmosphere atmosphere) {
+		this.atmosphere = atmosphere;
+	}
+
 	protected abstract Set<Thing> getCollisions(Segment movement);
 
 	protected abstract void tickThings(GenePool genePool, RanGen ranGen);
@@ -97,7 +102,7 @@ public abstract class Culture {
 		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
 		for (final Narjillo narjillo : narjillos) {
 			result.put(narjillo, executorService.submit(() -> {
-				Segment movement = narjillo.tick();
+				Segment movement = narjillo.tick(getAtmosphere());
 				return getCollisions(movement);
 			}));
 		}

@@ -6,6 +6,7 @@ import org.nusco.narjillos.core.things.FoodPiece;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -31,6 +32,9 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 
 		final JsonElement narjillos = context.serialize(ecosystem.getNarjillos());
 		jsonObject.add("narjillos", narjillos);
+
+		final JsonElement atmosphere = context.serialize(ecosystem.getAtmosphere());
+		jsonObject.add("atmosphere", atmosphere);
 
 		return jsonObject;
 	}
@@ -62,6 +66,10 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 			Narjillo narjillo = context.deserialize(jsonNarjllo, Narjillo.class);
 			result.insertNarjillo(narjillo);
 		}
+
+		JsonElement jsonAtmosphere = jsonObject.get("atmosphere");
+		Atmosphere atmosphere = context.deserialize(jsonAtmosphere, Atmosphere.class);
+		result.setAtmosphere(atmosphere);
 
 		return result;
 	}

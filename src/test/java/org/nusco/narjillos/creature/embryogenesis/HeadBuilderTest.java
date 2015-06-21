@@ -16,11 +16,11 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 	}
 
 	@Test
-	public void decodesAConsumedElement() {
-		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 0)).getConsumedElement());
-		assertEquals(Element.HYDROGEN, getConcreteOrganBuilder(new Chromosome(0, 1)).getConsumedElement());
-		assertEquals(Element.NITROGEN, getConcreteOrganBuilder(new Chromosome(0, 2)).getConsumedElement());
-		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 3)).getConsumedElement());
+	public void decodesAProducedElement() {
+		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 0)).getByproduct());
+		assertEquals(Element.HYDROGEN, getConcreteOrganBuilder(new Chromosome(0, 1)).getByproduct());
+		assertEquals(Element.NITROGEN, getConcreteOrganBuilder(new Chromosome(0, 2)).getByproduct());
+		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 3)).getByproduct());
 	}
 
 	@Test

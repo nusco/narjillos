@@ -40,6 +40,6 @@ public class GenePoolWithHistoryStatsTest {
 	public void convertsToACSVLine() {
 		GenePoolStats stats = new GenePoolStats(genePool);
 
-		assertEquals("6, 7, 1.83", stats.toCSVLine());
+		assertEquals("6,7,1.83", stats.toCSVLine());
 	}
 }

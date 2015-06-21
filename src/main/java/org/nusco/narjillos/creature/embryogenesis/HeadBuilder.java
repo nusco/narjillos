@@ -18,8 +18,8 @@ class HeadBuilder extends ConcreteOrganBuilder {
 		super(chromosome);
 	}
 
-	public Element getConsumedElement() {
-		return Element.values()[getChromosome().getGene(CONSUMED_ELEMENT) % 3];
+	public Element getByproduct() {
+		return Element.values()[getChromosome().getGene(BYPRODUCT) % 3];
 	}
 
 	public double getMetabolicRate() {
@@ -53,6 +53,6 @@ class HeadBuilder extends ConcreteOrganBuilder {
 
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
-		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getConsumedElement(), getEnergyToChildren(), getEggVelocity(), getEggInterval());
+		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getByproduct(), getEnergyToChildren(), getEggVelocity(), getEggInterval());
 	}
 }

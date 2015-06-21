@@ -85,8 +85,42 @@ public class Body {
 		return result;
 	}
 
-	public Element getConsumedElement() {
-		return getHead().getConsumedElement();
+	public double getBlueMass() {
+		double result = 0;
+		for (Organ organ : getOrgans())
+			result += organ.getMass() * organ.getFiber().getPercentOfBlue();
+		return result;
+	}
+
+	public double getRedMass() {
+		double result = 0;
+		for (Organ organ : getOrgans())
+			result += organ.getMass() * organ.getFiber().getPercentOfRed();
+		return result;
+	}
+
+	public Element getBreathedElement() {
+		Element breathedElementByFibers = getBreathedElementByFibers();
+
+		if (breathedElementByFibers == getByproduct())
+			return null;
+		
+		return breathedElementByFibers;
+	}
+
+	private Element getBreathedElementByFibers() {
+		double redMass = getRedMass();
+		double greenMass = getGreenMass();
+		double blueMass = getBlueMass();
+		if (redMass > greenMass & redMass > blueMass)
+			return Element.OXYGEN;
+		if (greenMass > getBlueMass())
+			return Element.HYDROGEN;
+		return Element.NITROGEN;
+	}
+
+	public Element getByproduct() {
+		return getHead().getByproduct();
 	}
 
 	public double getAdultMass() {

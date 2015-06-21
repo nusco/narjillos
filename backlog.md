@@ -20,11 +20,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     If I still don't get sympatric speciation after implementing this, then maybe I need  
     something even more radical. Sexual reproduction with assortative mating, maybe?
 
-* Narjillos produce a molecule  
-  based on visible body qualities - metabolic rate?  
-
-* Narjillos consume a molecule  
-  faster reproduction? lower energy expenditure?
+* Bind chemical consumption to phenotypic characters
     
 * Ecological Niches  
   tweak chemistry to encourage speciation
@@ -69,7 +65,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   one number for the whole gene pool.  
 
 
-
 ##Intuitive Navigation
 >goal: nice user experience  
 
@@ -93,6 +88,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Command menus for light, speed, and so on  
 * Start new experiment from menu  
 + "About"/"Help" menus  
+* Show atmosphere composition  
 - Speed widget  
 - "Screensaver mode"  
   no menus or status bar

@@ -11,16 +11,16 @@ import org.nusco.narjillos.ecosystem.chemistry.Element;
 public class Head extends MovingOrgan {
 
 	private final double metabolicRate;
-	private final Element consumedElement;
+	private final Element byproduct;
 	private final double energyToChildren;
 	private final int eggVelocity;
 	private final int eggInterval;
 
 	private Vector startPoint = Vector.ZERO;
 	
-	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, Element consumedElement, double energyToChildren, int eggVelocity, int eggInterval) {
+	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, Element byproduct, double energyToChildren, int eggVelocity, int eggInterval) {
 		super(adultLength, adultThickness, new Fiber(red, green, blue), null, new WaveNerve(Configuration.CREATURE_BASE_WAVE_FREQUENCY * metabolicRate), 0);
-		this.consumedElement = consumedElement;
+		this.byproduct = byproduct;
 		this.metabolicRate = metabolicRate;
 		this.energyToChildren = energyToChildren;
 		this.eggVelocity = eggVelocity;
@@ -36,8 +36,8 @@ public class Head extends MovingOrgan {
 		return metabolicRate;
 	}
 
-	public Element getConsumedElement() {
-		return consumedElement;
+	public Element getByproduct() {
+		return byproduct;
 	}
 
 	public double getEnergyToChildren() {

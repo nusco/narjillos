@@ -13,10 +13,6 @@ import java.util.Set;
 public class SimpleGenePool extends GenePool {
 
 	@Override
-	public void remove(DNA dna) {
-	}
-
-	@Override
 	public DNA getDna(Long id) {
 		return null;
 	}
@@ -29,11 +25,6 @@ public class SimpleGenePool extends GenePool {
 	@Override
 	public DNA getMostSuccessfulDNA() {
 		return null;
-	}
-
-	@Override
-	List<Long> getCurrentPool() {
-		return new LinkedList<Long>();
 	}
 
 	@Override

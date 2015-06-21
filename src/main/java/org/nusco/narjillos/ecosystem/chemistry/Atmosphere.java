@@ -9,39 +9,42 @@ import org.nusco.narjillos.core.utilities.Configuration;
 
 public class Atmosphere {
 
-	private static final double SATURATION_LEVEL = Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL * 3;
-	
-	public static int getInitialElementLevel() {
-		return Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL;
-	}
-
+	private final int saturationElementLevels;
 	private final Map<Element, Integer> levels = new LinkedHashMap<>();
 	
 	public Atmosphere() {
-		levels.put(OXYGEN, getInitialElementLevel());
-		levels.put(HYDROGEN, getInitialElementLevel());
-		levels.put(NITROGEN, getInitialElementLevel());
+		this(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL);
 	}
 	
+	public Atmosphere(int initialElementLevels) {
+		this.saturationElementLevels = initialElementLevels * 3;
+		levels.put(OXYGEN, initialElementLevels);
+		levels.put(HYDROGEN, initialElementLevels);
+		levels.put(NITROGEN, initialElementLevels);
+	}
+
 	public int getElementLevel(Element element) {
 		return levels.get(element);
 	}
 
-	public double convert(Element element) {
-		double density = getDensityOf(element);
-		
-		Integer elementLevel = levels.get(element);
-		if (elementLevel > 0) {
-			levels.put(element, elementLevel - 1);
+	public void convert(Element fromElement, Element toElement) {
+		Integer fromLevel = levels.get(fromElement);
+		if (fromLevel > 0) {
+			levels.put(fromElement, Math.max(0, fromLevel - 1));
 			
-			Element byproduct = element.getByproduct();
-			levels.put(byproduct, levels.get(byproduct) + 1);
+			levels.put(toElement, Math.min(saturationElementLevels, levels.get(toElement) + 1));
 		}
-		
-		return density;
 	}
 
-	private double getDensityOf(Element element) {
-		return levels.get(element) / SATURATION_LEVEL;
+	public double getDensityOf(Element element) {
+		return ((double) levels.get(element)) / saturationElementLevels;
+	}
+
+	public Atmosphere duplicate() {
+		Atmosphere result = new Atmosphere();
+		result.levels.put(OXYGEN, levels.get(OXYGEN));
+		result.levels.put(HYDROGEN, levels.get(HYDROGEN));
+		result.levels.put(NITROGEN, levels.get(NITROGEN));
+		return result;
 	}
 }

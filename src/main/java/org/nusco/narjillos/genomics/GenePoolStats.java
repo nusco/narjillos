@@ -68,12 +68,12 @@ public class GenePoolStats {
 	}
 
 	public String toCSVLine() {
-		return "" + getCurrentPoolSize() + ", "
-				+ getHistoricalPoolSize() + ", "
+		return "" + getCurrentPoolSize() + ","
+				+ getHistoricalPoolSize() + ","
 				+ NumberFormat.format(getAverageGeneration());
 	}
 
-	public static String getCsvHeader() {
-		return "population, historical_pool_size, average_generation";
+	public static String getCSVHeader() {
+		return "population,historical_pool_size,average_generation";
 	}
 }

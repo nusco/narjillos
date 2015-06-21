@@ -44,10 +44,9 @@ public class CommandLineOptionsTest {
 	}
 
 	@Test
-	public void acceptsAnAncestryOption() {
-		assertFalse(new CommandLineOptions().isTrackingGenePool());
-		assertTrue(new CommandLineOptions("-a").isTrackingGenePool());
-		assertTrue(new CommandLineOptions("--ancestry").isTrackingGenePool());
+	public void acceptsAnHistoryOption() {
+		assertFalse(new CommandLineOptions().isTrackingHistory());
+		assertTrue(new CommandLineOptions("-history").isTrackingHistory());
 	}
 
 	@Test

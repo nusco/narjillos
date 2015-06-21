@@ -13,6 +13,8 @@ import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.embryogenesis.Embryo;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -37,7 +39,7 @@ public class Narjillo implements Thing {
 	}
 	
 	@Override
-	public Segment tick() {
+	public Segment tick(Atmosphere atmosphere) {
 		growOlder();
 		
 		Vector startingPosition = body.getStartPoint();
@@ -46,9 +48,11 @@ public class Narjillo implements Thing {
 			return new Segment(startingPosition, Vector.ZERO);
 
 		mouth.tick(getPosition(), target, getBody().getAngle());
+		
 		double energySpentByMoving = body.tick(getMouth().getDirection());
+		double energySpentAfterConsumingElements = calculateEnergyExpenditure(atmosphere, energySpentByMoving);
 		double energyGainedByGreenFibers = body.getGreenMass() * Configuration.CREATURE_GREEN_FIBERS_EXTRA_ENERGY;
-		energy.tick(energySpentByMoving, energyGainedByGreenFibers);
+		energy.tick(energySpentAfterConsumingElements, energyGainedByGreenFibers);
 		
 		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
 	}
@@ -152,8 +156,29 @@ public class Narjillo implements Thing {
 		return new Egg(childDNA, position, velocity, energyToChild, ranGen);
 	}
 
+	public Element getBreathedElement() {
+		return body.getBreathedElement();
+	}
+
+	public Element getByproduct() {
+		return body.getByproduct();
+	}
+
 	public double getBrainWaveAngle() {
 		return body.getBrainWaveAngle();
+	}
+
+	// Make energy cheaper depending on atmospheric composition.
+	// (Don't change the atmosphere here - this code is called in parallel,
+	// and it would become non-deterministic).
+	private double calculateEnergyExpenditure(Atmosphere atmosphere, double energySpentByMoving) {
+		Element breathedElement = body.getBreathedElement();
+		
+		if (breathedElement == null)
+			return energySpentByMoving;
+		
+		double elementDensity = atmosphere.getDensityOf(breathedElement);
+		return energySpentByMoving * (1 - elementDensity) * 2;
 	}
 
 	private void decideWhenToLayTheNextEgg() {

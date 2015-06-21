@@ -53,10 +53,10 @@ public class HeadTest extends ConnectedOrganTest {
 	}
 	
 	@Test
-	public void hasAConsumedElement() {
+	public void hasAByproduct() {
 		Head head = new Head(10, 6, 0, 0, 0, 1, Element.NITROGEN, 1000, 1, 0);
 		
-		assertEquals(Element.NITROGEN, head.getConsumedElement());
+		assertEquals(Element.NITROGEN, head.getByproduct());
 	}
 	
 	@Test

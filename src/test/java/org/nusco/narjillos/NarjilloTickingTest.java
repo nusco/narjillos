@@ -10,6 +10,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Organ;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
@@ -62,7 +63,8 @@ public class NarjilloTickingTest {
 	public void narjillosTickingIsDeterministic() {
 		GenePool genePool = new GenePoolWithHistory();
 		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
-
+		Atmosphere atmosphere = new Atmosphere();
+		
 		// Create the sample narjillo.
 		Narjillo narjillo = new Narjillo(sampleDNA, Vector.cartesian(100, 200), 90, new LifeFormEnergy(10000, 30000));
 
@@ -70,12 +72,12 @@ public class NarjilloTickingTest {
 		// Then tick the narjillo for a while, and stop the readers.
 		startReadThreads(narjillo);
 		for (int i = 0; i < 50; i++)
-			narjillo.tick();
+			narjillo.tick(atmosphere);
 		stopReadThreads();
 
-		// Tick one last time to check that any cached value is correctly
+		// Tick one last time to ensure that any cached value is correctly
 		// updated at the end of the tick, even when no readers are around.
-		narjillo.tick();
+		narjillo.tick(atmosphere);
 
 		String currentState = JSON.toJson(narjillo, Narjillo.class);
 

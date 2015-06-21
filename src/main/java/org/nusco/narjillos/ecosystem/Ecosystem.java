@@ -17,6 +17,7 @@ import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.physics.Viscosity;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -176,7 +177,7 @@ public class Ecosystem extends Culture {
 	}
 
 	private void tickEgg(Egg egg, RanGen ranGen) {
-		egg.tick();
+		egg.tick(getAtmosphere());
 		if (egg.hatch(ranGen))
 			insertNarjillo(egg.getHatchedNarjillo());
 		if (egg.isDecayed())
@@ -200,11 +201,11 @@ public class Ecosystem extends Culture {
 			});
 	}
 
-	private Map<Narjillo, Set<Thing>> calculateCollisions(Set<Narjillo> set) {
+	private Map<Narjillo, Set<Thing>> calculateCollisions(Set<Narjillo> narjillos) {
 		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();
 
 		// Calculate collisions in parallel...
-		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickNarjillos(set);
+		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickNarjillos(narjillos);
 
 		// ...but collect the results in a predictable order
 		for (Narjillo narjillo : collisionFutures.keySet()) {
@@ -215,6 +216,13 @@ public class Ecosystem extends Culture {
 			}
 		}
 
+		// Finally, go through the breathing loop
+		for (Narjillo narjillo : narjillos) {
+			Element breathedElement = narjillo.getBreathedElement();
+			if (breathedElement != null)
+				getAtmosphere().convert(breathedElement, narjillo.getByproduct());
+		}
+		
 		return result;
 	}
 

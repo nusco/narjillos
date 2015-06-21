@@ -3,6 +3,7 @@ package org.nusco.narjillos.core.things;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 
 public class FoodPiece implements Thing {
 
@@ -25,7 +26,7 @@ public class FoodPiece implements Thing {
 	}
 
 	@Override
-	public Segment tick() {
+	public Segment tick(Atmosphere atmosphere) {
 		return new Segment(position, Vector.ZERO);
 	}
 

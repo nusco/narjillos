@@ -10,7 +10,6 @@ public class SimpleGenePoolStatsTest {
 	
 	RanGen ranGen = new RanGen(1234);
 	GenePool genePool = new SimpleGenePool();
-	GenePoolStats stats = new GenePoolStats(genePool);
 
 	@Before
 	public void setUpGenePool() {
@@ -19,16 +18,26 @@ public class SimpleGenePoolStatsTest {
 		genePool.mutateDNA(dna1, ranGen); // 2
 		genePool.mutateDNA(dna1, ranGen); // 3
 	}
+
+	@Test
+	public void hasACurrentPoolSize() {
+		GenePoolStats stats = new GenePoolStats(genePool);
+
+		assertEquals(3, stats.getCurrentPoolSize());
+	}
 	
 	@Test
-	public void hasEmptyStats() {
-		assertEquals(0, stats.getCurrentPoolSize());
+	public void hasNoHistoryNorAncestry() {
+		GenePoolStats stats = new GenePoolStats(genePool);
+
 		assertEquals(0, stats.getHistoricalPoolSize());
 		assertEquals(0.0, stats.getAverageGeneration(), 0.0);
 	}
 	
 	@Test
-	public void convertsToAnEmptyCSVLine() {
-		assertEquals("0, 0, 0.0", stats.toCSVLine());
+	public void convertsToACSVLine() {
+		GenePoolStats stats = new GenePoolStats(genePool);
+
+		assertEquals("3,0,0.0", stats.toCSVLine());
 	}
 }

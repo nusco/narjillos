@@ -2,6 +2,7 @@ package org.nusco.narjillos.core.things;
 
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 
 /**
  * Something that has a physical representation in the environment.
@@ -11,7 +12,7 @@ public interface Thing {
 	public static Thing NULL = new Thing() {
 		
 		@Override
-		public Segment tick() {
+		public Segment tick(Atmosphere atmosphere) {
 			return new Segment(Vector.ZERO, Vector.ZERO);
 		}
 		
@@ -44,7 +45,7 @@ public interface Thing {
 	/**
 	 * @return The movement segment.
 	 */
-	public Segment tick();
+	public Segment tick(Atmosphere atmosphere);
 	public Vector getPosition();
 	public Vector getCenter();
 	public double getRadius();

@@ -22,7 +22,7 @@ public class CommandLineOptions extends Options {
 	private Experiment experiment = null;
 	private GenePool genePool = null;
 	private boolean persistent = true;
-	private boolean trackingGenePool = false;
+	private boolean trackingHistory = false;
 	private long seed = NO_SEED;
 	private String dna = null;
 
@@ -38,7 +38,7 @@ public class CommandLineOptions extends Options {
 	CommandLineOptions(String... args) {
 		addOption("h", "help", false, "print this message");
 		addOption("p", "persistent", false, "periodically save experiment to file");
-		addOption("a", "ancestry", false, "track genepool ancestry (needs a lot of memory)");
+		addOption("history", false, "track genepool history (needs a lot of memory)");
 		addOption("s", "seed", true, "start experiment with given seed");
 		addOption("dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
 
@@ -58,7 +58,7 @@ public class CommandLineOptions extends Options {
 	        }
 
 	        setPersistent(line.hasOption("p"));
-	        setTrackingGenePool(line.hasOption("a"));
+	        setTrackingHistory(line.hasOption("history"));
 
 	        if (line.hasOption("seed")) {
 	        	if (line.hasOption("dna"))
@@ -78,8 +78,8 @@ public class CommandLineOptions extends Options {
 	        if (getDna() != null || getSeed() != NO_SEED)
 	        	throw new RuntimeException("If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
 	        
-        	if (line.hasOption("a"))
-        		System.out.println("WARNING: I'm loading an existing experiment, so I'm ignoring the --ancestry option.");
+        	if (line.hasOption("history"))
+        		System.out.println("WARNING: I'm loading an existing experiment, so I'm ignoring the -history option.");
 
         	setFile(line.getArgs()[0]);
         } catch(ParseException e) {
@@ -99,8 +99,8 @@ public class CommandLineOptions extends Options {
 		return persistent;
 	}
 
-	public boolean isTrackingGenePool() {
-		return trackingGenePool;
+	public boolean isTrackingHistory() {
+		return trackingHistory;
 	}
 
 	public long getSeed() {
@@ -130,8 +130,8 @@ public class CommandLineOptions extends Options {
 		this.persistent = persistent;
 	}
 
-	private void setTrackingGenePool(boolean trackingGenePool) {
-		this.trackingGenePool = trackingGenePool;
+	private void setTrackingHistory(boolean trackingHistory) {
+		this.trackingHistory = trackingHistory;
 	}
 
 	private void setSeed(String seed) {

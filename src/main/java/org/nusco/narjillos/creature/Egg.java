@@ -7,6 +7,7 @@ import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 import org.nusco.narjillos.genomics.DNA;
 
 /**
@@ -33,7 +34,8 @@ public class Egg implements Thing {
 		this.energy = energy;
 	}
 
-	public Segment tick() {
+	@Override
+	public Segment tick(Atmosphere atmosphere) {
 		age++;
 
 		if (velocity.getLength() > Configuration.EGG_MIN_VELOCITY) {

@@ -26,7 +26,7 @@ public class PetriDish extends Dish {
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
 
-		System.out.println(ExperimentStats.getHeadersString());
+		System.out.println(ExperimentStats.getConsoleHeader());
 	}
 
 	public Culture getCulture() {
@@ -72,7 +72,7 @@ public class PetriDish extends Dish {
 		Ecosystem ecosystem = new Ecosystem(size, true);
 		
 		String dna = options.getDna();
-		boolean trackingGenePool = options.isTrackingGenePool();
+		boolean trackingGenePool = options.isTrackingHistory();
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);
 			result = new Experiment(generateRandomSeed(), ecosystem, applicationVersion, trackingGenePool, dna);
@@ -92,10 +92,10 @@ public class PetriDish extends Dish {
 	}
 
 	private void reportPersistenceOptions(CommandLineOptions options) {
-		if (options.isPersistent() && options.isTrackingGenePool())
-			System.out.println(" (persisted to file with ancestry)");
+		if (options.isPersistent() && options.isTrackingHistory())
+			System.out.println(" (persisted to file, with history)");
 		else if (options.isPersistent())
-			System.out.println(" (persisted to file)");
+			System.out.println(" (persisted to file, no history)");
 		else
 			System.out.println(" (no persistence)");
 	}

@@ -1,17 +1,12 @@
 package org.nusco.narjillos.creature.embryogenesis;
 
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.BLUE;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.EGG_INTERVAL;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.EGG_VELOCITY;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.ENERGY_TO_CHILDREN;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.GREEN;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.METABOLIC_RATE;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.RED;
+import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.*;
 
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.MovingOrgan;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.Chromosome;
 
 /**
@@ -21,6 +16,10 @@ class HeadBuilder extends ConcreteOrganBuilder {
 
 	public HeadBuilder(Chromosome chromosome) {
 		super(chromosome);
+	}
+
+	public Element getConsumedElement() {
+		return Element.values()[getChromosome().getGene(CONSUMED_ELEMENT) % 3];
 	}
 
 	public double getMetabolicRate() {
@@ -54,6 +53,6 @@ class HeadBuilder extends ConcreteOrganBuilder {
 
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
-		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getEnergyToChildren(), getEggVelocity(), getEggInterval());
+		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getConsumedElement(), getEnergyToChildren(), getEggVelocity(), getEggInterval());
 	}
 }

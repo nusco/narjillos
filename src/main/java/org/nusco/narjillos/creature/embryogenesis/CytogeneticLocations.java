@@ -14,8 +14,8 @@ interface CytogeneticLocations {
 	// The building instruction in the body plan program
 	static final int BODY_PLAN_INSTRUCTION = 0;
 
-	// Reserved for later use
-	static final int _RESERVED = 1;
+	// The atmospheric element that the creature consumes
+	static final int CONSUMED_ELEMENT = 1;
 
 	// The body segment's geometry
 	static final int LENGTH = 2;

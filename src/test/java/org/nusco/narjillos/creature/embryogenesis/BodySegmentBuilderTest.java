@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.Chromosome;
 
 public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
@@ -82,7 +83,7 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		
 		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, delayGene, amplitudeGene, angleToParentGene, skewingGene, redShiftGene, greenShiftGene, blueShiftGene);
 		BodySegmentBuilder builder = getConcreteOrganBuilder(chromosome);
-		Head head = new Head(10, 10, 50, 60, 70, 10, 0.5, 30, 40);
+		Head head = new Head(10, 10, 50, 60, 70, 10, Element.OXYGEN, 0.5, 30, 40);
 		BodyPart bodyPart = (BodyPart) builder.buildOrgan(head, 1);
 
 		head.updateGeometry();

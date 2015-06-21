@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.Chromosome;
 
 public class HeadBuilderTest extends ConcreteOrganBuilderTest {
@@ -12,6 +13,14 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 	@Override
 	protected HeadBuilder getConcreteOrganBuilder(Chromosome chromosome) {
 		return new HeadBuilder(chromosome);
+	}
+
+	@Test
+	public void decodesAConsumedElement() {
+		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 0)).getConsumedElement());
+		assertEquals(Element.HYDROGEN, getConcreteOrganBuilder(new Chromosome(0, 1)).getConsumedElement());
+		assertEquals(Element.NITROGEN, getConcreteOrganBuilder(new Chromosome(0, 2)).getConsumedElement());
+		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 3)).getConsumedElement());
 	}
 
 	@Test

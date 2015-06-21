@@ -10,12 +10,13 @@ import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 
 public class JSONBodySerializationTest {
 
 	@Test
 	public void serializesAndDeserializesBody() {
-		Head head = new Head(1, 2, 30, 31, 32, 4, 0.5, 30, 40);
+		Head head = new Head(1, 2, 30, 31, 32, 4, Element.OXYGEN, 0.5, 30, 40);
 		
 		BodyPart child1 = new BodyPart(11, 12, 130, 131, 132, head, 14, 15, 16, 17);
 		head.addChild(child1);

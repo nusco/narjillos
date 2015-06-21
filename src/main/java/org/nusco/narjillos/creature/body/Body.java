@@ -13,6 +13,7 @@ import org.nusco.narjillos.core.physics.ZeroVectorException;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.physics.RotationsPhysicsEngine;
 import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 
 /**
  * The physical body of a Narjillo, with all its organs and their position in
@@ -84,8 +85,16 @@ public class Body {
 		return result;
 	}
 
+	public Element getConsumedElement() {
+		return getHead().getConsumedElement();
+	}
+
 	public double getAdultMass() {
 		return adultMass;
+	}
+
+	public boolean hasStoppedGrowing() {
+		return mass >= getAdultMass();
 	}
 
 	public synchronized double getRadius() {
@@ -165,6 +174,10 @@ public class Body {
 		return head.toString();
 	}
 
+	public double getBrainWaveAngle() {
+		return getHead().getBrainWaveAngle();
+	}
+
 	private synchronized void resetCaches() {
 		cachedCenterOfMass = null;
 		cachedRadius = Double.NaN;
@@ -241,10 +254,6 @@ public class Body {
 		result.add(organ);
 	}
 
-	public boolean hasStoppedGrowing() {
-		return mass >= getAdultMass();
-	}
-
 	private double getAngleTo(Vector direction) {
 		if (direction.equals(Vector.ZERO))
 			return 0;
@@ -287,9 +296,5 @@ public class Body {
 				result = distance;
 		}
 		return result;
-	}
-
-	public double getBrainWaveAngle() {
-		return getHead().getBrainWaveAngle();
 	}
 }

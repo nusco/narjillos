@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
+import org.nusco.narjillos.ecosystem.chemistry.Element;
 
 public abstract class NeuralConnectionTest {
 	
@@ -13,7 +14,7 @@ public abstract class NeuralConnectionTest {
 		final ClickNerve nerve2 = new ClickNerve();
 		final ClickNerve nerve3 = new ClickNerve();
 
-		MovingOrgan head = new Head(0, 0, 0, 0, 0, 1, 0.5, 30, 40);
+		MovingOrgan head = new Head(0, 0, 0, 0, 0, 1, Element.OXYGEN, 0.5, 30, 40);
 		ConnectedOrgan child1 = head.addChild(new BodyPart(nerve1));
 		child1.addChild(new BodyPart(nerve2));
 		head.addChild(new BodyPart(nerve3));

@@ -152,11 +152,6 @@ public class Body {
 	 * Look inside for more details...
 	 */
 	public double tick(Vector targetDirection) {
-		// Update the masses in a still-developing body. (Then stop
-		// doing it once the body is fully grown, to spare performance).
-		if (!hasStoppedGrowing())
-			updateMasses();
-
 		// Before any movement, store away the current center of mass and the
 		// angles and positions of all body parts. These will come useful later.
 		// (Note that we could calculate the angles from the positions, but
@@ -173,6 +168,12 @@ public class Body {
 		// favor movements that result in getting closer to the target.
 		tick_step1_updateAngles(targetDirection);
 
+		// The organs might have grown during the previous ticks.
+		// Update the masses in a still-developing body. (Then stop
+		// doing it once the body is fully grown, to spare performance).
+		if (!hasStoppedGrowing())
+			updateMasses();
+
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep the body's
 		// moment of inertia equal to zero.
@@ -181,8 +182,10 @@ public class Body {
 		// The previous updates moved the center of mass. Remember, we're
 		// in a vacuum - so the center of mass shouldn't move. Let's put it
 		// back to its original position.
-		tick_step3_recenter(initialCenterOfMass);
-
+		// It's important to recalculate the center of mass here.
+		// Otherwise, we will get the old, cached value from before the movement.
+		tick_step3_recenter(initialCenterOfMass, calculateCenterOfMass());
+		
 		// Now we can finally move out of the "vacuum" reference system.
 		// All the movements from the previous steps result in a different
 		// body position in space, and this different position generates
@@ -196,7 +199,7 @@ public class Body {
 		return getEnergyConsumed(rotationEnergy, translationEnergy);
 	}
 
-	void updateMasses() {
+	final void updateMasses() {
 		mass = 0;
 		redMass = 0;
 		greenMass = 0;
@@ -257,22 +260,21 @@ public class Body {
 	private double tick_step2_rotate(Map<Organ, Double> initialAnglesOfOrgans, Map<Organ, Segment> initialPositions, Vector centerOfMass,
 			double mass) {
 		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
-		for (Organ bodyPart : organs)
+		for (Organ bodyPart : getOrgans())
 			forceField.registerMovement(initialAnglesOfOrgans.get(bodyPart), bodyPart.getAbsoluteAngle(), bodyPart.getPositionInSpace(),
 					bodyPart.getMass(), getPush(bodyPart));
 		getHead().rotateBy(forceField.getRotation());
 		return forceField.getEnergy();
 	}
 
-	private void tick_step3_recenter(Vector centerOfMassBeforeReshaping) {
-		Vector centerOfMassAfterUpdatingAngles = calculateCenterOfMass();
-		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterUpdatingAngles);
+	private void tick_step3_recenter(Vector centerOfMassBeforeReshaping, Vector centerOfMassAfterReshaping) {
+		Vector centerOfMassOffset = centerOfMassBeforeReshaping.minus(centerOfMassAfterReshaping);
 		getHead().translateBy(centerOfMassOffset);
 	}
 
 	private double tick_step4_translate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
 		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
-		for (Organ bodyPart : organs)
+		for (Organ bodyPart : getOrgans())
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass(),
 					getPush(bodyPart));
 		getHead().translateBy(forceField.getTranslation());

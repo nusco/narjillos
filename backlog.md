@@ -9,6 +9,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     g backlog top        prints the topmost priority feature
     g backlog N          prints the topmost N features
 
+* Fix bug with spawning of creatures at beginning
 
 ##Self-Regulating Ecosystem
 >goal: specialized creatures  

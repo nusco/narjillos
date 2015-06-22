@@ -68,7 +68,7 @@ public class Narjillo implements Thing {
 
 		// Account for the gain of energy by green fibers.
 		double energyGatheredByGreenFibers = body.getGreenMass() * Configuration.CREATURE_GREEN_FIBERS_EXTRA_ENERGY;
-		
+
 		energy.tick(energyConsumed - energyGatheredByGreenFibers);
 	}
 

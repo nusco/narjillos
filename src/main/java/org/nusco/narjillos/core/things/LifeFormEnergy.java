@@ -38,13 +38,13 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void tick(double energySpent) {
+	public void tick(double energyConsumed) {
 		if (isZero())
 			return; // once it's gone, it's gone
 
 		maxForAge -= decay;
 
-		increaseBy(-energySpent);
+		decreaseBy(energyConsumed);
 	}
 
 	@Override

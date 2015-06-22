@@ -41,7 +41,7 @@ public class DNA implements Iterable<Chromosome> {
 			else
 				resultChromosomes.add(copyChromosome(chromosome, ranGen));
 		Integer[] resultGenes = flattenToGenes(resultChromosomes);
-		return new DNA(id, padToSameGenomeLength(resultGenes));
+		return new DNA(id, padToSameGenomeLength(resultGenes, ranGen));
 	}
 
 	public int getSimHashedDistanceFrom(DNA other) {
@@ -187,10 +187,10 @@ public class DNA implements Iterable<Chromosome> {
 		return result.toArray(new Integer[result.size()]);
 	}
 
-	private Integer[] padToSameGenomeLength(Integer[] otherGenes) {
+	private Integer[] padToSameGenomeLength(Integer[] otherGenes, RanGen ranGen) {
 		Integer[] result = new Integer[genes.length];
 		for (int i = 0; i < result.length; i++)
-			result[i] = i < otherGenes.length ? otherGenes[i] : 0;
+			result[i] = i < otherGenes.length ? otherGenes[i] : ranGen.nextByte();
 		return result;
 	}
 

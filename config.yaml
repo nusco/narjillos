@@ -13,7 +13,7 @@ physics:
   # The effort of a creature moving is measured in an arbitrary
   # unit - call it a "joule". This is the amount of energy that
   # is needed for one such unit.
-  energy_expense_per_joule: 0.1
+  energy_expense_per_joule: 0.2
 
   # Once a creature's tangential velocity gets over this value,
   # it starts getting impacted by viscosity - which means that
@@ -40,7 +40,7 @@ creature:
 
   # A creature cannot live more than max_lifespan ticks, and it
   # cannot reproduce before mature_age ticks.
-  max_lifespan: 100000
+  max_lifespan: 200000
   mature_age: 5000
 
   # The base frequency of a creature's wave is base_wave_frequency
@@ -136,7 +136,7 @@ ecosystem:
   # total number of blocks). If food density ever gets over
   # a maximum (defined by max_food_density_per_1000_blocks),
   # then food stops respawing.
-  food_respawn_average_interval_per_block: 800000
+  food_respawn_average_interval_per_block: 300000
   max_food_density_per_1000_blocks: 0.35
 
   # Every update_food_targets_interval ticks, the creatures

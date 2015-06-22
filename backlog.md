@@ -22,7 +22,14 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 * Give Narjillos a smooth evolutionary path from one element to another
   Instead of the abrupt switch from element to element that we have now.
+  Do I really want this? There is a chance that it will prevent disruptive selection.
+  Maybe I need another way to make wide color transitions possible? Another way to encode
+  color, maybe?
     
+* Increase color shift
+  Not sure whether to do this, but it would probably result in easier color changes
+  (and uglier narjillos).
+
 * Ecological Niches  
   tweak chemistry to encourage speciation
     
@@ -231,7 +238,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Maybe body size? or color?
   
 * Narjillos select food  
-  this could be tricky. how does a creature decide that food is "good enough"?
+  this could prove tricky. how does a creature decide that food is "good enough"?
   most likely, they pick the food that they "like" best. but what if better 
   food appears nearby? there is a risk that a creature will starve
   while trying to reach better and better food.
@@ -315,6 +322,10 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 >goal: understand what is happening in the dish  
 
     Track historical data in experiment for analysis.
+
+* Save current configuration in experiment file
+  Be aware that this means that it's not possible to change configuration mid-experiment.
+  Maybe re-save it in a list of configurations at the beginning of every run?
 
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 

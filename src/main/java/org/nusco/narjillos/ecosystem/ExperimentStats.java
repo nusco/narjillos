@@ -64,7 +64,7 @@ public class ExperimentStats {
 		result.append("" + ticks + "," + runningTime + "," + numberOfFoodPieces + "," + genePoolStats.toCSVLine() + ","
 				+ NumberFormat.format(oxygen) + "," + NumberFormat.format(hydrogen) + "," + NumberFormat.format(nitrogen));
 		for (String cycle : chemicalCycles.keySet())
-			result.append("," + cycle);
+			result.append("," + chemicalCycles.get(cycle));
 		return result.toString();
 	}
 
@@ -127,7 +127,7 @@ public class ExperimentStats {
 		StringBuffer result = new StringBuffer();
 		result.append("ticks,running_time,food," + GenePoolStats.getCSVHeader() + ",O,H,N");
 		for (int i = 0; i < CHEMICAL_CYCLES.length; i++)
-			result.append("" + CHEMICAL_CYCLES[i]);
+			result.append("," + CHEMICAL_CYCLES[i]);
 		return result.toString();
 	}
 

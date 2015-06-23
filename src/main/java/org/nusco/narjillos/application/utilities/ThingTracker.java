@@ -107,6 +107,11 @@ public class ThingTracker {
 		startTracking(target);
 	}
 
+	public void startTracking(Thing target) {
+		this.target = target;
+		viewport.centerAndZoomOn(target);
+	}
+
 	private void startTrackingRandomLivingThing() {
 		Thing target = locator.findRandomLivingThing();
 		if (target == null) {
@@ -115,11 +120,6 @@ public class ThingTracker {
 		}
 		startTracking(target);
 		lastDemoTrackingTime = System.currentTimeMillis();
-	}
-
-	private void startTracking(Thing target) {
-		this.target = target;
-		viewport.centerAndZoomOn(target);
 	}
 
 	private boolean isDemoMode() {

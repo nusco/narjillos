@@ -31,19 +31,23 @@ public abstract class Culture {
 	private final List<EnvironmentEventListener> eventListeners = new LinkedList<>();
 	private final ExecutorService executorService;
 	private Atmosphere atmosphere;
-	
+
 	/** Counter used by the ThreadFactory to name threads. */
 	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
 
 	public Culture(long size) {
+		this(size, new Atmosphere());
+	}
+
+	protected Culture(long size, Atmosphere atmosphere) {
 		this.size = size;
+		this.atmosphere = atmosphere;
 		ThreadFactory tickWorkerFactory = (Runnable r) -> {
 			Thread result = new Thread(r, "tick-worker-" + tickWorkerCounter.getAndIncrement());
 			result.setPriority(Thread.currentThread().getPriority());
 			return result;
 		};
-		 atmosphere = new Atmosphere();
-		 executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
+		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 	}
 
 	public abstract Set<Thing> getThings(String label);
@@ -57,7 +61,7 @@ public abstract class Culture {
 	/** Runs one simulation tick */
 	public void tick(GenePool genePool, RanGen ranGen) {
 		if (isShuttingDown())
-			return;		// we're leaving, apparently
+			return; // we're leaving, apparently
 
 		tickThings(genePool, ranGen);
 

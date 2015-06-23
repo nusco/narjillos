@@ -192,4 +192,8 @@ public class Narjillo implements Thing {
 	private void growOlder() {
 		age++;
 	}
+
+	public void growToAdultForm() {
+		getBody().growToAdultForm();
+	}
 }

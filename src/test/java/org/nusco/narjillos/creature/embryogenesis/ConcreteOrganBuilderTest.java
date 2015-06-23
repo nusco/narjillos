@@ -3,7 +3,6 @@ package org.nusco.narjillos.creature.embryogenesis;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.embryogenesis.bodyplan.BodyPlanInstruction;
 import org.nusco.narjillos.genomics.Chromosome;
 
@@ -44,10 +43,5 @@ public abstract class ConcreteOrganBuilderTest {
 		assertEquals(2, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 6)).getThickness());
 		assertEquals(10, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 50)).getThickness());
 		assertEquals(50, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 255)).getThickness());
-	}
-
-	protected void fullyGrow(Organ bodyPart) {
-		bodyPart.growBy(100_000);
-		bodyPart.updateGeometry();
 	}
 }

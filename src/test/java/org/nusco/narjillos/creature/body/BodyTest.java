@@ -41,23 +41,14 @@ public class BodyTest {
 	@Test
 	public void hasACenterOfMassAndARadius() {
 		Head head = new Head(10, 10, 0, 0, 0, 1, Element.OXYGEN, 0.5, 1, 0);
-		
-		BodyPart child = new BodyPart(20, 5, 0, 0, 0, head, 0, 0, 0, 0);
-		head.addChild(child);
-
+		head.addChild(new BodyPart(20, 5, 0, 0, 0, head, 0, 0, 0, 0));
 		Body body = new Body(head);
 
-		// We cannot just tick the body, because if we do, it will move
-		// around.
-		fullyGrow(head);
-		fullyGrow(child);
-		body.updateMasses();
+		body.growToAdultForm();
 		
 		// calculateRadius() needs an explicit center of mass, because of optimizations.
-		// So these two are better tested together: 
-		Vector centerOfMass = body.getCenterOfMass();
-		assertEquals(Vector.cartesian(12.5, 0), centerOfMass);
-		
+		// So these two are better tested together:
+		assertEquals(Vector.cartesian(12.5, 0), body.getCenterOfMass());
 		assertEquals(17.5, body.getRadius(), 0.0);
 	}
 	
@@ -97,9 +88,4 @@ public class BodyTest {
 
 		assertEquals(10, body.getEggInterval(), 0.0);
 	}
-
-	private void fullyGrow(MovingOrgan organ) {
-		organ.growBy(100_000);
-		organ.updateGeometry();
-	}	
 }

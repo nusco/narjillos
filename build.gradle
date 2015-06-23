@@ -56,6 +56,7 @@ dependencies {
 
 createProgramTask('experiment', 'org.nusco.narjillos.ExperimentRunner', 'Runs an experiment (same arguments as the \'experiment\' script).')
 createProgramTask('narjillos', 'org.nusco.narjillos.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
+createProgramTask('ancestry', 'org.nusco.narjillos.AncestryRunner', 'Runs the ancestry browser (pass it the *.germline filename).')
 createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it the *.exp filename).')
 
 

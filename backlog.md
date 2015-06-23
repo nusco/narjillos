@@ -20,9 +20,19 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
     buttons and the like.
 
-* More usable browser  
++ Show narjillo stats while browsing germline  
++ Auto-play  
++ Fade between phenotypes  
 
-- DNA diff during ancestry analysis  
+- Different background color from regular program  
+- More visible particles  
+- Repeating particles texture  
+
+- "Frozen mode"  
+  Shows the narjillos at a default number of ticks, but doesn't tick further  
+
+- Automatic phenotype diff  
+- Automatic DNA diff  
 
 
 ##Istincts

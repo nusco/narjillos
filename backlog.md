@@ -11,6 +11,20 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ---
 
+##Ancestry Browser
+>goal: ancestry browser  
+
+    Analyze DNA ancestry in separate program.
+    This is useful to prepare my presentation at Madison+ Ruby.
+    
+    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
+    buttons and the like.
+
+* More usable browser  
+
+- DNA diff during ancestry analysis  
+
+
 ##Istincts
 >goal: complex interactions  
 
@@ -54,20 +68,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   ...stealing their energy when they "hit" them.
 
 - Narjillos eat eggs  
-
-
-##Ancestry Browser
->goal: ancestry browser  
-
-    Analyze DNA ancestry in separate program.
-    This is useful to prepare my presentation at Madison+ Ruby.
-    
-    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
-    buttons and the like.
-
-* Ancestry Browser  
-+ "Back" button  
-- DNA diff during ancestry analysis  
 
 
 ##Species Analysis

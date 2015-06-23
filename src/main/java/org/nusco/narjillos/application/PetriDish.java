@@ -13,7 +13,7 @@ import org.nusco.narjillos.serializer.Persistence;
 /**
  * The class that initializes and runs an Experiment.
  */
-public class PetriDish extends Dish {
+public class PetriDish implements Dish {
 
 	private static boolean persistent = false;
 	private final Experiment experiment;
@@ -49,7 +49,6 @@ public class PetriDish extends Dish {
 		return isSaving;
 	}
 
-	@Override
 	public void terminate() {
 		while (isBusy())
 			sleepAWhile();
@@ -133,8 +132,7 @@ public class PetriDish extends Dish {
 		return Math.abs(new Random().nextInt() % 1_000_000_000);
 	}
 
-	@Override
-	public String getPerformanceStatistics() {
+	public String getDishStatistics() {
 		return "TPS: " + getTicksInLastSecond() + " / Ticks: " + NumberFormat.format(getTotalTicks());
 	}
 

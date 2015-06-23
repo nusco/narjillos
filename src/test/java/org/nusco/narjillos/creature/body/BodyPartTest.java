@@ -28,9 +28,9 @@ public class BodyPartTest extends ConnectedOrganTest {
 		ConnectedOrgan organ1 = head.addChild(new BodyPart(10, 0, 100, 101, 102, head, 0, 90, 1, 0));
 		ConnectedOrgan organ2 = organ1.addChild(new BodyPart(10, 0, 100, 101, 102, organ1, 0, -90, 1, 0));
 
-		fullyGrow(head);
-		fullyGrow(organ1);
-		fullyGrow(organ2);
+		head.growToAdultFormWithChildren();
+		organ1.growToAdultFormWithChildren();
+		organ2.growToAdultFormWithChildren();
 		
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
@@ -80,7 +80,7 @@ public class BodyPartTest extends ConnectedOrganTest {
 		organ.setAngleToParent(45);
 		head.updateTree();
 		
-		fullyGrow(organ);
+		organ.growToAdultFormWithChildren();
 		
 		final double lengthAt45Degrees = 7.07106;
 		double expectedX = head.getEndPoint().x + lengthAt45Degrees / 2;

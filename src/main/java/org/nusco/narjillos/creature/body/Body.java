@@ -222,6 +222,12 @@ public class Body {
 		return getHead().getBrainWaveAngle();
 	}
 
+	public void growToAdultForm() {
+		getHead().growToAdultFormWithChildren();
+		resetCaches();
+		updateMasses();
+	}
+
 	private synchronized void resetCaches() {
 		cachedCenterOfMass = null;
 		cachedRadius = Double.NaN;

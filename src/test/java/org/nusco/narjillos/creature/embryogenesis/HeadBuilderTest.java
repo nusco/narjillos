@@ -78,7 +78,7 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 		HeadBuilder builder = getConcreteOrganBuilder(chromosome);
 		Head head = (Head)builder.buildOrgan(null, 0);
 		
-		fullyGrow(head);
+		head.growToAdultFormWithChildren();
 		
 		assertEquals(30, head.getLength(), 0);
 		assertEquals(25, head.getThickness(), 0.01);

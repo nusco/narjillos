@@ -100,8 +100,8 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		assertEquals(16, bodyPart.getSkewing(), 0);
 		assertEquals(new Fiber(47, 59, 71), bodyPart.getFiber());
 
-		fullyGrow(head);
-		fullyGrow(bodyPart);
+		head.growToAdultFormWithChildren();
+		bodyPart.growToAdultFormWithChildren();
 		
 		assertEquals(30, bodyPart.getLength(), 0);
 		assertEquals(25, bodyPart.getThickness(), 0.01);

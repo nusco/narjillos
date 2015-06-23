@@ -175,11 +175,11 @@ abstract class NarjillosApplication extends Application {
 		return getDish().tick();
 	}
 
-	protected String getPerformanceStatistics() {
-		return getDish().getPerformanceStatistics();
+	protected String getDishStatistics() {
+		return getDish().getDishStatistics();
 	}
 
-	protected String getEnvironmentStatistics() {
+	protected String getCultureStatistics() {
 		Culture culture = getDish().getCulture();
 		return "Narj: " + culture.getNumberOfNarjillos()
 				+ " / Eggs: " + culture.getNumberOfEggs()

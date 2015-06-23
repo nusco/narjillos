@@ -47,6 +47,14 @@ public abstract class ConnectedOrgan extends Organ {
 		return getChildren().isEmpty();
 	}
 
+	public void growToAdultFormWithChildren() {
+		growBy(Integer.MAX_VALUE);
+		updateGeometry();
+
+		for (ConnectedOrgan child : getChildren())
+			child.growToAdultFormWithChildren();
+	}
+
 	protected abstract double getMetabolicRate();
 
 	protected Nerve getNerve() {

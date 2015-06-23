@@ -35,11 +35,11 @@ public class Lab {
 		options.addOption("h", "help", false, "print this message");
 		options.addOption("d", "dna", true, "print DNA (takes a DNA id)");
 		options.addOption("dnastats", true, "print DNA stats (takes a DNA id)");
-		options.addOption("a", "ancestry", true, "print DNA ancestry (takes a DNA id)");
+		options.addOption("germline", true, "print DNA germline (takes a DNA id)");
 		options.addOption("primary", false, "print id of primary (most successful) DNA");
 		options.addOption("s", "stats", false, "print current statistics");
 		options.addOption("history", false, "output history in CSV format");
-		options.addOption("ancestry", false, "output ancestry in CSV format");
+		options.addOption("csv", false, "output ancestry in CSV format");
 		options.addOption("nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
 
 		CommandLine commandLine;
@@ -87,8 +87,8 @@ public class Lab {
 			return;
 		}
 
-		if (commandLine.hasOption("a")) {
-			for (DNA dna : getAncestry(genePool, commandLine.getOptionValue("a")))
+		if (commandLine.hasOption("germline")) {
+			for (DNA dna : getAncestry(genePool, commandLine.getOptionValue("germline")))
 				System.out.println(dna);
 			return;
 		}
@@ -102,7 +102,7 @@ public class Lab {
 			return;
 		}
 		
-		if (commandLine.hasOption("ancestry")) {
+		if (commandLine.hasOption("csv")) {
 			System.out.print(new GenePoolExporter(genePool).toCSVFormat());
 			return;
 		}

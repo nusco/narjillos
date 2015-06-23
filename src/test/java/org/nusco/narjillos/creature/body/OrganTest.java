@@ -8,20 +8,20 @@ import org.nusco.narjillos.core.physics.Vector;
 
 public abstract class OrganTest {
 	
-	protected Organ organ;
+	protected ConnectedOrgan organ;
 
 	@Before
 	public void setUpPart() {
 		organ = createConcreteOrgan(50, 20);
 	}
 
-	public abstract Organ createConcreteOrgan(int length, int thickness);
+	public abstract ConnectedOrgan createConcreteOrgan(int length, int thickness);
 
 	@Test
 	public void hasALengthThatGrowsWithTime() {
 		assertEquals(5, organ.getLength(), 0);
 		
-		fullyGrow(organ);
+		((ConnectedOrgan) organ).growToAdultFormWithChildren();
 
 		assertEquals(50, organ.getLength(), 0);
 	}
@@ -30,7 +30,7 @@ public abstract class OrganTest {
 	public void hasAThicknessThatGrowsWithTime() {
 		assertEquals(1, organ.getThickness(), 0);
 		
-		fullyGrow(organ);
+		organ.growToAdultFormWithChildren();
 		
 		assertEquals(20, organ.getThickness(), 0);
 	}
@@ -40,7 +40,7 @@ public abstract class OrganTest {
 	
 	@Test
 	public void hasAMassProportionalToItsArea() {
-		fullyGrow(organ);
+		organ.growToAdultFormWithChildren();
 		
 		assertEquals(1000, organ.getMass(), 0.01);
 	}
@@ -61,10 +61,5 @@ public abstract class OrganTest {
 		};
 
 		assertEquals(1, verySmallBodyPart.getMass(), 0.0001);
-	}
-
-	protected void fullyGrow(Organ bodyPart) {
-		bodyPart.growBy(100_000);
-		bodyPart.updateGeometry();
 	}
 }

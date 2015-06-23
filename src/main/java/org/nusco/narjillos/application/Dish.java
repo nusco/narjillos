@@ -7,6 +7,6 @@ public interface Dish {
 	public Culture getCulture();
 	public void terminate();
 	public boolean tick();
-	public String getPerformanceStatistics();
+	public String getDishStatistics();
 	public boolean isBusy();
 }

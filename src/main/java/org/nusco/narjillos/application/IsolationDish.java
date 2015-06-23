@@ -72,8 +72,8 @@ class IsolationDish implements Dish {
 	}
 
 	@Override
-	public String getPerformanceStatistics() {
-		return "";
+	public String getDishStatistics() {
+		return "" + (currentDnaIndex + 1) + " of " + dnas.size();
 	}
 
 	public Narjillo getNarjillo() {

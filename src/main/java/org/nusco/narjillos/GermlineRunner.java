@@ -1,12 +1,12 @@
 package org.nusco.narjillos;
 
-import org.nusco.narjillos.application.AncestryApplication;
+import org.nusco.narjillos.application.GermlineApplication;
 
 
 /**
- * The entry point to the ancestry program.
+ * The entry point to the germline program.
  */
-public class AncestryRunner extends AncestryApplication {
+public class GermlineRunner extends GermlineApplication {
 
 	public static String[] programArguments = new String[0];
 

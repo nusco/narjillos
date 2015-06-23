@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 import org.nusco.narjillos.application.utilities.Effects;
 import org.nusco.narjillos.application.utilities.Speed;
 
-public class PetriStatusView {
+public class StatusBarView {
 
 	public Node toNode(int ticksInLastSecond, String environmentStatistics, String performanceStatistics, Speed speed, Effects effects, String trackingStatus, boolean isBusy) {
 		String message = 	"FPS: " + ticksInLastSecond + " / " + performanceStatistics + "\n" +

@@ -132,7 +132,7 @@ public class PetriDish implements Dish {
 		return Math.abs(new Random().nextInt() % 1_000_000_000);
 	}
 
-	public String getPerformanceStatistics() {
+	public String getDishStatistics() {
 		return "TPS: " + getTicksInLastSecond() + " / Ticks: " + NumberFormat.format(getTotalTicks());
 	}
 

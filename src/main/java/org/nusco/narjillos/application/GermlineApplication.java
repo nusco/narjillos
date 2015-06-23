@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,15 +20,16 @@ import org.nusco.narjillos.application.utilities.Speed;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
+import org.nusco.narjillos.application.views.StringView;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
 
 /**
- * This is work in progress for an application that will load the ancestry out
+ * This is work in progress for an application that will load the germline out
  * of an experiment and show the evolution of the most successfull genome.
  */
-public class AncestryApplication extends NarjillosApplication {
+public class GermlineApplication extends NarjillosApplication {
 
 	private static String[] programArguments = new String[0];
 	
@@ -90,6 +92,7 @@ public class AncestryApplication extends NarjillosApplication {
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
 			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
+			private final StringView statusView = new StringView();
 
 			public void run() {
 				trackNarjillo();
@@ -122,6 +125,9 @@ public class AncestryApplication extends NarjillosApplication {
 				root.getChildren().clear();
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
+
+				Node statusInfo = statusView.toNode(getDishStatistics());
+				root.getChildren().add(statusInfo);
 			}
 		};
 	}
@@ -170,7 +176,7 @@ public class AncestryApplication extends NarjillosApplication {
 	
 	@Override
 	protected String[] getProgramArguments() {
-		return AncestryApplication.programArguments;
+		return GermlineApplication.programArguments;
 	}
 
 	private void trackNarjillo() {

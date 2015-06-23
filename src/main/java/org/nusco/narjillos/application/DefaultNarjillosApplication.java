@@ -20,7 +20,7 @@ import org.nusco.narjillos.application.utilities.Speed;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
-import org.nusco.narjillos.application.views.PetriStatusView;
+import org.nusco.narjillos.application.views.StatusBarView;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
@@ -83,7 +83,7 @@ public abstract class DefaultNarjillosApplication extends NarjillosApplication {
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
 			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
-			private final PetriStatusView statusBarView = new PetriStatusView();
+			private final StatusBarView statusBarView = new StatusBarView();
 
 			@Override
 			public void run() {
@@ -117,7 +117,7 @@ public abstract class DefaultNarjillosApplication extends NarjillosApplication {
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(), getPerformanceStatistics(), state.getSpeed(), state.getEffects(),
+				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getCultureStatistics(), getDishStatistics(), state.getSpeed(), state.getEffects(),
 						getTracker().getStatus(), isBusy());
 				root.getChildren().add(statusInfo);
 			}

@@ -49,21 +49,34 @@ class IsolationDish implements Dish {
 
 	public void moveToFirst() {
 		currentDnaIndex = 0;
-		culture.updateSpecimen(createNarjillo(dnas.get(currentDnaIndex)));
+		resetSpecimen();
 	}
 
-	public synchronized void moveToPrevious() {
+	public void moveToLast() {
+		currentDnaIndex = dnas.size() - 1;
+		resetSpecimen();
+	}
+
+	public synchronized void moveBack(int by) {
 		if (currentDnaIndex == 0)
 			return;
 
-		culture.updateSpecimen(createNarjillo(dnas.get(--currentDnaIndex)));
+		currentDnaIndex -= by;
+		currentDnaIndex = Math.max(currentDnaIndex, 0);
+		resetSpecimen();
 	}
 
-	public synchronized void moveToNext() {
+	public synchronized void moveForward(int by) {
 		if (currentDnaIndex == dnas.size() - 1)
 			return;
 
-		culture.updateSpecimen(createNarjillo(dnas.get(++currentDnaIndex)));
+		currentDnaIndex += by;
+		currentDnaIndex = Math.min(currentDnaIndex, dnas.size() - 1);
+		resetSpecimen();
+	}
+
+	private void resetSpecimen() {
+		culture.updateSpecimen(createNarjillo(dnas.get(currentDnaIndex)));
 	}
 	
 	@Override

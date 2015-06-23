@@ -141,22 +141,51 @@ public class GermlineApplication extends NarjillosApplication {
 	protected void registerInteractionHandlers(final Scene scene) {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.RIGHT)
-					moveToNext();
+				final int SKIP = 10;
+				if (keyEvent.getCode() == KeyCode.LEFT && keyEvent.isControlDown())
+					moveBack(SKIP);
+				else if (keyEvent.getCode() == KeyCode.RIGHT && keyEvent.isControlDown())
+					moveForward(SKIP);
+				else if (keyEvent.getCode() == KeyCode.LEFT && keyEvent.isShiftDown())
+					moveToFirst();
+				else if (keyEvent.getCode() == KeyCode.RIGHT && keyEvent.isShiftDown())
+					moveToLast();
 				else if (keyEvent.getCode() == KeyCode.LEFT)
-					moveToPrevious();
+					moveBack(1);
+				else if (keyEvent.getCode() == KeyCode.RIGHT)
+					moveForward(1);
+				else if (keyEvent.getCode() == KeyCode.DOWN)
+					resetSpecimen();
 			}
 
-			private void moveToPrevious() {
+			private void resetSpecimen() {
+				moveForward(0);
+			}
+
+			private void moveBack(int skip) {
 				Narjillo from = getDish().getNarjillo();
-				getDish().moveToPrevious();
+				getDish().moveBack(skip);
 				Narjillo to = getDish().getNarjillo();
 				switchNarjillo(from, to);
 			}
 
-			private void moveToNext() {
+			private void moveForward(int skip) {
 				Narjillo from = getDish().getNarjillo();
-				getDish().moveToNext();
+				getDish().moveForward(skip);
+				Narjillo to = getDish().getNarjillo();
+				switchNarjillo(from, to);
+			}
+
+			private void moveToFirst() {
+				Narjillo from = getDish().getNarjillo();
+				getDish().moveToFirst();
+				Narjillo to = getDish().getNarjillo();
+				switchNarjillo(from, to);
+			}
+
+			private void moveToLast() {
+				Narjillo from = getDish().getNarjillo();
+				getDish().moveToLast();
 				Narjillo to = getDish().getNarjillo();
 				switchNarjillo(from, to);
 			}

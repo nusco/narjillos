@@ -130,7 +130,7 @@ public class PetriDish extends Dish {
 	}
 
 	private long generateRandomSeed() {
-		return Math.abs(new Random().nextInt());
+		return Math.abs(new Random().nextInt() % 1_000_000_000);
 	}
 
 	@Override

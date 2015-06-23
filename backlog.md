@@ -9,7 +9,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     g backlog top        prints the topmost priority feature
     g backlog N          prints the topmost N features
 
-* Fix bug with spawning of creatures at beginning
 
 ##Self-Regulating Ecosystem
 >goal: specialized creatures  
@@ -21,23 +20,24 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     If I still don't get sympatric speciation after implementing this, then maybe I need  
     something even more radical. Sexual reproduction with assortative mating, maybe?
 
-* Give Narjillos a smooth evolutionary path from one element to another
-  Instead of the abrupt switch from element to element that we have now.
-  Do I really want this? There is a chance that it will prevent disruptive selection.
-  Maybe I need another way to make wide color transitions possible? Another way to encode
-  color, maybe?
-    
-* Increase color shift
-  Not sure whether to do this, but it would probably result in easier color changes
-  (and uglier narjillos).
+* Increase color shifts  
+  To make it easier for creatures to change their breathing cycles
 
 * Ecological Niches  
   tweak chemistry to encourage speciation
+
+
+##Ancestry Browser
+>goal: ancestry browser  
+
+    Analyze DNA ancestry in separate program.
     
-+ Local atmosphere  
-  atmosphere composition is a map instead of a global value  
-  
-+ Atmosphere composition "heat map"  
+    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
+    buttons and the like.
+
+* Ancestry Browser  
++ "Back" button  
+- DNA diff during ancestry analysis  
 
 
 ##Species Analysis
@@ -74,77 +74,38 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   one number for the whole gene pool.  
 
 
-##Intuitive Navigation
->goal: nice user experience  
+##Advanced Body Plans
+>goal: specialized creatures  
 
-    Make it easier to move around the dish in a graphical run.
+    Give evolution more power to shape interesting creature bodies.
+
+* "Loop" instruction in body plan  
++ "Jump" instruction in body plan  
++ "Call" instruction in body plan  
+- Duplicate organs during mutation instead of mirroring them  
+  To favour emergent complexity. There are studies who say it would, at least.  
     
-    I should also test navigation with a first-time user.
-
-+ "Previous" command during demo/following  
-+ Visual effect when tracking/untracking  
-- Mini-map  
+- Different shapes for body segments  
 
 
-##GUI
->goal: nice user experience  
+##Database Persistence
+>goal: save experiment history to a database  
 
-    Make the program accessible to people who don't like to learn keyboard shortcuts.
+    For advanced analysis of experimental data.
+    This also removes the memory cap on extremely long experiments.  
 
-* Status bar  
-* Save/load experiment from menu  
-+ Optionally save when quitting application  
-+ Command menus for light, speed, and so on  
-* Start new experiment from menu  
-+ "About"/"Help" menus  
-* Show atmosphere composition  
-- Speed widget  
-- "Screensaver mode"  
-  no menus or status bar
-
-- Light switches for normal/infrared light  
-+ Show historical data  
-- Show graphs for historical data  
-+ View stats for followed narjillo  
-  age, energy, radius, times eaten, genome...  
+* Store historical data in a database rather than in memory  
+  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
   
-- Tutorial  
-+ In-app configuration panel  
-
-
-##Packaged Application
->goal: nice user experience  
-
-    Download-and-run user experience.
-
-* Native Mac app
-  See https://bitbucket.org/infinitekind/appbundler (from Cipster)
-    
-+ Native Windows app  
-+ Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
-- Run in a browser  
-+ Fix permissions on distribution startup scripts  
-  Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
-
-
-##Dish Edges
->goal: nice user experience  
-
-    Constrain the "world" inside defined edges.
-    
-    Right now, things can be placed anywhere, but only the central area of the dish is  
-    space-partitioned. The rest is "outer space". If we limit the world, we can make it  
-    all space-partitioned. The current space partitioning is OK-ish, but it would make  
-    it hard and expensive to implement generalized collision detection. At the moment,  
-    this is not a problem, because the only collision detection I have is "mouth colliding  
-    with food". But in the future, I want to have anything collide with anything.
-    After implementing this, I can probably remove the concept of "outer space" (the area outside the space-partitioned center of the dish).
-
-* Kill narjillos who touch outer space  
-+ Limit panning to inner space  
-  with some margin.  
++ Move entire persistence to a database  
+  Consider this, but be aware that it might effect usability, performance or reliability.  
+  So I might decide to stick with files.  
   
-+ Auto-scroll viewport to stay within inner space  
++ Save events instead of current state  
+  Then have an external program, possibly in Ruby, to process stats
+
++ Save to remote database  
+  If the DB is configurable, then it's easier to run experiments in the cloud.
 
 
 ##Predators
@@ -170,135 +131,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   pick target at random  
   
 - Narjillos eat eggs  
-
-
-##Eye Candy
->goal: nice user experience  
-
-    Smoother, nicer graphics.
-
-- Independent eye pupils  
-+ Optimize graphics  
-+ Smoother contours when zooming in infrared mode  
-- Show heat cloud when zooming out in infrared mode  
-- Skip quickly over less interesting creatures in Demo Mode  
-+ Command-line argument to start without visual effects  
-
-
-##Database Persistence
->goal: save experiment history to a database  
-
-    For advanced analysis of experimental data.
-    This also removes the memory cap on extremely long experiments.  
-
-* Store historical data in a database rather than in memory  
-  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
-  Maybe track only DNA and birth/date events, and have an external program, possibly in Ruby, to process stats?
-  
-+ Move entire persistence to a database  
-  Consider this, but be aware that it might effect usability, performance or reliability.  
-  So I might decide to stick with files.  
-  
-+ Move entire persistence to a database  
-  Consider this, but be aware that it might effect usability, performance or reliability.  
-  So I might decide to stick with files.  
-
-+ Save to remote database  
-  If the DB is configurable, then it's easier to run experiments in the cloud.
-
-
-##Seasons
->goal: faster evolution  
-
-    Cyclically vary the amount of food that spawns.
-    
-    Studies show that evolution works best if there are enough resources (food),
-    but not too many. The problem is that it's hard to know what "enough but 
-    not too many" means. So I want to try this: food amount is cyclical. I'm 
-    hoping that along the way from "almost starving" to "economy of
-    abundance", the system will hit a few evolutionary sweet spots.
-
-* Seasons  
-
-* Configurable seasonal cycle  
-  Max, min and period in config.yaml  
-
-
-##Ecological Niches
->goal: multiple species  
-
-    Use different kinds of food to encourage sympatric speciation.
-
-* Different kinds of food  
-  probably over a 1- or 2-dimensional continuum. (1-dimensional is easier to graph,
-  2-dimensional has more space for niches).
-  for example, red to green, and all the intermediate colors.
-  
-* Narjillos consume food based on their phenotype  
-  how exactly? I need to come up with some kind of 1-dimensional relationship here.
-  Maybe body size? or color?
-  
-* Narjillos select food  
-  this could prove tricky. how does a creature decide that food is "good enough"?
-  most likely, they pick the food that they "like" best. but what if better 
-  food appears nearby? there is a risk that a creature will starve
-  while trying to reach better and better food.
-  another totally different approach is mixing this with Geographical Food
-  Distribution (a separate story), and having narjillos have a favourite direction
-  (genetically determined) that they use to look for food instead of a favourite
-  type of food. Each Narjillos would eat any kind of food, but only find nutrients
-  in the "right" kind. Narjillos who tend towards the wrong direction will likely
-  die.
-  
-+ Geographical food distribution  
-  For example, red is in the upper left corner of the culture, green is in lower right.
-
-
-##Advanced Body Plans
->goal: specialized creatures  
-
-    Give evolution more power to shape interesting creature bodies.
-
-* "Loop" instruction in body plan  
-+ "Jump" instruction in body plan  
-+ "Call" instruction in body plan  
-- Duplicate organs during mutation instead of mirroring them  
-  To favour emergent complexity. There are studies who say it would, at least.  
-    
-- Different shapes for body segments  
-
-
-##Fibers
->goal: specialized creatures  
-
-    Creature specialize in different survival strategies depending on the color of their organs.
-    
-    This is another factor that can encourage disruptive evolution and speciation.
-
-* Green fibers  
-  "Plant fibers", get energy from environment.  
-  Reactivate (I disabled them in config).  
-  
-* Re-activate blue fibers  
-  "Runner fibers", generate more push when moving.  
-  Reactivate (I disabled them in config).  
-    
-+ Add red fibers  
-  "Killer fibers", damage collided creatures  
-  These are new.
-
-
-##Ancestry Browser
->goal: ancestry browser  
-
-    Analyze DNA ancestry in separate program.
-    
-    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
-    buttons and the like.
-
-* Ancestry Browser  
-+ "Back" button  
-- DNA diff during ancestry analysis  
 
 
 ##Istincts
@@ -366,6 +198,123 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   on a CPU with a different flotpoint precision than the expected one.  
 
 
+##GUI
+>goal: nice user experience  
+
+    Make the program accessible to people who don't like to learn keyboard shortcuts.
+
+* Status bar  
+* Save/load experiment from menu  
++ Optionally save when quitting application  
++ Command menus for light, speed, and so on  
+* Start new experiment from menu  
++ "About"/"Help" menus  
+* Show atmosphere composition  
+- Speed widget  
+- "Screensaver mode"  
+  no menus or status bar
+
+- Light switches for normal/infrared light  
++ Show historical data  
+- Show graphs for historical data  
++ View stats for followed narjillo  
+  age, energy, radius, times eaten, genome...  
+  
+- Tutorial  
++ In-app configuration panel  
+
+
+##Packaged Application
+>goal: nice user experience  
+
+    Download-and-run user experience.
+
+* Native Mac app
+  See https://bitbucket.org/infinitekind/appbundler (from Cipster)
+    
+* Allow multiple configurations  
+  With a -c switch. Also have a default configuration
+
++ Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
+
++ Native Windows app  
+
+- Run in a browser  
+
++ Fix permissions on distribution startup scripts  
+  Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
+
+
+##Dish Edges
+>goal: nice user experience  
+
+    Constrain the "world" inside defined edges.
+    
+    Right now, things can be placed anywhere, but only the central area of the dish is  
+    space-partitioned. The rest is "outer space". If we limit the world, we can make it  
+    all space-partitioned. The current space partitioning is OK-ish, but it would make  
+    it hard and expensive to implement generalized collision detection. At the moment,  
+    this is not a problem, because the only collision detection I have is "mouth colliding  
+    with food". But in the future, I want to have anything collide with anything.
+    After implementing this, I can probably remove the concept of "outer space" (the area outside the space-partitioned center of the dish).
+
+* Kill narjillos who touch outer space  
++ Limit panning to inner space  
+  with some margin.  
+  
++ Auto-scroll viewport to stay within inner space  
+
+
+##Fibers
+>goal: specialized creatures  
+
+    Creature specialize in different survival strategies depending on the color of their organs.
+    
+    This is another factor that can encourage disruptive evolution and speciation.
+
+* Green fibers  
+  "Plant fibers", get energy from environment.  
+  Reactivate (I disabled them in config).  
+  
+* Re-activate blue fibers  
+  "Runner fibers", generate more push when moving.  
+  Reactivate (I disabled them in config).  
+    
++ Add red fibers  
+  "Killer fibers", damage collided creatures  
+  These are new.
+
+
+##Eye Candy
+>goal: nice user experience  
+
+    Smoother, nicer graphics.
+
+- Independent eye pupils  
++ Optimize graphics  
++ Smoother contours when zooming in infrared mode  
+- Show heat cloud when zooming out in infrared mode  
+- Skip quickly over less interesting creatures in Demo Mode  
++ Command-line argument to start without visual effects  
+
+
+##Seasons
+>goal: faster evolution  
+
+    Cyclically vary the amount of food that spawns.
+    
+    Studies show that evolution works best if there are enough resources (food),
+    but not too many. The problem is that it's hard to know what "enough but 
+    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    hoping that along the way from "almost starving" to "economy of
+    abundance", the system will hit a few evolutionary sweet spots.
+
+* Seasons  
+
+* Configurable seasonal cycle  
+  Max, min and period in config.yaml  
+
+
 ##Sexual Reproduction
 >goal: different species  
 
@@ -385,6 +334,18 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   
 - Diploid creatures  
   maybe. is it useful?
+
+
+##Intuitive Navigation
+>goal: nice user experience  
+
+    Make it easier to move around the dish in a graphical run.
+    
+    I should also test navigation with a first-time user.
+
++ "Previous" command during demo/following  
++ Visual effect when tracking/untracking  
+- Mini-map  
 
 
 ##Realistic Physics

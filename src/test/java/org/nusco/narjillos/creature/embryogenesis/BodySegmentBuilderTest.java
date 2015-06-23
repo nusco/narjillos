@@ -61,10 +61,15 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 
 	@Test
 	public void decodesFiberShift() {
-		Chromosome chromosome = new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 10, 127, 255);
-		assertEquals(-117, getConcreteOrganBuilder(chromosome).getRedShift());
-		assertEquals(0, getConcreteOrganBuilder(chromosome).getGreenShift());
-		assertEquals(128, getConcreteOrganBuilder(chromosome).getBlueShift());
+		Chromosome chromosome1 = new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 1);
+		assertEquals(-255, getConcreteOrganBuilder(chromosome1).getRedShift());
+		assertEquals(255, getConcreteOrganBuilder(chromosome1).getGreenShift());
+		assertEquals(-253, getConcreteOrganBuilder(chromosome1).getBlueShift());
+
+		Chromosome chromosome2 = new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 126, 127, 128);
+		assertEquals(-3, getConcreteOrganBuilder(chromosome2).getRedShift());
+		assertEquals(-1, getConcreteOrganBuilder(chromosome2).getGreenShift());
+		assertEquals(1, getConcreteOrganBuilder(chromosome2).getBlueShift());
 	}
 
 	@Test
@@ -77,9 +82,9 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		int amplitudeGene = 107;
 		int angleToParentGene = 81;
 		int skewingGene = 150;
-		int redShiftGene = 128;
-		int greenShiftGene = 129;
-		int blueShiftGene = 130;
+		int redShiftGene = 126;
+		int greenShiftGene = 127;
+		int blueShiftGene = 128;
 		
 		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, delayGene, amplitudeGene, angleToParentGene, skewingGene, redShiftGene, greenShiftGene, blueShiftGene);
 		BodySegmentBuilder builder = getConcreteOrganBuilder(chromosome);
@@ -93,7 +98,7 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		assertEquals(10, bodyPart.getDelay(), 0);
 		assertEquals(34, bodyPart.getAmplitude(), 0);
 		assertEquals(16, bodyPart.getSkewing(), 0);
-		assertEquals(new Fiber(51, 62, 73), bodyPart.getFiber());
+		assertEquals(new Fiber(47, 59, 71), bodyPart.getFiber());
 
 		fullyGrow(head);
 		fullyGrow(bodyPart);

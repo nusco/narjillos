@@ -46,15 +46,19 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 	}
 	
 	int getRedShift() {
-		return getChromosome().getGene(RED_SHIFT) - 127;
+		return getFiberShift(RED_SHIFT);
 	}
 	
 	int getGreenShift() {
-		return getChromosome().getGene(GREEN_SHIFT) - 127;
+		return getFiberShift(GREEN_SHIFT);
 	}
 	
 	int getBlueShift() {
-		return getChromosome().getGene(BLUE_SHIFT) - 127;
+		return getFiberShift(BLUE_SHIFT);
+	}
+
+	private int getFiberShift(int redShift) {
+		return (int) ((getChromosome().getGene(redShift) - 127.5) * 2);
 	}
 
 	@Override

@@ -262,7 +262,7 @@ public class Body {
 		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (Organ bodyPart : getOrgans())
 			forceField.registerMovement(initialAnglesOfOrgans.get(bodyPart), bodyPart.getAbsoluteAngle(), bodyPart.getPositionInSpace(),
-					bodyPart.getMass(), getPush(bodyPart));
+					bodyPart.getMass());
 		getHead().rotateBy(forceField.getRotation());
 		return forceField.getEnergy();
 	}
@@ -275,14 +275,9 @@ public class Body {
 	private double tick_step4_translate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
 		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
 		for (Organ bodyPart : getOrgans())
-			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass(),
-					getPush(bodyPart));
+			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
 		getHead().translateBy(forceField.getTranslation());
 		return forceField.getEnergy();
-	}
-
-	private double getPush(Organ bodyPart) {
-		return 1 + bodyPart.getFiber().getPercentOfBlue() * Configuration.CREATURE_BLUE_FIBERS_EXTRA_PUSH;
 	}
 
 	private double getEnergyConsumed(double rotationEnergy, double translationEnergy) {

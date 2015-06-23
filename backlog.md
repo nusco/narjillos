@@ -9,28 +9,58 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     g backlog top        prints the topmost priority feature
     g backlog N          prints the topmost N features
 
+---
 
-##Self-Regulating Ecosystem
->goal: specialized creatures  
+##Istincts
+>goal: complex interactions  
 
-    Encourage speciation by creating a self-enforcing reciprocal need between creatures.
+    Narjillos decide where to go based on their attraction/repulsion to other creatures and things.
     
-    This feature should leverage disruptive evolution to push narjillos to specialize.
+    This is another example of complex interactions. It might result in interesting behaviors and  
+    "smart" species. It's also a precondition for Predators.
+
+    I didn't decide how to do this. It may be weights-based.
+
+* Species identification  
+  Probably based on DNA SimHashes?  
+  
+* Istinct genes: love, fear, hunger  
+- Visualize istinct directions  
+- Visualize istincts on other creatures when following a narjillo  
+* Decide ideal direction based on istinct genes  
++ Attach istincts to all things – in particular, food  
+
+
+##Predators
+>goal: complex interactions  
+
+    Narjillos can eat each other.
     
-    If I still don't get sympatric speciation after implementing this, then maybe I need  
-    something even more radical. Sexual reproduction with assortative mating, maybe?
+    This is a complex direct interaction that might pave the road to an arms race amongst species.
+    I should consider removing food by default after this is implemented.
 
-* Increase color shifts  
-  To make it easier for creatures to change their breathing cycles
+* Fix sketchy collision detection  
+  is this a bug?  
 
-* Ecological Niches  
-  tweak chemistry to encourage speciation
++ Rewrite collision detection to be independent of max speed  
+  This can be almost as simple as it is now, but we should probably aim for generalized
+  collision detection on all organs. Here are a few links from Cipster:
+  http://www.dyn4j.org
+  http://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects
+  http://blog.sklambert.com/html5-canvas-game-2d-collision-detection
+  http://number-none.com/blow/papers/practical_collision_detection.pdf
+
+* Narjillos hurt other narjillos  
+  ...stealing their energy when they "hit" them.
+
+- Narjillos eat eggs  
 
 
 ##Ancestry Browser
 >goal: ancestry browser  
 
     Analyze DNA ancestry in separate program.
+    This is useful to prepare my presentation at Madison+ Ruby.
     
     Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
     buttons and the like.
@@ -106,49 +136,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 + Save to remote database  
   If the DB is configurable, then it's easier to run experiments in the cloud.
-
-
-##Predators
->goal: complex interactions  
-
-    Narjillos can eat each other.
-    
-    This is a complex direct interaction that might pave the road to an arms race amongst species.
-    I should consider removing food by default after this is implemented.
-
-* Fix sketchy collision detection  
-  is this a bug?  
-  
-+ Rewrite collision detection to be independent of max speed  
-  This can be almost as simple as it is now, but we should probably aim for generalized
-  collision detection on all organs. Here are a few links from Cipster:
-  http://www.dyn4j.org
-  http://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects
-  http://blog.sklambert.com/html5-canvas-game-2d-collision-detection
-  http://number-none.com/blow/papers/practical_collision_detection.pdf
-  
-* Narjillos eat other narjillos  
-  pick target at random  
-  
-- Narjillos eat eggs  
-
-
-##Istincts
->goal: complex interactions  
-
-    Narjillos decide where to go based on their attraction/repulsion to other creatures and things.
-    
-    This is another example of complex interactions. It might result in interesting behaviors and  
-    "smart" species.
-
-* Species identification  
-  Probably based on DNA SimHashes?  
-  
-* Istinct genes: love, fear, hunger  
-- Visualize istinct directions  
-- Visualize istincts on other creatures when following a narjillo  
-* Decide ideal direction based on istinct genes  
-+ Attach istincts to all things – in particular, food  
 
 
 ##Lab Analysis
@@ -263,26 +250,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   with some margin.  
   
 + Auto-scroll viewport to stay within inner space  
-
-
-##Fibers
->goal: specialized creatures  
-
-    Creature specialize in different survival strategies depending on the color of their organs.
-    
-    This is another factor that can encourage disruptive evolution and speciation.
-
-* Green fibers  
-  "Plant fibers", get energy from environment.  
-  Reactivate (I disabled them in config).  
-  
-* Re-activate blue fibers  
-  "Runner fibers", generate more push when moving.  
-  Reactivate (I disabled them in config).  
-    
-+ Add red fibers  
-  "Killer fibers", damage collided creatures  
-  These are new.
 
 
 ##Eye Candy

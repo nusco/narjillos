@@ -66,10 +66,7 @@ public class Narjillo implements Thing {
 		double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
 		double energyConsumed = energyRequiredToMove * (1 - densityOfBreathableElement);
 
-		// Account for the gain of energy by green fibers.
-		double energyGatheredByGreenFibers = body.getGreenMass() * Configuration.CREATURE_GREEN_FIBERS_EXTRA_ENERGY;
-
-		energy.tick(energyConsumed - energyGatheredByGreenFibers);
+		energy.tick(energyConsumed);
 	}
 
 	@Override

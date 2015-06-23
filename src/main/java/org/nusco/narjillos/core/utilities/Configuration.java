@@ -97,8 +97,6 @@ public class Configuration {
 	public static final double CREATURE_LATERAL_VIEWFIELD = getDouble("creature", "lateral_viewfield");
 	public static final double CREATURE_SEED_ENERGY = getDouble("creature", "seed_energy");
 	public static final double CREATURE_MIN_ENERGY_TO_CHILDREN = getDouble("creature", "min_energy_to_children");
-	public static final double CREATURE_BLUE_FIBERS_EXTRA_PUSH = getDouble("creature", "blue_fibers_extra_push");
-	public static final double CREATURE_GREEN_FIBERS_EXTRA_ENERGY = getDouble("creature", "green_fibers_extra_energy");
 
 	// organs
 	public static final double ORGAN_MINIMUM_LENGTH_AT_BIRTH = getInt("organ", "minimum_length_at_birth");

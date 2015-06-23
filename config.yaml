@@ -66,22 +66,6 @@ creature:
   # energy.
   min_energy_to_children: 10000.0
 
-  # Different types of "fibers" (that is, colors of a creature's
-  # organs) have different trade-offs. Blue fibers can give extra
-  # push in liquid for the same amount of energy. Green fibers
-  # provide extra energy by converting energy from the environment.
-  # The creatures will tend to evolve different fibers on
-  # different organs, depending on the organs' functions. For
-  # example, organs that do a lot of pushing around might evolve
-  # towards blue.
-  blue_fibers_extra_push: 0.0
-  green_fibers_extra_energy: 0.0
-  # The effect of fibers is currently disabled by default. Here are
-  # a couple of reasonable values in case you want to experiment with
-  # them.
-  # blue_fibers_extra_push: 0.5
-  # green_fibers_extra_energy: 0.00000005
-
 organ:
   # At birth, an organ has a minimum length and thickness. Both
   # grow at growth_rate until they reach their genetically

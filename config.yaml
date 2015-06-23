@@ -13,7 +13,7 @@ physics:
   # The effort of a creature moving is measured in an arbitrary
   # unit - call it a "joule". This is the amount of energy that
   # is needed for one such unit.
-  energy_expense_per_joule: 5
+  energy_expense_per_joule: 0.2
 
   # Once a creature's tangential velocity gets over this value,
   # it starts getting impacted by viscosity - which means that

@@ -82,6 +82,11 @@ public class CommandLineOptions extends Options {
         		System.out.println("WARNING: I'm loading an existing experiment, so I'm ignoring the -history option.");
 
         	setFile(line.getArgs()[0]);
+        	
+        	if (getExperiment() != null && !isPersistent()) {
+				System.err.println("WARNING: you're loading an experiment from file, but you didn't ask for persistence. I will read the experiment file, but I will not update it.");
+				System.err.println("If that is not what you want, then maybe use the --persistence option.");
+			}
         } catch(ParseException e) {
 	        throw new RuntimeException(e);
 	    }

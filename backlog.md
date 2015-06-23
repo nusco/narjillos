@@ -11,18 +11,44 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ---
 
-##Ancestry Browser
->goal: ancestry browser  
+##Germline Browser
+>goal: understand what is happening in the dish  
 
-    Analyze DNA ancestry in separate program.
+    Analyze DNA germline in separate program.
     This is useful to prepare my presentation at Madison+ Ruby.
     
     Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
     buttons and the like.
 
-* More usable browser  
+*  Show narjillo stats while browsing germline  
+   Pick a few:
+   Breathing cycle, mass, maybe energy efficiency (but maybe that's  
+   a separate story), cumulative body angles, energy to children, metabolic  
+   rate, number of atrophic organs, number of organs, sum of bodyplan instructions,  
+   total delay, total amplitude, total skewing, total fiber shift, egg velocity, egg interval.  
 
-- DNA diff during ancestry analysis  
+* Automatic phenotype diff  
+
++ Start browser automatically from Lab program  
+
++ Fade between phenotypes  
+
++ Auto-play  
+  For presentation
+
+- "Go to" functionality
+  Using AutoPlay to make a smooth transition  
+
+- Shows only final diffed stats after a "Go to"
+
+- Different background color from regular program  
+- More visible particles  
+- Repeating particles texture  
+
+- "Frozen mode"  
+  Shows the narjillos at a default number of ticks, but doesn't tick further  
+
+- Automatic DNA diff  
 
 
 ##Istincts
@@ -32,17 +58,22 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     
     This is another example of complex interactions. It might result in interesting behaviors and  
     "smart" species. It's also a precondition for Predators.
-
-    I didn't decide how to do this. It may be weights-based.
+    
+    I didn't decide how to do this yet. It may be weights-based.
 
 * Species identification  
-  Probably based on DNA SimHashes?  
+  Probably based on DNA SimHashes? Or fibers?  
   
-* Istinct genes: love, fear, hunger  
+* Istinct genes  
+  How? Probably just a set of SimHashes and weights?
+
++ Attach istincts to food  
+  Maybe every Thing must be SimHashed?
+
+* Decide direction based on istincts  
+
 - Visualize istinct directions  
 - Visualize istincts on other creatures when following a narjillo  
-* Decide ideal direction based on istinct genes  
-+ Attach istincts to all things – in particular, food  
 
 
 ##Predators
@@ -63,16 +94,22 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   http://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects
   http://blog.sklambert.com/html5-canvas-game-2d-collision-detection
   http://number-none.com/blow/papers/practical_collision_detection.pdf
+  
+  However, see "hurt" story for an approach that might reduce collision detection to  
+  an intersection of vectors.
 
 * Narjillos hurt other narjillos  
   ...stealing their energy when they "hit" them.
+  Probably introduce the concept of "spikes" in the body and consider  
+  the tangential movement of leaf segments as an attach. Spikes would  
+  hurt more than blunt segments. The mouth might be spikey by default.
 
 - Narjillos eat eggs  
 
 
 ##Species Analysis
->goal: multiple species  
-   
+>goal: understand what is happening in the dish  
+
     Use clustering algorithms to automatically count the number of "species".
 
 * Count species with simple clustering algorithm  
@@ -119,7 +156,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Database Persistence
->goal: save experiment history to a database  
+>goal: understand what is happening in the dish  
 
     For advanced analysis of experimental data.
     This also removes the memory cap on extremely long experiments.  
@@ -144,8 +181,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     Track historical data in experiment for analysis.
 
 * Save current configuration in experiment file
-  Be aware that this means that it's not possible to change configuration mid-experiment.
-  Maybe re-save it in a list of configurations at the beginning of every run?
+  Issue warning if continuing the experiment with a different configuration.
+  Maybe offer a command-line switch to override existing configuration?
 
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 

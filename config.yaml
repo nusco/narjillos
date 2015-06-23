@@ -13,7 +13,7 @@ physics:
   # The effort of a creature moving is measured in an arbitrary
   # unit - call it a "joule". This is the amount of energy that
   # is needed for one such unit.
-  energy_expense_per_joule: 0.2
+  energy_expense_per_joule: 5
 
   # Once a creature's tangential velocity gets over this value,
   # it starts getting impacted by viscosity - which means that
@@ -114,21 +114,21 @@ food:
   # and provide a certain amount of energy to the creature
   # that eats them.
   radius: 7
-  energy: 30000
+  energy: 25000
 
 ecosystem:
   # A "block" is a 1000x1000 square. The entire dish is a
   # square whose edges are measured in blocks. The default
-  # number of blocks per edge is different in the "narjillos"
+  # number of blocks per edge can be different for the "narjillos"
   # app (with graphics) and the "experiment" script (without
   # graphics).
   blocks_per_edge_in_app: 40
   blocks_per_edge_in_experiment: 40
 
-  # The dish is populated with eggs and food. The density
-  # of both is calculated based on the total number of blocks. 
+  # The dish can be populated with eggs and food in the beginning,
+  # up to the given density.
   eggs_density_per_block: 0.18
-  food_density_per_block: 0.2
+  food_density_per_block: 0.0
 
   # Food keeps respawning with an average interval (which is
   # calculated based on a single block - so the total interval

@@ -2,7 +2,6 @@ package org.nusco.narjillos;
 
 import org.nusco.narjillos.application.GermlineApplication;
 
-
 /**
  * The entry point to the germline program.
  */

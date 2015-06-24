@@ -49,7 +49,7 @@ public class HeadTest extends ConnectedOrganTest {
 		
 		head.growToAdultFormWithChildren();
 		
-		assertTrue(head.getCenterOfMass().almostEquals(Vector.cartesian(0, 5)));
+		assertTrue(head.getCenterOfMass().approximatelyEquals(Vector.cartesian(0, 5)));
 	}
 	
 	@Test

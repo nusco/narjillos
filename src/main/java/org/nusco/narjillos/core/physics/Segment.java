@@ -65,7 +65,7 @@ public class Segment {
 
 		try {
 			return movement.getNormalComponentOn(getVector());
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 			// should never happen with the previous checks
 			return null;
 		}

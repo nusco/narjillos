@@ -39,7 +39,6 @@ class IsolationDish implements Dish {
 
 	@Override
 	public void terminate() {
-		culture.terminate();
 	}
 
 	@Override
@@ -90,7 +89,7 @@ class IsolationDish implements Dish {
 	}
 
 	public Narjillo getNarjillo() {
-		return getCulture().getNarjillo();
+		return getCulture().getSpecimen();
 	}
 
 	private Narjillo createNarjillo(DNA dna) {

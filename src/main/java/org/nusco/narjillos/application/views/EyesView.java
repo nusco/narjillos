@@ -9,7 +9,7 @@ import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Fiber;
 
@@ -79,7 +79,7 @@ class EyesView implements ItemView {
 		double pupilDirection;
 		try {
 			pupilDirection = narjillo.getMouth().getDirection().getAngle() - eyesDirection - 90;
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 			pupilDirection = 0;
 		}
 		

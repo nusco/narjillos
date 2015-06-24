@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
@@ -44,12 +43,7 @@ public class IsolationCulture extends Culture {
 
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		tickNarjillos(narjillos);
-	}
-
-	@Override
-	protected Set<Thing> getCollisions(Segment movement) {
-		return EMPTY_SET;
+		getSpecimen().tick(getAtmosphere());
 	}
 
 	public void updateSpecimen(Narjillo narjillo) {
@@ -63,7 +57,7 @@ public class IsolationCulture extends Culture {
 		notifyThingAdded(narjillo);
 	}
 
-	public Narjillo getNarjillo() {
+	public Narjillo getSpecimen() {
 		return narjillos.iterator().next();
 	}
 }

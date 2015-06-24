@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 
 public class MouthTest {
 
@@ -78,7 +78,7 @@ public class MouthTest {
 	private void assertMouthPointsTowards(Vector direction) {
 		try {
 			assertEquals(mouth.getDirection().getAngle(), direction.getAngle(), 1);
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 			throw new RuntimeException(e);
 		}
 	}

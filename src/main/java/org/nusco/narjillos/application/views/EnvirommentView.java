@@ -28,7 +28,7 @@ import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.ecosystem.Culture;
-import org.nusco.narjillos.ecosystem.EnvironmentEventListener;
+import org.nusco.narjillos.ecosystem.CultureEventListener;
 
 public class EnvirommentView {
 
@@ -62,14 +62,14 @@ public class EnvirommentView {
 		for (Thing thing : environment.getThings(""))
 			addThingView(thing);
 
-		environment.addEventListener(new EnvironmentEventListener() {
+		environment.addEventListener(new CultureEventListener() {
 			@Override
-			public void thingAdded(Thing thing) {
+			public void added(Thing thing) {
 				addThingView(thing);
 			}
 
 			@Override
-			public void thingRemoved(Thing thing) {
+			public void removed(Thing thing) {
 				removeThingView(thing);
 			}
 		});

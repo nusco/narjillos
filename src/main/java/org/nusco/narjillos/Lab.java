@@ -21,7 +21,7 @@ import org.nusco.narjillos.genomics.GenePoolStats;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
- * The "laboratory" program. It reads data from an experiment and outputs it in
+ * The "lab" program. It reads data from an experiment and outputs it in
  * various formats.
  * 
  * At the moment, it only does ancestry analysis: it reads the gene pool,

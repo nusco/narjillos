@@ -2,7 +2,7 @@ package org.nusco.narjillos.creature.body;
 
 import org.nusco.narjillos.core.physics.Angle;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
@@ -28,7 +28,7 @@ public class Mouth {
 				shiftSmoothlyTowards(rotation + Configuration.CREATURE_LATERAL_VIEWFIELD * Math.signum(relativeTargetAngle));
 
 			// else keep pointing in the same direction
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 			shiftSmoothlyTowards(0);
 		}
 	}

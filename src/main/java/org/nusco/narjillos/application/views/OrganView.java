@@ -14,7 +14,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Fiber;
@@ -186,7 +186,7 @@ public class OrganView implements ItemView {
 
 		try {
 			organShape.setEffect(new MotionBlur(movement.getAngle(), velocity / MOTION_BLUR_THRESHOLD * MOTION_BLUR_INTENSITY));
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 		}
 	}
 

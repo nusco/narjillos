@@ -6,7 +6,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
- * The entry point to "experiment".
+ * The entry point to the "experiment" program.
  */
 public class ExperimentRunner {
 	public static void main(String... args) {

@@ -15,6 +15,7 @@ import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.ecosystem.Culture;
+import org.nusco.narjillos.ecosystem.Ecosystem;
 
 abstract class NarjillosApplication extends Application {
 
@@ -44,7 +45,7 @@ abstract class NarjillosApplication extends Application {
 		// when you run a command-line experiment - but when you run
 		// with graphics, normal realtime speed is adequate, and you
 		// want to save CPU cores for the graphics instead.
-		Culture.numberOfBackgroundThreads = 1;
+		Ecosystem.numberOfBackgroundThreads = 1;
 		
 		startModelThread(getProgramArguments());
 

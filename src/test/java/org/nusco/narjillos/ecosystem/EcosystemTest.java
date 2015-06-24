@@ -80,15 +80,15 @@ public class EcosystemTest {
 	@Test
 	public void sendsEventsWhenAddingThings() {
 		final boolean[] eventFired = {false};
-		ecosystem.addEventListener(new EnvironmentEventListener() {
+		ecosystem.addEventListener(new CultureEventListener() {
 
 			@Override
-			public void thingAdded(Thing thing) {
+			public void added(Thing thing) {
 				eventFired[0] = true;
 			}
 
 			@Override
-			public void thingRemoved(Thing thing) {
+			public void removed(Thing thing) {
 			}
 		});
 		

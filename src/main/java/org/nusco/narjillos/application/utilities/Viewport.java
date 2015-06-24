@@ -186,7 +186,7 @@ public class Viewport {
 	}
 
 	private void panToTarget() {
-		if (targetCenterEC.almostEquals(centerEC))
+		if (targetCenterEC.approximatelyEquals(centerEC))
 			return;
 
 		Vector distanceToTarget = targetCenterEC.minus(centerEC);

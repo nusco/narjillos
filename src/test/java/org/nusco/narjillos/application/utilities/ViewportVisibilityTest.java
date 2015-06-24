@@ -44,7 +44,7 @@ public class ViewportVisibilityTest {
 		viewport.zoomTo(1);
 		stabilizeViewport();
 		viewport.setSizeSC(Vector.cartesian(100, 40));
-		assertTrue(viewport.getCenterEC().almostEquals(Vector.cartesian(100, 100)));
+		assertTrue(viewport.getCenterEC().approximatelyEquals(Vector.cartesian(100, 100)));
 	}
 
 	@Test

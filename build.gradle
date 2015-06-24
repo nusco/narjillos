@@ -113,11 +113,37 @@ task release(dependsOn: ['testAll', 'createStartupScripts', 'assembleMainDist'])
 }
 
 task createStartupScripts(dependsOn: 'installDist') {
-  def taskName = 'experimentStartScript'
+  createScript('experiment', 'org.nusco.narjillos.ExperimentRunner')
+  createScript('lab', 'org.nusco.narjillos.Lab')
+}
+
+
+// Helpers
+
+def createProgramTask(taskName, mainClassName, taskDescription) {
+  tasks.create(name: taskName, type: JavaExec) {
+    description = taskDescription
+    group = 'programs'
+    main = mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    args commandLineArgsOr([])
+    maxHeapSize '4g'
+  }
+}
+
+def commandLineArgsOr(defaultArgs) {
+  if(project.hasProperty('args') && project.getProperty('args').trim().length() > 0)
+    return project.args.split('\\s+')
+  else
+    return defaultArgs
+}
+
+def createScript(name, mainClass) {
+  def taskName = name + 'StartScript'
   tasks.create(name: taskName, type: CreateStartScripts) {
     outputDir = new File(buildDir, 'scripts')
-    mainClassName = 'org.nusco.narjillos.ExperimentRunner'
-    applicationName = 'experiment'
+    mainClassName = mainClass
+    applicationName = name
     classpath = tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + configurations.runtime
     defaultJvmOpts = ['-Xmx8g']
   }
@@ -130,25 +156,4 @@ task createStartupScripts(dependsOn: 'installDist') {
       fileMode = 0755
     }
   }
-}
-
-
-// Helpers
-
-def createProgramTask(taskName, taskMainClassName, taskDescription) {
-  tasks.create(name: taskName, type: JavaExec) {
-    description = taskDescription
-    group = 'programs'
-    main = taskMainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    args commandLineArgsOr([])
-    maxHeapSize '4g'
-  }
-}
-
-def commandLineArgsOr(defaultArgs) {
-  if(project.hasProperty('args') && project.getProperty('args').trim().length() > 0)
-    return project.args.split('\\s+')
-  else
-    return defaultArgs
 }

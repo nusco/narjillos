@@ -22,31 +22,28 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 *  Show narjillo stats while browsing germline  
    Pick a few:
-   Breathing cycle, mass, maybe energy efficiency (but maybe that's  
-   a separate story), cumulative body angles, energy to children, metabolic  
-   rate, number of atrophic organs, number of organs, sum of bodyplan instructions,  
+   Breathing cycle, adult mass, cumulative body angles, energy to children, metabolic  
+   rate, number of organs (atrophic and not), bodyplan program,  
    total delay, total amplitude, total skewing, total fiber shift, egg velocity, egg interval.  
 
 * Automatic phenotype diff  
+  Values that changed are marked in red.  
 
-+ Start browser automatically from Lab program  
-
-+ Fade between phenotypes  
++ Start browser directly from inside Lab program  
 
 + Auto-play  
   For presentation
 
-- "Go to" functionality
-  Using AutoPlay to make a smooth transition  
++ Show energy efficiency amongst stats  
 
-- Shows only final diffed stats after a "Go to"
-
-- Different background color from regular program  
 - More visible particles  
-- Repeating particles texture  
+- Infinite particles texture  
+- Fade between phenotypes  
+- Different background color from regular program  
 
 - "Frozen mode"  
-  Shows the narjillos at a default number of ticks, but doesn't tick further  
+  Shows the narjillos at a default number of ticks, but doesn't tick further.  
+  Maybe important for presentation?  
 
 - Automatic DNA diff  
 
@@ -70,7 +67,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Attach istincts to food  
   Maybe every Thing must be SimHashed?
 
-* Decide direction based on istincts  
+* Decide target direction based on istincts  
 
 - Visualize istinct directions  
 - Visualize istincts on other creatures when following a narjillo  

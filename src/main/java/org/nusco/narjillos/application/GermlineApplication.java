@@ -159,7 +159,10 @@ public class GermlineApplication extends NarjillosApplication {
 			}
 
 			private void resetSpecimen() {
-				moveForward(0);
+				Narjillo from = getDish().getNarjillo();
+				getDish().resetSpecimen();
+				Narjillo to = getDish().getNarjillo();
+				switchNarjillo(from, to);
 			}
 
 			private void moveBack(int skip) {

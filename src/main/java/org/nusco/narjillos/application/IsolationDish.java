@@ -74,7 +74,7 @@ class IsolationDish implements Dish {
 		resetSpecimen();
 	}
 
-	private void resetSpecimen() {
+	void resetSpecimen() {
 		culture.updateSpecimen(createNarjillo(dnas.get(currentDnaIndex)));
 	}
 	

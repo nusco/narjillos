@@ -18,7 +18,7 @@ public abstract class Culture {
 	private final long size;
 	private Atmosphere atmosphere;
 
-	private final List<CultureEventListener> eventListeners = new LinkedList<>();
+	private final transient List<CultureEventListener> eventListeners = new LinkedList<>();
 
 	public Culture(long size) {
 		this.size = size;

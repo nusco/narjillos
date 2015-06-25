@@ -3,6 +3,7 @@ package org.nusco.narjillos.application;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -22,6 +23,7 @@ import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.StringView;
 import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
 
@@ -63,11 +65,19 @@ public class GermlineApplication extends NarjillosApplication {
 			@Override
 			public void run() {
 				if (arguments.length != 1) {
-					System.out.println("This program needs a *.germline file.");
+					System.out.println("This program needs either a *.germline file or the -random option.");
 					System.exit(1);
 				}
 
-				setDish(new IsolationDish(readGermline(arguments[0])));
+				List<DNA> germline;
+				if (arguments[0].equals("-random")) {
+					System.out.println("No *.germline file. Generating random DNAs...");
+					germline = randomGermline();
+				}
+				else
+					germline = readGermline(arguments[0]);
+				
+				setDish(new IsolationDish(germline));
 				getDish().moveToFirst();
 				Narjillo firstNarjillo = getDish().getNarjillo();
 				firstNarjillo.getBody().forcePosition(Vector.ZERO, 180);
@@ -80,8 +90,37 @@ public class GermlineApplication extends NarjillosApplication {
 					tick();
 					waitFor(state.getSpeed().getTicksPeriod(), startTime);
 				}
+
+			}
+			private List<DNA> randomGermline() {
+				List<DNA> result = new LinkedList<DNA>();
+				RanGen ranGen = new RanGen((int) (Math.random() * 100000));
+				for (int i = 0; i < 1000; i++)
+					result.add(DNA.random(i, ranGen ));
+				return result;
 			}
 
+			/**
+			 * Takes an ancestry file that contains a germline (one DNA document per
+			 * line) and returns a list of matching phenotypes.
+			 */
+			private List<DNA> readGermline(String germlineFileName) {
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(germlineFileName));
+					
+					List<DNA> result = new ArrayList<DNA>();
+					String nextLine = reader.readLine();
+					while (nextLine != null) {
+						result.add(new DNA(1, nextLine.trim()));
+						nextLine = reader.readLine();
+					}
+					reader.close();
+					System.out.println("Loaded ancestry germline from file " + germlineFileName);
+					return result;
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
 		};
 	}
 	
@@ -214,26 +253,4 @@ public class GermlineApplication extends NarjillosApplication {
 	private void trackNarjillo() {
 		getTracker().startTracking(getDish().getNarjillo());
 	};
-	
-	/**
-	 * Takes an ancestry file that contains a germline (one DNA document per
-	 * line) and returns a list of matching phenotypes.
-	 */
-	private static List<DNA> readGermline(String germlineFileName) {
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(germlineFileName));
-			
-			List<DNA> result = new ArrayList<DNA>();
-			String nextLine = reader.readLine();
-			while (nextLine != null) {
-				result.add(new DNA(1, nextLine.trim()));
-				nextLine = reader.readLine();
-			}
-			reader.close();
-			System.out.println("Loaded ancestry germline from file " + germlineFileName);
-			return result;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
 }

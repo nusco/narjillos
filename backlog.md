@@ -29,6 +29,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Automatic phenotype diff  
   Values that changed are marked in red.  
 
++ Fix bug with target position not being set at right-infinite  
+
 + Start browser directly from inside Lab program  
 
 + Auto-play  
@@ -38,12 +40,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 - More visible particles  
 - Infinite particles texture  
-- Fade between phenotypes  
 - Different background color from regular program  
-
-- "Frozen mode"  
-  Shows the narjillos at a default number of ticks, but doesn't tick further.  
-  Maybe important for presentation?  
 
 - Automatic DNA diff  
 
@@ -143,6 +140,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Give evolution more power to shape interesting creature bodies.
 
+* Less constraining mirroring  
+  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
+    
 * "Loop" instruction in body plan  
 + "Jump" instruction in body plan  
 + "Call" instruction in body plan  

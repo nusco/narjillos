@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.Experiment;
+import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
 
 /**
  * Runs a short experiment for a few thousands ticks and times the result.

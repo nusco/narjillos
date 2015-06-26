@@ -2,6 +2,8 @@ package org.nusco.narjillos.creature;
 
 import java.util.List;
 
+import org.nusco.narjillos.core.chemistry.Atmosphere;
+import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -13,8 +15,6 @@ import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.embryogenesis.Embryo;
-import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
-import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 

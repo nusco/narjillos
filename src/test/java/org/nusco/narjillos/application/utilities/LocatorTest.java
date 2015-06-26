@@ -10,7 +10,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 
 public class LocatorTest {

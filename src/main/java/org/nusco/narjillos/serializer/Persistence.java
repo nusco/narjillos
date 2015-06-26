@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.nusco.narjillos.ecosystem.Experiment;
+import org.nusco.narjillos.experiment.Experiment;
 
 public class Persistence {
 

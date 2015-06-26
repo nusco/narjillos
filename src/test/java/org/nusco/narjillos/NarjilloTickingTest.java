@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;

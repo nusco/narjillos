@@ -1,6 +1,6 @@
-package org.nusco.narjillos.ecosystem.chemistry;
+package org.nusco.narjillos.core.chemistry;
 
-import static org.nusco.narjillos.ecosystem.chemistry.Element.*;
+import static org.nusco.narjillos.core.chemistry.Element.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

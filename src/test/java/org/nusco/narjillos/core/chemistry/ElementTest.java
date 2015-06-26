@@ -1,12 +1,13 @@
-package org.nusco.narjillos.ecosystem.chemistry;
+package org.nusco.narjillos.core.chemistry;
 
 import static org.junit.Assert.assertEquals;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.OXYGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.ZERO;
+import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
+import static org.nusco.narjillos.core.chemistry.Element.ZERO;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.chemistry.Element;
 
 public class ElementTest {
 

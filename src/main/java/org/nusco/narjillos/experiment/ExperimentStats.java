@@ -1,8 +1,8 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment;
 
-import static org.nusco.narjillos.ecosystem.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.OXYGEN;
+import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

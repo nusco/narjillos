@@ -4,10 +4,10 @@ import java.util.Random;
 
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.NumberFormat;
-import org.nusco.narjillos.ecosystem.Culture;
-import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.Experiment;
-import org.nusco.narjillos.ecosystem.ExperimentStats;
+import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.experiment.ExperimentStats;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Environment;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
@@ -29,7 +29,7 @@ public class PetriDish implements Dish {
 		System.out.println(ExperimentStats.getConsoleHeader());
 	}
 
-	public Culture getCulture() {
+	public Environment getEnvironment() {
 		return experiment.getEcosystem();
 	}
 
@@ -132,7 +132,7 @@ public class PetriDish implements Dish {
 		return Math.abs(new Random().nextInt() % 1_000_000_000);
 	}
 
-	public String getDishStatistics() {
+	public String getStatistics() {
 		return "TPS: " + getTicksInLastSecond() + " / Ticks: " + NumberFormat.format(getTotalTicks());
 	}
 

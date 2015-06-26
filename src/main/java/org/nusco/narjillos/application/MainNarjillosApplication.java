@@ -117,7 +117,7 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getCultureStatistics(), getDishStatistics(), state.getSpeed(), state.getEffects(),
+				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(), getDishStatistics(), state.getSpeed(), state.getEffects(),
 						getTracker().getStatus(), isBusy());
 				root.getChildren().add(statusInfo);
 			}

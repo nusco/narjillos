@@ -27,8 +27,8 @@ import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
-import org.nusco.narjillos.ecosystem.Culture;
-import org.nusco.narjillos.ecosystem.CultureEventListener;
+import org.nusco.narjillos.experiment.environment.Environment;
+import org.nusco.narjillos.experiment.environment.EnvironmentEventListener;
 
 public class EnvirommentView {
 
@@ -43,7 +43,7 @@ public class EnvirommentView {
 	private final Shape infraredEmptySpace;
 	private final Shape darkness;
 
-	public EnvirommentView(Culture environment, Viewport viewport, AppState state) {
+	public EnvirommentView(Environment environment, Viewport viewport, AppState state) {
 		this.viewport = viewport;
 		this.viewState = state;
 
@@ -62,7 +62,7 @@ public class EnvirommentView {
 		for (Thing thing : environment.getThings(""))
 			addThingView(thing);
 
-		environment.addEventListener(new CultureEventListener() {
+		environment.addEventListener(new EnvironmentEventListener() {
 			@Override
 			public void added(Thing thing) {
 				addThingView(thing);

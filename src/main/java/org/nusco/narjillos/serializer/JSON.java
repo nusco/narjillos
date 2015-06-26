@@ -8,7 +8,7 @@ import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 

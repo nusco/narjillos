@@ -14,8 +14,8 @@ import org.nusco.narjillos.application.utilities.ThingTracker;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.ecosystem.Culture;
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Environment;
 
 abstract class NarjillosApplication extends Application {
 
@@ -51,8 +51,8 @@ abstract class NarjillosApplication extends Application {
 
 		System.gc(); // minimize GC during the first stages on animation
 
-		viewport = new Viewport(getDish().getCulture());
-		locator = new Locator(getDish().getCulture());
+		viewport = new Viewport(getDish().getEnvironment());
+		locator = new Locator(getDish().getEnvironment());
 		tracker = new ThingTracker(viewport, locator);
 
 		final Group root = new Group();
@@ -168,8 +168,8 @@ abstract class NarjillosApplication extends Application {
 		this.dish = dish;
 	}
 
-	protected Culture getEcosystem() {
-		return getDish().getCulture();
+	protected Environment getEcosystem() {
+		return getDish().getEnvironment();
 	}
 
 	protected boolean tick() {
@@ -177,14 +177,14 @@ abstract class NarjillosApplication extends Application {
 	}
 
 	protected String getDishStatistics() {
-		return getDish().getDishStatistics();
+		return getDish().getStatistics();
 	}
 
-	protected String getCultureStatistics() {
-		Culture culture = getDish().getCulture();
-		return "Narj: " + culture.getNumberOfNarjillos()
-				+ " / Eggs: " + culture.getNumberOfEggs()
-				+ " / Food: " + culture.getNumberOfFoodPieces();
+	protected String getEnvironmentStatistics() {
+		Environment environment = getDish().getEnvironment();
+		return "Narj: " + environment.getNumberOfNarjillos()
+				+ " / Eggs: " + environment.getNumberOfEggs()
+				+ " / Food: " + environment.getNumberOfFoodPieces();
 	}
 
 	protected boolean isBusy() {

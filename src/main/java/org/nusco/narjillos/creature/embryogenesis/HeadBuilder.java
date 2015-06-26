@@ -2,11 +2,11 @@ package org.nusco.narjillos.creature.embryogenesis;
 
 import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.*;
 
+import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.MovingOrgan;
-import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.Chromosome;
 
 /**

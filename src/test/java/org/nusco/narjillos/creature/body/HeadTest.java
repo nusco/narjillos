@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
-import org.nusco.narjillos.ecosystem.chemistry.Element;
 
 public class HeadTest extends ConnectedOrganTest {
 

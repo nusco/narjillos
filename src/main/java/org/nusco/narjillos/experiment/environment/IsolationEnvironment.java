@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -9,13 +9,16 @@ import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.GenePool;
 
-public class IsolationCulture extends Culture {
+/**
+ * An environment that isolates a single narjillo at a time.
+ */
+public class IsolationEnvironment extends Environment {
 
 	private static final Set<Thing> EMPTY_SET = Collections.unmodifiableSet(new LinkedHashSet<Thing>());
 
 	private Set<Narjillo> narjillos = new LinkedHashSet<>();
 
-	public IsolationCulture(long size, RanGen ranGen) {
+	public IsolationEnvironment(long size, RanGen ranGen) {
 		super(size);
 	}
 

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -26,9 +26,9 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 
 /**
- * The place that Narjillos call "home".
+ * A complex environment populate with narjillos, eggs and food.
  */
-public class Ecosystem extends Culture {
+public class Ecosystem extends Environment {
 
 	public static int numberOfBackgroundThreads = Runtime.getRuntime().availableProcessors();
 

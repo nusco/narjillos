@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;

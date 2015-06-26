@@ -1,8 +1,8 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import org.nusco.narjillos.core.things.Thing;
 
-public interface CultureEventListener {
+public interface EnvironmentEventListener {
 
 	void added(Thing thing);
 

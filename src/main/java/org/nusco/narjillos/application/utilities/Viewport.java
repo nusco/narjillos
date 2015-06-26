@@ -2,7 +2,7 @@ package org.nusco.narjillos.application.utilities;
 
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.ecosystem.Culture;
+import org.nusco.narjillos.experiment.environment.Environment;
 
 /**
  * A Viewport is a zoomable, rectangular view over an ecosystem.
@@ -30,7 +30,7 @@ public class Viewport {
 	private volatile boolean userIsZooming = false;
 	final double minZoomLevel;
 	
-	public Viewport(Culture ecosystem) {
+	public Viewport(Environment ecosystem) {
 		this.ecosystemSizeEC = ecosystem.getSize();
 		setCenterEC(getEcosystemCenterEC());
 

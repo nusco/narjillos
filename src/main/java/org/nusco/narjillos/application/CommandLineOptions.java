@@ -10,7 +10,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
-import org.nusco.narjillos.ecosystem.Experiment;
+import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.Persistence;
 

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
 
 public class ViewportVisibilityTest {
 

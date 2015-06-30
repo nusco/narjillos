@@ -23,7 +23,7 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	@Override
-	public Set<Thing> getThings(String label) {
+	public synchronized Set<Thing> getThings(String label) {
 		if (label.equals("narjillo") || label.equals(""))
 			return new LinkedHashSet<Thing>(narjillos);
 		return EMPTY_SET;
@@ -49,7 +49,7 @@ public class IsolationEnvironment extends Environment {
 		getSpecimen().tick(getAtmosphere());
 	}
 
-	public void updateSpecimen(Narjillo narjillo) {
+	public synchronized void updateSpecimen(Narjillo narjillo) {
 		if (!narjillos.isEmpty()) {
 			Narjillo existingNarjillo = narjillos.iterator().next();
 			narjillos.remove(existingNarjillo);
@@ -60,7 +60,7 @@ public class IsolationEnvironment extends Environment {
 		notifyThingAdded(narjillo);
 	}
 
-	public Narjillo getSpecimen() {
+	public synchronized Narjillo getSpecimen() {
 		return narjillos.iterator().next();
 	}
 }

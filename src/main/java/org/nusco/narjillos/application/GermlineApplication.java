@@ -81,7 +81,6 @@ public class GermlineApplication extends NarjillosApplication {
 				getDish().moveToFirst();
 				Narjillo firstNarjillo = getDish().getNarjillo();
 				firstNarjillo.getBody().forcePosition(Vector.ZERO, 180);
-				firstNarjillo.setTarget(firstNarjillo.getPosition().minus(Vector.cartesian(1000000, 0)));
 				
 				isModelInitialized[0] = true;
 

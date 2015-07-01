@@ -29,8 +29,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Automatic phenotype diff  
   Values that changed are marked in red.  
 
-+ Fix bug with target position not being set at right-infinite  
-
 + Start browser directly from inside Lab program  
 
 + Auto-play  

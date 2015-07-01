@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
@@ -46,7 +47,13 @@ public class IsolationEnvironment extends Environment {
 
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
+		setTargetToTheRight(getSpecimen());
 		getSpecimen().tick(getAtmosphere());
+	}
+
+	private void setTargetToTheRight(Narjillo specimen) {
+		Vector target = specimen.getPosition().plus(Vector.cartesian(10, 0));
+		specimen.setTarget(target);
 	}
 
 	public synchronized void updateSpecimen(Narjillo narjillo) {

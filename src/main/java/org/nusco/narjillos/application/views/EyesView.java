@@ -111,21 +111,21 @@ class EyesView implements ItemView {
 	private Color toEyeColor(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
 			return Color.WHITE;
-		return new Color(eyeRed, eyeGreen, eyeBlue, getZoomOpacity(zoomLevel));
+		return new Color(eyeRed, eyeGreen, eyeBlue, getZoomAlpha(zoomLevel));
 	}
 
 	private Color toPupilColor(double zoomLevel) {
-		return new Color(0, 0, 0, Math.min(getZoomOpacity(zoomLevel), getEnergyOpacity(zoomLevel)));
+		return new Color(0, 0, 0, Math.min(getZoomAlpha(zoomLevel), getEnergyAlpha(zoomLevel)));
 	}
 
-	private double getEnergyOpacity(double zoomLevel) {
+	private double getEnergyAlpha(double zoomLevel) {
 		double maxEnergy = narjillo.getEnergy().getMaximumValue();
 		if (maxEnergy <= 0)
 			return 0;
 		return narjillo.getEnergy().getValue() * 3 / maxEnergy;
 	}
 
-	private double getZoomOpacity(double zoomLevel) {
+	private double getZoomAlpha(double zoomLevel) {
 		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 4, 0, 1);
 	}
 

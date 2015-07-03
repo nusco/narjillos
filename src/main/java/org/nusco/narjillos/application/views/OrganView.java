@@ -224,7 +224,7 @@ public class OrganView implements ItemView {
 
 	private double getAlpha(double zoomLevel) {
 		double distanceAlpha = getDistanceAlpha(zoomLevel);
-		double energyAlpha = getEnergyOpacity();
+		double energyAlpha = getEnergyAlpha();
 		return Math.min(energyAlpha, distanceAlpha);
 	}
 
@@ -261,7 +261,7 @@ public class OrganView implements ItemView {
 		return organ.getLength() + getOverlap() * 2 < 50 || organ.getThickness() < 20;
 	}
 
-	private double getEnergyOpacity() {
+	private double getEnergyAlpha() {
 		double result = getNarjillo().getEnergy().getValue() / (getNarjillo().getEnergy().getMaximumValue() / 10);
 		return Math.min(1, result);
 	}

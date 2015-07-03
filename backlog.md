@@ -36,6 +36,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 + Show energy efficiency amongst stats  
 
++ Command-line help in germline application  
+
 - More visible particles  
 - Infinite particles texture  
 - Different background color from regular program  

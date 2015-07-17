@@ -1,12 +1,12 @@
 package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertEquals;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.OXYGEN;
+import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 
 import org.junit.Test;
-import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
+import org.nusco.narjillos.core.chemistry.Atmosphere;
 
 public class JSONAtmosphereSerializationTest {
 

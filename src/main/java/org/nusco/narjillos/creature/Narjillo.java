@@ -2,6 +2,8 @@ package org.nusco.narjillos.creature;
 
 import java.util.List;
 
+import org.nusco.narjillos.core.chemistry.Atmosphere;
+import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -13,8 +15,6 @@ import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.embryogenesis.Embryo;
-import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
-import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -53,20 +53,6 @@ public class Narjillo implements Thing {
 		updateEnergy(energyRequiredToMove, atmosphere);
 
 		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
-	}
-
-	private void updateEnergy(double energyRequiredToMove, Atmosphere atmosphere) {
-		// Make energy cheaper depending on atmospheric composition.
-		// A creature whose breathable element has a density of 1 can move for free.
-		// A creature whose breathable element has a density of 0 has to spend all
-		// the energy from its reserves.
-		//
-		// (Don't mutate the Atmosphere here - this code is called in parallel,
-		// and it would become non-deterministic if we mutate shared objects).
-		double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
-		double energyConsumed = energyRequiredToMove * (1 - densityOfBreathableElement);
-
-		energy.tick(energyConsumed);
 	}
 
 	@Override
@@ -111,12 +97,12 @@ public class Narjillo implements Thing {
 	}
 
 	public void feedOn(FoodPiece thing) {
-		energy.steal(thing.getEnergy());
+		getEnergy().steal(thing.getEnergy());
 		thing.setEater(this);
 	}
 
 	public boolean isDead() {
-		return energy.isZero();
+		return getEnergy().isZero();
 	}
 
 	public Body getBody() {
@@ -129,10 +115,6 @@ public class Narjillo implements Thing {
 
 	public Mouth getMouth() {
 		return mouth;
-	}
-
-	public Vector getNeckLocation() {
-		return getBody().getHead().getEndPoint();
 	}
 
 	public long getAge() {
@@ -181,6 +163,28 @@ public class Narjillo implements Thing {
 		return body.getBrainWaveAngle();
 	}
 
+	public void growToAdultForm() {
+		getBody().growToAdultForm();
+	}
+
+	Vector getNeckLocation() {
+		return getBody().getHead().getEndPoint();
+	}
+
+	private void updateEnergy(double energyRequiredToMove, Atmosphere atmosphere) {
+		// Make energy cheaper depending on atmospheric composition.
+		// A creature whose breathable element has a density of 1 can move for free.
+		// A creature whose breathable element has a density of 0 has to spend all
+		// the energy from its reserves.
+		//
+		// (Don't mutate the Atmosphere here - this code is called in parallel,
+		// and it would become non-deterministic if we mutate shared objects).
+		double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
+		double energyConsumed = energyRequiredToMove * (1 - densityOfBreathableElement);
+
+		getEnergy().tick(energyConsumed);
+	}
+
 	private void decideWhenToLayTheNextEgg() {
 		nextEggAge = getAge() + getBody().getEggInterval();
 	}
@@ -191,9 +195,5 @@ public class Narjillo implements Thing {
 
 	private void growOlder() {
 		age++;
-	}
-
-	public void growToAdultForm() {
-		getBody().growToAdultForm();
 	}
 }

@@ -12,8 +12,8 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.Experiment;
-import org.nusco.narjillos.ecosystem.ExperimentStats;
+import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.experiment.ExperimentStats;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
@@ -21,7 +21,7 @@ import org.nusco.narjillos.genomics.GenePoolStats;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
- * The "laboratory" program. It reads data from an experiment and outputs it in
+ * The "lab" program. It reads data from an experiment and outputs it in
  * various formats.
  * 
  * At the moment, it only does ancestry analysis: it reads the gene pool,

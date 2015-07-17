@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
 import org.nusco.narjillos.genomics.SimpleGenePool;
@@ -14,14 +15,13 @@ public class Experiment {
 
 	private final String id;
 	private final Ecosystem ecosystem;
+	private final GenePool genePool;
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final RanGen ranGen;
-	private final GenePool genePool;
 	private final boolean trackHistory;
 	private final LinkedList<ExperimentStats> stats = new LinkedList<>();
 
 	private long totalRunningTime = 0;
-
 	private transient long lastRegisteredRunningTime;
 
 	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackHistory, String dna) {

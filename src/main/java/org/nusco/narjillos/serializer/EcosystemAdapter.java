@@ -2,11 +2,11 @@ package org.nusco.narjillos.serializer;
 
 import java.lang.reflect.Type;
 
+import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.things.FoodPiece;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.Ecosystem;
-import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;

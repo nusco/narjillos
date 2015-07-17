@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +13,8 @@ import org.nusco.narjillos.core.things.FoodPiece;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.experiment.environment.EnvironmentEventListener;
 import org.nusco.narjillos.genomics.DNA;
 
 public class EcosystemTest {
@@ -83,12 +85,12 @@ public class EcosystemTest {
 		ecosystem.addEventListener(new EnvironmentEventListener() {
 
 			@Override
-			public void thingAdded(Thing thing) {
+			public void added(Thing thing) {
 				eventFired[0] = true;
 			}
 
 			@Override
-			public void thingRemoved(Thing thing) {
+			public void removed(Thing thing) {
 			}
 		});
 		

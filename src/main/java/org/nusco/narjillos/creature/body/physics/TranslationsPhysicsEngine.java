@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
@@ -47,7 +47,7 @@ public class TranslationsPhysicsEngine {
 		
 		try {
 			return Vector.polar(result.getAngle(), Viscosity.limit(length));
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 			throw new RuntimeException(e); // should never happen
 		}
 	}

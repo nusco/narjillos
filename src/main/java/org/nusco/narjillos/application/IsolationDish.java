@@ -6,19 +6,19 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.IsolationCulture;
+import org.nusco.narjillos.experiment.environment.IsolationEnvironment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.SimpleGenePool;
 
 /**
- * A dish that isolates a single narjillo in its own dish.
+ * A dish that isolates a single narjillo in its own environment.
  */
 class IsolationDish implements Dish {
 
 	private final List<DNA> dnas;
 	private int currentDnaIndex = 0;
-	private IsolationCulture culture;
+	private IsolationEnvironment environment;
 	private GenePool genePool = new SimpleGenePool();
 	private RanGen ranGen = new RanGen(1234);
 
@@ -28,18 +28,17 @@ class IsolationDish implements Dish {
 			System.out.println("Empty germline");
 			System.exit(1);
 		}
-		culture = new IsolationCulture(10_000, ranGen);
+		environment = new IsolationEnvironment(10_000, ranGen);
 	}
 
 	@Override
 	public synchronized boolean tick() {
-		culture.tick(genePool, ranGen);
+		environment.tick(genePool, ranGen);
 		return true;
 	}
 
 	@Override
 	public void terminate() {
-		culture.terminate();
 	}
 
 	@Override
@@ -49,35 +48,48 @@ class IsolationDish implements Dish {
 
 	public void moveToFirst() {
 		currentDnaIndex = 0;
-		culture.updateSpecimen(createNarjillo(dnas.get(currentDnaIndex)));
+		resetSpecimen();
 	}
 
-	public synchronized void moveToPrevious() {
+	public void moveToLast() {
+		currentDnaIndex = dnas.size() - 1;
+		resetSpecimen();
+	}
+
+	public synchronized void moveBack(int by) {
 		if (currentDnaIndex == 0)
 			return;
 
-		culture.updateSpecimen(createNarjillo(dnas.get(--currentDnaIndex)));
+		currentDnaIndex -= by;
+		currentDnaIndex = Math.max(currentDnaIndex, 0);
+		resetSpecimen();
 	}
 
-	public synchronized void moveToNext() {
+	public synchronized void moveForward(int by) {
 		if (currentDnaIndex == dnas.size() - 1)
 			return;
 
-		culture.updateSpecimen(createNarjillo(dnas.get(++currentDnaIndex)));
+		currentDnaIndex += by;
+		currentDnaIndex = Math.min(currentDnaIndex, dnas.size() - 1);
+		resetSpecimen();
+	}
+
+	void resetSpecimen() {
+		environment.updateSpecimen(createNarjillo(dnas.get(currentDnaIndex)));
 	}
 	
 	@Override
-	public IsolationCulture getCulture() {
-		return culture;
+	public IsolationEnvironment getEnvironment() {
+		return environment;
 	}
 
 	@Override
-	public String getDishStatistics() {
+	public String getStatistics() {
 		return "" + (currentDnaIndex + 1) + " of " + dnas.size();
 	}
 
 	public Narjillo getNarjillo() {
-		return getCulture().getNarjillo();
+		return getEnvironment().getSpecimen();
 	}
 
 	private Narjillo createNarjillo(DNA dna) {

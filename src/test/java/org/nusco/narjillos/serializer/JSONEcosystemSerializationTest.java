@@ -1,9 +1,9 @@
 package org.nusco.narjillos.serializer;
 
 import static org.junit.Assert.assertEquals;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.OXYGEN;
+import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 
 import java.util.Iterator;
 
@@ -15,7 +15,7 @@ import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.ecosystem.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.SimpleGenePool;
 

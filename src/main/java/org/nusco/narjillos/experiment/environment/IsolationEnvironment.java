@@ -1,27 +1,30 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.GenePool;
 
-public class IsolationCulture extends Culture {
+/**
+ * An environment that isolates a single narjillo at a time.
+ */
+public class IsolationEnvironment extends Environment {
 
 	private static final Set<Thing> EMPTY_SET = Collections.unmodifiableSet(new LinkedHashSet<Thing>());
 
 	private Set<Narjillo> narjillos = new LinkedHashSet<>();
 
-	public IsolationCulture(long size, RanGen ranGen) {
+	public IsolationEnvironment(long size, RanGen ranGen) {
 		super(size);
 	}
 
 	@Override
-	public Set<Thing> getThings(String label) {
+	public synchronized Set<Thing> getThings(String label) {
 		if (label.equals("narjillo") || label.equals(""))
 			return new LinkedHashSet<Thing>(narjillos);
 		return EMPTY_SET;
@@ -44,15 +47,16 @@ public class IsolationCulture extends Culture {
 
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		tickNarjillos(narjillos);
+		setTargetToTheRight(getSpecimen());
+		getSpecimen().tick(getAtmosphere());
 	}
 
-	@Override
-	protected Set<Thing> getCollisions(Segment movement) {
-		return EMPTY_SET;
+	private void setTargetToTheRight(Narjillo specimen) {
+		Vector target = specimen.getPosition().plus(Vector.cartesian(10, 0));
+		specimen.setTarget(target);
 	}
 
-	public void updateSpecimen(Narjillo narjillo) {
+	public synchronized void updateSpecimen(Narjillo narjillo) {
 		if (!narjillos.isEmpty()) {
 			Narjillo existingNarjillo = narjillos.iterator().next();
 			narjillos.remove(existingNarjillo);
@@ -63,7 +67,7 @@ public class IsolationCulture extends Culture {
 		notifyThingAdded(narjillo);
 	}
 
-	public Narjillo getNarjillo() {
+	public synchronized Narjillo getSpecimen() {
 		return narjillos.iterator().next();
 	}
 }

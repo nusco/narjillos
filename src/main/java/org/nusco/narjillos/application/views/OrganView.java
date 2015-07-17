@@ -14,7 +14,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Fiber;
@@ -186,7 +186,7 @@ public class OrganView implements ItemView {
 
 		try {
 			organShape.setEffect(new MotionBlur(movement.getAngle(), velocity / MOTION_BLUR_THRESHOLD * MOTION_BLUR_INTENSITY));
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 		}
 	}
 
@@ -224,7 +224,7 @@ public class OrganView implements ItemView {
 
 	private double getAlpha(double zoomLevel) {
 		double distanceAlpha = getDistanceAlpha(zoomLevel);
-		double energyAlpha = getEnergyOpacity();
+		double energyAlpha = getEnergyAlpha();
 		return Math.min(energyAlpha, distanceAlpha);
 	}
 
@@ -261,7 +261,7 @@ public class OrganView implements ItemView {
 		return organ.getLength() + getOverlap() * 2 < 50 || organ.getThickness() < 20;
 	}
 
-	private double getEnergyOpacity() {
+	private double getEnergyAlpha() {
 		double result = getNarjillo().getEnergy().getValue() / (getNarjillo().getEnergy().getMaximumValue() / 10);
 		return Math.min(1, result);
 	}

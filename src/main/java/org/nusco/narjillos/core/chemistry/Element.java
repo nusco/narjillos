@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem.chemistry;
+package org.nusco.narjillos.core.chemistry;
 
 public enum Element {
 	ZERO,

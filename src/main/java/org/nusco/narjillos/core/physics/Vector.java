@@ -17,7 +17,7 @@ public class Vector {
 	// cached fields (for performance)
 	private double angle = Double.NaN;
 	private double length = Double.NaN;
-		
+
 	public static Vector polar(double degrees, double length) {
 		double sin = FastMath.sin(degrees);
 		double cos = FastMath.cos(degrees);
@@ -27,7 +27,7 @@ public class Vector {
 	public static Vector cartesian(double x, double y) {
 		return new Vector(x, y);
 	}
-	
+
 	private Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
@@ -37,17 +37,20 @@ public class Vector {
 		return x == 0 && y == 0;
 	}
 
-	public double getAngle() throws ZeroVectorException {
+	public double getAngle() throws ZeroVectorAngleException {
 		if (isZero())
-			throw new ZeroVectorException();
+			throw new ZeroVectorAngleException();
+		
 		if (Double.isNaN(angle))
 			angle = FastMath.atan(y, x);
+		
 		return angle;
 	}
 
 	public double getLength() {
 		if (Double.isNaN(length))
 			length = Math.sqrt(x * x + y * y);
+
 		return length;
 	}
 
@@ -67,7 +70,7 @@ public class Vector {
 		return this.minus(other).getLength();
 	}
 
-	public Vector getNormalComponentOn(Vector other) throws ZeroVectorException {
+	public Vector getNormalComponentOn(Vector other) throws ZeroVectorAngleException {
 		double resultAngle = other.getAngle() - 90;
 		double resultLength = FastMath.cos(getAngle() - resultAngle) * getLength();
 		return Vector.polar(resultAngle, resultLength);
@@ -83,14 +86,15 @@ public class Vector {
 		if (obj == null)
 			return false;
 		Vector other = (Vector) obj;
-		return equalsExactly(x, other.x) && equalsExactly(y, other.y);
+		return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
+				&& Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
 	}
 
-	public boolean almostEquals(Vector other) {
+	public boolean approximatelyEquals(Vector other) {
 		final double delta = 0.01;
 		return Math.abs(x - other.x) < delta && Math.abs(y - other.y) < delta;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "(" + approx(x) + ", " + approx(y) + ")";
@@ -99,9 +103,5 @@ public class Vector {
 	private double approx(double n) {
 		final double decimals = 100.0;
 		return (Math.round(n * decimals)) / decimals;
-	}
-
-	private static boolean equalsExactly(double d1, double d2) {
-		return Double.doubleToLongBits(d1) == Double.doubleToLongBits(d2);
 	}
 }

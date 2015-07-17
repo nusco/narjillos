@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -11,7 +11,7 @@ import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
- * Partitioned space for fast neighbor searching, collision detection, etc.
+ * Partitioned space for fast neighbor searches, collision detection, etc.
  */
 class Space {
 

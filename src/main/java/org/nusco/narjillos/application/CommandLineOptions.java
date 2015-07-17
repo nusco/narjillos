@@ -10,7 +10,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
-import org.nusco.narjillos.ecosystem.Experiment;
+import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.serializer.Persistence;
 
@@ -22,6 +22,7 @@ public class CommandLineOptions extends Options {
 	private Experiment experiment = null;
 	private GenePool genePool = null;
 	private boolean persistent = true;
+	private boolean fast = false;
 	private boolean trackingHistory = false;
 	private long seed = NO_SEED;
 	private String dna = null;
@@ -37,6 +38,7 @@ public class CommandLineOptions extends Options {
 
 	CommandLineOptions(String... args) {
 		addOption("h", "help", false, "print this message");
+		addOption("f", "fast", false, "fast mode (no graphics)");
 		addOption("p", "persistent", false, "periodically save experiment to file");
 		addOption("history", false, "track genepool history (needs a lot of memory)");
 		addOption("s", "seed", true, "start experiment with given seed");
@@ -57,6 +59,7 @@ public class CommandLineOptions extends Options {
 	        	System.exit(0);
 	        }
 
+	        setFast(line.hasOption("f"));
 	        setPersistent(line.hasOption("p"));
 	        setTrackingHistory(line.hasOption("history"));
 
@@ -99,7 +102,11 @@ public class CommandLineOptions extends Options {
 	public GenePool getGenePool() {
 		return genePool;
 	}
-	
+
+	public boolean isFast() {
+		return fast;
+	}
+
 	public boolean isPersistent() {
 		return persistent;
 	}
@@ -129,6 +136,10 @@ public class CommandLineOptions extends Options {
 	private void setFile(String file) {
 		this.experiment = Persistence.loadExperiment(file);
 		this.genePool = this.experiment.getGenePool();
+	}
+
+	private void setFast(boolean fast) {
+		this.fast = fast;
 	}
 
 	private void setPersistent(boolean persistent) {

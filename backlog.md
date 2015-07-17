@@ -11,6 +11,21 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ---
 
+##Prepare for Madison+ Presentation
+>goal: have a good, clear presentation in Madison  
+
+* Update documentation  
+* Prepare a "find a new name" initiative  
+* Auto-play in Germline Browser  
+* Keyframes in Germline Browser  
+* Identify interesting germline for demo  
+* Identify interesting history for demo  
+  (Temporarily remove chemistry?)  
+* Slow motion in germline viewer  
+* Fix "viewport shift" bug in germline viewer  
+* Rotate food in germline viewer  
+
+
 ##Germline Browser
 >goal: understand what is happening in the dish  
 
@@ -44,9 +59,22 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Different background color from regular program  
 - More visible particles  
 - Repeating particles texture  
+   Breathing cycle, adult mass, cumulative body angles, energy to children, metabolic  
+   rate, number of organs (atrophic and not), bodyplan program,  
+   total delay, total amplitude, total skewing, total fiber shift, egg velocity, egg interval.  
 
-- "Frozen mode"  
-  Shows the narjillos at a default number of ticks, but doesn't tick further  
+* Automatic phenotype diff  
+  Values that changed are marked in red.  
+
++ Start browser directly from inside Lab program  
+
++ Show energy efficiency amongst stats  
+
++ Command-line help in germline application  
+
+- More visible particles  
+- Infinite particles texture  
+- Different background color from regular program  
 
 - Automatic DNA diff  
 
@@ -146,6 +174,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Give evolution more power to shape interesting creature bodies.
 
+* Less constraining mirroring  
+  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
+    
 * "Loop" instruction in body plan  
 + "Jump" instruction in body plan  
 + "Call" instruction in body plan  

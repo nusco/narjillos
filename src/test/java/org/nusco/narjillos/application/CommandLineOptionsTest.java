@@ -37,6 +37,13 @@ public class CommandLineOptionsTest {
 	}
 
 	@Test
+	public void acceptsAFastOption() {
+		assertFalse(new CommandLineOptions().isFast());
+		assertTrue(new CommandLineOptions("-f").isFast());
+		assertTrue(new CommandLineOptions("--fast").isFast());
+	}
+
+	@Test
 	public void acceptsAPersistenceOption() {
 		assertFalse(new CommandLineOptions().isPersistent());
 		assertTrue(new CommandLineOptions("-p").isPersistent());

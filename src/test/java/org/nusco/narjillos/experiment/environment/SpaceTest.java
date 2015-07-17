@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,11 +9,12 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
+import org.nusco.narjillos.experiment.environment.Space;
 
 public class SpaceTest {
 

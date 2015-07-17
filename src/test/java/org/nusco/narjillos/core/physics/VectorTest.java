@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 
 public class VectorTest {
 	
 	@Test
-	public void canBeCreatedFromCartesianCoordinates() throws ZeroVectorException {
+	public void canBeCreatedFromCartesianCoordinates() throws ZeroVectorAngleException {
 		double x = 10.1;
 		double y = 20.1;
 		Vector v = Vector.cartesian(x, y);
@@ -23,7 +23,7 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void canBeCreatedFromPolarCoordinates() throws ZeroVectorException {
+	public void canBeCreatedFromPolarCoordinates() throws ZeroVectorAngleException {
 		double degrees = 30;
 		double length = 10;
 		Vector v = Vector.polar(degrees, length);
@@ -43,7 +43,7 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void normalizesAnglesWhenUsingPolarCoordinates() throws ZeroVectorException {
+	public void normalizesAnglesWhenUsingPolarCoordinates() throws ZeroVectorAngleException {
 		assertEquals(0, Vector.polar(0, 1).getAngle(), 0.001);
 		assertEquals(180, Vector.polar(180, 1).getAngle(), 0.001);
 		assertEquals(0, Vector.polar(360, 1).getAngle(), 0.001);
@@ -56,7 +56,7 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void normalizesAnglesWhenUsingCartesianCoordinates() throws ZeroVectorException {
+	public void normalizesAnglesWhenUsingCartesianCoordinates() throws ZeroVectorAngleException {
 		double PRECISION_FOR_ANGLES_ALONG_THE_AXES = 0.0;
 		double PRECISION_FOR_ANY_OTHER_ANGLE = 0.01;
 
@@ -86,13 +86,13 @@ public class VectorTest {
 		assertEquals(1, Vector.polar(45, -1).getLength(), 0.001);
 	}
 	
-	@Test(expected = ZeroVectorException.class)
-	public void hasNoAngleIfItsLengthIsZero() throws ZeroVectorException {
+	@Test(expected = ZeroVectorAngleException.class)
+	public void hasNoAngleIfItsLengthIsZero() throws ZeroVectorAngleException {
 		assertEquals(0, Vector.ZERO.getAngle(), 0);
 	}
 
 	@Test
-	public void canBeCreatedWithANegativeLengths() throws ZeroVectorException {
+	public void canBeCreatedWithANegativeLengths() throws ZeroVectorAngleException {
 		assertEquals(180, Vector.polar(0, -1).getAngle(), 0.01);
 		assertEquals(0, Vector.polar(180, -1).getAngle(), 0.01);
 		assertEquals(-90, Vector.polar(90, -1).getAngle(), 0.01);
@@ -127,7 +127,7 @@ public class VectorTest {
 	}
 	
 	@Test
-	public void hasANormalComponentOnAnotherVector() throws ZeroVectorException {
+	public void hasANormalComponentOnAnotherVector() throws ZeroVectorAngleException {
 		assertAlmostEquals(Vector.ZERO, Vector.polar(90, 10).getNormalComponentOn(Vector.polar(90, 1)));
 		assertAlmostEquals(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 1)));
 		assertAlmostEquals(Vector.polar(90, 10), Vector.polar(90, 10).getNormalComponentOn(Vector.polar(0, 10)));
@@ -137,13 +137,13 @@ public class VectorTest {
 		assertAlmostEquals(Vector.polar(-90, 7.0710), Vector.polar(-45, 10).getNormalComponentOn(Vector.polar(180, 10)));
 	}
 	
-	@Test(expected = ZeroVectorException.class)
-	public void hasNoNormalComponentIfItsLengthIsZero() throws ZeroVectorException {
+	@Test(expected = ZeroVectorAngleException.class)
+	public void hasNoNormalComponentIfItsLengthIsZero() throws ZeroVectorAngleException {
 		Vector.ZERO.getNormalComponentOn(Vector.polar(90, 1));
 	}
 	
-	@Test(expected = ZeroVectorException.class)
-	public void hasNoNormalComponentOnVectorZero() throws ZeroVectorException {
+	@Test(expected = ZeroVectorAngleException.class)
+	public void hasNoNormalComponentOnVectorZero() throws ZeroVectorAngleException {
 		Vector.polar(90, 1).getNormalComponentOn(Vector.ZERO);
 	}
 
@@ -157,6 +157,6 @@ public class VectorTest {
 	}
 	
 	private void assertAlmostEquals(Vector v1, Vector v2) {
-		assertTrue("Different vectors: " + v1 + ", " + v2, v1.almostEquals(v2));
+		assertTrue("Different vectors: " + v1 + ", " + v2, v1.approximatelyEquals(v2));
 	}
 }

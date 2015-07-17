@@ -1,8 +1,8 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment;
 
-import static org.nusco.narjillos.ecosystem.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.ecosystem.chemistry.Element.OXYGEN;
+import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
+import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,6 +25,27 @@ public class ExperimentStats {
 		"Z->H",
 		"Z->N"
 	};
+
+	public static String getConsoleHeader() {
+		StringBuffer result = new StringBuffer();
+		result.append(alignLeft("tick")
+				+ alignLeft("narj")
+				+ alignLeft("food")
+				+ alignLeft("O")
+				+ alignLeft("H")
+				+ alignLeft("N"));
+		for (int i = 0; i < CHEMICAL_CYCLES.length; i++)
+			result.append(alignLeft(CHEMICAL_CYCLES[i]));
+		return result.toString();
+	}
+
+	public static String getCSVHeader() {
+		StringBuffer result = new StringBuffer();
+		result.append("ticks,running_time,food," + GenePoolStats.getCSVHeader() + ",O,H,N");
+		for (int i = 0; i < CHEMICAL_CYCLES.length; i++)
+			result.append("," + CHEMICAL_CYCLES[i]);
+		return result.toString();
+	}
 	
 	private final long ticks;
 	private final long runningTime;
@@ -71,10 +92,12 @@ public class ExperimentStats {
 	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		result.append(alignLeft(NumberFormat.format(ticks)) + alignLeft(NumberFormat.format(runningTime))
-				+ alignLeft(genePoolStats.getCurrentPoolSize()) + alignLeft(numberOfFoodPieces)
-				+ alignLeft(NumberFormat.format(genePoolStats.getAverageGeneration())) + alignLeft(NumberFormat.format(oxygen))
-				+ alignLeft(NumberFormat.format(hydrogen)) + alignLeft(NumberFormat.format(nitrogen)));
+		result.append(alignLeft(NumberFormat.format(ticks))
+				+ alignLeft(genePoolStats.getCurrentPoolSize())
+				+ alignLeft(numberOfFoodPieces)
+				+ alignLeft(NumberFormat.format(oxygen))
+				+ alignLeft(NumberFormat.format(hydrogen))
+				+ alignLeft(NumberFormat.format(nitrogen)));
 		for (String cycle : chemicalCycles.keySet())
 			result.append(alignLeft(chemicalCycles.get(cycle)));
 		return result.toString();
@@ -108,29 +131,6 @@ public class ExperimentStats {
 		return true;
 	}
 
-	public static String getConsoleHeader() {
-		StringBuffer result = new StringBuffer();
-		result.append(alignLeft("tick")
-				+ alignLeft("time")
-				+ alignLeft("narj")
-				+ alignLeft("food")
-				+ alignLeft("gen")
-				+ alignLeft("O")
-				+ alignLeft("H")
-				+ alignLeft("N"));
-		for (int i = 0; i < CHEMICAL_CYCLES.length; i++)
-			result.append(alignLeft(CHEMICAL_CYCLES[i]));
-		return result.toString();
-	}
-
-	public static String getCSVHeader() {
-		StringBuffer result = new StringBuffer();
-		result.append("ticks,running_time,food," + GenePoolStats.getCSVHeader() + ",O,H,N");
-		for (int i = 0; i < CHEMICAL_CYCLES.length; i++)
-			result.append("," + CHEMICAL_CYCLES[i]);
-		return result.toString();
-	}
-
 	public String getChemicalCyclesReport() {
 		StringBuffer result = new StringBuffer("Chemical cycles:");
 		for (String cycle : chemicalCycles.keySet())
@@ -139,7 +139,7 @@ public class ExperimentStats {
 	}
 
 	private static String alignLeft(Object label) {
-		final String padding = "       ";
+		final String padding = "        ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
 	}

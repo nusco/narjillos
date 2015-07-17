@@ -7,9 +7,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.RanGen;
-import org.nusco.narjillos.ecosystem.chemistry.Atmosphere;
 import org.nusco.narjillos.genomics.DNA;
 
 public class EggTest {
@@ -20,30 +20,12 @@ public class EggTest {
 	
 	@Test
 	public void hatchesANarjilloAfterAnIncubationPeriod() {
-		assertEquals(100, egg.getEnergy().getValue(), 0);
 		assertNull(egg.getHatchedNarjillo());
 
 		waitUntilItHatches(egg);
-		
 		Narjillo narjillo = egg.getHatchedNarjillo();
+
 		assertEquals(egg.getPosition(), narjillo.getPosition());
-		assertEquals(0, egg.getEnergy().getValue(), 0);
-		assertEquals(100, narjillo.getEnergy().getValue(), 0);
-	}
-	
-	@Test
-	public void onlyHatchesOnce() {
-		waitUntilItHatches(egg);
-		
-		assertFalse(egg.hatch(new RanGen(1)));
-	}
-	
-	@Test
-	public void theHatchedNarjilloHasTheOriginalDNA() {
-		waitUntilItHatches(egg);
-		
-		Narjillo narjillo = egg.getHatchedNarjillo();
-		assertSame(dna, narjillo.getDNA());
 	}
 	
 	@Test
@@ -57,6 +39,21 @@ public class EggTest {
 		assertEquals(100, narjillo.getEnergy().getValue(), 0);
 	}
 	
+	@Test
+	public void putsDNAIntoTheHatchedNarjillo() {
+		waitUntilItHatches(egg);
+		Narjillo narjillo = egg.getHatchedNarjillo();
+		
+		assertSame(dna, narjillo.getDNA());
+	}
+	
+	@Test
+	public void onlyHatchesOnce() {
+		waitUntilItHatches(egg);
+		
+		assertFalse(egg.hatch(new RanGen(1)));
+	}
+
 	@Test
 	public void decaysUpTo100PercentAfterHatching() {
 		assertFalse(egg.isDecayed());

@@ -10,7 +10,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 import org.nusco.narjillos.creature.Narjillo;
 
 class MouthView implements ItemView {
@@ -88,7 +88,7 @@ class MouthView implements ItemView {
 	private double getMouthAngle() {
 		try {
 			return getNarjillo().getMouth().getDirection().getAngle();
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 			return 0;
 		}
 	}

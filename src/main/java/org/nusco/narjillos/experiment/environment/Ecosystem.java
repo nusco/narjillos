@@ -1,4 +1,4 @@
-package org.nusco.narjillos.ecosystem;
+package org.nusco.narjillos.experiment.environment;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -6,7 +6,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
@@ -21,9 +26,16 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 
 /**
- * The place that Narjillos call "home".
+ * A complex environment populate with narjillos, eggs and food.
  */
-public class Ecosystem extends Culture {
+public class Ecosystem extends Environment {
+
+	public static int numberOfBackgroundThreads = Runtime.getRuntime().availableProcessors();
+
+	private final ExecutorService executorService;
+
+	/** Counter used by the ThreadFactory to name threads. */
+	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
 
 	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
@@ -32,6 +44,14 @@ public class Ecosystem extends Culture {
 
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
+		
+		ThreadFactory tickWorkerFactory = (Runnable r) -> {
+			Thread result = new Thread(r, "tick-worker-" + tickWorkerCounter.getAndIncrement());
+			result.setPriority(Thread.currentThread().getPriority());
+			return result;
+		};
+		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
+
 		this.space = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
 
@@ -41,6 +61,14 @@ public class Ecosystem extends Culture {
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 
+	@Override
+	public void tick(GenePool genePool, RanGen ranGen) {
+		if (isShuttingDown())
+			return; // we're leaving, apparently
+
+		super.tick(genePool, ranGen);
+	}
+	
 	@Override
 	public Set<Thing> getThings(String label) {
 		Set<Thing> result = new LinkedHashSet<>();
@@ -137,6 +165,30 @@ public class Ecosystem extends Culture {
 			spawnEgg(genePool.createRandomDNA(ranGen), randomPosition(getSize(), ranGen), ranGen);
 	}
 
+	public synchronized void terminate() {
+		executorService.shutdown();
+		try {
+			executorService.awaitTermination(10, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected boolean isShuttingDown() {
+		return executorService.isShutdown();
+	}
+
+	protected Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Set<Narjillo> narjillos) {
+		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
+		for (final Narjillo narjillo : narjillos) {
+			result.put(narjillo, executorService.submit(() -> {
+				Segment movement = narjillo.tick(getAtmosphere());
+				return getCollisions(movement);
+			}));
+		}
+		return result;
+	}
+
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
 		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> {
@@ -165,7 +217,6 @@ public class Ecosystem extends Culture {
 		}
 	}
 
-	@Override
 	protected Set<Thing> getCollisions(Segment movement) {
 		return space.detectCollisions(movement, "food_piece");
 	}

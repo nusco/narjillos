@@ -6,14 +6,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.physics.Angle;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorException;
+import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.physics.RotationsPhysicsEngine;
 import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
-import org.nusco.narjillos.ecosystem.chemistry.Element;
 
 /**
  * The physical body of a Narjillo, with all its organs and their position in
@@ -302,7 +302,7 @@ public class Body {
 			return 0;
 		try {
 			return Angle.normalize(getAngle() - direction.getAngle());
-		} catch (ZeroVectorException e) {
+		} catch (ZeroVectorAngleException e) {
 			throw new RuntimeException(e); // should never happen
 		}
 	}

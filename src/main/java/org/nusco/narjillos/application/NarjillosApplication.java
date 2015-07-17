@@ -14,9 +14,12 @@ import org.nusco.narjillos.application.utilities.ThingTracker;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.ecosystem.Culture;
+import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.experiment.environment.Environment;
 
 abstract class NarjillosApplication extends Application {
+
+	private static String[] programArguments = new String[0];
 
 	// These fields are all just visualization stuff - no data will
 	// get corrupted if different threads see slightly outdated versions of
@@ -34,6 +37,14 @@ abstract class NarjillosApplication extends Application {
 	private volatile boolean[] isModelInitialized = new boolean[] { false };
 	private volatile boolean mainApplicationStopped = false;
 
+	protected static String[] getProgramArguments() {
+		return programArguments;
+	}
+
+	protected static void setProgramArguments(String[] programArguments) {
+		NarjillosApplication.programArguments = programArguments;
+	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		FastMath.setUp();
@@ -44,14 +55,14 @@ abstract class NarjillosApplication extends Application {
 		// when you run a command-line experiment - but when you run
 		// with graphics, normal realtime speed is adequate, and you
 		// want to save CPU cores for the graphics instead.
-		Culture.numberOfBackgroundThreads = 1;
+		Ecosystem.numberOfBackgroundThreads = 1;
 		
 		startModelThread(getProgramArguments());
 
 		System.gc(); // minimize GC during the first stages on animation
 
-		viewport = new Viewport(getDish().getCulture());
-		locator = new Locator(getDish().getCulture());
+		viewport = new Viewport(getDish().getEnvironment());
+		locator = new Locator(getDish().getEnvironment());
 		tracker = new ThingTracker(viewport, locator);
 
 		final Group root = new Group();
@@ -137,8 +148,6 @@ abstract class NarjillosApplication extends Application {
 
 	protected abstract void registerInteractionHandlers(Scene scene);
 
-	protected abstract String[] getProgramArguments();
-
 	// Remember: we need to initialize the random number generator inside this
 	// thread, because it will complain if it is called from multiple threads.
 	protected abstract StoppableThread createModelThread(String[] arguments, boolean[] isModelInitialized);
@@ -167,8 +176,8 @@ abstract class NarjillosApplication extends Application {
 		this.dish = dish;
 	}
 
-	protected Culture getEcosystem() {
-		return getDish().getCulture();
+	protected Environment getEcosystem() {
+		return getDish().getEnvironment();
 	}
 
 	protected boolean tick() {
@@ -176,14 +185,14 @@ abstract class NarjillosApplication extends Application {
 	}
 
 	protected String getDishStatistics() {
-		return getDish().getDishStatistics();
+		return getDish().getStatistics();
 	}
 
-	protected String getCultureStatistics() {
-		Culture culture = getDish().getCulture();
-		return "Narj: " + culture.getNumberOfNarjillos()
-				+ " / Eggs: " + culture.getNumberOfEggs()
-				+ " / Food: " + culture.getNumberOfFoodPieces();
+	protected String getEnvironmentStatistics() {
+		Environment environment = getDish().getEnvironment();
+		return "Narj: " + environment.getNumberOfNarjillos()
+				+ " / Eggs: " + environment.getNumberOfEggs()
+				+ " / Food: " + environment.getNumberOfFoodPieces();
 	}
 
 	protected boolean isBusy() {

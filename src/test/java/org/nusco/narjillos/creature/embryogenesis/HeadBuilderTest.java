@@ -3,9 +3,9 @@ package org.nusco.narjillos.creature.embryogenesis;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.ecosystem.chemistry.Element;
 import org.nusco.narjillos.genomics.Chromosome;
 
 public class HeadBuilderTest extends ConcreteOrganBuilderTest {

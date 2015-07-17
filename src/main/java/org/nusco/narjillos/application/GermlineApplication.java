@@ -195,43 +195,44 @@ public class GermlineApplication extends NarjillosApplication {
 					resetSpecimen();
 			}
 
-			private void resetSpecimen() {
+			private synchronized void resetSpecimen() {
 				Narjillo from = getDish().getNarjillo();
 				getDish().resetSpecimen();
 				Narjillo to = getDish().getNarjillo();
 				switchNarjillo(from, to);
 			}
 
-			private void moveBack(int skip) {
+			private synchronized void moveBack(int skip) {
 				Narjillo from = getDish().getNarjillo();
 				getDish().moveBack(skip);
 				Narjillo to = getDish().getNarjillo();
 				switchNarjillo(from, to);
 			}
 
-			private void moveForward(int skip) {
+			private synchronized void moveForward(int skip) {
 				Narjillo from = getDish().getNarjillo();
 				getDish().moveForward(skip);
 				Narjillo to = getDish().getNarjillo();
 				switchNarjillo(from, to);
 			}
 
-			private void moveToFirst() {
+			private synchronized void moveToFirst() {
 				Narjillo from = getDish().getNarjillo();
 				getDish().moveToFirst();
 				Narjillo to = getDish().getNarjillo();
 				switchNarjillo(from, to);
 			}
 
-			private void moveToLast() {
+			private synchronized void moveToLast() {
 				Narjillo from = getDish().getNarjillo();
 				getDish().moveToLast();
 				Narjillo to = getDish().getNarjillo();
 				switchNarjillo(from, to);
 			}
 
-			private void switchNarjillo(Narjillo from, Narjillo to) {
-				to.getBody().forcePosition(from.getPosition(), 180);
+			private synchronized void switchNarjillo(Narjillo from, Narjillo to) {
+				Vector centerOffset = to.getPosition().minus(to.getCenter());
+				to.getBody().forcePosition(from.getCenter().plus(centerOffset), 180);
 				to.setTarget(to.getPosition().minus(Vector.cartesian(1000000, 0)));
 				trackNarjillo();
 			}

@@ -22,7 +22,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Identify interesting history for demo  
   (Temporarily remove chemistry?)  
 * Slow motion in germline viewer  
-* Fix "viewport shift" bug in germline viewer  
 * Rotate food in germline viewer  
 
 

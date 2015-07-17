@@ -14,18 +14,16 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 ##Prepare for Madison+ Presentation
 >goal: have a good, clear presentation in Madison  
 
-* Bigger generation numbers during presentation  
+* Update documentation  
 * Prepare a "find a new name" initiative  
+* Auto-play in Germline Browser  
+* Keyframes in Germline Browser  
 * Identify interesting germline for demo  
 * Identify interesting history for demo  
   (Temporarily remove chemistry?)  
 * Slow motion in germline viewer  
 * Fix "viewport shift" bug in germline viewer  
 * Rotate food in germline viewer  
-* Update documentation  
-
-* Auto-play in Germline Browser  
-* Keyframes in Germline Browser  
 
 
 ##Germline Browser

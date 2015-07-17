@@ -88,7 +88,6 @@ public class GermlineApplication extends NarjillosApplication {
 					tick();
 					waitFor(state.getSpeed().getTicksPeriod(), startTime);
 				}
-
 			}
 
 			private List<DNA> randomGermline() {
@@ -130,7 +129,7 @@ public class GermlineApplication extends NarjillosApplication {
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
 			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
-			private final StringView statusView = new StringView();
+			private final StringView statusView = new StringView(40);
 
 			public void run() {
 				trackNarjillo();

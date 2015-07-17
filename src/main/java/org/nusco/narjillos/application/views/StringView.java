@@ -6,13 +6,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class StringView {
+	
+	private final int fontSize;
+
+	public StringView(int fontSize) {
+		this.fontSize = fontSize;
+	}
 
 	public Node toNode(String message) {
-		Text result = new Text(message);
-		result.setFont(Font.font("HelveticaNeue-Bold", 14));
+		Text result = new Text(" " + message);
+		result.setFont(Font.font("HelveticaNeue-Bold", fontSize));
 		result.setFill(Color.LIGHTGREEN);
-		result.setTranslateX(5);
-		result.setTranslateY(15);
+		result.setTranslateY(fontSize);
 		return result;
 	}
 }

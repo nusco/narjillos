@@ -14,7 +14,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 ##Prepare for Madison+ Presentation
 >goal: have a good, clear presentation in Madison  
 
-* Unify "experiment" and "narjillos" programs  
 * Bigger generation numbers during presentation  
 * Prepare a "find a new name" initiative  
 * Identify interesting germline for demo  

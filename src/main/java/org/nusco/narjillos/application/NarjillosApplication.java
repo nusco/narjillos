@@ -19,6 +19,8 @@ import org.nusco.narjillos.experiment.environment.Environment;
 
 abstract class NarjillosApplication extends Application {
 
+	private static String[] programArguments = new String[0];
+
 	// These fields are all just visualization stuff - no data will
 	// get corrupted if different threads see slightly outdated versions of
 	// them. So we can avoid synchronization altogether.
@@ -34,6 +36,14 @@ abstract class NarjillosApplication extends Application {
 
 	private volatile boolean[] isModelInitialized = new boolean[] { false };
 	private volatile boolean mainApplicationStopped = false;
+
+	protected static String[] getProgramArguments() {
+		return programArguments;
+	}
+
+	protected static void setProgramArguments(String[] programArguments) {
+		NarjillosApplication.programArguments = programArguments;
+	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -137,8 +147,6 @@ abstract class NarjillosApplication extends Application {
 	}
 
 	protected abstract void registerInteractionHandlers(Scene scene);
-
-	protected abstract String[] getProgramArguments();
 
 	// Remember: we need to initialize the random number generator inside this
 	// thread, because it will complain if it is called from multiple threads.

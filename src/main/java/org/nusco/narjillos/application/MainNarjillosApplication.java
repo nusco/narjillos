@@ -31,7 +31,7 @@ import org.nusco.narjillos.serializer.Persistence;
  * The main JavaFX Application class. It binds model and view together, and also
  * manages the user interface.
  */
-public abstract class MainNarjillosApplication extends NarjillosApplication {
+public class MainNarjillosApplication extends NarjillosApplication {
 
 	private static final long PAN_SPEED = 200;
 
@@ -271,5 +271,10 @@ public abstract class MainNarjillosApplication extends NarjillosApplication {
 					getTracker().stopTracking();
 			}
 		});
+	}
+
+	public static void main(String... args) throws Exception {
+		setProgramArguments(args);
+		launch(args);
 	}
 }

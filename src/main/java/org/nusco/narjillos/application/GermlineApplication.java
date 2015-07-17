@@ -28,37 +28,37 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
 
 /**
- * This is work in progress for an application that will load the germline out
- * of an experiment and show the evolution of the most successfull genome.
+ * This application loads the germline out of an experiment and shows the
+ * evolution of the most successfull genome.
+ * 
+ * (Alternately, it can also show a lineup of random creatures).
  */
 public class GermlineApplication extends NarjillosApplication {
 
-	private static String[] programArguments = new String[0];
-	
 	private static AppState state = new AppState() {
-		
+
 		@Override
 		public Speed getSpeed() {
 			return Speed.REALTIME;
 		}
-		
+
 		@Override
 		public Light getLight() {
 			return Light.ON;
 		}
-		
+
 		@Override
 		public int getFramesPeriod() {
 			final int FPS = 30;
 			return 1000 / FPS;
 		}
-		
+
 		@Override
 		public Effects getEffects() {
 			return Effects.ON;
 		}
 	};
-	
+
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
 		return new StoppableThread() {
@@ -73,15 +73,14 @@ public class GermlineApplication extends NarjillosApplication {
 				if (arguments[0].equals("-random")) {
 					System.out.println("No *.germline file. Generating random DNAs...");
 					germline = randomGermline();
-				}
-				else
+				} else
 					germline = readGermline(arguments[0]);
-				
+
 				setDish(new IsolationDish(germline));
 				getDish().moveToFirst();
 				Narjillo firstNarjillo = getDish().getNarjillo();
 				firstNarjillo.getBody().forcePosition(Vector.ZERO, 180);
-				
+
 				isModelInitialized[0] = true;
 
 				while (!hasBeenAskedToStop()) {
@@ -91,22 +90,23 @@ public class GermlineApplication extends NarjillosApplication {
 				}
 
 			}
+
 			private List<DNA> randomGermline() {
 				List<DNA> result = new LinkedList<DNA>();
 				RanGen ranGen = new RanGen((int) (Math.random() * 100000));
 				for (int i = 0; i < 1000; i++)
-					result.add(DNA.random(i, ranGen ));
+					result.add(DNA.random(i, ranGen));
 				return result;
 			}
 
 			/**
-			 * Takes an ancestry file that contains a germline (one DNA document per
-			 * line) and returns a list of matching phenotypes.
+			 * Takes an ancestry file that contains a germline (one DNA document
+			 * per line) and returns a list of matching phenotypes.
 			 */
 			private List<DNA> readGermline(String germlineFileName) {
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(germlineFileName));
-					
+
 					List<DNA> result = new ArrayList<DNA>();
 					String nextLine = reader.readLine();
 					while (nextLine != null) {
@@ -122,7 +122,7 @@ public class GermlineApplication extends NarjillosApplication {
 			}
 		};
 	}
-	
+
 	@Override
 	protected StoppableThread createViewThread(final Group root) {
 		return new StoppableThread() {
@@ -243,13 +243,8 @@ public class GermlineApplication extends NarjillosApplication {
 	protected synchronized IsolationDish getDish() {
 		return (IsolationDish) super.getDish();
 	}
-	
-	@Override
-	protected String[] getProgramArguments() {
-		return GermlineApplication.programArguments;
-	}
 
 	private void trackNarjillo() {
 		getTracker().startTracking(getDish().getNarjillo());
-	};
+	}
 }

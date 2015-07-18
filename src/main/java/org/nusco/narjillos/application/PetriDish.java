@@ -91,12 +91,14 @@ public class PetriDish implements Dish {
 	}
 
 	private void reportPersistenceOptions(CommandLineOptions options) {
-		if (options.isPersistent() && options.isTrackingHistory())
-			System.out.println(" (persisted to file, with history)");
-		else if (options.isPersistent())
-			System.out.println(" (persisted to file, no history)");
+		if (options.getExperiment() != null)
+			System.out.println(" (continuing existing experiment from file)");
+		else if (options.isPersistent() && !options.isTrackingHistory())
+			System.out.println(" (starting new persistent experiment, without history)");
+		else if (options.isPersistent() && options.isTrackingHistory())
+			System.out.println(" (starting new persistent experiment, with history)");
 		else
-			System.out.println(" (no persistence)");
+			System.out.println(" (starting new non-persistent experiment)");
 	}
 
 	private void executePeriodOperations() {

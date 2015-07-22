@@ -11,9 +11,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ---
 
-* Always enable persistence when continuing existing experiment
-* Always disable history if persistence is off
-
 ##Prepare for Madison+ Presentation
 >goal: have a good, clear presentation in Madison  
 

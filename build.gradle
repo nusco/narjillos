@@ -106,16 +106,15 @@ applicationDistribution.from(
     )
 )
 
-task release(dependsOn: ['testAll', 'createStartupScripts', 'assembleMainDist']) {
-  description = 'Runs all tests and packages a release.'
-  group = 'distribution'
-}
-
 task createStartupScripts(dependsOn: 'installDist') {
   createScript('lab', 'org.nusco.narjillos.Lab')
   createScript('germline', 'org.nusco.narjillos.GermlineRunner')
 }
 
+task release(dependsOn: ['testAll', 'createStartupScripts', 'assemble']) {
+  description = 'Runs all tests and packages a release.'
+  group = 'distribution'
+}
 
 // Helpers
 

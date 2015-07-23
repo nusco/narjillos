@@ -12,48 +12,77 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 ---
 
 ##Prepare for Madison+ Presentation
->goal: have a good, clear presentation in Madison  
+>goal: give a good, clear presentation in Madison  
 
-* Update documentation  
-* Prepare a "find a new name" initiative  
+* Identify interesting germline for demo  
 * Auto-play in Germline Browser  
 * Keyframes in Germline Browser  
-* Identify interesting germline for demo  
-* Identify interesting history for demo  
-  (Temporarily remove chemistry?)  
 * Slow motion in germline viewer  
 * Rotate food in germline viewer  
+* Release new version  
+
++ Fix problem with viewport skipping back sometimes  
+
++ Identify interesting history for demo  
+  (Temporarily remove chemistry?)  
 
 
-##Germline Browser
->goal: understand what is happening in the dish  
+##Database Persistence
+>goal: run very long experiments  
 
-    Analyze DNA germline in separate program.
-    This is useful to prepare my presentation at Madison+ Ruby.
+    For advanced analysis of experimental data.  
+    This also removes the memory cap on very long experiments.  
+
+* Store historical data in a database rather than in memory  
+  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
+
++ Move entire persistence to a database  
+  Consider this, but be aware that it might effect usability, performance or reliability.  
+  So I might decide to stick with files.  
+
++ Save events instead of current state  
+  Then have an external program, possibly in Elixir, to process stats
+
++ Save to remote database  
+  If the DB is configurable, then it's easier to run experiments in the cloud.
+
+
+##Advanced Body Plans
+>goal: specialized creatures  
+
+    Give evolution more power to shape interesting creature bodies.
+
+* Less constraining mirroring  
+  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
+
+* "Loop" instruction in body plan  
++ "Jump" instruction in body plan  
++ "Call" instruction in body plan  
+
+- Duplicate organs during mutation instead of mirroring them  
+  To favour emergent complexity. There are studies who say it would, at least.  
+
+- Different shapes for body segments  
+
+
+##Dish Edges
+>goal: nice user experience  
+
+    Constrain the "world" inside defined edges.
     
-    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
-    buttons and the like.
+    Right now, things can be placed anywhere, but only the central area of the dish is  
+    space-partitioned. The rest is "outer space". If we limit the world, we can make it  
+    all space-partitioned. The current space partitioning is OK-ish, but it would make  
+    it hard and expensive to implement generalized collision detection. At the moment,  
+    this is not a problem, because the only collision detection I have is "mouth colliding  
+    with food". But in the future, I want to have anything collide with anything.
+    After implementing this, I can probably remove the concept of "outer space" (the area outside the space-partitioned center of the dish).
 
-*  Show narjillo stats while browsing germline  
-   Pick a few:
-   Breathing cycle, adult mass, cumulative body angles, energy to children, metabolic  
-   rate, number of organs (atrophic and not), bodyplan program,  
-   total delay, total amplitude, total skewing, total fiber shift, egg velocity, egg interval.  
-
-* Automatic phenotype diff  
-  Values that changed are marked in red.  
-
-+ Start browser directly from inside Lab program  
-
-+ Show energy efficiency amongst stats  
-
-+ Command-line help in germline application  
-
-- More visible particles  
-- Infinite particles texture  
-- Different background color from regular program  
-
-- Automatic DNA diff  
+* Kill narjillos who touch outer space  
++ Limit panning to inner space  
+  with some margin.  
+  
++ Auto-scroll viewport to stay within inner space  
 
 
 ##Istincts
@@ -131,9 +160,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 * Track number of species clusters in history  
   Or during lab analysis if too slow.  
-  
+
 - Track composition of species clusters in history  
-  
+
 - Advanced clustering algorithm  
   Based on Shannon's theory to evaluate gene distribution.  
   See "Identifying Species by Genetic Clustering" (Murdock, Yaeger) and "The Stochastic QT–Clust Algorithm" (Scharl, Leisch).  
@@ -146,41 +175,38 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   one number for the whole gene pool.  
 
 
-##Advanced Body Plans
->goal: specialized creatures  
-
-    Give evolution more power to shape interesting creature bodies.
-
-* Less constraining mirroring  
-  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
-    
-* "Loop" instruction in body plan  
-+ "Jump" instruction in body plan  
-+ "Call" instruction in body plan  
-- Duplicate organs during mutation instead of mirroring them  
-  To favour emergent complexity. There are studies who say it would, at least.  
-    
-- Different shapes for body segments  
-
-
-##Database Persistence
+##Germline Browser
 >goal: understand what is happening in the dish  
 
-    For advanced analysis of experimental data.
-    This also removes the memory cap on extremely long experiments.  
+    Analyze DNA germline in separate program.
+    This is useful to prepare my presentation at Madison+ Ruby.
+    
+    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
+    buttons and the like.
 
-* Store historical data in a database rather than in memory  
-  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
-  
-+ Move entire persistence to a database  
-  Consider this, but be aware that it might effect usability, performance or reliability.  
-  So I might decide to stick with files.  
-  
-+ Save events instead of current state  
-  Then have an external program, possibly in Ruby, to process stats
+*  Show narjillo stats while browsing germline  
+   Pick a few:
+   Breathing cycle, adult mass, cumulative body angles, energy to children, metabolic  
+   rate, number of organs (atrophic and not), bodyplan program,  
+   total delay, total amplitude, total skewing, total fiber shift, egg velocity, egg interval.  
 
-+ Save to remote database  
-  If the DB is configurable, then it's easier to run experiments in the cloud.
++ Start browser directly from inside Lab program  
+
+* Automatic phenotype diff  
+  Values that changed are marked in red.  
+
++ Show energy efficiency amongst stats  
+
++ Command-line help in germline application  
+
+- More visible particles  
+- Infinite particles texture  
+- Different background color from regular program  
+
+- Automatic DNA diff  
+
+- DNA diff hint  
+  Tells which characteristic the gene is controlling.  
 
 
 ##Lab Analysis
@@ -195,7 +221,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 
 + Warning in case of conflicting command-line arguments of main apps  
-  like -s and experiment file used together  
+  Like -s and experiment file used together, or combinations of file loading, -p and -history  
+  Also issue better error messages in case of conflict
 
 + Generate lab script for packaged distribution  
 
@@ -212,11 +239,11 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Measure longest dead branch in Lab  
 
 + Measure distance of common ancestor in Lab and history  
-  
+
 + Show graph of phenogenealogic tree  
   See "Sexual Selection, Resource Distribution, and Population Size in Synthetic Sympatric Speciation".
   (Woehrer, Hougen, Schlupp). I need one (or more) 1-dimensional phenotypic trait for these graphs to make sense.
-  
+
 + Measure creature/dish efficiency  
   Somehow. Right now, I don't really know what "efficiency" really means :)  
 
@@ -228,6 +255,27 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Issue warning when running on CPU with the "wrong" word size
   We don't use strictfp, because it harms performance. So you could get non-deterministic results if you run
   on a CPU with a different flotpoint precision than the expected one.  
+
+
+##Packaged Application
+>goal: nice user experience  
+
+    Download-and-run user experience.
+
+* Native Mac app
+  See https://bitbucket.org/infinitekind/appbundler (from Cipster)
+    
+* Allow multiple configurations  
+  With a -c switch. Also have a default configuration
+
++ Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
+
++ Native Windows app  
+
+- Run in a browser  
+
++ Fix permissions on distribution startup scripts  
+  Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
 
 
 ##GUI
@@ -256,54 +304,13 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + In-app configuration panel  
 
 
-##Packaged Application
->goal: nice user experience  
-
-    Download-and-run user experience.
-
-* Native Mac app
-  See https://bitbucket.org/infinitekind/appbundler (from Cipster)
-    
-* Allow multiple configurations  
-  With a -c switch. Also have a default configuration
-
-+ Load narjillos.yaml (or .narjillos.yaml) from home, if present, instead of config.yaml  
-
-+ Native Windows app  
-
-- Run in a browser  
-
-+ Fix permissions on distribution startup scripts  
-  Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
-
-
-##Dish Edges
->goal: nice user experience  
-
-    Constrain the "world" inside defined edges.
-    
-    Right now, things can be placed anywhere, but only the central area of the dish is  
-    space-partitioned. The rest is "outer space". If we limit the world, we can make it  
-    all space-partitioned. The current space partitioning is OK-ish, but it would make  
-    it hard and expensive to implement generalized collision detection. At the moment,  
-    this is not a problem, because the only collision detection I have is "mouth colliding  
-    with food". But in the future, I want to have anything collide with anything.
-    After implementing this, I can probably remove the concept of "outer space" (the area outside the space-partitioned center of the dish).
-
-* Kill narjillos who touch outer space  
-+ Limit panning to inner space  
-  with some margin.  
-  
-+ Auto-scroll viewport to stay within inner space  
-
-
 ##Eye Candy
 >goal: nice user experience  
 
     Smoother, nicer graphics.
 
-- Independent eye pupils  
 + Optimize graphics  
+- Independent eye pupils  
 + Smoother contours when zooming in infrared mode  
 - Show heat cloud when zooming out in infrared mode  
 - Skip quickly over less interesting creatures in Demo Mode  

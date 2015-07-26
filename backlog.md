@@ -15,7 +15,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 >goal: give a good, clear presentation in Madison  
 
 * Identify interesting germline for demo  
-* Auto-play in Germline Browser  
 * Keyframes in Germline Browser  
 * Rotate food in germline viewer  
 * Release new version  

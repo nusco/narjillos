@@ -68,6 +68,8 @@ abstract class NarjillosApplication extends Application {
 		final Group root = new Group();
 		startViewThread(root);
 
+		startSupportThreads();
+
 		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 		registerInteractionHandlers(scene);
 		bindViewportSizeToWindowSize(scene, viewport);
@@ -76,6 +78,8 @@ abstract class NarjillosApplication extends Application {
 		primaryStage.setTitle("Narjillos - " + getName());
 		primaryStage.show();
 	}
+
+	protected abstract void startSupportThreads();
 
 	@Override
 	public void stop() {

@@ -32,7 +32,13 @@ import org.nusco.narjillos.genomics.DNA;
  */
 public class GermlineApplication extends NarjillosApplication {
 
-	private static NarjillosApplicationState state = new NarjillosApplicationState();
+	private NarjillosApplicationState state = new NarjillosApplicationState();
+	private volatile boolean autoplay = false;
+
+	@Override
+	protected void startSupportThreads() {
+		startAutoplayThread();
+	}
 
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
@@ -170,48 +176,8 @@ public class GermlineApplication extends NarjillosApplication {
 					resetSpecimen();
 				else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
 					state.toggleSpeed();
-			}
-
-			private synchronized void resetSpecimen() {
-				Narjillo from = getDish().getNarjillo();
-				getDish().resetSpecimen();
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private synchronized void moveBack(int skip) {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveBack(skip);
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private synchronized void moveForward(int skip) {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveForward(skip);
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private synchronized void moveToFirst() {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveToFirst();
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private synchronized void moveToLast() {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveToLast();
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private synchronized void switchNarjillo(Narjillo from, Narjillo to) {
-				Vector centerOffset = to.getPosition().minus(to.getCenter());
-				to.getBody().forcePosition(from.getCenter().plus(centerOffset), 180);
-				to.setTarget(to.getPosition().minus(Vector.cartesian(1000000, 0)));
-				trackNarjillo();
+				else if (keyEvent.getCode() == KeyCode.SPACE)
+					autoplay = !autoplay;
 			}
 		});
 	}
@@ -221,7 +187,74 @@ public class GermlineApplication extends NarjillosApplication {
 		return (IsolationDish) super.getDish();
 	}
 
+	private void startAutoplayThread() {
+		Thread autoplayThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					if (autoplay) {
+						moveForward(1);
+						sleep(100);
+					} else
+						sleep(100);
+				}
+			}
+
+			private void sleep(int timeMillis) {
+				try {
+					Thread.sleep(timeMillis);
+				} catch (InterruptedException e) {
+				}
+			}
+		});
+		autoplayThread.setDaemon(true);
+		autoplayThread.start();
+	}
+
 	private void trackNarjillo() {
 		getTracker().startTracking(getDish().getNarjillo());
+	}
+
+	private synchronized void resetSpecimen() {
+		Narjillo from = getDish().getNarjillo();
+		getDish().resetSpecimen();
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveBack(int skip) {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveBack(skip);
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveForward(int skip) {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveForward(skip);
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveToFirst() {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveToFirst();
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveToLast() {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveToLast();
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void switchNarjillo(Narjillo from, Narjillo to) {
+		Vector centerOffset = to.getPosition().minus(to.getCenter());
+		to.getBody().forcePosition(from.getCenter().plus(centerOffset), 180);
+		to.setTarget(to.getPosition().minus(Vector.cartesian(1000000, 0)));
+		trackNarjillo();
 	}
 }

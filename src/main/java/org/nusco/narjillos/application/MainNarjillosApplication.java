@@ -43,6 +43,10 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	}
 
 	@Override
+	protected void startSupportThreads() {
+	}
+
+	@Override
 	protected void registerInteractionHandlers(final Scene scene) {
 		registerKeyboardHandlers(scene);
 		registerMouseClickHandlers(scene);

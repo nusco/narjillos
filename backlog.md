@@ -22,8 +22,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Release new version  
 * Document "germline" and "lab"  
 
-+ Fix problem with viewport skipping back sometimes  
-
 + Identify interesting history for demo  
   (Temporarily remove chemistry?)  
 

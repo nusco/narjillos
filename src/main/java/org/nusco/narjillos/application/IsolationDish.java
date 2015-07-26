@@ -46,12 +46,12 @@ class IsolationDish implements Dish {
 		return false;
 	}
 
-	public void moveToFirst() {
+	public synchronized void moveToFirst() {
 		currentDnaIndex = 0;
 		resetSpecimen();
 	}
 
-	public void moveToLast() {
+	public synchronized void moveToLast() {
 		currentDnaIndex = dnas.size() - 1;
 		resetSpecimen();
 	}
@@ -74,7 +74,7 @@ class IsolationDish implements Dish {
 		resetSpecimen();
 	}
 
-	void resetSpecimen() {
+	synchronized void resetSpecimen() {
 		environment.updateSpecimen(createNarjillo(dnas.get(currentDnaIndex)));
 	}
 	
@@ -88,7 +88,7 @@ class IsolationDish implements Dish {
 		return "" + (currentDnaIndex + 1) + " of " + dnas.size();
 	}
 
-	public Narjillo getNarjillo() {
+	public synchronized Narjillo getNarjillo() {
 		return getEnvironment().getSpecimen();
 	}
 

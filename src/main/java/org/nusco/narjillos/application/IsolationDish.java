@@ -21,7 +21,7 @@ class IsolationDish implements Dish {
 	private IsolationEnvironment environment;
 	private GenePool genePool = new SimpleGenePool();
 	private RanGen ranGen = new RanGen(1234);
-
+	
 	public IsolationDish(List<DNA> dnas) {
 		this.dnas = dnas;
 		if (dnas.isEmpty()) {
@@ -33,6 +33,7 @@ class IsolationDish implements Dish {
 
 	@Override
 	public synchronized boolean tick() {
+		environment.setTarget();
 		environment.tick(genePool, ranGen);
 		return true;
 	}
@@ -89,7 +90,11 @@ class IsolationDish implements Dish {
 	}
 
 	public synchronized Narjillo getNarjillo() {
-		return getEnvironment().getSpecimen();
+		return getEnvironment().getNarjillo();
+	}
+
+	public synchronized void rotateTarget() {
+		getEnvironment().rotateTarget();
 	}
 
 	private Narjillo createNarjillo(DNA dna) {

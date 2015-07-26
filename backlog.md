@@ -16,7 +16,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 * Identify interesting germline for demo  
 * Keyframes in Germline Browser  
-* Rotate food in germline viewer  
 * Release new version  
 * Document "germline" and "lab"  
 

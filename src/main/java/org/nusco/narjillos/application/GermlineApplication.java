@@ -34,7 +34,7 @@ public class GermlineApplication extends NarjillosApplication {
 
 	private NarjillosApplicationState state = new NarjillosApplicationState();
 	private volatile boolean autoplay = false;
-
+	
 	@Override
 	protected void startSupportThreads() {
 		startAutoplayThread();
@@ -174,6 +174,8 @@ public class GermlineApplication extends NarjillosApplication {
 					moveForward(1);
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					resetSpecimen();
+				else if (keyEvent.getCode() == KeyCode.ENTER)
+					getDish().rotateTarget();
 				else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
 					state.toggleSpeed();
 				else if (keyEvent.getCode() == KeyCode.SPACE)
@@ -254,7 +256,6 @@ public class GermlineApplication extends NarjillosApplication {
 	private synchronized void switchNarjillo(Narjillo from, Narjillo to) {
 		Vector centerOffset = to.getPosition().minus(to.getCenter());
 		to.getBody().forcePosition(from.getCenter().plus(centerOffset), 180);
-		to.setTarget(to.getPosition().minus(Vector.cartesian(1000000, 0)));
 		trackNarjillo();
 	}
 }

@@ -17,7 +17,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Identify interesting germline for demo  
 * Auto-play in Germline Browser  
 * Keyframes in Germline Browser  
-* Slow motion in germline viewer  
 * Rotate food in germline viewer  
 * Release new version  
 * Document "germline" and "lab"  

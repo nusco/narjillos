@@ -14,10 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import org.nusco.narjillos.application.utilities.AppState;
-import org.nusco.narjillos.application.utilities.Effects;
-import org.nusco.narjillos.application.utilities.Light;
-import org.nusco.narjillos.application.utilities.Speed;
+import org.nusco.narjillos.application.utilities.NarjillosApplicationState;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
@@ -35,29 +32,7 @@ import org.nusco.narjillos.genomics.DNA;
  */
 public class GermlineApplication extends NarjillosApplication {
 
-	private static AppState state = new AppState() {
-
-		@Override
-		public Speed getSpeed() {
-			return Speed.REALTIME;
-		}
-
-		@Override
-		public Light getLight() {
-			return Light.ON;
-		}
-
-		@Override
-		public int getFramesPeriod() {
-			final int FPS = 30;
-			return 1000 / FPS;
-		}
-
-		@Override
-		public Effects getEffects() {
-			return Effects.ON;
-		}
-	};
+	private static NarjillosApplicationState state = new NarjillosApplicationState();
 
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
@@ -129,7 +104,7 @@ public class GermlineApplication extends NarjillosApplication {
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
 			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
-			private final StringView statusView = new StringView(40);
+			private final StringView statusView = new StringView(40, state);
 
 			public void run() {
 				trackNarjillo();
@@ -171,7 +146,7 @@ public class GermlineApplication extends NarjillosApplication {
 
 	@Override
 	protected String getName() {
-		return "Ancestry Browser";
+		return "Germline Browser";
 	}
 
 	@Override
@@ -193,6 +168,8 @@ public class GermlineApplication extends NarjillosApplication {
 					moveForward(1);
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					resetSpecimen();
+				else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
+					state.toggleSpeed();
 			}
 
 			private synchronized void resetSpecimen() {

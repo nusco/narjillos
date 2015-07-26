@@ -57,6 +57,15 @@ public enum Speed {
 		}
 	}
 
+	public Speed toggle() {
+		switch (this) {
+		case REALTIME:
+			return Speed.SLOW;
+		default:
+			return Speed.REALTIME;
+		}
+	}
+
 	public Color getViewColor() {
 		switch (this) {
 		case FAST:

@@ -137,6 +137,7 @@ public class Lab {
 		StringBuffer result = new StringBuffer();
 		result.append("Number of organs   => " + specimen.getOrgans().size() + "\n");
 		result.append("Adult mass         => " + NumberFormat.format(specimen.getBody().getAdultMass()) + "\n");
+		result.append("Wave beat ratio    => " + NumberFormat.format(specimen.getBody().getWaveBeatRatio()) + "\n");
 		result.append("Energy to children => " + NumberFormat.format(specimen.getBody().getEnergyToChildren()) + "\n");
 		result.append("Egg interval       => " + specimen.getBody().getEggInterval() + "\n");
 		result.append("Egg velocity       => " + specimen.getBody().getEggVelocity() + "\n");

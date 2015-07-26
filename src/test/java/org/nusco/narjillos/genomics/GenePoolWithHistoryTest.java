@@ -34,15 +34,15 @@ public class GenePoolWithHistoryTest {
 	
 	@Test
 	public void getsMostSuccessfulDNA() {
-		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000");
-		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000_000_000");
 
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
-		assertEquals("{111_111_111_222_111_000_000_000_000_000_000_000}", mostSuccessful.toString());
+		assertEquals("{111_111_111_222_111_000_000_000_000_000_000_000_000_000}", mostSuccessful.toString());
 	}
 	
 	@Test
@@ -52,16 +52,16 @@ public class GenePoolWithHistoryTest {
 	
 	@Test
 	public void removesDNA() {
-		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000");
-		DNA thisOneWillDie = genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000");
-		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000_000_000");
+		DNA thisOneWillDie = genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000_000_000");
 
 		genePool.remove(thisOneWillDie);
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
-		assertEquals("{111_111_111_222_222_000_000_000_000_000_000_000}", mostSuccessful.toString());
+		assertEquals("{111_111_111_222_222_000_000_000_000_000_000_000_000_000}", mostSuccessful.toString());
 	}
 	
 	@Test

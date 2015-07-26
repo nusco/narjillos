@@ -6,7 +6,7 @@ dna:
   # happening is mutation_rate. If it does mutate, then the
   # gene's value is either incremented or decremented by a
   # random amount in the range [0, mutation_range].
-  mutation_rate: 0.073
+  mutation_rate: 0.085
   mutation_range: 15.0
 
 physics:
@@ -43,15 +43,8 @@ creature:
   max_lifespan: 100000
   mature_age: 5000
 
-  # The base frequency of a creature's wave is base_wave_frequency
-  # (this frequency is then multiplied by the creature's metabolic
-  # rate). The wave is actually not a real sinus wave - it's
-  # asymmetric, because the negative portion of the wave is
-  # wave_beat_ratio times faster than the positive portion. This
-  # generates natural-looking movements where the creatures "open
-  # slowly and close fast", or the opposite.
+  # The base frequency of a creature's wave.
   base_wave_frequency: 0.01
-  wave_beat_ratio: 2.0
 
   # A creature "skews" its movements depending on the current angle
   # of the target (up to a maximum absolute angle of lateral_viewfield).

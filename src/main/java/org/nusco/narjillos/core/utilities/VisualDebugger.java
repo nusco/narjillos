@@ -10,14 +10,14 @@ import org.nusco.narjillos.core.physics.Segment;
  * 
  * This is just a global object that holds geometric Segments. If any code in
  * the system loads it with Segments, those segments will be visualized by the
- * viewer classes. Whoever fills in the VisualDebugger also has the
- * responsibility to clean it up, probably once per tick.
+ * viewer classes.
  * 
  * This class is made to be accessed by multiple threads: one will write the
  * Segments, the other(s) will read them.
  */
 public class VisualDebugger {
 
+	// set this to true before compilation to activate the debugger
 	public static final boolean DEBUG = false;
 
 	private static final List<Segment> previousSegments = new LinkedList<>();

@@ -12,17 +12,18 @@ public class WaveNerveTest {
 		final double LENGTH_AT_45_DEGREES = 0.707;
 
 		WaveNerve nerve = new WaveNerve(1.0 / 8);
+		final double beatRatio = 2.0;
 		
-		assertEquals(0, nerve.tick(0), 0.01);
-		assertEquals(LENGTH_AT_45_DEGREES, nerve.tick(0), 0.01);
-		assertEquals(LENGTH, nerve.tick(0), 0.01);
+		assertEquals(0, nerve.tick(beatRatio), 0.01);
+		assertEquals(LENGTH_AT_45_DEGREES, nerve.tick(beatRatio), 0.01);
+		assertEquals(LENGTH, nerve.tick(beatRatio), 0.01);
 
 		// faster left semiplane
-		assertEquals(0, nerve.tick(0), 0.01);
-		assertEquals(-LENGTH, nerve.tick(0), 0.01);
+		assertEquals(0, nerve.tick(beatRatio), 0.01);
+		assertEquals(-LENGTH, nerve.tick(beatRatio), 0.01);
 
 		// back to right semiplane
-		assertEquals(-LENGTH_AT_45_DEGREES, nerve.tick(0), 0.01);
-		assertEquals(0, nerve.tick(0), 0.01);
+		assertEquals(-LENGTH_AT_45_DEGREES, nerve.tick(beatRatio), 0.01);
+		assertEquals(0, nerve.tick(beatRatio), 0.01);
 	}
 }

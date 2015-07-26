@@ -1,7 +1,6 @@
 package org.nusco.narjillos.creature.body.pns;
 
 import org.nusco.narjillos.core.physics.FastMath;
-import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * Generates an output that goes from -1 to 1 and back, in a sinusoidal wave.
@@ -27,9 +26,9 @@ public class WaveNerve implements Nerve {
 	}
 
 	@Override
-	public double tick(double ignored) {
+	public double tick(double beatRatio) {
 		double result = FastMath.sin(angle);
-		angle = update(angle);
+		angle = update(angle, beatRatio);
 		return result;
 	}
 
@@ -37,8 +36,8 @@ public class WaveNerve implements Nerve {
 		return angle;
 	}
 
-	private double update(double currentAngle) {
-		double multiplicationFactor = isInLeftSemiplane(currentAngle) ? Configuration.CREATURE_WAVE_BEAT_RATIO : 1;
+	private double update(double currentAngle, double beatRatio) {
+		double multiplicationFactor = isInLeftSemiplane(currentAngle) ? beatRatio : 1;
 		return (currentAngle + 360 * frequency * multiplicationFactor) % 360;
 	}
 

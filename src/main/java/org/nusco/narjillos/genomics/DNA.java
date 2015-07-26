@@ -25,6 +25,10 @@ public class DNA implements Iterable<Chromosome> {
 		this.genes = clipGenes(genes);
 	}
 
+	public static DNA random(long id, RanGen ranGen) {
+		return new DNA(id, randomGenes(getDefaultSize(), ranGen));
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -127,6 +131,17 @@ public class DNA implements Iterable<Chromosome> {
 		return result;
 	}
 
+	private static int getDefaultSize() {
+		return Chromosome.SIZE * Configuration.DNA_NUMBER_OF_CHROMOSOMES;
+	}
+
+	private static Integer[] randomGenes(int size, RanGen ranGen) {
+		Integer[] genes = new Integer[size];
+		for (int i = 0; i < genes.length; i++)
+			genes[i] = ranGen.nextByte();
+		return genes;
+	}
+
 	private List<Integer[]> mutateChromosome(RanGen ranGen, Chromosome chromosome) {
 		if (isSkipMutation(ranGen))
 			return new LinkedList<Integer[]>();
@@ -141,10 +156,6 @@ public class DNA implements Iterable<Chromosome> {
 
 	private boolean isSkipMutation(RanGen ranGen) {
 		return ranGen.nextDouble() > 0.5;
-	}
-
-	public static DNA random(long id, RanGen ranGen) {
-		return new DNA(id, randomGenes(getDefaultSize(), ranGen));
 	}
 
 	private Integer[] copyChromosome(Chromosome chromosome, RanGen ranGen) {
@@ -164,10 +175,6 @@ public class DNA implements Iterable<Chromosome> {
 
 	private boolean isChromosomeMutation(RanGen ranGen) {
 		return ranGen.nextDouble() < (Configuration.DNA_MUTATION_RATE / (Chromosome.SIZE * 2));
-	}
-
-	private static int getDefaultSize() {
-		return Chromosome.SIZE * Configuration.DNA_NUMBER_OF_CHROMOSOMES;
 	}
 
 	private Integer[] clipGenes(Integer[] genes) {
@@ -203,13 +210,6 @@ public class DNA implements Iterable<Chromosome> {
 
 	private int clipToByteSize(int number) {
 		return Math.max(0, Math.min(255, number));
-	}
-
-	private static Integer[] randomGenes(int size, RanGen ranGen) {
-		Integer[] genes = new Integer[size];
-		for (int i = 0; i < genes.length; i++)
-			genes[i] = ranGen.nextByte();
-		return genes;
 	}
 
 	private Integer safeGetGene(int i) {

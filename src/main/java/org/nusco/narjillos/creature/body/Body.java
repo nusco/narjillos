@@ -63,18 +63,6 @@ public class Body {
 		return Angle.normalize(getHead().getAbsoluteAngle() + 180);
 	}
 
-	public double getEnergyToChildren() {
-		return getHead().getEnergyToChildren();
-	}
-
-	public int getEggVelocity() {
-		return getHead().getEggVelocity();
-	}
-
-	public int getEggInterval() {
-		return getHead().getEggInterval();
-	}
-
 	public double getMass() {
 		return mass;
 	}
@@ -91,6 +79,10 @@ public class Body {
 		return redMass;
 	}
 
+	public double getWaveBeatRatio() {
+		return getHead().getWaveBeatRatio();
+	}
+
 	public Element getBreathedElement() {
 		Element result = getBreathedElementFromFibers();
 
@@ -100,6 +92,18 @@ public class Body {
 			return Element.ZERO;
 
 		return result;
+	}
+	
+	public double getEnergyToChildren() {
+		return getHead().getEnergyToChildren();
+	}
+
+	public int getEggVelocity() {
+		return getHead().getEggVelocity();
+	}
+
+	public int getEggInterval() {
+		return getHead().getEggInterval();
 	}
 
 	// Creatures with a prevalence of red, green and blue mass breathe oxygen,

@@ -11,6 +11,7 @@ import org.nusco.narjillos.creature.body.pns.WaveNerve;
 public class Head extends MovingOrgan {
 
 	private final double metabolicRate;
+	private double waveBeatRatio;
 	private final Element byproduct;
 	private final double energyToChildren;
 	private final int eggVelocity;
@@ -18,22 +19,27 @@ public class Head extends MovingOrgan {
 
 	private Vector startPoint = Vector.ZERO;
 	
-	public Head(int adultLength, int adultThickness, int red, int green, int blue, double metabolicRate, Element byproduct, double energyToChildren, int eggVelocity, int eggInterval) {
-		super(adultLength, adultThickness, new Fiber(red, green, blue), null, new WaveNerve(Configuration.CREATURE_BASE_WAVE_FREQUENCY * metabolicRate), 0);
-		this.byproduct = byproduct;
-		this.metabolicRate = metabolicRate;
-		this.energyToChildren = energyToChildren;
-		this.eggVelocity = eggVelocity;
-		this.eggInterval = eggInterval;
+	public Head(HeadParameters parameters) {
+		super(parameters.getAdultLength(), parameters.getAdultThickness(), new Fiber(parameters.getRed(), parameters.getGreen(), parameters.getBlue()), null, new WaveNerve(Configuration.CREATURE_BASE_WAVE_FREQUENCY * parameters.getMetabolicRate()), 0);
+		this.metabolicRate = parameters.getMetabolicRate();
+		this.waveBeatRatio = parameters.getWaveBeatRatio();
+		this.byproduct = parameters.getByproduct();
+		this.energyToChildren = parameters.getEnergyToChildren();
+		this.eggVelocity = parameters.getEggVelocity();
+		this.eggInterval = parameters.getEggInterval();
 	}
 
 	public void tick(double angleToTarget) {
-		tick(angleToTarget, 0, 1);
+		tick(angleToTarget, getWaveBeatRatio(), 1);
 	}
 
 	@Override
 	public double getMetabolicRate() {
 		return metabolicRate;
+	}
+
+	public double getWaveBeatRatio() {
+		return waveBeatRatio;
 	}
 
 	public Element getByproduct() {

@@ -20,11 +20,39 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Slow motion in germline viewer  
 * Rotate food in germline viewer  
 * Release new version  
+* Document "germline" and "lab"  
 
 + Fix problem with viewport skipping back sometimes  
 
 + Identify interesting history for demo  
   (Temporarily remove chemistry?)  
+
+
+##Advanced Body Plans
+>goal: specialized creatures  
+
+    Give evolution more power to shape interesting creature bodies.
+
+* MIRROR_AND_CONTINUE and MIRROR_AND_STOP instructions  
+* FORK_AND_CONTINUE and FORK_AND_STOP instructions  
++ Parametric FORK  
++ Parametric MIRROR  
++ Parametric SKIP  
+* Parametric LOOP  
+* STOP and END instructions  
+  STOP just stops building this part, END terminates the building  
+
+* Less constraining mirroring  
+  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
+
++ "Jump" instruction in body plan  
++ "Call" instruction in body plan  
+
+- Duplicate organs during mutation instead of mirroring them  
+  To favour emergent complexity. There are studies who say it would, at least.  
+  PATCH instruction?  
+
+- Different shapes for body segments  
 
 
 ##Database Persistence
@@ -45,24 +73,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 + Save to remote database  
   If the DB is configurable, then it's easier to run experiments in the cloud.
-
-
-##Advanced Body Plans
->goal: specialized creatures  
-
-    Give evolution more power to shape interesting creature bodies.
-
-* Less constraining mirroring  
-  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
-
-* "Loop" instruction in body plan  
-+ "Jump" instruction in body plan  
-+ "Call" instruction in body plan  
-
-- Duplicate organs during mutation instead of mirroring them  
-  To favour emergent complexity. There are studies who say it would, at least.  
-
-- Different shapes for body segments  
 
 
 ##Dish Edges
@@ -217,6 +227,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Save current configuration in experiment file
   Issue warning if continuing the experiment with a different configuration.
   Maybe offer a command-line switch to override existing configuration?
+
+* Output germline statistics  
+  Energy to children, total mass, etc.  
 
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 
@@ -397,7 +410,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
  
     More qualities of the creatures are determined by genes instead of being hard-coded.
 
-+ Wave beat ratio is genetically determined  
 + Max lifespan is geneticaly determined  
   within a limit  
   

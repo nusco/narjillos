@@ -13,7 +13,7 @@ public class HeadTest extends ConnectedOrganTest {
 
 	@Override
 	public Head createConcreteOrgan(int length, int thickness) {
-		return new Head(length, thickness, 100, 101, 102, 1, Element.OXYGEN, 0.5, 1, 0);
+		return new Head(new HeadParameters(length, thickness));
 	}
 
 	@Override
@@ -36,14 +36,14 @@ public class HeadTest extends ConnectedOrganTest {
 
 	@Test
 	public void hasAWaveNerve() {
-		Nerve nerve = new Head(0, 0, 0, 0, 0, 1, Element.OXYGEN, 0.5, 30, 0).getNerve();
+		Nerve nerve = new Head(new HeadParameters()).getNerve();
 				
 		assertEquals(WaveNerve.class, nerve.getClass());
 	}
 	
 	@Test
 	public void hasACenterOfMass() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, Element.OXYGEN, 0.5, 1, 0);
+		Head head = new Head(new HeadParameters(10, 6));
 		head.setAngleToParent(90);
 		head.updateGeometry();
 		
@@ -53,36 +53,66 @@ public class HeadTest extends ConnectedOrganTest {
 	}
 	
 	@Test
+	public void hasAMetabolicRate() {
+		HeadParameters parameters = new HeadParameters();
+		parameters.setMetabolicRate(2.1);
+		Head head = new Head(parameters);
+		
+		assertEquals(2.1, head.getMetabolicRate(), 0.0);
+	}
+	
+	@Test
+	public void hasAWaveBeatRatio() {
+		HeadParameters parameters = new HeadParameters();
+		parameters.setWaveBeatRatio(2.3);
+		Head head = new Head(parameters);
+		
+		assertEquals(2.3, head.getWaveBeatRatio(), 0.0);
+	}
+	
+	@Test
 	public void hasAByproduct() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, Element.NITROGEN, 1000, 1, 0);
+		HeadParameters parameters = new HeadParameters();
+		parameters.setByproduct(Element.NITROGEN);
+		Head head = new Head(parameters);
 		
 		assertEquals(Element.NITROGEN, head.getByproduct());
 	}
 	
 	@Test
 	public void hasAnAmountOfEnergyThatItPassesOnToChildren() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, Element.OXYGEN, 1000, 1, 0);
+		HeadParameters parameters = new HeadParameters();
+		parameters.setEnergyToChildren(1000);
+		Head head = new Head(parameters);
 		
 		assertEquals(1000, head.getEnergyToChildren(), 0.0);
 	}
 	
 	@Test
 	public void hasAVelocityOfEggs() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, Element.OXYGEN, 0.42, 42, 0);
+		HeadParameters parameters = new HeadParameters();
+		parameters.setEggVelocity(42);
+		Head head = new Head(parameters);
 		
 		assertEquals(42, head.getEggVelocity());
 	}
 	
 	@Test
 	public void hasAnIntervalForLayingEggs() {
-		Head head = new Head(10, 6, 0, 0, 0, 1, Element.OXYGEN, 0.42, 42, 43);
+		HeadParameters parameters = new HeadParameters();
+		parameters.setEggInterval(43);
+		Head head = new Head(parameters);
 		
 		assertEquals(43, head.getEggInterval());
 	}
 	
 	@Test
 	public void hasAFiber() {
-		Head head = new Head(10, 6, 10, 20, 30, 1, Element.OXYGEN, 0.42, 30, 0);
+		HeadParameters parameters = new HeadParameters();
+		parameters.setRed(10);
+		parameters.setGreen(20);
+		parameters.setBlue(30);
+		Head head = new Head(parameters);
 		
 		assertEquals(new Fiber(10, 20, 30), head.getFiber());
 	}

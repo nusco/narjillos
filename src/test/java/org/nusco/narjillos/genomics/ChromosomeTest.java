@@ -34,8 +34,8 @@ public class ChromosomeTest {
 
 	@Test
 	public void convertsToAString() {
-		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+		Chromosome chromosome = new Chromosome(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
 		
-		assertEquals("{001_002_003_004_005_006_007_008_009_010_011_012}", chromosome.toString());
+		assertEquals("{001_002_003_004_005_006_007_008_009_010_011_012_013_014}", chromosome.toString());
 	}
 }

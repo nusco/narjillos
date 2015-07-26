@@ -17,6 +17,7 @@ public class BodyPart extends MovingOrgan {
 	private double currentSkewing = 0;
 	private double cachedMetabolicRate = -1;
 
+	// TODO: too many constructor arguments. introduce parameter object like I did for Head
 	public BodyPart(int adultLength, int adultThickness, int redShift, int greenShift, int blueShift, ConnectedOrgan parent, int delay, int angleToParentAtRest, int amplitude, int skewing) {
 		super(adultLength,
 			  adultThickness,

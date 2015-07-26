@@ -107,7 +107,7 @@ public class PetriDish implements Dish {
 
 		experiment.updateStats();
 		System.out.println(experiment.getStats());
-
+		
 		if (!persistent)
 			return;
 		

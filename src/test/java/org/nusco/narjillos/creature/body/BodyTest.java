@@ -10,13 +10,13 @@ public class BodyTest {
 
 	@Test
 	public void isPositionedAtZeroByDefault() {
-		Body body = new Body(new Head(1, 1, 1, 1, 1, 1, Element.OXYGEN, 0.5, 1, 0));
+		Body body = new Body(new Head(new HeadParameters()));
 		assertEquals(Vector.ZERO, body.getStartPoint());
 	}
 
 	@Test
 	public void canBeForcedAtAGivenPosition() {
-		Body body = new Body(new Head(1, 1, 1, 1, 1, 1, Element.OXYGEN, 0.5, 1, 0));
+		Body body = new Body(new Head(new HeadParameters()));
 		
 		body.forcePosition(Vector.cartesian(10, -10), 15);
 
@@ -27,7 +27,7 @@ public class BodyTest {
 	public void hasAMassProportionalToItsSize() {
 		int headLengthInMm = 3;
 		int headThicknessInMm = 4;
-		Head head = new Head(headLengthInMm, headThicknessInMm, 0, 0, 0, 1, Element.OXYGEN, 0.5, 1, 0);
+		Head head = new Head(new HeadParameters(headLengthInMm, headThicknessInMm));
 		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
@@ -40,7 +40,7 @@ public class BodyTest {
 	
 	@Test
 	public void hasACenterOfMassAndARadius() {
-		Head head = new Head(10, 10, 0, 0, 0, 1, Element.OXYGEN, 0.5, 1, 0);
+		Head head = new Head(new HeadParameters(10, 10));
 		head.addChild(new BodyPart(20, 5, 0, 0, 0, head, 0, 0, 0, 0));
 		Body body = new Body(head);
 
@@ -54,14 +54,16 @@ public class BodyTest {
 	
 	@Test
 	public void itsMinimumRadiusIsOne() {
-		Head head = new Head(0, 1, 0, 0, 0, 1, Element.OXYGEN, 0.5, 0, 0);
+		Head head = new Head(new HeadParameters(0, 1));
 		Body body = new Body(head);
 		assertEquals(1, body.getRadius(), 0.0);
 	}
 	
 	@Test
 	public void hasTheSameByproductAsTheHead() {
-		Head head = new Head(0, 1, 0, 0, 0, 1, Element.OXYGEN, 0.42, 0, 10);
+		HeadParameters headParameters = new HeadParameters();
+		headParameters.setByproduct(Element.OXYGEN);
+		Head head = new Head(headParameters);
 		Body body = new Body(head);
 
 		assertEquals(Element.OXYGEN, head.getByproduct());
@@ -70,21 +72,30 @@ public class BodyTest {
 
 	@Test
 	public void hasTheSameEnergyToChildrenAsTheHead() {
-		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, Element.OXYGEN, 0.42, 0, 0));
+		HeadParameters headParameters = new HeadParameters();
+		headParameters.setEnergyToChildren(0.42);
+		Head head = new Head(headParameters);
+		Body body = new Body(head);
 
 		assertEquals(0.42, body.getEnergyToChildren(), 0.0);
 	}
 	
 	@Test
 	public void hasTheSameEggVelocityAsTheHead() {
-		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, Element.OXYGEN, 0.42, 42, 0));
+		HeadParameters headParameters = new HeadParameters();
+		headParameters.setEggVelocity(42);
+		Head head = new Head(headParameters);
+		Body body = new Body(head);
 
 		assertEquals(42, body.getEggVelocity(), 0.0);
 	}
 	
 	@Test
 	public void hasTheSameEggIntervalAsTheHead() {
-		Body body = new Body(new Head(0, 1, 0, 0, 0, 1, Element.OXYGEN, 0.42, 0, 10));
+		HeadParameters headParameters = new HeadParameters();
+		headParameters.setEggInterval(10);
+		Head head = new Head(headParameters);
+		Body body = new Body(head);
 
 		assertEquals(10, body.getEggInterval(), 0.0);
 	}

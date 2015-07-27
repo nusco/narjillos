@@ -55,7 +55,7 @@ dependencies {
 // Programs
 
 createProgramTask('narjillos', 'org.nusco.narjillos.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
-createProgramTask('germline', 'org.nusco.narjillos.GermlineRunner', 'Runs the germline browser (pass it the *.germline filename).')
+createProgramTask('dnabrowser', 'org.nusco.narjillos.DNABrowserRunner', 'Runs the DNA Browser (pass it the *.germline filename).')
 createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it the *.exp filename).')
 
 
@@ -108,7 +108,7 @@ applicationDistribution.from(
 
 task createStartupScripts(dependsOn: 'installDist') {
   createScript('lab', 'org.nusco.narjillos.Lab')
-  createScript('germline', 'org.nusco.narjillos.GermlineRunner')
+  createScript('dnabrowser', 'org.nusco.narjillos.DNABrowserRunner')
 }
 
 task release(dependsOn: ['testAll', 'createStartupScripts', 'assemble']) {

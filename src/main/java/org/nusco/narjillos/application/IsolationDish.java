@@ -25,7 +25,7 @@ class IsolationDish implements Dish {
 	public IsolationDish(List<DNA> dnas) {
 		this.dnas = dnas;
 		if (dnas.isEmpty()) {
-			System.out.println("Empty germline");
+			System.out.println("Empty genomes list");
 			System.exit(1);
 		}
 		environment = new IsolationEnvironment(10_000, ranGen);

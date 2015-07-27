@@ -15,9 +15,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 >goal: give a good, clear presentation in Madison  
 
 * Identify interesting germline for demo  
-* Keyframes in Germline Browser  
+* Keyframes in DNA Browser  
 * Release new version  
-* Document "germline" and "lab"  
+* Document "dnabrowser" and "lab"  
 
 + Identify interesting history for demo  
   (Temporarily remove chemistry?)  

@@ -26,12 +26,12 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
 
 /**
- * This application loads the germline out of an experiment and shows the
- * evolution of the most successfull genome.
+ * This application loads a list of genomes (typically a germline) and shows
+ * phenotypes for each genome.
  * 
  * (Alternately, it can also show a lineup of random creatures).
  */
-public class GermlineApplication extends NarjillosApplication {
+public class DNABrowserApplication extends NarjillosApplication {
 
 	private NarjillosApplicationState state = new NarjillosApplicationState();
 	private volatile boolean autoplay = false;
@@ -51,14 +51,14 @@ public class GermlineApplication extends NarjillosApplication {
 					System.exit(1);
 				}
 
-				List<DNA> germline;
+				List<DNA> genomes;
 				if (arguments[0].equals("-random")) {
 					System.out.println("No *.germline file. Generating random DNAs...");
-					germline = randomGermline();
+					genomes = randomGenomes();
 				} else
-					germline = readGermline(arguments[0]);
+					genomes = readGenomes(arguments[0]);
 
-				setDish(new IsolationDish(germline));
+				setDish(new IsolationDish(genomes));
 				getDish().moveToFirst();
 				Narjillo firstNarjillo = getDish().getNarjillo();
 				firstNarjillo.getBody().forcePosition(Vector.ZERO, 180);
@@ -72,7 +72,7 @@ public class GermlineApplication extends NarjillosApplication {
 				}
 			}
 
-			private List<DNA> randomGermline() {
+			private List<DNA> randomGenomes() {
 				List<DNA> result = new LinkedList<DNA>();
 				RanGen ranGen = new RanGen((int) (Math.random() * 100000));
 				for (int i = 0; i < 1000; i++)
@@ -81,12 +81,12 @@ public class GermlineApplication extends NarjillosApplication {
 			}
 
 			/**
-			 * Takes an ancestry file that contains a germline (one DNA document
+			 * Takes an ancestry file that contains genomes (one DNA document
 			 * per line) and returns a list of matching phenotypes.
 			 */
-			private List<DNA> readGermline(String germlineFileName) {
+			private List<DNA> readGenomes(String genomesFileName) {
 				try {
-					BufferedReader reader = new BufferedReader(new FileReader(germlineFileName));
+					BufferedReader reader = new BufferedReader(new FileReader(genomesFileName));
 
 					List<DNA> result = new ArrayList<DNA>();
 					String nextLine = reader.readLine();
@@ -95,7 +95,7 @@ public class GermlineApplication extends NarjillosApplication {
 						nextLine = reader.readLine();
 					}
 					reader.close();
-					System.out.println("Loaded ancestry germline from file " + germlineFileName);
+					System.out.println("Loaded genomes from " + genomesFileName);
 					return result;
 				} catch (Exception e) {
 					throw new RuntimeException(e);
@@ -153,7 +153,7 @@ public class GermlineApplication extends NarjillosApplication {
 
 	@Override
 	protected String getName() {
-		return "Germline Browser";
+		return "DNA Browser";
 	}
 
 	@Override

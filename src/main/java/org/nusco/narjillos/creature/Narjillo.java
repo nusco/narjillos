@@ -44,15 +44,17 @@ public class Narjillo implements Thing {
 
 		Vector startingPosition = body.getStartPoint();
 
-		if (isDead())
-			return new Segment(startingPosition, Vector.ZERO);
+		return new Segment(startingPosition, Vector.ZERO);
 
-		mouth.tick(getPosition(), getTarget(), getBody().getAngle());
-
-		double energyRequiredToMove = body.tick(getMouth().getDirection());
-		updateEnergy(energyRequiredToMove, atmosphere);
-
-		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
+//		if (isDead())
+//			return new Segment(startingPosition, Vector.ZERO);
+//
+//		mouth.tick(getPosition(), getTarget(), getBody().getAngle());
+//
+//		double energyRequiredToMove = body.tick(getMouth().getDirection());
+//		updateEnergy(energyRequiredToMove, atmosphere);
+//
+//		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
 	}
 
 	@Override

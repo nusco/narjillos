@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import org.nusco.narjillos.application.utilities.NarjillosApplicationState;
 import org.nusco.narjillos.application.utilities.StoppableThread;
@@ -180,6 +181,16 @@ public class GermlineApplication extends NarjillosApplication {
 					state.toggleSpeed();
 				else if (keyEvent.getCode() == KeyCode.SPACE)
 					autoplay = !autoplay;
+			}
+		});
+
+		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
+				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
+
+				if (event.getClickCount() == 3)
+					copyDNAToClipboard(clickedPositionEC);
 			}
 		});
 	}

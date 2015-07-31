@@ -19,6 +19,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Release new version  
 * Document "dnabrowser" and "lab"  
 
++ Start DNA browser in random mode in the middle of movement
 + Identify interesting history for demo  
   (Temporarily remove chemistry?)  
 

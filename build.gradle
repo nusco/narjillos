@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.google.code.gson:gson:2.3'
+  compile 'com.google.code.gson:gson:2.3.1'
   compile 'commons-cli:commons-cli:1.2'
   compile 'org.yaml:snakeyaml:1.15'
   testCompile 'junit:junit:4.11'

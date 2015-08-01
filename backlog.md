@@ -16,7 +16,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 * Identify interesting germline for demo  
 * Keyframes in DNA Browser  
-* Release new version  
 * Document "dnabrowser" and "lab"  
 
 + Start DNA browser in random mode in the middle of movement

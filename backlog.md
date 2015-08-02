@@ -14,6 +14,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 ##Prepare for Madison+ Presentation
 >goal: give a good, clear presentation in Madison  
 
+* Add "paused" speed to browser view  
+* Start in "paused" by default (only in presentation branch)  
 * Identify interesting germline for demo  
 * Keyframes in DNA Browser  
 * Document "dnabrowser" and "lab"  

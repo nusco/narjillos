@@ -44,7 +44,6 @@ public class Ecosystem extends Environment {
 
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
-		System.out.println("CORES: " + numberOfBackgroundThreads);
 		
 		ThreadFactory tickWorkerFactory = (Runnable r) -> {
 			Thread result = new Thread(r, "tick-worker-" + tickWorkerCounter.getAndIncrement());

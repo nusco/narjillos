@@ -24,7 +24,7 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
  */
 public class PerformanceTest {
 
-	private final static double EXPECTED_MAX_TIME_PER_TICK = 0.0025;
+	private final static double EXPECTED_MINIMUM_TICKS_PER_SECOND = 400;
 	
 	private static int ticks;
 	private static double timeSeconds;
@@ -41,8 +41,12 @@ public class PerformanceTest {
 		System.exit(0); // exit Gradle
 	}
 
+	private static long getTicksPerSecond() {
+		return Math.round(ticks / timeSeconds);
+	}
+
 	private static void reportTicks() {
-		System.out.println("" + ticks + " cycles in " + timeSeconds + " seconds.");
+		System.out.println("" + getTicksPerSecond() + " ticks per second");
 	}
 
 	@Before
@@ -67,8 +71,8 @@ public class PerformanceTest {
 		double timeMillis = (endTimeMillis - startTimeMillis) / 1000.0;
 		timeSeconds = Math.ceil(timeMillis * 10) / 10.0;
 
-		double expectedMaxTimeSeconds = EXPECTED_MAX_TIME_PER_TICK * ticks;
-		String errorMessage = "PERFORMANCE FAILURE: slower than expected (took " + timeSeconds + " seconds for " + ticks + " ticks)";
-		assertTrue(errorMessage, timeSeconds < expectedMaxTimeSeconds);
+		long tps = getTicksPerSecond();
+		String errorMessage = "PERFORMANCE FAILURE: slower than expected (" + tps + " ticks per second)";
+		assertTrue(errorMessage, tps > EXPECTED_MINIMUM_TICKS_PER_SECOND);
 	}
 }

@@ -1,10 +1,11 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.persistence.file.JSON;
 
 public class JSONDNASerializationTest {
 

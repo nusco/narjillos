@@ -4,7 +4,7 @@ import org.nusco.narjillos.application.CommandLineOptions;
 import org.nusco.narjillos.application.MainNarjillosApplication;
 import org.nusco.narjillos.application.PetriDish;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.serializer.FilePersistence;
+import org.nusco.narjillos.persistence.file.FilePersistence;
 
 /**
  * The entry point to the "narjillos" program.

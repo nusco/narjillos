@@ -1,4 +1,4 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import org.nusco.narjillos.creature.body.pns.Nerve;
 

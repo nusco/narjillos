@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.serializer.FilePersistence;
+import org.nusco.narjillos.persistence.file.FilePersistence;
 
 public class CommandLineOptionsTest {
 

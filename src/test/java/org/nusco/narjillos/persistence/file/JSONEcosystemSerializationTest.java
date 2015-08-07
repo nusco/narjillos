@@ -1,4 +1,4 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import static org.junit.Assert.assertEquals;
 import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
@@ -18,6 +18,7 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.persistence.file.JSON;
 
 public class JSONEcosystemSerializationTest {
 

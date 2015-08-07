@@ -1,4 +1,4 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

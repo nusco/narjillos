@@ -12,7 +12,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.serializer.FilePersistence;
+import org.nusco.narjillos.persistence.file.FilePersistence;
 
 @SuppressWarnings("serial")
 public class CommandLineOptions extends Options {

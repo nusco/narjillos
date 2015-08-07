@@ -1,9 +1,10 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.persistence.file.JSON;
 
 public class JSONVectorSerializationTest {
 

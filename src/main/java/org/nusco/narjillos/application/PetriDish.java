@@ -8,7 +8,7 @@ import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.ExperimentStats;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-import org.nusco.narjillos.serializer.FilePersistence;
+import org.nusco.narjillos.persistence.file.FilePersistence;
 
 /**
  * The class that initializes and runs an Experiment.

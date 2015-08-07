@@ -1,4 +1,4 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,6 +12,7 @@ import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.HeadParameters;
+import org.nusco.narjillos.persistence.file.JSON;
 
 public class JSONBodySerializationTest {
 

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import static org.junit.Assert.assertEquals;
 import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
@@ -7,6 +7,7 @@ import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Atmosphere;
+import org.nusco.narjillos.persistence.file.JSON;
 
 public class JSONAtmosphereSerializationTest {
 

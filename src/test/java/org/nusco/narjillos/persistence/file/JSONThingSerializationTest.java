@@ -1,4 +1,4 @@
-package org.nusco.narjillos.serializer;
+package org.nusco.narjillos.persistence.file;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,6 +15,7 @@ import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.persistence.file.JSON;
 
 public class JSONThingSerializationTest {
 

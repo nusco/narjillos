@@ -18,7 +18,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
 import org.nusco.narjillos.genomics.GenePoolStats;
-import org.nusco.narjillos.serializer.FilePersistence;
+import org.nusco.narjillos.persistence.file.FilePersistence;
 
 /**
  * The "lab" program. It reads data from an experiment and outputs it in

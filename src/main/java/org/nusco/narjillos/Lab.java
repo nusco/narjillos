@@ -32,16 +32,16 @@ public class Lab {
 
 	public static void main(String[] args) throws IOException {
 		Options options = new Options();
-		options.addOption("h", "help", false, "print this message");
+		options.addOption("?", "help", false, "print this message");
 		options.addOption("d", "dna", true, "print DNA (takes a DNA id)");
-		options.addOption("dnastats", true, "print DNA stats (takes a DNA id)");
-		options.addOption("germline", true, "print DNA germline (takes a DNA id)");
-		options.addOption("primary", false, "print id of primary (most successful) DNA");
+		options.addOption("D", "dnastats", true, "print DNA stats (takes a DNA id)");
+		options.addOption("g", "germline", true, "print DNA germline (takes a DNA id)");
+		options.addOption("p", "primary", false, "print id of primary (most successful) DNA");
 		options.addOption("s", "stats", false, "print current statistics");
-		options.addOption("history", false, "output history in CSV format");
-		options.addOption("csv", false, "output ancestry in CSV format");
-		options.addOption("nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
-
+		options.addOption("h", "history", false, "output history in CSV format");
+		options.addOption("c", "csv", false, "output ancestry in CSV format");
+		options.addOption("n", "nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
+		
 		CommandLine commandLine;
 		try {
 			commandLine = new BasicParser().parse(options, args);
@@ -62,7 +62,7 @@ public class Lab {
 		Experiment experiment = Persistence.loadExperiment(experimentFile);
 		GenePool genePool = experiment.getGenePool();
 
-		if (commandLine.hasOption("s") || commandLine.hasOption("stats")) {
+		if (commandLine.hasOption("stats")) {
 			System.out.println(new GenePoolStats(genePool));
 
 			ExperimentStats stats = new ExperimentStats(experiment);
@@ -73,7 +73,7 @@ public class Lab {
 			return;
 		}
 
-		if (commandLine.hasOption("d")) {
+		if (commandLine.hasOption("dna")) {
 			DNA dna = getDNA(genePool, commandLine.getOptionValue("d"));
 			if (dna == null)
 				System.out.println("DNA not found");

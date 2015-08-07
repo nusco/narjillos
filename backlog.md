@@ -18,7 +18,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Start in "paused" by default (only in presentation branch)  
 * Identify interesting germline for demo  
 * Keyframes in DNA Browser  
-* Document "dnabrowser" and "lab"  
 
 + Start DNA browser in random mode in the middle of movement
 + Identify interesting history for demo  

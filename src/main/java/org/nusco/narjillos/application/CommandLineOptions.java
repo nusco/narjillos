@@ -37,12 +37,12 @@ public class CommandLineOptions extends Options {
 	}
 
 	CommandLineOptions(String... args) {
-		addOption("h", "help", false, "print this message");
+		addOption("?", "help", false, "print this message");
 		addOption("f", "fast", false, "fast mode (no graphics)");
-		addOption("p", "persistent", false, "periodically save experiment to file");
-		addOption("history", false, "track genepool history (needs a lot of memory)");
+		addOption("p", "persistent", false, "periodically save to file, without history");
+		addOption("h", "history", false, "periodically save to file, with history (needs a lot of memory)");
 		addOption("s", "seed", true, "start experiment with given seed");
-		addOption("dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
+		addOption("d", "dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
 
 		CommandLineParser parser = new BasicParser();
 		
@@ -54,13 +54,13 @@ public class CommandLineOptions extends Options {
 				throw new RuntimeException(e.getMessage() + "\n" + getHelpText());
 			}
 			
-	        if (line.hasOption("h")) {
+	        if (line.hasOption("help")) {
 	        	System.out.println(getHelpText());
 	        	System.exit(0);
 	        }
 
-	        setFast(line.hasOption("f"));
-	        setPersistent(line.hasOption("p"));
+	        setFast(line.hasOption("fast"));
+	        setPersistent(line.hasOption("persistent") || line.hasOption("history"));
 	        setTrackingHistory(line.hasOption("history"));
 
 	        if (line.hasOption("seed")) {

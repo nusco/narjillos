@@ -46,13 +46,13 @@ public class DNABrowserApplication extends NarjillosApplication {
 		return new StoppableThread() {
 			@Override
 			public void run() {
-				if (arguments.length != 1) {
-					System.out.println("This program needs either a *.germline file or the -random option.");
+				if (arguments.length != 1 || arguments[0].equals("-?") || arguments[0].equals("--help")) {
+					System.out.println("This program needs either a *.germline file or the --random option.");
 					System.exit(1);
 				}
 
 				List<DNA> genomes;
-				if (arguments[0].equals("-random")) {
+				if (arguments[0].equals("-r") || arguments[0].equals("--random")) {
 					System.out.println("No *.germline file. Generating random DNAs...");
 					genomes = randomGenomes();
 				} else

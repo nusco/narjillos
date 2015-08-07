@@ -11,6 +11,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ---
 
+* Fix extinction code
+
 ##Prepare for Madison+ Presentation
 >goal: give a good, clear presentation in Madison  
 

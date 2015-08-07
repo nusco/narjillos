@@ -8,7 +8,7 @@ import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.ExperimentStats;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.serializer.FilePersistence;
 
 /**
  * The class that initializes and runs an Experiment.
@@ -120,7 +120,7 @@ public class PetriDish implements Dish {
 	private void save() {
 		isSaving = true;
 		System.out.print("> Saving...");
-		Persistence.save(experiment);
+		FilePersistence.save(experiment);
 		System.out.println(" Done.");
 		isSaving = false;
 	}

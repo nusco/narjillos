@@ -4,7 +4,7 @@ import org.nusco.narjillos.application.CommandLineOptions;
 import org.nusco.narjillos.application.MainNarjillosApplication;
 import org.nusco.narjillos.application.PetriDish;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.serializer.FilePersistence;
 
 /**
  * The entry point to the "narjillos" program.
@@ -22,7 +22,7 @@ public class NarjillosRunner {
 	}
 
 	private static void runWithoutGraphics(CommandLineOptions options) {
-		String applicationVersion = Persistence.readApplicationVersion();
+		String applicationVersion = FilePersistence.readApplicationVersion();
 		final PetriDish dish = new PetriDish(applicationVersion, options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_EXPERIMENT * 1000);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {

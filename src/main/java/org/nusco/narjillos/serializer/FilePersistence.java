@@ -17,7 +17,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.nusco.narjillos.experiment.Experiment;
 
-public class Persistence {
+public class FilePersistence {
 
 	private static final String EXPERIMENT_EXT = ".exp";
 	private static final String TEMP_EXT = ".tmp";

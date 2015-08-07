@@ -12,7 +12,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.serializer.FilePersistence;
 
 @SuppressWarnings("serial")
 public class CommandLineOptions extends Options {
@@ -134,7 +134,7 @@ public class CommandLineOptions extends Options {
 	}
 
 	private void setFile(String file) {
-		this.experiment = Persistence.loadExperiment(file);
+		this.experiment = FilePersistence.loadExperiment(file);
 		this.genePool = this.experiment.getGenePool();
 	}
 
@@ -162,6 +162,6 @@ public class CommandLineOptions extends Options {
 			return;
 		}
 		// not inline DNA, so it must be a filename
-		this.dna = Persistence.loadDNADocument(dna);
+		this.dna = FilePersistence.loadDNADocument(dna);
 	}
 }

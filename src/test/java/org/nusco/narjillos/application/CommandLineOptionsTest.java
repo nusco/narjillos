@@ -5,11 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.serializer.FilePersistence;
 
 public class CommandLineOptionsTest {
 
-	String EXPERIMENT_ID = "1234-" + Persistence.readApplicationVersion();
+	String EXPERIMENT_ID = "1234-" + FilePersistence.readApplicationVersion();
 
 	@Test
 	public void acceptsEmptyArguments() {

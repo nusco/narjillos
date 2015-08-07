@@ -20,35 +20,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Keyframes in DNA Browser  
 
 + Start DNA browser in random mode in the middle of movement
-+ Identify interesting history for demo  
-  (Temporarily remove chemistry?)  
-
-
-##Advanced Body Plans
->goal: specialized creatures  
-
-    Give evolution more power to shape interesting creature bodies.
-
-* MIRROR_AND_CONTINUE and MIRROR_AND_STOP instructions  
-* FORK_AND_CONTINUE and FORK_AND_STOP instructions  
-+ Parametric FORK  
-+ Parametric MIRROR  
-+ Parametric SKIP  
-* Parametric LOOP  
-* STOP and END instructions  
-  STOP just stops building this part, END terminates the building  
-
-* Less constraining mirroring  
-  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
-
-+ "Jump" instruction in body plan  
-+ "Call" instruction in body plan  
-
-- Duplicate organs during mutation instead of mirroring them  
-  To favour emergent complexity. There are studies who say it would, at least.  
-  PATCH instruction?  
-
-- Different shapes for body segments  
 
 
 ##Database Persistence
@@ -69,6 +40,33 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 + Save to remote database  
   If the DB is configurable, then it's easier to run experiments in the cloud.
+
+
+##Advanced Body Plans
+>goal: specialized creatures  
+
+    Give evolution more power to shape interesting creature bodies.
+
+* MIRROR_AND_CONTINUE and MIRROR_AND_STOP instructions  
+* FORK_AND_CONTINUE and FORK_AND_STOP instructions  
++ Parametric FORK  
++ Parametric MIRROR  
++ Parametric SKIP  
+* Parametric LOOP  
+* STOP and END instructions  
+  STOP just stops building this part, END terminates the build process  
+
+* Less constraining mirroring  
+  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
+
++ "Jump" instruction in body plan  
++ "Call" instruction in body plan  
+
+- Duplicate organs during mutation instead of mirroring them  
+  To favour emergent complexity. There are studies who say it would, at least.  
+  PATCH instruction?  
+
+- Different shapes for body segments  
 
 
 ##Dish Edges

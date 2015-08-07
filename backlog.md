@@ -400,7 +400,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   is this a good idea?  
 
 + Simpler senescence mechanism  
-  the current one feels too complicated for its own good
+  the current one feels too complicated for its own good.
 
 
 ##Flexible Genes

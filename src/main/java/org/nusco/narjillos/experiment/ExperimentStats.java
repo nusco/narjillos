@@ -67,19 +67,6 @@ public class ExperimentStats {
 		this.chemicalCycles = calculateChemicalCycles(experiment);
 	}
 
-	private Map<String, Integer> calculateChemicalCycles(Experiment experiment) {
-		Map<String, Integer> result = new LinkedHashMap<>();
-		for (int i = 0; i < CHEMICAL_CYCLES.length; i++)
-			result.put(CHEMICAL_CYCLES[i], 0);
-		
-		Set<Narjillo> narjillos = experiment.getEcosystem().getNarjillos();
-		for (Narjillo narjillo : narjillos) {
-			String cycles = "" + narjillo.getBreathedElement() + "->" + narjillo.getByproduct();
-			result.put(cycles, result.get(cycles) + 1);
-		}
-		return result;
-	}
-
 	public String toCSVLine() {
 		StringBuffer result = new StringBuffer();
 		result.append("" + ticks + "," + runningTime + "," + numberOfFoodPieces + "," + genePoolStats.toCSVLine() + ","
@@ -142,5 +129,18 @@ public class ExperimentStats {
 		final String padding = "        ";
 		String paddedLabel = padding + label.toString();
 		return paddedLabel.substring(paddedLabel.length() - padding.length());
+	}
+
+	private Map<String, Integer> calculateChemicalCycles(Experiment experiment) {
+		Map<String, Integer> result = new LinkedHashMap<>();
+		for (int i = 0; i < CHEMICAL_CYCLES.length; i++)
+			result.put(CHEMICAL_CYCLES[i], 0);
+		
+		Set<Narjillo> narjillos = experiment.getEcosystem().getNarjillos();
+		for (Narjillo narjillo : narjillos) {
+			String cycles = "" + narjillo.getBreathedElement() + "->" + narjillo.getByproduct();
+			result.put(cycles, result.get(cycles) + 1);
+		}
+		return result;
 	}
 }

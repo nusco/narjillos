@@ -5,7 +5,6 @@ import java.util.Random;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.ExperimentStats;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
 import org.nusco.narjillos.persistence.file.FilePersistence;
@@ -25,8 +24,8 @@ public class PetriDish implements Dish {
 		experiment = createExperiment(version, options, size);
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
-
-		System.out.println(ExperimentStats.getConsoleHeader());
+		
+		System.out.println("Ticks:\tNarji:\tFood:");
 	}
 
 	public Environment getEnvironment() {
@@ -68,20 +67,20 @@ public class PetriDish implements Dish {
 		Ecosystem ecosystem = new Ecosystem(size, true);
 		
 		String dna = options.getDna();
-		boolean trackingGenePool = options.isTrackingHistory();
+		boolean trackingHistory = options.isTrackingHistory();
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);
-			result = new Experiment(generateRandomSeed(), ecosystem, applicationVersion, trackingGenePool, dna);
+			result = new Experiment(generateRandomSeed(), ecosystem, applicationVersion, trackingHistory, dna);
 		} else if (options.getExperiment() != null) {
 			System.out.print("Continuining experiment " + options.getExperiment().getId());
 			result = options.getExperiment();
 		} else if (options.getSeed() == CommandLineOptions.NO_SEED) {
 			long randomSeed = generateRandomSeed();
 			System.out.print("Starting new experiment with random seed: " + randomSeed);
-			result = new Experiment(randomSeed, ecosystem, applicationVersion, trackingGenePool);
+			result = new Experiment(randomSeed, ecosystem, applicationVersion, trackingHistory);
 		} else {
 			System.out.print("Starting experiment " + options.getSeed());
-			result = new Experiment(options.getSeed(), ecosystem, applicationVersion, trackingGenePool);
+			result = new Experiment(options.getSeed(), ecosystem, applicationVersion, trackingHistory);
 		}
 		
 		return result;
@@ -89,32 +88,39 @@ public class PetriDish implements Dish {
 
 	private void reportPersistenceOptions(CommandLineOptions options) {
 		if (options.isPersistent() && options.isTrackingHistory())
-			System.out.println(" (persisted to file, with history)");
+			System.out.println(" (persisted to file and database)");
 		else if (options.isPersistent())
-			System.out.println(" (persisted to file, no history)");
+			System.out.println(" (persisted to file, no database)");
 		else
 			System.out.println(" (no persistence)");
 	}
 
 	private void executePeriodOperations() {
 		long ticks = experiment.getTicksChronometer().getTotalTicks();
-
 		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL_TICKS != 0)
 			return;
 
 		if (!experiment.thereAreSurvivors())
 			isTerminated = true;
 
-		experiment.updateStats();
-		System.out.println(experiment.getStats());
+		experiment.saveHistory();
+		System.out.println(getReport());
 		
-		if (!persistent)
-			return;
-		
+		if (persistent)
+			saveExperimentToFile();
+	}
+
+	private void saveExperimentToFile() {
 		if ((System.currentTimeMillis() - lastSaveTime) / 1000.0 > Configuration.EXPERIMENT_SAVE_INTERVAL_SECONDS) {
 			save();
 			lastSaveTime = System.currentTimeMillis();
 		}
+	}
+
+	private String getReport() {
+		return 	NumberFormat.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
+				experiment.getEcosystem().getNumberOfNarjillos() + "\t" +
+				experiment.getEcosystem().getNumberOfFoodPieces();
 	}
 
 	private void save() {

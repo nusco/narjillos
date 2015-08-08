@@ -40,7 +40,7 @@ public class CommandLineOptions extends Options {
 		addOption("?", "help", false, "print this message");
 		addOption("f", "fast", false, "fast mode (no graphics)");
 		addOption("p", "persistent", false, "periodically save to file, without history");
-		addOption("h", "history", false, "periodically save to file, with history (needs a lot of memory)");
+		addOption("h", "history", false, "save history to database (needs MongoDB)");
 		addOption("s", "seed", true, "start experiment with given seed");
 		addOption("d", "dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
 

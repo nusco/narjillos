@@ -1,8 +1,5 @@
 package org.nusco.narjillos.experiment;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
@@ -10,6 +7,7 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
 import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.persistence.db.Database;
 
 public class Experiment {
 
@@ -18,29 +16,28 @@ public class Experiment {
 	private final GenePool genePool;
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final RanGen ranGen;
-	private final boolean trackHistory;
-	private final LinkedList<ExperimentStats> stats = new LinkedList<>();
 
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
-
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackHistory, String dna) {
-		this(seed, version, ecosystem, trackHistory);
+	private transient final Database database;
+	
+	public Experiment(long seed, Ecosystem ecosystem, String version, boolean useDatabase, String dna) {
+		this(seed, version, ecosystem, useDatabase);
 		ecosystem.populate(dna, genePool, ranGen);
 	}
 
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackHistory) {
-		this(seed, version, ecosystem, trackHistory);
+	public Experiment(long seed, Ecosystem ecosystem, String version, boolean useDatabase) {
+		this(seed, version, ecosystem, useDatabase);
 		ecosystem.populate(genePool, ranGen);
 	}
 
-	private Experiment(long seed, String version, Ecosystem ecosystem, boolean trackHistory) {
-		genePool = initializeGenePool(trackHistory);
+	private Experiment(long seed, String version, Ecosystem ecosystem, boolean useDatabase) {
+		genePool = initializeGenePool(true); // FIXME
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);
 		this.ecosystem = ecosystem;
-		this.trackHistory = trackHistory;
+		database = useDatabase ? new Database(getId()) : null;
 	}
 
 	public final void timeStamp() {
@@ -71,15 +68,10 @@ public class Experiment {
 		return totalRunningTime / 1000L;
 	}
 
-	public ExperimentStats getStats() {
-		return stats.getLast();
-	}
-
-	public List<ExperimentStats> getHistory() {
-		return stats;
-	}
-
 	public String terminate() {
+		if (database != null)
+			database.close();
+		
 		ecosystem.terminate();
 
 		updateTotalRunningTime();
@@ -94,12 +86,13 @@ public class Experiment {
 		return genePool;
 	}
 
-	public void updateStats() {
-		if (!trackHistory)
-			stats.clear();
+	// TODO: move to the dish?
+	public void saveHistory() {
+		if (database == null)
+			return;
 		
 		updateTotalRunningTime();
-		stats.add(new ExperimentStats(this));
+		database.updateStatsFor(this);
 	}
 
 	public boolean thereAreSurvivors() {

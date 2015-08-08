@@ -60,7 +60,7 @@ public class PerformanceTest {
 		// it hasn't been loaded yet
 		FastMath.setUp();
 
-		Experiment experiment = new Experiment(424242, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, true), "performance_test", true);
+		Experiment experiment = new Experiment(424242, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, true), "performance_test", false);
 
 		long startTimeMillis = System.currentTimeMillis();
 

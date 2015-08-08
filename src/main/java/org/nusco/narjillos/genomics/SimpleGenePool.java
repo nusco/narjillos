@@ -28,7 +28,7 @@ public class SimpleGenePool extends GenePool {
 	}
 
 	@Override
-	Set<Long> getHistoricalPool() {
+	public Set<Long> getHistoricalPool() {
 		return new LinkedHashSet<Long>();
 	}
 

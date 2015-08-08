@@ -77,6 +77,7 @@ public class GenePoolWithHistory extends GenePool {
 	}
 
 	@Override
+	public
 	Set<Long> getHistoricalPool() {
 		return dnaById.keySet();
 	}

@@ -13,11 +13,10 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.ExperimentStats;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
-import org.nusco.narjillos.genomics.GenePoolStats;
+import org.nusco.narjillos.persistence.db.Database;
 import org.nusco.narjillos.persistence.file.FilePersistence;
 
 /**
@@ -63,13 +62,8 @@ public class Lab {
 		GenePool genePool = experiment.getGenePool();
 
 		if (commandLine.hasOption("stats")) {
-			System.out.println(new GenePoolStats(genePool));
-
-			ExperimentStats stats = new ExperimentStats(experiment);
-			System.out.println(ExperimentStats.getConsoleHeader());
-			System.out.println(stats);
-			System.out.println();
-			System.out.println(stats.getChemicalCyclesReport());
+			Database database = new Database(experiment.getId());
+			System.out.println(database.getLatestStats());
 			return;
 		}
 
@@ -108,9 +102,8 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("history")) {
-			System.out.println(ExperimentStats.getCSVHeader());
-			for (ExperimentStats experimentStats : experiment.getHistory())
-				System.out.println(experimentStats.toCSVLine());
+			Database database = new Database(experiment.getId());
+			database.printHistory();
 			return;
 		}
 

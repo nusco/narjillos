@@ -37,11 +37,15 @@ public abstract class GenePool {
 		currentPool.remove(dna.getId());
 	}
 
+	public List<Long> getCurrentPool() {
+		return currentPool;
+	}
+
 	public abstract DNA getDna(Long id);
 
 	public abstract List<DNA> getAncestry(DNA dna);
 
-	abstract Set<Long> getHistoricalPool();
+	public abstract Set<Long> getHistoricalPool();
 	
 	public abstract DNA getMostSuccessfulDNA();
 
@@ -51,11 +55,20 @@ public abstract class GenePool {
 		return dnaSerialId;
 	}
 
-	abstract Map<Long, Long> getChildrenToParents();
-
-	List<Long> getCurrentPool() {
-		return currentPool;
+	public double getAverageGeneration() {
+		List<Long> currentPool = getCurrentPool();
+		if (currentPool.size() == 0)
+			return 0;
+		
+		double generationsSum = 0;
+		for (Long id : currentPool) {
+			DNA dna = getDna(id);
+			generationsSum += getGenerationOf(dna);
+		}
+		return generationsSum / currentPool.size();
 	}
+
+	abstract Map<Long, Long> getChildrenToParents();
 
 	private long nextSerialId() {
 		return ++dnaSerialId;

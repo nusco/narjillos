@@ -24,6 +24,8 @@ import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
  */
 public class Body {
 
+	public static boolean PHYSICS_ENABLED = false;
+	
 	private final MovingOrgan head;
 	private final double metabolicConsumption;
 	private final double adultMass;
@@ -177,6 +179,11 @@ public class Body {
 		// doing it once the body is fully grown, to spare performance).
 		if (!hasStoppedGrowing())
 			updateMasses();
+
+		if (!PHYSICS_ENABLED) {
+			resetCaches();
+			return 0;
+		}
 
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep the body's

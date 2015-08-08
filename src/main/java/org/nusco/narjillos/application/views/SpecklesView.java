@@ -75,7 +75,7 @@ public class SpecklesView {
 		infraredEmptySpace.setFill(EnvirommentView.INFRARED_BACKGROUND_COLOR);
 		infraredBackgroundGroup.getChildren().add(infraredEmptySpace);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 25; i++) {
 			int x = getRandomCoordinate(tileSize);
 			int y = getRandomCoordinate(tileSize);
 			backgroundGroup.getChildren().add(createSpeckle(x, y, NORMAL_SPECKLE_RADIUS));

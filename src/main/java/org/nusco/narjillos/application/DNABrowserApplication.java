@@ -23,6 +23,7 @@ import org.nusco.narjillos.application.views.StringView;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.genomics.DNA;
 
 /**
@@ -32,6 +33,8 @@ import org.nusco.narjillos.genomics.DNA;
  * (Alternately, it can also show a lineup of random creatures).
  */
 public class DNABrowserApplication extends NarjillosApplication {
+
+	private static boolean MOVEMENT_ENABLED = false;
 
 	private NarjillosApplicationState state = new NarjillosApplicationState();
 	private volatile boolean autoplay = false;
@@ -67,7 +70,8 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 				while (!hasBeenAskedToStop()) {
 					long startTime = System.currentTimeMillis();
-					tick();
+					if (MOVEMENT_ENABLED)
+						tick();
 					waitFor(state.getSpeed().getTicksPeriod(), startTime);
 				}
 			}
@@ -179,6 +183,10 @@ public class DNABrowserApplication extends NarjillosApplication {
 					getDish().rotateTarget();
 				else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
 					state.toggleSpeed();
+				else if (keyEvent.getCode() == KeyCode.A)
+					MOVEMENT_ENABLED = !MOVEMENT_ENABLED;
+				else if (keyEvent.getCode() == KeyCode.Z)
+					Body.PHYSICS_ENABLED = !Body.PHYSICS_ENABLED;
 				else if (keyEvent.getCode() == KeyCode.SPACE)
 					autoplay = !autoplay;
 			}

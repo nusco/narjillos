@@ -86,6 +86,8 @@ class IsolationDish implements Dish {
 
 	@Override
 	public String getStatistics() {
+		if (dnas.size() == 1)
+			return "";
 		return "" + (currentDnaIndex + 1) + " of " + dnas.size();
 	}
 

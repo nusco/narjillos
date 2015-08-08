@@ -19,6 +19,7 @@ import org.nusco.narjillos.application.utilities.NarjillosApplicationState;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
+import org.nusco.narjillos.application.views.SpecklesView;
 import org.nusco.narjillos.application.views.StringView;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.RanGen;
@@ -34,6 +35,10 @@ import org.nusco.narjillos.genomics.DNA;
  */
 public class DNABrowserApplication extends NarjillosApplication {
 
+	static {
+		SpecklesView.DENSITY = 25; // more speckles for reference
+	}
+	
 	private static boolean MOVEMENT_ENABLED = false;
 
 	private NarjillosApplicationState state = new NarjillosApplicationState();

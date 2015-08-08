@@ -20,6 +20,8 @@ import org.nusco.narjillos.application.utilities.Viewport;
  */
 public class SpecklesView {
 
+	public static int DENSITY = 5;
+
 	private static final double NORMAL_SPECKLE_RADIUS = 2;
 	private static final double INFRARED_SPECKLE_RADIUS = 2.5;
 	private static final Color SPECKLE_COLOR = EnvirommentView.BACKGROUND_COLOR.darker();
@@ -75,7 +77,7 @@ public class SpecklesView {
 		infraredEmptySpace.setFill(EnvirommentView.INFRARED_BACKGROUND_COLOR);
 		infraredBackgroundGroup.getChildren().add(infraredEmptySpace);
 
-		for (int i = 0; i < 25; i++) {
+		for (int i = 0; i < DENSITY ; i++) {
 			int x = getRandomCoordinate(tileSize);
 			int y = getRandomCoordinate(tileSize);
 			backgroundGroup.getChildren().add(createSpeckle(x, y, NORMAL_SPECKLE_RADIUS));

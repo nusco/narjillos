@@ -43,13 +43,6 @@ public class Experiment {
 		this.trackHistory = trackHistory;
 	}
 
-	private GenePool initializeGenePool(boolean trackHistory) {
-		if (!trackHistory)
-			return new SimpleGenePool();
-
-		return new GenePoolWithHistory();
-	}
-
 	public final void timeStamp() {
 		lastRegisteredRunningTime = System.currentTimeMillis();
 	}
@@ -87,8 +80,9 @@ public class Experiment {
 	}
 
 	public String terminate() {
-		updateTotalRunningTime();
 		ecosystem.terminate();
+
+		updateTotalRunningTime();
 		String result = toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
 			+ getTicksChronometer().getTotalTicks() + " ticks";
 		if (!thereAreSurvivors())
@@ -126,5 +120,12 @@ public class Experiment {
 		long updateTime = System.currentTimeMillis();
 		totalRunningTime = totalRunningTime + (updateTime - lastRegisteredRunningTime);
 		lastRegisteredRunningTime = updateTime;
+	}
+
+	private GenePool initializeGenePool(boolean trackHistory) {
+		if (!trackHistory)
+			return new SimpleGenePool();
+
+		return new GenePoolWithHistory();
 	}
 }

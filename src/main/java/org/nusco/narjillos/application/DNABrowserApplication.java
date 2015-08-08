@@ -37,6 +37,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 	static {
 		SpecklesView.DENSITY = 25; // more speckles for reference
+		Body.PHYSICS_ENABLED = false; // start whithout physics
 	}
 	
 	private static boolean MOVEMENT_ENABLED = false;

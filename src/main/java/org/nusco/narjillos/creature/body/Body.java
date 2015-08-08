@@ -24,7 +24,7 @@ import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
  */
 public class Body {
 
-	public static boolean PHYSICS_ENABLED = false;
+	public static boolean PHYSICS_ENABLED = true;
 	
 	private final MovingOrgan head;
 	private final double metabolicConsumption;

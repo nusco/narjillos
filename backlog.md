@@ -33,6 +33,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Store historical data in a database rather than in memory  
   Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
 
++ Keep running even after extinction
+  Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
+
 + Move entire persistence to a database  
   Consider this, but be aware that it might effect usability, performance or reliability.  
   So I might decide to stick with files.  

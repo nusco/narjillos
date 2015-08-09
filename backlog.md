@@ -19,7 +19,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Identify interesting germline for demo  
 * Keyframes in DNA Browser  
 
-+ Start DNA browser in random mode in the middle of movement
++ Fix position of creatures relative to speckled area  
++ Start DNA browser in random mode in the middle of movement  
 
 
 ##Database Persistence

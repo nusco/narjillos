@@ -11,6 +11,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ---
 
+* Fix bug with duplicated --persistence warning
 * Fix extinction code
 
 ##Prepare for Madison+ Presentation

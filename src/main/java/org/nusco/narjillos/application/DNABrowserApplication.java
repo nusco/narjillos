@@ -13,11 +13,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
-import org.nusco.narjillos.application.utilities.AppState;
-import org.nusco.narjillos.application.utilities.Effects;
-import org.nusco.narjillos.application.utilities.Light;
-import org.nusco.narjillos.application.utilities.Speed;
+import org.nusco.narjillos.application.utilities.NarjillosApplicationState;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
@@ -28,55 +26,39 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
 
 /**
- * This application loads the germline out of an experiment and shows the
- * evolution of the most successfull genome.
+ * This application loads a list of genomes (typically a germline) and shows
+ * phenotypes for each genome.
  * 
  * (Alternately, it can also show a lineup of random creatures).
  */
-public class GermlineApplication extends NarjillosApplication {
+public class DNABrowserApplication extends NarjillosApplication {
 
-	private static AppState state = new AppState() {
-
-		@Override
-		public Speed getSpeed() {
-			return Speed.REALTIME;
-		}
-
-		@Override
-		public Light getLight() {
-			return Light.ON;
-		}
-
-		@Override
-		public int getFramesPeriod() {
-			final int FPS = 30;
-			return 1000 / FPS;
-		}
-
-		@Override
-		public Effects getEffects() {
-			return Effects.ON;
-		}
-	};
+	private NarjillosApplicationState state = new NarjillosApplicationState();
+	private volatile boolean autoplay = false;
+	
+	@Override
+	protected void startSupportThreads() {
+		startAutoplayThread();
+	}
 
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
 		return new StoppableThread() {
 			@Override
 			public void run() {
-				if (arguments.length != 1) {
-					System.out.println("This program needs either a *.germline file or the -random option.");
+				if (arguments.length != 1 || arguments[0].equals("-?") || arguments[0].equals("--help")) {
+					System.out.println("This program needs either a *.germline file or the --random option.");
 					System.exit(1);
 				}
 
-				List<DNA> germline;
-				if (arguments[0].equals("-random")) {
+				List<DNA> genomes;
+				if (arguments[0].equals("-r") || arguments[0].equals("--random")) {
 					System.out.println("No *.germline file. Generating random DNAs...");
-					germline = randomGermline();
+					genomes = randomGenomes();
 				} else
-					germline = readGermline(arguments[0]);
+					genomes = readGenomes(arguments[0]);
 
-				setDish(new IsolationDish(germline));
+				setDish(new IsolationDish(genomes));
 				getDish().moveToFirst();
 				Narjillo firstNarjillo = getDish().getNarjillo();
 				firstNarjillo.getBody().forcePosition(Vector.ZERO, 180);
@@ -90,7 +72,7 @@ public class GermlineApplication extends NarjillosApplication {
 				}
 			}
 
-			private List<DNA> randomGermline() {
+			private List<DNA> randomGenomes() {
 				List<DNA> result = new LinkedList<DNA>();
 				RanGen ranGen = new RanGen((int) (Math.random() * 100000));
 				for (int i = 0; i < 1000; i++)
@@ -99,12 +81,12 @@ public class GermlineApplication extends NarjillosApplication {
 			}
 
 			/**
-			 * Takes an ancestry file that contains a germline (one DNA document
+			 * Takes an ancestry file that contains genomes (one DNA document
 			 * per line) and returns a list of matching phenotypes.
 			 */
-			private List<DNA> readGermline(String germlineFileName) {
+			private List<DNA> readGenomes(String genomesFileName) {
 				try {
-					BufferedReader reader = new BufferedReader(new FileReader(germlineFileName));
+					BufferedReader reader = new BufferedReader(new FileReader(genomesFileName));
 
 					List<DNA> result = new ArrayList<DNA>();
 					String nextLine = reader.readLine();
@@ -113,7 +95,7 @@ public class GermlineApplication extends NarjillosApplication {
 						nextLine = reader.readLine();
 					}
 					reader.close();
-					System.out.println("Loaded ancestry germline from file " + germlineFileName);
+					System.out.println("Loaded genomes from " + genomesFileName);
 					return result;
 				} catch (Exception e) {
 					throw new RuntimeException(e);
@@ -129,7 +111,7 @@ public class GermlineApplication extends NarjillosApplication {
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
 			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
-			private final StringView statusView = new StringView(40);
+			private final StringView statusView = new StringView(40, state);
 
 			public void run() {
 				trackNarjillo();
@@ -171,7 +153,7 @@ public class GermlineApplication extends NarjillosApplication {
 
 	@Override
 	protected String getName() {
-		return "Ancestry Browser";
+		return "DNA Browser";
 	}
 
 	@Override
@@ -193,47 +175,22 @@ public class GermlineApplication extends NarjillosApplication {
 					moveForward(1);
 				else if (keyEvent.getCode() == KeyCode.DOWN)
 					resetSpecimen();
+				else if (keyEvent.getCode() == KeyCode.ENTER)
+					getDish().rotateTarget();
+				else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
+					state.toggleSpeed();
+				else if (keyEvent.getCode() == KeyCode.SPACE)
+					autoplay = !autoplay;
 			}
+		});
 
-			private void resetSpecimen() {
-				Narjillo from = getDish().getNarjillo();
-				getDish().resetSpecimen();
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
+		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
+				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
 
-			private void moveBack(int skip) {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveBack(skip);
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private void moveForward(int skip) {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveForward(skip);
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private void moveToFirst() {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveToFirst();
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private void moveToLast() {
-				Narjillo from = getDish().getNarjillo();
-				getDish().moveToLast();
-				Narjillo to = getDish().getNarjillo();
-				switchNarjillo(from, to);
-			}
-
-			private void switchNarjillo(Narjillo from, Narjillo to) {
-				to.getBody().forcePosition(from.getPosition(), 180);
-				to.setTarget(to.getPosition().minus(Vector.cartesian(1000000, 0)));
-				trackNarjillo();
+				if (event.getClickCount() == 3)
+					copyDNAToClipboard(clickedPositionEC);
 			}
 		});
 	}
@@ -243,7 +200,73 @@ public class GermlineApplication extends NarjillosApplication {
 		return (IsolationDish) super.getDish();
 	}
 
+	private void startAutoplayThread() {
+		Thread autoplayThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					if (autoplay) {
+						moveForward(1);
+						sleep(100);
+					} else
+						sleep(100);
+				}
+			}
+
+			private void sleep(int timeMillis) {
+				try {
+					Thread.sleep(timeMillis);
+				} catch (InterruptedException e) {
+				}
+			}
+		});
+		autoplayThread.setDaemon(true);
+		autoplayThread.start();
+	}
+
 	private void trackNarjillo() {
 		getTracker().startTracking(getDish().getNarjillo());
+	}
+
+	private synchronized void resetSpecimen() {
+		Narjillo from = getDish().getNarjillo();
+		getDish().resetSpecimen();
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveBack(int skip) {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveBack(skip);
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveForward(int skip) {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveForward(skip);
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveToFirst() {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveToFirst();
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void moveToLast() {
+		Narjillo from = getDish().getNarjillo();
+		getDish().moveToLast();
+		Narjillo to = getDish().getNarjillo();
+		switchNarjillo(from, to);
+	}
+
+	private synchronized void switchNarjillo(Narjillo from, Narjillo to) {
+		Vector centerOffset = to.getPosition().minus(to.getCenter());
+		to.getBody().forcePosition(from.getCenter().plus(centerOffset), 180);
+		trackNarjillo();
 	}
 }

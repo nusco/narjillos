@@ -26,14 +26,14 @@ public class DNATest {
 	public void convertsToADNADocumentString() {
 		DNA dna = new DNA(1, "1_2_3");
 		
-		assertEquals("{001_002_003_000_000_000_000_000_000_000_000_000}", dna.toString());
+		assertEquals("{001_002_003_000_000_000_000_000_000_000_000_000_000_000}", dna.toString());
 	}
 
 	@Test
 	public void isNeverEmpty() {
 		DNA dna = new DNA(1, "{}");
 		
-		assertEquals("{000_000_000_000_000_000_000_000_000_000_000_000}", dna.toString());
+		assertEquals("{000_000_000_000_000_000_000_000_000_000_000_000_000_000}", dna.toString());
 	}
 
 	@Test

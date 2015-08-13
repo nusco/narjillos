@@ -1,9 +1,5 @@
 package org.nusco.narjillos.application;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -24,7 +20,6 @@ import org.nusco.narjillos.application.views.StatusBarView;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.serializer.Persistence;
 
 /**
@@ -40,6 +35,10 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	@Override
 	protected String getName() {
 		return "Narjillos";
+	}
+
+	@Override
+	protected void startSupportThreads() {
 	}
 
 	@Override
@@ -171,16 +170,6 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 				if (event.getClickCount() == 3)
 					copyDNAToClipboard(clickedPositionEC);
-			}
-
-			private void copyDNAToClipboard(Vector clickedPositionEC) {
-				Narjillo narjillo = (Narjillo) getLocator().findNarjilloAt(clickedPositionEC);
-
-				if (narjillo == null)
-					return;
-				
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 			}
 		});
 	}

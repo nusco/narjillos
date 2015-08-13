@@ -17,12 +17,12 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 		setAngleToParent(angleToParentAtRest);
 	}
 
-	public void tick(double angleToTarget, double percentOfAmplitude, int level) {
+	public void tick(double angleToTarget, double inputSignal, int level) {
 		// Organs towards the head grow slower, organs towards the tail grow
 		// faster. This gives juveline narjillos a nice "infant" shape.
 		growBy(level);
 
-		double processedPercentOfAmplitude = getNerve().tick(percentOfAmplitude);
+		double processedPercentOfAmplitude = getNerve().tick(inputSignal);
 		setAngleToParent(calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget));
 
 		updateGeometry();

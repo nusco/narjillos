@@ -47,7 +47,7 @@ public class Narjillo implements Thing {
 		if (isDead())
 			return new Segment(startingPosition, Vector.ZERO);
 
-		mouth.tick(getPosition(), target, getBody().getAngle());
+		mouth.tick(getPosition(), getTarget(), getBody().getAngle());
 
 		double energyRequiredToMove = body.tick(getMouth().getDirection());
 		updateEnergy(energyRequiredToMove, atmosphere);
@@ -84,11 +84,11 @@ public class Narjillo implements Thing {
 		return dna;
 	}
 
-	public Vector getTarget() {
+	public synchronized Vector getTarget() {
 		return target;
 	}
 
-	public void setTarget(Vector target) {
+	public synchronized void setTarget(Vector target) {
 		this.target = target;
 	}
 

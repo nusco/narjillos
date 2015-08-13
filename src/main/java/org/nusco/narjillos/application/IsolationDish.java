@@ -21,11 +21,11 @@ class IsolationDish implements Dish {
 	private IsolationEnvironment environment;
 	private GenePool genePool = new SimpleGenePool();
 	private RanGen ranGen = new RanGen(1234);
-
+	
 	public IsolationDish(List<DNA> dnas) {
 		this.dnas = dnas;
 		if (dnas.isEmpty()) {
-			System.out.println("Empty germline");
+			System.out.println("Empty genomes list");
 			System.exit(1);
 		}
 		environment = new IsolationEnvironment(10_000, ranGen);
@@ -33,6 +33,7 @@ class IsolationDish implements Dish {
 
 	@Override
 	public synchronized boolean tick() {
+		environment.setTarget();
 		environment.tick(genePool, ranGen);
 		return true;
 	}
@@ -46,12 +47,12 @@ class IsolationDish implements Dish {
 		return false;
 	}
 
-	public void moveToFirst() {
+	public synchronized void moveToFirst() {
 		currentDnaIndex = 0;
 		resetSpecimen();
 	}
 
-	public void moveToLast() {
+	public synchronized void moveToLast() {
 		currentDnaIndex = dnas.size() - 1;
 		resetSpecimen();
 	}
@@ -74,7 +75,7 @@ class IsolationDish implements Dish {
 		resetSpecimen();
 	}
 
-	void resetSpecimen() {
+	synchronized void resetSpecimen() {
 		environment.updateSpecimen(createNarjillo(dnas.get(currentDnaIndex)));
 	}
 	
@@ -88,8 +89,12 @@ class IsolationDish implements Dish {
 		return "" + (currentDnaIndex + 1) + " of " + dnas.size();
 	}
 
-	public Narjillo getNarjillo() {
-		return getEnvironment().getSpecimen();
+	public synchronized Narjillo getNarjillo() {
+		return getEnvironment().getNarjillo();
+	}
+
+	public synchronized void rotateTarget() {
+		getEnvironment().rotateTarget();
 	}
 
 	private Narjillo createNarjillo(DNA dna) {

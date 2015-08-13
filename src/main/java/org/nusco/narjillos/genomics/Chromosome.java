@@ -8,7 +8,7 @@ import java.util.Arrays;
  */
 public class Chromosome {
 
-	static final int SIZE = 12;
+	static final int SIZE = 14;
 	
 	private final int[] genes = new int[SIZE];
 

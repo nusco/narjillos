@@ -19,6 +19,8 @@ public class IsolationEnvironment extends Environment {
 
 	private Set<Narjillo> narjillos = new LinkedHashSet<>();
 
+	private double targetAngle = 0;
+
 	public IsolationEnvironment(long size, RanGen ranGen) {
 		super(size);
 	}
@@ -47,13 +49,7 @@ public class IsolationEnvironment extends Environment {
 
 	@Override
 	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		setTargetToTheRight(getSpecimen());
-		getSpecimen().tick(getAtmosphere());
-	}
-
-	private void setTargetToTheRight(Narjillo specimen) {
-		Vector target = specimen.getPosition().plus(Vector.cartesian(10, 0));
-		specimen.setTarget(target);
+		getNarjillo().tick(getAtmosphere());
 	}
 
 	public synchronized void updateSpecimen(Narjillo narjillo) {
@@ -67,7 +63,15 @@ public class IsolationEnvironment extends Environment {
 		notifyThingAdded(narjillo);
 	}
 
-	public synchronized Narjillo getSpecimen() {
+	public synchronized Narjillo getNarjillo() {
 		return narjillos.iterator().next();
+	}
+
+	public synchronized void rotateTarget() {
+		targetAngle  = (targetAngle + 90) % 360;
+	}
+
+	public synchronized void setTarget() {
+		getNarjillo().setTarget(getNarjillo().getPosition().plus(Vector.polar(targetAngle, 1_000_000.0)));
 	}
 }

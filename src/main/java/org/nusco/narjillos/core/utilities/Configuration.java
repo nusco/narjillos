@@ -92,7 +92,6 @@ public class Configuration {
 	public static final double CREATURE_MATURE_AGE = getDouble("creature", "mature_age");
 	public static final double CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY = getDouble("creature", "max_energy_to_initial_energy");
 	public static final double CREATURE_BASE_WAVE_FREQUENCY = getDouble("creature", "base_wave_frequency");
-	public static final double CREATURE_WAVE_BEAT_RATIO = getDouble("creature", "wave_beat_ratio");
 	public static final double CREATURE_BASE_SKEWING_VELOCITY = getDouble("creature", "base_skewing_velocity");
 	public static final double CREATURE_LATERAL_VIEWFIELD = getDouble("creature", "lateral_viewfield");
 	public static final double CREATURE_SEED_ENERGY = getDouble("creature", "seed_energy");

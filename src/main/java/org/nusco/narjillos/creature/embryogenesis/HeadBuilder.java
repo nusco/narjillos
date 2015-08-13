@@ -6,6 +6,7 @@ import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
+import org.nusco.narjillos.creature.body.HeadParameters;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.genomics.Chromosome;
 
@@ -16,15 +17,6 @@ class HeadBuilder extends ConcreteOrganBuilder {
 
 	public HeadBuilder(Chromosome chromosome) {
 		super(chromosome);
-	}
-
-	public Element getByproduct() {
-		return Element.fromInteger(getChromosome().getGene(BYPRODUCT));
-	}
-
-	public double getMetabolicRate() {
-		final double MAX_METABOLIC_RATE = 3;
-		return getChromosome().getGene(METABOLIC_RATE) * (MAX_METABOLIC_RATE / 255);
 	}
 	
 	int getRed() {
@@ -37,6 +29,23 @@ class HeadBuilder extends ConcreteOrganBuilder {
 	
 	int getBlue() {
 		return getChromosome().getGene(BLUE);
+	}
+
+	public double getMetabolicRate() {
+		final double MAX_METABOLIC_RATE = 3;
+		return getChromosome().getGene(METABOLIC_RATE) * (MAX_METABOLIC_RATE / 255);
+	}
+
+	public double getWaveBeatRatio() {
+		final double minValue = 0.2;
+		final double maxValue = 5.0;
+		final double range = maxValue - minValue;
+		final double ratio = 255 / range;
+		return getChromosome().getGene(WAVE_BEAT_RATIO) / ratio + minValue;
+	}
+
+	public Element getByproduct() {
+		return Element.fromInteger(getChromosome().getGene(BYPRODUCT));
 	}
 
 	double getEnergyToChildren() {
@@ -53,6 +62,18 @@ class HeadBuilder extends ConcreteOrganBuilder {
 
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int ignored) {
-		return new Head(getLength(), getThickness(), getRed(), getGreen(), getBlue(), getMetabolicRate(), getByproduct(), getEnergyToChildren(), getEggVelocity(), getEggInterval());
+		HeadParameters parameters = new HeadParameters();
+		parameters.setAdultLength(getLength());
+		parameters.setAdultThickness(getThickness());
+		parameters.setRed(getRed());
+		parameters.setGreen(getGreen());
+		parameters.setBlue(getBlue());
+		parameters.setMetabolicRate(getMetabolicRate());
+		parameters.setWaveBeatRatio(getWaveBeatRatio());
+		parameters.setByproduct(getByproduct());
+		parameters.setEnergyToChildren(getEnergyToChildren());
+		parameters.setEggVelocity(getEggVelocity());
+		parameters.setEggInterval(getEggInterval());
+		return new Head(parameters);
 	}
 }

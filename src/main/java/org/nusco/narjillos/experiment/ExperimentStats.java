@@ -132,9 +132,9 @@ public class ExperimentStats {
 	}
 
 	public String getChemicalCyclesReport() {
-		StringBuffer result = new StringBuffer("Chemical cycles:");
+		StringBuffer result = new StringBuffer("Chemical cycles:\n");
 		for (String cycle : chemicalCycles.keySet())
-			System.out.println("  " + cycle + "\tspecimen: " + chemicalCycles.get(cycle));
+			result.append("  " + cycle + "\tspecimen: " + chemicalCycles.get(cycle) + "\n");
 		return result.toString();
 	}
 

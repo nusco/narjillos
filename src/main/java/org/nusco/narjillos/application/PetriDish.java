@@ -38,10 +38,7 @@ public class PetriDish implements Dish {
 			return false;
 
 		executePeriodOperations();
-		
-		if (experiment.thereAreSurvivors())
-			experiment.tick();
-
+		experiment.tick();
 		return true;
 	}
 
@@ -105,9 +102,12 @@ public class PetriDish implements Dish {
 		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL_TICKS != 0)
 			return;
 
+		if (!experiment.thereAreSurvivors())
+			isTerminated = true;
+
 		experiment.updateStats();
 		System.out.println(experiment.getStats());
-
+		
 		if (!persistent)
 			return;
 		
@@ -115,9 +115,6 @@ public class PetriDish implements Dish {
 			save();
 			lastSaveTime = System.currentTimeMillis();
 		}
-
-		if (!experiment.thereAreSurvivors())
-			isTerminated = true;
 	}
 
 	private void save() {

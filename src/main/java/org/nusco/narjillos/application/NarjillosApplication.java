@@ -1,5 +1,9 @@
 package org.nusco.narjillos.application;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -14,6 +18,7 @@ import org.nusco.narjillos.application.utilities.ThingTracker;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
 
@@ -68,6 +73,8 @@ abstract class NarjillosApplication extends Application {
 		final Group root = new Group();
 		startViewThread(root);
 
+		startSupportThreads();
+
 		final Scene scene = new Scene(root, viewport.getSizeSC().x, viewport.getSizeSC().y);
 		registerInteractionHandlers(scene);
 		bindViewportSizeToWindowSize(scene, viewport);
@@ -76,6 +83,8 @@ abstract class NarjillosApplication extends Application {
 		primaryStage.setTitle("Narjillos - " + getName());
 		primaryStage.show();
 	}
+
+	protected abstract void startSupportThreads();
 
 	@Override
 	public void stop() {
@@ -197,5 +206,15 @@ abstract class NarjillosApplication extends Application {
 
 	protected boolean isBusy() {
 		return getDish().isBusy();
+	}
+	
+	protected void copyDNAToClipboard(Vector clickedPositionEC) {
+		Narjillo narjillo = (Narjillo) getLocator().findNarjilloAt(clickedPositionEC);
+
+		if (narjillo == null)
+			return;
+		
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 	}
 }

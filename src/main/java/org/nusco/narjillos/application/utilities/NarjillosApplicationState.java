@@ -76,4 +76,8 @@ public class NarjillosApplicationState implements AppState {
 	public void toggleEffects() {
 		effects = effects.toggle();
 	}
+
+	public void toggleSpeed() {
+		speed = speed.toggle();
+	}
 }

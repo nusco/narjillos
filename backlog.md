@@ -14,15 +14,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Fix bug with duplicated --persistence warning
 * Fix extinction code
 
-##Prepare for Madison+ Presentation
->goal: give a good, clear presentation in Madison  
-
-* Identify interesting germline for demo  
-* Keyframes in DNA Browser  
-
-+ Fix position of creatures relative to speckled area  
-+ Start DNA browser in random mode in the middle of movement  
-
 
 ##Database Persistence
 >goal: run very long experiments  
@@ -37,7 +28,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
 
 + Move entire persistence to a database  
-  Consider this, but be aware that it might effect usability, performance or reliability.  
+  Consider this, but be aware that it might affect usability, performance or reliability.  
   So I might decide to stick with files.  
 
 + Save events instead of current state  

@@ -53,7 +53,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 				List<DNA> genomes;
 				if (arguments[0].equals("-r") || arguments[0].equals("--random")) {
-					System.out.println("No *.germline file. Generating random DNAs...");
+					System.out.println("Generating random DNAs...");
 					genomes = randomGenomes();
 				} else
 					genomes = readGenomes(arguments[0]);

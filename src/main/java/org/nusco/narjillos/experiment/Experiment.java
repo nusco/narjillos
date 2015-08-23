@@ -32,7 +32,7 @@ public class Experiment {
 	}
 
 	private Experiment(long seed, String version, Ecosystem ecosystem, boolean useDatabase) {
-		genePool = initializeGenePool(true); // FIXME
+		genePool = initializeGenePool(true); // TODO: fix this
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);

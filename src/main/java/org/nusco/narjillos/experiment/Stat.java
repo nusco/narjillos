@@ -33,6 +33,32 @@ public class Stat {
 	public final int z2h;
 	public final int z2n;
 
+	public Stat(long ticks, long runningTime,
+				int numberOfNarjillos, int numberOfFoodPellets,
+				int currentPoolSize, int historicalPoolSize, double averageGeneration,
+				double oxygen, double hydrogen, double nitrogen,
+				int o2h, int o2n, int h2o, int h2n, int n2o, int n2h, int z2o, int z2h, int z2n) {
+		this.ticks = ticks;
+		this.runningTime = runningTime;
+		this.numberOfNarjillos = numberOfNarjillos;
+		this.numberOfFoodPellets = numberOfFoodPellets;
+		this.currentPoolSize = currentPoolSize;
+		this.historicalPoolSize = historicalPoolSize;
+		this.averageGeneration = averageGeneration;
+		this.oxygen = oxygen;
+		this.hydrogen = hydrogen;
+		this.nitrogen = nitrogen;
+		this.o2h = o2h;
+		this.o2n = o2n;
+		this.h2o = h2o;
+		this.h2n = h2n;
+		this.n2o = n2o;
+		this.n2h = n2h;
+		this.z2o = z2o;
+		this.z2h = z2h;
+		this.z2n = z2n;
+	}
+	
 	public Stat(Experiment experiment) {
 		this.ticks = experiment.getTicksChronometer().getTotalTicks();
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();

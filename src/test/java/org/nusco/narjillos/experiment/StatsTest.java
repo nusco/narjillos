@@ -20,20 +20,20 @@ public class StatsTest {
 	
 	@Test
 	public void extractsDataFromExperiment() {
-		Stat stats = new Stat(experiment);
+		Stat stat = new Stat(experiment);
 		
-		assertEquals(1000, stats.ticks);
-		assertEquals(experiment.getTotalRunningTimeInSeconds(), stats.runningTime);
-		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), stats.numberOfNarjillos);
-		assertEquals(experiment.getEcosystem().getNumberOfFoodPellets(), stats.numberOfFoodPellets);
-		assertEquals(experiment.getGenePool().getCurrentPool().size(), stats.currentPoolSize);
-		assertEquals(experiment.getGenePool().getHistoricalPool().size(), stats.historicalPoolSize);
-		assertEquals(experiment.getGenePool().getAverageGeneration(), stats.averageGeneration, 0.0);
-		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.OXYGEN), stats.oxygen, 0.0);
-		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.HYDROGEN), stats.hydrogen, 0.0);
-		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.NITROGEN), stats.nitrogen, 0.0);
+		assertEquals(1000, stat.ticks);
+		assertEquals(experiment.getTotalRunningTimeInSeconds(), stat.runningTime);
+		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), stat.numberOfNarjillos);
+		assertEquals(experiment.getEcosystem().getNumberOfFoodPellets(), stat.numberOfFoodPellets);
+		assertEquals(experiment.getGenePool().getCurrentPool().size(), stat.currentPoolSize);
+		assertEquals(experiment.getGenePool().getHistoricalPool().size(), stat.historicalPoolSize);
+		assertEquals(experiment.getGenePool().getAverageGeneration(), stat.averageGeneration, 0.0);
+		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.OXYGEN), stat.oxygen, 0.0);
+		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.HYDROGEN), stat.hydrogen, 0.0);
+		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.NITROGEN), stat.nitrogen, 0.0);
 
-		int totalCreatures = stats.o2h + stats.o2n + stats.h2o + stats.h2n + stats.n2o + stats.n2h + stats.z2o + stats.z2h + stats.z2n;
-		assertEquals(totalCreatures, stats.numberOfNarjillos);
+		int totalCreatures = stat.o2h + stat.o2n + stat.h2o + stat.h2n + stat.n2o + stat.n2h + stat.z2o + stat.z2h + stat.z2n;
+		assertEquals(totalCreatures, stat.numberOfNarjillos);
 	}
 }

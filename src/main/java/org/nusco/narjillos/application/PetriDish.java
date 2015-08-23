@@ -120,7 +120,7 @@ public class PetriDish implements Dish {
 	private String getReport() {
 		return 	NumberFormat.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
 				experiment.getEcosystem().getNumberOfNarjillos() + "\t" +
-				experiment.getEcosystem().getNumberOfFoodPieces();
+				experiment.getEcosystem().getNumberOfFoodPellets();
 	}
 
 	private void save() {

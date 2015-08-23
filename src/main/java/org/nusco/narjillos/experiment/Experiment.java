@@ -92,7 +92,7 @@ public class Experiment {
 			return;
 		
 		updateTotalRunningTime();
-		database.updateStatsFor(this);
+		database.updateStatsOf(this);
 	}
 
 	public boolean thereAreSurvivors() {

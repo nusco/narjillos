@@ -7,20 +7,20 @@ public enum Element {
 	NITROGEN;
 
 	public static final String[] CYCLES = new String[] {
-		"O->H",
-		"O->N",
-		"H->O",
-		"H->N",
-		"N->O",
-		"N->H",
-		"Z->O",
-		"Z->H",
-		"Z->N"
+		"O2H",
+		"O2N",
+		"H2O",
+		"H2N",
+		"N2O",
+		"N2H",
+		"Z2O",
+		"Z2H",
+		"Z2N"
 	};
 
 	/**
-	 * Deterministically converts any positive integer to an element, but
-	 * never returns element Zero.
+	 * Deterministically convert any positive integer to an element, but
+	 * never return element Zero.
 	 */
 	public static Element fromInteger(int n) {
 		int cardinality = Element.values().length - 1;

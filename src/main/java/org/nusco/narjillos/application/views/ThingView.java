@@ -6,7 +6,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
@@ -40,8 +40,8 @@ abstract class ThingView implements ItemView {
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("narjillo"))
 			return new NarjilloView((Narjillo) thing);
-		else if (thing.getLabel().equals("food_piece"))
-			return new FoodView((FoodPiece)thing);
+		else if (thing.getLabel().equals("food_pellet"))
+			return new FoodView((FoodPellet)thing);
 		else if (thing.getLabel().equals("egg"))
 			return new EggView((Egg)thing);
 		else

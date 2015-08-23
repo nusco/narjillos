@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
@@ -83,8 +83,8 @@ public class Ecosystem extends Environment {
 		return result;
 	}
 
-	public Vector findClosestFoodPiece(Thing thing) {
-		Thing target = space.findClosestTo(thing, "food_piece");
+	public Vector findClosestFood(Thing thing) {
+		Thing target = space.findClosestTo(thing, "food_pellet");
 
 		if (target == null)
 			return center;
@@ -92,8 +92,8 @@ public class Ecosystem extends Environment {
 		return target.getPosition();
 	}
 
-	public final FoodPiece spawnFood(Vector position) {
-		FoodPiece newFood = new FoodPiece();
+	public final FoodPellet spawnFood(Vector position) {
+		FoodPellet newFood = new FoodPellet();
 		newFood.setPosition(position);
 		insert(newFood);
 		return newFood;
@@ -118,8 +118,8 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	public int getNumberOfFoodPieces() {
-		return space.count("food_piece");
+	public int getNumberOfFoodPellets() {
+		return space.count("food_pellet");
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class Ecosystem extends Environment {
 			narjillos.stream()
 				.map((creature) -> (Narjillo) creature)
 				.forEach((narjillo) -> {
-					Vector closestTarget = findClosestFoodPiece(narjillo);
+					Vector closestTarget = findClosestFood(narjillo);
 					narjillo.setTarget(closestTarget);
 				});
 		}
@@ -218,7 +218,7 @@ public class Ecosystem extends Environment {
 	}
 
 	protected Set<Thing> getCollisions(Segment movement) {
-		return space.detectCollisions(movement, "food_piece");
+		return space.detectCollisions(movement, "food_pellet");
 	}
 
 	private void spawnFood(RanGen ranGen) {
@@ -242,7 +242,7 @@ public class Ecosystem extends Environment {
 
 		// Consume food in a predictable order, to avoid non-deterministic
 		// behavior or race conditions when multiple narjillos collide with the
-		// same piece of food.
+		// same food pellet.
 		narjillosToCollidedFood.entrySet().stream()
 			.forEach((entry) -> {
 				Narjillo narjillo = entry.getKey();
@@ -274,8 +274,8 @@ public class Ecosystem extends Environment {
 	}
 
 	private boolean shouldSpawnFood(RanGen ranGen) {
-		double maxFoodPieces = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK;
-		if (getNumberOfFoodPieces() >= maxFoodPieces)
+		double maxFoodPellets = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK;
+		if (getNumberOfFoodPellets() >= maxFoodPellets)
 			return false;
 
 		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK / getNumberOf1000SquarePointsBlocks();
@@ -291,26 +291,26 @@ public class Ecosystem extends Environment {
 			narjillos.stream()
 				.filter((narjillo) -> (narjillo.getTarget().equals(food.getPosition())))
 				.forEach((narjillo) -> {
-					Vector closestTarget = findClosestFoodPiece(narjillo);
+					Vector closestTarget = findClosestFood(narjillo);
 					narjillo.setTarget(closestTarget);
 				});
 		}
 	}
 
-	private void consume(Narjillo narjillo, Set<Thing> foodPieces, GenePool genePool, RanGen ranGen) {
-		foodPieces.stream().forEach((foodPiece) -> {
-			consumeFood(narjillo, (FoodPiece) foodPiece, genePool, ranGen);
+	private void consume(Narjillo narjillo, Set<Thing> foodPellets, GenePool genePool, RanGen ranGen) {
+		foodPellets.stream().forEach((foodPellet) -> {
+			consumeFood(narjillo, (FoodPellet) foodPellet, genePool, ranGen);
 		});
 	}
 
-	private void consumeFood(Narjillo narjillo, FoodPiece foodPiece, GenePool genePool, RanGen ranGen) {
-		if (!space.contains(foodPiece))
+	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, GenePool genePool, RanGen ranGen) {
+		if (!space.contains(foodPellet))
 			return;		// race condition: already consumed
 
-		remove(foodPiece);
-		narjillo.feedOn(foodPiece);
+		remove(foodPellet);
+		narjillo.feedOn(foodPellet);
 
-		updateTargets(foodPiece);
+		updateTargets(foodPellet);
 	}
 
 	private void remove(Thing thing) {

@@ -201,7 +201,7 @@ abstract class NarjillosApplication extends Application {
 		Environment environment = getDish().getEnvironment();
 		return "Narj: " + environment.getNumberOfNarjillos()
 				+ " / Eggs: " + environment.getNumberOfEggs()
-				+ " / Food: " + environment.getNumberOfFoodPieces();
+				+ " / Food: " + environment.getNumberOfFoodPellets();
 	}
 
 	protected boolean isBusy() {

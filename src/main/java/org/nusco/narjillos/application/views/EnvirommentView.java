@@ -145,7 +145,7 @@ public class EnvirommentView {
 
 	private List<Node> getNodesForThingsInOrder(boolean infraredOn, boolean effectsOn) {
 		List<Node> result = new LinkedList<>();
-		addNodesFor("food_piece", result, infraredOn, effectsOn);
+		addNodesFor("food_pellet", result, infraredOn, effectsOn);
 		addNodesFor("narjillo", result, infraredOn, effectsOn);
 		addNodesFor("egg", result, infraredOn, effectsOn);
 		return result;

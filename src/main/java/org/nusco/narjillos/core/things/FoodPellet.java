@@ -5,7 +5,7 @@ import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Configuration;
 
-public class FoodPiece implements Thing {
+public class FoodPellet implements Thing {
 
 	public Vector position;
 	private final Energy energy = new LifeFormEnergy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
@@ -32,7 +32,7 @@ public class FoodPiece implements Thing {
 
 	@Override
 	public String getLabel() {
-		return "food_piece";
+		return "food_pellet";
 	}
 
 	@Override

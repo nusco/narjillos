@@ -7,7 +7,7 @@ import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
@@ -96,7 +96,7 @@ public class Narjillo implements Thing {
 		return body.getCenterOfMass();
 	}
 
-	public void feedOn(FoodPiece thing) {
+	public void feedOn(FoodPellet thing) {
 		getEnergy().steal(thing.getEnergy());
 		thing.setEater(this);
 	}

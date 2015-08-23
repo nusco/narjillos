@@ -49,7 +49,7 @@ public class ExperimentStats {
 	
 	private final long ticks;
 	private final long runningTime;
-	private final int numberOfFoodPieces;
+	private final int numberOfFoodPellets;
 	private final GenePoolStats genePoolStats;
 	private final double oxygen;
 	private final double hydrogen;
@@ -59,7 +59,7 @@ public class ExperimentStats {
 	public ExperimentStats(Experiment experiment) {
 		this.ticks = experiment.getTicksChronometer().getTotalTicks();
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
-		this.numberOfFoodPieces = experiment.getEcosystem().getNumberOfFoodPieces();
+		this.numberOfFoodPellets = experiment.getEcosystem().getNumberOfFoodPellets();
 		this.genePoolStats = new GenePoolStats(experiment.getGenePool());
 		this.oxygen = experiment.getEcosystem().getAtmosphere().getDensityOf(OXYGEN);
 		this.hydrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(HYDROGEN);
@@ -82,7 +82,7 @@ public class ExperimentStats {
 
 	public String toCSVLine() {
 		StringBuffer result = new StringBuffer();
-		result.append("" + ticks + "," + runningTime + "," + numberOfFoodPieces + "," + genePoolStats.toCSVLine() + ","
+		result.append("" + ticks + "," + runningTime + "," + numberOfFoodPellets + "," + genePoolStats.toCSVLine() + ","
 				+ NumberFormat.format(oxygen) + "," + NumberFormat.format(hydrogen) + "," + NumberFormat.format(nitrogen));
 		for (String cycle : chemicalCycles.keySet())
 			result.append("," + chemicalCycles.get(cycle));
@@ -94,7 +94,7 @@ public class ExperimentStats {
 		StringBuffer result = new StringBuffer();
 		result.append(alignLeft(NumberFormat.format(ticks))
 				+ alignLeft(genePoolStats.getCurrentPoolSize())
-				+ alignLeft(numberOfFoodPieces)
+				+ alignLeft(numberOfFoodPellets)
 				+ alignLeft(NumberFormat.format(oxygen))
 				+ alignLeft(NumberFormat.format(hydrogen))
 				+ alignLeft(NumberFormat.format(nitrogen)));
@@ -115,7 +115,7 @@ public class ExperimentStats {
 			return false;
 		if (runningTime != other.runningTime)
 			return false;
-		if (numberOfFoodPieces != other.numberOfFoodPieces)
+		if (numberOfFoodPellets != other.numberOfFoodPellets)
 			return false;
 		if (!genePoolStats.equals(other.genePoolStats))
 			return false;

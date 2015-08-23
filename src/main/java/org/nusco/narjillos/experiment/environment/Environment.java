@@ -31,7 +31,7 @@ public abstract class Environment {
 
 	public abstract int getNumberOfEggs();
 
-	public abstract int getNumberOfFoodPieces();
+	public abstract int getNumberOfFoodPellets();
 
 	/** Runs one simulation tick */
 	public void tick(GenePool genePool, RanGen ranGen) {

@@ -105,15 +105,15 @@ class Space {
 	 * by the movement, plus their neighbors (potentially including outerSpace).
 	 */
 	public Set<Thing> detectCollisions(Segment movement, String label) {
-		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
+		Set<Thing> collidedFoodPellets = new LinkedHashSet<>();
 
 		getNearbyNeighbors(movement.getStartPoint(), label).stream()
 			.filter((neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
 			.forEach((neighbor) -> {
-				collidedFoodPieces.add(neighbor);
+				collidedFoodPellets.add(neighbor);
 			});
 
-		return collidedFoodPieces;
+		return collidedFoodPellets;
 	}
 
 	public Set<Thing> getAll(String label) {

@@ -5,7 +5,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
- * A piece of body.
+ * A segment of a body.
  * 
  * Describes the geometry of the organ (length, thickness, mass, ...). It also
  * goes through the calculations needed to come up with angles, etc.

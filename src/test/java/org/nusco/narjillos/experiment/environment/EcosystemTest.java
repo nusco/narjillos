@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.creature.Narjillo;
@@ -20,9 +20,9 @@ import org.nusco.narjillos.genomics.DNA;
 public class EcosystemTest {
 	
 	Ecosystem ecosystem;
-	FoodPiece foodPiece1;
-	FoodPiece foodPiece2;
-	FoodPiece foodPiece3;
+	FoodPellet foodPellet1;
+	FoodPellet foodPellet2;
+	FoodPellet foodPellet3;
 	Narjillo narjillo1;
 	Narjillo narjillo2;
 	RanGen ranGen = new RanGen(1234);
@@ -30,9 +30,9 @@ public class EcosystemTest {
 	@Before
 	public void initialize() {
 		ecosystem = new Ecosystem(1000, false);
-		foodPiece1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
-		foodPiece2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
-		foodPiece3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
+		foodPellet1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
+		foodPellet2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
+		foodPellet3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
 		narjillo1 = insertNarjillo(Vector.cartesian(150, 150));
 		narjillo2 = insertNarjillo(Vector.cartesian(1050, 1050));
 	}
@@ -45,8 +45,8 @@ public class EcosystemTest {
 	}
 
 	@Test
-	public void countsFoodPieces() {
-		assertEquals(3, ecosystem.getNumberOfFoodPieces());
+	public void countsFoodPellets() {
+		assertEquals(3, ecosystem.getNumberOfFoodPellets());
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class EcosystemTest {
 		
 		assertEquals(5, things.size());
 		assertTrue(things.contains(narjillo1));
-		assertTrue(things.contains(foodPiece1));
+		assertTrue(things.contains(foodPellet1));
 	}
 
 	@Test
@@ -73,10 +73,10 @@ public class EcosystemTest {
 
 	@Test
 	public void returnsASubsetOfThings() {
-		Set<Thing> things = ecosystem.getThings("food_piece");
+		Set<Thing> things = ecosystem.getThings("food_pellet");
 		
 		assertEquals(3, things.size());
-		assertTrue(things.contains(foodPiece1));
+		assertTrue(things.contains(foodPellet1));
 	}
 	
 	@Test
@@ -100,15 +100,15 @@ public class EcosystemTest {
 	
 	@Test
 	public void findsTheClosestFoodToAGivenNarjillo() {
-		assertEquals(foodPiece1.getPosition(), ecosystem.findClosestFoodPiece(narjillo1));
-		assertEquals(foodPiece2.getPosition(), ecosystem.findClosestFoodPiece(narjillo2));
+		assertEquals(foodPellet1.getPosition(), ecosystem.findClosestFood(narjillo1));
+		assertEquals(foodPellet2.getPosition(), ecosystem.findClosestFood(narjillo2));
 	}
 
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
 		Ecosystem emptyEcosystem = new Ecosystem(1000, false);
 		Narjillo narjillo = insertNarjillo(Vector.cartesian(100, 100));
-		Vector target = emptyEcosystem.findClosestFoodPiece(narjillo);
+		Vector target = emptyEcosystem.findClosestFood(narjillo);
 		assertEquals(Vector.cartesian(500, 500), target);
 	}
 }

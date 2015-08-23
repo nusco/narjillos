@@ -4,7 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 class FoodView extends ThingView {
@@ -13,7 +13,7 @@ class FoodView extends ThingView {
 
 	private final RoundObjectView roundObjectView;
 	
-	public FoodView(FoodPiece food) {
+	public FoodView(FoodPellet food) {
 		super(food);
 		
 		roundObjectView = new RoundObjectView(Configuration.FOOD_RADIUS) {

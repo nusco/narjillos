@@ -3,7 +3,7 @@ package org.nusco.narjillos.persistence.file;
 import java.lang.reflect.Type;
 
 import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
@@ -24,8 +24,8 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("size", ecosystem.getSize());
 
-		final JsonElement foodPieces = context.serialize(ecosystem.getThings("food_piece"));
-		jsonObject.add("foodPieces", foodPieces);
+		final JsonElement foodPellets = context.serialize(ecosystem.getThings("food_pellet"));
+		jsonObject.add("foodPellets", foodPellets);
 
 		final JsonElement eggs = context.serialize(ecosystem.getThings("egg"));
 		jsonObject.add("eggs", eggs);
@@ -46,11 +46,11 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 		long size = jsonObject.get("size").getAsLong();
 		Ecosystem result = new Ecosystem(size, false);
 
-		JsonArray foodPieces = jsonObject.get("foodPieces").getAsJsonArray();
-		for (int i = 0; i < foodPieces.size(); i++) {
-			JsonElement jsonFoodPiece = foodPieces.get(i);
-			FoodPiece foodPiece = context.deserialize(jsonFoodPiece, FoodPiece.class);
-			result.insert(foodPiece);
+		JsonArray foodPellets = jsonObject.get("foodPellets").getAsJsonArray();
+		for (int i = 0; i < foodPellets.size(); i++) {
+			JsonElement jsonFoodPellet = foodPellets.get(i);
+			FoodPellet foodPellet = context.deserialize(jsonFoodPellet, FoodPellet.class);
+			result.insert(foodPellet);
 		}
 
 		JsonArray eggs = jsonObject.get("eggs").getAsJsonArray();

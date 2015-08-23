@@ -43,7 +43,7 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	@Override
-	public int getNumberOfFoodPieces() {
+	public int getNumberOfFoodPellets() {
 		return 0;
 	}
 

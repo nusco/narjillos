@@ -1,6 +1,6 @@
 package org.nusco.narjillos.persistence.file;
 
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
@@ -16,8 +16,8 @@ class ThingAdapter extends HierarchyAdapter<Thing> {
 
 	@Override
 	protected Class<?> getClass(String typeTag) throws JsonParseException {
-		if (typeTag.equals("food_piece"))
-			return FoodPiece.class;
+		if (typeTag.equals("food_pellet"))
+			return FoodPellet.class;
 		if (typeTag.equals("egg"))
 			return Egg.class;
 		if (typeTag.equals("narjillo"))

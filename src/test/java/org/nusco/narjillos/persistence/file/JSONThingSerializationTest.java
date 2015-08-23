@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.RanGen;
@@ -20,8 +20,8 @@ import org.nusco.narjillos.persistence.file.JSON;
 public class JSONThingSerializationTest {
 
 	@Test
-	public void serializesAndDeserializesFoodPieces() {
-		Thing food = new FoodPiece();
+	public void serializesAndDeserializesFoodPellet() {
+		Thing food = new FoodPellet();
 
 		String json = JSON.toJson(food, Thing.class);
 		Thing deserialized = JSON.fromJson(json, Thing.class);

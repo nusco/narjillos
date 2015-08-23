@@ -1,7 +1,7 @@
 package org.nusco.narjillos.application.utilities;
 
 import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
@@ -56,8 +56,8 @@ public class ThingTracker {
 			return;
 		}
 		
-		if (target.getLabel().equals("food_piece")) {
-			Thing eater = ((FoodPiece) target).getEater();
+		if (target.getLabel().equals("food_pellet")) {
+			Thing eater = ((FoodPellet) target).getEater();
 			if (eater != null)
 				startTracking(eater);
 			return;

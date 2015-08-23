@@ -151,7 +151,15 @@ public class Database {
 	}
 
 	public void printHistory() {
-		// FIXME Auto-generated method stub
+		System.out.println(Stat.toCsvHeader());
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT * FROM STATS ORDER_BY(TICKS);");
+			while (rs.next())
+				System.out.println(toStat(rs));
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public String getName() {

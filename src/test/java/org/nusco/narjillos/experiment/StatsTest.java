@@ -2,24 +2,17 @@ package org.nusco.narjillos.experiment;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 
 public class StatsTest {
 	
-	Experiment experiment;
-	
-	@Before
-	public void prepareExperiment() {
-		experiment = new Experiment(123, new Ecosystem(1000, false), "1.1.1", false);
-		for (int i = 0; i < 1000; i++)
-			experiment.tick();
-	}
-	
 	@Test
 	public void extractsDataFromExperiment() {
+		Experiment experiment = new Experiment(123, new Ecosystem(1000, false), "1.1.1", false);
+		for (int i = 0; i < 1000; i++)
+			experiment.tick();
 		Stat stat = new Stat(experiment);
 		
 		assertEquals(1000, stat.ticks);
@@ -35,5 +28,13 @@ public class StatsTest {
 
 		int totalCreatures = stat.o2h + stat.o2n + stat.h2o + stat.h2n + stat.n2o + stat.n2h + stat.z2o + stat.z2h + stat.z2n;
 		assertEquals(totalCreatures, stat.numberOfNarjillos);
+	}
+
+	@Test
+	public void convertsToACsvString() {
+		Stat stat = new Stat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+
+		String expected = "1, 2, 3, 4, 5, 6, 7.0, 8.0, 9.0, 10.0, 11, 12, 13, 14, 15, 16, 17, 18, 19";
+		assertEquals(expected, stat.toString());
 	}
 }

@@ -111,6 +111,38 @@ public class Stat {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return 	"" +
+				ticks + ", " +
+				runningTime + ", " +
+				numberOfNarjillos + ", " +
+				numberOfFoodPellets + ", " +
+				currentPoolSize + ", " +
+				historicalPoolSize + ", " +
+				averageGeneration + ", " +
+				oxygen + ", " +
+				hydrogen + ", " +
+				nitrogen + ", " +
+				o2h + ", " +
+				o2n + ", " +
+				h2o + ", " +
+				h2n + ", " +
+				n2o + ", " +
+				n2h + ", " +
+				z2o + ", " +
+				z2h + ", " +
+				z2n;
+	}
+	
+	public static String toCsvHeader() {
+		return 	"ticks, runningTime, " +
+				"numberOfNarjillos, numberOfFoodPellets, " +
+				"currentPoolSize, historicalPoolSize, averageGeneration, " +
+				"oxygen, hydrogen, nitrogen, " +
+				"o2h, o2n, h2o, h2n, n2o, n2h, z2o, z2h, z2n";
+	}
+	
 	private Map<String, Integer> getChemicalCycles(Ecosystem ecosystem) {
 		Map<String, Integer> result = new LinkedHashMap<>();
 

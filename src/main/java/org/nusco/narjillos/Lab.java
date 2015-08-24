@@ -13,6 +13,7 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.experiment.Stat;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
@@ -102,8 +103,10 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("history")) {
+			System.out.println(Stat.toCsvHeader());
 			Database database = new Database(experiment.getId());
-			database.printHistory();
+			for (Stat stat : database.getHistory())
+				System.out.println(stat);
 			return;
 		}
 

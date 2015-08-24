@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +40,10 @@ public class DatabaseTest {
 		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING", false);
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		db.updateStatsOf(experiment);
+		db.saveStatsOf(experiment);
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		db.updateStatsOf(experiment);
+		db.saveStatsOf(experiment);
 
 		Stat latestStats = db.getLatestStats();
 
@@ -49,10 +51,21 @@ public class DatabaseTest {
 		assertEquals(new Stat(experiment), latestStats);
 	}
 	
-//	@Test
-//	public void silentlySkipsWritingIfAStatIsAlreadyInTheDatabase() {
-//		// TODOw
-//	}
+	@Test
+	public void silentlySkipsWritingIfAStatIsAlreadyInTheDatabase() {
+		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING", false);
+		for (int i = 0; i < 10; i++)
+			experiment.tick();
+		db.saveStatsOf(experiment);
+		for (int i = 0; i < 10; i++)
+			experiment.tick();
+		db.saveStatsOf(experiment);
+		db.saveStatsOf(experiment);
+
+		List<Stat> history = db.getHistory();
+
+		assertEquals(2, history.size());
+	}
 	
 	@Test
 	public void returnsNullIfThereAreNoStatsInTheDatabase() {

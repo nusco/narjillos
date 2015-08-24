@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.Stat;
@@ -80,8 +82,10 @@ public class Database {
 		return null;
 	}
 
-	public void updateStatsOf(Experiment experiment) {
-		Stat stats = new Stat(experiment);
+	public void saveStatsOf(Experiment experiment) {
+		Stat stat = new Stat(experiment);
+		if (hasAlreadyBeenSaved(stat))
+			return;
 	    try {
 	    	Statement stmt = connection.createStatement();
 	    	String sql = "INSERT INTO STATS (TICKS, RUNNING_TIME, " +
@@ -89,27 +93,37 @@ public class Database {
 	    				 "CURRENT_POOL_SIZE, HISTORYCAL_POOL_SIZE, AVERAGE_GENERATION, " +
 	    				 "OXYGEN, HYDROGEN, NITROGEN, " + 
 	    				 "O2H, O2N, H2O, H2N, N2O, N2H, Z2O, Z2H, Z2N) VALUES (" + 
-	    				 stats.ticks + ", " +
-	    				 stats.runningTime + ", " +
-	    				 stats.numberOfNarjillos + ", " +
-	    				 stats.numberOfFoodPellets + ", " +
-	    				 stats.currentPoolSize + ", " +
-	    				 stats.historicalPoolSize + ", " +
-	    				 stats.averageGeneration + ", " +
-	    				 stats.oxygen + ", " +
-	    				 stats.hydrogen + ", " +
-	    				 stats.nitrogen + ", " +
-	    				 stats.o2h + ", " +
-	    				 stats.o2n + ", " +
-	    				 stats.h2o + ", " +
-	    				 stats.h2n + ", " +
-	    				 stats.n2o + ", " +
-	    				 stats.n2h + ", " +
-	    				 stats.z2o + ", " +
-	    				 stats.z2h + ", " +
-	    				 stats.z2n + ");"; 
+	    				 stat.ticks + ", " +
+	    				 stat.runningTime + ", " +
+	    				 stat.numberOfNarjillos + ", " +
+	    				 stat.numberOfFoodPellets + ", " +
+	    				 stat.currentPoolSize + ", " +
+	    				 stat.historicalPoolSize + ", " +
+	    				 stat.averageGeneration + ", " +
+	    				 stat.oxygen + ", " +
+	    				 stat.hydrogen + ", " +
+	    				 stat.nitrogen + ", " +
+	    				 stat.o2h + ", " +
+	    				 stat.o2n + ", " +
+	    				 stat.h2o + ", " +
+	    				 stat.h2n + ", " +
+	    				 stat.n2o + ", " +
+	    				 stat.n2h + ", " +
+	    				 stat.z2o + ", " +
+	    				 stat.z2h + ", " +
+	    				 stat.z2n + ");"; 
 	    	System.out.println(sql);
 			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private boolean hasAlreadyBeenSaved(Stat stat) {
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT * FROM STATS WHERE TICKS = " + stat.ticks + ";");
+			return rs.next();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -150,13 +164,14 @@ public class Database {
 						rs.getInt("Z2N"));
 	}
 
-	public void printHistory() {
-		System.out.println(Stat.toCsvHeader());
+	public List<Stat> getHistory() {
 		try {
+			List<Stat> result = new LinkedList<>();
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM STATS ORDER_BY(TICKS);");
+			ResultSet rs = statement.executeQuery("SELECT * FROM STATS ORDER_BY TICKS;");
 			while (rs.next())
-				System.out.println(toStat(rs));
+				result.add(toStat(rs));
+			return result;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

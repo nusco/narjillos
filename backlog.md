@@ -21,19 +21,19 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Save genepool to database rather than memory  
   Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
 
-* Change behaviour of persistence command-line arguments  
++ Change behaviour of persistence command-line arguments  
   Find a good combination for state persistence and history persistence (if you have the  
   second, then you must also have the first).  
+  Check that the system behaves consistently after picking up a persisted experiment with/without history.  
 
-* Fix bug with duplicated --persistence warning  
++ Fix bug with duplicated --persistence warning  
 
 * Keep running even after extinction
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
   Also take the chance to fix the current bug with experiments not stopping correctly on extinction.  
 
 + Move entire persistence to a database  
-  Consider this, but be aware that it might affect usability, performance or reliability.  
-  So I might decide to stick with files. Alternately, consider using a one-record table with a blob  
+  Consider using a one-record table with a blob  
 
 + Save event log instead of current state  
   Then have an external program, maybe in Elixir, to process stats

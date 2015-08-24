@@ -7,6 +7,9 @@ import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
+import org.nusco.narjillos.persistence.db.DatabaseHistory;
+import org.nusco.narjillos.persistence.db.History;
+import org.nusco.narjillos.persistence.db.NullHistory;
 import org.nusco.narjillos.persistence.file.FilePersistence;
 
 /**
@@ -67,27 +70,29 @@ public class PetriDish implements Dish {
 		Ecosystem ecosystem = new Ecosystem(size, true);
 		
 		String dna = options.getDna();
-		boolean trackingHistory = options.isTrackingHistory();
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);
-			result = new Experiment(generateRandomSeed(), ecosystem, applicationVersion, trackingHistory, dna);
+			result = new Experiment(generateRandomSeed(), ecosystem, applicationVersion, dna);
 		} else if (options.getExperiment() != null) {
 			System.out.print("Continuining experiment " + options.getExperiment().getId());
-			result = options.getExperiment();
+			return options.getExperiment();
 		} else if (options.getSeed() == CommandLineOptions.NO_SEED) {
 			long randomSeed = generateRandomSeed();
 			System.out.print("Starting new experiment with random seed: " + randomSeed);
-			result = new Experiment(randomSeed, ecosystem, applicationVersion, trackingHistory);
+			result = new Experiment(randomSeed, ecosystem, applicationVersion);
 		} else {
 			System.out.print("Starting experiment " + options.getSeed());
-			result = new Experiment(options.getSeed(), ecosystem, applicationVersion, trackingHistory);
+			result = new Experiment(options.getSeed(), ecosystem, applicationVersion);
 		}
+
+		History history = options.isKeepingHistory() ? new DatabaseHistory(result.getId()) : new NullHistory();	
+		result.setHistory(history);
 		
 		return result;
 	}
 
 	private void reportPersistenceOptions(CommandLineOptions options) {
-		if (options.isPersistent() && options.isTrackingHistory())
+		if (options.isPersistent() && options.isKeepingHistory())
 			System.out.println(" (persisted to file and database)");
 		else if (options.isPersistent())
 			System.out.println(" (persisted to file, no database)");

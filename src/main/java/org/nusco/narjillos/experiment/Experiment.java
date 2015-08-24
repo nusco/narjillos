@@ -7,7 +7,7 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
 import org.nusco.narjillos.genomics.SimpleGenePool;
-import org.nusco.narjillos.persistence.db.Database;
+import org.nusco.narjillos.persistence.db.History;
 
 public class Experiment {
 
@@ -19,25 +19,28 @@ public class Experiment {
 
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
-	private transient final Database database;
+	private transient History history;
 	
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean useDatabase, String dna) {
-		this(seed, version, ecosystem, useDatabase);
+	public Experiment(long seed, Ecosystem ecosystem, String version, String dna) {
+		this(seed, version, ecosystem);
 		ecosystem.populate(dna, genePool, ranGen);
 	}
 
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean useDatabase) {
-		this(seed, version, ecosystem, useDatabase);
+	public Experiment(long seed, Ecosystem ecosystem, String version) {
+		this(seed, version, ecosystem);
 		ecosystem.populate(genePool, ranGen);
 	}
 
-	private Experiment(long seed, String version, Ecosystem ecosystem, boolean useDatabase) {
+	private Experiment(long seed, String version, Ecosystem ecosystem) {
 		genePool = initializeGenePool(true); // TODO: fix this
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);
 		this.ecosystem = ecosystem;
-		database = useDatabase ? new Database(getId()) : null;
+	}
+
+	public void setHistory(History history) {
+		this.history = history;
 	}
 
 	public final void timeStamp() {
@@ -69,8 +72,8 @@ public class Experiment {
 	}
 
 	public String terminate() {
-		if (database != null)
-			database.close();
+		if (history != null)
+			history.close();
 		
 		ecosystem.terminate();
 
@@ -88,11 +91,11 @@ public class Experiment {
 
 	// TODO: move to the dish?
 	public void saveHistory() {
-		if (database == null)
+		if (history == null)
 			return;
 		
 		updateTotalRunningTime();
-		database.saveStatsOf(this);
+		history.saveStats(this);
 	}
 
 	public boolean thereAreSurvivors() {

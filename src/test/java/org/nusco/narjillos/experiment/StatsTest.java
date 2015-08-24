@@ -10,7 +10,7 @@ public class StatsTest {
 	
 	@Test
 	public void extractsDataFromExperiment() {
-		Experiment experiment = new Experiment(123, new Ecosystem(1000, false), "1.1.1", false);
+		Experiment experiment = new Experiment(123, new Ecosystem(1000, false), "1.1.1");
 		for (int i = 0; i < 1000; i++)
 			experiment.tick();
 		Stat stat = new Stat(experiment);

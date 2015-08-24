@@ -111,7 +111,7 @@ public class CommandLineOptions extends Options {
 		return persistent;
 	}
 
-	public boolean isTrackingHistory() {
+	public boolean isKeepingHistory() {
 		return trackingHistory;
 	}
 

@@ -14,38 +14,38 @@ import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.Stat;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 
-public class DatabaseTest {
+public class DatabaseHistoryTest {
 
-	private Database db;
+	private DatabaseHistory history;
 	
 	@Before
-	public void createTestDababase() {
-		db = new Database("123-TESTING");
+	public void createDababaseHistory() {
+		history = new DatabaseHistory("123-TESTING");
 	}
 
 	@After
 	public void deleteTestDatabase() {
-		db.close();
-		db.delete();
+		history.close();
+		history.delete();
 	}
 	
 	@Test
 	public void doesNotRaiseAnErrorIfConnectingToTheSameDatabaseTwice() {
-		Database anotherConnectionToTheSameDb = new Database("123-TESTING");
+		History anotherConnectionToTheSameDb = new DatabaseHistory("123-TESTING");
 		anotherConnectionToTheSameDb.close();
 	}
 	
 	@Test
 	public void savesAndLoadsStats() {
-		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING", false);
+		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		db.saveStatsOf(experiment);
+		history.saveStats(experiment);
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		db.saveStatsOf(experiment);
+		history.saveStats(experiment);
 
-		Stat latestStats = db.getLatestStats();
+		Stat latestStats = history.getLatestStats();
 
 		assertNotNull(latestStats);
 		assertEquals(new Stat(experiment), latestStats);
@@ -53,23 +53,23 @@ public class DatabaseTest {
 	
 	@Test
 	public void silentlySkipsWritingIfAStatIsAlreadyInTheDatabase() {
-		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING", false);
+		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
-		db.saveStatsOf(experiment);
+		history.saveStats(experiment);
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
-		db.saveStatsOf(experiment);
-		db.saveStatsOf(experiment);
+		history.saveStats(experiment);
+		history.saveStats(experiment);
 
-		List<Stat> history = db.getHistory();
+		List<Stat> stats = history.getStats();
 
-		assertEquals(2, history.size());
+		assertEquals(2, stats.size());
 	}
 	
 	@Test
 	public void returnsNullIfThereAreNoStatsInTheDatabase() {
-		Database unknownExperimentDatabase = new Database("unknown_experiment");
+		DatabaseHistory unknownExperimentDatabase = new DatabaseHistory("unknown_experiment");
 		try {
 			assertNull(unknownExperimentDatabase.getLatestStats());
 		} finally {

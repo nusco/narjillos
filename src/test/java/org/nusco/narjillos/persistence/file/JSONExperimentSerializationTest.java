@@ -15,7 +15,7 @@ public class JSONExperimentSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesExperiment() {
-		Experiment experiment = new Experiment(1234, new Ecosystem(10000, false), "experiment_serialization_test", false);
+		Experiment experiment = new Experiment(1234, new Ecosystem(10000, false), "experiment_serialization_test");
 		assertTrue(experiment.getGenePool() instanceof GenePoolWithHistory);
 		
 		for (int i = 0; i < 10; i++) {

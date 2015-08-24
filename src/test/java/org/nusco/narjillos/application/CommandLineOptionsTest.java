@@ -52,8 +52,8 @@ public class CommandLineOptionsTest {
 
 	@Test
 	public void acceptsAnHistoryOption() {
-		assertFalse(new CommandLineOptions().isTrackingHistory());
-		assertTrue(new CommandLineOptions("-history").isTrackingHistory());
+		assertFalse(new CommandLineOptions().isKeepingHistory());
+		assertTrue(new CommandLineOptions("-history").isKeepingHistory());
 	}
 
 	@Test

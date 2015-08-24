@@ -17,7 +17,8 @@ import org.nusco.narjillos.experiment.Stat;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
-import org.nusco.narjillos.persistence.db.Database;
+import org.nusco.narjillos.persistence.db.DatabaseHistory;
+import org.nusco.narjillos.persistence.db.History;
 import org.nusco.narjillos.persistence.file.FilePersistence;
 
 /**
@@ -63,8 +64,8 @@ public class Lab {
 		GenePool genePool = experiment.getGenePool();
 
 		if (commandLine.hasOption("stats")) {
-			Database database = new Database(experiment.getId());
-			System.out.println(database.getLatestStats());
+			History history = new DatabaseHistory(experiment.getId());
+			System.out.println(history.getLatestStats());
 			return;
 		}
 
@@ -104,8 +105,8 @@ public class Lab {
 
 		if (commandLine.hasOption("history")) {
 			System.out.println(Stat.toCsvHeader());
-			Database database = new Database(experiment.getId());
-			for (Stat stat : database.getHistory())
+			History database = new DatabaseHistory(experiment.getId());
+			for (Stat stat : database.getStats())
 				System.out.println(stat);
 			return;
 		}

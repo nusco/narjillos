@@ -7,10 +7,10 @@ import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-import org.nusco.narjillos.persistence.db.DatabaseHistory;
-import org.nusco.narjillos.persistence.db.History;
-import org.nusco.narjillos.persistence.db.NullHistory;
-import org.nusco.narjillos.persistence.file.FilePersistence;
+import org.nusco.narjillos.persistence.History;
+import org.nusco.narjillos.persistence.NullHistory;
+import org.nusco.narjillos.persistence.PersistentHistory;
+import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
  * The class that initializes and runs an Experiment.
@@ -85,7 +85,7 @@ public class PetriDish implements Dish {
 			result = new Experiment(options.getSeed(), ecosystem, applicationVersion);
 		}
 
-		History history = options.isKeepingHistory() ? new DatabaseHistory(result.getId()) : new NullHistory();	
+		History history = options.isKeepingHistory() ? new PersistentHistory(result.getId()) : new NullHistory();	
 		result.setHistory(history);
 		
 		return result;

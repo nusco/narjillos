@@ -7,7 +7,7 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
 import org.nusco.narjillos.genomics.SimpleGenePool;
-import org.nusco.narjillos.persistence.db.History;
+import org.nusco.narjillos.persistence.History;
 
 public class Experiment {
 

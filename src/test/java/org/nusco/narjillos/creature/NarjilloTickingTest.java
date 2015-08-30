@@ -14,7 +14,7 @@ import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
-import org.nusco.narjillos.persistence.file.JSON;
+import org.nusco.narjillos.persistence.serialization.JSON;
 
 /**
  * The code that moves Narjillos, and in particular the code in the Organ

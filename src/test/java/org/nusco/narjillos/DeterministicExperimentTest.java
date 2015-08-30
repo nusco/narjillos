@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
-import org.nusco.narjillos.persistence.file.JSON;
+import org.nusco.narjillos.persistence.serialization.JSON;
 
 /**
  * Check that two Experiments with the same seed result in the same exact

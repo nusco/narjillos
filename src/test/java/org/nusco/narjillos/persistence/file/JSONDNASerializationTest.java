@@ -11,11 +11,12 @@ public class JSONDNASerializationTest {
 
 	@Test
 	public void serializesAndDeserializesDNA() {
-		DNA dna = new DNA(1, "{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{015_016_017_018_019_020_021_022_023_024_025_026_027_028}");
+		DNA dna = new DNA(4, "{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{015_016_017_018_019_020_021_022_023_024_025_026_027_028}", 3);
 		String json = JSON.toJson(dna, DNA.class);
 		DNA deserialized = JSON.fromJson(json, DNA.class);
 
 		assertEquals(dna.getId(), deserialized.getId());
+		assertEquals(dna.getParentId(), deserialized.getParentId());
 		assertArrayEquals(dna.getGenes(), deserialized.getGenes());
 	}
 }

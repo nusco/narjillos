@@ -25,7 +25,7 @@ public class GenePoolExporterTest {
 	}
 	
 	@Test
-	public void convertsGenePoolToACSVTree() {
+	public void convertsAGenePoolToACSVTree() {
 		GenePoolExporter genePoolExporter = new GenePoolExporter(genePool);
 
 		String expected = "0;1\n"
@@ -38,7 +38,7 @@ public class GenePoolExporterTest {
 	}
 	
 	@Test
-	public void convertsGenePoolToANEXUSTree() {
+	public void convertsAGenePoolToANEXUSTree() {
 		GenePoolExporter genePoolExporter = new GenePoolExporter(genePool);
 
 		String expected = "begin trees;\n" +

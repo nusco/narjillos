@@ -121,7 +121,7 @@ public class Lab {
 
 	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {
 		DNA dna = getDNA(genePool, dnaId);
-		return genePool.getAncestry(dna);
+		return genePool.getAncestryOf(dna);
 	}
 
 	private static String getDNAStatistics(GenePool genePool, String dnaId) {

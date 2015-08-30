@@ -1,7 +1,5 @@
 package org.nusco.narjillos.genomics;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,8 +32,8 @@ public class GenePoolExporter {
 		StringBuffer result = new StringBuffer();
 		result.append("begin trees;\n");
 
-		Map<Long, List<Long>> parentsToChildren = calculateParentsToChildren();
-		String toNewickTree = toNewickTree(new Long(0), parentsToChildren);
+		Map<Long, List<Long>> parentsToChildren = genePool.getParentsToChildren();
+		String toNewickTree = toNewickTree(0L, parentsToChildren);
 		result.append("tree genotypes = " + toNewickTree + ";\n");
 		result.append("end;");
 		return result.toString();
@@ -54,20 +52,5 @@ public class GenePoolExporter {
 		String childrenTree = childrenTreeBuffer.toString();
 		String trimmedChildrenTree = childrenTree.substring(0, childrenTree.length() - 1);
 		return "(" + trimmedChildrenTree + ")" + rootId;
-	}
-
-	private LinkedHashMap<Long, List<Long>> calculateParentsToChildren() {
-		LinkedHashMap<Long, List<Long>> parentsToChildren = new LinkedHashMap<>();
-
-		parentsToChildren.put(new Long(0), new LinkedList<Long>());
-
-		Map<Long, Long> childrenToParents = genePool.getChildrenToParents();
-
-		for (Long dnaId : childrenToParents.keySet())
-			parentsToChildren.put(dnaId, new LinkedList<Long>());
-
-		for (Long childId : childrenToParents.keySet())
-			parentsToChildren.get(childrenToParents.get(childId)).add(childId);
-		return parentsToChildren;
 	}
 }

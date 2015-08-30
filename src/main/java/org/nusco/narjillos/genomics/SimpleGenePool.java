@@ -18,7 +18,7 @@ public class SimpleGenePool extends GenePool {
 	}
 
 	@Override
-	public List<DNA> getAncestry(DNA dna) {
+	public List<DNA> getAncestryOf(DNA dna) {
 		return new LinkedList<>();
 	}
 
@@ -35,6 +35,13 @@ public class SimpleGenePool extends GenePool {
 	@Override
 	Map<Long, Long> getChildrenToParents() {
 		return new LinkedHashMap<>();
+	}
+
+	@Override
+	Map<Long, List<Long>> getParentsToChildren() {
+		LinkedHashMap<Long, List<Long>> result = new LinkedHashMap<>();
+		result.put(0L, new LinkedList<Long>());
+		return result;
 	}
 
 	@Override

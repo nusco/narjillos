@@ -24,7 +24,7 @@ public class GenePoolWithHistoryTest {
 
 		DNA child2_2_1 = genePool.mutateDNA(child2_1, ranGen);
 
-		List<DNA> ancestry = genePool.getAncestry(child2_2_1);
+		List<DNA> ancestry = genePool.getAncestryOf(child2_2_1);
 		
 		assertEquals(3, ancestry.size());
 		assertEquals(parent2, ancestry.get(0));
@@ -77,7 +77,21 @@ public class GenePoolWithHistoryTest {
 	}
 	
 	@Test
-	public void getsDNAGeneration() {
+	public void knowsDNAAncestry() {
+		DNA gen1 = genePool.createDNA("{0}");
+		DNA gen2 = genePool.mutateDNA(gen1, ranGen);
+		DNA gen3 = genePool.mutateDNA(gen2, ranGen);
+		
+		List<DNA> ancestry = genePool.getAncestryOf(gen3);
+		
+		assertEquals(3, ancestry.size());
+		assertEquals(gen1, ancestry.get(0));
+		assertEquals(gen2, ancestry.get(1));
+		assertEquals(gen3, ancestry.get(2));
+	}
+	
+	@Test
+	public void knowsDNAGeneration() {
 		DNA gen1 = genePool.createDNA("{0}");
 		DNA gen2 = genePool.mutateDNA(gen1, ranGen);
 		DNA gen3 = genePool.mutateDNA(gen2, ranGen);

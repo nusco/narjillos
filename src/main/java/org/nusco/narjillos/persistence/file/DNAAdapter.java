@@ -19,6 +19,7 @@ class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
 		JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("genes", dna.toString());
         jsonObject.addProperty("id", dna.getId());
+        jsonObject.addProperty("parentId", dna.getParentId());
         return jsonObject;
 	}
 
@@ -27,6 +28,7 @@ class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
 		JsonObject jsonObject = json.getAsJsonObject();
 		String genes = jsonObject.get("genes").getAsString();
 		long id = jsonObject.get("id").getAsLong();
-		return new DNA(id, genes);
+		long parentId = jsonObject.get("parentId").getAsLong();
+		return new DNA(id, genes, parentId);
 	}
 }

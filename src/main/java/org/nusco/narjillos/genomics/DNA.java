@@ -12,25 +12,38 @@ import org.nusco.narjillos.core.utilities.RanGen;
  */
 public class DNA implements Iterable<Chromosome> {
 
+	public static final long NO_PARENT = 0;
+	
 	private final long id;
 	private final Integer[] genes;
+	private final long parentId;
 
 	public DNA(long id, String dnaDocument) {
-		this.id = id;
-		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
+		this(id, dnaDocument, NO_PARENT);
 	}
 
-	public DNA(long id, Integer[] genes) {
+	public DNA(long id, String dnaDocument, long parentId) {
+		this.id = id;
+		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
+		this.parentId = parentId;
+	}
+
+	public DNA(long id, Integer[] genes, long parentId) {
 		this.id = id;
 		this.genes = clipGenes(genes);
+		this.parentId = parentId;
 	}
 
 	public static DNA random(long id, RanGen ranGen) {
-		return new DNA(id, randomGenes(getDefaultSize(), ranGen));
+		return new DNA(id, randomGenes(getDefaultSize(), ranGen), 0);
 	}
 
 	public long getId() {
 		return id;
+	}
+
+	public long getParentId() {
+		return parentId;
 	}
 
 	public Integer[] getGenes() {
@@ -45,7 +58,7 @@ public class DNA implements Iterable<Chromosome> {
 			else
 				resultChromosomes.add(copyChromosome(chromosome, ranGen));
 		Integer[] resultGenes = flattenToGenes(resultChromosomes);
-		return new DNA(id, padToSameGenomeLength(resultGenes, ranGen));
+		return new DNA(id, padToSameGenomeLength(resultGenes, ranGen), getId());
 	}
 
 	public int getSimHashedDistanceFrom(DNA other) {

@@ -30,7 +30,7 @@ public class DatabaseHistoryTest {
 	}
 	
 	@Test
-	public void doesNotRaiseAnErrorIfConnectingToTheSameDatabaseTwice() {
+	public void doesNotRaiseAnErrorIfConnectingToTheSameDatabaseFromMultiplePlaces() {
 		History anotherConnectionToTheSameDb = new DatabaseHistory("123-TESTING");
 		anotherConnectionToTheSameDb.close();
 	}
@@ -79,8 +79,18 @@ public class DatabaseHistoryTest {
 	}
 
 //	@Test
-//	public void savesAndRetrievesDNA() {
+//	public void savesAndLoadsDNA() {
 //		DNA dna = new DNA(42, "{1_2_3}");
+//
+//		
+//		history.saveDNA(dna);
+//
+//		Stat latestStats = history.getLatestStats();
+//
+//		assertNotNull(latestStats);
+//		assertEquals(new Stat(experiment), latestStats);
+//
+//		
 //		db.newDNA(dna);
 //		
 //		DNA retrieved = db.getDNA(42);

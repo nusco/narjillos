@@ -33,7 +33,7 @@ public class JSONGenePoolSerializationTest {
 
 		assertTrue(deserialized instanceof GenePoolWithHistory);
 		assertEquals(deserialized.getCurrentSerialId(), genePool.getCurrentSerialId());
-		assertArrayEquals(deserialized.getAncestry(child3).toArray(), genePool.getAncestry(child3).toArray());
+		assertArrayEquals(deserialized.getAncestryOf(child3).toArray(), genePool.getAncestryOf(child3).toArray());
 		assertEquals(deserialized.getMostSuccessfulDNA().toString(), genePool.getMostSuccessfulDNA().toString());
 	}
 

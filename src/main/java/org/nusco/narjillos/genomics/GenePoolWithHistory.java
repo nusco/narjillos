@@ -14,8 +14,7 @@ import org.nusco.narjillos.core.utilities.RanGen;
  */
 public class GenePoolWithHistory extends GenePool {
 
-	private final Map<Long, DNA> dnaById = new LinkedHashMap<>();
-	private final Map<Long, Long> childrenToParents = new LinkedHashMap<>();
+	private final Map<Long, DNA> historicalDnaById = new LinkedHashMap<>();
 	private final Map<Long, Integer> dnaToGeneration = new LinkedHashMap<>();
 
 	@Override
@@ -41,11 +40,11 @@ public class GenePoolWithHistory extends GenePool {
 
 	@Override
 	public DNA getDna(Long id) {
-		return dnaById.get(new Long(id));
+		return historicalDnaById.get(new Long(id));
 	}
 
 	@Override
-	public List<DNA> getAncestry(DNA dna) {
+	public List<DNA> getAncestryOf(DNA dna) {
 		List<DNA> result = new LinkedList<>();
 
 		if (dna == null)
@@ -53,8 +52,9 @@ public class GenePoolWithHistory extends GenePool {
 
 		Long currentDnaId = dna.getId();
 		while (currentDnaId != 0) {
-			result.add(dnaById.get(currentDnaId));
-			currentDnaId = childrenToParents.get(currentDnaId);
+			DNA currentDna = historicalDnaById.get(currentDnaId);
+			result.add(currentDna);
+			currentDnaId = currentDna.getParentId();
 		}
 
 		Collections.reverse(result);
@@ -66,7 +66,7 @@ public class GenePoolWithHistory extends GenePool {
 		DNA result = null;
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
 		for (Long dnaId : getCurrentPool()) {
-			DNA dna = dnaById.get(dnaId);
+			DNA dna = historicalDnaById.get(dnaId);
 			int currentLevenshteinDistance = totalLevenshteinDistanceFromTheRestOfThePool(dna);
 			if (currentLevenshteinDistance < lowestLevenshteinDistance) {
 				result = dna;
@@ -79,12 +79,26 @@ public class GenePoolWithHistory extends GenePool {
 	@Override
 	public
 	Set<Long> getHistoricalPool() {
-		return dnaById.keySet();
+		return historicalDnaById.keySet();
 	}
 
 	@Override
 	Map<Long, Long> getChildrenToParents() {
-		return childrenToParents;
+		Map<Long, Long> result = new LinkedHashMap<>();
+		for (DNA dna : historicalDnaById.values())
+			result.put(dna.getId(), dna.getParentId());
+		return result;
+	}
+
+	@Override
+	Map<Long, List<Long>> getParentsToChildren() {
+		Map<Long, List<Long>> result = new LinkedHashMap<>();
+		result.put(0L, new LinkedList<Long>());
+		for (DNA dna : historicalDnaById.values())
+			result.put(dna.getId(), new LinkedList<Long>());
+		for (DNA dna : historicalDnaById.values()) 
+			result.get(dna.getParentId()).add(dna.getId());
+		return result;
 	}
 
 	@Override
@@ -93,23 +107,18 @@ public class GenePoolWithHistory extends GenePool {
 	}
 
 	private void add(DNA dna, DNA parent) {
-		dnaById.put(dna.getId(), dna);
+		historicalDnaById.put(dna.getId(), dna);
 		
 		if (parent == null)
 			dnaToGeneration.put(dna.getId(), 1);
 		else
 			dnaToGeneration.put(dna.getId(), getGenerationOf(parent) + 1);
-			
-		if (parent == null)
-			childrenToParents.put(dna.getId(), 0l);
-		else
-			childrenToParents.put(dna.getId(), parent.getId());
 	}
 
 	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
 		int result = 0;
 		for (Long otherDNAId : getCurrentPool()) {
-			DNA otherDNA = dnaById.get(otherDNAId);
+			DNA otherDNA = historicalDnaById.get(otherDNAId);
 			if (!otherDNA.equals(dna))
 				result += dna.getLevenshteinDistanceFrom(otherDNA);
 		}

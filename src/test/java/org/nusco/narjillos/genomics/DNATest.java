@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.core.utilities.RanGen;
 
 public class DNATest {
 
@@ -12,7 +13,7 @@ public class DNATest {
 	public void hasASerialId() {
 		DNA dna = new DNA(42, "{1_2_3}");
 		
-		assertEquals(dna.getId(), 42);
+		assertEquals(42, dna.getId());
 	}
 
 	@Test
@@ -60,6 +61,20 @@ public class DNATest {
 	}
 
 	@Test
+	public void hasNoParentIdByDefault() {
+		DNA dna = new DNA(42, "{1_2_3}");
+		
+		assertEquals(DNA.NO_PARENT, dna.getParentId());
+	}
+
+	@Test
+	public void canHaveAParentId() {
+		DNA dna = new DNA(42, "{1_2_3}", 41);
+		
+		assertEquals(41, dna.getParentId());
+	}
+
+	@Test
 	public void splitsIntoCodons() {
 		DNA dna = new DNA(1, "1_2_3_4_5_6_7_8_9_10_11_12");
 
@@ -91,5 +106,14 @@ public class DNATest {
 		assertEquals(new DNA(1, "1_2_3"), new DNA(1, "1_2_3"));
 		assertEquals(new DNA(1, "1_2_3"), new DNA(1, "1_2_4"));
 		assertNotEquals(new DNA(1, "1_2_3"), new DNA(2, "1_2_3"));
+	}
+
+	@Test
+	public void givesRiseToAChildDNAWhenItMutates() {
+		DNA parent = new DNA(42, "{}");
+
+		DNA child = parent.mutate(43, new RanGen(123));
+
+		assertEquals(42, child.getParentId());
 	}
 }

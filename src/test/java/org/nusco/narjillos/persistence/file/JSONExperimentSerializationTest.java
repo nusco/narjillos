@@ -36,6 +36,6 @@ public class JSONExperimentSerializationTest {
 		GenePool genePool = experiment.getGenePool();
 		GenePool deserializedGenePool = deserialized.getGenePool();
 		
-		assertArrayEquals(deserializedGenePool.getAncestry(deserializedGenePool.getMostSuccessfulDNA()).toArray(), genePool.getAncestry(genePool.getMostSuccessfulDNA()).toArray());
+		assertArrayEquals(deserializedGenePool.getAncestryOf(deserializedGenePool.getMostSuccessfulDNA()).toArray(), genePool.getAncestryOf(genePool.getMostSuccessfulDNA()).toArray());
 	}
 }

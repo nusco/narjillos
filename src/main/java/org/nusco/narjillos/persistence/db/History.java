@@ -11,7 +11,7 @@ public interface History {
 	public abstract List<Stat> getStats();
 	public abstract Stat getLatestStats();
 	public abstract void saveStats(Experiment experiment);
-	public abstract DNA getDNA(int dnaId);
+	public abstract DNA getDNA(long dnaId);
 	public abstract void save(DNA dna);
 	public abstract void close();
 }

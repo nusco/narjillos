@@ -85,7 +85,7 @@ public class NarjilloTickingTest {
 		// Enable this line to get the new expected value whenever I need to
 		// update this test (that is, whenever I make changes that cause this
 		// test to break, as long as I was expecting it to happen).
-		System.out.println(currentState);
+		//System.out.println(currentState);
 
 		// Check that the narjillo's state is exactly what we expect. We use
 		// JSON to make the comparison easier, and also to make sure that we're

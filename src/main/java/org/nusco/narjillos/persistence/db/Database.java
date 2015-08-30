@@ -40,23 +40,44 @@ public class DatabaseHistory implements History {
 
 	@Override
 	public void save(DNA dna) {
-		// Document doc = new Document()
-		// .append("id", dna.getId())
-		// .append("genes", dna.toString());
-		//
-		// MongoCollection<Document> collection = db.getCollection(GENEPOOL);
-		// collection.insertOne(doc);
+	    try {
+			if (contains(dna))
+				return;
+	    	Statement stmt = connection.createStatement();
+	    	String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID) VALUES (" + 
+	    				 dna.getId() + ", " +
+	    				 "'" + dna.toString() + "', " +
+	    				 dna.getParentId() + ");";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public DNA getDNA(int dnaId) {
-		// MongoCollection<Document> collection = db.getCollection(GENEPOOL);
-		// Document doc = collection.find(eq("id", dnaId)).first();
-		// if (doc == null)
-		// return null;
+	public DNA getDNA(long id) {
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT * FROM DNA WHERE ID = " + id + ";");
+			if (!rs.next())
+				return null;
+			return toDNA(rs);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-		// return new DNA(doc.getLong("id"), doc.getString("genes"));
-		return null;
+	public List<DNA> getAllDNA() {
+		try {
+			List<DNA> result = new LinkedList<>();
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT * FROM DNA ORDER BY ID;");
+			while (rs.next())
+				result.add(toDNA(rs));
+			return result;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -133,6 +154,11 @@ public class DatabaseHistory implements History {
 	}
 
 	private void createTables() throws SQLException {
+		createStatsTable();
+		createDnaTable();
+	}
+
+	private void createStatsTable() throws SQLException {
 		Statement stmt = connection.createStatement();
 		String sql = "CREATE TABLE IF NOT EXISTS STATS "
 				+ "(TICKS                   INT PRIMARY KEY     NOT NULL,"
@@ -158,6 +184,20 @@ public class DatabaseHistory implements History {
 		stmt.close();
 	}
 
+	private void createDnaTable() throws SQLException {
+		Statement stmt = connection.createStatement();
+		String sql = "CREATE TABLE IF NOT EXISTS DNA "
+				+ "(ID                   INT PRIMARY KEY     NOT NULL,"
+				+ " GENES                STRING              NOT NULL,"
+				+ " PARENT_ID            INT                 NOT NULL)";
+		stmt.executeUpdate(sql);
+		stmt.close();
+	}
+
+	private boolean contains(DNA dna) {
+		return getDNA(dna.getId()) != null;
+	}
+
 	private boolean contains(Stat stat) {
 		try {
 			Statement statement = connection.createStatement();
@@ -166,6 +206,12 @@ public class DatabaseHistory implements History {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private DNA toDNA(ResultSet rs) throws SQLException {
+		return new DNA(rs.getInt("ID"),
+					   rs.getString("GENES"),
+					   rs.getInt("PARENT_ID"));
 	}
 
 	private Stat toStat(ResultSet rs) throws SQLException {

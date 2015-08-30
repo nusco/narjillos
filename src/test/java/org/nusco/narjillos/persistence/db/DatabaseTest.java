@@ -13,6 +13,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.Stat;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.genomics.DNA;
 
 public class DatabaseHistoryTest {
 
@@ -78,33 +79,43 @@ public class DatabaseHistoryTest {
 		}
 	}
 
-//	@Test
-//	public void savesAndLoadsDNA() {
-//		DNA dna = new DNA(42, "{1_2_3}");
-//
-//		
-//		history.saveDNA(dna);
-//
-//		Stat latestStats = history.getLatestStats();
-//
-//		assertNotNull(latestStats);
-//		assertEquals(new Stat(experiment), latestStats);
-//
-//		
-//		db.newDNA(dna);
-//		
-//		DNA retrieved = db.getDNA(42);
-//		assertEquals(42, retrieved.getId());
-//		assertTrue(retrieved.toString().startsWith("{001_002_003_000"));
-//	}
-//	
-//	@Test
-//	public void returnsNullIfTheDNAIsNotInThePool() {
-//		assertNull(db.getDNA(42));
-//	}
-//	
-//	@Test
-//	public void silentlySkipsWritingIfADNAIsAlreadyInTheDatabase() {
-//		//TODO;
-//	}
+	@Test
+	public void savesAndLoadsDNA() {
+		DNA dna = new DNA(42, "{1_2_3}", 41);
+
+		history.save(dna);
+		DNA retrieved = history.getDNA(42);
+
+		assertNotNull(retrieved);
+		assertEquals(retrieved.getId(), dna.getId());
+		assertEquals(retrieved.toString(), dna.toString());
+		assertEquals(retrieved.getParentId(), dna.getParentId());
+	}
+	
+	@Test
+	public void returnsNullIfTheDNAIsNotInThePool() {
+		assertNull(history.getDNA(42));
+	}
+	
+	@Test
+	public void retrievesTheEntireGenePool() {
+		history.save(new DNA(42, "{1_2_3}", 0));
+		history.save(new DNA(43, "{1_2_3}", 42));
+
+		List<DNA> genePool = history.getAllDNA();
+		
+		assertEquals(2, genePool.size());
+		assertEquals(history.getDNA(42), genePool.get(0));
+		assertEquals(history.getDNA(43), genePool.get(1));
+	}
+	
+	@Test
+	public void silentlySkipsWritingIfADNAIsAlreadyInTheDatabase() {
+		DNA dna = new DNA(42, "{1_2_3}", 41);
+
+		history.save(dna);
+		history.save(dna);
+
+		assertEquals(1, history.getAllDNA().size());
+	}
 }

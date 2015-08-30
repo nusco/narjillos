@@ -24,7 +24,7 @@ public class NullHistory implements History {
 	}
 
 	@Override
-	public DNA getDNA(int dnaId) {
+	public DNA getDNA(long id) {
 		return null;
 	}
 

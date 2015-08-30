@@ -167,7 +167,7 @@ public class Narjillo implements Thing {
 		getBody().growToAdultForm();
 	}
 
-	Vector getNeckLocation() {
+	public Vector getNeckLocation() {
 		return getBody().getHead().getEndPoint();
 	}
 

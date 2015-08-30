@@ -13,11 +13,11 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.experiment.History;
 import org.nusco.narjillos.experiment.Stat;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
-import org.nusco.narjillos.persistence.History;
 import org.nusco.narjillos.persistence.PersistentHistory;
 import org.nusco.narjillos.persistence.serialization.FilePersistence;
 

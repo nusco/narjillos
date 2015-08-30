@@ -1,9 +1,6 @@
-package org.nusco.narjillos.persistence;
+package org.nusco.narjillos.experiment;
 
 import java.util.List;
-
-import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.Stat;
 
 public interface History {
 

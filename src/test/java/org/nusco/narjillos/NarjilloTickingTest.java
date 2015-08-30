@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature;
+package org.nusco.narjillos;
 
 import static org.junit.Assert.assertEquals;
 

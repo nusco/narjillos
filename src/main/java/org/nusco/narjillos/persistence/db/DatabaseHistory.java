@@ -115,7 +115,7 @@ public class DatabaseHistory implements History {
 		try {
 			List<Stat> result = new LinkedList<>();
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM STATS ORDER_BY TICKS;");
+			ResultSet rs = statement.executeQuery("SELECT * FROM STATS ORDER BY TICKS;");
 			while (rs.next())
 				result.add(toStat(rs));
 			return result;

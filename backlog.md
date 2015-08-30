@@ -17,7 +17,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     For advanced analysis of experimental data.  
     This also removes the memory cap on very long experiments.  
 
-* Save stats to database rather than memory  
 * Save genepool to database rather than memory  
   Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
 
@@ -32,11 +31,14 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
   Also take the chance to fix the current bug with experiments not stopping correctly on extinction.  
 
-+ Move entire persistence to a database  
++ Move entire persistence to database  
   Consider using a one-record table with a blob  
 
 + Save event log instead of current state  
   Then have an external program, maybe in Elixir, to process stats
+
++ Move from SQLite to H2  
+  As suggested by Cipster.  
 
 
 ##Advanced Body Plans

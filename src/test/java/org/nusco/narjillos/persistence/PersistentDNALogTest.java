@@ -72,4 +72,17 @@ public class PersistentDNALogTest {
 
 		assertEquals(1, dnaLog.getAllDNA().size());
 	}
+	
+	@Test
+	public void returns1AsTheFirstAvailableDnaId() {
+		assertEquals(1, dnaLog.getNextAvailableDnaId());
+	}
+	
+	@Test
+	public void returnsAnAvailableIdForTheNextDna() {
+		dnaLog.save(new DNA(23, "{1_2_3}", 0));
+		dnaLog.save(new DNA(42, "{1_2_3}", 0));
+
+		assertEquals(43, dnaLog.getNextAvailableDnaId());
+	}
 }

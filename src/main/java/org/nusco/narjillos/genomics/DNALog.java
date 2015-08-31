@@ -7,4 +7,5 @@ public interface DNALog {
 	public abstract void save(DNA dna);
 	public abstract DNA getDNA(long id);
 	public abstract List<DNA> getAllDNA();
+	public long getNextAvailableDnaId();
 }

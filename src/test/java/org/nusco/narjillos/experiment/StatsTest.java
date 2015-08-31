@@ -3,14 +3,14 @@ package org.nusco.narjillos.experiment;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.nusco.narjillos.SimpleExperiment;
 import org.nusco.narjillos.core.chemistry.Element;
-import org.nusco.narjillos.experiment.environment.Ecosystem;
 
 public class StatsTest {
 	
 	@Test
 	public void extractsDataFromExperiment() {
-		Experiment experiment = new Experiment(123, new Ecosystem(1000, false), "1.1.1");
+		Experiment experiment = new SimpleExperiment();
 		for (int i = 0; i < 1000; i++)
 			experiment.tick();
 		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(experiment);

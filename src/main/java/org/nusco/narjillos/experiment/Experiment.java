@@ -5,43 +5,35 @@ import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.RanGen;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.genomics.GenePoolWithHistory;
-import org.nusco.narjillos.genomics.SimpleGenePool;
-import org.nusco.narjillos.persistence.PersistentDNALog;
-import org.nusco.narjillos.persistence.VolatileDNALog;
 
 public class Experiment {
 
 	private final String id;
 	private final Ecosystem ecosystem;
-	private final GenePool genePool;
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final RanGen ranGen;
 
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
-	private transient HistoryLog history;
+	private transient GenePool genePool;
+	private transient HistoryLog historyLog;
+	private transient String dna;
 	
 	public Experiment(long seed, Ecosystem ecosystem, String version, String dna) {
 		this(seed, version, ecosystem);
-		ecosystem.populate(dna, genePool, ranGen);
+		this.dna = dna;
 	}
 
 	public Experiment(long seed, Ecosystem ecosystem, String version) {
 		this(seed, version, ecosystem);
-		ecosystem.populate(genePool, ranGen);
+		this.dna = null;  // FIXME: ugly. it must go.
 	}
 
 	private Experiment(long seed, String version, Ecosystem ecosystem) {
-		genePool = initializeGenePool(true); // TODO: fix this
 		id = "" + seed + "-" + version;
 		timeStamp();
 		ranGen = new RanGen(seed);
 		this.ecosystem = ecosystem;
-	}
-
-	public void setHistory(HistoryLog history) {
-		this.history = history;
 	}
 
 	public final void timeStamp() {
@@ -73,8 +65,7 @@ public class Experiment {
 	}
 
 	public String terminate() {
-		if (history != null)
-			history.close();
+		historyLog.close();
 		
 		ecosystem.terminate();
 
@@ -92,11 +83,8 @@ public class Experiment {
 
 	// TODO: move to the dish?
 	public void saveHistoryEntry() {
-		if (history == null)
-			return;
-		
 		updateTotalRunningTime();
-		history.saveEntries(this);
+		historyLog.saveEntries(this);
 	}
 
 	public boolean thereAreSurvivors() {
@@ -108,6 +96,18 @@ public class Experiment {
 		totalRunningTime = 0;
 	}
 
+	public void setGenePool(GenePool genePool) {
+		this.genePool = genePool;
+		if (dna != null)
+			ecosystem.populate(dna, genePool, ranGen);
+		else
+			ecosystem.populate(genePool, ranGen);
+	}
+
+	public void setHistoryLog(HistoryLog historyLog) {
+		this.historyLog = historyLog;
+	}
+
 	@Override
 	public String toString() {
 		return "Experiment " + getId();
@@ -117,12 +117,5 @@ public class Experiment {
 		long updateTime = System.currentTimeMillis();
 		totalRunningTime = totalRunningTime + (updateTime - lastRegisteredRunningTime);
 		lastRegisteredRunningTime = updateTime;
-	}
-
-	private GenePool initializeGenePool(boolean trackHistory) {
-		if (!trackHistory)
-			return new SimpleGenePool(new VolatileDNALog());
-
-		return new GenePoolWithHistory(new PersistentDNALog(getId()));
 	}
 }

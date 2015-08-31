@@ -8,6 +8,8 @@ import org.nusco.narjillos.genomics.DNALog;
 
 public class VolatileDNALog implements DNALog {
 
+	int serialId = 0;
+	
 	@Override
 	public void save(DNA dna) {
 	}
@@ -20,5 +22,10 @@ public class VolatileDNALog implements DNALog {
 	@Override
 	public List<DNA> getAllDNA() {
 		return new LinkedList<DNA>();
+	}
+
+	@Override
+	public long getNextAvailableDnaId() {
+		return ++serialId;
 	}
 }

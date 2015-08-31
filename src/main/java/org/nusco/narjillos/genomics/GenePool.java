@@ -21,19 +21,19 @@ public abstract class GenePool {
 	}
 
 	public DNA createDNA(String dna) {
-		DNA result = new DNA(nextSerialId(), dna, DNA.NO_PARENT);
+		DNA result = new DNA(dnaLog.getNextAvailableDnaId(), dna, DNA.NO_PARENT);
 		addToPool(result);
 		return result;
 	}
 
 	public DNA createRandomDNA(RanGen ranGen) {
-		DNA result = DNA.random(nextSerialId(), ranGen);
+		DNA result = DNA.random(dnaLog.getNextAvailableDnaId(), ranGen);
 		addToPool(result);
 		return result;
 	}
 
 	public DNA mutateDNA(DNA parent, RanGen ranGen) {
-		DNA result = parent.mutate(nextSerialId(), ranGen);
+		DNA result = parent.mutate(dnaLog.getNextAvailableDnaId(), ranGen);
 		addToPool(result);
 		return result;
 	}
@@ -75,10 +75,6 @@ public abstract class GenePool {
 
 	abstract Map<Long, Long> getChildrenToParents();
 	abstract Map<Long, List<Long>> getParentsToChildren();
-
-	private long nextSerialId() {
-		return ++dnaSerialId;
-	}
 
 	private void addToPool(DNA dna) {
 		currentPool.put(dna.getId(), dna);

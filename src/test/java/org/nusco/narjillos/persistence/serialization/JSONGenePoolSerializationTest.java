@@ -40,7 +40,7 @@ public class JSONGenePoolSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesSimpleGenePools() {
-		GenePool genePool = new SimpleGenePool(new VolatileDNALog());
+		GenePool genePool = new SimpleGenePool();
 
 		String json = JSON.toJson(genePool, GenePool.class);
 		GenePool deserialized = JSON.fromJson(json, GenePool.class);

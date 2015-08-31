@@ -40,6 +40,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Move from SQLite to H2  
   As suggested by Cipster.  
 
++ Cache database data for performance  
+  Such as DNAs, available DNA id, etc.
 
 ##Advanced Body Plans
 >goal: specialized creatures  

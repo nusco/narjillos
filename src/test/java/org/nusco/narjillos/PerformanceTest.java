@@ -5,9 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.FastMath;
-import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.environment.Ecosystem;
 
 /**
  * Runs a short experiment for a few thousands ticks and times the result.
@@ -60,7 +58,7 @@ public class PerformanceTest {
 		// it hasn't been loaded yet
 		FastMath.setUp();
 
-		Experiment experiment = new Experiment(424242, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, true), "performance_test");
+		Experiment experiment = new SimpleExperiment();
 
 		long startTimeMillis = System.currentTimeMillis();
 

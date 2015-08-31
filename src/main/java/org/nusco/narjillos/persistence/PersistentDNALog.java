@@ -59,6 +59,22 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 		}
 	}
 
+	@Override
+	public long getNextAvailableDnaId() {
+		try {
+			Statement stmt = getConnection().createStatement();
+			String sql = "SELECT MAX(ID) FROM DNA;";
+			ResultSet rs = stmt.executeQuery(sql);
+			if (!rs.next())
+				return 1;
+			long result = rs.getLong("MAX(ID)") + 1;
+			stmt.close();
+			return result;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private void createDnaTable() {
 		try {
 			Statement stmt = getConnection().createStatement();
@@ -78,7 +94,7 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	private DNA toDNA(ResultSet rs) throws SQLException {
-		return new DNA(rs.getInt("ID"),
+		return new DNA(rs.getLong("ID"),
 					   rs.getString("GENES"),
 					   rs.getInt("PARENT_ID"));
 	}

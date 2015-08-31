@@ -18,8 +18,6 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.SimpleGenePool;
-import org.nusco.narjillos.persistence.VolatileDNALog;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONEcosystemSerializationTest {
 
@@ -35,7 +33,7 @@ public class JSONEcosystemSerializationTest {
 		ecosystem.insertNarjillo(narjillo);
 		
 		for (int i = 0; i < 10; i++)
-			ecosystem.tick(new SimpleGenePool(new VolatileDNALog()), new RanGen(1234));
+			ecosystem.tick(new SimpleGenePool(), new RanGen(1234));
 		
 		String json = JSON.toJson(ecosystem, Ecosystem.class);
 		Ecosystem deserialized = JSON.fromJson(json, Ecosystem.class);

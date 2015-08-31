@@ -8,8 +8,12 @@ import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-import org.nusco.narjillos.persistence.VolatileHistoryLog;
+import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.GenePoolWithHistory;
+import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
+import org.nusco.narjillos.persistence.VolatileHistoryLog;
 import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
@@ -85,10 +89,16 @@ public class PetriDish implements Dish {
 			result = new Experiment(options.getSeed(), ecosystem, applicationVersion);
 		}
 
-		HistoryLog history = options.isKeepingHistory() ? new PersistentHistoryLog(result.getId()) : new VolatileHistoryLog();	
-		result.setHistory(history);
-		
+		if (options.isKeepingHistory())
+			setPersistenceStrategies(result, new GenePoolWithHistory(new PersistentDNALog(result.getId())), new PersistentHistoryLog(result.getId()));
+		else
+			setPersistenceStrategies(result, new SimpleGenePool(), new VolatileHistoryLog());
 		return result;
+	}
+
+	private void setPersistenceStrategies(Experiment result, GenePool genePool, HistoryLog historyLog) {
+		result.setGenePool(genePool);
+		result.setHistoryLog(historyLog);
 	}
 
 	private void reportPersistenceOptions(CommandLineOptions options) {

@@ -3,9 +3,7 @@ package org.nusco.narjillos;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.persistence.serialization.JSON;
 
 /**
@@ -33,7 +31,7 @@ public class DeterministicExperimentTest {
 		int halfCycles = cycles / 2;
 
 		// Run an experiment for a few ticks
-		Experiment experiment1 = new Experiment(1234, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "deterministic_experiment_test");
+		Experiment experiment1 = new SimpleExperiment();
 
 		for (int i = 0; i < halfCycles; i++)
 			experiment1.tick();

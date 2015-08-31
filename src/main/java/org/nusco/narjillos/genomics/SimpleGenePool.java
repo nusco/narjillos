@@ -7,13 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.nusco.narjillos.persistence.VolatileDNALog;
+
+//TODO: remove this class
 /**
  * A GenePool that doesn't track history.
  */
 public class SimpleGenePool extends GenePool {
 
-	public SimpleGenePool(DNALog journal) {
-		super(journal);
+	public SimpleGenePool() {
+		super(new VolatileDNALog());
 	}
 
 	@Override

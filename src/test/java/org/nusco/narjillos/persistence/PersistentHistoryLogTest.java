@@ -13,6 +13,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.genomics.SimpleGenePool;
 
 public class PersistentHistoryLogTest {
 
@@ -37,7 +38,12 @@ public class PersistentHistoryLogTest {
 	
 	@Test
 	public void savesAndLoadsEntries() {
+		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
+
 		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
+		experiment.setGenePool(new SimpleGenePool());
+		experiment.setHistoryLog(historyLog);
+		
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
 		historyLog.saveEntries(experiment);
@@ -53,7 +59,12 @@ public class PersistentHistoryLogTest {
 	
 	@Test
 	public void silentlySkipsWritingIfAnEntryIsAlreadyInTheDatabase() {
+		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
+
 		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
+		experiment.setGenePool(new SimpleGenePool());
+		experiment.setHistoryLog(historyLog);
+
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
 		historyLog.saveEntries(experiment);

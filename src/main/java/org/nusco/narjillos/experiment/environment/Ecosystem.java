@@ -155,14 +155,14 @@ public class Ecosystem extends Environment {
 		spawnFood(numGen);
 
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
-			spawnEgg(genePool.createDNA(dna, numGen), randomPosition(getSize(), numGen), numGen);
+			spawnEgg(genePool.createDna(dna, numGen), randomPosition(getSize(), numGen), numGen);
 	}
 
 	public void populate(GenePool genePool, NumGen numGen) {
 		spawnFood(numGen);
 
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
-			spawnEgg(genePool.createRandomDNA(numGen), randomPosition(getSize(), numGen), numGen);
+			spawnEgg(genePool.createRandomDna(numGen), randomPosition(getSize(), numGen), numGen);
 	}
 
 	public synchronized void terminate() {

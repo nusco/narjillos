@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-abstract class PersistentInformation {
+public abstract class PersistentInformation {
 
 	private final String name;
 	private final Connection connection;
@@ -28,7 +28,7 @@ abstract class PersistentInformation {
 		}
 	}
 
-	void delete() {
+	public void delete() {
 		new File(getName()).delete();
 	}
 

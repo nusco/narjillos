@@ -10,7 +10,6 @@ import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,7 +26,6 @@ public class JSON {
 		.registerTypeAdapter(ConnectedOrgan.class, new OrganAdapter())
 		.registerTypeAdapter(MovingOrgan.class, new OrganAdapter())
 		.registerTypeAdapter(Thing.class, new ThingAdapter())
-		.registerTypeAdapter(GenePool.class, new GenePoolAdapter())
 		.registerTypeAdapter(Ecosystem.class, new EcosystemAdapter())
 		.enableComplexMapKeySerialization()
         .create();

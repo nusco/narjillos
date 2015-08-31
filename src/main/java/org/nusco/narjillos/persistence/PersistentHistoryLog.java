@@ -25,17 +25,14 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 	    try {
 	    	Statement stmt = getConnection().createStatement();
 	    	String sql = "INSERT INTO HISTORY_ENTRIES (TICKS, RUNNING_TIME, " +
-	    				 "NUMBER_OF_NARJILLOS, NUMBER_OF_FOOD_PELLETS, " +
-	    				 "CURRENT_POOL_SIZE, HISTORYCAL_POOL_SIZE, AVERAGE_GENERATION, " +
+	    				 "NUMBER_OF_NARJILLOS, NUMBER_OF_FOOD_PELLETS, DNA_POOL_SIZE, " +
 	    				 "OXYGEN, HYDROGEN, NITROGEN, " + 
 	    				 "O2H, O2N, H2O, H2N, N2O, N2H, Z2O, Z2H, Z2N) VALUES (" + 
 	    				 entry.ticks + ", " +
 	    				 entry.runningTime + ", " +
 	    				 entry.numberOfNarjillos + ", " +
 	    				 entry.numberOfFoodPellets + ", " +
-	    				 entry.currentPoolSize + ", " +
-	    				 entry.historicalPoolSize + ", " +
-	    				 entry.averageGeneration + ", " +
+	    				 entry.dnaPoolSize + ", " +
 	    				 entry.oxygen + ", " +
 	    				 entry.hydrogen + ", " +
 	    				 entry.nitrogen + ", " +
@@ -90,9 +87,7 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 					+ " RUNNING_TIME            INT                 NOT NULL,"
 					+ " NUMBER_OF_NARJILLOS     INT                 NOT NULL,"
 					+ " NUMBER_OF_FOOD_PELLETS  INT                 NOT NULL,"
-					+ " CURRENT_POOL_SIZE       INT                 NOT NULL,"
-					+ " HISTORYCAL_POOL_SIZE    INT                 NOT NULL,"
-					+ " AVERAGE_GENERATION      DOUBLE              NOT NULL,"
+					+ " DNA_POOL_SIZE           INT                 NOT NULL,"
 					+ " OXYGEN                  DOUBLE              NOT NULL,"
 					+ " HYDROGEN                DOUBLE              NOT NULL,"
 					+ " NITROGEN                DOUBLE              NOT NULL,"
@@ -127,9 +122,7 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 						rs.getInt("RUNNING_TIME"),
 						rs.getInt("NUMBER_OF_NARJILLOS"),
 						rs.getInt("NUMBER_OF_FOOD_PELLETS"),
-						rs.getInt("CURRENT_POOL_SIZE"),
-						rs.getInt("HISTORYCAL_POOL_SIZE"),
-						rs.getDouble("AVERAGE_GENERATION"),
+						rs.getInt("DNA_POOL_SIZE"),
 						rs.getDouble("OXYGEN"),
 						rs.getDouble("HYDROGEN"),
 						rs.getDouble("NITROGEN"),

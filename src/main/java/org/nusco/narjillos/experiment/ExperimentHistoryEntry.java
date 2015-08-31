@@ -17,9 +17,7 @@ public class ExperimentHistoryEntry {
 	public final long runningTime;
 	public final int numberOfNarjillos;
 	public final int numberOfFoodPellets;
-	public final int currentPoolSize;
-	public final int historicalPoolSize;
-	public final double averageGeneration;
+	public final int dnaPoolSize;
 	public final double oxygen;
 	public final double hydrogen;
 	public final double nitrogen;
@@ -35,16 +33,14 @@ public class ExperimentHistoryEntry {
 
 	public ExperimentHistoryEntry(long ticks, long runningTime,
 				int numberOfNarjillos, int numberOfFoodPellets,
-				int currentPoolSize, int historicalPoolSize, double averageGeneration,
+				int dnaPoolSize,
 				double oxygen, double hydrogen, double nitrogen,
 				int o2h, int o2n, int h2o, int h2n, int n2o, int n2h, int z2o, int z2h, int z2n) {
 		this.ticks = ticks;
 		this.runningTime = runningTime;
 		this.numberOfNarjillos = numberOfNarjillos;
 		this.numberOfFoodPellets = numberOfFoodPellets;
-		this.currentPoolSize = currentPoolSize;
-		this.historicalPoolSize = historicalPoolSize;
-		this.averageGeneration = averageGeneration;
+		this.dnaPoolSize = dnaPoolSize;
 		this.oxygen = oxygen;
 		this.hydrogen = hydrogen;
 		this.nitrogen = nitrogen;
@@ -64,9 +60,7 @@ public class ExperimentHistoryEntry {
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
 		this.numberOfNarjillos = experiment.getEcosystem().getNumberOfNarjillos();
 		this.numberOfFoodPellets = experiment.getEcosystem().getNumberOfFoodPellets();
-		this.currentPoolSize = experiment.getGenePool().getCurrentPool().size();
-		this.historicalPoolSize = experiment.getGenePool().getHistoricalPool().size();
-		this.averageGeneration = experiment.getGenePool().getAverageGeneration();
+		this.dnaPoolSize = experiment.getGenePool().getHistoricalPool().size();
 		this.oxygen = experiment.getEcosystem().getAtmosphere().getDensityOf(OXYGEN);
 		this.hydrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(HYDROGEN);
 		this.nitrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(NITROGEN);
@@ -95,10 +89,6 @@ public class ExperimentHistoryEntry {
 			return false;
 		if (ticks != other.ticks || runningTime != other.runningTime)
 			return false;
-		if (Double.doubleToLongBits(averageGeneration) != Double.doubleToLongBits(other.averageGeneration))
-			return false;
-		if (currentPoolSize != other.currentPoolSize || historicalPoolSize != other.historicalPoolSize)
-			return false;
 		if (Double.doubleToLongBits(oxygen) != Double.doubleToLongBits(other.oxygen))
 			return false;
 		if (Double.doubleToLongBits(hydrogen) != Double.doubleToLongBits(other.hydrogen))
@@ -118,9 +108,7 @@ public class ExperimentHistoryEntry {
 				runningTime + ", " +
 				numberOfNarjillos + ", " +
 				numberOfFoodPellets + ", " +
-				currentPoolSize + ", " +
-				historicalPoolSize + ", " +
-				averageGeneration + ", " +
+				dnaPoolSize + ", " +
 				oxygen + ", " +
 				hydrogen + ", " +
 				nitrogen + ", " +

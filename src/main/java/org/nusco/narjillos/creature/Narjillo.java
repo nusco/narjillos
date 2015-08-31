@@ -143,7 +143,7 @@ public class Narjillo implements Thing {
 			return null;
 
 		getEnergy().decreaseBy(energyToChild);
-		DNA childDNA = genePool.mutateDNA(getDNA(), numGen);
+		DNA childDNA = genePool.mutateDna(getDNA(), numGen);
 
 		decideWhenToLayTheNextEgg();
 		Vector position = getNeckLocation();

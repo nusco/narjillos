@@ -9,10 +9,9 @@ import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.genomics.GenePoolWithHistory;
-import org.nusco.narjillos.genomics.SimpleGenePool;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 import org.nusco.narjillos.persistence.VolatileHistoryLog;
 import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
@@ -90,9 +89,9 @@ public class PetriDish implements Dish {
 		}
 
 		if (options.isKeepingHistory())
-			setPersistenceStrategies(result, new GenePoolWithHistory(new PersistentDNALog(result.getId())), new PersistentHistoryLog(result.getId()));
+			setPersistenceStrategies(result, new GenePool(new PersistentDNALog(result.getId())), new PersistentHistoryLog(result.getId()));
 		else
-			setPersistenceStrategies(result, new SimpleGenePool(), new VolatileHistoryLog());
+			setPersistenceStrategies(result, new GenePool(new VolatileDNALog()), new VolatileHistoryLog());
 		return result;
 	}
 

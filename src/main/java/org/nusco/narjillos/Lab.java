@@ -90,7 +90,7 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("primary")) {
-			DNA dna = genePool.getMostSuccessfulDNA();
+			DNA dna = genePool.getMostSuccessfulDna();
 			if (dna == null)
 				System.out.println("DNA not found");
 			else

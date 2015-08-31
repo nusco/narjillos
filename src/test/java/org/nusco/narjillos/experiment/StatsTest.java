@@ -19,9 +19,7 @@ public class StatsTest {
 		assertEquals(experiment.getTotalRunningTimeInSeconds(), stat.runningTime);
 		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), stat.numberOfNarjillos);
 		assertEquals(experiment.getEcosystem().getNumberOfFoodPellets(), stat.numberOfFoodPellets);
-		assertEquals(experiment.getGenePool().getCurrentPool().size(), stat.currentPoolSize);
-		assertEquals(experiment.getGenePool().getHistoricalPool().size(), stat.historicalPoolSize);
-		assertEquals(experiment.getGenePool().getAverageGeneration(), stat.averageGeneration, 0.0);
+		assertEquals(experiment.getGenePool().getHistoricalPool().size(), stat.dnaPoolSize);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.OXYGEN), stat.oxygen, 0.0);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.HYDROGEN), stat.hydrogen, 0.0);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.NITROGEN), stat.nitrogen, 0.0);
@@ -32,9 +30,9 @@ public class StatsTest {
 
 	@Test
 	public void convertsToACsvString() {
-		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
 
-		String expected = "1, 2, 3, 4, 5, 6, 7.0, 8.0, 9.0, 10.0, 11, 12, 13, 14, 15, 16, 17, 18, 19";
+		String expected = "1, 2, 3, 4, 5, 6.0, 7.0, 8.0, 9, 10, 11, 12, 13, 14, 15, 16, 17";
 		assertEquals(expected, stat.toString());
 	}
 }

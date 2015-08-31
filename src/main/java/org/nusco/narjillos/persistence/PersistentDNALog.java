@@ -33,7 +33,7 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	@Override
-	public DNA getDNA(long id) {
+	public DNA getDna(long id) {
 		try {
 			Statement statement = getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM DNA WHERE ID = " + id + ";");
@@ -46,7 +46,7 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	@Override
-	public List<DNA> getAllDNA() {
+	public List<DNA> getAllDna() {
 		try {
 			List<DNA> result = new LinkedList<>();
 			Statement statement = getConnection().createStatement();
@@ -74,7 +74,7 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	private boolean contains(DNA dna) {
-		return getDNA(dna.getId()) != null;
+		return getDna(dna.getId()) != null;
 	}
 
 	private DNA toDNA(ResultSet rs) throws SQLException {

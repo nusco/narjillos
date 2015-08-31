@@ -10,6 +10,7 @@ import org.nusco.narjillos.experiment.environment.IsolationEnvironment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 
 /**
  * A dish that isolates a single narjillo in its own environment.
@@ -19,7 +20,7 @@ class IsolationDish implements Dish {
 	private final List<DNA> dnas;
 	private int currentDnaIndex = 0;
 	private IsolationEnvironment environment;
-	private GenePool genePool = new SimpleGenePool();
+	private GenePool genePool = new SimpleGenePool(new VolatileDNALog());
 	private RanGen ranGen = new RanGen(1234);
 	
 	public IsolationDish(List<DNA> dnas) {

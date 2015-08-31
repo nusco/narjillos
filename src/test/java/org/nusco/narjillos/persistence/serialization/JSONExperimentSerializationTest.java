@@ -20,7 +20,7 @@ public class JSONExperimentSerializationTest {
 		
 		for (int i = 0; i < 10; i++) {
 			experiment.tick();
-			experiment.saveHistory();
+			experiment.saveHistoryEntry();
 		}
 		
 		String json = JSON.toJson(experiment, Experiment.class);

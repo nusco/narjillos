@@ -11,70 +11,70 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.Stat;
+import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 
-public class PersistentHistoryTest {
+public class PersistentHistoryLogTest {
 
-	private PersistentHistory history;
+	private PersistentHistoryLog historyLog;
 	
 	@Before
-	public void createDababaseHistory() {
-		history = new PersistentHistory("123-TESTING");
+	public void createTestDababase() {
+		historyLog = new PersistentHistoryLog("123-TESTING");
 	}
 
 	@After
 	public void deleteTestDatabase() {
-		history.close();
-		history.delete();
+		historyLog.close();
+		historyLog.delete();
 	}
 	
 	@Test
 	public void doesNotRaiseAnErrorIfConnectingToTheSameDatabaseFromMultiplePlaces() {
-		PersistentHistory anotherConnectionToTheSameDb = new PersistentHistory("123-TESTING");
-		anotherConnectionToTheSameDb.close();
+		PersistentHistoryLog logWithAnotherConnectionToTheSameDb = new PersistentHistoryLog("123-TESTING");
+		logWithAnotherConnectionToTheSameDb.close();
 	}
 	
 	@Test
-	public void savesAndLoadsStats() {
+	public void savesAndLoadsEntries() {
 		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		history.saveStats(experiment);
+		historyLog.saveEntries(experiment);
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		history.saveStats(experiment);
+		historyLog.saveEntries(experiment);
 
-		Stat latestStats = history.getLatestStats();
+		ExperimentHistoryEntry latestStats = historyLog.getLatestEntry();
 
 		assertNotNull(latestStats);
-		assertEquals(new Stat(experiment), latestStats);
+		assertEquals(new ExperimentHistoryEntry(experiment), latestStats);
 	}
 	
 	@Test
-	public void silentlySkipsWritingIfAStatIsAlreadyInTheDatabase() {
+	public void silentlySkipsWritingIfAnEntryIsAlreadyInTheDatabase() {
 		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
-		history.saveStats(experiment);
+		historyLog.saveEntries(experiment);
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
-		history.saveStats(experiment);
-		history.saveStats(experiment);
+		historyLog.saveEntries(experiment);
+		historyLog.saveEntries(experiment);
 
-		List<Stat> stats = history.getStats();
+		List<ExperimentHistoryEntry> stats = historyLog.getEntries();
 
 		assertEquals(2, stats.size());
 	}
 	
 	@Test
-	public void returnsNullIfThereAreNoStatsInTheDatabase() {
-		PersistentHistory unknownExperimentDatabase = new PersistentHistory("unknown_experiment");
+	public void returnsNullIfThereAreNoEntriesInTheDatabase() {
+		PersistentHistoryLog unknownDatabaseNameLog = new PersistentHistoryLog("unknown_experiment");
 		try {
-			assertNull(unknownExperimentDatabase.getLatestStats());
+			assertNull(unknownDatabaseNameLog.getLatestEntry());
 		} finally {
-			unknownExperimentDatabase.close();
-			unknownExperimentDatabase.delete();
+			unknownDatabaseNameLog.close();
+			unknownDatabaseNameLog.delete();
 		}
 	}
 

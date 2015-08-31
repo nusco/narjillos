@@ -13,12 +13,12 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.History;
-import org.nusco.narjillos.experiment.Stat;
+import org.nusco.narjillos.experiment.HistoryLog;
+import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
-import org.nusco.narjillos.persistence.PersistentHistory;
+import org.nusco.narjillos.persistence.PersistentHistoryLog;
 import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
@@ -64,8 +64,8 @@ public class Lab {
 		GenePool genePool = experiment.getGenePool();
 
 		if (commandLine.hasOption("stats")) {
-			History history = new PersistentHistory(experiment.getId());
-			System.out.println(history.getLatestStats());
+			HistoryLog history = new PersistentHistoryLog(experiment.getId());
+			System.out.println(history.getLatestEntry());
 			return;
 		}
 
@@ -104,9 +104,9 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("history")) {
-			System.out.println(Stat.toCsvHeader());
-			History database = new PersistentHistory(experiment.getId());
-			for (Stat stat : database.getStats())
+			System.out.println(ExperimentHistoryEntry.toCsvHeader());
+			HistoryLog database = new PersistentHistoryLog(experiment.getId());
+			for (ExperimentHistoryEntry stat : database.getEntries())
 				System.out.println(stat);
 			return;
 		}

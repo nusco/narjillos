@@ -7,14 +7,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.DNALog;
 
-public class PersistentGenePool extends PersistentStorage {
+public class PersistentDNALog extends PersistentInformation implements DNALog {
 
-	public PersistentGenePool(String name) {
+	public PersistentDNALog(String name) {
 		super(name);
 		createDnaTable();
 	}
 
+	@Override
 	public void save(DNA dna) {
 	    try {
 			if (contains(dna))
@@ -30,6 +32,7 @@ public class PersistentGenePool extends PersistentStorage {
 		}
 	}
 
+	@Override
 	public DNA getDNA(long id) {
 		try {
 			Statement statement = getConnection().createStatement();
@@ -42,6 +45,7 @@ public class PersistentGenePool extends PersistentStorage {
 		}
 	}
 
+	@Override
 	public List<DNA> getAllDNA() {
 		try {
 			List<DNA> result = new LinkedList<>();

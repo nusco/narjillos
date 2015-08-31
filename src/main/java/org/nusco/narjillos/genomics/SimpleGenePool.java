@@ -12,6 +12,10 @@ import java.util.Set;
  */
 public class SimpleGenePool extends GenePool {
 
+	public SimpleGenePool(DNALog journal) {
+		super(journal);
+	}
+
 	@Override
 	public DNA getDna(Long id) {
 		return null;

@@ -5,11 +5,11 @@ import java.util.Random;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.History;
+import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-import org.nusco.narjillos.persistence.NullHistory;
-import org.nusco.narjillos.persistence.PersistentHistory;
+import org.nusco.narjillos.persistence.VolatileHistoryLog;
+import org.nusco.narjillos.persistence.PersistentHistoryLog;
 import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
@@ -85,7 +85,7 @@ public class PetriDish implements Dish {
 			result = new Experiment(options.getSeed(), ecosystem, applicationVersion);
 		}
 
-		History history = options.isKeepingHistory() ? new PersistentHistory(result.getId()) : new NullHistory();	
+		HistoryLog history = options.isKeepingHistory() ? new PersistentHistoryLog(result.getId()) : new VolatileHistoryLog();	
 		result.setHistory(history);
 		
 		return result;
@@ -108,7 +108,7 @@ public class PetriDish implements Dish {
 		if (!experiment.thereAreSurvivors())
 			isTerminated = true;
 
-		experiment.saveHistory();
+		experiment.saveHistoryEntry();
 		System.out.println(getReport());
 		
 		if (persistent)

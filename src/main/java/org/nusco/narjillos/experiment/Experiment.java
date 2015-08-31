@@ -7,6 +7,8 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
 import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.persistence.PersistentDNALog;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 
 public class Experiment {
 
@@ -18,7 +20,7 @@ public class Experiment {
 
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
-	private transient History history;
+	private transient HistoryLog history;
 	
 	public Experiment(long seed, Ecosystem ecosystem, String version, String dna) {
 		this(seed, version, ecosystem);
@@ -38,7 +40,7 @@ public class Experiment {
 		this.ecosystem = ecosystem;
 	}
 
-	public void setHistory(History history) {
+	public void setHistory(HistoryLog history) {
 		this.history = history;
 	}
 
@@ -89,12 +91,12 @@ public class Experiment {
 	}
 
 	// TODO: move to the dish?
-	public void saveHistory() {
+	public void saveHistoryEntry() {
 		if (history == null)
 			return;
 		
 		updateTotalRunningTime();
-		history.saveStats(this);
+		history.saveEntries(this);
 	}
 
 	public boolean thereAreSurvivors() {
@@ -119,8 +121,8 @@ public class Experiment {
 
 	private GenePool initializeGenePool(boolean trackHistory) {
 		if (!trackHistory)
-			return new SimpleGenePool();
+			return new SimpleGenePool(new VolatileDNALog());
 
-		return new GenePoolWithHistory();
+		return new GenePoolWithHistory(new PersistentDNALog(getId()));
 	}
 }

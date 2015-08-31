@@ -5,11 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 
 public class GenePoolExporterWithSimplePoolTest {
 	
 	RanGen ranGen = new RanGen(1234);
-	GenePool genePool = new SimpleGenePool();
+	GenePool genePool = new SimpleGenePool(new VolatileDNALog());
 
 	@Before
 	public void setUpGenePool() {

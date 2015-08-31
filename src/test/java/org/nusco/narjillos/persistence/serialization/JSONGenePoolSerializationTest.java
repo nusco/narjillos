@@ -10,6 +10,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
 import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONGenePoolSerializationTest {
@@ -17,7 +18,7 @@ public class JSONGenePoolSerializationTest {
 	@Test
 	public void serializesAndDeserializesGenePools() {
 		RanGen ranGen = new RanGen(1234);
-		GenePool genePool = new GenePoolWithHistory();
+		GenePool genePool = new GenePoolWithHistory(new VolatileDNALog());
 
 		DNA parent = genePool.createRandomDNA(ranGen);
 		DNA child1 = genePool.mutateDNA(parent, ranGen);
@@ -39,7 +40,7 @@ public class JSONGenePoolSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesSimpleGenePools() {
-		GenePool genePool = new SimpleGenePool();
+		GenePool genePool = new SimpleGenePool(new VolatileDNALog());
 
 		String json = JSON.toJson(genePool, GenePool.class);
 		GenePool deserialized = JSON.fromJson(json, GenePool.class);

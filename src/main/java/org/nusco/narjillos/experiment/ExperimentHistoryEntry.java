@@ -11,7 +11,7 @@ import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 
-public class Stat {
+public class ExperimentHistoryEntry {
 
 	public final long ticks;
 	public final long runningTime;
@@ -33,7 +33,7 @@ public class Stat {
 	public final int z2h;
 	public final int z2n;
 
-	public Stat(long ticks, long runningTime,
+	public ExperimentHistoryEntry(long ticks, long runningTime,
 				int numberOfNarjillos, int numberOfFoodPellets,
 				int currentPoolSize, int historicalPoolSize, double averageGeneration,
 				double oxygen, double hydrogen, double nitrogen,
@@ -59,7 +59,7 @@ public class Stat {
 		this.z2n = z2n;
 	}
 	
-	public Stat(Experiment experiment) {
+	public ExperimentHistoryEntry(Experiment experiment) {
 		this.ticks = experiment.getTicksChronometer().getTotalTicks();
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
 		this.numberOfNarjillos = experiment.getEcosystem().getNumberOfNarjillos();
@@ -90,7 +90,7 @@ public class Stat {
 
 	@Override
 	public boolean equals(Object obj) {
-		Stat other = (Stat) obj;
+		ExperimentHistoryEntry other = (ExperimentHistoryEntry) obj;
 		if (numberOfNarjillos != other.numberOfNarjillos || numberOfFoodPellets != other.numberOfFoodPellets)
 			return false;
 		if (ticks != other.ticks || runningTime != other.runningTime)

@@ -5,12 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public abstract class PersistentStorage {
+abstract class PersistentInformation {
 
 	private final String name;
 	private final Connection connection;
 
-	public PersistentStorage(String name) {
+	public PersistentInformation(String name) {
 		this.name = name + ".history";
 		try {
 			Class.forName("org.sqlite.JDBC");

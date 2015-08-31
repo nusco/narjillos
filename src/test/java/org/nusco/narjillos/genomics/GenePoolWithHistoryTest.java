@@ -7,12 +7,13 @@ import java.util.List;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 
 public class GenePoolWithHistoryTest {
 	
 	RanGen ranGen = new RanGen(1234);
-	GenePool genePool = new GenePoolWithHistory();
-		
+	GenePool genePool = new GenePoolWithHistory(new VolatileDNALog());
+
 	@Test
 	public void hasHistory() {
 		DNA parent1 = genePool.createDNA("{0}");

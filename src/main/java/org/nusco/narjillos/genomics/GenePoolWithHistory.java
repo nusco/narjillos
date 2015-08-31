@@ -10,13 +10,17 @@ import java.util.Set;
 import org.nusco.narjillos.core.utilities.RanGen;
 
 /**
- * A GenePool that tracks ancestry history.
+ * A GenePool that tracks history.
  */
 public class GenePoolWithHistory extends GenePool {
 
 	private final Map<Long, DNA> historicalDnaById = new LinkedHashMap<>();
 	private final Map<Long, Integer> dnaToGeneration = new LinkedHashMap<>();
-
+	
+	public GenePoolWithHistory(DNALog journal) {
+		super(journal);
+	}
+	
 	@Override
 	public DNA createDNA(String dna) {
 		DNA result = super.createDNA(dna);

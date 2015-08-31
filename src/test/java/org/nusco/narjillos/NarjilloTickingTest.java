@@ -14,6 +14,7 @@ import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 import org.nusco.narjillos.persistence.serialization.JSON;
 
 /**
@@ -62,7 +63,7 @@ public class NarjilloTickingTest {
 
 	@Test
 	public void narjillosTickingIsDeterministic() {
-		GenePool genePool = new GenePoolWithHistory();
+		GenePool genePool = new GenePoolWithHistory(new VolatileDNALog());
 		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
 		Atmosphere atmosphere = new Atmosphere();
 		

@@ -11,24 +11,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.genomics.DNA;
 
-public class PersistentGenePoolTest {
+public class PersistentDNALogTest {
 
-	private PersistentGenePool db;
+	private PersistentDNALog dnaLog;
 	
 	@Before
 	public void createDababaseHistory() {
-		db = new PersistentGenePool("123-TESTING");
+		dnaLog = new PersistentDNALog("123-TESTING");
 	}
 
 	@After
 	public void deleteTestDatabase() {
-		db.close();
-		db.delete();
+		dnaLog.close();
+		dnaLog.delete();
 	}
 	
 	@Test
 	public void doesNotRaiseAnErrorIfConnectingToTheSameDatabaseFromMultiplePlaces() {
-		PersistentGenePool anotherConnectionToTheSameDb = new PersistentGenePool("123-TESTING");
+		PersistentDNALog anotherConnectionToTheSameDb = new PersistentDNALog("123-TESTING");
 		anotherConnectionToTheSameDb.close();
 	}
 	
@@ -37,8 +37,8 @@ public class PersistentGenePoolTest {
 	public void savesAndLoadsDNA() {
 		DNA dna = new DNA(42, "{1_2_3}", 41);
 
-		db.save(dna);
-		DNA retrieved = db.getDNA(42);
+		dnaLog.save(dna);
+		DNA retrieved = dnaLog.getDNA(42);
 
 		assertNotNull(retrieved);
 		assertEquals(retrieved.getId(), dna.getId());
@@ -48,28 +48,28 @@ public class PersistentGenePoolTest {
 	
 	@Test
 	public void returnsNullIfTheDNAIsNotInThePool() {
-		assertNull(db.getDNA(42));
+		assertNull(dnaLog.getDNA(42));
 	}
 	
 	@Test
 	public void retrievesTheEntireGenePool() {
-		db.save(new DNA(42, "{1_2_3}", 0));
-		db.save(new DNA(43, "{1_2_3}", 42));
+		dnaLog.save(new DNA(42, "{1_2_3}", 0));
+		dnaLog.save(new DNA(43, "{1_2_3}", 42));
 
-		List<DNA> genePool = db.getAllDNA();
+		List<DNA> genePool = dnaLog.getAllDNA();
 		
 		assertEquals(2, genePool.size());
-		assertEquals(db.getDNA(42), genePool.get(0));
-		assertEquals(db.getDNA(43), genePool.get(1));
+		assertEquals(dnaLog.getDNA(42), genePool.get(0));
+		assertEquals(dnaLog.getDNA(43), genePool.get(1));
 	}
 	
 	@Test
 	public void silentlySkipsWritingIfADNAIsAlreadyInTheDatabase() {
 		DNA dna = new DNA(42, "{1_2_3}", 41);
 
-		db.save(dna);
-		db.save(dna);
+		dnaLog.save(dna);
+		dnaLog.save(dna);
 
-		assertEquals(1, db.getAllDNA().size());
+		assertEquals(1, dnaLog.getAllDNA().size());
 	}
 }

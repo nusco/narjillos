@@ -13,7 +13,7 @@ public class StatsTest {
 		Experiment experiment = new Experiment(123, new Ecosystem(1000, false), "1.1.1");
 		for (int i = 0; i < 1000; i++)
 			experiment.tick();
-		Stat stat = new Stat(experiment);
+		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(experiment);
 		
 		assertEquals(1000, stat.ticks);
 		assertEquals(experiment.getTotalRunningTimeInSeconds(), stat.runningTime);
@@ -32,7 +32,7 @@ public class StatsTest {
 
 	@Test
 	public void convertsToACsvString() {
-		Stat stat = new Stat(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
 
 		String expected = "1, 2, 3, 4, 5, 6, 7.0, 8.0, 9.0, 10.0, 11, 12, 13, 14, 15, 16, 17, 18, 19";
 		assertEquals(expected, stat.toString());

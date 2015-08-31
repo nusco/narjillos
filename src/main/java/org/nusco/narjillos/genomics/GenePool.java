@@ -14,6 +14,11 @@ public abstract class GenePool {
 
 	private long dnaSerialId = 0;
 	private final Map<Long, DNA> currentPool = new LinkedHashMap<>();
+	private transient DNALog dnaLog;
+
+	public GenePool(DNALog dnaLog) {
+		this.dnaLog = dnaLog;
+	}
 
 	public DNA createDNA(String dna) {
 		DNA result = new DNA(nextSerialId(), dna, DNA.NO_PARENT);

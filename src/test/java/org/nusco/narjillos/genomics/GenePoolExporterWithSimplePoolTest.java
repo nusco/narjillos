@@ -4,24 +4,24 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 
 public class GenePoolExporterWithSimplePoolTest {
 	
-	RanGen ranGen = new RanGen(1234);
+	NumGen numGen = new NumGen(1234);
 	GenePool genePool = new SimpleGenePool();
 
 	@Before
 	public void setUpGenePool() {
-		DNA dna1 = genePool.createRandomDNA(ranGen); // 1
+		DNA dna1 = genePool.createRandomDNA(numGen); // 1
 		
-		DNA dna2 = genePool.mutateDNA(dna1, ranGen); // 2
-		genePool.mutateDNA(dna1, ranGen); // 3
+		DNA dna2 = genePool.mutateDNA(dna1, numGen); // 2
+		genePool.mutateDNA(dna1, numGen); // 3
 		
-		genePool.mutateDNA(dna2, ranGen); // 4
+		genePool.mutateDNA(dna2, numGen); // 4
 		
-		DNA dna5 = genePool.createRandomDNA(ranGen); // 5
-		genePool.mutateDNA(dna5, ranGen); // 6
+		DNA dna5 = genePool.createRandomDNA(numGen); // 5
+		genePool.mutateDNA(dna5, numGen); // 6
 	}
 	
 	@Test

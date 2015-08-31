@@ -17,8 +17,13 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     For advanced analysis of experimental data.  
     This also removes the memory cap on very long experiments.  
 
+* EXTRA: move serial generation to RanGen
+
 * Save genepool to database rather than memory  
   Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
+
++ Move from SQLite to H2  
+  As suggested by Cipster.  
 
 + Change behaviour of persistence command-line arguments  
   Find a good combination for state persistence and history persistence (if you have the  

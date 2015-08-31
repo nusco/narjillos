@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 
 public class DNATest {
 
@@ -112,7 +112,7 @@ public class DNATest {
 	public void givesRiseToAChildDNAWhenItMutates() {
 		DNA parent = new DNA(42, "{}");
 
-		DNA child = parent.mutate(43, new RanGen(123));
+		DNA child = parent.mutate(43, new NumGen(123));
 
 		assertEquals(42, child.getParentId());
 	}

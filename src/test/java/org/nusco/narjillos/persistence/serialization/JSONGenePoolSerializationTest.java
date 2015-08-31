@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolWithHistory;
@@ -17,17 +17,17 @@ public class JSONGenePoolSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesGenePools() {
-		RanGen ranGen = new RanGen(1234);
+		NumGen numGen = new NumGen(1234);
 		GenePool genePool = new GenePoolWithHistory(new VolatileDNALog());
 
-		DNA parent = genePool.createRandomDNA(ranGen);
-		DNA child1 = genePool.mutateDNA(parent, ranGen);
-		DNA child2 = genePool.mutateDNA(parent, ranGen);
-		genePool.mutateDNA(parent, ranGen);
+		DNA parent = genePool.createRandomDNA(numGen);
+		DNA child1 = genePool.mutateDNA(parent, numGen);
+		DNA child2 = genePool.mutateDNA(parent, numGen);
+		genePool.mutateDNA(parent, numGen);
 		genePool.remove(child2);
 		
-		genePool.mutateDNA(child1, ranGen);
-		DNA child3 = genePool.mutateDNA(child1, ranGen);
+		genePool.mutateDNA(child1, numGen);
+		DNA child3 = genePool.mutateDNA(child1, numGen);
 
 		String json = JSON.toJson(genePool, GenePool.class);
 		GenePool deserialized = JSON.fromJson(json, GenePool.class);

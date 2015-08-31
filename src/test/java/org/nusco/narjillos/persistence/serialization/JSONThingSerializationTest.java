@@ -10,7 +10,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
@@ -32,7 +32,7 @@ public class JSONThingSerializationTest {
 	@Test
 	public void serializesAndDeserializesEggs() {
 		DNA dna = new DNA(1, "{1_2}");
-		Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.polar(10, 15), 101, new RanGen(1));
+		Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.polar(10, 15), 101, new NumGen(1));
 
 		String json = JSON.toJson(egg, Thing.class);
 		Egg deserialized = (Egg)JSON.fromJson(json, Thing.class);

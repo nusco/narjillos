@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 
 /**
  * A pool of DNA strands.
@@ -20,20 +20,20 @@ public abstract class GenePool {
 		this.dnaLog = dnaLog;
 	}
 
-	public DNA createDNA(String dna) {
-		DNA result = new DNA(dnaLog.getNextAvailableDnaId(), dna, DNA.NO_PARENT);
+	public DNA createDNA(String dna, NumGen numGen) {
+		DNA result = new DNA(numGen.nextSerial(), dna, DNA.NO_PARENT);
 		addToPool(result);
 		return result;
 	}
 
-	public DNA createRandomDNA(RanGen ranGen) {
-		DNA result = DNA.random(dnaLog.getNextAvailableDnaId(), ranGen);
+	public DNA createRandomDNA(NumGen numGen) {
+		DNA result = DNA.random(numGen.nextSerial(), numGen);
 		addToPool(result);
 		return result;
 	}
 
-	public DNA mutateDNA(DNA parent, RanGen ranGen) {
-		DNA result = parent.mutate(dnaLog.getNextAvailableDnaId(), ranGen);
+	public DNA mutateDNA(DNA parent, NumGen numGen) {
+		DNA result = parent.mutate(numGen.nextSerial(), numGen);
 		addToPool(result);
 		return result;
 	}

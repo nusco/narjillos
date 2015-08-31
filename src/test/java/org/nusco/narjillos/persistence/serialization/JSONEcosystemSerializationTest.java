@@ -12,7 +12,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
@@ -26,14 +26,14 @@ public class JSONEcosystemSerializationTest {
 		Ecosystem ecosystem = new Ecosystem(123, false);
 		FoodPellet food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));
 		FoodPellet food2 = ecosystem.spawnFood(Vector.cartesian(20, 20));
-		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new RanGen(0));
+		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new NumGen(0));
 
-		DNA dna = DNA.random(1, new RanGen(100));
+		DNA dna = DNA.random(1, new NumGen(100));
 		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(100, 101), 90, Energy.INFINITE);
 		ecosystem.insertNarjillo(narjillo);
 		
 		for (int i = 0; i < 10; i++)
-			ecosystem.tick(new SimpleGenePool(), new RanGen(1234));
+			ecosystem.tick(new SimpleGenePool(), new NumGen(1234));
 		
 		String json = JSON.toJson(ecosystem, Ecosystem.class);
 		Ecosystem deserialized = JSON.fromJson(json, Ecosystem.class);

@@ -10,7 +10,7 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Mouth;
@@ -125,7 +125,7 @@ public class Narjillo implements Thing {
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay
 	 * it.
 	 */
-	public Egg layEgg(GenePool genePool, RanGen ranGen) {
+	public Egg layEgg(GenePool genePool, NumGen numGen) {
 		if (getAge() < nextEggAge)
 			return null;
 
@@ -143,12 +143,12 @@ public class Narjillo implements Thing {
 			return null;
 
 		getEnergy().decreaseBy(energyToChild);
-		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
+		DNA childDNA = genePool.mutateDNA(getDNA(), numGen);
 
 		decideWhenToLayTheNextEgg();
 		Vector position = getNeckLocation();
-		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), getBody().getEggVelocity());
-		return new Egg(childDNA, position, velocity, energyToChild, ranGen);
+		Vector velocity = Vector.polar(360 * numGen.nextDouble(), getBody().getEggVelocity());
+		return new Egg(childDNA, position, velocity, energyToChild, numGen);
 	}
 
 	public Element getBreathedElement() {

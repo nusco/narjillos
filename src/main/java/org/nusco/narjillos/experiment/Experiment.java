@@ -2,7 +2,7 @@ package org.nusco.narjillos.experiment;
 
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -11,7 +11,7 @@ public class Experiment {
 	private final String id;
 	private final Ecosystem ecosystem;
 	private final Chronometer ticksChronometer = new Chronometer();
-	private final RanGen ranGen;
+	private final NumGen numGen;
 
 	private long totalRunningTime = 0;
 	private transient long lastRegisteredRunningTime;
@@ -32,7 +32,7 @@ public class Experiment {
 	private Experiment(long seed, String version, Ecosystem ecosystem) {
 		id = "" + seed + "-" + version;
 		timeStamp();
-		ranGen = new RanGen(seed);
+		numGen = new NumGen(seed);
 		this.ecosystem = ecosystem;
 	}
 
@@ -48,7 +48,7 @@ public class Experiment {
 		if (ticksChronometer.getTotalTicks() % Configuration.ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL == 0)
 			ecosystem.updateTargets();
 
-		ecosystem.tick(genePool, ranGen);
+		ecosystem.tick(genePool, numGen);
 		ticksChronometer.tick();
 	}
 
@@ -99,9 +99,9 @@ public class Experiment {
 	public void setGenePool(GenePool genePool) {
 		this.genePool = genePool;
 		if (dna != null)
-			ecosystem.populate(dna, genePool, ranGen);
+			ecosystem.populate(dna, genePool, numGen);
 		else
-			ecosystem.populate(genePool, ranGen);
+			ecosystem.populate(genePool, numGen);
 	}
 
 	public void setHistoryLog(HistoryLog historyLog) {

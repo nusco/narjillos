@@ -11,7 +11,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.EnvironmentEventListener;
@@ -25,7 +25,7 @@ public class EcosystemTest {
 	FoodPellet foodPellet3;
 	Narjillo narjillo1;
 	Narjillo narjillo2;
-	RanGen ranGen = new RanGen(1234);
+	NumGen numGen = new NumGen(1234);
 	
 	@Before
 	public void initialize() {
@@ -38,7 +38,7 @@ public class EcosystemTest {
 	}
 
 	private Narjillo insertNarjillo(Vector position) {
-		DNA dna = DNA.random(1, ranGen);
+		DNA dna = DNA.random(1, numGen);
 		Narjillo result = new Narjillo(dna, position, 90, Energy.INFINITE);
 		ecosystem.insertNarjillo(result);
 		return result;

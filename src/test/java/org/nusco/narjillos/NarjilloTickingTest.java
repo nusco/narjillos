@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.DNA;
@@ -64,7 +65,7 @@ public class NarjilloTickingTest {
 	@Test
 	public void narjillosTickingIsDeterministic() {
 		GenePool genePool = new GenePoolWithHistory(new VolatileDNALog());
-		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT);
+		DNA sampleDNA = genePool.createDNA(SAMPLE_DNA_DOCUMENT, new NumGen(1234));
 		Atmosphere atmosphere = new Atmosphere();
 		
 		// Create the sample narjillo.

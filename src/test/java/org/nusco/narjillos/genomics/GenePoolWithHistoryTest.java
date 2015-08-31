@@ -6,24 +6,24 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.persistence.VolatileDNALog;
 
 public class GenePoolWithHistoryTest {
 	
-	RanGen ranGen = new RanGen(1234);
+	NumGen numGen = new NumGen(1234);
 	GenePool genePool = new GenePoolWithHistory(new VolatileDNALog());
 
 	@Test
 	public void hasHistory() {
-		DNA parent1 = genePool.createDNA("{0}");
-		genePool.mutateDNA(parent1, ranGen);
+		DNA parent1 = genePool.createDNA("{0}", numGen);
+		genePool.mutateDNA(parent1, numGen);
 
-		DNA parent2 = genePool.createDNA("{0}");
-		DNA child2_1 = genePool.mutateDNA(parent2, ranGen);
-		genePool.mutateDNA(parent2, ranGen);
+		DNA parent2 = genePool.createDNA("{0}", numGen);
+		DNA child2_1 = genePool.mutateDNA(parent2, numGen);
+		genePool.mutateDNA(parent2, numGen);
 
-		DNA child2_2_1 = genePool.mutateDNA(child2_1, ranGen);
+		DNA child2_2_1 = genePool.mutateDNA(child2_1, numGen);
 
 		List<DNA> ancestry = genePool.getAncestryOf(child2_2_1);
 		
@@ -35,11 +35,11 @@ public class GenePoolWithHistoryTest {
 	
 	@Test
 	public void getsMostSuccessfulDNA() {
-		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000_000_000");
-		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000_000_000", numGen);
+		genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000_000_000", numGen);
+		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000_000_000", numGen);
+		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000_000_000", numGen);
+		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000_000_000", numGen);
 
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
 		
@@ -53,11 +53,11 @@ public class GenePoolWithHistoryTest {
 	
 	@Test
 	public void removesDNA() {
-		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000_000_000");
-		DNA thisOneWillDie = genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000_000_000");
-		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000_000_000");
-		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000_000_000");
+		genePool.createDNA("111_111_111_222_111_000_000_000_000_000_000_000_000_000", numGen);
+		DNA thisOneWillDie = genePool.createDNA("111_111_111_111_111_000_000_000_000_000_000_000_000_000", numGen);
+		genePool.createDNA("111_111_111_222_222_000_000_000_000_000_000_000_000_000", numGen);
+		genePool.createDNA("111_111_222_111_222_000_000_000_000_000_000_000_000_000", numGen);
+		genePool.createDNA("111_222_222_222_222_000_000_000_000_000_000_000_000_000", numGen);
 
 		genePool.remove(thisOneWillDie);
 		DNA mostSuccessful = genePool.getMostSuccessfulDNA();
@@ -68,7 +68,7 @@ public class GenePoolWithHistoryTest {
 	@Test
 	public void neverRemovesDNAFromHistory() {
 		for (int i = 0; i < 100; i++) {
-			DNA dna = genePool.createRandomDNA(ranGen);
+			DNA dna = genePool.createRandomDNA(numGen);
 			if (i >= 50)
 				genePool.remove(dna);
 		}
@@ -79,9 +79,9 @@ public class GenePoolWithHistoryTest {
 	
 	@Test
 	public void knowsDNAAncestry() {
-		DNA gen1 = genePool.createDNA("{0}");
-		DNA gen2 = genePool.mutateDNA(gen1, ranGen);
-		DNA gen3 = genePool.mutateDNA(gen2, ranGen);
+		DNA gen1 = genePool.createDNA("{0}", numGen);
+		DNA gen2 = genePool.mutateDNA(gen1, numGen);
+		DNA gen3 = genePool.mutateDNA(gen2, numGen);
 		
 		List<DNA> ancestry = genePool.getAncestryOf(gen3);
 		
@@ -93,9 +93,9 @@ public class GenePoolWithHistoryTest {
 	
 	@Test
 	public void knowsDNAGeneration() {
-		DNA gen1 = genePool.createDNA("{0}");
-		DNA gen2 = genePool.mutateDNA(gen1, ranGen);
-		DNA gen3 = genePool.mutateDNA(gen2, ranGen);
+		DNA gen1 = genePool.createDNA("{0}", numGen);
+		DNA gen2 = genePool.mutateDNA(gen1, numGen);
+		DNA gen3 = genePool.mutateDNA(gen2, numGen);
 		
 		assertEquals(1, genePool.getGenerationOf(gen1));
 		assertEquals(2, genePool.getGenerationOf(gen2));

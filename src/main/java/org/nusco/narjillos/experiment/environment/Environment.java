@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -34,8 +34,8 @@ public abstract class Environment {
 	public abstract int getNumberOfFoodPellets();
 
 	/** Runs one simulation tick */
-	public void tick(GenePool genePool, RanGen ranGen) {
-		tickThings(genePool, ranGen);
+	public void tick(GenePool genePool, NumGen numGen) {
+		tickThings(genePool, numGen);
 
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
@@ -57,7 +57,7 @@ public abstract class Environment {
 		this.atmosphere = atmosphere;
 	}
 
-	protected abstract void tickThings(GenePool genePool, RanGen ranGen);
+	protected abstract void tickThings(GenePool genePool, NumGen numGen);
 
 	protected final void notifyThingAdded(Thing thing) {
 		eventListeners.stream().forEach((ecosystemEvent) -> {

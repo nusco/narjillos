@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.GenePool;
 
@@ -21,7 +21,7 @@ public class IsolationEnvironment extends Environment {
 
 	private double targetAngle = 0;
 
-	public IsolationEnvironment(long size, RanGen ranGen) {
+	public IsolationEnvironment(long size, NumGen numGen) {
 		super(size);
 	}
 
@@ -48,7 +48,7 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	@Override
-	protected void tickThings(GenePool genePool, RanGen ranGen) {
+	protected void tickThings(GenePool genePool, NumGen numGen) {
 		getNarjillo().tick(getAtmosphere());
 	}
 

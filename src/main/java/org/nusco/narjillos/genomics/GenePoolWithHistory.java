@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 
 /**
  * A GenePool that tracks history.
@@ -17,27 +17,27 @@ public class GenePoolWithHistory extends GenePool {
 	private final Map<Long, DNA> historicalDnaById = new LinkedHashMap<>();
 	private final Map<Long, Integer> dnaToGeneration = new LinkedHashMap<>();
 	
-	public GenePoolWithHistory(DNALog journal) {
-		super(journal);
+	public GenePoolWithHistory(DNALog dnaLog) {
+		super(dnaLog);
 	}
 	
 	@Override
-	public DNA createDNA(String dna) {
-		DNA result = super.createDNA(dna);
+	public DNA createDNA(String dna, NumGen numGen) {
+		DNA result = super.createDNA(dna, numGen);
 		add(result, null);
 		return result;
 	}
 
 	@Override
-	public DNA createRandomDNA(RanGen ranGen) {
-		DNA result = super.createRandomDNA(ranGen);
+	public DNA createRandomDNA(NumGen numGen) {
+		DNA result = super.createRandomDNA(numGen);
 		add(result, null);
 		return result;
 	}
 
 	@Override
-	public DNA mutateDNA(DNA parent, RanGen ranGen) {
-		DNA result = super.mutateDNA(parent, ranGen);
+	public DNA mutateDNA(DNA parent, NumGen numGen) {
+		DNA result = super.mutateDNA(parent, numGen);
 		add(result, parent);
 		return result;
 	}

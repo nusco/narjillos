@@ -19,7 +19,6 @@ public class StatsTest {
 		assertEquals(experiment.getTotalRunningTimeInSeconds(), stat.runningTime);
 		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), stat.numberOfNarjillos);
 		assertEquals(experiment.getEcosystem().getNumberOfFoodPellets(), stat.numberOfFoodPellets);
-		assertEquals(experiment.getGenePool().getHistoricalPool().size(), stat.dnaPoolSize);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.OXYGEN), stat.oxygen, 0.0);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.HYDROGEN), stat.hydrogen, 0.0);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.NITROGEN), stat.nitrogen, 0.0);

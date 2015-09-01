@@ -47,7 +47,7 @@ public class GenePool implements Cloneable {
 	}
 
 	public void remove(DNA dna) {
-		getAllDna().remove(dna.getId());
+		aliveDnaCache.remove(dna.getId());
 		dnaLog.markAsDead(dna.getId());
 	}
 

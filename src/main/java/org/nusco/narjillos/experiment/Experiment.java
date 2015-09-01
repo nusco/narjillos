@@ -65,8 +65,8 @@ public class Experiment {
 	}
 
 	public String terminate() {
+		genePool.terminate();
 		historyLog.close();
-		
 		ecosystem.terminate();
 
 		updateTotalRunningTime();

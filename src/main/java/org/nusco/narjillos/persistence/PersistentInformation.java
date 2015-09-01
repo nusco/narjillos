@@ -7,27 +7,41 @@ import java.sql.SQLException;
 
 public abstract class PersistentInformation {
 
+	static {
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private final String name;
-	private final Connection connection;
+	private Connection connection;
 
 	public PersistentInformation(String name) {
 		this.name = name + ".history";
+		open();
+	}
+
+	public void close() {
 		try {
-			Class.forName("org.sqlite.JDBC");
+			if (!connection.isClosed())
+				connection.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public final void open() {
+		try {
+			if (connection != null && !connection.isClosed())
+				return;
 			connection = DriverManager.getConnection("jdbc:sqlite:" + getName());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public void close() {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
+	
 	public void delete() {
 		new File(getName()).delete();
 	}

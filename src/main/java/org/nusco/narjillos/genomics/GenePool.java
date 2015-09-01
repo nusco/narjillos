@@ -11,11 +11,11 @@ import org.nusco.narjillos.core.utilities.NumGen;
 /**
  * A pool of DNA strands.
  */
-public class GenePool {
+public class GenePool implements Cloneable {
 
-	private transient DNALog dnaLog;
-	private transient Map<Long, DNA> allDnaCache = new LinkedHashMap<>();
-	private transient List<Long> aliveDnaCache;
+	private DNALog dnaLog;
+	private Map<Long, DNA> allDnaCache = new LinkedHashMap<>();
+	private List<Long> aliveDnaCache;
 
 	public GenePool(DNALog dnaLog) {
 		this.dnaLog = dnaLog;
@@ -43,15 +43,15 @@ public class GenePool {
 	}
 
 	public DNA getDna(long id) {
-		return allDnaCache.get(id);
+		return getAllDna().get(id);
 	}
 
 	public void remove(DNA dna) {
-		aliveDnaCache.remove(dna.getId());
+		getAllDna().remove(dna.getId());
 		dnaLog.markAsDead(dna.getId());
 	}
 
-	public Map<Long, DNA> getHistoricalPool() {
+	public Map<Long, DNA> getAllDna() {
 		return allDnaCache;
 	}
 
@@ -85,6 +85,10 @@ public class GenePool {
 			}
 		}
 		return result;
+	}
+
+	public void terminate() {
+		dnaLog.close();
 	}
 
 	Map<Long, Long> getChildrenToParents() {

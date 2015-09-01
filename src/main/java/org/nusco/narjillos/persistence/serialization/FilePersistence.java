@@ -16,6 +16,9 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.persistence.PersistentDNALog;
+import org.nusco.narjillos.persistence.PersistentHistoryLog;
 
 public class FilePersistence {
 
@@ -98,6 +101,12 @@ public class FilePersistence {
 		String data = readExperimentData(fileName);
 		Experiment experiment = JSON.fromJson(data, Experiment.class);
 		experiment.timeStamp();
+		
+		// It's been deserialized, so it must be persistent.
+		// Set it up for persistence again.
+		experiment.setGenePool(new GenePool(new PersistentDNALog(experiment.getId())));
+		experiment.setHistoryLog(new PersistentHistoryLog(experiment.getId()));
+
 		return experiment;
 	}
 

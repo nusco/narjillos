@@ -73,7 +73,7 @@ public class GenePoolTest {
 				genePool.remove(dna);
 		}
 		
-		assertEquals(100, genePool.getHistoricalPool().size());
+		assertEquals(100, genePool.getAllDna().size());
 	}
 	
 	@Test

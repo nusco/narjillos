@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 /**
  * Export a GenePool as a tree, in various formats.
  * 
- * When converting the gene pool to a tree, it adds an artifical zero node that
+ * When converting the gene pool to a tree, it adds an artificial zero node that
  * acts as a root to the root nodes. This creates a single big tree (with the
  * caveat that the first level actually representes unrelated genotypes). The
  * reason for this trickery is that a singly-rooted tree is easier to analyze in

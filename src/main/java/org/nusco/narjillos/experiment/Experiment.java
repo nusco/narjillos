@@ -14,19 +14,12 @@ public class Experiment {
 	private final NumGen numGen;
 	private long totalRunningTime = 0;
 
-	private transient long lastRegisteredRunningTime;
 	private transient GenePool genePool;
 	private transient HistoryLog historyLog;
-	private transient String dna;
-	
-	public Experiment(long seed, Ecosystem ecosystem, String version, String dna) {
-		this(seed, version, ecosystem);
-		this.dna = dna;
-	}
+	private transient long lastRegisteredRunningTime;
 
 	public Experiment(long seed, Ecosystem ecosystem, String version) {
 		this(seed, version, ecosystem);
-		this.dna = null;  // FIXME: ugly. it must go.
 	}
 
 	private Experiment(long seed, String version, Ecosystem ecosystem) {
@@ -96,12 +89,16 @@ public class Experiment {
 		totalRunningTime = 0;
 	}
 
-	public void setGenePool(GenePool genePool) {
+	public final void setGenePool(GenePool genePool) {
 		this.genePool = genePool;
-		if (dna != null)
-			ecosystem.populate(dna, genePool, numGen);
-		else
-			ecosystem.populate(genePool, numGen);
+	}
+
+	public final void populate(String dna) {
+		ecosystem.populate(dna, genePool, numGen);
+	}
+
+	public final void populate() {
+		ecosystem.populate(genePool, numGen);
 	}
 
 	public void setHistoryLog(HistoryLog historyLog) {

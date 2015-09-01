@@ -17,9 +17,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     For advanced analysis of experimental data.  
     This also removes the memory cap on very long experiments.  
 
-* Save genepool to database rather than memory  
-  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
-
 + Change behaviour of persistence command-line arguments  
   Find a good combination for state persistence and history persistence (if you have the  
   second, then you must also have the first).  
@@ -35,10 +32,10 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Consider using a one-record table with a blob  
 
 + Save event log instead of current state  
-  Then have an external program, maybe in Elixir, to process stats
+  Maybe. Then have an external program, maybe in Elixir, to process stats.  
 
 + Move from SQLite to H2  
-  As suggested by Cipster. Ask him for advantages.  
+  Maybe. As suggested by Cipster. Ask him for advantages.  
 
 
 ##Advanced Body Plans

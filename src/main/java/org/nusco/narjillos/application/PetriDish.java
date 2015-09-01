@@ -68,31 +68,40 @@ public class PetriDish implements Dish {
 	}
 
 	private Experiment createExperiment(String applicationVersion, CommandLineOptions options, int size) {
-		Experiment result;
-		
 		Ecosystem ecosystem = new Ecosystem(size, true);
-		
 		String dna = options.getDna();
+
+		Experiment experiment;
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);
-			result = new Experiment(generateRandomSeed(), ecosystem, applicationVersion, dna);
+			experiment = new Experiment(generateRandomSeed(), ecosystem, applicationVersion);
+			setPersistenceStrategies(experiment, options);
+			experiment.populate(dna);
 		} else if (options.getExperiment() != null) {
 			System.out.print("Continuining experiment " + options.getExperiment().getId());
-			return options.getExperiment();
+			experiment = options.getExperiment();
+			setPersistenceStrategies(experiment, options);
+			return experiment;
 		} else if (options.getSeed() == CommandLineOptions.NO_SEED) {
 			long randomSeed = generateRandomSeed();
 			System.out.print("Starting new experiment with random seed: " + randomSeed);
-			result = new Experiment(randomSeed, ecosystem, applicationVersion);
+			experiment = new Experiment(randomSeed, ecosystem, applicationVersion);
+			setPersistenceStrategies(experiment, options);
+			experiment.populate();
 		} else {
 			System.out.print("Starting experiment " + options.getSeed());
-			result = new Experiment(options.getSeed(), ecosystem, applicationVersion);
+			experiment = new Experiment(options.getSeed(), ecosystem, applicationVersion);
+			setPersistenceStrategies(experiment, options);
+			experiment.populate();
 		}
+		return experiment;
+	}
 
+	private void setPersistenceStrategies(Experiment experiment, CommandLineOptions options) {
 		if (options.isKeepingHistory())
-			setPersistenceStrategies(result, new GenePool(new PersistentDNALog(result.getId())), new PersistentHistoryLog(result.getId()));
+			setPersistenceStrategies(experiment, new GenePool(new PersistentDNALog(experiment.getId())), new PersistentHistoryLog(experiment.getId()));
 		else
-			setPersistenceStrategies(result, new GenePool(new VolatileDNALog()), new VolatileHistoryLog());
-		return result;
+			setPersistenceStrategies(experiment, new GenePool(new VolatileDNALog()), new VolatileHistoryLog());
 	}
 
 	private void setPersistenceStrategies(Experiment result, GenePool genePool, HistoryLog historyLog) {

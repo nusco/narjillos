@@ -10,8 +10,9 @@ import org.nusco.narjillos.persistence.VolatileHistoryLog;
 public class SimpleExperiment extends Experiment {
 
 	public SimpleExperiment() {
-		super(1234, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "deterministic_experiment_test");
+		super(1234, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "simple_experiment");
 		setGenePool(new GenePool(new VolatileDNALog()));
 		setHistoryLog(new VolatileHistoryLog());
+		populate();
 	}
 }

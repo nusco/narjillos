@@ -9,11 +9,9 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.SimpleExperiment;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
-import org.nusco.narjillos.experiment.environment.Ecosystem;
-import org.nusco.narjillos.genomics.GenePool;
 
 public class PersistentHistoryLogTest {
 
@@ -40,9 +38,7 @@ public class PersistentHistoryLogTest {
 	public void savesAndLoadsEntries() {
 		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
 
-		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
-		experiment.setGenePool(new GenePool(new VolatileDNALog()));
-		experiment.setHistoryLog(historyLog);
+		Experiment experiment = new SimpleExperiment();
 		
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
@@ -61,9 +57,7 @@ public class PersistentHistoryLogTest {
 	public void silentlySkipsWritingIfAnEntryIsAlreadyInTheDatabase() {
 		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
 
-		Experiment experiment = new Experiment(123, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "TESTING");
-		experiment.setGenePool(new GenePool(new VolatileDNALog()));
-		experiment.setHistoryLog(historyLog);
+		Experiment experiment = new SimpleExperiment();
 
 		for (int i = 0; i < 10; i++)
 			experiment.tick();

@@ -60,7 +60,7 @@ public class ExperimentHistoryEntry {
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
 		this.numberOfNarjillos = experiment.getEcosystem().getNumberOfNarjillos();
 		this.numberOfFoodPellets = experiment.getEcosystem().getNumberOfFoodPellets();
-		this.dnaPoolSize = experiment.getGenePool().getHistoricalPool().size();
+		this.dnaPoolSize = experiment.getGenePool().getAllDna().size();
 		this.oxygen = experiment.getEcosystem().getAtmosphere().getDensityOf(OXYGEN);
 		this.hydrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(HYDROGEN);
 		this.nitrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(NITROGEN);

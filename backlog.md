@@ -17,19 +17,15 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     For advanced analysis of experimental data.  
     This also removes the memory cap on very long experiments.  
 
-+ Change behaviour of persistence command-line arguments  
-  Find a good combination for state persistence and history persistence (if you have the  
-  second, then you must also have the first).  
-  Check that the system behaves consistently after picking up a persisted experiment with/without history.  
++ Move entire persistence to database  
+  Consider using a one-record table with a blob  
 
 + Fix bug with duplicated --persistence warning  
+  Probably impacted by the previous story  
 
 * Keep running even after extinction
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
   Also take the chance to fix the current bug with experiments not stopping correctly on extinction.  
-
-+ Move entire persistence to database  
-  Consider using a one-record table with a blob  
 
 + Save event log instead of current state  
   Maybe. Then have an external program, maybe in Elixir, to process stats.  

@@ -54,7 +54,7 @@ public class Lab {
 			return;
 		}
 
-		if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("h")) {
+		if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("?")) {
 			printHelpText(options);
 			return;
 		}

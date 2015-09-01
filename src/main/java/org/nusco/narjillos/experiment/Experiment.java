@@ -12,8 +12,8 @@ public class Experiment {
 	private final Ecosystem ecosystem;
 	private final Chronometer ticksChronometer = new Chronometer();
 	private final NumGen numGen;
-
 	private long totalRunningTime = 0;
+
 	private transient long lastRegisteredRunningTime;
 	private transient GenePool genePool;
 	private transient HistoryLog historyLog;

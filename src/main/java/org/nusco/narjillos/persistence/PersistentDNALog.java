@@ -22,10 +22,10 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 			if (contains(dna))
 				return;
 	    	Statement stmt = getConnection().createStatement();
-	    	String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID) VALUES (" + 
+	    	String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID, IS_DEAD) VALUES (" + 
 	    				 dna.getId() + ", " +
 	    				 "'" + dna.toString() + "', " +
-	    				 dna.getParentId() + ");";
+	    				 dna.getParentId() +", 0);";
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -46,6 +46,16 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	@Override
+	public void markAsDead(long id) {
+		try {
+			Statement statement = getConnection().createStatement();
+			statement.executeUpdate("UPDATE DNA SET IS_DEAD = 1 WHERE ID = " + id + ";");
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
 	public List<DNA> getAllDna() {
 		try {
 			List<DNA> result = new LinkedList<>();
@@ -59,13 +69,28 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 		}
 	}
 
+	@Override
+	public List<Long> getAliveDna() {
+		try {
+			List<Long> result = new LinkedList<>();
+			Statement statement = getConnection().createStatement();
+			ResultSet rs = statement.executeQuery("SELECT ID FROM DNA WHERE IS_DEAD = 0 ORDER BY ID;");
+			while (rs.next())
+				result.add(rs.getLong("ID"));
+			return result;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private void createDnaTable() {
 		try {
 			Statement stmt = getConnection().createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS DNA "
 					+ "(ID                   INT PRIMARY KEY     NOT NULL,"
 					+ " GENES                STRING              NOT NULL,"
-					+ " PARENT_ID            INT                 NOT NULL)";
+					+ " PARENT_ID            INT                 NOT NULL,"
+					+ " IS_DEAD              INT                 NOT NULL)";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (SQLException e) {

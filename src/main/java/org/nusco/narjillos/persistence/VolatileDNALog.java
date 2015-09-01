@@ -13,15 +13,22 @@ import org.nusco.narjillos.genomics.DNALog;
 public class VolatileDNALog implements DNALog {
 
 	private final Map<Long, DNA> idToDna= new LinkedHashMap<>();
+	private final List<Long> aliveDna = new LinkedList<>();
 	
 	@Override
 	public void save(DNA dna) {
 		idToDna.put(dna.getId(), dna);
+		aliveDna.add(dna.getId());
 	}
 
 	@Override
 	public DNA getDna(long id) {
 		return idToDna.get(id);
+	}
+
+	@Override
+	public void markAsDead(long id) {
+		aliveDna.remove(id);
 	}
 
 	@Override
@@ -36,6 +43,18 @@ public class VolatileDNALog implements DNALog {
 		});
 		return result;
 	}
+	
+	@Override
+	public List<Long> getAliveDna() {
+		Collections.sort(aliveDna, new Comparator<Long>() {
+
+			@Override
+			public int compare(Long id1, Long id2) {
+				return (int) (id1 - id2);
+			}
+		});
+		return aliveDna;
+	}
 
 	@Override
 	public void close() {
@@ -43,5 +62,7 @@ public class VolatileDNALog implements DNALog {
 
 	@Override
 	public void delete() {
+		idToDna.clear();
+		aliveDna .clear();
 	}
 }

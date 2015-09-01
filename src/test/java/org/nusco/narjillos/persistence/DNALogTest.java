@@ -1,6 +1,7 @@
 package org.nusco.narjillos.persistence;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -42,6 +43,22 @@ public abstract class DNALogTest {
 		assertEquals(retrieved.getId(), dna.getId());
 		assertEquals(retrieved.toString(), dna.toString());
 		assertEquals(retrieved.getParentId(), dna.getParentId());
+	}
+
+	@Test
+	public void returnsLiveDnaOrderedById() {
+		DNA dna1 = new DNA(42, "{1_2_3}", 41);
+		dnaLog.save(dna1);
+		DNA dna2 = new DNA(43, "{1_2_3}", 41);
+		dnaLog.save(dna2);
+		DNA dna3 = new DNA(41, "{1_2_3}", 41);
+		dnaLog.save(dna3);
+		
+		dnaLog.markAsDead(42);
+	
+		assertEquals(41, (long) dnaLog.getAliveDna().get(0));
+		assertFalse(dnaLog.getAliveDna().contains(42));
+		assertEquals(43, (long) dnaLog.getAliveDna().get(1));
 	}
 
 	@Test

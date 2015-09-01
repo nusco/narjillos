@@ -2,11 +2,9 @@ package org.nusco.narjillos.genomics;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.nusco.narjillos.core.utilities.NumGen;
 
@@ -15,13 +13,15 @@ import org.nusco.narjillos.core.utilities.NumGen;
  */
 public class GenePool {
 
-	// TODO: remove and make the whole thing transient in experiment
-	private final Set<DNA> currentPool = new LinkedHashSet<>();
-
 	private transient DNALog dnaLog;
+	private transient Map<Long, DNA> allDnaCache = new LinkedHashMap<>();
+	private transient List<Long> aliveDnaCache;
 
 	public GenePool(DNALog dnaLog) {
 		this.dnaLog = dnaLog;
+		for (DNA dna : dnaLog.getAllDna())
+			allDnaCache.put(dna.getId(), dna);
+		aliveDnaCache = dnaLog.getAliveDna();
 	}
 
 	public DNA createDna(String dna, NumGen numGen) {
@@ -43,9 +43,18 @@ public class GenePool {
 	}
 
 	public DNA getDna(long id) {
-		return dnaLog.getDna(id);
+		return allDnaCache.get(id);
 	}
-	
+
+	public void remove(DNA dna) {
+		aliveDnaCache.remove(dna.getId());
+		dnaLog.markAsDead(dna.getId());
+	}
+
+	public Map<Long, DNA> getHistoricalPool() {
+		return allDnaCache;
+	}
+
 	public List<DNA> getAncestryOf(DNA dna) {
 		List<DNA> result = new LinkedList<>();
 
@@ -67,7 +76,8 @@ public class GenePool {
 	public DNA getMostSuccessfulDna() {
 		DNA result = null;
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
-		for (DNA dna : getCurrentPool()) {
+		for (Long dnaId: aliveDnaCache) {
+			DNA dna = allDnaCache.get(dnaId);
 			int currentLevenshteinDistance = totalLevenshteinDistanceFromTheRestOfThePool(dna);
 			if (currentLevenshteinDistance < lowestLevenshteinDistance) {
 				result = dna;
@@ -104,27 +114,17 @@ public class GenePool {
 
 	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
 		int result = 0;
-		for (DNA otherDNA: getCurrentPool()) {
-			if (!otherDNA.equals(dna))
-				result += dna.getLevenshteinDistanceFrom(otherDNA);
+		for (Long otherDnaId: aliveDnaCache) {
+			DNA otherDna = allDnaCache.get(otherDnaId);
+			if (!otherDna.equals(dna))
+				result += dna.getLevenshteinDistanceFrom(otherDna);
 		}
 		return result;
 	}
 
-	public void remove(DNA dna) {
-		currentPool.remove(dna.getId());
-	}
-
-	public List<DNA> getHistoricalPool() {
-		return dnaLog.getAllDna();
-	}
-
-	private Set<DNA> getCurrentPool() {
-		return currentPool;
-	}
-
 	private void addToPool(DNA dna) {
-		currentPool.add(dna);
 		dnaLog.save(dna);
+		allDnaCache.put(dna.getId(), dna);
+		aliveDnaCache.add(dna.getId());
 	}
 }

@@ -26,4 +26,8 @@ public class VolatileHistoryLog implements HistoryLog {
 	@Override
 	public void close() {
 	}
+
+	@Override
+	public void delete() {
+	}
 }

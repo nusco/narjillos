@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -75,8 +74,10 @@ public class DeterministicExperimentTest {
 	}
 
 	private static void deleteDatabases() throws IOException {
-		delete("test_database1.history");
-		delete("test_database2.history");
+		genePoolLog1.delete();
+		historyLog1.delete();
+		genePoolLog2.delete();
+		historyLog2.delete();
 	}
 
 	@Test
@@ -144,11 +145,5 @@ public class DeterministicExperimentTest {
 
 		// Did it work?
 		assertEquals(json1, json2);
-	}
-
-	private static void delete(String file) throws IOException {
-		Path path = new File(file).toPath();
-		if (Files.exists(path))
-			Files.delete(path);
 	}
 }

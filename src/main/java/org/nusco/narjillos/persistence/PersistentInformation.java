@@ -1,6 +1,7 @@
 package org.nusco.narjillos.persistence;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -43,7 +44,9 @@ public abstract class PersistentInformation {
 	}
 	
 	public void delete() {
-		new File(getName()).delete();
+		File databaseFile = new File(getName());
+		if (Files.exists(databaseFile.toPath()))
+			databaseFile.delete();
 	}
 
 	private String getName() {

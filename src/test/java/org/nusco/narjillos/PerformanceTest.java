@@ -2,10 +2,7 @@ package org.nusco.narjillos;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,6 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.experiment.HistoryLog;
+import org.nusco.narjillos.genomics.DNALog;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
@@ -36,8 +35,8 @@ public class PerformanceTest {
 	
 	private static int ticks;
 	private static double timeSeconds;
-	private static PersistentDNALog dnaLog;
-	private static PersistentHistoryLog historyLog;
+	private static DNALog dnaLog;
+	private static HistoryLog historyLog;
 	
 	public static void main(String[] args) throws IOException {
 		ticks = 10000;
@@ -66,9 +65,8 @@ public class PerformanceTest {
 	}
 
 	private static void deleteDatabase() throws IOException {
-		Path databasePath = new File("x.history").toPath();
-		if (Files.exists(databasePath))
-			Files.delete(databasePath);
+		dnaLog.delete();
+		historyLog.delete();
 	}
 
 	@Before

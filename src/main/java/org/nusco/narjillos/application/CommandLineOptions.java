@@ -40,7 +40,7 @@ public class CommandLineOptions extends Options {
 		addOption("?", "help", false, "print this message");
 		addOption("f", "fast", false, "fast mode (no graphics)");
 		addOption("p", "persistent", false, "periodically save to file, without history");
-		addOption("h", "history", false, "save history to database (needs MongoDB)");
+		addOption("h", "history", false, "save history to database");
 		addOption("s", "seed", true, "start experiment with given seed");
 		addOption("d", "dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
 
@@ -82,7 +82,7 @@ public class CommandLineOptions extends Options {
 	        	throw new RuntimeException("If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
 	        
         	if (line.hasOption("history"))
-        		System.out.println("WARNING: I'm loading an existing experiment, so I'm ignoring the -history option.");
+        		System.out.println("WARNING: I'm loading an existing experiment, so I'm ignoring the --history option.");
 
         	setFile(line.getArgs()[0]);
         	

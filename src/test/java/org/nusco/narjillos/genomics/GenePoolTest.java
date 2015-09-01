@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.persistence.VolatileDNALog;
 
-public class GenePoolWithHistoryTest {
+public class GenePoolTest {
 	
 	NumGen numGen = new NumGen(1234);
 	GenePool genePool = new GenePool(new VolatileDNALog());

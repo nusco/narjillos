@@ -18,83 +18,94 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 
 	@Override
 	public void save(DNA dna) {
+		if (contains(dna))
+			return;
+    	Statement statement = createStatement();
 	    try {
-			if (contains(dna))
-				return;
-	    	Statement stmt = getConnection().createStatement();
 	    	String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID, IS_DEAD) VALUES (" + 
 	    				 dna.getId() + ", " +
 	    				 "'" + dna.toString() + "', " +
 	    				 dna.getParentId() +", 0);";
-			stmt.executeUpdate(sql);
+			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	@Override
 	public DNA getDna(long id) {
+		Statement statement = createStatement();
 		try {
-			Statement statement = getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM DNA WHERE ID = " + id + ";");
 			if (!rs.next())
 				return null;
 			return toDNA(rs);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	@Override
 	public void markAsDead(long id) {
+		Statement statement = createStatement();
 		try {
-			Statement statement = getConnection().createStatement();
 			statement.executeUpdate("UPDATE DNA SET IS_DEAD = 1 WHERE ID = " + id + ";");
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	@Override
 	public List<DNA> getAllDna() {
+		Statement statement = createStatement();
 		try {
 			List<DNA> result = new LinkedList<>();
-			Statement statement = getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM DNA ORDER BY ID;");
 			while (rs.next())
 				result.add(toDNA(rs));
 			return result;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	@Override
 	public List<Long> getAliveDna() {
+		Statement statement = createStatement();
 		try {
 			List<Long> result = new LinkedList<>();
-			Statement statement = getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("SELECT ID FROM DNA WHERE IS_DEAD = 0 ORDER BY ID;");
 			while (rs.next())
 				result.add(rs.getLong("ID"));
 			return result;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	private void createDnaTable() {
+		Statement statement = createStatement();
 		try {
-			Statement stmt = getConnection().createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS DNA "
 					+ "(ID                   INT PRIMARY KEY     NOT NULL,"
 					+ " GENES                STRING              NOT NULL,"
 					+ " PARENT_ID            INT                 NOT NULL,"
 					+ " IS_DEAD              INT                 NOT NULL)";
-			stmt.executeUpdate(sql);
-			stmt.close();
+			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 

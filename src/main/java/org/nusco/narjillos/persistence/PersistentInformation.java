@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public abstract class PersistentInformation {
 
@@ -53,7 +54,19 @@ public abstract class PersistentInformation {
 		return name;
 	}
 
-	protected Connection getConnection() {
-		return connection;
+	protected Statement createStatement() {
+		try {
+			return connection.createStatement();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	protected void close(Statement stmt) {
+		try {
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

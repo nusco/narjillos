@@ -22,8 +22,8 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 		ExperimentHistoryEntry entry = new ExperimentHistoryEntry(experiment);
 		if (contains(entry))
 			return;
-	    try {
-	    	Statement stmt = getConnection().createStatement();
+		Statement statement = createStatement();
+		try {
 	    	String sql = "INSERT INTO HISTORY_ENTRIES (TICKS, RUNNING_TIME, " +
 	    				 "NUMBER_OF_NARJILLOS, NUMBER_OF_FOOD_PELLETS, DNA_POOL_SIZE, " +
 	    				 "OXYGEN, HYDROGEN, NITROGEN, " + 
@@ -45,43 +45,48 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 	    				 entry.z2o + ", " +
 	    				 entry.z2h + ", " +
 	    				 entry.z2n + ");";
-			stmt.executeUpdate(sql);
+	    	statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	@Override
 	public ExperimentHistoryEntry getLatestEntry() {
+		Statement statement = createStatement();
 		try {
-			Statement statement = getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM HISTORY_ENTRIES WHERE TICKS = (SELECT MAX(TICKS) FROM HISTORY_ENTRIES);");
 			if (!rs.next())
 				return null;
-
 			return toHistoryEntry(rs);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	@Override
 	public List<ExperimentHistoryEntry> getEntries() {
+		Statement statement = createStatement();
 		try {
 			List<ExperimentHistoryEntry> result = new LinkedList<>();
-			Statement statement = getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM HISTORY_ENTRIES ORDER BY TICKS;");
 			while (rs.next())
 				result.add(toHistoryEntry(rs));
 			return result;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	private void createEntriesTable() {
+		Statement statement = createStatement();
 		try {
-			Statement stmt = getConnection().createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS HISTORY_ENTRIES "
 					+ "(TICKS                   INT PRIMARY KEY     NOT NULL,"
 					+ " RUNNING_TIME            INT                 NOT NULL,"
@@ -100,20 +105,23 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 					+ " Z2O                     INT                 NOT NULL,"
 					+ " Z2H                     INT                 NOT NULL,"
 					+ " Z2N                     INT                 NOT NULL)";
-			stmt.executeUpdate(sql);
-			stmt.close();
+			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 
 	private boolean contains(ExperimentHistoryEntry entry) {
+		Statement statement = createStatement();
 		try {
-			Statement statement = getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM HISTORY_ENTRIES WHERE TICKS = " + entry.ticks + ";");
 			return rs.next();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		} finally {
+			close(statement);
 		}
 	}
 

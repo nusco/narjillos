@@ -11,34 +11,30 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ---
 
-* Fix bug with duplicated --persistence warning
-* Fix extinction code
-
-
 ##Database Persistence
 >goal: run very long experiments  
 
     For advanced analysis of experimental data.  
     This also removes the memory cap on very long experiments.  
 
-* Store historical data in a database rather than in memory  
-  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
++ Move entire persistence to database  
+  Consider using a one-record table with a blob  
 
 + Stabilize memory consumption  
   By using soft caching in GenePool  
 
++ Fix bug with duplicated --persistence warning  
+  Probably impacted by the previous story  
+
 * Keep running even after extinction
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
+  Also take the chance to fix the current bug with experiments not stopping correctly on extinction.  
 
-+ Move entire persistence to a database  
-  Consider this, but be aware that it might affect usability, performance or reliability.  
-  So I might decide to stick with files.  
++ Save event log instead of current state  
+  Maybe. Then have an external program, maybe in Elixir, to process stats.  
 
-+ Save events instead of current state  
-  Then have an external program, possibly in Elixir, to process stats
-
-+ Save to remote database  
-  If the DB is configurable, then it's easier to run experiments in the cloud.
++ Move from SQLite to H2  
+  Maybe. As suggested by Cipster. Ask him for advantages.  
 
 
 ##Advanced Body Plans
@@ -180,12 +176,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 ##Advanced Germline Browser
 >goal: understand what is happening in the dish  
-
-    Analyze DNA germline in separate program.
-    This is useful to prepare my presentation at Madison+ Ruby.
-    
-    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
-    buttons and the like.
 
 *  Show narjillo stats while browsing germline  
    Pick a few:
@@ -419,8 +409,15 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   This is a very interesting concept, and something that I should think about carefully.
 
 
+##Multi-dish World
+>goal: distributed experiments
+
+* Migrations  
+
+* Save to remote database  
+  Requires switching to a different driver than SQLite.  
+
 ##Crazy Ideas
 
-- Multiple environments in multiple processes (with migration)  
 - Creatures have neural networks for brains  
 - Demiurge (an entity that dynamically tweaks the environment to maximize evolutionary speed)  

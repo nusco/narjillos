@@ -4,28 +4,29 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 
 public class GenePoolExporterTest {
 	
-	RanGen ranGen = new RanGen(1234);
-	GenePool genePool = new GenePoolWithHistory();
+	NumGen numGen = new NumGen(1234);
+	GenePool genePool = new GenePool(new VolatileDNALog());
 
 	@Before
 	public void setUpGenePool() {
-		DNA dna1 = genePool.createRandomDNA(ranGen); // 1
+		DNA dna1 = genePool.createRandomDna(numGen); // 1
 		
-		DNA dna2 = genePool.mutateDNA(dna1, ranGen); // 2
-		genePool.mutateDNA(dna1, ranGen); // 3
+		DNA dna2 = genePool.mutateDna(dna1, numGen); // 2
+		genePool.mutateDna(dna1, numGen); // 3
 		
-		genePool.mutateDNA(dna2, ranGen); // 4
+		genePool.mutateDna(dna2, numGen); // 4
 		
-		DNA dna5 = genePool.createRandomDNA(ranGen); // 5
-		genePool.mutateDNA(dna5, ranGen); // 6
+		DNA dna5 = genePool.createRandomDna(numGen); // 5
+		genePool.mutateDna(dna5, numGen); // 6
 	}
 	
 	@Test
-	public void convertsGenePoolToACSVTree() {
+	public void convertsAGenePoolToACSVTree() {
 		GenePoolExporter genePoolExporter = new GenePoolExporter(genePool);
 
 		String expected = "0;1\n"
@@ -38,7 +39,7 @@ public class GenePoolExporterTest {
 	}
 	
 	@Test
-	public void convertsGenePoolToANEXUSTree() {
+	public void convertsAGenePoolToANEXUSTree() {
 		GenePoolExporter genePoolExporter = new GenePoolExporter(genePool);
 
 		String expected = "begin trees;\n" +

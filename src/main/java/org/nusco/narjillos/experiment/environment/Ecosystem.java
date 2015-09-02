@@ -18,7 +18,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.physics.Viscosity;
@@ -62,11 +62,11 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	public void tick(GenePool genePool, RanGen ranGen) {
+	public void tick(GenePool genePool, NumGen numGen) {
 		if (isShuttingDown())
 			return; // we're leaving, apparently
 
-		super.tick(genePool, ranGen);
+		super.tick(genePool, numGen);
 	}
 	
 	@Override
@@ -111,8 +111,8 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	public final Egg spawnEgg(DNA genes, Vector position, RanGen ranGen) {
-		Egg egg = new Egg(genes, position, Vector.ZERO, Configuration.CREATURE_SEED_ENERGY, ranGen);
+	public final Egg spawnEgg(DNA genes, Vector position, NumGen numGen) {
+		Egg egg = new Egg(genes, position, Vector.ZERO, Configuration.CREATURE_SEED_ENERGY, numGen);
 		insert(egg);
 		return egg;
 	}
@@ -151,18 +151,18 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	public void populate(String dna, GenePool genePool, RanGen ranGen) {
-		spawnFood(ranGen);
+	public void populate(String dna, GenePool genePool, NumGen numGen) {
+		spawnFood(numGen);
 
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
-			spawnEgg(genePool.createDNA(dna), randomPosition(getSize(), ranGen), ranGen);
+			spawnEgg(genePool.createDna(dna, numGen), randomPosition(getSize(), numGen), numGen);
 	}
 
-	public void populate(GenePool genePool, RanGen ranGen) {
-		spawnFood(ranGen);
+	public void populate(GenePool genePool, NumGen numGen) {
+		spawnFood(numGen);
 
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
-			spawnEgg(genePool.createRandomDNA(ranGen), randomPosition(getSize(), ranGen), ranGen);
+			spawnEgg(genePool.createRandomDna(numGen), randomPosition(getSize(), numGen), numGen);
 	}
 
 	public synchronized void terminate() {
@@ -190,9 +190,9 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	protected void tickThings(GenePool genePool, RanGen ranGen) {
+	protected void tickThings(GenePool genePool, NumGen numGen) {
 		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> {
-			tickEgg((Egg) thing, ranGen);
+			tickEgg((Egg) thing, numGen);
 		});
 
 		synchronized (narjillos) {
@@ -203,16 +203,16 @@ public class Ecosystem extends Environment {
 				});
 		}
 
-		tickNarjillos(genePool, ranGen);
+		tickNarjillos(genePool, numGen);
 
-		if (shouldSpawnFood(ranGen)) {
-			spawnFood(randomPosition(getSize(), ranGen));
+		if (shouldSpawnFood(numGen)) {
+			spawnFood(randomPosition(getSize(), numGen));
 			updateTargets();
 		}
 
 		synchronized (narjillos) {
 			narjillos.stream().forEach((narjillo) -> {
-				maybeLayEgg(narjillo, genePool, ranGen);
+				maybeLayEgg(narjillo, genePool, numGen);
 			});
 		}
 	}
@@ -221,20 +221,20 @@ public class Ecosystem extends Environment {
 		return space.detectCollisions(movement, "food_pellet");
 	}
 
-	private void spawnFood(RanGen ranGen) {
+	private void spawnFood(NumGen numGen) {
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_FOOD_DENSITY_PER_BLOCK; i++)
-			spawnFood(randomPosition(getSize(), ranGen));
+			spawnFood(randomPosition(getSize(), numGen));
 	}
 
-	private void tickEgg(Egg egg, RanGen ranGen) {
+	private void tickEgg(Egg egg, NumGen numGen) {
 		egg.tick(getAtmosphere());
-		if (egg.hatch(ranGen))
+		if (egg.hatch(numGen))
 			insertNarjillo(egg.getHatchedNarjillo());
 		if (egg.isDecayed())
 			remove(egg);
 	}
 
-	private synchronized void tickNarjillos(GenePool genePool, RanGen ranGen) {
+	private synchronized void tickNarjillos(GenePool genePool, NumGen numGen) {
 		Map<Narjillo, Set<Thing>> narjillosToCollidedFood;
 		synchronized (narjillos) {
 			narjillosToCollidedFood = tick(narjillos);
@@ -247,7 +247,7 @@ public class Ecosystem extends Environment {
 			.forEach((entry) -> {
 				Narjillo narjillo = entry.getKey();
 				Set<Thing> collidedFood = entry.getValue();
-				consume(narjillo, collidedFood, genePool, ranGen);
+				consume(narjillo, collidedFood, genePool, numGen);
 			});
 	}
 
@@ -273,17 +273,17 @@ public class Ecosystem extends Environment {
 		return result;
 	}
 
-	private boolean shouldSpawnFood(RanGen ranGen) {
+	private boolean shouldSpawnFood(NumGen numGen) {
 		double maxFoodPellets = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK;
 		if (getNumberOfFoodPellets() >= maxFoodPellets)
 			return false;
 
 		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK / getNumberOf1000SquarePointsBlocks();
-		return ranGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
+		return numGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
 	}
 
-	private Vector randomPosition(long size, RanGen ranGen) {
-		return Vector.cartesian(ranGen.nextDouble() * size, ranGen.nextDouble() * size);
+	private Vector randomPosition(long size, NumGen numGen) {
+		return Vector.cartesian(numGen.nextDouble() * size, numGen.nextDouble() * size);
 	}
 
 	private void updateTargets(Thing food) {
@@ -297,13 +297,13 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	private void consume(Narjillo narjillo, Set<Thing> foodPellets, GenePool genePool, RanGen ranGen) {
+	private void consume(Narjillo narjillo, Set<Thing> foodPellets, GenePool genePool, NumGen numGen) {
 		foodPellets.stream().forEach((foodPellet) -> {
-			consumeFood(narjillo, (FoodPellet) foodPellet, genePool, ranGen);
+			consumeFood(narjillo, (FoodPellet) foodPellet, genePool, numGen);
 		});
 	}
 
-	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, GenePool genePool, RanGen ranGen) {
+	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, GenePool genePool, NumGen numGen) {
 		if (!space.contains(foodPellet))
 			return;		// race condition: already consumed
 
@@ -326,8 +326,8 @@ public class Ecosystem extends Environment {
 		genePool.remove(narjillo.getDNA());
 	}
 
-	private void maybeLayEgg(Narjillo narjillo, GenePool genePool, RanGen ranGen) {
-		Egg egg = narjillo.layEgg(genePool, ranGen);
+	private void maybeLayEgg(Narjillo narjillo, GenePool genePool, NumGen numGen) {
+		Egg egg = narjillo.layEgg(genePool, numGen);
 		if (egg == null)
 			return;
 

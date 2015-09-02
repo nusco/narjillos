@@ -5,11 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 public class CommandLineOptionsTest {
 
-	String EXPERIMENT_ID = "1234-" + Persistence.readApplicationVersion();
+	String EXPERIMENT_ID = "1234-" + FilePersistence.readApplicationVersion();
 
 	@Test
 	public void acceptsEmptyArguments() {
@@ -52,8 +52,8 @@ public class CommandLineOptionsTest {
 
 	@Test
 	public void acceptsAnHistoryOption() {
-		assertFalse(new CommandLineOptions().isTrackingHistory());
-		assertTrue(new CommandLineOptions("-history").isTrackingHistory());
+		assertFalse(new CommandLineOptions().isKeepingHistory());
+		assertTrue(new CommandLineOptions("-history").isKeepingHistory());
 	}
 
 	@Test

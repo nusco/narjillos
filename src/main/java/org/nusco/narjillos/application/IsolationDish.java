@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.IsolationEnvironment;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.persistence.VolatileDNALog;
 
 /**
  * A dish that isolates a single narjillo in its own environment.
@@ -19,8 +19,8 @@ class IsolationDish implements Dish {
 	private final List<DNA> dnas;
 	private int currentDnaIndex = 0;
 	private IsolationEnvironment environment;
-	private GenePool genePool = new SimpleGenePool();
-	private RanGen ranGen = new RanGen(1234);
+	private GenePool genePool = new GenePool(new VolatileDNALog());
+	private NumGen numGen = new NumGen(1234);
 	
 	public IsolationDish(List<DNA> dnas) {
 		this.dnas = dnas;
@@ -28,13 +28,13 @@ class IsolationDish implements Dish {
 			System.out.println("Empty genomes list");
 			System.exit(1);
 		}
-		environment = new IsolationEnvironment(10_000, ranGen);
+		environment = new IsolationEnvironment(10_000, numGen);
 	}
 
 	@Override
 	public synchronized boolean tick() {
 		environment.setTarget();
-		environment.tick(genePool, ranGen);
+		environment.tick(genePool, numGen);
 		return true;
 	}
 

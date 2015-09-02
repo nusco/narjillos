@@ -5,10 +5,15 @@ import java.util.Random;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.ExperimentStats;
+import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.persistence.PersistentDNALog;
+import org.nusco.narjillos.persistence.PersistentHistoryLog;
+import org.nusco.narjillos.persistence.VolatileDNALog;
+import org.nusco.narjillos.persistence.VolatileHistoryLog;
+import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
  * The class that initializes and runs an Experiment.
@@ -25,8 +30,8 @@ public class PetriDish implements Dish {
 		experiment = createExperiment(version, options, size);
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
-
-		System.out.println(ExperimentStats.getConsoleHeader());
+		
+		System.out.println("Ticks:\tNarji:\tFood:");
 	}
 
 	public Environment getEnvironment() {
@@ -63,64 +68,88 @@ public class PetriDish implements Dish {
 	}
 
 	private Experiment createExperiment(String applicationVersion, CommandLineOptions options, int size) {
-		Experiment result;
-		
 		Ecosystem ecosystem = new Ecosystem(size, true);
-		
 		String dna = options.getDna();
-		boolean trackingGenePool = options.isTrackingHistory();
+
+		Experiment experiment;
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);
-			result = new Experiment(generateRandomSeed(), ecosystem, applicationVersion, trackingGenePool, dna);
+			experiment = new Experiment(generateRandomSeed(), ecosystem, applicationVersion);
+			setPersistenceStrategies(experiment, options);
+			experiment.populate(dna);
 		} else if (options.getExperiment() != null) {
 			System.out.print("Continuining experiment " + options.getExperiment().getId());
-			result = options.getExperiment();
+			experiment = options.getExperiment();
+			setPersistenceStrategies(experiment, options);
+			return experiment;
 		} else if (options.getSeed() == CommandLineOptions.NO_SEED) {
 			long randomSeed = generateRandomSeed();
 			System.out.print("Starting new experiment with random seed: " + randomSeed);
-			result = new Experiment(randomSeed, ecosystem, applicationVersion, trackingGenePool);
+			experiment = new Experiment(randomSeed, ecosystem, applicationVersion);
+			setPersistenceStrategies(experiment, options);
+			experiment.populate();
 		} else {
 			System.out.print("Starting experiment " + options.getSeed());
-			result = new Experiment(options.getSeed(), ecosystem, applicationVersion, trackingGenePool);
+			experiment = new Experiment(options.getSeed(), ecosystem, applicationVersion);
+			setPersistenceStrategies(experiment, options);
+			experiment.populate();
 		}
-		
-		return result;
+		return experiment;
+	}
+
+	private void setPersistenceStrategies(Experiment experiment, CommandLineOptions options) {
+		if (options.isKeepingHistory())
+			setPersistenceStrategies(experiment, new GenePool(new PersistentDNALog(experiment.getId())), new PersistentHistoryLog(experiment.getId()));
+		else
+			setPersistenceStrategies(experiment, new GenePool(new VolatileDNALog()), new VolatileHistoryLog());
+	}
+
+	private void setPersistenceStrategies(Experiment result, GenePool genePool, HistoryLog historyLog) {
+		result.setGenePool(genePool);
+		result.setHistoryLog(historyLog);
 	}
 
 	private void reportPersistenceOptions(CommandLineOptions options) {
-		if (options.isPersistent() && options.isTrackingHistory())
-			System.out.println(" (persisted to file, with history)");
+		if (options.isPersistent() && options.isKeepingHistory())
+			System.out.println(" (persisted to file and database)");
 		else if (options.isPersistent())
-			System.out.println(" (persisted to file, no history)");
+			System.out.println(" (persisted to file, no database)");
 		else
 			System.out.println(" (no persistence)");
 	}
 
 	private void executePeriodOperations() {
 		long ticks = experiment.getTicksChronometer().getTotalTicks();
-
 		if (ticks % Configuration.EXPERIMENT_SAMPLE_INTERVAL_TICKS != 0)
 			return;
 
 		if (!experiment.thereAreSurvivors())
 			isTerminated = true;
 
-		experiment.updateStats();
-		System.out.println(experiment.getStats());
+		experiment.saveHistoryEntry();
+		System.out.println(getReport());
 		
-		if (!persistent)
-			return;
-		
+		if (persistent)
+			saveExperimentToFile();
+	}
+
+	private void saveExperimentToFile() {
 		if ((System.currentTimeMillis() - lastSaveTime) / 1000.0 > Configuration.EXPERIMENT_SAVE_INTERVAL_SECONDS) {
 			save();
 			lastSaveTime = System.currentTimeMillis();
 		}
 	}
 
+	private String getReport() {
+		return 	NumberFormat.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
+				experiment.getEcosystem().getNumberOfNarjillos() + "\t" +
+				experiment.getEcosystem().getNumberOfFoodPellets();
+	}
+
 	private void save() {
 		isSaving = true;
 		System.out.print("> Saving...");
-		Persistence.save(experiment);
+		FilePersistence.save(experiment);
 		System.out.println(" Done.");
 		isSaving = false;
 	}

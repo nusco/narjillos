@@ -13,12 +13,13 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormat;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.ExperimentStats;
+import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
+import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
-import org.nusco.narjillos.genomics.GenePoolStats;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.persistence.PersistentHistoryLog;
+import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
  * The "lab" program. It reads data from an experiment and outputs it in
@@ -53,23 +54,18 @@ public class Lab {
 			return;
 		}
 
-		if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("h")) {
+		if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("?")) {
 			printHelpText(options);
 			return;
 		}
 
 		String experimentFile = args[0];
-		Experiment experiment = Persistence.loadExperiment(experimentFile);
+		Experiment experiment = FilePersistence.loadExperiment(experimentFile);
 		GenePool genePool = experiment.getGenePool();
 
 		if (commandLine.hasOption("stats")) {
-			System.out.println(new GenePoolStats(genePool));
-
-			ExperimentStats stats = new ExperimentStats(experiment);
-			System.out.println(ExperimentStats.getConsoleHeader());
-			System.out.println(stats);
-			System.out.println();
-			System.out.println(stats.getChemicalCyclesReport());
+			HistoryLog history = new PersistentHistoryLog(experiment.getId());
+			System.out.println(history.getLatestEntry());
 			return;
 		}
 
@@ -94,7 +90,7 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("primary")) {
-			DNA dna = genePool.getMostSuccessfulDNA();
+			DNA dna = genePool.getMostSuccessfulDna();
 			if (dna == null)
 				System.out.println("DNA not found");
 			else
@@ -108,9 +104,10 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("history")) {
-			System.out.println(ExperimentStats.getCSVHeader());
-			for (ExperimentStats experimentStats : experiment.getHistory())
-				System.out.println(experimentStats.toCSVLine());
+			System.out.println(ExperimentHistoryEntry.toCsvHeader());
+			HistoryLog database = new PersistentHistoryLog(experiment.getId());
+			for (ExperimentHistoryEntry stat : database.getEntries())
+				System.out.println(stat);
 			return;
 		}
 
@@ -124,7 +121,7 @@ public class Lab {
 
 	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {
 		DNA dna = getDNA(genePool, dnaId);
-		return genePool.getAncestry(dna);
+		return genePool.getAncestryOf(dna);
 	}
 
 	private static String getDNAStatistics(GenePool genePool, String dnaId) {

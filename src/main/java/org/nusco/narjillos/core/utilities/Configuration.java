@@ -9,13 +9,13 @@ import org.yaml.snakeyaml.Yaml;
 
 public class Configuration {
 
-	private static Map<String, Map<String, Double>> data = loadConfigurationData();
+	private static Map<String, Map<String, Object>> data = loadConfigurationData();
 	
 	@SuppressWarnings("unchecked")
-	private static Map<String, Map<String, Double>> loadConfigurationData() {		
+	private static Map<String, Map<String, Object>> loadConfigurationData() {		
 		File configurationFile = locateConfigurationFile();
 		try {
-			return (Map<String, Map<String, Double>>) new Yaml().load(new FileReader(configurationFile));
+			return (Map<String, Map<String, Object>>) new Yaml().load(new FileReader(configurationFile));
 		} catch (FileNotFoundException e) {
 			fail("cannot find a configuration file (config.yaml) in the current working directory");
 			return null;
@@ -58,9 +58,19 @@ public class Configuration {
 			return 0;
 		}
 	}
+	
+	private static String getString(String configSection, String configKey) {
+		Object result = get(configSection, configKey);
+		try {
+			return (String) result;
+		} catch (ClassCastException e) {
+			fail("\"" + configSection + ":" + configKey + "\" in config.yaml is not a string");
+			return "";
+		}
+	}
 
 	private static Object get(String configSection, String configKey) {
-		Map<String, Double> section = data.get(configSection);
+		Map<String, Object> section = data.get(configSection);
 		if (section == null) {
 			fail("cannot find section \"" + configSection + "\" in config.yaml");
 		}
@@ -127,4 +137,8 @@ public class Configuration {
 	// experiment
 	public static final int EXPERIMENT_SAMPLE_INTERVAL_TICKS = getInt("experiment", "sample_interval_ticks");
 	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = getInt("experiment", "save_interval_seconds");
+
+	// database
+	public static final String DATABASE_HOST = getString("database", "host");
+	public static final int DATABASE_PORT = getInt("database", "port");
 }

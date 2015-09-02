@@ -2,12 +2,19 @@ package org.nusco.narjillos;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.FastMath;
-import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.experiment.HistoryLog;
+import org.nusco.narjillos.genomics.DNALog;
+import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.persistence.PersistentDNALog;
+import org.nusco.narjillos.persistence.PersistentHistoryLog;
 
 /**
  * Runs a short experiment for a few thousands ticks and times the result.
@@ -28,40 +35,57 @@ public class PerformanceTest {
 	
 	private static int ticks;
 	private static double timeSeconds;
-
-	public static void main(String[] args) {
-		ticks = 4000;
+	private static DNALog dnaLog;
+	private static HistoryLog historyLog;
+	
+	public static void main(String[] args) throws IOException {
+		ticks = 10000;
 		try {
 			new PerformanceTest().testPerformance();
 		} catch (AssertionError e) {
 			reportTicks();
 			throw e;
+		} finally {
+			deleteDatabase();
 		}
 		reportTicks();
 		System.exit(0); // exit Gradle
 	}
 
-	private static long getTicksPerSecond() {
-		return Math.round(ticks / timeSeconds);
+	@BeforeClass
+	public static void setUpDatabase() throws IOException {
+		deleteDatabase();
+	}
+	
+	@AfterClass
+	public static void closeDatabase() throws IOException {
+		dnaLog.close();
+		historyLog.close();
+		deleteDatabase();
 	}
 
-	private static void reportTicks() {
-		System.out.println("" + getTicksPerSecond() + " ticks per second");
+	private static void deleteDatabase() throws IOException {
+		dnaLog.delete();
+		historyLog.delete();
 	}
 
 	@Before
 	public void initializeTicks() {
-		ticks = 100;
+		ticks = 1500;
 	}
 
 	@Test
-	public void testPerformance() {
+	public void testPerformance() throws IOException {
 		// pay up front for the setup of FastMath, in case
 		// it hasn't been loaded yet
 		FastMath.setUp();
 
-		Experiment experiment = new Experiment(424242, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, true), "performance_test", true);
-
+		Experiment experiment = new SimpleExperiment();
+		dnaLog = new PersistentDNALog("x");
+		experiment.setGenePool(new GenePool(dnaLog));
+		historyLog = new PersistentHistoryLog("x");
+		experiment.setHistoryLog(historyLog);
+		
 		long startTimeMillis = System.currentTimeMillis();
 
 		for (int i = 0; i < ticks; i++)
@@ -72,7 +96,16 @@ public class PerformanceTest {
 		timeSeconds = Math.ceil(timeMillis * 10) / 10.0;
 
 		long tps = getTicksPerSecond();
+
 		String errorMessage = "PERFORMANCE FAILURE: slower than expected (" + tps + " ticks per second)";
 		assertTrue(errorMessage, tps > EXPECTED_MINIMUM_TICKS_PER_SECOND);
+	}
+
+	private static long getTicksPerSecond() {
+		return Math.round(ticks / timeSeconds);
+	}
+
+	private static void reportTicks() {
+		System.out.println("" + getTicksPerSecond() + " ticks per second");
 	}
 }

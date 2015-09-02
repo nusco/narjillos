@@ -24,7 +24,10 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 * Store historical data in a database rather than in memory  
   Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
 
-+ Keep running even after extinction
++ Stabilize memory consumption  
+  By using soft caching in GenePool  
+
+* Keep running even after extinction
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
 
 + Move entire persistence to a database  
@@ -66,7 +69,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 
 ##Dish Edges
->goal: nice user experience  
+>goal: complex interactions  
 
     Constrain the "world" inside defined edges.
     
@@ -175,7 +178,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   one number for the whole gene pool.  
 
 
-##Germline Browser
+##Advanced Germline Browser
 >goal: understand what is happening in the dish  
 
     Analyze DNA germline in separate program.
@@ -214,7 +217,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Track historical data in experiment for analysis.
 
-* Save current configuration in experiment file
+* Save current configuration to experiment file  
   Issue warning if continuing the experiment with a different configuration.
   Maybe offer a command-line switch to override existing configuration?
 
@@ -281,6 +284,48 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
 
 
+##Seasons
+>goal: faster evolution  
+
+    Cyclically vary the amount of food that spawns.
+    
+    Studies show that evolution works best if there are enough resources (food),
+    but not too many. The problem is that it's hard to know what "enough but 
+    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    hoping that along the way from "almost starving" to "economy of
+    abundance", the system will hit a few evolutionary sweet spots.
+
+* Seasons  
+
+* Configurable seasonal cycle  
+  Max, min and period in config.yaml  
+
+
+##Realistic Physics
+>goal: specialized creatures  
+
+    More realistic behavior of body to avoid body shapes that "exploit" the current naive physics.
+
++ Fix "tail wiggles dog" effect  
++ Rotation inertia  
+  but check comments in physics engine - it may break previous assumptions  
+  
++ Translation inertia  
+  but check comments in physics engine - it may break previous assumptions  
+  
++ Limit rotation speed  
+  is this a good idea?  
+
+- Realistic viscosity  
+  is this a good idea?  
+
+- Viscosity per segment  
+  is this a good idea?  
+
++ Simpler senescence mechanism  
+  the current one feels too complicated for its own good.
+
+
 ##GUI
 >goal: nice user experience  
 
@@ -320,23 +365,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Command-line argument to start without visual effects  
 
 
-##Seasons
->goal: faster evolution  
-
-    Cyclically vary the amount of food that spawns.
-    
-    Studies show that evolution works best if there are enough resources (food),
-    but not too many. The problem is that it's hard to know what "enough but 
-    not too many" means. So I want to try this: food amount is cyclical. I'm 
-    hoping that along the way from "almost starving" to "economy of
-    abundance", the system will hit a few evolutionary sweet spots.
-
-* Seasons  
-
-* Configurable seasonal cycle  
-  Max, min and period in config.yaml  
-
-
 ##Sexual Reproduction
 >goal: different species  
 
@@ -368,31 +396,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + "Previous" command during demo/following  
 + Visual effect when tracking/untracking  
 - Mini-map  
-
-
-##Realistic Physics
->goal: specialized creatures  
-
-    More realistic behavior of body to avoid body shapes that "exploit" the current naive physics.
-
-+ Fix "tail wiggles dog" effect  
-+ Rotation inertia  
-  but check comments in physics engine - it may break previous assumptions  
-  
-+ Translation inertia  
-  but check comments in physics engine - it may break previous assumptions  
-  
-+ Limit rotation speed  
-  is this a good idea?  
-
-- Realistic viscosity  
-  is this a good idea?  
-
-- Viscosity per segment  
-  is this a good idea?  
-
-+ Simpler senescence mechanism  
-  the current one feels too complicated for its own good
 
 
 ##Flexible Genes

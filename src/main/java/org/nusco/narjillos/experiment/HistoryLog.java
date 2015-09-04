@@ -11,5 +11,5 @@ public interface HistoryLog {
 	public abstract ExperimentHistoryEntry getLatestEntry();
 	public abstract void saveEntries(Experiment experiment);
 	public abstract void close();
-	public abstract void delete();
+	public abstract void clear();
 }

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
@@ -45,13 +44,12 @@ public class DeterministicExperimentTest {
 		long startTime = System.currentTimeMillis();
 		int cycles = 50_000;
 
-		deleteDatabases();
 		try {
 			runTest(cycles);
 		} catch (Throwable t) {
 			throw t;
 		} finally {
-			deleteDatabases();
+			clearDatabases();
 		}
 		
 		long totalTime = (System.currentTimeMillis() - startTime) / 1000;
@@ -59,25 +57,12 @@ public class DeterministicExperimentTest {
 		System.exit(0); // otherwise Gradle won't exit (god knows why)
 	}
 
-	@BeforeClass
-	public static void setUpDatabases() throws IOException {
-		deleteDatabases();
-	}
-
 	@AfterClass
-	public static void closeDatabases() throws IOException {
-		genePoolLog1.close();
-		historyLog1.close();
-		genePoolLog2.close();
-		historyLog2.close();
-		deleteDatabases();
-	}
-
-	private static void deleteDatabases() throws IOException {
-		genePoolLog1.delete();
-		historyLog1.delete();
-		genePoolLog2.delete();
-		historyLog2.delete();
+	public static void clearDatabases() throws IOException {
+		genePoolLog1.clear();
+		historyLog1.clear();
+		genePoolLog2.clear();
+		historyLog2.clear();
 	}
 
 	@Test
@@ -106,7 +91,7 @@ public class DeterministicExperimentTest {
 		// Copy the database
 		genePoolLog1.close();
 		historyLog1.close();
-		Files.copy(new File("test_database1.history").toPath(), new File("test_database2.history").toPath());
+		copy("test_database1.history", "test_database2.history");
 		genePoolLog1.open();
 		historyLog1.open();
 
@@ -137,13 +122,14 @@ public class DeterministicExperimentTest {
 		//		Files.write(new File("json1").toPath(), json1.getBytes());
 		//		Files.write(new File("json2").toPath(), json2.getBytes());
 
-		// Close the databases
-		genePoolLog1.close();
-		historyLog1.close();
-		genePoolLog2.close();
-		historyLog2.close();
-
 		// Did it work?
 		assertEquals(json1, json2);
+	}
+
+	private static void copy(String file1, String file2) throws IOException {
+		File destinationFile = new File(file2);
+		if (destinationFile.exists())
+			Files.delete(destinationFile.toPath());
+		Files.copy(new File(file1).toPath(), destinationFile.toPath());
 	}
 }

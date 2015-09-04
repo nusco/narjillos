@@ -14,14 +14,11 @@ import org.nusco.narjillos.core.utilities.NumGen;
 public class GenePool implements Cloneable {
 
 	private DNALog dnaLog;
-	private Map<Long, DNA> allDnaCache = new LinkedHashMap<>();
-	private List<Long> aliveDnaCache;
+	private int allDnaCountCache;
 
 	public GenePool(DNALog dnaLog) {
 		this.dnaLog = dnaLog;
-		for (DNA dna : dnaLog.getAllDna())
-			allDnaCache.put(dna.getId(), dna);
-		aliveDnaCache = dnaLog.getAliveDna();
+		allDnaCountCache = dnaLog.getDnaCount();
 	}
 
 	public DNA createDna(String dna, NumGen numGen) {
@@ -42,49 +39,53 @@ public class GenePool implements Cloneable {
 		return result;
 	}
 
-	public DNA getDna(long id) {
-		return getAllDna().get(id);
-	}
-
 	public void remove(DNA dna) {
-		aliveDnaCache.remove(dna.getId());
 		dnaLog.markAsDead(dna.getId());
 	}
 
-	public Map<Long, DNA> getAllDna() {
-		return allDnaCache;
-	}
-
-	public List<DNA> getAncestryOf(DNA dna) {
+	public List<DNA> getAncestryOf(long dnaId) {
 		List<DNA> result = new LinkedList<>();
 
-		if (dna == null)
-			return result;
-
-		Long currentDnaId = dna.getId();
 		Map<Long, DNA> dnaById = getDnaById();
-		while (currentDnaId != 0) {
-			DNA currentDna = dnaById.get(currentDnaId);
+		while (dnaId != 0) {
+			DNA currentDna = dnaById.get(dnaId);
 			result.add(currentDna);
-			currentDnaId = currentDna.getParentId();
+			dnaId = currentDna.getParentId();
 		}
 
 		Collections.reverse(result);
 		return result;
 	}
 
+	// TODO: move these slow operations to Lab. First, it's where they belong,
+	// and second, it avoids usage by mistake.
+	
+	/*
+	 * Slow and memory-intensive! Only call for lab analysis.
+	 */
 	public DNA getMostSuccessfulDna() {
+		List<DNA> aliveDna = getAliveDna();
 		DNA result = null;
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
-		for (Long dnaId: aliveDnaCache) {
-			DNA dna = allDnaCache.get(dnaId);
-			int currentLevenshteinDistance = totalLevenshteinDistanceFromTheRestOfThePool(dna);
+		for (DNA dna: aliveDna) {
+			int currentLevenshteinDistance = totalLevenshteinDistanceFromTheRestOfThePool(dna, aliveDna);
 			if (currentLevenshteinDistance < lowestLevenshteinDistance) {
 				result = dna;
 				lowestLevenshteinDistance = currentLevenshteinDistance;
 			}
 		}
 		return result;
+	}
+
+	/*
+	 * Slow and memory-intensive! Only call for lab analysis.
+	 */
+	public DNA getDna(long id) {
+		return getAllDna().get(id);
+	}
+
+	public int getAllDnaCount() {
+		return allDnaCountCache;
 	}
 
 	public void terminate() {
@@ -116,19 +117,28 @@ public class GenePool implements Cloneable {
 		return result;
 	}
 
-	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna) {
+	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna, List<DNA> aliveDna) {
 		int result = 0;
-		for (Long otherDnaId: aliveDnaCache) {
-			DNA otherDna = allDnaCache.get(otherDnaId);
+		for (DNA otherDna: aliveDna) {
 			if (!otherDna.equals(dna))
 				result += dna.getLevenshteinDistanceFrom(otherDna);
 		}
 		return result;
 	}
 
+	private Map<Long, DNA> getAllDna() {
+		Map<Long, DNA> result = new LinkedHashMap<>();
+		for (DNA dna : dnaLog.getAllDna())
+			result.put(dna.getId(), dna);
+		return result;
+	}
+
+	private List<DNA> getAliveDna() {
+		return dnaLog.getLiveDna();
+	}
+
 	private void addToPool(DNA dna) {
 		dnaLog.save(dna);
-		allDnaCache.put(dna.getId(), dna);
-		aliveDnaCache.add(dna.getId());
+		allDnaCountCache++;
 	}
 }

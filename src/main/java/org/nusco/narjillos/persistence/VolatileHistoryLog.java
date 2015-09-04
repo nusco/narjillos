@@ -28,6 +28,6 @@ public class VolatileHistoryLog implements HistoryLog {
 	}
 
 	@Override
-	public void delete() {
+	public void clear() {
 	}
 }

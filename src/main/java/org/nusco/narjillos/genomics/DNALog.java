@@ -4,11 +4,12 @@ import java.util.List;
 
 public interface DNALog {
 
-	public abstract void save(DNA dna);
-	public abstract DNA getDna(long id);
-	public abstract void markAsDead(long id);
-	public abstract List<DNA> getAllDna();
-	public abstract List<Long> getAliveDna();
-	public abstract void close();
-	public abstract void delete();
+	public void save(DNA dna);
+	public DNA getDna(long id);
+	public void markAsDead(long id);
+	public List<DNA> getAllDna();
+	public List<DNA> getLiveDna();
+	public int getDnaCount();
+	public void close();
+	public void clear();
 }

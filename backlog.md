@@ -20,18 +20,12 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Move entire persistence to database  
   Consider using a one-record table with a blob  
 
-+ Stabilize memory consumption  
-  By using soft caching in GenePool  
-
 + Fix bug with duplicated --persistence warning  
   Probably impacted by the previous story  
 
 * Keep running even after extinction
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
   Also take the chance to fix the current bug with experiments not stopping correctly on extinction.  
-
-+ Save event log instead of current state  
-  Maybe. Then have an external program, maybe in Elixir, to process stats.  
 
 + Move from SQLite to H2  
   Maybe. As suggested by Cipster. Ask him for advantages.  
@@ -213,6 +207,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 * Output germline statistics  
   Energy to children, total mass, etc.  
+
++ Stabilize memory consumption  
+  Right now the Lab program might run out of memory of a large experiment.  
 
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 

@@ -29,7 +29,7 @@ public abstract class DNALogTest {
 	@After
 	public void deleteTestDatabase() {
 		dnaLog.close();
-		dnaLog.delete();
+		dnaLog.clear();
 	}
 
 	@Test
@@ -46,28 +46,22 @@ public abstract class DNALogTest {
 	}
 
 	@Test
-	public void returnsLiveDnaOrderedById() {
-		DNA dna1 = new DNA(42, "{1_2_3}", 41);
-		dnaLog.save(dna1);
-		DNA dna2 = new DNA(43, "{1_2_3}", 41);
-		dnaLog.save(dna2);
-		DNA dna3 = new DNA(41, "{1_2_3}", 41);
-		dnaLog.save(dna3);
-		
-		dnaLog.markAsDead(42);
-	
-		assertEquals(41, (long) dnaLog.getAliveDna().get(0));
-		assertFalse(dnaLog.getAliveDna().contains(42));
-		assertEquals(43, (long) dnaLog.getAliveDna().get(1));
-	}
-
-	@Test
 	public void returnsNullIfTheDnaIsNotInTheLog() {
 		assertNull(dnaLog.getDna(42));
 	}
 
 	@Test
-	public void retrievesAllDnaSortedById() {
+	public void silentlySkipsWritingIfADnaIsAlreadyInTheLog() {
+		DNA dna = new DNA(42, "{1_2_3}", 41);
+	
+		dnaLog.save(dna);
+		dnaLog.save(dna);
+	
+		assertEquals(1, dnaLog.getAllDna().size());
+	}
+
+	@Test
+	public void returnsAllDnaSortedById() {
 		dnaLog.save(new DNA(43, "{1_2_3}", 0));
 		dnaLog.save(new DNA(42, "{1_2_3}", 42));
 	
@@ -79,13 +73,27 @@ public abstract class DNALogTest {
 	}
 
 	@Test
-	public void silentlySkipsWritingIfADnaIsAlreadyInTheLog() {
-		DNA dna = new DNA(42, "{1_2_3}", 41);
+	public void returnsDnaCount() {
+		dnaLog.save(new DNA(43, "{1_2_3}", 0));
+		dnaLog.save(new DNA(42, "{1_2_3}", 42));
 	
-		dnaLog.save(dna);
-		dnaLog.save(dna);
+		assertEquals(2, dnaLog.getDnaCount());
+	}
+
+	@Test
+	public void returnsLiveDnaSortedById() {
+		DNA dna1 = new DNA(42, "{1}", 41);
+		dnaLog.save(dna1);
+		DNA dna2 = new DNA(43, "{2}", 41);
+		dnaLog.save(dna2);
+		DNA dna3 = new DNA(41, "{3}", 41);
+		dnaLog.save(dna3);
+		
+		dnaLog.markAsDead(42);
 	
-		assertEquals(1, dnaLog.getAllDna().size());
+		assertEquals(dna3, dnaLog.getLiveDna().get(0));
+		assertFalse(dnaLog.getLiveDna().contains(42));
+		assertEquals(dna2, dnaLog.getLiveDna().get(1));
 	}
 
 	protected abstract DNALog createNewInstance();

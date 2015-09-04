@@ -84,7 +84,7 @@ public class Lab {
 		}
 
 		if (commandLine.hasOption("germline")) {
-			for (DNA dna : getAncestry(genePool, commandLine.getOptionValue("germline")))
+			for (DNA dna : getAncestry(genePool, Long.parseLong(commandLine.getOptionValue("germline"))))
 				System.out.println(dna);
 			return;
 		}
@@ -119,9 +119,8 @@ public class Lab {
 		printHelpText(options);
 	}
 
-	private static List<DNA> getAncestry(GenePool genePool, String dnaId) {
-		DNA dna = getDNA(genePool, dnaId);
-		return genePool.getAncestryOf(dna);
+	private static List<DNA> getAncestry(GenePool genePool, long dnaId) {
+		return genePool.getAncestryOf(dnaId);
 	}
 
 	private static String getDNAStatistics(GenePool genePool, String dnaId) {

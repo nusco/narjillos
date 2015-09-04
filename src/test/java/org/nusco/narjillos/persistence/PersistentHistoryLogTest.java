@@ -25,7 +25,7 @@ public class PersistentHistoryLogTest {
 	@After
 	public void deleteTestDatabase() {
 		historyLog.close();
-		historyLog.delete();
+		historyLog.clear();
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class PersistentHistoryLogTest {
 			assertNull(unknownDatabaseNameLog.getLatestEntry());
 		} finally {
 			unknownDatabaseNameLog.close();
-			unknownDatabaseNameLog.delete();
+			unknownDatabaseNameLog.clear();
 		}
 	}
 }

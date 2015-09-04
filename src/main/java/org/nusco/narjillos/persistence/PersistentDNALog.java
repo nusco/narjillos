@@ -78,19 +78,39 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	@Override
-	public List<Long> getAliveDna() {
+	public int getDnaCount() {
 		Statement statement = createStatement();
 		try {
-			List<Long> result = new LinkedList<>();
-			ResultSet rs = statement.executeQuery("SELECT ID FROM DNA WHERE IS_DEAD = 0 ORDER BY ID;");
+			ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM DNA;");
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(statement);
+		}
+	}
+
+	@Override
+	public List<DNA> getLiveDna() {
+		Statement statement = createStatement();
+		try {
+			List<DNA> result = new LinkedList<>();
+			ResultSet rs = statement.executeQuery("SELECT * FROM DNA WHERE IS_DEAD = 0 ORDER BY ID;");
 			while (rs.next())
-				result.add(rs.getLong("ID"));
+				result.add(toDNA(rs));
 			return result;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			close(statement);
 		}
+	}
+
+	@Override
+	public void clear() {
+		super.clear();
+		createDnaTable();
 	}
 
 	private void createDnaTable() {

@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.experiment.Experiment;
@@ -35,38 +34,28 @@ public class PerformanceTest {
 	
 	private static int ticks;
 	private static double timeSeconds;
-	private static DNALog dnaLog;
-	private static HistoryLog historyLog;
+	private static DNALog dnaLog = new PersistentDNALog("x");
+	private static HistoryLog historyLog = new PersistentHistoryLog("x");
 	
 	public static void main(String[] args) throws IOException {
-		ticks = 10000;
+		ticks = 10_000;
+		clearDatabase();
 		try {
 			new PerformanceTest().testPerformance();
 		} catch (AssertionError e) {
 			reportTicks();
 			throw e;
 		} finally {
-			deleteDatabase();
+			clearDatabase();
 		}
 		reportTicks();
 		System.exit(0); // exit Gradle
 	}
 
-	@BeforeClass
-	public static void setUpDatabase() throws IOException {
-		deleteDatabase();
-	}
-	
 	@AfterClass
-	public static void closeDatabase() throws IOException {
-		dnaLog.close();
-		historyLog.close();
-		deleteDatabase();
-	}
-
-	private static void deleteDatabase() throws IOException {
-		dnaLog.delete();
-		historyLog.delete();
+	public static void clearDatabase() throws IOException {
+		dnaLog.clear();
+		historyLog.clear();
 	}
 
 	@Before
@@ -81,9 +70,7 @@ public class PerformanceTest {
 		FastMath.setUp();
 
 		Experiment experiment = new SimpleExperiment();
-		dnaLog = new PersistentDNALog("x");
 		experiment.setGenePool(new GenePool(dnaLog));
-		historyLog = new PersistentHistoryLog("x");
 		experiment.setHistoryLog(historyLog);
 		
 		long startTimeMillis = System.currentTimeMillis();

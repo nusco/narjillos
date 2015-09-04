@@ -43,12 +43,6 @@ public abstract class PersistentInformation {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	public void delete() {
-		File databaseFile = new File(getName());
-		if (Files.exists(databaseFile.toPath()))
-			databaseFile.delete();
-	}
 
 	private String getName() {
 		return name;
@@ -68,5 +62,13 @@ public abstract class PersistentInformation {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public void clear() {
+		close();
+		File databaseFile = new File(getName());
+		if (Files.exists(databaseFile.toPath()))
+			databaseFile.delete();
+		open();
 	}
 }

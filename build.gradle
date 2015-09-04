@@ -36,8 +36,6 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 mainClassName = 'org.nusco.narjillos.NarjillosRunner'
 
-applicationDefaultJvmArgs = ['-Xmx8g']
-
 // Dependencies
 
 repositories {
@@ -138,7 +136,7 @@ def createProgramTask(taskName, mainClassName, taskDescription) {
     main = mainClassName
     classpath = sourceSets.main.runtimeClasspath
     args commandLineArgsOr([])
-    maxHeapSize '4g'
+    maxHeapSize '8g'
   }
 }
 

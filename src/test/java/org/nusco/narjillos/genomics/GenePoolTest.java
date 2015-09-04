@@ -25,7 +25,7 @@ public class GenePoolTest {
 
 		DNA child2_2_1 = genePool.mutateDna(child2_1, numGen);
 
-		List<DNA> ancestry = genePool.getAncestryOf(child2_2_1);
+		List<DNA> ancestry = genePool.getAncestryOf(child2_2_1.getId());
 		
 		assertEquals(3, ancestry.size());
 		assertEquals(parent2, ancestry.get(0));
@@ -52,7 +52,7 @@ public class GenePoolTest {
 	}
 	
 	@Test
-	public void removesDNA() {
+	public void removesDnaFromLivingDna() {
 		genePool.createDna("111_111_111_222_111_000_000_000_000_000_000_000_000_000", numGen);
 		DNA thisOneWillDie = genePool.createDna("111_111_111_111_111_000_000_000_000_000_000_000_000_000", numGen);
 		genePool.createDna("111_111_111_222_222_000_000_000_000_000_000_000_000_000", numGen);
@@ -66,14 +66,25 @@ public class GenePoolTest {
 	}
 	
 	@Test
-	public void neverRemovesDNAFromHistory() {
-		for (int i = 0; i < 100; i++) {
-			DNA dna = genePool.createRandomDna(numGen);
-			if (i >= 50)
-				genePool.remove(dna);
-		}
+	public void getsAllDnaCount() {
+		for (int i = 0; i < 3; i++)
+			genePool.createRandomDna(numGen);
+
+		assertEquals(3, genePool.getAllDnaCount());
+	}
+	
+	@Test
+	public void getAncestryOfDna() {
+		DNA gen1 = genePool.createDna("{0}", numGen);
+		DNA gen2 = genePool.mutateDna(gen1, numGen);
+		DNA gen3 = genePool.mutateDna(gen2, numGen);
 		
-		assertEquals(100, genePool.getAllDna().size());
+		List<DNA> ancestry = genePool.getAncestryOf(gen3.getId());
+		
+		assertEquals(3, ancestry.size());
+		assertEquals(gen1, ancestry.get(0));
+		assertEquals(gen2, ancestry.get(1));
+		assertEquals(gen3, ancestry.get(2));
 	}
 	
 	@Test
@@ -82,7 +93,7 @@ public class GenePoolTest {
 		DNA gen2 = genePool.mutateDna(gen1, numGen);
 		DNA gen3 = genePool.mutateDna(gen2, numGen);
 		
-		List<DNA> ancestry = genePool.getAncestryOf(gen3);
+		List<DNA> ancestry = genePool.getAncestryOf(gen3.getId());
 		
 		assertEquals(3, ancestry.size());
 		assertEquals(gen1, ancestry.get(0));

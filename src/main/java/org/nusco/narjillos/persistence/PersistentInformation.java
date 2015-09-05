@@ -64,11 +64,9 @@ public abstract class PersistentInformation {
 		}
 	}
 	
-	public void clear() {
-		close();
+	public void delete() {
 		File databaseFile = new File(getName());
 		if (Files.exists(databaseFile.toPath()))
 			databaseFile.delete();
-		open();
 	}
 }

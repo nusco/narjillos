@@ -49,7 +49,7 @@ public class DeterministicExperimentTest {
 		} catch (Throwable t) {
 			throw t;
 		} finally {
-			clearDatabases();
+			deleteDatabases();
 		}
 		
 		long totalTime = (System.currentTimeMillis() - startTime) / 1000;
@@ -58,11 +58,11 @@ public class DeterministicExperimentTest {
 	}
 
 	@AfterClass
-	public static void clearDatabases() throws IOException {
-		genePoolLog1.clear();
-		historyLog1.clear();
-		genePoolLog2.clear();
-		historyLog2.clear();
+	public static void deleteDatabases() throws IOException {
+		genePoolLog1.delete();
+		historyLog1.delete();
+		genePoolLog2.delete();
+		historyLog2.delete();
 	}
 
 	@Test

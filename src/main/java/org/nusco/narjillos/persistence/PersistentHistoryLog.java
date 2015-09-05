@@ -84,12 +84,6 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 		}
 	}
 
-	@Override
-	public void clear() {
-		super.clear();
-		createEntriesTable();
-	}
-
 	private void createEntriesTable() {
 		Statement statement = createStatement();
 		try {

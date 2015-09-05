@@ -11,5 +11,5 @@ public interface DNALog {
 	public List<DNA> getLiveDna();
 	public int getDnaCount();
 	public void close();
-	public void clear();
+	public void delete();
 }

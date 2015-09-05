@@ -7,9 +7,9 @@ import java.util.List;
  */
 public interface HistoryLog {
 
-	public abstract List<ExperimentHistoryEntry> getEntries();
-	public abstract ExperimentHistoryEntry getLatestEntry();
-	public abstract void saveEntries(Experiment experiment);
-	public abstract void close();
-	public abstract void clear();
+	public List<ExperimentHistoryEntry> getEntries();
+	public ExperimentHistoryEntry getLatestEntry();
+	public void saveEntries(Experiment experiment);
+	public void close();
+	public void delete();
 }

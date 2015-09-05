@@ -107,12 +107,6 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 		}
 	}
 
-	@Override
-	public void clear() {
-		super.clear();
-		createDnaTable();
-	}
-
 	private void createDnaTable() {
 		Statement statement = createStatement();
 		try {

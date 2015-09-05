@@ -29,7 +29,7 @@ public abstract class DNALogTest {
 	@After
 	public void deleteTestDatabase() {
 		dnaLog.close();
-		dnaLog.clear();
+		dnaLog.delete();
 	}
 
 	@Test

@@ -39,23 +39,22 @@ public class PerformanceTest {
 	
 	public static void main(String[] args) throws IOException {
 		ticks = 10_000;
-		clearDatabase();
 		try {
 			new PerformanceTest().testPerformance();
 		} catch (AssertionError e) {
 			reportTicks();
 			throw e;
 		} finally {
-			clearDatabase();
+			deleteDatabase();
 		}
 		reportTicks();
 		System.exit(0); // exit Gradle
 	}
 
 	@AfterClass
-	public static void clearDatabase() throws IOException {
-		dnaLog.clear();
-		historyLog.clear();
+	public static void deleteDatabase() throws IOException {
+		dnaLog.delete();
+		historyLog.delete();
 	}
 
 	@Before

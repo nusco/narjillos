@@ -30,10 +30,16 @@ public class PetriDish implements Dish {
 	public PetriDish(String version, CommandLineOptions options, int size) {
 		experiment = createExperiment(version, options, size);
 		experimentLog = new ExperimentLog(experiment.getId());
+		if (isNewExperiment(experiment))
+			experimentLog.save(experiment);
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
 		
 		System.out.println("Ticks:\tNarji:\tFood:");
+	}
+
+	private boolean isNewExperiment(Experiment experiment) {
+		return experiment.getTicksChronometer().getTotalTicks() == 0;
 	}
 
 	public Environment getEnvironment() {

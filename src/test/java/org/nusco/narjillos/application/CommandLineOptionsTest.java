@@ -31,7 +31,7 @@ public class CommandLineOptionsTest {
 			new CommandLineOptions(EXPERIMENT_ID + ".exp");
 		} catch (RuntimeException e) {
 			// the file is not there, so this is OK
-			assertTrue(e.getMessage().contains(EXPERIMENT_ID + ".exp (No such file or directory)"));
+			assertTrue(e.getMessage().contains("No file named " + EXPERIMENT_ID + ".exp"));
 		}
 	}
 
@@ -43,21 +43,15 @@ public class CommandLineOptionsTest {
 	}
 
 	@Test
-	public void acceptsAPersistenceOption() {
+	public void acceptsASaveOption() {
 		assertFalse(new CommandLineOptions().isPersistent());
-		assertTrue(new CommandLineOptions("-p").isPersistent());
-		assertTrue(new CommandLineOptions("--persistent").isPersistent());
-	}
-
-	@Test
-	public void acceptsAnHistoryOption() {
-		assertFalse(new CommandLineOptions().isKeepingHistory());
-		assertTrue(new CommandLineOptions("-history").isKeepingHistory());
+		assertTrue(new CommandLineOptions("-s").isPersistent());
+		assertTrue(new CommandLineOptions("--save").isPersistent());
 	}
 
 	@Test
 	public void acceptsAnExperimentSeed() {
-		CommandLineOptions options = new CommandLineOptions("-seed", "1234");
+		CommandLineOptions options = new CommandLineOptions("--seed", "1234");
 		
 		assertEquals(1234, options.getSeed());
 	}

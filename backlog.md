@@ -17,9 +17,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     For advanced analysis of experimental data.  
     This also removes the memory cap on very long experiments.  
 
-+ Fix bug with duplicated --persistence warning  
-  Probably impacted by the previous story  
-
 * Keep running even after extinction
   Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
   Also take the chance to fix the current bug with experiments not stopping correctly on extinction.  

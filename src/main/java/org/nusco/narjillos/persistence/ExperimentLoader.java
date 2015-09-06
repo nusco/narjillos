@@ -1,14 +1,23 @@
 package org.nusco.narjillos.persistence;
 
+import java.io.File;
+import java.nio.file.Files;
+
 import org.nusco.narjillos.application.Version;
 import org.nusco.narjillos.experiment.Experiment;
 
 public class ExperimentLoader {
 
 	public static Experiment load(String fileName) {
+		checkFile(fileName);
 		checkVersion(fileName);
 		ExperimentLog experimentLog = new ExperimentLog(stripExtension(fileName));
 		return experimentLog.load();
+	}
+
+	private static void checkFile(String fileName) {
+		if (!Files.exists(new File(fileName).toPath()))
+			throw new RuntimeException("No file named " + fileName);
 	}
 
 	private static void checkVersion(String fileName) {

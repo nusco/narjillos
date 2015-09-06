@@ -100,7 +100,7 @@ public class PetriDish implements Dish {
 	}
 
 	private void setPersistenceStrategies(Experiment experiment, CommandLineOptions options) {
-		if (options.isKeepingHistory())
+		if (options.isPersistent())
 			setPersistenceStrategies(experiment, new GenePool(new PersistentDNALog(experiment.getId())), new PersistentHistoryLog(experiment.getId()));
 		else
 			setPersistenceStrategies(experiment, new GenePool(new VolatileDNALog()), new VolatileHistoryLog());
@@ -112,10 +112,8 @@ public class PetriDish implements Dish {
 	}
 
 	private void reportPersistenceOptions(CommandLineOptions options) {
-		if (options.isPersistent() && options.isKeepingHistory())
-			System.out.println(" (persisted to file and database)");
-		else if (options.isPersistent())
-			System.out.println(" (persisted to file, no database)");
+		if (options.isPersistent())
+			System.out.println(" (persisted to file)");
 		else
 			System.out.println(" (no persistence)");
 	}

@@ -44,7 +44,7 @@ public class CommandLineOptions extends Options {
 		addOption("f", "fast", false, "fast mode (no graphics)");
 		addOption("s", "save", false, "save experiment to file");
 		addOption("e", "seed", true, "start experiment with given seed");
-		addOption("d", "dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
+		addOption("d", "dna", true, "populate experiment with specific DNA (takes genes, or a file containing genes)");
 
 		CommandLineParser parser = new BasicParser();
 		

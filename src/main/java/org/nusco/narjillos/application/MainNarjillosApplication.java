@@ -20,7 +20,6 @@ import org.nusco.narjillos.application.views.StatusBarView;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
  * The main JavaFX Application class. It binds model and view together, and also
@@ -58,7 +57,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				if (options == null)
 					System.exit(1);
 
-				String applicationVersion = FilePersistence.readApplicationVersion();
+				String applicationVersion = Version.read();
 				setDish(new PetriDish(applicationVersion, options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000));
 
 				isModelInitialized[0] = true;

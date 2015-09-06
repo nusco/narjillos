@@ -18,8 +18,8 @@ import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.genomics.GenePoolExporter;
+import org.nusco.narjillos.persistence.ExperimentLoader;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
-import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
  * The "lab" program. It reads data from an experiment and outputs it in
@@ -59,8 +59,8 @@ public class Lab {
 			return;
 		}
 
-		String experimentFile = args[0];
-		Experiment experiment = FilePersistence.loadExperiment(experimentFile);
+		String databaseFile = args[0];
+		Experiment experiment = ExperimentLoader.load(databaseFile);
 		GenePool genePool = experiment.getGenePool();
 
 		if (commandLine.hasOption("stats")) {

@@ -9,11 +9,11 @@ import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
 import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.persistence.ExperimentLog;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
 import org.nusco.narjillos.persistence.VolatileDNALog;
 import org.nusco.narjillos.persistence.VolatileHistoryLog;
-import org.nusco.narjillos.persistence.serialization.FilePersistence;
 
 /**
  * The class that initializes and runs an Experiment.
@@ -22,12 +22,14 @@ public class PetriDish implements Dish {
 
 	private static boolean persistent = false;
 	private final Experiment experiment;
+	private final ExperimentLog experimentLog;
 	private volatile boolean isSaving = false;
 	private volatile boolean isTerminated = false;
 	private volatile long lastSaveTime = System.currentTimeMillis();
 
 	public PetriDish(String version, CommandLineOptions options, int size) {
 		experiment = createExperiment(version, options, size);
+		experimentLog = new ExperimentLog(experiment.getId());
 		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
 		
@@ -130,11 +132,12 @@ public class PetriDish implements Dish {
 		System.out.println(getReport());
 		
 		if (persistent)
-			saveExperimentToFile();
+			maybeSaveExperiment();
 	}
 
-	private void saveExperimentToFile() {
-		if ((System.currentTimeMillis() - lastSaveTime) / 1000.0 > Configuration.EXPERIMENT_SAVE_INTERVAL_SECONDS) {
+	private void maybeSaveExperiment() {
+		double secondsSinceLastSave = (System.currentTimeMillis() - lastSaveTime) / 1000.0;
+		if (secondsSinceLastSave > Configuration.EXPERIMENT_SAVE_INTERVAL_SECONDS) {
 			save();
 			lastSaveTime = System.currentTimeMillis();
 		}
@@ -149,7 +152,7 @@ public class PetriDish implements Dish {
 	private void save() {
 		isSaving = true;
 		System.out.print("> Saving...");
-		FilePersistence.save(experiment);
+		experimentLog.save(experiment);
 		System.out.println(" Done.");
 		isSaving = false;
 	}

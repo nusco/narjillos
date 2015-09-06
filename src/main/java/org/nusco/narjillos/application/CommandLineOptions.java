@@ -1,7 +1,11 @@
 package org.nusco.narjillos.application;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -12,7 +16,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.persistence.serialization.FilePersistence;
+import org.nusco.narjillos.persistence.ExperimentLoader;
 
 @SuppressWarnings("serial")
 public class CommandLineOptions extends Options {
@@ -134,7 +138,7 @@ public class CommandLineOptions extends Options {
 	}
 
 	private void setFile(String file) {
-		this.experiment = FilePersistence.loadExperiment(file);
+		this.experiment = ExperimentLoader.load(file);
 		this.genePool = this.experiment.getGenePool();
 	}
 
@@ -162,6 +166,16 @@ public class CommandLineOptions extends Options {
 			return;
 		}
 		// not inline DNA, so it must be a filename
-		this.dna = FilePersistence.loadDNADocument(dna);
+		this.dna = loadDnaDocument(dna);
+	}
+
+	private String loadDnaDocument(String fileName) {
+		try {
+			byte[] encoded = Files.readAllBytes(Paths.get(fileName));
+			String dnaDocument = new String(encoded, Charset.defaultCharset());
+			return dnaDocument;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

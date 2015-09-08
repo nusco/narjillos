@@ -189,7 +189,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Energy to children, total mass, etc.  
 
 + Stabilize memory consumption  
-  Right now the Lab program might run out of memory of a large experiment.  
+  Right now the Lab program might run out of memory on a large experiment.  
+  Avoid bulk-loading stuff off the database.  
 
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 

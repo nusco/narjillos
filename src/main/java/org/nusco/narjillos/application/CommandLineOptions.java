@@ -15,7 +15,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.persistence.ExperimentLoader;
 
 @SuppressWarnings("serial")
@@ -24,7 +23,6 @@ public class CommandLineOptions extends Options {
 	public static final int NO_SEED = -1;
 	
 	private Experiment experiment = null;
-	private GenePool genePool = null;
 	private boolean persistent = true;
 	private boolean fast = false;
 	private long seed = NO_SEED;
@@ -97,10 +95,6 @@ public class CommandLineOptions extends Options {
 		return experiment;
 	}
 
-	public GenePool getGenePool() {
-		return genePool;
-	}
-
 	public boolean isFast() {
 		return fast;
 	}
@@ -129,7 +123,6 @@ public class CommandLineOptions extends Options {
 
 	private void setFile(String file) {
 		this.experiment = ExperimentLoader.load(file);
-		this.genePool = this.experiment.getGenePool();
 	}
 
 	private void setFast(boolean fast) {

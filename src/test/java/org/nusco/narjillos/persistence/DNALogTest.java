@@ -73,14 +73,6 @@ public abstract class DNALogTest {
 	}
 
 	@Test
-	public void returnsDnaCount() {
-		dnaLog.save(new DNA(43, "{1_2_3}", 0));
-		dnaLog.save(new DNA(42, "{1_2_3}", 42));
-	
-		assertEquals(2, dnaLog.getDnaCount());
-	}
-
-	@Test
 	public void returnsLiveDnaSortedById() {
 		DNA dna1 = new DNA(42, "{1}", 41);
 		dnaLog.save(dna1);

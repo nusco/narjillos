@@ -29,9 +29,9 @@ public class StatsTest {
 
 	@Test
 	public void convertsToACsvString() {
-		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
-		String expected = "1, 2, 3, 4, 5, 6.0, 7.0, 8.0, 9, 10, 11, 12, 13, 14, 15, 16, 17";
+		String expected = "1,2,3,4,5.0,6.0,7.0,8,9,10,11,12,13,14,15,16";
 		assertEquals(expected, stat.toString());
 	}
 }

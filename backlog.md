@@ -1,5 +1,7 @@
 #Narjillos Backlog
 
+* Fix DNA-related functionality in Lab
+
 ##Advanced Body Plans
 >goal: specialized creatures  
 

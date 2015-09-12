@@ -9,7 +9,6 @@ public interface DNALog {
 	public void markAsDead(long id);
 	public List<DNA> getAllDna();
 	public List<DNA> getLiveDna();
-	public int getDnaCount();
 	public void close();
 	public void delete();
 }

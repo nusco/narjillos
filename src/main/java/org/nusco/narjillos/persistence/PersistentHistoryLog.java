@@ -25,14 +25,13 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 		Statement statement = createStatement();
 		try {
 	    	String sql = "INSERT INTO HISTORY_ENTRIES (TICKS, RUNNING_TIME, " +
-	    				 "NUMBER_OF_NARJILLOS, NUMBER_OF_FOOD_PELLETS, DNA_POOL_SIZE, " +
+	    				 "NUMBER_OF_NARJILLOS, NUMBER_OF_FOOD_PELLETS, " +
 	    				 "OXYGEN, HYDROGEN, NITROGEN, " + 
 	    				 "O2H, O2N, H2O, H2N, N2O, N2H, Z2O, Z2H, Z2N) VALUES (" + 
 	    				 entry.ticks + ", " +
 	    				 entry.runningTime + ", " +
 	    				 entry.numberOfNarjillos + ", " +
 	    				 entry.numberOfFoodPellets + ", " +
-	    				 entry.dnaPoolSize + ", " +
 	    				 entry.oxygen + ", " +
 	    				 entry.hydrogen + ", " +
 	    				 entry.nitrogen + ", " +
@@ -92,7 +91,6 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 					+ " RUNNING_TIME            INT                 NOT NULL,"
 					+ " NUMBER_OF_NARJILLOS     INT                 NOT NULL,"
 					+ " NUMBER_OF_FOOD_PELLETS  INT                 NOT NULL,"
-					+ " DNA_POOL_SIZE           INT                 NOT NULL,"
 					+ " OXYGEN                  DOUBLE              NOT NULL,"
 					+ " HYDROGEN                DOUBLE              NOT NULL,"
 					+ " NITROGEN                DOUBLE              NOT NULL,"
@@ -130,7 +128,6 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 						rs.getInt("RUNNING_TIME"),
 						rs.getInt("NUMBER_OF_NARJILLOS"),
 						rs.getInt("NUMBER_OF_FOOD_PELLETS"),
-						rs.getInt("DNA_POOL_SIZE"),
 						rs.getDouble("OXYGEN"),
 						rs.getDouble("HYDROGEN"),
 						rs.getDouble("NITROGEN"),

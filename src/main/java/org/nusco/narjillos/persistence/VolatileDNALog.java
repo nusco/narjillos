@@ -45,11 +45,6 @@ public class VolatileDNALog implements DNALog {
 	}
 
 	@Override
-	public int getDnaCount() {
-		return idToDna.size();
-	}
-
-	@Override
 	public List<DNA> getLiveDna() {
 		Collections.sort(liveDna, new Comparator<DNA>() {
 

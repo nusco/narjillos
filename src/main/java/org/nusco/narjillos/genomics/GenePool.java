@@ -11,31 +11,29 @@ import org.nusco.narjillos.core.utilities.NumGen;
 /**
  * A pool of DNA strands.
  */
-public class GenePool implements Cloneable {
+public class GenePool {
 
 	private DNALog dnaLog;
-	private int allDnaCountCache;
 
 	public GenePool(DNALog dnaLog) {
 		this.dnaLog = dnaLog;
-		allDnaCountCache = dnaLog.getDnaCount();
 	}
 
 	public DNA createDna(String dna, NumGen numGen) {
 		DNA result = new DNA(numGen.nextSerial(), dna, DNA.NO_PARENT);
-		addToPool(result);
+		dnaLog.save(result);
 		return result;
 	}
 
 	public DNA createRandomDna(NumGen numGen) {
 		DNA result = DNA.random(numGen.nextSerial(), numGen);
-		addToPool(result);
+		dnaLog.save(result);
 		return result;
 	}
 
 	public DNA mutateDna(DNA parent, NumGen numGen) {
 		DNA result = parent.mutate(numGen.nextSerial(), numGen);
-		addToPool(result);
+		dnaLog.save(result);
 		return result;
 	}
 
@@ -82,10 +80,6 @@ public class GenePool implements Cloneable {
 	 */
 	public DNA getDna(long id) {
 		return getAllDna().get(id);
-	}
-
-	public int getAllDnaCount() {
-		return allDnaCountCache;
 	}
 
 	public void terminate() {
@@ -135,10 +129,5 @@ public class GenePool implements Cloneable {
 
 	private List<DNA> getAliveDna() {
 		return dnaLog.getLiveDna();
-	}
-
-	private void addToPool(DNA dna) {
-		dnaLog.save(dna);
-		allDnaCountCache++;
 	}
 }

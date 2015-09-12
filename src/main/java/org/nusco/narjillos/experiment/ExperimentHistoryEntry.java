@@ -17,7 +17,6 @@ public class ExperimentHistoryEntry {
 	public final long runningTime;
 	public final int numberOfNarjillos;
 	public final int numberOfFoodPellets;
-	public final int dnaPoolSize;
 	public final double oxygen;
 	public final double hydrogen;
 	public final double nitrogen;
@@ -33,14 +32,12 @@ public class ExperimentHistoryEntry {
 
 	public ExperimentHistoryEntry(long ticks, long runningTime,
 				int numberOfNarjillos, int numberOfFoodPellets,
-				int dnaPoolSize,
 				double oxygen, double hydrogen, double nitrogen,
 				int o2h, int o2n, int h2o, int h2n, int n2o, int n2h, int z2o, int z2h, int z2n) {
 		this.ticks = ticks;
 		this.runningTime = runningTime;
 		this.numberOfNarjillos = numberOfNarjillos;
 		this.numberOfFoodPellets = numberOfFoodPellets;
-		this.dnaPoolSize = dnaPoolSize;
 		this.oxygen = oxygen;
 		this.hydrogen = hydrogen;
 		this.nitrogen = nitrogen;
@@ -60,7 +57,6 @@ public class ExperimentHistoryEntry {
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
 		this.numberOfNarjillos = experiment.getEcosystem().getNumberOfNarjillos();
 		this.numberOfFoodPellets = experiment.getEcosystem().getNumberOfFoodPellets();
-		this.dnaPoolSize = experiment.getGenePool().getAllDnaCount();
 		this.oxygen = experiment.getEcosystem().getAtmosphere().getDensityOf(OXYGEN);
 		this.hydrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(HYDROGEN);
 		this.nitrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(NITROGEN);
@@ -108,7 +104,6 @@ public class ExperimentHistoryEntry {
 				runningTime + "," +
 				numberOfNarjillos + "," +
 				numberOfFoodPellets + "," +
-				dnaPoolSize + "," +
 				oxygen + "," +
 				hydrogen + "," +
 				nitrogen + "," +
@@ -126,7 +121,6 @@ public class ExperimentHistoryEntry {
 	public static String toCsvHeader() {
 		return 	"Ticks,RunningTime," +
 				"NumberOfNarjillos,NumberOfFoodPellets," +
-				"DnaPoolSize," +
 				"Oxygen,Hydrogen,Nitrogen," +
 				"O2H,O2N,H2O,H2N,N2O,N2H,Z2O,Z2H,Z2N";
 	}

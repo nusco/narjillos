@@ -66,14 +66,6 @@ public class GenePoolTest {
 	}
 	
 	@Test
-	public void getsAllDnaCount() {
-		for (int i = 0; i < 3; i++)
-			genePool.createRandomDna(numGen);
-
-		assertEquals(3, genePool.getAllDnaCount());
-	}
-	
-	@Test
 	public void getAncestryOfDna() {
 		DNA gen1 = genePool.createDna("{0}", numGen);
 		DNA gen2 = genePool.mutateDna(gen1, numGen);

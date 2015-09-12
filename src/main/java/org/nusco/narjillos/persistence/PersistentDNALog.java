@@ -78,20 +78,6 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	@Override
-	public int getDnaCount() {
-		Statement statement = createStatement();
-		try {
-			ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM DNA;");
-			rs.next();
-			return rs.getInt(1);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			close(statement);
-		}
-	}
-
-	@Override
 	public List<DNA> getLiveDna() {
 		Statement statement = createStatement();
 		try {

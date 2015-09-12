@@ -40,91 +40,82 @@ public class Lab {
 		options.addOption("c", "csv", false, "output ancestry in CSV format");
 		options.addOption("n", "nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
 
-		CommandLine commandLine;
 		try {
-			commandLine = new BasicParser().parse(options, args);
-		} catch (ParseException e) {
-			printHelpText(options);
-			return;
+			CommandLine commandLine;
+			try {
+				commandLine = new BasicParser().parse(options, args);
+			} catch (ParseException e) {
+				printHelpText(options);
+				return;
+			}
+	
+			if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("?")) {
+				printHelpText(options);
+				return;
+			}
+	
+			String databaseFile = args[0];
+			Experiment experiment = ExperimentLoader.load(databaseFile);
+			HistoryLog historyLog = new PersistentHistoryLog(experiment.getId());
+			DNAAnalyzer dnaAnalyzer = new DNAAnalyzer(new PersistentDNALog(experiment.getId()));
+	
+			if (commandLine.hasOption("history"))
+				dumpHistory(historyLog);
+			else if (commandLine.hasOption("stats"))
+				System.out.println(historyLog.getLatestEntry());
+			else if (commandLine.hasOption("primary"))
+				System.out.println(getPrimaryDNAId(dnaAnalyzer));
+			else if (commandLine.hasOption("dna"))
+				System.out.println(getDna(dnaAnalyzer, commandLine.getOptionValue("dna")));
+			else if (commandLine.hasOption("dnastats"))
+				System.out.println(getDNAStats(dnaAnalyzer, commandLine.getOptionValue("dnastats")));
+			else if (commandLine.hasOption("germline"))
+				dumpGermline(dnaAnalyzer, commandLine.getOptionValue("germline"));
+			else if (commandLine.hasOption("csv"))
+				System.out.print(new DNAExporter(dnaAnalyzer).toCSVFormat());
+			else if (commandLine.hasOption("nexus"))
+				System.out.println(new DNAExporter(dnaAnalyzer).toNEXUSFormat());
+			else
+				printHelpText(options);
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
-			return;
 		}
+	}
 
-		if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("?")) {
-			printHelpText(options);
-			return;
-		}
+	private static String getDNAStats(DNAAnalyzer dnaAnalyzer, String dnaId) {
+		return dnaAnalyzer.getDNAStatistics(getDna(dnaAnalyzer, dnaId));
+	}
 
-		String databaseFile = args[0];
-		Experiment experiment = ExperimentLoader.load(databaseFile);
-		DNAAnalyzer dnaAnalyzer = new DNAAnalyzer(new PersistentDNALog(experiment.getId()));
-		HistoryLog historyLog = new PersistentHistoryLog(experiment.getId());
+	private static void dumpGermline(DNAAnalyzer dnaAnalyzer, String dnaId) {
+		DNA dna = getDna(dnaAnalyzer, dnaId);
+		List<DNA> germline = dnaAnalyzer.getGermline(dna);
+		for (DNA ancestor : germline)
+			System.out.println(ancestor);
+	}
 
+	private static long getPrimaryDNAId(DNAAnalyzer dnaAnalyzer) {
+		DNA dna = dnaAnalyzer.getMostSuccessfulDna();
+		validateDna(dna);
+		long id = dna.getId();
+		return id;
+	}
 
-		if (commandLine.hasOption("history")) {
-			System.out.println(ExperimentHistoryEntry.toCsvHeader());
-			for (ExperimentHistoryEntry stat : historyLog.getEntries())
-				System.out.println(stat);
-			return;
-		}
-
-		if (commandLine.hasOption("stats")) {
-			System.out.println(historyLog.getLatestEntry());
-			return;
-		}
-
-		if (commandLine.hasOption("primary")) {
-			DNA dna = dnaAnalyzer.getMostSuccessfulDna();
-			if (dna == null) {
-				System.out.println("DNA not found");
-				System.exit(-1);
-			}
-			System.out.println(dna.getId());
-			return;
-		}
-
-		if (commandLine.hasOption("dna")) {
-			DNA dna = getDna(dnaAnalyzer, commandLine.getOptionValue("dna"));
-			System.out.println(dna);
-			return;
-		}
-
-		if (commandLine.hasOption("dnastats")) {
-			DNA dna = getDna(dnaAnalyzer, commandLine.getOptionValue("dnastats"));
-			System.out.println(dnaAnalyzer.getDNAStatistics(dna));
-			return;
-		}
-
-		if (commandLine.hasOption("germline")) {
-			DNA dna = getDna(dnaAnalyzer, commandLine.getOptionValue("germline"));
-			List<DNA> germline = dnaAnalyzer.getGermline(dna);
-			for (DNA ancestor : germline)
-				System.out.println(ancestor);
-			return;
-		}
-
-		if (commandLine.hasOption("csv")) {
-			System.out.print(new DNAExporter(dnaAnalyzer).toCSVFormat());
-			return;
-		}
-
-		if (commandLine.hasOption("nexus")) {
-			System.out.println(new DNAExporter(dnaAnalyzer).toNEXUSFormat());
-			return;
-		}
-
-		printHelpText(options);
+	private static void dumpHistory(HistoryLog historyLog) {
+		System.out.println(ExperimentHistoryEntry.toCsvHeader());
+		for (ExperimentHistoryEntry stat : historyLog.getEntries())
+			System.out.println(stat);
 	}
 
 	private static DNA getDna(DNAAnalyzer dnaAnalyzer, String id) {
 		Long dnaId = Long.parseLong(id);
 		DNA dna = dnaAnalyzer.getDna(dnaId);
-		if (dna == null) {
-			System.out.println("DNA not found");
-			System.exit(1);
-		}
+		validateDna(dna);
 		return dna;
+	}
+
+	private static void validateDna(DNA dna) {
+		if (dna == null)
+			throw new RuntimeException("DNA not found");
 	}
 
 	private static void printHelpText(Options commandLineOptions) {

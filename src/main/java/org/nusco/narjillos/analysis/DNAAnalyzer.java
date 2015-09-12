@@ -90,17 +90,6 @@ public class DNAAnalyzer {
 		return result;
 	}
 
-	private Map<Long, DNA> getAllDna() {
-		Map<Long, DNA> result = new LinkedHashMap<>();
-		for (DNA dna : dnaLog.getAllDna())
-			result.put(dna.getId(), dna);
-		return result;
-	}
-
-	private List<DNA> getAliveDna() {
-		return dnaLog.getLiveDna();
-	}
-
 	private Map<Long, DNA> getDnaById() {
 		Map<Long, DNA> result = new LinkedHashMap<>();
 		for (DNA dna : dnaLog.getAllDna())

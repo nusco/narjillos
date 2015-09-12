@@ -5,9 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.SimpleExperiment;
-import org.nusco.narjillos.application.Version;
+import org.nusco.narjillos.core.utilities.Version;
 import org.nusco.narjillos.experiment.Experiment;
+import org.nusco.narjillos.experiment.SimpleExperiment;
 
 public class ExperimentLogTest {
 

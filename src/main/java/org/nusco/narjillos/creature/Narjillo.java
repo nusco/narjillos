@@ -16,7 +16,7 @@ import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 /**
  * A fully-formed, autonomous creature.
@@ -125,7 +125,7 @@ public class Narjillo implements Thing {
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay
 	 * it.
 	 */
-	public Egg layEgg(GenePool genePool, NumGen numGen) {
+	public Egg layEgg(DNALog dnaLog, NumGen numGen) {
 		if (getAge() < nextEggAge)
 			return null;
 
@@ -143,12 +143,18 @@ public class Narjillo implements Thing {
 			return null;
 
 		getEnergy().decreaseBy(energyToChild);
-		DNA childDNA = genePool.mutateDna(getDNA(), numGen);
+		DNA childDNA = mutateDna(dnaLog, getDNA(), numGen);
 
 		decideWhenToLayTheNextEgg();
 		Vector position = getNeckLocation();
 		Vector velocity = Vector.polar(360 * numGen.nextDouble(), getBody().getEggVelocity());
 		return new Egg(childDNA, position, velocity, energyToChild, numGen);
+	}
+
+	public DNA mutateDna(DNALog dnaLog, DNA parent, NumGen numGen) {
+		DNA result = parent.mutate(numGen.nextSerial(), numGen);
+		dnaLog.save(result);
+		return result;
 	}
 
 	public Element getBreathedElement() {

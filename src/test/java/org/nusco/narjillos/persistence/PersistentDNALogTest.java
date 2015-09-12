@@ -2,6 +2,7 @@ package org.nusco.narjillos.persistence;
 
 import org.junit.Test;
 import org.nusco.narjillos.genomics.DNALog;
+import org.nusco.narjillos.genomics.DNALogTest;
 
 public class PersistentDNALogTest extends DNALogTest {
 

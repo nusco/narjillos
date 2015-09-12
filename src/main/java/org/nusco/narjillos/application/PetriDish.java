@@ -6,14 +6,14 @@ import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.NumberFormatter;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.HistoryLog;
+import org.nusco.narjillos.experiment.VolatileHistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
+import org.nusco.narjillos.genomics.VolatileDNALog;
 import org.nusco.narjillos.persistence.ExperimentLog;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
-import org.nusco.narjillos.persistence.VolatileDNALog;
-import org.nusco.narjillos.persistence.VolatileHistoryLog;
 
 /**
  * The class that initializes and runs an Experiment.
@@ -107,13 +107,13 @@ public class PetriDish implements Dish {
 
 	private void setPersistenceStrategies(Experiment experiment, CommandLineOptions options) {
 		if (options.isPersistent())
-			setPersistenceStrategies(experiment, new GenePool(new PersistentDNALog(experiment.getId())), new PersistentHistoryLog(experiment.getId()));
+			setPersistenceStrategies(experiment, new PersistentDNALog(experiment.getId()), new PersistentHistoryLog(experiment.getId()));
 		else
-			setPersistenceStrategies(experiment, new GenePool(new VolatileDNALog()), new VolatileHistoryLog());
+			setPersistenceStrategies(experiment, new VolatileDNALog(), new VolatileHistoryLog());
 	}
 
-	private void setPersistenceStrategies(Experiment result, GenePool genePool, HistoryLog historyLog) {
-		result.setGenePool(genePool);
+	private void setPersistenceStrategies(Experiment result, DNALog dnaLog, HistoryLog historyLog) {
+		result.setDnaLog(dnaLog);
 		result.setHistoryLog(historyLog);
 	}
 

@@ -3,7 +3,6 @@ package org.nusco.narjillos.experiment;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.SimpleExperiment;
 import org.nusco.narjillos.core.chemistry.Element;
 
 public class StatsTest {

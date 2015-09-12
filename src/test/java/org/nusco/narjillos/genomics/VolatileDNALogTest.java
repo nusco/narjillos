@@ -1,4 +1,4 @@
-package org.nusco.narjillos.persistence;
+package org.nusco.narjillos.genomics;
 
 import org.nusco.narjillos.genomics.DNALog;
 

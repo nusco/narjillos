@@ -3,8 +3,8 @@ package org.nusco.narjillos;
 import org.nusco.narjillos.application.CommandLineOptions;
 import org.nusco.narjillos.application.MainNarjillosApplication;
 import org.nusco.narjillos.application.PetriDish;
-import org.nusco.narjillos.application.Version;
 import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.utilities.Version;
 
 /**
  * The entry point to the "narjillos" program.

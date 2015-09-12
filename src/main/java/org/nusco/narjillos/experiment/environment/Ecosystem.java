@@ -23,7 +23,7 @@ import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.physics.Viscosity;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 /**
  * A complex environment populate with narjillos, eggs and food.
@@ -62,11 +62,11 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	public void tick(GenePool genePool, NumGen numGen) {
+	public void tick(DNALog dnaLog, NumGen numGen) {
 		if (isShuttingDown())
 			return; // we're leaving, apparently
 
-		super.tick(genePool, numGen);
+		super.tick(dnaLog, numGen);
 	}
 	
 	@Override
@@ -151,18 +151,24 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	public void populate(String dna, GenePool genePool, NumGen numGen) {
+	public void populate(String dna, DNALog dnaLog, NumGen numGen) {
 		spawnFood(numGen);
 
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
-			spawnEgg(genePool.createDna(dna, numGen), randomPosition(getSize(), numGen), numGen);
+			spawnEgg(createDna(dna, dnaLog, numGen), randomPosition(getSize(), numGen), numGen);
 	}
 
-	public void populate(GenePool genePool, NumGen numGen) {
+	private DNA createDna(String dna, DNALog dnaLog, NumGen numGen) {
+		DNA result = new DNA(numGen.nextSerial(), dna, DNA.NO_PARENT);
+		dnaLog.save(result);
+		return result;
+	}
+
+	public void populate(DNALog dnaLog, NumGen numGen) {
 		spawnFood(numGen);
 
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
-			spawnEgg(genePool.createRandomDna(numGen), randomPosition(getSize(), numGen), numGen);
+			spawnEgg(createRandomDna(dnaLog, numGen), randomPosition(getSize(), numGen), numGen);
 	}
 
 	public synchronized void terminate() {
@@ -190,7 +196,7 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	protected void tickThings(GenePool genePool, NumGen numGen) {
+	protected void tickThings(DNALog dnaLog, NumGen numGen) {
 		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> {
 			tickEgg((Egg) thing, numGen);
 		});
@@ -199,11 +205,11 @@ public class Ecosystem extends Environment {
 			new LinkedList<>(narjillos).stream()
 				.filter((narjillo) -> (narjillo.isDead()))
 				.forEach((narjillo) -> {
-					removeNarjillo(narjillo, genePool);
+					removeNarjillo(narjillo, dnaLog);
 				});
 		}
 
-		tickNarjillos(genePool, numGen);
+		tickNarjillos(numGen);
 
 		if (shouldSpawnFood(numGen)) {
 			spawnFood(randomPosition(getSize(), numGen));
@@ -212,13 +218,19 @@ public class Ecosystem extends Environment {
 
 		synchronized (narjillos) {
 			narjillos.stream().forEach((narjillo) -> {
-				maybeLayEgg(narjillo, genePool, numGen);
+				maybeLayEgg(narjillo, dnaLog, numGen);
 			});
 		}
 	}
 
 	protected Set<Thing> getCollisions(Segment movement) {
 		return space.detectCollisions(movement, "food_pellet");
+	}
+
+	private DNA createRandomDna(DNALog dnaLog, NumGen numGen) {
+		DNA result = DNA.random(numGen.nextSerial(), numGen);
+		dnaLog.save(result);
+		return result;
 	}
 
 	private void spawnFood(NumGen numGen) {
@@ -234,7 +246,7 @@ public class Ecosystem extends Environment {
 			remove(egg);
 	}
 
-	private synchronized void tickNarjillos(GenePool genePool, NumGen numGen) {
+	private synchronized void tickNarjillos(NumGen numGen) {
 		Map<Narjillo, Set<Thing>> narjillosToCollidedFood;
 		synchronized (narjillos) {
 			narjillosToCollidedFood = tick(narjillos);
@@ -247,7 +259,7 @@ public class Ecosystem extends Environment {
 			.forEach((entry) -> {
 				Narjillo narjillo = entry.getKey();
 				Set<Thing> collidedFood = entry.getValue();
-				consume(narjillo, collidedFood, genePool, numGen);
+				consume(narjillo, collidedFood, numGen);
 			});
 	}
 
@@ -297,13 +309,13 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	private void consume(Narjillo narjillo, Set<Thing> foodPellets, GenePool genePool, NumGen numGen) {
+	private void consume(Narjillo narjillo, Set<Thing> foodPellets, NumGen numGen) {
 		foodPellets.stream().forEach((foodPellet) -> {
-			consumeFood(narjillo, (FoodPellet) foodPellet, genePool, numGen);
+			consumeFood(narjillo, (FoodPellet) foodPellet, numGen);
 		});
 	}
 
-	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, GenePool genePool, NumGen numGen) {
+	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, NumGen numGen) {
 		if (!space.contains(foodPellet))
 			return;		// race condition: already consumed
 
@@ -318,16 +330,16 @@ public class Ecosystem extends Environment {
 		space.remove(thing);
 	}
 
-	private void removeNarjillo(Narjillo narjillo, GenePool genePool) {
+	private void removeNarjillo(Narjillo narjillo, DNALog dnaLog) {
 		notifyThingRemoved(narjillo);
 		synchronized (narjillos) {
 			narjillos.remove(narjillo);
 		}
-		genePool.remove(narjillo.getDNA());
+		dnaLog.markAsDead(narjillo.getDNA().getId());
 	}
 
-	private void maybeLayEgg(Narjillo narjillo, GenePool genePool, NumGen numGen) {
-		Egg egg = narjillo.layEgg(genePool, numGen);
+	private void maybeLayEgg(Narjillo narjillo, DNALog dnaLog, NumGen numGen) {
+		Egg egg = narjillo.layEgg(dnaLog, numGen);
 		if (egg == null)
 			return;
 

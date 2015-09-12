@@ -4,7 +4,7 @@ import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 public class Experiment {
 
@@ -14,7 +14,7 @@ public class Experiment {
 	private final NumGen numGen;
 	private long totalRunningTime = 0;
 
-	private transient GenePool genePool;
+	private transient DNALog dnaLog;
 	private transient HistoryLog historyLog;
 	private transient long lastRegisteredRunningTime;
 
@@ -41,7 +41,7 @@ public class Experiment {
 		if (ticksChronometer.getTotalTicks() % Configuration.ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL == 0)
 			ecosystem.updateTargets();
 
-		ecosystem.tick(genePool, numGen);
+		ecosystem.tick(dnaLog, numGen);
 		ticksChronometer.tick();
 	}
 
@@ -58,7 +58,7 @@ public class Experiment {
 	}
 
 	public String terminate() {
-		genePool.terminate();
+		dnaLog.close();
 		historyLog.close();
 		ecosystem.terminate();
 
@@ -68,10 +68,6 @@ public class Experiment {
 		if (!thereAreSurvivors())
 			result += " (EXTINCTION)";
 		return result;
-	}
-
-	public GenePool getGenePool() {
-		return genePool;
 	}
 
 	// TODO: move to the dish?
@@ -89,16 +85,16 @@ public class Experiment {
 		totalRunningTime = 0;
 	}
 
-	public final void setGenePool(GenePool genePool) {
-		this.genePool = genePool;
+	public final void setDnaLog(DNALog dnaLog) {
+		this.dnaLog = dnaLog;
 	}
 
 	public final void populate(String dna) {
-		ecosystem.populate(dna, genePool, numGen);
+		ecosystem.populate(dna, dnaLog, numGen);
 	}
 
 	public final void populate() {
-		ecosystem.populate(genePool, numGen);
+		ecosystem.populate(dnaLog, numGen);
 	}
 
 	public void setHistoryLog(HistoryLog historyLog) {

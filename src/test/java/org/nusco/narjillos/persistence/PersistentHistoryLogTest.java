@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.SimpleExperiment;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
+import org.nusco.narjillos.experiment.SimpleExperiment;
 
 public class PersistentHistoryLogTest {
 

@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.nusco.narjillos.core.physics.FastMath;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.HistoryLog;
+import org.nusco.narjillos.experiment.SimpleExperiment;
 import org.nusco.narjillos.genomics.DNALog;
-import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
 
@@ -69,7 +69,7 @@ public class PerformanceTest {
 		FastMath.setUp();
 
 		Experiment experiment = new SimpleExperiment();
-		experiment.setGenePool(new GenePool(dnaLog));
+		experiment.setDnaLog(dnaLog);
 		experiment.setHistoryLog(historyLog);
 		
 		long startTimeMillis = System.currentTimeMillis();

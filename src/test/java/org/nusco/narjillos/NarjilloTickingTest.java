@@ -13,8 +13,6 @@ import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Organ;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.persistence.VolatileDNALog;
 import org.nusco.narjillos.persistence.serialization.JSON;
 
 /**
@@ -63,12 +61,11 @@ public class NarjilloTickingTest {
 
 	@Test
 	public void narjillosTickingIsDeterministic() {
-		GenePool genePool = new GenePool(new VolatileDNALog());
-		DNA sampleDNA = genePool.createDna(SAMPLE_DNA_DOCUMENT, new NumGen(1234));
-		Atmosphere atmosphere = new Atmosphere();
-		
 		// Create the sample narjillo.
-		Narjillo narjillo = new Narjillo(sampleDNA, Vector.cartesian(100, 200), 90, new LifeFormEnergy(10000, 30000));
+		DNA sampleDna = new DNA(new NumGen(1234).nextSerial(), SAMPLE_DNA_DOCUMENT, DNA.NO_PARENT);
+		Narjillo narjillo = new Narjillo(sampleDna, Vector.cartesian(100, 200), 90, new LifeFormEnergy(10000, 30000));
+
+		Atmosphere atmosphere = new Atmosphere();
 
 		// Start a few reading threads to make things more interesting.
 		// Then tick the narjillo for a while, and stop the readers.

@@ -1,5 +1,5 @@
 /**
- * Serialization/deserialization of experiment to zipped JSON files.
+ * Serialization/deserialization to JSON.
  */
 package org.nusco.narjillos.persistence.serialization;
 

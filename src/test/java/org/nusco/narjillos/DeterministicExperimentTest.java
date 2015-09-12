@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
-import org.nusco.narjillos.genomics.GenePool;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
 import org.nusco.narjillos.persistence.serialization.JSON;
@@ -78,7 +77,7 @@ public class DeterministicExperimentTest {
 		Experiment experiment1 = new Experiment(1234, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "deterministic_experiment_test");
 		genePoolLog1 = new PersistentDNALog("test_database1");
 		historyLog1 = new PersistentHistoryLog("test_database1");
-		experiment1.setGenePool(new GenePool(genePoolLog1));
+		experiment1.setDnaLog(genePoolLog1);
 		experiment1.setHistoryLog(historyLog1);
 		experiment1.populate();
 		
@@ -99,7 +98,7 @@ public class DeterministicExperimentTest {
 		Experiment experiment2 = JSON.fromJson(json, Experiment.class);
 		genePoolLog2 = new PersistentDNALog("test_database2");
 		historyLog2 = new PersistentHistoryLog("test_database2");
-		experiment2.setGenePool(new GenePool(genePoolLog2));
+		experiment2.setDnaLog(genePoolLog2);
 		experiment2.setHistoryLog(historyLog2);
 
 		// Now we have two experiments. Keep ticking both for a few more cycles.

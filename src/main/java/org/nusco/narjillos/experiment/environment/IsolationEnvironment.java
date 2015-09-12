@@ -8,7 +8,7 @@ import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 /**
  * An environment that isolates a single narjillo at a time.
@@ -48,7 +48,7 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	@Override
-	protected void tickThings(GenePool genePool, NumGen numGen) {
+	protected void tickThings(DNALog dnaLog, NumGen numGen) {
 		getNarjillo().tick(getAtmosphere());
 	}
 

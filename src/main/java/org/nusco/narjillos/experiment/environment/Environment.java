@@ -8,7 +8,7 @@ import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 /**
  * Base class for all the environments where Narjillos can live.
@@ -34,8 +34,8 @@ public abstract class Environment {
 	public abstract int getNumberOfFoodPellets();
 
 	/** Runs one simulation tick */
-	public void tick(GenePool genePool, NumGen numGen) {
-		tickThings(genePool, numGen);
+	public void tick(DNALog dnaLog, NumGen numGen) {
+		tickThings(dnaLog, numGen);
 
 		if (VisualDebugger.DEBUG)
 			VisualDebugger.clear();
@@ -57,7 +57,7 @@ public abstract class Environment {
 		this.atmosphere = atmosphere;
 	}
 
-	protected abstract void tickThings(GenePool genePool, NumGen numGen);
+	protected abstract void tickThings(DNALog dnaLog, NumGen numGen);
 
 	protected final void notifyThingAdded(Thing thing) {
 		eventListeners.stream().forEach((ecosystemEvent) -> {

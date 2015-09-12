@@ -3,7 +3,7 @@ package org.nusco.narjillos.persistence;
 import java.io.File;
 import java.nio.file.Files;
 
-import org.nusco.narjillos.application.Version;
+import org.nusco.narjillos.core.utilities.Version;
 import org.nusco.narjillos.experiment.Experiment;
 
 public class ExperimentLoader {

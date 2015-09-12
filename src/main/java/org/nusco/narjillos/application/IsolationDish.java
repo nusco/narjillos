@@ -8,8 +8,8 @@ import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.IsolationEnvironment;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.persistence.VolatileDNALog;
+import org.nusco.narjillos.genomics.DNALog;
+import org.nusco.narjillos.genomics.VolatileDNALog;
 
 /**
  * A dish that isolates a single narjillo in its own environment.
@@ -19,7 +19,7 @@ class IsolationDish implements Dish {
 	private final List<DNA> dnas;
 	private int currentDnaIndex = 0;
 	private IsolationEnvironment environment;
-	private GenePool genePool = new GenePool(new VolatileDNALog());
+	private DNALog dnaLog = new VolatileDNALog();
 	private NumGen numGen = new NumGen(1234);
 	
 	public IsolationDish(List<DNA> dnas) {
@@ -34,7 +34,7 @@ class IsolationDish implements Dish {
 	@Override
 	public synchronized boolean tick() {
 		environment.setTarget();
-		environment.tick(genePool, numGen);
+		environment.tick(dnaLog, numGen);
 		return true;
 	}
 

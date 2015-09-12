@@ -1,11 +1,7 @@
-package org.nusco.narjillos.persistence;
+package org.nusco.narjillos.experiment;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.experiment.HistoryLog;
-import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
 
 public class VolatileHistoryLog implements HistoryLog {
 

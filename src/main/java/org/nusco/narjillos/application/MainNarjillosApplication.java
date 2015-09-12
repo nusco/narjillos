@@ -20,6 +20,7 @@ import org.nusco.narjillos.application.views.StatusBarView;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.utilities.Version;
 
 /**
  * The main JavaFX Application class. It binds model and view together, and also

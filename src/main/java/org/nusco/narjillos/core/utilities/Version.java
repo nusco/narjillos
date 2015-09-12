@@ -1,4 +1,4 @@
-package org.nusco.narjillos.application;
+package org.nusco.narjillos.core.utilities;
 
 import java.io.IOException;
 import java.nio.file.Files;

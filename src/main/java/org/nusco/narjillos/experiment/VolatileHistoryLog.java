@@ -16,7 +16,7 @@ public class VolatileHistoryLog implements HistoryLog {
 	}
 
 	@Override
-	public void saveEntries(Experiment experiment) {
+	public void saveEntry(Experiment experiment) {
 	}
 
 	@Override

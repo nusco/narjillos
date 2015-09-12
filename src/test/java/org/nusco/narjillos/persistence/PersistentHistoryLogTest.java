@@ -42,10 +42,10 @@ public class PersistentHistoryLogTest {
 		
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		historyLog.saveEntries(experiment);
+		historyLog.saveEntry(experiment);
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
-		historyLog.saveEntries(experiment);
+		historyLog.saveEntry(experiment);
 
 		ExperimentHistoryEntry latestStats = historyLog.getLatestEntry();
 
@@ -61,11 +61,11 @@ public class PersistentHistoryLogTest {
 
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
-		historyLog.saveEntries(experiment);
+		historyLog.saveEntry(experiment);
 		for (int i = 0; i < 10; i++)
 			experiment.tick();
-		historyLog.saveEntries(experiment);
-		historyLog.saveEntries(experiment);
+		historyLog.saveEntry(experiment);
+		historyLog.saveEntry(experiment);
 
 		List<ExperimentHistoryEntry> stats = historyLog.getEntries();
 

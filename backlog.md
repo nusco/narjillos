@@ -1,13 +1,13 @@
 #Narjillos Backlog
 
-* Fix DNA-related functionality in Lab
-
 ##Advanced Body Plans
 >goal: specialized creatures  
 
     Give evolution more power to shape interesting creature bodies.
 
 * MIRROR_AND_CONTINUE and MIRROR_AND_STOP instructions  
+  Makes it possible to mirror an organ without necessarily mirroring the entire subtree.  
+
 * FORK_AND_CONTINUE and FORK_AND_STOP instructions  
 + Parametric FORK  
 + Parametric MIRROR  
@@ -16,11 +16,8 @@
 * STOP and END instructions  
   STOP just stops building this part, END terminates the build process  
 
-* Less constraining mirroring  
-  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
-
-+ "Jump" instruction in body plan  
-+ "Call" instruction in body plan  
++ JUMP instruction  
++ CALL instruction  
 
 - Duplicate organs during mutation instead of mirroring them  
   To favour emergent complexity. There are studies who say it would, at least.  

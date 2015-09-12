@@ -19,12 +19,8 @@ import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
 
 /**
- * The "lab" program. It reads data from an experiment and outputs it in various
- * formats.
- *
- * At the moment, it only does ancestry analysis: it reads the gene pool,
- * identifies the most successful DNA in the pool, and prints out its entire
- * ancestry - from the first randomly generates ancestor onwards.
+ * The "lab" program. It reads data from an experiment and does analysis and
+ * conversions.
  */
 public class Lab {
 
@@ -48,17 +44,17 @@ public class Lab {
 				printHelpText(options);
 				return;
 			}
-	
+
 			if (args.length == 0 || args[0].startsWith("-") || commandLine == null || commandLine.hasOption("?")) {
 				printHelpText(options);
 				return;
 			}
-	
+
 			String databaseFile = args[0];
 			Experiment experiment = ExperimentLoader.load(databaseFile);
 			HistoryLog historyLog = new PersistentHistoryLog(experiment.getId());
 			DNAAnalyzer dnaAnalyzer = new DNAAnalyzer(new PersistentDNALog(experiment.getId()));
-	
+
 			if (commandLine.hasOption("history"))
 				dumpHistory(historyLog);
 			else if (commandLine.hasOption("stats"))

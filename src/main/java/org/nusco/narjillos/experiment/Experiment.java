@@ -73,7 +73,7 @@ public class Experiment {
 	// TODO: move to the dish?
 	public void saveHistoryEntry() {
 		updateTotalRunningTime();
-		historyLog.saveEntries(this);
+		historyLog.saveEntry(this);
 	}
 
 	public boolean thereAreSurvivors() {

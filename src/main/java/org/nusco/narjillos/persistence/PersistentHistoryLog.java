@@ -18,7 +18,7 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 	}
 
 	@Override
-	public void saveEntries(Experiment experiment) {
+	public void saveEntry(Experiment experiment) {
 		ExperimentHistoryEntry entry = new ExperimentHistoryEntry(experiment);
 		if (contains(entry))
 			return;

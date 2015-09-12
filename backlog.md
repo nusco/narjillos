@@ -170,8 +170,6 @@
 
     Track historical data in experiment for analysis.
 
-+ Fix bug with negative total running time in history CSV  
-
 * Save current configuration to experiment file  
   Issue warning if continuing the experiment with a different configuration.
   Maybe offer a command-line switch to override existing configuration?

@@ -12,7 +12,9 @@ public class ExperimentLoader {
 		checkFile(fileName);
 		checkVersion(fileName);
 		ExperimentLog experimentLog = new ExperimentLog(stripExtension(fileName));
-		return experimentLog.load();
+		Experiment result = experimentLog.load();
+		result.timeStamp();
+		return result;
 	}
 
 	private static void checkFile(String fileName) {

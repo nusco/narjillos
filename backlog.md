@@ -1,16 +1,5 @@
 #Narjillos Backlog
 
-Narjillos is my experimental project. I use it to try a lot of different things, and then I apply what I learn to other projects. In this case, I'm using it to experiment with the backlog.txt format (https://github.com/nusco/backlog.txt).
-
-For now, I'm using a quick Java utility to process the backlog. Here are some commands you can use:
-
-    g backlog            prints the whole backlog (in color)
-    g backlog all        like "g backlog"
-    g backlog top        prints the topmost priority feature
-    g backlog N          prints the topmost N features
-
----
-
 ##Advanced Body Plans
 >goal: specialized creatures  
 
@@ -181,6 +170,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Track historical data in experiment for analysis.
 
++ Fix bug with negative total running time in history CSV  
+
 * Save current configuration to experiment file  
   Issue warning if continuing the experiment with a different configuration.
   Maybe offer a command-line switch to override existing configuration?
@@ -195,7 +186,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 
 + Warning in case of conflicting command-line arguments of main apps  
-  Like -s and experiment file used together, or combinations of file loading, -p and -history  
+  Like -s and experiment file used together
   Also issue better error messages in case of conflict
 
 + Generate lab script for packaged distribution  
@@ -351,7 +342,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   maybe. (to keep species apart)  
   
 - Diploid creatures  
-  maybe. is it useful?
+  maybe. would this be useful?
 
 
 ##Intuitive Navigation
@@ -376,7 +367,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   
 - Lateral viewfield is genetically determined  
 - Growth rate is genetically determined  
-  maybe? (Takes energy?)  
+  maybe? (Consumes energy?)  
   
 - Egg incubation time is genetically determined  
   maybe. (Makes sense if egg contains green fibers)  
@@ -394,6 +385,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
 * Save to remote database  
   Requires switching to a different driver than SQLite.  
+
 
 ##Crazy Ideas
 

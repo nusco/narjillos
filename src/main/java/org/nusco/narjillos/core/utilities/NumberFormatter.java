@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
  * 
  * For example, 2000 becomes 2K, 1200000 becomes 1.2M, and so on.
  */
-public class NumberFormat {
+public class NumberFormatter {
 
 	private final static DecimalFormat FORMAT = new DecimalFormat("###.##");
 

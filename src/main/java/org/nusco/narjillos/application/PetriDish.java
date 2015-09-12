@@ -3,7 +3,7 @@ package org.nusco.narjillos.application;
 import java.util.Random;
 
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.NumberFormat;
+import org.nusco.narjillos.core.utilities.NumberFormatter;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
@@ -149,7 +149,7 @@ public class PetriDish implements Dish {
 	}
 
 	private String getReport() {
-		return 	NumberFormat.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
+		return 	NumberFormatter.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
 				experiment.getEcosystem().getNumberOfNarjillos() + "\t" +
 				experiment.getEcosystem().getNumberOfFoodPellets();
 	}
@@ -167,7 +167,7 @@ public class PetriDish implements Dish {
 	}
 
 	public String getStatistics() {
-		return "TPS: " + getTicksInLastSecond() + " / Ticks: " + NumberFormat.format(getTotalTicks());
+		return "TPS: " + getTicksInLastSecond() + " / Ticks: " + NumberFormatter.format(getTotalTicks());
 	}
 
 	private int getTicksInLastSecond() {

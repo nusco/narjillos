@@ -1,7 +1,7 @@
 package org.nusco.narjillos.core.things;
 
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.NumberFormat;
+import org.nusco.narjillos.core.utilities.NumberFormatter;
 
 public class LifeFormEnergy implements Energy {
 
@@ -84,6 +84,6 @@ public class LifeFormEnergy implements Energy {
 	
 	@Override
 	public String toString() {
-		return NumberFormat.format(getValue()) + " of " + NumberFormat.format(getMaximumValue());
+		return NumberFormatter.format(getValue()) + " of " + NumberFormatter.format(getMaximumValue());
 	}
 }

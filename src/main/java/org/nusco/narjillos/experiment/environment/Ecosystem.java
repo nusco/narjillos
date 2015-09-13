@@ -197,16 +197,12 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
-		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> {
-			tickEgg((Egg) thing, numGen);
-		});
+		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> tickEgg((Egg) thing, numGen));
 
 		synchronized (narjillos) {
 			new LinkedList<>(narjillos).stream()
 				.filter((narjillo) -> (narjillo.isDead()))
-				.forEach((narjillo) -> {
-					removeNarjillo(narjillo, dnaLog);
-				});
+				.forEach((narjillo) -> removeNarjillo(narjillo, dnaLog));
 		}
 
 		tickNarjillos(numGen);

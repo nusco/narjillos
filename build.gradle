@@ -86,8 +86,13 @@ task(testDeterministic, dependsOn: 'compileJava', type: JavaExec) {
   classpath = sourceSets.test.runtimeClasspath
 }
 
-task testAll(dependsOn: ['test', 'testPerformance', 'testDatabase', 'testDeterministic']) {
-  description = 'Runs all the tests, including the slow tests and the database tests.'
+task testBuild(dependsOn: ['test', 'testDatabase', 'testDeterministic']) {
+  description = 'Runs all the tests suitable for a build machine, including the slow tests and the database tests.'
+  group = 'verification'
+}
+
+task testAll(dependsOn: ['testBuild', 'testPerformance']) {
+  description = 'Runs all the tests, including the slow tests, the database tests and the performance tests.'
   group = 'verification'
 }
 

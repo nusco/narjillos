@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
@@ -35,6 +36,7 @@ public class DeterministicExperimentTest {
 	private static PersistentDNALog genePoolLog2;
 	private static PersistentHistoryLog historyLog1;
 	private static PersistentHistoryLog historyLog2;
+	private static boolean reporting = true;
 
 	// This test takes a few minutes. Run before packaging a release for
 	// complete peace of mind.
@@ -56,6 +58,11 @@ public class DeterministicExperimentTest {
 		System.exit(0); // otherwise Gradle won't exit (god knows why)
 	}
 
+	@BeforeClass
+	public static void silenceReporting() {
+		reporting  = false;
+	}
+	
 	@AfterClass
 	public static void deleteDatabases() throws IOException {
 		genePoolLog1.delete();
@@ -81,8 +88,8 @@ public class DeterministicExperimentTest {
 		experiment1.setHistoryLog(historyLog1);
 		experiment1.populate();
 		
-		for (int i = 0; i < halfCycles; i++) {
-			maybeReport(i, cycles);
+		for (int cycle = 0; cycle < halfCycles; cycle++) {
+			maybeReport(cycle, cycles);
 			experiment1.tick();
 		}
 
@@ -104,8 +111,8 @@ public class DeterministicExperimentTest {
 		experiment2.setHistoryLog(historyLog2);
 
 		// Now we have two experiments. Keep ticking both for a few more cycles.
-		for (int i = 0; i < halfCycles; i++) {
-			maybeReport(i, cycles);
+		for (int cycle = halfCycles; cycle < cycles; cycle++) {
+			maybeReport(cycle, cycles);
 			experiment1.tick();
 			experiment2.tick();
 		}
@@ -129,7 +136,9 @@ public class DeterministicExperimentTest {
 	}
 
 	private static void maybeReport(int cycle, int totalCycles) {
-		if (cycle % 500 == 0)
+		if (!reporting)
+			return;
+		if (cycle % 1000 == 0)
 			System.out.println(cycle + " of " + totalCycles);
 	}
 

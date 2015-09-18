@@ -81,8 +81,10 @@ public class DeterministicExperimentTest {
 		experiment1.setHistoryLog(historyLog1);
 		experiment1.populate();
 		
-		for (int i = 0; i < halfCycles; i++)
+		for (int i = 0; i < halfCycles; i++) {
+			maybeReport(i, cycles);
 			experiment1.tick();
+		}
 
 		// Serialize the experiment
 		String json = JSON.toJson(experiment1, Experiment.class);
@@ -103,6 +105,7 @@ public class DeterministicExperimentTest {
 
 		// Now we have two experiments. Keep ticking both for a few more cycles.
 		for (int i = 0; i < halfCycles; i++) {
+			maybeReport(i, cycles);
 			experiment1.tick();
 			experiment2.tick();
 		}
@@ -123,6 +126,11 @@ public class DeterministicExperimentTest {
 
 		// Did it work?
 		assertEquals(json1, json2);
+	}
+
+	private static void maybeReport(int cycle, int totalCycles) {
+		if (cycle % 500 == 0)
+			System.out.println(cycle + " of " + totalCycles);
 	}
 
 	private static void copy(String file1, String file2) throws IOException {

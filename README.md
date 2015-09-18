@@ -7,4 +7,5 @@ Narjillos are artificial creatures that mutate and evolve in a virtual microscop
 See the [site](http://nusco.github.io/narjillos/) for more.
 
 #### Interested in contributing?
+
 Check out the [CONTRIBUTOR notes](https://github.com/nusco/narjillos/blob/master/CONTRIBUTOR.md).

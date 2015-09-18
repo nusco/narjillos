@@ -63,7 +63,6 @@ createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it 
 test {
   description "Runs standard suite of unit tests."
   include '**/*Test*'
-  exclude '**/DatabaseTest*'
   exclude '**/PerformanceTest*'
   testLogging.showStandardStreams = true
 }
@@ -75,11 +74,6 @@ task(testPerformance, dependsOn: 'compileJava', type: JavaExec) {
   classpath = sourceSets.test.runtimeClasspath
 }
 
-task testDatabase(type: Test, dependsOn: 'compileJava') {
-  include '**/DatabaseTest*'
-  testLogging.showStandardStreams = true
-}
-
 task(testDeterministic, dependsOn: 'compileJava', type: JavaExec) {
   description = 'Runs the (slow) test that checks whether the system is deterministic.'
   group = 'verification'
@@ -87,7 +81,7 @@ task(testDeterministic, dependsOn: 'compileJava', type: JavaExec) {
   classpath = sourceSets.test.runtimeClasspath
 }
 
-task testBuild(dependsOn: ['test', 'testDatabase', 'testDeterministic']) {
+task testBuild(dependsOn: ['test', 'testDeterministic']) {
   description = 'Runs all the tests suitable for a build machine, including the slow tests and the database tests.'
   group = 'verification'
 }

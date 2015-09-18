@@ -64,6 +64,7 @@ test {
   description "Runs standard suite of unit tests."
   include '**/*Test*'
   exclude '**/DatabaseTest*'
+  exclude '**/PerformanceTest*'
   testLogging.showStandardStreams = true
 }
 

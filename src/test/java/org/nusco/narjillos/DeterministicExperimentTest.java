@@ -99,7 +99,7 @@ public class DeterministicExperimentTest {
 		// Copy the database
 		genePoolLog1.close();
 		historyLog1.close();
-		copy("test_database1.history", "test_database2.history");
+		copy("test_database1.exp", "test_database2.exp");
 		genePoolLog1.open();
 		historyLog1.open();
 

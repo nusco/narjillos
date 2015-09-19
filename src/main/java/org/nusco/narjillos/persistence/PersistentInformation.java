@@ -21,7 +21,7 @@ public abstract class PersistentInformation {
 	private Connection connection;
 
 	public PersistentInformation(String name) {
-		this.name = name + ".history";
+		this.name = name + ".exp";
 		open();
 	}
 

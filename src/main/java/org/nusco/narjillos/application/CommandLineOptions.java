@@ -28,9 +28,9 @@ public class CommandLineOptions extends Options {
 	private long seed = NO_SEED;
 	private String dna = null;
 
-	public static CommandLineOptions parse(String... args) {
+	public static CommandLineOptions parse(boolean printWarnings, String... args) {
 		try {
-			return new CommandLineOptions(args);
+			return new CommandLineOptions(printWarnings, args);
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -38,6 +38,10 @@ public class CommandLineOptions extends Options {
 	}
 
 	CommandLineOptions(String... args) {
+		this(true, args);
+	}
+
+	private CommandLineOptions(boolean printWarnings, String... args) {
 		addOption("?", "help", false, "print this message");
 		addOption("f", "fast", false, "fast mode (no graphics)");
 		addOption("s", "save", false, "save experiment to file");
@@ -82,7 +86,7 @@ public class CommandLineOptions extends Options {
 
         	setFile(line.getArgs()[0]);
         	
-        	if (getExperiment() != null && !isPersistent()) {
+        	if (printWarnings && getExperiment() != null && !isPersistent()) {
 				System.err.println("WARNING: you're loading an existing experiment, but you didn't ask to save it. I will read the experiment, but I will not update it.");
 				System.err.println("If that is not what you want, then maybe use the --save option.");
 			}

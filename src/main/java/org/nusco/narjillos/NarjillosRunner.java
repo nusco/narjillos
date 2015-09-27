@@ -11,7 +11,7 @@ import org.nusco.narjillos.core.utilities.Version;
  */
 public class NarjillosRunner {
 	public static void main(String... args) throws Exception {
-		CommandLineOptions options = CommandLineOptions.parse(args);
+		CommandLineOptions options = CommandLineOptions.parse(false, args);
 		if (options == null)
 			System.exit(1);
 		

@@ -54,7 +54,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
 		return new StoppableThread() {
 			public void run() {
-				CommandLineOptions options = CommandLineOptions.parse(arguments);
+				CommandLineOptions options = CommandLineOptions.parse(true, arguments);
 				if (options == null)
 					System.exit(1);
 

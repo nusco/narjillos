@@ -7,6 +7,7 @@ Before I move on to the next (crucial) items, I need to understand a few things 
 1. Does evolution really stop in the current system? What happens at 1 billion ticks? Run a very long experiment.  
 2. Why doesn't atmosphere seem to encourage the birth of separate species? The creatures seem to evolve to only consume one element, deplete it, and still keep consuming that one element (at huge energy cost). Why? Find out and try to have stable species.  
 3. Is there any way to encourage path dependency by changing the criterion for element consumption, or maybe adding a side effect to having different fybers?  
+4. Any way to shift focus away from speed?  
 
 ##Advanced Body Plans
 >goal: specialized creatures  

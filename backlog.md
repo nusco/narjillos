@@ -322,6 +322,7 @@ Before I move on to the next (crucial) items, I need to understand a few things 
 
     Smoother, nicer graphics.
 
++ Disable effects automatically when framerate drops  
 + Optimize graphics  
 - Independent eye pupils  
 + Smoother contours when zooming in infrared mode  

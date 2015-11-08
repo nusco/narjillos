@@ -142,7 +142,7 @@ public class Narjillo implements Thing {
 		if (getEnergy().getValue() < totalEnergyRequired)
 			return null;
 
-		getEnergy().decreaseBy(energyToChild);
+		getEnergy().increaseBy(-energyToChild);
 		DNA childDNA = mutateDna(dnaLog, getDNA(), numGen);
 
 		decideWhenToLayTheNextEgg();
@@ -185,10 +185,10 @@ public class Narjillo implements Thing {
 		//
 		// (Don't mutate the Atmosphere here - this code is called in parallel,
 		// and it would become non-deterministic if we mutate shared objects).
-		double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
-		double energyConsumed = energyRequiredToMove * (1 - densityOfBreathableElement);
+		//double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
+		//double energyConsumed = energyRequiredToMove - densityOfBreathableElement;
 
-		getEnergy().tick(energyConsumed);
+		getEnergy().tick(-energyRequiredToMove);
 	}
 
 	private void decideWhenToLayTheNextEgg() {

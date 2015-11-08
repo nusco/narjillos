@@ -83,7 +83,7 @@ public class CommandLineOptionsTest {
 	}
 
 	@Test
-	public void narjillosAcceptsADNADocument() {
+	public void acceptsADNADocument() {
 		CommandLineOptions options = new CommandLineOptions("-dna", "{1_2_3}");
 		
 		assertEquals("{1_2_3}", options.getDna());

@@ -87,8 +87,8 @@ public class CommandLineOptions extends Options {
         	setFile(line.getArgs()[0]);
         	
         	if (printWarnings && getExperiment() != null && !isPersistent()) {
-				System.err.println("WARNING: you're loading an existing experiment, but you didn't ask to save it. I will read the experiment, but I will not update it.");
-				System.err.println("If that is not what you want, then maybe use the --save option.");
+				System.err.print("WARNING: you're continuing an existing experiment, but I won't update it on disk. ");
+				System.err.println("If you want to update the experiment file, then use the --save option.");
 			}
         } catch(ParseException e) {
 	        throw new RuntimeException(e);

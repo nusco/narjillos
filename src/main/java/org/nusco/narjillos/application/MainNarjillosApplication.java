@@ -52,11 +52,13 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
+		CommandLineOptions options = CommandLineOptions.parse(true, arguments);
+		
+		if (options == null)
+			System.exit(1);
+
 		return new StoppableThread() {
 			public void run() {
-				CommandLineOptions options = CommandLineOptions.parse(true, arguments);
-				if (options == null)
-					System.exit(1);
 
 				String applicationVersion = Version.read();
 				setDish(new PetriDish(applicationVersion, options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000));

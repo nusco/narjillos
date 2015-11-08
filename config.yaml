@@ -151,9 +151,3 @@ experiment:
   # it saves its state to an .exp file.
   sample_interval_ticks: 10000
   save_interval_seconds: 600
-
-database:
-  # Must be a running MongoDB instance
-  host: localhost
-  port: 27017
-

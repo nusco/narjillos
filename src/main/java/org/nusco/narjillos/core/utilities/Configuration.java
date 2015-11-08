@@ -59,16 +59,6 @@ public class Configuration {
 		}
 	}
 	
-	private static String getString(String configSection, String configKey) {
-		Object result = get(configSection, configKey);
-		try {
-			return (String) result;
-		} catch (ClassCastException e) {
-			fail("\"" + configSection + ":" + configKey + "\" in config.yaml is not a string");
-			return "";
-		}
-	}
-
 	private static Object get(String configSection, String configKey) {
 		Map<String, Object> section = data.get(configSection);
 		if (section == null) {
@@ -138,8 +128,4 @@ public class Configuration {
 	// experiment
 	public static final int EXPERIMENT_SAMPLE_INTERVAL_TICKS = getInt("experiment", "sample_interval_ticks");
 	public static final int EXPERIMENT_SAVE_INTERVAL_SECONDS = getInt("experiment", "save_interval_seconds");
-
-	// database
-	public static final String DATABASE_HOST = getString("database", "host");
-	public static final int DATABASE_PORT = getInt("database", "port");
 }

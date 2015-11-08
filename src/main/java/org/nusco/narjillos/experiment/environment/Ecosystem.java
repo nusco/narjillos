@@ -46,7 +46,7 @@ public class Ecosystem extends Environment {
 
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
-		
+
 		ThreadFactory tickWorkerFactory = (Runnable r) -> {
 			Thread result = new Thread(r, "tick-worker-" + tickWorkerCounter.getAndIncrement());
 			result.setPriority(Thread.currentThread().getPriority());
@@ -66,8 +66,6 @@ public class Ecosystem extends Environment {
 
 	public Atmosphere getAtmosphere() {
 		return atmosphere;
-		//double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
-		//double energyConsumed = energyRequiredToMove - densityOfBreathableElement;
 	}
 
 	public void setAtmosphere(Atmosphere atmosphere) {
@@ -81,7 +79,7 @@ public class Ecosystem extends Environment {
 
 		super.tick(dnaLog, numGen);
 	}
-	
+
 	@Override
 	public Set<Thing> getThings(String label) {
 		Set<Thing> result = new LinkedHashSet<>();
@@ -155,12 +153,10 @@ public class Ecosystem extends Environment {
 
 	public void updateTargets() {
 		synchronized (narjillos) {
-			narjillos.stream()
-				.map((creature) -> (Narjillo) creature)
-				.forEach((narjillo) -> {
-					Vector closestTarget = findClosestFood(narjillo);
-					narjillo.setTarget(closestTarget);
-				});
+			narjillos.stream().map((creature) -> (Narjillo) creature).forEach((narjillo) -> {
+				Vector closestTarget = findClosestFood(narjillo);
+				narjillo.setTarget(closestTarget);
+			});
 		}
 	}
 
@@ -213,9 +209,8 @@ public class Ecosystem extends Environment {
 		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> tickEgg((Egg) thing, numGen));
 
 		synchronized (narjillos) {
-			new LinkedList<>(narjillos).stream()
-				.filter((narjillo) -> (narjillo.isDead()))
-				.forEach((narjillo) -> removeNarjillo(narjillo, dnaLog));
+			new LinkedList<>(narjillos).stream().filter((narjillo) -> (narjillo.isDead()))
+					.forEach((narjillo) -> removeNarjillo(narjillo, dnaLog));
 		}
 
 		tickNarjillos(numGen);
@@ -261,24 +256,33 @@ public class Ecosystem extends Environment {
 			narjillosToCollidedFood = tick(narjillos);
 		}
 
-		// Consume food in a predictable order, to avoid non-deterministic
-		// behavior or race conditions when multiple narjillos collide with the
-		// same food pellet.
-		narjillosToCollidedFood.entrySet().stream()
-			.forEach((entry) -> {
-				Narjillo narjillo = entry.getKey();
-				Set<Thing> collidedFood = entry.getValue();
-				consume(narjillo, collidedFood, numGen);
-			});
+		// The next operations happen in a predictable order, to avoid
+		// non-deterministic behavior or race conditions - for example, when
+		// multiple narjillos collide with the same food pellet.
+
+		// Breathe
+		for (Narjillo narjillo : narjillos) {
+			// double densityOfBreathableElement =
+			// atmosphere.getDensityOf(body.getBreathedElement());
+			// double energyConsumed = energyRequiredToMove -
+			// densityOfBreathableElement;
+			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
+		}
+		
+		// Consume food
+		narjillosToCollidedFood.entrySet().stream().forEach((entry) -> {
+			Narjillo narjillo = entry.getKey();
+			Set<Thing> collidedFood = entry.getValue();
+			consume(narjillo, collidedFood, numGen);
+		});
 	}
 
 	private Map<Narjillo, Set<Thing>> tick(Set<Narjillo> narjillos) {
-		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();
-
 		// Calculate collisions in parallel...
 		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickNarjillos(narjillos);
 
 		// ...but collect the results in a predictable sequential order
+		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();
 		for (Narjillo narjillo : collisionFutures.keySet()) {
 			try {
 				result.put(narjillo, collisionFutures.get(narjillo).get());
@@ -286,11 +290,6 @@ public class Ecosystem extends Environment {
 				throw new RuntimeException(e);
 			}
 		}
-
-		// Finally, go through the breathing loop (also sequential)
-		for (Narjillo narjillo : narjillos)
-			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
-		
 		return result;
 	}
 
@@ -299,7 +298,8 @@ public class Ecosystem extends Environment {
 		if (getNumberOfFoodPellets() >= maxFoodPellets)
 			return false;
 
-		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK / getNumberOf1000SquarePointsBlocks();
+		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK
+				/ getNumberOf1000SquarePointsBlocks();
 		return numGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
 	}
 
@@ -309,12 +309,10 @@ public class Ecosystem extends Environment {
 
 	private void updateTargets(Thing food) {
 		synchronized (narjillos) {
-			narjillos.stream()
-				.filter((narjillo) -> (narjillo.getTarget().equals(food.getPosition())))
-				.forEach((narjillo) -> {
-					Vector closestTarget = findClosestFood(narjillo);
-					narjillo.setTarget(closestTarget);
-				});
+			narjillos.stream().filter((narjillo) -> (narjillo.getTarget().equals(food.getPosition()))).forEach((narjillo) -> {
+				Vector closestTarget = findClosestFood(narjillo);
+				narjillo.setTarget(closestTarget);
+			});
 		}
 	}
 
@@ -326,7 +324,7 @@ public class Ecosystem extends Environment {
 
 	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, NumGen numGen) {
 		if (!space.contains(foodPellet))
-			return;		// race condition: already consumed
+			return; // race condition: already consumed
 
 		remove(foodPellet);
 		narjillo.feedOn(foodPellet);

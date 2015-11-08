@@ -105,7 +105,7 @@ ecosystem:
   # The dish is populated with eggs and food. The density
   # of both is calculated based on the total number of blocks. 
   eggs_density_per_block: 0.18
-  food_density_per_block: 0.2
+  food_density_per_block: 0
 
   # Food keeps respawning with an average interval (which is
   # calculated based on a single block - so the total interval
@@ -114,7 +114,7 @@ ecosystem:
   # a maximum (defined by max_food_density_per_1000_blocks),
   # then food stops respawing.
   food_respawn_average_interval_per_block: 800000
-  max_food_density_per_1000_blocks: 0.35
+  max_food_density_per_1000_blocks: 0
 
   # Every update_food_targets_interval ticks, the creatures
   # get a chance to point at a new target.

@@ -39,10 +39,8 @@ public class LifeFormEnergy implements Energy {
 
 	@Override
 	public void tick(double additionalEnergy) {
-		if (isZero())
-			return; // once it's gone, it's gone
-
-		maxForAge -= decay;
+		if (maxForAge >= 0)
+			maxForAge -= decay;
 
 		increaseBy(additionalEnergy);
 	}
@@ -60,6 +58,9 @@ public class LifeFormEnergy implements Energy {
 
 	@Override
 	public void increaseBy(double amount) {
+		if (isZero())
+			return; // once it's gone, it's gone
+
 		value += amount;
 		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
 	}

@@ -49,7 +49,7 @@ public class IsolationEnvironment extends Environment {
 
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
-		getNarjillo().tick(getAtmosphere());
+		getNarjillo().tick();
 	}
 
 	public synchronized void updateSpecimen(Narjillo narjillo) {

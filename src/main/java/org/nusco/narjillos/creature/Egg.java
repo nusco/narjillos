@@ -1,6 +1,5 @@
 package org.nusco.narjillos.creature;
 
-import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -35,7 +34,7 @@ public class Egg implements Thing {
 	}
 
 	@Override
-	public Segment tick(Atmosphere atmosphere) {
+	public Segment tick() {
 		age++;
 
 		if (velocity.getLength() > Configuration.EGG_MIN_VELOCITY) {

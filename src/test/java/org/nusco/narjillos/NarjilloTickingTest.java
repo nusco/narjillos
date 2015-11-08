@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.utilities.NumGen;
@@ -65,18 +64,16 @@ public class NarjilloTickingTest {
 		DNA sampleDna = new DNA(new NumGen(1234).nextSerial(), SAMPLE_DNA_DOCUMENT, DNA.NO_PARENT);
 		Narjillo narjillo = new Narjillo(sampleDna, Vector.cartesian(100, 200), 90, new LifeFormEnergy(10000, 30000));
 
-		Atmosphere atmosphere = new Atmosphere();
-
 		// Start a few reading threads to make things more interesting.
 		// Then tick the narjillo for a while, and stop the readers.
 		startReadThreads(narjillo);
 		for (int i = 0; i < 50; i++)
-			narjillo.tick(atmosphere);
+			narjillo.tick();
 		stopReadThreads();
 
 		// Tick one last time to ensure that any cached value is correctly
 		// updated at the end of the tick, even when no readers are around.
-		narjillo.tick(atmosphere);
+		narjillo.tick();
 
 		String currentState = JSON.toJson(narjillo, Narjillo.class);
 

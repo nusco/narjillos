@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.FoodPellet;
@@ -41,6 +42,7 @@ public class Ecosystem extends Environment {
 
 	private final Space space;
 	private final Vector center;
+	private Atmosphere atmosphere;
 
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
@@ -54,11 +56,22 @@ public class Ecosystem extends Environment {
 
 		this.space = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
+		this.atmosphere = new Atmosphere();
 
 		// check that things cannot move faster than a space area in a single
 		// tick (which would make collision detection unreliable)
 		if (sizeCheck && space.getAreaSize() < Viscosity.getMaxVelocity())
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
+	}
+
+	public Atmosphere getAtmosphere() {
+		return atmosphere;
+		//double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
+		//double energyConsumed = energyRequiredToMove - densityOfBreathableElement;
+	}
+
+	public void setAtmosphere(Atmosphere atmosphere) {
+		this.atmosphere = atmosphere;
 	}
 
 	@Override
@@ -188,7 +201,7 @@ public class Ecosystem extends Environment {
 		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
 		for (final Narjillo narjillo : narjillos) {
 			result.put(narjillo, executorService.submit(() -> {
-				Segment movement = narjillo.tick(getAtmosphere());
+				Segment movement = narjillo.tick();
 				return getCollisions(movement);
 			}));
 		}
@@ -235,7 +248,7 @@ public class Ecosystem extends Environment {
 	}
 
 	private void tickEgg(Egg egg, NumGen numGen) {
-		egg.tick(getAtmosphere());
+		egg.tick();
 		if (egg.hatch(numGen))
 			insertNarjillo(egg.getHatchedNarjillo());
 		if (egg.isDecayed())

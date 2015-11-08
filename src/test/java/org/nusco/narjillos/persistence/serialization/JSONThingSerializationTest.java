@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
@@ -15,7 +14,6 @@ import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONThingSerializationTest {
 
@@ -46,21 +44,18 @@ public class JSONThingSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesNarjillos() {
-		Atmosphere atmosphere = new Atmosphere();
 		String genes = "{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{001_002_003_004_005_006_007_008_009_010_011_012_013_014}{001_002_003_004_005_006_007_008_009_010_011_012_013_014}";
 		DNA dna = new DNA(1, genes);
 		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(10, 20), 90, new LifeFormEnergy(1000, 10_000));
 		narjillo.setTarget(Vector.cartesian(100, 200));
 		for (int i = 0; i < 10; i++)
-			narjillo.tick(atmosphere);
+			narjillo.tick();
 		
 		String json = JSON.toJson(narjillo, Thing.class);
 		Narjillo deserialized = (Narjillo) JSON.fromJson(json, Thing.class);
 		
-		Atmosphere duplicatedAtmosphere = atmosphere.duplicate();
-		
-		narjillo.tick(atmosphere);
-		deserialized.tick(duplicatedAtmosphere);
+		narjillo.tick();
+		deserialized.tick();
 		
 		assertEquals(narjillo.getPosition(), deserialized.getPosition());
 		assertEquals(genes, deserialized.getDNA().toString());

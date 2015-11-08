@@ -1,6 +1,5 @@
 package org.nusco.narjillos.core.things;
 
-import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.physics.Segment;
 import org.nusco.narjillos.core.physics.Vector;
 import org.nusco.narjillos.core.utilities.Configuration;
@@ -26,7 +25,7 @@ public class FoodPellet implements Thing {
 	}
 
 	@Override
-	public Segment tick(Atmosphere atmosphere) {
+	public Segment tick() {
 		return new Segment(position, Vector.ZERO);
 	}
 

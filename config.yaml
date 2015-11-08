@@ -121,9 +121,29 @@ ecosystem:
   update_food_targets_interval: 1000
 
   # The initial level for each element (Oxygen, Hydrogen and Nitrogen)
-  # in the atmosphere. Each element can be converted into another, so
-  # the maximum level is three times the initial level.
+  # in the atmosphere. Narjillos breathe by converting each element
+  # into another, so the maximum theoretical level for an element is
+  # three times this number, assuming that the other elements drop to
+  # zero. In practice, the higher this number, the longer it takes to
+  # change the composition of the atmosphere (other things being equal,
+  # such as the number of Narjillos in the system). As this number grows,
+  # the system becomes more "inertial", taking longer to switch, for
+  # example, from an atmosphere with a prevalence of Oxygen to an
+  # atmosphere with a prevalence of Hydrogen.
   initial_element_level: 10000000
+
+  # The amount of Catalyst in the atmosphere. The Catalyst is used by
+  # the creatures to convert elements and breathe. If the Catalyst is
+  # 0, then nobody can breathe.
+  # The Catalyst is a constant amount - no matter how much of it the
+  # Narjillos consume during one tick, it's always fully replenished
+  # at every tick.
+  # The total amount of Catalyst is subdivided amongst the creatures,
+  # so the higher this number, the higher the number of creatures that
+  # can can take full advantage of breathing. In practice, this number
+  # constrains the amount of creatures that can populate the dish at
+  # once.
+  catalyst_level: 20
 
 experiment:
   # Every sample_interval_ticks, an experiment reports its

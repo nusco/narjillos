@@ -133,6 +133,7 @@ public class Configuration {
 	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = getInt("ecosystem", "food_respawn_average_interval_per_block");
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = getInt("ecosystem", "update_food_targets_interval");
 	public static final int ECOSYSTEM_INITIAL_ELEMENT_LEVEL = getInt("ecosystem", "initial_element_level");
+	public static final int ECOSYSTEM_CATALYST_LEVEL = getInt("ecosystem", "catalyst_level");
 
 	// experiment
 	public static final int EXPERIMENT_SAMPLE_INTERVAL_TICKS = getInt("experiment", "sample_interval_ticks");

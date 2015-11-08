@@ -11,16 +11,18 @@ public class Atmosphere {
 
 	private final int saturationElementLevels;
 	private final Map<Element, Integer> levels = new LinkedHashMap<>();
+	private final int catalystLevel;
 	
 	public Atmosphere() {
-		this(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL);
+		this(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL, Configuration.ECOSYSTEM_CATALYST_LEVEL);
 	}
 	
-	public Atmosphere(int initialElementLevels) {
+	public Atmosphere(int initialElementLevels, int catalystLevel) {
 		this.saturationElementLevels = initialElementLevels * 3;
 		levels.put(OXYGEN, initialElementLevels);
 		levels.put(HYDROGEN, initialElementLevels);
 		levels.put(NITROGEN, initialElementLevels);
+		this.catalystLevel = catalystLevel;
 	}
 
 	public synchronized int getAmountOf(Element element) {
@@ -28,6 +30,10 @@ public class Atmosphere {
 			return 0;
 		
 		return levels.get(element);
+	}
+
+	public int getCatalystLevel() {
+		return catalystLevel;
 	}
 
 	public synchronized void convert(Element fromElement, Element toElement) {

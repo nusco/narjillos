@@ -13,7 +13,7 @@ public class JSONAtmosphereSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesAtmospheres() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 15);
 		
 		for (int i = 0; i < 3; i++)
 			atmosphere.convert(OXYGEN, NITROGEN);
@@ -26,5 +26,7 @@ public class JSONAtmosphereSerializationTest {
 		assertEquals(atmosphere.getAmountOf(OXYGEN), deserialized.getAmountOf(OXYGEN));
 		assertEquals(atmosphere.getAmountOf(HYDROGEN), deserialized.getAmountOf(HYDROGEN));
 		assertEquals(atmosphere.getAmountOf(NITROGEN), deserialized.getAmountOf(NITROGEN));
+
+		assertEquals(atmosphere.getCatalystLevel(), deserialized.getCatalystLevel());
 	}
 }

@@ -13,8 +13,8 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public class AtmosphereTest {
 
 	@Test
-	public void hasAnElementAmountsAtStart() {
-		Atmosphere atmosphere = new Atmosphere(10);
+	public void hasElementAmountsAtStart() {
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		assertEquals(10, atmosphere.getAmountOf(OXYGEN), 0.0);
 		assertEquals(10, atmosphere.getAmountOf(HYDROGEN), 0.0);
@@ -23,7 +23,7 @@ public class AtmosphereTest {
 
 	@Test
 	public void hasEqualDensitiesAtStart() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		assertEquals(0.33, atmosphere.getDensityOf(OXYGEN), 0.01);
 		assertEquals(0.33, atmosphere.getDensityOf(HYDROGEN), 0.01);
@@ -39,7 +39,7 @@ public class AtmosphereTest {
 
 	@Test
 	public void hasElementDensities() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		assertEquals(0.33, atmosphere.getDensityOf(OXYGEN), 0.01);
 		assertEquals(0.33, atmosphere.getDensityOf(HYDROGEN), 0.01);
@@ -48,15 +48,22 @@ public class AtmosphereTest {
 
 	@Test
 	public void hasNoElementZero() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		assertEquals(0, atmosphere.getAmountOf(ZERO));
 		assertEquals(0.0, atmosphere.getDensityOf(ZERO), 0.0);
 	}
 	
 	@Test
+	public void hasAFixedCatalystLevel() {
+		Atmosphere atmosphere = new Atmosphere(10, 15);
+
+		assertEquals(15, atmosphere.getCatalystLevel());
+	}
+
+	@Test
 	public void theSumOfTheDensitiesIsAlwaysOne() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 
 		for (int i = 0; i < 3; i++) {
 			atmosphere.convert(HYDROGEN, NITROGEN);
@@ -69,7 +76,7 @@ public class AtmosphereTest {
 	
 	@Test
 	public void convertsElements() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		atmosphere.convert(OXYGEN, HYDROGEN);
 		
@@ -80,7 +87,7 @@ public class AtmosphereTest {
 
 	@Test
 	public void densitiesNeverGetBelowZeroOrAboveOne() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 
 		for (int i = 0; i < 30; i++) {
 			atmosphere.convert(OXYGEN, HYDROGEN);
@@ -94,7 +101,7 @@ public class AtmosphereTest {
 	
 	@Test
 	public void neverConvertsFromTheZeroElement() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		atmosphere.convert(ZERO, HYDROGEN);
 		
@@ -104,7 +111,7 @@ public class AtmosphereTest {
 	
 	@Test
 	public void neverConvertsToTheZeroElement() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		atmosphere.convert(OXYGEN, ZERO);
 		
@@ -114,7 +121,7 @@ public class AtmosphereTest {
 	
 	@Test
 	public void stopsConvertingDepletedElements() {
-		Atmosphere atmosphere = new Atmosphere(10);
+		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
 		for (int i = 0; i < 20; i++) {
 			atmosphere.convert(OXYGEN, HYDROGEN);

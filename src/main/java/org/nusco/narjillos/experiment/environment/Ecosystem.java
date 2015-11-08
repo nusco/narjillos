@@ -260,14 +260,7 @@ public class Ecosystem extends Environment {
 		// non-deterministic behavior or race conditions - for example, when
 		// multiple narjillos collide with the same food pellet.
 
-		// Breathe
-		for (Narjillo narjillo : narjillos) {
-			// double densityOfBreathableElement =
-			// atmosphere.getDensityOf(body.getBreathedElement());
-			// double energyConsumed = energyRequiredToMove -
-			// densityOfBreathableElement;
-			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
-		}
+		breathe();
 		
 		// Consume food
 		narjillosToCollidedFood.entrySet().stream().forEach((entry) -> {
@@ -275,6 +268,25 @@ public class Ecosystem extends Environment {
 			Set<Thing> collidedFood = entry.getValue();
 			consume(narjillo, collidedFood, numGen);
 		});
+	}
+
+	private void breathe() {
+		// The maximum amount of energy that each creature can extract from
+		// breathing, depending on the amount of catalyst available to all the
+		// creatures. Varies between 0 and 1 included.
+		double breathingPowerPerNarjillo = Math.min(1, (double) getAtmosphere().getCatalystLevel() / getNumberOfNarjillos());
+
+		// Increase energies
+		for (Narjillo narjillo : narjillos) {
+			double densityOfBreathableElement = getAtmosphere().getDensityOf(narjillo.getBreathedElement());
+			double energyObtainedByBreathing = densityOfBreathableElement * breathingPowerPerNarjillo;
+			narjillo.getEnergy().increaseBy(energyObtainedByBreathing);
+		}
+
+		// Consume elements
+		for (Narjillo narjillo : narjillos) {
+			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
+		}
 	}
 
 	private Map<Narjillo, Set<Thing>> tick(Set<Narjillo> narjillos) {

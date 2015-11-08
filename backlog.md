@@ -227,6 +227,9 @@ Before I move on to the next (crucial) items, I need to understand a few things 
   We don't use strictfp, because it harms performance. So you could get non-deterministic results if you run
   on a CPU with a different flotpoint precision than the expected one.  
 
++ Exit early in case of extinction  
+  Rather than wait for 10 minutes, going through thousands of very fast cycles.  
+
 
 ##Packaged Application
 >goal: nice user experience  

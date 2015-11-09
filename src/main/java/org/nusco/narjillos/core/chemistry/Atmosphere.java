@@ -9,15 +9,15 @@ import org.nusco.narjillos.core.utilities.Configuration;
 
 public class Atmosphere {
 
-	private final int saturationElementLevels;
-	private final Map<Element, Integer> levels = new LinkedHashMap<>();
+	private final double saturationElementLevels;
+	private final Map<Element, Double> levels = new LinkedHashMap<>();
 	private final int catalystLevel;
 	
 	public Atmosphere() {
 		this(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL, Configuration.ECOSYSTEM_CATALYST_LEVEL);
 	}
 	
-	public Atmosphere(int initialElementLevels, int catalystLevel) {
+	public Atmosphere(double initialElementLevels, int catalystLevel) {
 		this.saturationElementLevels = initialElementLevels * 3;
 		levels.put(OXYGEN, initialElementLevels);
 		levels.put(HYDROGEN, initialElementLevels);
@@ -25,7 +25,7 @@ public class Atmosphere {
 		this.catalystLevel = catalystLevel;
 	}
 
-	public synchronized int getAmountOf(Element element) {
+	public synchronized double getAmountOf(Element element) {
 		if (element == ZERO)
 			return 0;
 		
@@ -40,9 +40,9 @@ public class Atmosphere {
 		if (fromElement == ZERO || toElement == ZERO)
 			return;
 
-		int fromLevel = levels.get(fromElement);
+		double fromLevel = levels.get(fromElement);
 		if (fromLevel > 0) {
-			Integer toLevel = levels.get(toElement);
+			Double toLevel = levels.get(toElement);
 			levels.put(fromElement, fromLevel - 1);
 			levels.put(toElement, toLevel + 1);
 		}

@@ -50,7 +50,7 @@ public class AtmosphereTest {
 	public void hasNoElementZero() {
 		Atmosphere atmosphere = new Atmosphere(10, 0);
 		
-		assertEquals(0, atmosphere.getAmountOf(ZERO));
+		assertEquals(0, atmosphere.getAmountOf(ZERO), 0.0);
 		assertEquals(0.0, atmosphere.getDensityOf(ZERO), 0.0);
 	}
 	
@@ -80,7 +80,7 @@ public class AtmosphereTest {
 		
 		atmosphere.convert(OXYGEN, HYDROGEN);
 		
-		assertEquals(9, atmosphere.getAmountOf(OXYGEN));
+		assertEquals(9, atmosphere.getAmountOf(OXYGEN), 0.0);
 		assertEquals(11, atmosphere.getAmountOf(HYDROGEN), 0.0);
 		assertEquals(10, atmosphere.getAmountOf(NITROGEN), 0.0);
 	}
@@ -105,8 +105,8 @@ public class AtmosphereTest {
 		
 		atmosphere.convert(ZERO, HYDROGEN);
 		
-		assertEquals(0, atmosphere.getAmountOf(ZERO));
-		assertEquals(10, atmosphere.getAmountOf(HYDROGEN));
+		assertEquals(0, atmosphere.getAmountOf(ZERO), 0.0);
+		assertEquals(10, atmosphere.getAmountOf(HYDROGEN), 0.0);
 	}
 	
 	@Test
@@ -115,8 +115,8 @@ public class AtmosphereTest {
 		
 		atmosphere.convert(OXYGEN, ZERO);
 		
-		assertEquals(10, atmosphere.getAmountOf(OXYGEN));
-		assertEquals(0, atmosphere.getAmountOf(ZERO));
+		assertEquals(10, atmosphere.getAmountOf(OXYGEN), 0.0);
+		assertEquals(0, atmosphere.getAmountOf(ZERO), 0.0);
 	}
 	
 	@Test

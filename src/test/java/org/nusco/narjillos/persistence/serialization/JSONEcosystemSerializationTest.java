@@ -42,9 +42,9 @@ public class JSONEcosystemSerializationTest {
 		assertEquals(4, deserialized.getThings("").size());
 		assertEquals(1, deserialized.getNarjillos().size());
 
-		assertEquals(deserialized.getAtmosphere().getAmountOf(OXYGEN), ecosystem.getAtmosphere().getAmountOf(OXYGEN));
-		assertEquals(deserialized.getAtmosphere().getAmountOf(HYDROGEN), ecosystem.getAtmosphere().getAmountOf(HYDROGEN));
-		assertEquals(deserialized.getAtmosphere().getAmountOf(NITROGEN), ecosystem.getAtmosphere().getAmountOf(NITROGEN));
+		assertEquals(deserialized.getAtmosphere().getAmountOf(OXYGEN), ecosystem.getAtmosphere().getAmountOf(OXYGEN), 0.0);
+		assertEquals(deserialized.getAtmosphere().getAmountOf(HYDROGEN), ecosystem.getAtmosphere().getAmountOf(HYDROGEN), 0.0);
+		assertEquals(deserialized.getAtmosphere().getAmountOf(NITROGEN), ecosystem.getAtmosphere().getAmountOf(NITROGEN), 0.0);
 		
 		Iterator<Thing> thingsIterator = deserialized.getThings("").iterator();
 		assertEquals(narjillo.getPosition(), thingsIterator.next().getPosition());

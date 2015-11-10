@@ -130,7 +130,7 @@ ecosystem:
   # the system becomes more "inertial", taking longer to switch, for
   # example, from an atmosphere with a prevalence of Oxygen to an
   # atmosphere with a prevalence of Hydrogen.
-  initial_element_level: 10000000
+  initial_element_level: 1000000000
 
   # The amount of Catalyst in the atmosphere. The Catalyst is used by
   # the creatures to convert elements and breathe. If the Catalyst is
@@ -143,7 +143,7 @@ ecosystem:
   # can can take full advantage of breathing. In practice, this number
   # constrains the amount of creatures that can populate the dish at
   # once.
-  catalyst_level: 20
+  catalyst_level: 50
 
 experiment:
   # Every sample_interval_ticks, an experiment reports its
@@ -151,3 +151,4 @@ experiment:
   # it saves its state to an .exp file.
   sample_interval_ticks: 10000
   save_interval_seconds: 600
+ 

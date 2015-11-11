@@ -132,19 +132,17 @@ public class PetriDish implements Dish {
 		experiment.saveHistoryEntry();
 		System.out.println(getReport());
 		
-		if (persistent) {
+		if (!experiment.thereAreSurvivors()) {
+			// extinction!
+			isTerminated = true;
+			if (persistent)
+				save();
+		} else if (persistent) {
 			double secondsSinceLastSave = (System.currentTimeMillis() - lastSaveTime) / 1000.0;
 			if (secondsSinceLastSave > Configuration.EXPERIMENT_SAVE_INTERVAL_SECONDS) {
 				save();
 				lastSaveTime = System.currentTimeMillis();
-				// only exit after saving in case of extinction
-				if (!experiment.thereAreSurvivors())
-					isTerminated = true;
 			}
-		} else {
-			// in case of extinction, any time is good to exit
-			if (!experiment.thereAreSurvivors())
-				isTerminated = true;
 		}
 	}
 

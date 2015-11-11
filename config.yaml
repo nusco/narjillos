@@ -143,7 +143,7 @@ ecosystem:
   # can can take full advantage of breathing. In practice, this number
   # constrains the amount of creatures that can populate the dish at
   # once.
-  catalyst_level: 50
+  catalyst_level: 100
 
 experiment:
   # Every sample_interval_ticks, an experiment reports its

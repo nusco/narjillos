@@ -1,13 +1,5 @@
 #Narjillos Backlog
 
-##What I'm doing now  
-
-Before I move on to the next (crucial) items, I need to understand a few things experimentally.
-
-* Why doesn't atmosphere seem to encourage the birth of separate species? The creatures seem to evolve to only consume one element, deplete it, and still keep consuming that one element (at huge energy cost). Why? Find out and try to have stable species.  
-* Is there any way to encourage path dependency by changing the criterion for element consumption, or maybe adding a side effect to having different fybers?  
-* Any way to shift focus away from speed?  
-
 ##Advanced Body Plans
 >goal: specialized creatures  
 

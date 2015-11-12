@@ -1,9 +1,9 @@
-package org.nusco.narjillos.core.physics;
+package org.nusco.narjillos.core.geometry;
 
 /**
  * A vector that has a specific origin in the plane.
  */
-public class Segment {
+public class Segment implements SegmentShape {
 
 	private final Vector startPoint;
 	private final Vector vector;
@@ -69,6 +69,11 @@ public class Segment {
 			// should never happen with the previous checks
 			return null;
 		}
+	}
+
+	@Override
+	public Segment toSegment() {
+		return this;
 	}
 
 	@Override

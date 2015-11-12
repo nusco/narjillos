@@ -1,43 +1,23 @@
 #Narjillos Backlog
 
-##Advanced Body Plans
->goal: specialized creatures  
-
-    Give evolution more power to shape interesting creature bodies.
-
-* MIRROR_AND_CONTINUE and MIRROR_AND_STOP instructions  
-  Makes it possible to mirror an organ without necessarily mirroring the entire subtree.  
-
-* FORK_AND_CONTINUE and FORK_AND_STOP instructions  
-+ Parametric FORK  
-+ Parametric MIRROR  
-+ Parametric SKIP  
-* Parametric LOOP  
-* STOP and END instructions  
-  STOP just stops building this part, END terminates the build process  
-
-+ JUMP instruction  
-+ CALL instruction  
-
-+ Duplicate organs during mutation instead of mirroring them  
-  To favour emergent complexity. There are studies who say it would, at least.  
-  PATCH instruction?  
-
-- Different shapes for body segments  
-
 
 ##Dish Edges
 >goal: complex interactions  
 
     Constrain the "world" inside defined edges.
     
+    Note: think about this now that (thanks to the new chemistry) there are narjillos  
+    who can survive on breathing alone, without moving. It could cause issues for populations  
+    that happen to sit close to the edge of the dish.  
+
     Right now, things can be placed anywhere, but only the central area of the dish is  
     space-partitioned. The rest is "outer space". If we limit the world, we can make it  
     all space-partitioned. The current space partitioning is OK-ish, but it would make  
     it hard and expensive to implement generalized collision detection. At the moment,  
     this is not a problem, because the only collision detection I have is "mouth colliding  
-    with food". But in the future, I want to have anything collide with anything.
-    After implementing this, I can probably remove the concept of "outer space" (the area outside the space-partitioned center of the dish).
+    with food". But in the future, we want to have anything collide with anything.
+    After implementing this, I can probably remove the concept of "outer space" (the area  
+    outside the space-partitioned center of the dish).
 
 * Kill narjillos who touch outer space  
 + Limit panning to inner space  
@@ -61,6 +41,7 @@
   
 * Istinct genes  
   How? Probably just a set of SimHashes and weights?
+  Maybe a small set of curves with multiplies and shifters, all determined by the genes?  
 
 + Attach istincts to food  
   Maybe every Thing must be SimHashed?
@@ -79,8 +60,9 @@
     This is a complex direct interaction that might pave the road to an arms race amongst species.
     I should consider removing food by default after this is implemented.
 
-* Fix sketchy collision detection  
-  is this a bug?  
+* Fix vector math  
+  See TODOs and FIXMEs, in particular around vector projections.  
+  This is probably the cause of sketchy collision detection  
 
 + Rewrite collision detection to be independent of max speed  
   This can be almost as simple as it is now, but we should probably aim for generalized

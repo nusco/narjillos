@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumberFormatter;
 import org.nusco.narjillos.creature.Narjillo;

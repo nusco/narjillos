@@ -3,7 +3,7 @@ package org.nusco.narjillos.application.views;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.Narjillo;
 
 /**

@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
@@ -153,7 +153,7 @@ public class Ecosystem extends Environment {
 
 	public void updateTargets() {
 		synchronized (narjillos) {
-			narjillos.stream().map((creature) -> (Narjillo) creature).forEach((narjillo) -> {
+			narjillos.stream().forEach((narjillo) -> {
 				Vector closestTarget = findClosestFood(narjillo);
 				narjillo.setTarget(closestTarget);
 			});

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.core.physics;
+package org.nusco.narjillos.core.geometry;
 
 public class Angle {
 

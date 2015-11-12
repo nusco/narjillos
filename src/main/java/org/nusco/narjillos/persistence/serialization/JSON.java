@@ -1,6 +1,6 @@
 package org.nusco.narjillos.persistence.serialization;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;

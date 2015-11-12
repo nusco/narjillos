@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;

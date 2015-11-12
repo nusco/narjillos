@@ -1,6 +1,6 @@
 package org.nusco.narjillos.creature.body.physics;
 
-import org.nusco.narjillos.core.physics.FastMath;
+import org.nusco.narjillos.core.geometry.FastMath;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 /**

@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;

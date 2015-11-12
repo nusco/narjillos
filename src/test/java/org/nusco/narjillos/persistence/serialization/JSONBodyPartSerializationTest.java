@@ -5,7 +5,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Fiber;

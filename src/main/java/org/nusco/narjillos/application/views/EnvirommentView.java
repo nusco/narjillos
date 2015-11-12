@@ -24,7 +24,7 @@ import org.nusco.narjillos.application.utilities.AppState;
 import org.nusco.narjillos.application.utilities.Effects;
 import org.nusco.narjillos.application.utilities.Light;
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.experiment.environment.Environment;

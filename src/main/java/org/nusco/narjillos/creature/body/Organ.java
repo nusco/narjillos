@@ -1,7 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.SegmentShape;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
@@ -18,7 +19,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
  * updateGeometry() or updatePosition() when they want to update the state of
  * the Organ.
  */
-public abstract class Organ {
+public abstract class Organ implements SegmentShape {
 
 	private final double adultLength;
 	private final int adultThickness;
@@ -36,7 +37,7 @@ public abstract class Organ {
 	private volatile Vector cachedEndPoint;
 	private volatile double cachedMass;
 	private volatile Vector cachedCenterOfMass;
-	private volatile Segment cachedPositionInSpace;
+	private volatile Segment cachedSegment;
 
 	public Organ(int adultLength, int adultThickness, Fiber fiber) {
 		this.adultLength = adultLength;
@@ -51,7 +52,7 @@ public abstract class Organ {
 		this.cachedStartPoint = Vector.ZERO;
 		this.cachedVector = Vector.polar(0, getLength());
 		this.cachedEndPoint = cachedVector;
-		this.cachedPositionInSpace = new Segment(Vector.ZERO, cachedVector);
+		this.cachedSegment = new Segment(Vector.ZERO, cachedVector);
 		this.cachedMass = calculateMass();
 		this.cachedCenterOfMass = cachedVector.by(0.5);
 	}
@@ -63,7 +64,7 @@ public abstract class Organ {
 		cachedVector = calculateVector();
 		cachedStartPoint = calculateStartPoint();
 		cachedEndPoint = calculateEndPoint();
-		cachedPositionInSpace = calculatePositionInSpace();
+		cachedSegment = calculateSegment();
 		cachedMass = calculateMass();
 		cachedCenterOfMass = calculateCenterOfMass();
 	}
@@ -74,8 +75,17 @@ public abstract class Organ {
 	public final void updatePosition() {
 		cachedStartPoint = calculateStartPoint();
 		cachedEndPoint = calculateEndPoint();
-		cachedPositionInSpace = calculatePositionInSpace();
+		cachedSegment = calculateSegment();
 		cachedCenterOfMass = calculateCenterOfMass();
+	}
+
+	@Override
+	public Segment toSegment() {
+		return cachedSegment;
+	}
+
+	public double getThickness() {
+		return thickness;
 	}
 
 	void growBy(int amount) {
@@ -93,10 +103,6 @@ public abstract class Organ {
 		return getLength() >= adultLength && getThickness() >= adultThickness;
 	}
 
-	public Segment getPositionInSpace() {
-		return cachedPositionInSpace;
-	}
-
 	public boolean isAtrophic() {
 		return adultLength == 0;
 	}
@@ -111,10 +117,6 @@ public abstract class Organ {
 
 	public final double getLength() {
 		return length;
-	}
-
-	public double getThickness() {
-		return thickness;
 	}
 
 	public Fiber getFiber() {
@@ -178,7 +180,7 @@ public abstract class Organ {
 		return getStartPoint().plus(getVector().by(0.5));
 	}
 
-	private Segment calculatePositionInSpace() {
+	private Segment calculateSegment() {
 		return new Segment(getStartPoint(), getVector());
 	}
 }

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.core.physics;
+package org.nusco.narjillos.core.geometry;
 
 public class ZeroVectorAngleException extends Exception {
 	private static final long serialVersionUID = 1L;

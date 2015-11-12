@@ -1,6 +1,6 @@
 package org.nusco.narjillos.creature.body.pns;
 
-import org.nusco.narjillos.core.physics.FastMath;
+import org.nusco.narjillos.core.geometry.FastMath;
 
 /**
  * Generates an output that goes from -1 to 1 and back, in a sinusoidal wave.

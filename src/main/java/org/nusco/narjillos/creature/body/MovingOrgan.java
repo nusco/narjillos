@@ -1,7 +1,7 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.core.physics.Angle;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Angle;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 
 /**

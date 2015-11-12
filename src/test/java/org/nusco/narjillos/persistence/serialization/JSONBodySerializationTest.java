@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;

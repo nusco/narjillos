@@ -1,7 +1,7 @@
 package org.nusco.narjillos.core.things;
 
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 public class FoodPellet implements Thing {

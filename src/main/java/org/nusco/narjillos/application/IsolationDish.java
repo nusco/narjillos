@@ -2,7 +2,7 @@ package org.nusco.narjillos.application;
 
 import java.util.List;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;

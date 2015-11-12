@@ -2,7 +2,7 @@ package org.nusco.narjillos.persistence.serialization;
 
 import java.lang.reflect.Type;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

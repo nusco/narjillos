@@ -1,10 +1,10 @@
-package org.nusco.narjillos.core.physics;
+package org.nusco.narjillos.core.geometry;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 
 public class SegmentTest {
 	@Test
@@ -38,6 +38,13 @@ public class SegmentTest {
 		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(4, 6));
 
 		assertEquals(Vector.cartesian(5, 8), segment.getEndPoint());
+	}
+	
+	@Test
+	public void convertsToItself() {
+		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(4, 6));
+
+		assertEquals(segment, segment.toSegment());
 	}
 	
 	@Test

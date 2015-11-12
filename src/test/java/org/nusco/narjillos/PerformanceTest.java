@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.core.physics.FastMath;
+import org.nusco.narjillos.core.geometry.FastMath;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.SimpleExperiment;

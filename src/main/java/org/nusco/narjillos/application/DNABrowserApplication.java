@@ -20,7 +20,7 @@ import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.StringView;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;

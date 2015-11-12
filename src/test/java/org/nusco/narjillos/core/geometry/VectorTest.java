@@ -1,12 +1,12 @@
-package org.nusco.narjillos.core.physics;
+package org.nusco.narjillos.core.geometry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 
 public class VectorTest {
 	

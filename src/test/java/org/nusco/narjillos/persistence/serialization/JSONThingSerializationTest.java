@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;

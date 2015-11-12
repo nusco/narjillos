@@ -1,4 +1,4 @@
-package org.nusco.narjillos.core.physics;
+package org.nusco.narjillos.core.geometry;
 
 /**
  * Fast approximated trigonometry functions based on lookup tables.

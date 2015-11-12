@@ -6,8 +6,8 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.physics.Angle;
-import org.nusco.narjillos.core.physics.FastMath;
+import org.nusco.narjillos.core.geometry.Angle;
+import org.nusco.narjillos.core.geometry.FastMath;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.Egg;
 

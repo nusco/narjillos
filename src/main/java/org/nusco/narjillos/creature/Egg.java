@@ -1,7 +1,7 @@
 package org.nusco.narjillos.creature;
 
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;

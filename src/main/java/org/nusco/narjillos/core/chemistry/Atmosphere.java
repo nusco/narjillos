@@ -54,17 +54,9 @@ public class Atmosphere {
 
 		return ((double) levels.get(element)) / saturationElementLevels;
 	}
-
-	public Atmosphere duplicate() {
-		Atmosphere result = new Atmosphere();
-		result.levels.put(OXYGEN, levels.get(OXYGEN));
-		result.levels.put(HYDROGEN, levels.get(HYDROGEN));
-		result.levels.put(NITROGEN, levels.get(NITROGEN));
-		return result;
-	}
 	
 	@Override
 	public synchronized String toString() {
-		return "O: " + levels.get(OXYGEN) + ", H: " + levels.get(HYDROGEN) + ", N: " + levels.get(NITROGEN);
+		return "O: " + levels.get(OXYGEN) + ", H: " + levels.get(HYDROGEN) + ", N: " + levels.get(NITROGEN) + ", X: " + getCatalystLevel();
 	}
 }

@@ -24,7 +24,7 @@ import org.nusco.narjillos.application.utilities.AppState;
 import org.nusco.narjillos.application.utilities.Effects;
 import org.nusco.narjillos.application.utilities.Light;
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.VisualDebugger;
 import org.nusco.narjillos.experiment.environment.Environment;
@@ -145,7 +145,7 @@ public class EnvirommentView {
 
 	private List<Node> getNodesForThingsInOrder(boolean infraredOn, boolean effectsOn) {
 		List<Node> result = new LinkedList<>();
-		addNodesFor("food_piece", result, infraredOn, effectsOn);
+		addNodesFor("food_pellet", result, infraredOn, effectsOn);
 		addNodesFor("narjillo", result, infraredOn, effectsOn);
 		addNodesFor("egg", result, infraredOn, effectsOn);
 		return result;

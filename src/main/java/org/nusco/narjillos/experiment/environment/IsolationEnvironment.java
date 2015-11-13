@@ -4,11 +4,11 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 /**
  * An environment that isolates a single narjillo at a time.
@@ -21,7 +21,7 @@ public class IsolationEnvironment extends Environment {
 
 	private double targetAngle = 0;
 
-	public IsolationEnvironment(long size, RanGen ranGen) {
+	public IsolationEnvironment(long size, NumGen numGen) {
 		super(size);
 	}
 
@@ -43,13 +43,13 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	@Override
-	public int getNumberOfFoodPieces() {
+	public int getNumberOfFoodPellets() {
 		return 0;
 	}
 
 	@Override
-	protected void tickThings(GenePool genePool, RanGen ranGen) {
-		getNarjillo().tick(getAtmosphere());
+	protected void tickThings(DNALog dnaLog, NumGen numGen) {
+		getNarjillo().tick();
 	}
 
 	public synchronized void updateSpecimen(Narjillo narjillo) {

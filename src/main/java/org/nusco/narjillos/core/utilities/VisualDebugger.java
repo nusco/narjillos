@@ -3,7 +3,7 @@ package org.nusco.narjillos.core.utilities;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.core.physics.Segment;
+import org.nusco.narjillos.core.geometry.Segment;
 
 /**
  * A quick debugging class.

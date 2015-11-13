@@ -1,7 +1,7 @@
 package org.nusco.narjillos.core.things;
 
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.NumberFormat;
+import org.nusco.narjillos.core.utilities.NumberFormatter;
 
 public class LifeFormEnergy implements Energy {
 
@@ -38,13 +38,11 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void tick(double energyConsumed) {
-		if (isZero())
-			return; // once it's gone, it's gone
+	public void tick(double additionalEnergy) {
+		if (maxForAge >= 0)
+			maxForAge -= decay;
 
-		maxForAge -= decay;
-
-		decreaseBy(energyConsumed);
+		increaseBy(additionalEnergy);
 	}
 
 	@Override
@@ -59,11 +57,10 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void decreaseBy(double energy) {
-		increaseBy(-energy);
-	}
+	public void increaseBy(double amount) {
+		if (isZero())
+			return; // once it's gone, it's gone
 
-	private void increaseBy(double amount) {
 		value += amount;
 		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
 	}
@@ -84,6 +81,6 @@ public class LifeFormEnergy implements Energy {
 	
 	@Override
 	public String toString() {
-		return NumberFormat.format(getValue()) + " of " + NumberFormat.format(getMaximumValue());
+		return NumberFormatter.format(getValue()) + " of " + NumberFormatter.format(getMaximumValue());
 	}
 }

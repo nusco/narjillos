@@ -17,10 +17,10 @@ import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.StatusBarView;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.core.utilities.Version;
 
 /**
  * The main JavaFX Application class. It binds model and view together, and also
@@ -52,13 +52,15 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
+		CommandLineOptions options = CommandLineOptions.parse(true, arguments);
+		
+		if (options == null)
+			System.exit(1);
+
 		return new StoppableThread() {
 			public void run() {
-				CommandLineOptions options = CommandLineOptions.parse(arguments);
-				if (options == null)
-					System.exit(1);
 
-				String applicationVersion = Persistence.readApplicationVersion();
+				String applicationVersion = Version.read();
 				setDish(new PetriDish(applicationVersion, options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000));
 
 				isModelInitialized[0] = true;

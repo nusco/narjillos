@@ -4,7 +4,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 
 abstract class RoundObjectView implements ItemView {
 

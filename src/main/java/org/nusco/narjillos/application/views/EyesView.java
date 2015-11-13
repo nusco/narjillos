@@ -8,8 +8,8 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.Fiber;
 

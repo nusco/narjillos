@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature.body;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 
 /**

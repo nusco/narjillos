@@ -2,21 +2,20 @@ package org.nusco.narjillos.creature;
 
 import java.util.List;
 
-import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.chemistry.Element;
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.things.FoodPiece;
+import org.nusco.narjillos.core.things.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Mouth;
 import org.nusco.narjillos.creature.embryogenesis.Embryo;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.GenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 /**
  * A fully-formed, autonomous creature.
@@ -39,7 +38,7 @@ public class Narjillo implements Thing {
 	}
 
 	@Override
-	public Segment tick(Atmosphere atmosphere) {
+	public Segment tick() {
 		growOlder();
 
 		Vector startingPosition = body.getStartPoint();
@@ -50,7 +49,7 @@ public class Narjillo implements Thing {
 		mouth.tick(getPosition(), getTarget(), getBody().getAngle());
 
 		double energyRequiredToMove = body.tick(getMouth().getDirection());
-		updateEnergy(energyRequiredToMove, atmosphere);
+		getEnergy().tick(-energyRequiredToMove);
 
 		return new Segment(startingPosition, body.getStartPoint().minus(startingPosition));
 	}
@@ -96,7 +95,7 @@ public class Narjillo implements Thing {
 		return body.getCenterOfMass();
 	}
 
-	public void feedOn(FoodPiece thing) {
+	public void feedOn(FoodPellet thing) {
 		getEnergy().steal(thing.getEnergy());
 		thing.setEater(this);
 	}
@@ -125,7 +124,7 @@ public class Narjillo implements Thing {
 	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay
 	 * it.
 	 */
-	public Egg layEgg(GenePool genePool, RanGen ranGen) {
+	public Egg layEgg(DNALog dnaLog, NumGen numGen) {
 		if (getAge() < nextEggAge)
 			return null;
 
@@ -142,13 +141,19 @@ public class Narjillo implements Thing {
 		if (getEnergy().getValue() < totalEnergyRequired)
 			return null;
 
-		getEnergy().decreaseBy(energyToChild);
-		DNA childDNA = genePool.mutateDNA(getDNA(), ranGen);
+		getEnergy().increaseBy(-energyToChild);
+		DNA childDNA = mutateDna(dnaLog, getDNA(), numGen);
 
 		decideWhenToLayTheNextEgg();
 		Vector position = getNeckLocation();
-		Vector velocity = Vector.polar(360 * ranGen.nextDouble(), getBody().getEggVelocity());
-		return new Egg(childDNA, position, velocity, energyToChild, ranGen);
+		Vector velocity = Vector.polar(360 * numGen.nextDouble(), getBody().getEggVelocity());
+		return new Egg(childDNA, position, velocity, energyToChild, numGen);
+	}
+
+	public DNA mutateDna(DNALog dnaLog, DNA parent, NumGen numGen) {
+		DNA result = parent.mutate(numGen.nextSerial(), numGen);
+		dnaLog.save(result);
+		return result;
 	}
 
 	public Element getBreathedElement() {
@@ -167,22 +172,8 @@ public class Narjillo implements Thing {
 		getBody().growToAdultForm();
 	}
 
-	Vector getNeckLocation() {
+	public Vector getNeckLocation() {
 		return getBody().getHead().getEndPoint();
-	}
-
-	private void updateEnergy(double energyRequiredToMove, Atmosphere atmosphere) {
-		// Make energy cheaper depending on atmospheric composition.
-		// A creature whose breathable element has a density of 1 can move for free.
-		// A creature whose breathable element has a density of 0 has to spend all
-		// the energy from its reserves.
-		//
-		// (Don't mutate the Atmosphere here - this code is called in parallel,
-		// and it would become non-deterministic if we mutate shared objects).
-		double densityOfBreathableElement = atmosphere.getDensityOf(body.getBreathedElement());
-		double energyConsumed = energyRequiredToMove * (1 - densityOfBreathableElement);
-
-		getEnergy().tick(energyConsumed);
 	}
 
 	private void decideWhenToLayTheNextEgg() {

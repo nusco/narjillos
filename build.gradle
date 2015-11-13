@@ -36,8 +36,6 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 mainClassName = 'org.nusco.narjillos.NarjillosRunner'
 
-applicationDefaultJvmArgs = ['-Xmx8g']
-
 // Dependencies
 
 repositories {
@@ -48,6 +46,7 @@ dependencies {
   compile 'com.google.code.gson:gson:2.3.1'
   compile 'commons-cli:commons-cli:1.2'
   compile 'org.yaml:snakeyaml:1.15'
+  compile 'org.xerial:sqlite-jdbc:3.8.11.1'
   testCompile 'junit:junit:4.11'
 }
 
@@ -60,6 +59,13 @@ createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it 
 
 
 // Tests
+
+test {
+  description "Runs standard suite of unit tests."
+  include '**/*Test*'
+  exclude '**/PerformanceTest*'
+  testLogging.showStandardStreams = true
+}
 
 task(testPerformance, dependsOn: 'compileJava', type: JavaExec) {
   description = 'Runs performance test.'
@@ -75,8 +81,8 @@ task(testDeterministic, dependsOn: 'compileJava', type: JavaExec) {
   classpath = sourceSets.test.runtimeClasspath
 }
 
-task testAll(dependsOn: ['testPerformance', 'test', 'testDeterministic']) {
-  description = 'Runs all the tests, including the slow ones.'
+task testAll(dependsOn: ['test', 'testDeterministic', 'testPerformance']) {
+  description = 'Runs all the tests, including the slow tests, the database tests and the performance tests.'
   group = 'verification'
 }
 
@@ -125,7 +131,7 @@ def createProgramTask(taskName, mainClassName, taskDescription) {
     main = mainClassName
     classpath = sourceSets.main.runtimeClasspath
     args commandLineArgsOr([])
-    maxHeapSize '4g'
+    maxHeapSize '8g'
   }
 }
 

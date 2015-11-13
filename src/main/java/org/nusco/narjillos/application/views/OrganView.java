@@ -12,9 +12,9 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Fiber;
@@ -59,7 +59,7 @@ public class OrganView implements ItemView {
 		else
 			joint = null;
 		
-		previousOrganPosition = this.organ.getPositionInSpace();
+		previousOrganPosition = this.organ.toSegment();
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class OrganView implements ItemView {
 		addStroke(shape, infraredOn, alpha, zoomLevel);
 		addMotionBlurEffect(shape, zoomLevel, effectsOn);
 
-		previousOrganPosition = organ.getPositionInSpace();
+		previousOrganPosition = organ.toSegment();
 
 		return shape;
 	}
@@ -191,7 +191,7 @@ public class OrganView implements ItemView {
 	}
 
 	private Vector calculateMovement() {
-		Segment currentOrganPosition = organ.getPositionInSpace();
+		Segment currentOrganPosition = organ.toSegment();
 
 		if (!areDistant(currentOrganPosition, previousOrganPosition))
 			return Vector.ZERO;

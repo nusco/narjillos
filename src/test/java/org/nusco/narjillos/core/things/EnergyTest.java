@@ -26,14 +26,14 @@ public class EnergyTest {
 	public void canBeDepleted() {
 		assertFalse(energy.isZero());
 
-		energy.tick(initialValue);
+		energy.tick(-initialValue);
 
 		assertTrue(energy.isZero());
 	}
 
 	@Test
 	public void cannotFallBelowZero() {
-		energy.tick(initialValue);
+		energy.tick(-initialValue);
 		assertEquals(0, energy.getValue(), 0.001);
 
 		energy.tick(-10);
@@ -42,7 +42,7 @@ public class EnergyTest {
 
 	@Test
 	public void cannotIncreaseAgainAfterBeingDepleted() {
-		energy.tick(initialValue);
+		energy.tick(-initialValue);
 		assertEquals(0, energy.getValue(), 0.001);
 
 		energy.tick(10);

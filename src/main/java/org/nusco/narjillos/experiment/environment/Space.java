@@ -5,8 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
 
@@ -105,15 +105,15 @@ class Space {
 	 * by the movement, plus their neighbors (potentially including outerSpace).
 	 */
 	public Set<Thing> detectCollisions(Segment movement, String label) {
-		Set<Thing> collidedFoodPieces = new LinkedHashSet<>();
+		Set<Thing> collidedFoodPellets = new LinkedHashSet<>();
 
 		getNearbyNeighbors(movement.getStartPoint(), label).stream()
 			.filter((neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
 			.forEach((neighbor) -> {
-				collidedFoodPieces.add(neighbor);
+				collidedFoodPellets.add(neighbor);
 			});
 
-		return collidedFoodPieces;
+		return collidedFoodPellets;
 	}
 
 	public Set<Thing> getAll(String label) {

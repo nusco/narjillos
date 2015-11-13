@@ -38,7 +38,7 @@ public class SimHashTest {
 				gene1, gene1, gene2,
 				gene1, gene2, gene3,
 				gene2, gene3, gene3
-		});
+		}, DNA.NO_PARENT);
 		
 		int[] expected = new int[] {
 				0, 0, 0, 0, 0, 0, 0, 0,
@@ -54,9 +54,9 @@ public class SimHashTest {
 		int gene2 = 0b00001111;
 		int gene3 = 0b11111111;
 
-		DNA dna1 = new DNA(1, new Integer[] {gene1, gene1, gene1});
-		DNA dna2 = new DNA(1, new Integer[] {gene1, gene1, gene2});
-		DNA dna3 = new DNA(1, new Integer[] {gene3, gene3, gene3});
+		DNA dna1 = new DNA(1, new Integer[] {gene1, gene1, gene1}, DNA.NO_PARENT);
+		DNA dna2 = new DNA(1, new Integer[] {gene1, gene1, gene2}, DNA.NO_PARENT);
+		DNA dna3 = new DNA(1, new Integer[] {gene3, gene3, gene3}, DNA.NO_PARENT);
 		
 		assertEquals(0, dna1.getSimHashedDistanceFrom(dna1));
 		assertEquals(4, dna1.getSimHashedDistanceFrom(dna2));

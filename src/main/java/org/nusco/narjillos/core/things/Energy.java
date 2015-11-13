@@ -14,7 +14,7 @@ public interface Energy {
 		};
 
 		@Override
-		public void tick(double energyConsumed) {};
+		public void tick(double additionalEnergy) {};
 		
 		@Override
 		public void steal(Energy other) {
@@ -22,7 +22,7 @@ public interface Energy {
 		};
 		
 		@Override
-		public void decreaseBy(double energy) {
+		public void increaseBy(double amount) {
 		};
 
 		@Override
@@ -37,13 +37,13 @@ public interface Energy {
 
 	public double getValue();
 	
-	public void tick(double energyConsumed);
+	public void tick(double additionalEnergy);
 	
 	public double getMaximumValue();
 
 	void steal(Energy other);
 	
-	public void decreaseBy(double energy);
+	public void increaseBy(double amount);
 
 	public boolean isZero();
 

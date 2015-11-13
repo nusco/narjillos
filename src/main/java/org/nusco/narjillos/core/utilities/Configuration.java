@@ -9,13 +9,13 @@ import org.yaml.snakeyaml.Yaml;
 
 public class Configuration {
 
-	private static Map<String, Map<String, Double>> data = loadConfigurationData();
+	private static Map<String, Map<String, Object>> data = loadConfigurationData();
 	
 	@SuppressWarnings("unchecked")
-	private static Map<String, Map<String, Double>> loadConfigurationData() {		
+	private static Map<String, Map<String, Object>> loadConfigurationData() {		
 		File configurationFile = locateConfigurationFile();
 		try {
-			return (Map<String, Map<String, Double>>) new Yaml().load(new FileReader(configurationFile));
+			return (Map<String, Map<String, Object>>) new Yaml().load(new FileReader(configurationFile));
 		} catch (FileNotFoundException e) {
 			fail("cannot find a configuration file (config.yaml) in the current working directory");
 			return null;
@@ -58,9 +58,9 @@ public class Configuration {
 			return 0;
 		}
 	}
-
+	
 	private static Object get(String configSection, String configKey) {
-		Map<String, Double> section = data.get(configSection);
+		Map<String, Object> section = data.get(configSection);
 		if (section == null) {
 			fail("cannot find section \"" + configSection + "\" in config.yaml");
 		}
@@ -120,9 +120,10 @@ public class Configuration {
 	public static final double ECOSYSTEM_EGGS_DENSITY_PER_BLOCK = getDouble("ecosystem", "eggs_density_per_block");
 	public static final double ECOSYSTEM_FOOD_DENSITY_PER_BLOCK = getDouble("ecosystem", "food_density_per_block");
 	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK = getDouble("ecosystem", "max_food_density_per_1000_blocks");
-	public static final double ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = getInt("ecosystem", "food_respawn_average_interval_per_block");
+	public static final int ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = getInt("ecosystem", "food_respawn_average_interval_per_block");
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = getInt("ecosystem", "update_food_targets_interval");
-	public static final int ECOSYSTEM_INITIAL_ELEMENT_LEVEL = getInt("ecosystem", "initial_element_level");
+	public static final double ECOSYSTEM_INITIAL_ELEMENT_LEVEL = getDouble("ecosystem", "initial_element_level");
+	public static final int ECOSYSTEM_CATALYST_LEVEL = getInt("ecosystem", "catalyst_level");
 
 	// experiment
 	public static final int EXPERIMENT_SAMPLE_INTERVAL_TICKS = getInt("experiment", "sample_interval_ticks");

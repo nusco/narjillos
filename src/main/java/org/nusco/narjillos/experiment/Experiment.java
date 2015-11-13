@@ -1,46 +1,32 @@
 package org.nusco.narjillos.experiment;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
-import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.genomics.GenePoolWithHistory;
-import org.nusco.narjillos.genomics.SimpleGenePool;
+import org.nusco.narjillos.genomics.DNALog;
 
 public class Experiment {
 
 	private final String id;
 	private final Ecosystem ecosystem;
-	private final GenePool genePool;
 	private final Chronometer ticksChronometer = new Chronometer();
-	private final RanGen ranGen;
-	private final boolean trackHistory;
-	private final LinkedList<ExperimentStats> stats = new LinkedList<>();
-
+	private final NumGen numGen;
 	private long totalRunningTime = 0;
+
+	private transient DNALog dnaLog;
+	private transient HistoryLog historyLog;
 	private transient long lastRegisteredRunningTime;
 
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackHistory, String dna) {
-		this(seed, version, ecosystem, trackHistory);
-		ecosystem.populate(dna, genePool, ranGen);
+	public Experiment(long seed, Ecosystem ecosystem, String version) {
+		this(seed, version, ecosystem);
 	}
 
-	public Experiment(long seed, Ecosystem ecosystem, String version, boolean trackHistory) {
-		this(seed, version, ecosystem, trackHistory);
-		ecosystem.populate(genePool, ranGen);
-	}
-
-	private Experiment(long seed, String version, Ecosystem ecosystem, boolean trackHistory) {
-		genePool = initializeGenePool(trackHistory);
+	private Experiment(long seed, String version, Ecosystem ecosystem) {
 		id = "" + seed + "-" + version;
 		timeStamp();
-		ranGen = new RanGen(seed);
+		numGen = new NumGen(seed);
 		this.ecosystem = ecosystem;
-		this.trackHistory = trackHistory;
 	}
 
 	public final void timeStamp() {
@@ -55,7 +41,7 @@ public class Experiment {
 		if (ticksChronometer.getTotalTicks() % Configuration.ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL == 0)
 			ecosystem.updateTargets();
 
-		ecosystem.tick(genePool, ranGen);
+		ecosystem.tick(dnaLog, numGen);
 		ticksChronometer.tick();
 	}
 
@@ -71,15 +57,9 @@ public class Experiment {
 		return totalRunningTime / 1000L;
 	}
 
-	public ExperimentStats getStats() {
-		return stats.getLast();
-	}
-
-	public List<ExperimentStats> getHistory() {
-		return stats;
-	}
-
 	public String terminate() {
+		dnaLog.close();
+		historyLog.close();
 		ecosystem.terminate();
 
 		updateTotalRunningTime();
@@ -90,16 +70,10 @@ public class Experiment {
 		return result;
 	}
 
-	public GenePool getGenePool() {
-		return genePool;
-	}
-
-	public void updateStats() {
-		if (!trackHistory)
-			stats.clear();
-		
+	// TODO: move to the dish?
+	public void saveHistoryEntry() {
 		updateTotalRunningTime();
-		stats.add(new ExperimentStats(this));
+		historyLog.saveEntry(this);
 	}
 
 	public boolean thereAreSurvivors() {
@@ -111,6 +85,22 @@ public class Experiment {
 		totalRunningTime = 0;
 	}
 
+	public final void setDnaLog(DNALog dnaLog) {
+		this.dnaLog = dnaLog;
+	}
+
+	public final void populate(String dna) {
+		ecosystem.populate(dna, dnaLog, numGen);
+	}
+
+	public final void populate() {
+		ecosystem.populate(dnaLog, numGen);
+	}
+
+	public void setHistoryLog(HistoryLog historyLog) {
+		this.historyLog = historyLog;
+	}
+
 	@Override
 	public String toString() {
 		return "Experiment " + getId();
@@ -120,12 +110,5 @@ public class Experiment {
 		long updateTime = System.currentTimeMillis();
 		totalRunningTime = totalRunningTime + (updateTime - lastRegisteredRunningTime);
 		lastRegisteredRunningTime = updateTime;
-	}
-
-	private GenePool initializeGenePool(boolean trackHistory) {
-		if (!trackHistory)
-			return new SimpleGenePool();
-
-		return new GenePoolWithHistory();
 	}
 }

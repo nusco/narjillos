@@ -1,7 +1,11 @@
 package org.nusco.narjillos.application;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -11,8 +15,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.nusco.narjillos.experiment.Experiment;
-import org.nusco.narjillos.genomics.GenePool;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.persistence.ExperimentLoader;
 
 @SuppressWarnings("serial")
 public class CommandLineOptions extends Options {
@@ -20,16 +23,14 @@ public class CommandLineOptions extends Options {
 	public static final int NO_SEED = -1;
 	
 	private Experiment experiment = null;
-	private GenePool genePool = null;
 	private boolean persistent = true;
 	private boolean fast = false;
-	private boolean trackingHistory = false;
 	private long seed = NO_SEED;
 	private String dna = null;
 
-	public static CommandLineOptions parse(String... args) {
+	public static CommandLineOptions parse(boolean printWarnings, String... args) {
 		try {
-			return new CommandLineOptions(args);
+			return new CommandLineOptions(printWarnings, args);
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -37,12 +38,15 @@ public class CommandLineOptions extends Options {
 	}
 
 	CommandLineOptions(String... args) {
+		this(true, args);
+	}
+
+	private CommandLineOptions(boolean printWarnings, String... args) {
 		addOption("?", "help", false, "print this message");
 		addOption("f", "fast", false, "fast mode (no graphics)");
-		addOption("p", "persistent", false, "periodically save to file, without history");
-		addOption("h", "history", false, "periodically save to file, with history (needs a lot of memory)");
-		addOption("s", "seed", true, "start experiment with given seed");
-		addOption("d", "dna", true, "populate experiment with specific dna at start (either the genes, or a file containing them)");
+		addOption("s", "save", false, "save experiment to file");
+		addOption("e", "seed", true, "start experiment with given seed");
+		addOption("d", "dna", true, "populate experiment with specific DNA (takes genes, or a file containing genes)");
 
 		CommandLineParser parser = new BasicParser();
 		
@@ -60,12 +64,11 @@ public class CommandLineOptions extends Options {
 	        }
 
 	        setFast(line.hasOption("fast"));
-	        setPersistent(line.hasOption("persistent") || line.hasOption("history"));
-	        setTrackingHistory(line.hasOption("history"));
+	        setPersistent(line.hasOption("save"));
 
 	        if (line.hasOption("seed")) {
 	        	if (line.hasOption("dna"))
-	        		throw new RuntimeException("You cannot pick a seed and dna at the same time. It's either one, or the other.");
+	        		throw new RuntimeException("You cannot pick seed and dna at the same time. It's either one, or the other.");
 	        	setSeed(line.getOptionValue("seed"));
 	        }
 	        
@@ -80,15 +83,12 @@ public class CommandLineOptions extends Options {
 	        
 	        if (getDna() != null || getSeed() != NO_SEED)
 	        	throw new RuntimeException("If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
-	        
-        	if (line.hasOption("history"))
-        		System.out.println("WARNING: I'm loading an existing experiment, so I'm ignoring the -history option.");
 
         	setFile(line.getArgs()[0]);
         	
-        	if (getExperiment() != null && !isPersistent()) {
-				System.err.println("WARNING: you're loading an experiment from file, but you didn't ask for persistence. I will read the experiment file, but I will not update it.");
-				System.err.println("If that is not what you want, then maybe use the --persistence option.");
+        	if (printWarnings && getExperiment() != null && !isPersistent()) {
+				System.err.print("WARNING: you're continuing an existing experiment, but I won't update it on disk. ");
+				System.err.println("If you want to update the experiment file, then use the --save option.");
 			}
         } catch(ParseException e) {
 	        throw new RuntimeException(e);
@@ -99,20 +99,12 @@ public class CommandLineOptions extends Options {
 		return experiment;
 	}
 
-	public GenePool getGenePool() {
-		return genePool;
-	}
-
 	public boolean isFast() {
 		return fast;
 	}
 
 	public boolean isPersistent() {
 		return persistent;
-	}
-
-	public boolean isTrackingHistory() {
-		return trackingHistory;
 	}
 
 	public long getSeed() {
@@ -134,8 +126,7 @@ public class CommandLineOptions extends Options {
 	}
 
 	private void setFile(String file) {
-		this.experiment = Persistence.loadExperiment(file);
-		this.genePool = this.experiment.getGenePool();
+		this.experiment = ExperimentLoader.load(file);
 	}
 
 	private void setFast(boolean fast) {
@@ -144,10 +135,6 @@ public class CommandLineOptions extends Options {
 
 	private void setPersistent(boolean persistent) {
 		this.persistent = persistent;
-	}
-
-	private void setTrackingHistory(boolean trackingHistory) {
-		this.trackingHistory = trackingHistory;
 	}
 
 	private void setSeed(String seed) {
@@ -162,6 +149,16 @@ public class CommandLineOptions extends Options {
 			return;
 		}
 		// not inline DNA, so it must be a filename
-		this.dna = Persistence.loadDNADocument(dna);
+		this.dna = loadDnaDocument(dna);
+	}
+
+	private String loadDnaDocument(String fileName) {
+		try {
+			byte[] encoded = Files.readAllBytes(Paths.get(fileName));
+			String dnaDocument = new String(encoded, Charset.defaultCharset());
+			return dnaDocument;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

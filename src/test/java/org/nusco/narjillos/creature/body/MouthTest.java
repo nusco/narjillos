@@ -3,8 +3,8 @@ package org.nusco.narjillos.creature.body;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 
 public class MouthTest {
 

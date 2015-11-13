@@ -1,0 +1,7 @@
+language: java
+jdk: oraclejdk8
+env:
+  - TEST_SUITE=test
+  - TEST_SUITE=testDeterministic
+script: "gradle $TEST_SUITE"
+sudo: false

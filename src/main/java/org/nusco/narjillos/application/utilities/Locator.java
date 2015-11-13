@@ -3,7 +3,7 @@ package org.nusco.narjillos.application.utilities;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;

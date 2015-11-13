@@ -5,47 +5,60 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 
 /**
  * A sequence of genes.
  */
 public class DNA implements Iterable<Chromosome> {
 
+	public static final long NO_PARENT = 0;
+	
 	private final long id;
 	private final Integer[] genes;
+	private final long parentId;
 
 	public DNA(long id, String dnaDocument) {
+		this(id, dnaDocument, NO_PARENT);
+	}
+
+	public DNA(long id, String dnaDocument, long parentId) {
 		this.id = id;
 		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
+		this.parentId = parentId;
 	}
 
-	public DNA(long id, Integer[] genes) {
+	public DNA(long id, Integer[] genes, long parentId) {
 		this.id = id;
 		this.genes = clipGenes(genes);
+		this.parentId = parentId;
 	}
 
-	public static DNA random(long id, RanGen ranGen) {
-		return new DNA(id, randomGenes(getDefaultSize(), ranGen));
+	public static DNA random(long id, NumGen numGen) {
+		return new DNA(id, randomGenes(getDefaultSize(), numGen), 0);
 	}
 
 	public long getId() {
 		return id;
 	}
 
+	public long getParentId() {
+		return parentId;
+	}
+
 	public Integer[] getGenes() {
 		return genes;
 	}
 
-	public DNA mutate(long id, RanGen ranGen) {
+	public DNA mutate(long id, NumGen numGen) {
 		List<Integer[]> resultChromosomes = new LinkedList<>();
 		for (Chromosome chromosome : this)
-			if (isChromosomeMutation(ranGen))
-				resultChromosomes.addAll(mutateChromosome(ranGen, chromosome));
+			if (isChromosomeMutation(numGen))
+				resultChromosomes.addAll(mutateChromosome(numGen, chromosome));
 			else
-				resultChromosomes.add(copyChromosome(chromosome, ranGen));
+				resultChromosomes.add(copyChromosome(chromosome, numGen));
 		Integer[] resultGenes = flattenToGenes(resultChromosomes);
-		return new DNA(id, padToSameGenomeLength(resultGenes, ranGen));
+		return new DNA(id, padToSameGenomeLength(resultGenes, numGen), getId());
 	}
 
 	public int getSimHashedDistanceFrom(DNA other) {
@@ -135,54 +148,54 @@ public class DNA implements Iterable<Chromosome> {
 		return Chromosome.SIZE * Configuration.DNA_NUMBER_OF_CHROMOSOMES;
 	}
 
-	private static Integer[] randomGenes(int size, RanGen ranGen) {
+	private static Integer[] randomGenes(int size, NumGen numGen) {
 		Integer[] genes = new Integer[size];
 		for (int i = 0; i < genes.length; i++)
-			genes[i] = ranGen.nextByte();
+			genes[i] = numGen.nextByte();
 		return genes;
 	}
 
-	private List<Integer[]> mutateChromosome(RanGen ranGen, Chromosome chromosome) {
-		if (isSkipMutation(ranGen))
+	private List<Integer[]> mutateChromosome(NumGen numGen, Chromosome chromosome) {
+		if (isSkipMutation(numGen))
 			return new LinkedList<Integer[]>();
 
 		// duplicate the chromosome
 		List<Integer[]> resultChromosomes = new LinkedList<>();
-		Integer[] copiedGenes = copyChromosome(chromosome, ranGen);
+		Integer[] copiedGenes = copyChromosome(chromosome, numGen);
 		resultChromosomes.add(copiedGenes);
 		resultChromosomes.add(copiedGenes);
 		return resultChromosomes;
 	}
 
-	private boolean isSkipMutation(RanGen ranGen) {
-		return ranGen.nextDouble() > 0.5;
+	private boolean isSkipMutation(NumGen numGen) {
+		return numGen.nextDouble() > 0.5;
 	}
 
-	private Integer[] copyChromosome(Chromosome chromosome, RanGen ranGen) {
+	private Integer[] copyChromosome(Chromosome chromosome, NumGen numGen) {
 		Integer[] result = new Integer[Chromosome.SIZE];
 		for (int i = 0; i < result.length; i++)
-			result[i] = copyWithMutations(chromosome.getGene(i), ranGen);
+			result[i] = copyWithMutations(chromosome.getGene(i), numGen);
 		return result;
 	}
 
-	private int copyWithMutations(int gene, RanGen ranGen) {
-		return isMutantGene(ranGen) ? mutate(gene, ranGen) : gene;
+	private int copyWithMutations(int gene, NumGen numGen) {
+		return isMutantGene(numGen) ? mutate(gene, numGen) : gene;
 	}
 
-	private boolean isMutantGene(RanGen ranGen) {
-		return ranGen.nextDouble() < Configuration.DNA_MUTATION_RATE;
+	private boolean isMutantGene(NumGen numGen) {
+		return numGen.nextDouble() < Configuration.DNA_MUTATION_RATE;
 	}
 
-	private boolean isChromosomeMutation(RanGen ranGen) {
-		return ranGen.nextDouble() < (Configuration.DNA_MUTATION_RATE / (Chromosome.SIZE * 2));
+	private boolean isChromosomeMutation(NumGen numGen) {
+		return numGen.nextDouble() < (Configuration.DNA_MUTATION_RATE / (Chromosome.SIZE * 2));
 	}
 
 	private Integer[] clipGenes(Integer[] genes) {
 		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
 	}
 
-	private int mutate(int gene, RanGen ranGen) {
-		int randomFactor = (int) ((ranGen.nextDouble() * Configuration.DNA_MUTATION_RANGE * 2) - Configuration.DNA_MUTATION_RANGE);
+	private int mutate(int gene, NumGen numGen) {
+		int randomFactor = (int) ((numGen.nextDouble() * Configuration.DNA_MUTATION_RANGE * 2) - Configuration.DNA_MUTATION_RANGE);
 		return gene + randomFactor;
 	}
 
@@ -194,10 +207,10 @@ public class DNA implements Iterable<Chromosome> {
 		return result.toArray(new Integer[result.size()]);
 	}
 
-	private Integer[] padToSameGenomeLength(Integer[] otherGenes, RanGen ranGen) {
+	private Integer[] padToSameGenomeLength(Integer[] otherGenes, NumGen numGen) {
 		Integer[] result = new Integer[genes.length];
 		for (int i = 0; i < result.length; i++)
-			result[i] = i < otherGenes.length ? otherGenes[i] : ranGen.nextByte();
+			result[i] = i < otherGenes.length ? otherGenes[i] : numGen.nextByte();
 		return result;
 	}
 

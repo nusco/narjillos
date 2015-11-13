@@ -9,12 +9,10 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.experiment.environment.Space;
 
 public class SpaceTest {
 
@@ -233,7 +231,7 @@ class MockThing implements Thing {
 	}
 
 	@Override
-	public Segment tick(Atmosphere atmosphere) {
+	public Segment tick() {
 		return null;
 	}
 

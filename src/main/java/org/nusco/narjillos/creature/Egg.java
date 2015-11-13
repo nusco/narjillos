@@ -1,13 +1,12 @@
 package org.nusco.narjillos.creature;
 
-import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
 
 /**
@@ -26,16 +25,16 @@ public class Egg implements Thing {
 	private int hatchAge = NOT_HATCHED_YET;
 	private transient Narjillo hatchedNarjillo = null;
 	
-	public Egg(DNA dna, Vector position, Vector velocity, double energy, RanGen ranGen) {
+	public Egg(DNA dna, Vector position, Vector velocity, double energy, NumGen numGen) {
 		this.dna = dna;
-		this.incubationTime = calculateIncubationTime(ranGen);
+		this.incubationTime = calculateIncubationTime(numGen);
 		this.position = position;
 		this.velocity = velocity;
 		this.energy = energy;
 	}
 
 	@Override
-	public Segment tick(Atmosphere atmosphere) {
+	public Segment tick() {
 		age++;
 
 		if (velocity.getLength() > Configuration.EGG_MIN_VELOCITY) {
@@ -47,7 +46,7 @@ public class Egg implements Thing {
 		return new Segment(position, velocity);
 	}
 
-	public boolean hatch(RanGen ranGen) {
+	public boolean hatch(NumGen numGen) {
 		if (hasHatched())
 			return false;
 		if (!hasStopped())
@@ -57,7 +56,7 @@ public class Egg implements Thing {
 
 		
 		hatchAge = age;
-		double angle = ranGen.nextInt() % 360;
+		double angle = numGen.nextInt() % 360;
 		hatchedNarjillo = new Narjillo(dna, getPosition(), angle, new LifeFormEnergy(energy, Configuration.CREATURE_MAX_LIFESPAN));
 		energy = 0;
 		return true;
@@ -127,9 +126,9 @@ public class Egg implements Thing {
 		return incubationTime;
 	}
 
-	private int calculateIncubationTime(RanGen ranGen) {
+	private int calculateIncubationTime(NumGen numGen) {
 		final int MAX_INCUBATION_INTERVAL = Configuration.EGG_MAX_INCUBATION_TIME - Configuration.EGG_MIN_INCUBATION_TIME;
-		int extraIncubation = (int) (MAX_INCUBATION_INTERVAL * ranGen.nextDouble());
+		int extraIncubation = (int) (MAX_INCUBATION_INTERVAL * numGen.nextDouble());
 		return Configuration.EGG_MIN_INCUBATION_TIME + extraIncubation;
 	}
 }

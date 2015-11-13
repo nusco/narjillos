@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.nusco.narjillos.core.chemistry.Element;
-import org.nusco.narjillos.core.physics.Angle;
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
+import org.nusco.narjillos.core.geometry.Angle;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.creature.body.physics.RotationsPhysicsEngine;
 import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
@@ -271,7 +271,7 @@ public class Body {
 			double mass) {
 		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (Organ bodyPart : getOrgans())
-			forceField.registerMovement(initialAnglesOfOrgans.get(bodyPart), bodyPart.getAbsoluteAngle(), bodyPart.getPositionInSpace(),
+			forceField.registerMovement(initialAnglesOfOrgans.get(bodyPart), bodyPart.getAbsoluteAngle(), bodyPart.toSegment(),
 					bodyPart.getMass());
 		getHead().rotateBy(forceField.getRotation());
 		return forceField.getEnergy();
@@ -285,7 +285,7 @@ public class Body {
 	private double tick_step4_translate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
 		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
 		for (Organ bodyPart : getOrgans())
-			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.getPositionInSpace(), bodyPart.getMass());
+			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.toSegment(), bodyPart.getMass());
 		getHead().translateBy(forceField.getTranslation());
 		return forceField.getEnergy();
 	}
@@ -314,7 +314,7 @@ public class Body {
 	private Map<Organ, Segment> calculatePositionsOfOrgans() {
 		Map<Organ, Segment> result = new LinkedHashMap<>();
 		for (Organ organ : getOrgans())
-			result.put(organ, organ.getPositionInSpace());
+			result.put(organ, organ.toSegment());
 		return result;
 	}
 

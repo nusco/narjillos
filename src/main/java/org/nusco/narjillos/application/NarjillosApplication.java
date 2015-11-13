@@ -16,8 +16,8 @@ import org.nusco.narjillos.application.utilities.Locator;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.utilities.ThingTracker;
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.physics.FastMath;
-import org.nusco.narjillos.core.physics.Vector;
+import org.nusco.narjillos.core.geometry.FastMath;
+import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
@@ -201,7 +201,7 @@ abstract class NarjillosApplication extends Application {
 		Environment environment = getDish().getEnvironment();
 		return "Narj: " + environment.getNumberOfNarjillos()
 				+ " / Eggs: " + environment.getNumberOfEggs()
-				+ " / Food: " + environment.getNumberOfFoodPieces();
+				+ " / Food: " + environment.getNumberOfFoodPellets();
 	}
 
 	protected boolean isBusy() {

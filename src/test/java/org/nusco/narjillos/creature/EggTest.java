@@ -7,16 +7,14 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
 
 public class EggTest {
 
 	DNA dna = new DNA(1, "{1_2_3}");
-	Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.ZERO, 100, new RanGen(1));
-	Atmosphere atmosphere = new Atmosphere();
+	Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.ZERO, 100, new NumGen(1));
 	
 	@Test
 	public void hatchesANarjilloAfterAnIncubationPeriod() {
@@ -51,7 +49,7 @@ public class EggTest {
 	public void onlyHatchesOnce() {
 		waitUntilItHatches(egg);
 		
-		assertFalse(egg.hatch(new RanGen(1)));
+		assertFalse(egg.hatch(new NumGen(1)));
 	}
 
 	@Test
@@ -64,19 +62,19 @@ public class EggTest {
 		for (int i = 0; i < 100; i++) {
 			assertFalse(egg.isDecayed());
 			assertEquals(i / 100.0, egg.getDecay(), 0);
-			egg.tick(atmosphere);
+			egg.tick();
 		}
 
 		assertTrue(egg.isDecayed());
 		assertEquals(1, egg.getDecay(), 0);
 
-		egg.tick(atmosphere);
+		egg.tick();
 		assertEquals(1, egg.getDecay(), 0);
 	}
 
 	private void waitUntilItHatches(Egg egg) {
-		RanGen ranGen = new RanGen(1);
-		while (!egg.hatch(ranGen))
-			egg.tick(atmosphere);
+		NumGen numGen = new NumGen(1);
+		while (!egg.hatch(numGen))
+			egg.tick();
 	}
 }

@@ -20,8 +20,8 @@ import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.views.EnvirommentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.StringView;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.utilities.RanGen;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
 
@@ -53,7 +53,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 				List<DNA> genomes;
 				if (arguments[0].equals("-r") || arguments[0].equals("--random")) {
-					System.out.println("No *.germline file. Generating random DNAs...");
+					System.out.println("Generating random DNAs...");
 					genomes = randomGenomes();
 				} else
 					genomes = readGenomes(arguments[0]);
@@ -74,9 +74,9 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 			private List<DNA> randomGenomes() {
 				List<DNA> result = new LinkedList<DNA>();
-				RanGen ranGen = new RanGen((int) (Math.random() * 100000));
+				NumGen numGen = new NumGen((int) (Math.random() * 100000));
 				for (int i = 0; i < 1000; i++)
-					result.add(DNA.random(i, ranGen));
+					result.add(DNA.random(i, numGen));
 				return result;
 			}
 

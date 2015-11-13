@@ -1,91 +1,23 @@
 #Narjillos Backlog
 
-Narjillos is my experimental project. I use it to try a lot of different things, and then I apply what I learn to other projects. In this case, I'm using it to experiment with the backlog.txt format (https://github.com/nusco/backlog.txt).
-
-For now, I'm using a quick Java utility to process the backlog. Here are some commands you can use:
-
-    g backlog            prints the whole backlog (in color)
-    g backlog all        like "g backlog"
-    g backlog top        prints the topmost priority feature
-    g backlog N          prints the topmost N features
-
----
-
-* Fix bug with duplicated --persistence warning
-* Fix extinction code
-
-##Prepare for Madison+ Presentation
->goal: give a good, clear presentation in Madison  
-
-* Identify interesting germline for demo  
-* Keyframes in DNA Browser  
-
-+ Fix position of creatures relative to speckled area  
-+ Start DNA browser in random mode in the middle of movement  
-
-
-##Database Persistence
->goal: run very long experiments  
-
-    For advanced analysis of experimental data.  
-    This also removes the memory cap on very long experiments.  
-
-* Store historical data in a database rather than in memory  
-  Amongst other things, this fixes the OutOfMemory problem on extremely long experiments.
-
-+ Keep running even after extinction
-  Or maybe find a reliable way to save the last state in case of extinction with persistent experiments.  
-
-+ Move entire persistence to a database  
-  Consider this, but be aware that it might effect usability, performance or reliability.  
-  So I might decide to stick with files.  
-
-+ Save events instead of current state  
-  Then have an external program, possibly in Elixir, to process stats
-
-+ Save to remote database  
-  If the DB is configurable, then it's easier to run experiments in the cloud.
-
-
-##Advanced Body Plans
->goal: specialized creatures  
-
-    Give evolution more power to shape interesting creature bodies.
-
-* MIRROR_AND_CONTINUE and MIRROR_AND_STOP instructions  
-* FORK_AND_CONTINUE and FORK_AND_STOP instructions  
-+ Parametric FORK  
-+ Parametric MIRROR  
-+ Parametric SKIP  
-* Parametric LOOP  
-* STOP and END instructions  
-  STOP just stops building this part, END terminates the build process  
-
-* Less constraining mirroring  
-  It should be possible to mirror an organ without necessarily mirroring the entire subtree.  
-
-+ "Jump" instruction in body plan  
-+ "Call" instruction in body plan  
-
-- Duplicate organs during mutation instead of mirroring them  
-  To favour emergent complexity. There are studies who say it would, at least.  
-  PATCH instruction?  
-
-- Different shapes for body segments  
-
 
 ##Dish Edges
->goal: nice user experience  
+>goal: complex interactions  
 
     Constrain the "world" inside defined edges.
     
+    Note: think about this now that (thanks to the new chemistry) there are narjillos  
+    who can survive on breathing alone, without moving. It could cause issues for populations  
+    that happen to sit close to the edge of the dish.  
+
     Right now, things can be placed anywhere, but only the central area of the dish is  
     space-partitioned. The rest is "outer space". If we limit the world, we can make it  
     all space-partitioned. The current space partitioning is OK-ish, but it would make  
     it hard and expensive to implement generalized collision detection. At the moment,  
     this is not a problem, because the only collision detection I have is "mouth colliding  
-    with food". But in the future, I want to have anything collide with anything.
-    After implementing this, I can probably remove the concept of "outer space" (the area outside the space-partitioned center of the dish).
+    with food". But in the future, we want to have anything collide with anything.
+    After implementing this, I can probably remove the concept of "outer space" (the area  
+    outside the space-partitioned center of the dish).
 
 * Kill narjillos who touch outer space  
 + Limit panning to inner space  
@@ -109,6 +41,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   
 * Istinct genes  
   How? Probably just a set of SimHashes and weights?
+  Maybe a small set of curves with multiplies and shifters, all determined by the genes?  
 
 + Attach istincts to food  
   Maybe every Thing must be SimHashed?
@@ -127,8 +60,9 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
     This is a complex direct interaction that might pave the road to an arms race amongst species.
     I should consider removing food by default after this is implemented.
 
-* Fix sketchy collision detection  
-  is this a bug?  
+* Fix vector math  
+  See TODOs and FIXMEs, in particular around vector projections.  
+  This is probably the cause of sketchy collision detection  
 
 + Rewrite collision detection to be independent of max speed  
   This can be almost as simple as it is now, but we should probably aim for generalized
@@ -184,14 +118,8 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   one number for the whole gene pool.  
 
 
-##Germline Browser
+##Advanced Germline Browser
 >goal: understand what is happening in the dish  
-
-    Analyze DNA germline in separate program.
-    This is useful to prepare my presentation at Madison+ Ruby.
-    
-    Takes a chain of DNA ancestors and dynamically shows specimen on the screen, with forward/back  
-    buttons and the like.
 
 *  Show narjillo stats while browsing germline  
    Pick a few:
@@ -223,17 +151,21 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Track historical data in experiment for analysis.
 
-* Save current configuration in experiment file
+* Save current configuration to experiment file  
   Issue warning if continuing the experiment with a different configuration.
   Maybe offer a command-line switch to override existing configuration?
 
 * Output germline statistics  
   Energy to children, total mass, etc.  
 
++ Stabilize memory consumption  
+  Right now the Lab program might run out of memory on a large experiment.  
+  Avoid bulk-loading stuff off the database.  
+
 + Fail with explicit error if running ancestry/history analysis on a file without history  
 
 + Warning in case of conflicting command-line arguments of main apps  
-  Like -s and experiment file used together, or combinations of file loading, -p and -history  
+  Like -s and experiment file used together
   Also issue better error messages in case of conflict
 
 + Generate lab script for packaged distribution  
@@ -290,6 +222,48 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
 
 
+##Seasons
+>goal: faster evolution  
+
+    Cyclically vary the amount of food that spawns.
+    
+    Studies show that evolution works best if there are enough resources (food),
+    but not too many. The problem is that it's hard to know what "enough but 
+    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    hoping that along the way from "almost starving" to "economy of
+    abundance", the system will hit a few evolutionary sweet spots.
+
+* Seasons  
+
+* Configurable seasonal cycle  
+  Max, min and period in config.yaml  
+
+
+##Realistic Physics
+>goal: specialized creatures  
+
+    More realistic behavior of body to avoid body shapes that "exploit" the current naive physics.
+
++ Fix "tail wiggles dog" effect  
++ Rotation inertia  
+  but check comments in physics engine - it may break previous assumptions  
+  
++ Translation inertia  
+  but check comments in physics engine - it may break previous assumptions  
+  
++ Limit rotation speed  
+  is this a good idea?  
+
+- Realistic viscosity  
+  is this a good idea?  
+
+- Viscosity per segment  
+  is this a good idea?  
+
++ Simpler senescence mechanism  
+  the current one feels too complicated for its own good.
+
+
 ##GUI
 >goal: nice user experience  
 
@@ -321,29 +295,13 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 
     Smoother, nicer graphics.
 
++ Disable effects automatically when framerate drops  
 + Optimize graphics  
 - Independent eye pupils  
 + Smoother contours when zooming in infrared mode  
 - Show heat cloud when zooming out in infrared mode  
 - Skip quickly over less interesting creatures in Demo Mode  
 + Command-line argument to start without visual effects  
-
-
-##Seasons
->goal: faster evolution  
-
-    Cyclically vary the amount of food that spawns.
-    
-    Studies show that evolution works best if there are enough resources (food),
-    but not too many. The problem is that it's hard to know what "enough but 
-    not too many" means. So I want to try this: food amount is cyclical. I'm 
-    hoping that along the way from "almost starving" to "economy of
-    abundance", the system will hit a few evolutionary sweet spots.
-
-* Seasons  
-
-* Configurable seasonal cycle  
-  Max, min and period in config.yaml  
 
 
 ##Sexual Reproduction
@@ -364,7 +322,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   maybe. (to keep species apart)  
   
 - Diploid creatures  
-  maybe. is it useful?
+  maybe. would this be useful?
 
 
 ##Intuitive Navigation
@@ -379,31 +337,6 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
 - Mini-map  
 
 
-##Realistic Physics
->goal: specialized creatures  
-
-    More realistic behavior of body to avoid body shapes that "exploit" the current naive physics.
-
-+ Fix "tail wiggles dog" effect  
-+ Rotation inertia  
-  but check comments in physics engine - it may break previous assumptions  
-  
-+ Translation inertia  
-  but check comments in physics engine - it may break previous assumptions  
-  
-+ Limit rotation speed  
-  is this a good idea?  
-
-- Realistic viscosity  
-  is this a good idea?  
-
-- Viscosity per segment  
-  is this a good idea?  
-
-+ Simpler senescence mechanism  
-  the current one feels too complicated for its own good
-
-
 ##Flexible Genes
 >goal: specialized creatures  
  
@@ -414,7 +347,7 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   
 - Lateral viewfield is genetically determined  
 - Growth rate is genetically determined  
-  maybe? (Takes energy?)  
+  maybe? (Consumes energy?)  
   
 - Egg incubation time is genetically determined  
   maybe. (Makes sense if egg contains green fibers)  
@@ -425,8 +358,16 @@ For now, I'm using a quick Java utility to process the backlog. Here are some co
   This is a very interesting concept, and something that I should think about carefully.
 
 
+##Multi-dish World
+>goal: distributed experiments
+
+* Migrations  
+
+* Save to remote database  
+  Requires switching to a different driver than SQLite.  
+
+
 ##Crazy Ideas
 
-- Multiple environments in multiple processes (with migration)  
 - Creatures have neural networks for brains  
 - Demiurge (an entity that dynamically tweaks the environment to maximize evolutionary speed)  

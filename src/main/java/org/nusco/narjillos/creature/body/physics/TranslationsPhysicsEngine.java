@@ -3,9 +3,9 @@ package org.nusco.narjillos.creature.body.physics;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.core.physics.Segment;
-import org.nusco.narjillos.core.physics.Vector;
-import org.nusco.narjillos.core.physics.ZeroVectorAngleException;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 /**

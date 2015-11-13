@@ -5,11 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.serializer.Persistence;
+import org.nusco.narjillos.core.utilities.Version;
 
 public class CommandLineOptionsTest {
 
-	String EXPERIMENT_ID = "1234-" + Persistence.readApplicationVersion();
+	String EXPERIMENT_ID = "1234-" + Version.read();
 
 	@Test
 	public void acceptsEmptyArguments() {
@@ -32,7 +32,7 @@ public class CommandLineOptionsTest {
 			new CommandLineOptions(EXPERIMENT_ID + ".exp");
 		} catch (RuntimeException e) {
 			// the file is not there, so this is OK
-			assertTrue(e.getMessage().contains(EXPERIMENT_ID + ".exp (No such file or directory)"));
+			assertTrue(e.getMessage().contains("No file named " + EXPERIMENT_ID + ".exp"));
 		}
 	}
 
@@ -44,21 +44,15 @@ public class CommandLineOptionsTest {
 	}
 
 	@Test
-	public void acceptsAPersistenceOption() {
+	public void acceptsASaveOption() {
 		assertFalse(new CommandLineOptions().isPersistent());
-		assertTrue(new CommandLineOptions("-p").isPersistent());
-		assertTrue(new CommandLineOptions("--persistent").isPersistent());
-	}
-
-	@Test
-	public void acceptsAnHistoryOption() {
-		assertFalse(new CommandLineOptions().isTrackingHistory());
-		assertTrue(new CommandLineOptions("-history").isTrackingHistory());
+		assertTrue(new CommandLineOptions("-s").isPersistent());
+		assertTrue(new CommandLineOptions("--save").isPersistent());
 	}
 
 	@Test
 	public void acceptsAnExperimentSeed() {
-		CommandLineOptions options = new CommandLineOptions("-seed", "1234");
+		CommandLineOptions options = new CommandLineOptions("--seed", "1234");
 		
 		assertEquals(1234, options.getSeed());
 	}
@@ -89,7 +83,7 @@ public class CommandLineOptionsTest {
 	}
 
 	@Test
-	public void narjillosAcceptsADNADocument() {
+	public void acceptsADNADocument() {
 		CommandLineOptions options = new CommandLineOptions("-dna", "{1_2_3}");
 		
 		assertEquals("{1_2_3}", options.getDna());

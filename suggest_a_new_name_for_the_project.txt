@@ -1,8 +1,0 @@
-Narjillos Name Change
-
-I'm considering changing the name of this project (and maybe the creature themselves, if the new name refers to them). If you have ideas, please add them to this list and send me a Pull Request.
-
-* Narjillos
-* Little Darwin
-* ...
-

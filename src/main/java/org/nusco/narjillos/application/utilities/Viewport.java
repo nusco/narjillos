@@ -19,7 +19,7 @@ public class Viewport {
 	static final double[] ZOOM_CLOSEUP_LEVELS = new double[] { 0.15, 0.6 };
 	private static final double ZOOM_VELOCITY = 1.03;
 
-	private final double ecosystemSizeEC;
+	private final double environmentSizeEC;
 	private Vector sizeSC;
 	private Vector centerEC;
 	private double zoomLevel;
@@ -30,13 +30,13 @@ public class Viewport {
 	private volatile boolean userIsZooming = false;
 	final double minZoomLevel;
 	
-	public Viewport(Environment ecosystem) {
-		this.ecosystemSizeEC = ecosystem.getSize();
+	public Viewport(Environment environment) {
+		this.environmentSizeEC = environment.getSize();
 		setCenterEC(getEcosystemCenterEC());
 
-		double size = Math.min(ecosystem.getSize(), MAX_INITIAL_SIZE_SC);
+		double size = Math.min(environment.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
-		fitInViewZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / ecosystemSizeEC;
+		fitInViewZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / environmentSizeEC;
 		minZoomLevel = fitInViewZoomLevel / 2.5;
 		
 		centerOnEcosystem();
@@ -45,7 +45,7 @@ public class Viewport {
 	}
 
 	private Vector getEcosystemCenterEC() {
-		return Vector.cartesian(ecosystemSizeEC / 2, ecosystemSizeEC / 2);
+		return Vector.cartesian(environmentSizeEC / 2, environmentSizeEC / 2);
 	}
 
 	public Vector getSizeSC() {

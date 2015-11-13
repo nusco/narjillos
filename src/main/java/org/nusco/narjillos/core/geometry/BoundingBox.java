@@ -11,13 +11,13 @@ public class BoundingBox {
 	public final double bottom;
 	public final double top;
 
-	public BoundingBox(Set<SegmentShape> shapes) {
+	public BoundingBox(Set<SegmentShape> segmentShapes) {
 		double minX = Double.POSITIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY;
 		double maxX = Double.NEGATIVE_INFINITY;
 		double maxY = Double.NEGATIVE_INFINITY;
 
-		List<Vector> points = collectPoints(shapes);
+		List<Vector> points = collectPoints(segmentShapes);
 		for (Vector point : points) {
 			minX = Math.min(minX, point.x);
 			maxX = Math.max(maxX, point.x);
@@ -39,7 +39,6 @@ public class BoundingBox {
 			return result;
 		}
 		
-		// TODO: use map()
 		for (SegmentShape segmentShape : shapes) {
 			Segment segment = segmentShape.toSegment();
 			result.add(segment.getStartPoint());
@@ -49,6 +48,6 @@ public class BoundingBox {
 	}
 
 	public boolean overlaps(BoundingBox other) {
-		return top > other.bottom && bottom < other.top && right > other.left && left < other.right;
+		return !(top <= other.bottom || bottom >= other.top || right <= other.left || left >= other.right);
 	}
 }

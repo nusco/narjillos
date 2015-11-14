@@ -3,12 +3,16 @@ package org.nusco.narjillos.creature.body;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.geometry.Angle;
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.SegmentShape;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 import org.nusco.narjillos.core.utilities.Configuration;
@@ -34,6 +38,7 @@ public class Body {
 	private transient List<ConnectedOrgan> organs;
 
 	private transient Vector cachedCenterOfMass = null;
+	private transient BoundingBox cachedBoundingBox = null;
 	private transient double cachedRadius = Double.NaN;
 
 	public Body(MovingOrgan head) {
@@ -106,16 +111,6 @@ public class Body {
 		return getHead().getEggInterval();
 	}
 
-	// Creatures with a prevalence of red, green and blue mass breathe oxygen,
-	// hydrogen and nitrogen, respectively.
-	private Element getBreathedElementFromFibers() {
-		if (redMass > greenMass && redMass > blueMass)
-			return Element.OXYGEN;
-		if (greenMass > blueMass)
-			return Element.HYDROGEN;
-		return Element.NITROGEN;
-	}
-
 	public Element getByproduct() {
 		return getHead().getByproduct();
 	}
@@ -138,6 +133,12 @@ public class Body {
 		if (cachedCenterOfMass == null)
 			cachedCenterOfMass = calculateCenterOfMass();
 		return cachedCenterOfMass;
+	}
+
+	public BoundingBox getBoundingBox() {
+		if (cachedBoundingBox == null)
+			cachedBoundingBox = calculateBoundingBox();
+		return cachedBoundingBox;
 	}
 
 	public void forcePosition(Vector position, double angle) {
@@ -234,6 +235,7 @@ public class Body {
 
 	private synchronized void resetCaches() {
 		cachedCenterOfMass = null;
+		cachedBoundingBox = null;
 		cachedRadius = Double.NaN;
 	}
 
@@ -260,6 +262,23 @@ public class Body {
 		}
 
 		return Vector.cartesian(totalX / mass, totalY / mass);
+	}
+
+	private BoundingBox calculateBoundingBox() {
+		Set<SegmentShape> organShapes = new LinkedHashSet<>();
+		for (ConnectedOrgan connectedOrgan : getOrgans())
+			organShapes.add(connectedOrgan);
+		return new BoundingBox(organShapes);
+	}
+
+	// Creatures with a prevalence of red, green and blue mass breathe oxygen,
+	// hydrogen and nitrogen, respectively.
+	private Element getBreathedElementFromFibers() {
+		if (redMass > greenMass && redMass > blueMass)
+			return Element.OXYGEN;
+		if (greenMass > blueMass)
+			return Element.HYDROGEN;
+		return Element.NITROGEN;
 	}
 
 	private void tick_step1_updateAngles(Vector targetDirection) {

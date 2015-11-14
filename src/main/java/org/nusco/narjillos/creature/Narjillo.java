@@ -3,6 +3,7 @@ package org.nusco.narjillos.creature;
 import java.util.List;
 
 import org.nusco.narjillos.core.chemistry.Element;
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -93,6 +94,10 @@ public class Narjillo implements Thing {
 
 	public Vector getCenterOfMass() {
 		return body.getCenterOfMass();
+	}
+
+	public BoundingBox getBoundingBox() {
+		return body.getBoundingBox();
 	}
 
 	public void feedOn(FoodPellet thing) {

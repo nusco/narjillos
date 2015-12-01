@@ -46,7 +46,7 @@
 + Attach istincts to food  
   Maybe every Thing must be SimHashed?
 
-* Decide direction based on istincts  
+* Decide target direction based on istincts  
 
 - Visualize istinct directions  
 - Visualize istincts on other creatures when following a narjillo  

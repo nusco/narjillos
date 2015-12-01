@@ -113,7 +113,7 @@ ecosystem:
   # total number of blocks). If food density ever gets over
   # a maximum (defined by max_food_density_per_1000_blocks),
   # then food stops respawing.
-  food_respawn_average_interval_per_block: 800000
+  food_respawn_average_interval_per_block: 1200000
   max_food_density_per_1000_blocks: 0.3
 
   # Every update_food_targets_interval ticks, the creatures

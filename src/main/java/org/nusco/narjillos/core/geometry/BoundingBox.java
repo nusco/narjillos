@@ -11,13 +11,24 @@ public class BoundingBox {
 	public final double bottom;
 	public final double top;
 
-	public BoundingBox(Set<SegmentShape> shapes) {
+	public BoundingBox(SegmentShape segmentShape) {
+		Segment segment = segmentShape.toSegment();
+		left = Math.min(segment.getStartPoint().x, segment.getEndPoint().x);
+		right = Math.max(segment.getStartPoint().x, segment.getEndPoint().x);
+		top = Math.max(segment.getStartPoint().y, segment.getEndPoint().y);
+		bottom = Math.min(segment.getStartPoint().y, segment.getEndPoint().y);
+	}
+
+	public BoundingBox(Set<SegmentShape> segmentShapes) {
+		if (segmentShapes.isEmpty())
+			throw new RuntimeException("Empty bounding box");
+		
 		double minX = Double.POSITIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY;
 		double maxX = Double.NEGATIVE_INFINITY;
 		double maxY = Double.NEGATIVE_INFINITY;
 
-		List<Vector> points = collectPoints(shapes);
+		List<Vector> points = collectPoints(segmentShapes);
 		for (Vector point : points) {
 			minX = Math.min(minX, point.x);
 			maxX = Math.max(maxX, point.x);
@@ -33,13 +44,7 @@ public class BoundingBox {
 
 	private List<Vector> collectPoints(Set<SegmentShape> shapes) {
 		List<Vector> result = new LinkedList<>();
-
-		if (shapes.isEmpty()) {
-			result.add(Vector.ZERO);
-			return result;
-		}
 		
-		// TODO: use map()
 		for (SegmentShape segmentShape : shapes) {
 			Segment segment = segmentShape.toSegment();
 			result.add(segment.getStartPoint());
@@ -49,6 +54,6 @@ public class BoundingBox {
 	}
 
 	public boolean overlaps(BoundingBox other) {
-		return top > other.bottom && bottom < other.top && right > other.left && left < other.right;
+		return !(top <= other.bottom || bottom >= other.top || right <= other.left || left >= other.right);
 	}
 }

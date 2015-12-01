@@ -11,136 +11,142 @@ import org.junit.Test;
 
 public class BoundingBoxTest {
 	
-	private static class SegmentShapedThing implements SegmentShape {
-
-		private final double x1;
-		private final double y1;
-		private final double x2;
-		private final double y2;
-
-		public SegmentShapedThing(double x1, double y1, double x2, double y2) {
-			this.x1 = x1;
-			this.y1 = y1;
-			this.x2 = x2;
-			this.y2 = y2;
-		}
-
-		@Override
-		public Segment toSegment() {
-			return new Segment(Vector.cartesian(x1, y1), Vector.cartesian(x2 - x1, y2 - y1));
-		}
-	}
-
-	public final Set<SegmentShape> shapes = new LinkedHashSet<>();
-	
 	@Test
 	public void definesTheBoundariesOfASegment() {
-		shapes.add(new SegmentShapedThing(10, 20, 30, 40));
-		BoundingBox boundingBox = new BoundingBox(shapes);
+		BoundingBox boundingBox = createBoundingBox(10, 20, 30, 40);
 		
 		assertEquals(10, boundingBox.left, 0.0);
-		assertEquals(30, boundingBox.right, 0.0);
+		assertEquals(40, boundingBox.right, 0.0);
 		assertEquals(20, boundingBox.bottom, 0.0);
-		assertEquals(40, boundingBox.top, 0.0);
+		assertEquals(60, boundingBox.top, 0.0);
+	}
+	
+	@Test
+	public void definesTheBoundariesOfMultipleSegments() {
+		Set<SegmentShape> shapes = new LinkedHashSet<>();
+		shapes.add(createSegmentShape(10, 20, 30, 40));
+		shapes.add(createSegmentShape(15, 30, -100, 60));
+		BoundingBox boundingBox = new BoundingBox(shapes);
+		
+		assertEquals(-85, boundingBox.left, 0.0);
+		assertEquals(40, boundingBox.right, 0.0);
+		assertEquals(20, boundingBox.bottom, 0.0);
+		assertEquals(90, boundingBox.top, 0.0);
 	}
 
 	@Test
 	public void worksWithNegativeBoundaries() {
-		shapes.add(new SegmentShapedThing(-10, -20, 30, 40));
-		BoundingBox boundingBox = new BoundingBox(shapes);
+		BoundingBox boundingBox = createBoundingBox(-10, -20, 30, 40);
 		
 		assertEquals(-10, boundingBox.left, 0.0);
-		assertEquals(30, boundingBox.right, 0.0);
+		assertEquals(20, boundingBox.right, 0.0);
 		assertEquals(-20, boundingBox.bottom, 0.0);
-		assertEquals(40, boundingBox.top, 0.0);
+		assertEquals(20, boundingBox.top, 0.0);
 	}
 
 	@Test
 	public void worksWithSegmentsInAnyOrientation() {
-		shapes.add(new SegmentShapedThing(30, 40, -10, -20));
-		BoundingBox boundingBox = new BoundingBox(shapes);
+		BoundingBox boundingBox = createBoundingBox(35, 40, -10, -20);
 		
-		
-		assertEquals(-10, boundingBox.left, 0.0);
-		assertEquals(30, boundingBox.right, 0.0);
-		assertEquals(-20, boundingBox.bottom, 0.0);
+		assertEquals(25, boundingBox.left, 0.0);
+		assertEquals(35, boundingBox.right, 0.0);
+		assertEquals(20, boundingBox.bottom, 0.0);
 		assertEquals(40, boundingBox.top, 0.0);
 	}
 
-	@Test
-	public void isEmptyIfThereAreNoSegments() {
-		BoundingBox boundingBox = new BoundingBox(shapes);
-		
-		assertEquals(0, boundingBox.left, 0.0);
-		assertEquals(0, boundingBox.right, 0.0);
-		assertEquals(0, boundingBox.bottom, 0.0);
-		assertEquals(0, boundingBox.top, 0.0);
+	@Test(expected = RuntimeException.class)
+	public void cannotBeEmpty() {
+		new BoundingBox(new LinkedHashSet<SegmentShape>());
 	}
 
 	@Test
-	public void checksOverlaps() {
-		Set<SegmentShape> shapes1 = new LinkedHashSet<>();
-		shapes1.add(new SegmentShapedThing(0, 0, 10, 10));
-		BoundingBox boundingBox1 = new BoundingBox(shapes1);
+	public void overlapsWithAnotherBoundingBox() {
+		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
+		BoundingBox boundingBox2 = createBoundingBox(0, 9, 10, 10);
 		
-		Set<SegmentShape> shapes2 = new LinkedHashSet<>();
-		shapes2.add(new SegmentShapedThing(0, 11, 20, 20));
-		BoundingBox boundingBox2 = new BoundingBox(shapes2);
-		
-		Set<SegmentShape> shapes3 = new LinkedHashSet<>();
-		shapes3.add(new SegmentShapedThing(-5, -5, 5, 5));
-		BoundingBox boundingBox3 = new BoundingBox(shapes3);
+		assertTrue(boundingBox1.overlaps(boundingBox2));
+	}
+
+	@Test
+	public void doesNotOverlapIfItIsToTheRightOfTheOtherBoundingBox() {
+		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
+		BoundingBox boundingBox2 = createBoundingBox(11, 0, 10, 10);
 		
 		assertFalse(boundingBox1.overlaps(boundingBox2));
-		assertTrue(boundingBox1.overlaps(boundingBox3));
-		assertFalse(boundingBox2.overlaps(boundingBox3));
+	}
+
+	@Test
+	public void doesNotOverlapIfItIsToTheLeftOfTheOtherBoundingBox() {
+		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
+		BoundingBox boundingBox2 = createBoundingBox(-11, 0, 10, 10);
+		
+		assertFalse(boundingBox1.overlaps(boundingBox2));
+	}
+
+	@Test
+	public void doesNotOverlapIfItIsBelowTheOtherBoundingBox() {
+		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
+		BoundingBox boundingBox2 = createBoundingBox(0, 11, 10, 10);
+		
+		assertFalse(boundingBox1.overlaps(boundingBox2));
+	}
+
+	@Test
+	public void doesNotOverlapIfItIsAboveTheOtherBoundingBox() {
+		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
+		BoundingBox boundingBox2 = createBoundingBox(0, -11, 10, 10);
+		
+		assertFalse(boundingBox1.overlaps(boundingBox2));
+	}
+
+	@Test
+	public void doesNotOverlapIfItTouchesOnTheEdge() {
+		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
+		BoundingBox boundingBox2 = createBoundingBox(0, 10, 20, 20);
+		
+		assertFalse(boundingBox1.overlaps(boundingBox2));
 	}
 
 	@Test
 	public void overlapsItself() {
-		shapes.add(new SegmentShapedThing(0, 0, 10, 10));
-		BoundingBox boundingBox = new BoundingBox(shapes);
+		BoundingBox boundingBox = createBoundingBox(0, 0, 10, 10);
 		
 		assertTrue(boundingBox.overlaps(boundingBox));
 	}
 
 	@Test
-	public void doesNotOverlapIfItTouchesOnTheEdge() {
-		Set<SegmentShape> shapes1 = new LinkedHashSet<>();
-		shapes1.add(new SegmentShapedThing(0, 0, 10, 10));
-		BoundingBox boundingBox1 = new BoundingBox(shapes1);
-		
-		Set<SegmentShape> shapes2 = new LinkedHashSet<>();
-		shapes2.add(new SegmentShapedThing(0, 10, 20, 20));
-		BoundingBox boundingBox2 = new BoundingBox(shapes2);
-		
-		assertFalse(boundingBox1.overlaps(boundingBox2));
-	}
-
-	@Test
 	public void neverOverlapsIfBothBoxesHaveAreaZero() {
-		Set<SegmentShape> shapes = new LinkedHashSet<>();
-		shapes.add(new SegmentShapedThing(10, 10, 10, 10));
-		BoundingBox boundingBox = new BoundingBox(shapes);
-		
+		BoundingBox boundingBox = createBoundingBox(10, 10, 0, 0);
+
 		assertFalse(boundingBox.overlaps(boundingBox));
 	}
 
 	@Test
-	public void canStillOverlapsIfOnlyOneBoxHasAreaZero() {
-		Set<SegmentShape> shapes1 = new LinkedHashSet<>();
-		shapes1.add(new SegmentShapedThing(0, 0, 0, 0));
-		BoundingBox boundingBox1 = new BoundingBox(shapes1);
-		
-		Set<SegmentShape> shapes2 = new LinkedHashSet<>();
-		shapes2.add(new SegmentShapedThing(-10, -10, 10, 10));
-		BoundingBox boundingBox2 = new BoundingBox(shapes2);
-		
-		Set<SegmentShape> shapes3 = new LinkedHashSet<>();
-		shapes3.add(new SegmentShapedThing(1, 1, 5, 5));
-		BoundingBox boundingBox3 = new BoundingBox(shapes3);
+	public void canStillOverlapIfTheFirstBoxHasAreaZero() {
+		BoundingBox boundingBox1 = createBoundingBox(5, 5, 0, 0);
+		BoundingBox boundingBox2 = createBoundingBox(-10, -10, 20, 20);
 		
 		assertTrue(boundingBox1.overlaps(boundingBox2));
-		assertFalse(boundingBox1.overlaps(boundingBox3));
+	}
+
+	@Test
+	public void canStillOverlapIfTheSecondBoxHasAreaZero() {
+		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
+		BoundingBox boundingBox2 = createBoundingBox(5, 5, 0, 0);
+		
+		assertTrue(boundingBox1.overlaps(boundingBox2));
+	}
+	
+	private BoundingBox createBoundingBox(int x, int y, int width, int height) {
+		return new BoundingBox(createSegmentShape(x, y, width, height));
+	}
+
+	private SegmentShape createSegmentShape(int x, int y, int width, int height) {
+		return new SegmentShape() {
+			@Override
+			public Segment toSegment() {
+				return new Segment(Vector.cartesian(x, y), Vector.cartesian(width, height));
+			}
+		};
 	}
 }

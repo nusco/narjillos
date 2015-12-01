@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Vector;
 
 public class BodyTest {
@@ -37,7 +38,7 @@ public class BodyTest {
 		double expectedMassInGrams = 212;
 		assertEquals(expectedMassInGrams, body.getAdultMass(), 0.001);
 	}
-	
+
 	@Test
 	public void hasACenterOfMassAndARadius() {
 		Head head = new Head(new HeadParameters(10, 10));
@@ -50,6 +51,22 @@ public class BodyTest {
 		// So these two are better tested together:
 		assertEquals(Vector.cartesian(12.5, 0), body.getCenterOfMass());
 		assertEquals(17.5, body.getRadius(), 0.0);
+	}
+
+	@Test
+	public void hasABoundingBox() {
+		Head head = new Head(new HeadParameters(10, 1));
+		head.addChild(new BodyPart(20, 1, 0, 0, 0, head, 0, 90, 0, 0));
+		Body body = new Body(head);
+
+		body.growToAdultForm();
+		body.forcePosition(Vector.cartesian(3, 4), 0);
+
+		BoundingBox boundingBox = body.getBoundingBox();
+		assertEquals(3, boundingBox.left, 0.0);
+		assertEquals(13, boundingBox.right, 0.0);
+		assertEquals(4, boundingBox.bottom, 0.0);
+		assertEquals(24, boundingBox.top, 0.0);
 	}
 	
 	@Test

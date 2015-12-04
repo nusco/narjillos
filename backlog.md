@@ -1,5 +1,6 @@
 #Narjillos Backlog
 
+* Generalize Dockerfile to the latest version
 
 ##Dish Edges
 >goal: complex interactions  

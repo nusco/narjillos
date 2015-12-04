@@ -79,6 +79,8 @@ public class PetriDish implements Dish {
 		Ecosystem ecosystem = new Ecosystem(size, true);
 		String dna = options.getDna();
 
+		System.out.println("Narjillos v" + applicationVersion);
+
 		Experiment experiment;
 		if (dna != null) {
 			System.out.print("Observing DNA " + dna);

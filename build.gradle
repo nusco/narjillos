@@ -1,17 +1,11 @@
 // Plugins
 
-//plugins {
-//  id "edu.sc.seis.macAppBundle" version "2.1.0"
-//}
-
 apply plugin: 'java'
 apply plugin: 'application'     // loads also the 'distribution' plugin
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 // Basic Configuration
-
-version = file('version').getText().trim()
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 

@@ -101,6 +101,26 @@ public class EnergyTest {
 		assertTrue(energy.isZero());
 	}
 
+	@Test
+	public void canBeDroppedToZero() {
+		energy.dropToZero();
+
+		assertTrue(energy.isZero());
+	}
+
+	@Test
+	public void canBeDamaged() {
+		double value = energy.getValue();
+		energy.damage();
+		
+		assertTrue(energy.getValue() < value);
+
+		for (int i = 0; i < 100; i++)
+			energy.damage();
+
+		assertTrue(energy.isZero());
+	}
+
 	private void fillToTheMax() {
 		double energyValue;
 		do {

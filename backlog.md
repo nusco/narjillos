@@ -18,11 +18,8 @@
     After implementing this, I can probably remove the concept of "outer space" (the area  
     outside the space-partitioned center of the dish).
 
-* Kill narjillos who touch outer space  
 + Limit panning to inner space  
   with some margin.  
-  
-+ Auto-scroll viewport to stay within inner space  
 
 
 ##Istincts

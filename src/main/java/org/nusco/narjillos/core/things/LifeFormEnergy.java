@@ -46,8 +46,12 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void dropToZero() {
-		value = 0;
+	public void increaseBy(double amount) {
+		if (isZero())
+			return; // once it's gone, it's gone
+	
+		value += amount;
+		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
 	}
 
 	@Override
@@ -57,12 +61,16 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void increaseBy(double amount) {
-		if (isZero())
-			return; // once it's gone, it's gone
+	public void dropToZero() {
+		value = 0;
+	}
 
-		value += amount;
-		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
+	@Override
+	public void damage() {
+		if (value < 10)
+			increaseBy(-1);
+		else
+			value = value * 0.9;
 	}
 
 	@Override

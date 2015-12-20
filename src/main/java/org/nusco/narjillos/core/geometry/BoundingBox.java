@@ -13,7 +13,7 @@ public class BoundingBox {
 		this(segment.getStartPoint().x, segment.getEndPoint().x, segment.getStartPoint().y, segment.getEndPoint().y);
 	}
 
-	BoundingBox(double left, double right, double bottom, double top) {
+	public BoundingBox(double left, double right, double bottom, double top) {
 		this.left = Math.min(left, right);
 		this.right = Math.max(left, right);
 		this.bottom = Math.min(bottom, top);

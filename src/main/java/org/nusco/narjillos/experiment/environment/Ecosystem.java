@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nusco.narjillos.core.chemistry.Atmosphere;
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.FoodPellet;
@@ -42,6 +43,7 @@ public class Ecosystem extends Environment {
 
 	private final Space space;
 	private final Vector center;
+	private final BoundingBox boundingBox;
 	private Atmosphere atmosphere;
 
 	public Ecosystem(final long size, boolean sizeCheck) {
@@ -56,6 +58,7 @@ public class Ecosystem extends Environment {
 
 		this.space = new Space(size);
 		this.center = Vector.cartesian(size, size).by(0.5);
+		this.boundingBox = new BoundingBox(0, size, 0, size);
 		this.atmosphere = new Atmosphere();
 
 		// check that things cannot move faster than a space area in a single
@@ -198,6 +201,7 @@ public class Ecosystem extends Environment {
 		for (final Narjillo narjillo : narjillos) {
 			result.put(narjillo, executorService.submit(() -> {
 				Segment movement = narjillo.tick();
+				damageIfTouchingEdges(narjillo);
 				return getCollisions(movement);
 			}));
 		}
@@ -227,8 +231,14 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	protected Set<Thing> getCollisions(Segment movement) {
+	private Set<Thing> getCollisions(Segment movement) {
 		return space.detectCollisions(movement, "food_pellet");
+	}
+
+	private void damageIfTouchingEdges(final Narjillo narjillo) {
+		BoundingBox boundingBox2 = narjillo.getBoundingBox();
+		if (!boundingBox2.isContainedIn(boundingBox))
+			narjillo.damage();
 	}
 
 	private DNA createRandomDna(DNALog dnaLog, NumGen numGen) {

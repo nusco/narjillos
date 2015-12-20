@@ -181,6 +181,10 @@ public class Narjillo implements Thing {
 		return getBody().getHead().getEndPoint();
 	}
 
+	public void damage() {
+		energy.damage();
+	}
+
 	private void decideWhenToLayTheNextEgg() {
 		nextEggAge = getAge() + getBody().getEggInterval();
 	}

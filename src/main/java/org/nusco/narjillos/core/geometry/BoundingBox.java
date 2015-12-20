@@ -24,6 +24,10 @@ public class BoundingBox {
 		return !(top <= other.bottom || bottom >= other.top || right <= other.left || left >= other.right);
 	}
 
+	public boolean isContainedIn(BoundingBox other) {
+		return left >= other.left && right <= other.right && bottom >= other.bottom && top <= other.top;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)(bottom + top);

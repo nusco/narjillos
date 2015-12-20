@@ -33,7 +33,7 @@ public class BoundingBoxTest {
 		assertEquals(-100, boundingBox.bottom, 0.0);
 		assertEquals(60, boundingBox.top, 0.0);
 	}
-
+	
 	@Test
 	public void worksWithNegativeBoundaries() {
 		BoundingBox boundingBox = createBoundingBox(-10, -20, 30, 40);
@@ -122,6 +122,20 @@ public class BoundingBoxTest {
 		BoundingBox boundingBox = createBoundingBox(0, 0, 10, 10);
 		
 		assertTrue(boundingBox.overlaps(boundingBox));
+	}
+
+	@Test
+	public void checksForContainment() {
+		BoundingBox big = new BoundingBox(0, 30, 0, 60);
+		BoundingBox tall = new BoundingBox(1, 29, 1, 100);
+		BoundingBox small = new BoundingBox(0, 0, 10, 10);
+		
+		assertTrue(small.isContainedIn(big));
+		assertFalse(big.isContainedIn(small));
+	
+		assertFalse(small.isContainedIn(tall));
+		
+		assertTrue(big.isContainedIn(big));
 	}
 
 	@Test

@@ -3,11 +3,13 @@ package org.nusco.narjillos.core.geometry;
 /**
  * A vector that has a specific origin in the plane.
  */
-public class Segment implements SegmentShape {
+public class Segment implements Bounded {
 
 	private final Vector startPoint;
 	private final Vector vector;
 
+	private transient BoundingBox cachedBoundingBox;
+	
 	public Segment(Vector startPoint, Vector vector) {
 		this.startPoint = startPoint;
 		this.vector = vector;
@@ -72,8 +74,10 @@ public class Segment implements SegmentShape {
 	}
 
 	@Override
-	public Segment toSegment() {
-		return this;
+	public BoundingBox getBoundingBox() {
+		if (cachedBoundingBox == null)
+			cachedBoundingBox = new BoundingBox(this);
+		return cachedBoundingBox;
 	}
 
 	@Override

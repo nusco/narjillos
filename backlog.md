@@ -65,10 +65,7 @@
 
 + Rewrite collision detection to be independent of max speed  
   This can be almost as simple as it is now, but we should probably aim for generalized
-  collision detection on all organs. Here are a few links from Cipster:
-  http://www.dyn4j.org
-  http://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects
-  http://blog.sklambert.com/html5-canvas-game-2d-collision-detection
+  collision detection on all organs. see:
   http://number-none.com/blow/papers/practical_collision_detection.pdf
   
   However, see "hurt" story for an approach that might reduce collision detection to  

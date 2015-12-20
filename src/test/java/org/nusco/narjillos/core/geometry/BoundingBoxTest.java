@@ -22,16 +22,16 @@ public class BoundingBoxTest {
 	}
 	
 	@Test
-	public void definesTheBoundariesOfMultipleSegments() {
-		Set<SegmentShape> shapes = new LinkedHashSet<>();
-		shapes.add(createSegmentShape(10, 20, 30, 40));
-		shapes.add(createSegmentShape(15, 30, -100, 60));
-		BoundingBox boundingBox = new BoundingBox(shapes);
+	public void canBeUnited() {
+		Set<BoundingBox> shapes = new LinkedHashSet<>();
+		shapes.add(new BoundingBox(10, 20, 30, 60));
+		shapes.add(new BoundingBox(15, 30, -100, 40));
+		BoundingBox boundingBox = BoundingBox.union(shapes);
 		
-		assertEquals(-85, boundingBox.left, 0.0);
-		assertEquals(40, boundingBox.right, 0.0);
-		assertEquals(20, boundingBox.bottom, 0.0);
-		assertEquals(90, boundingBox.top, 0.0);
+		assertEquals(10, boundingBox.left, 0.0);
+		assertEquals(30, boundingBox.right, 0.0);
+		assertEquals(-100, boundingBox.bottom, 0.0);
+		assertEquals(60, boundingBox.top, 0.0);
 	}
 
 	@Test
@@ -45,7 +45,17 @@ public class BoundingBoxTest {
 	}
 
 	@Test
-	public void worksWithSegmentsInAnyOrientation() {
+	public void automaticallyFixesInvertedCoordinates() {
+		BoundingBox boundingBox = new BoundingBox(35, 10, 30, 20);
+		
+		assertEquals(10, boundingBox.left, 0.0);
+		assertEquals(35, boundingBox.right, 0.0);
+		assertEquals(20, boundingBox.bottom, 0.0);
+		assertEquals(30, boundingBox.top, 0.0);
+	}
+
+	@Test
+	public void worksWithAnySegmentOrientation() {
 		BoundingBox boundingBox = createBoundingBox(35, 40, -10, -20);
 		
 		assertEquals(25, boundingBox.left, 0.0);
@@ -56,7 +66,7 @@ public class BoundingBoxTest {
 
 	@Test(expected = RuntimeException.class)
 	public void cannotBeEmpty() {
-		new BoundingBox(new LinkedHashSet<SegmentShape>());
+		BoundingBox.union(new LinkedHashSet<BoundingBox>());
 	}
 
 	@Test
@@ -138,15 +148,6 @@ public class BoundingBoxTest {
 	}
 	
 	private BoundingBox createBoundingBox(int x, int y, int width, int height) {
-		return new BoundingBox(createSegmentShape(x, y, width, height));
-	}
-
-	private SegmentShape createSegmentShape(int x, int y, int width, int height) {
-		return new SegmentShape() {
-			@Override
-			public Segment toSegment() {
-				return new Segment(Vector.cartesian(x, y), Vector.cartesian(width, height));
-			}
-		};
+		return new Segment(Vector.cartesian(x, y), Vector.cartesian(width, height)).getBoundingBox();
 	}
 }

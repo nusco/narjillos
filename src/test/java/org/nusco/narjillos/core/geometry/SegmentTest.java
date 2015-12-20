@@ -34,19 +34,19 @@ public class SegmentTest {
 	}
 
 	@Test
+	public void hasAStartPoint() {
+		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(4, 6));
+
+		assertEquals(Vector.cartesian(1, 2), segment.getStartPoint());
+	}
+
+	@Test
 	public void hasAnEndPoint() {
 		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(4, 6));
 
 		assertEquals(Vector.cartesian(5, 8), segment.getEndPoint());
 	}
-	
-	@Test
-	public void convertsToItself() {
-		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(4, 6));
 
-		assertEquals(segment, segment.toSegment());
-	}
-	
 	@Test
 	public void convertsToAString() {
 		Segment segment = new Segment(Vector.cartesian(1, 2), Vector.cartesian(3, 4));

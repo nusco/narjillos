@@ -1,6 +1,7 @@
 package org.nusco.narjillos.creature.body;
 
-import org.nusco.narjillos.core.geometry.SegmentShape;
+import org.nusco.narjillos.core.geometry.Bounded;
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.utilities.Configuration;
@@ -19,7 +20,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
  * updateGeometry() or updatePosition() when they want to update the state of
  * the Organ.
  */
-public abstract class Organ implements SegmentShape {
+public abstract class Organ implements Bounded {
 
 	private final double adultLength;
 	private final int adultThickness;
@@ -79,9 +80,13 @@ public abstract class Organ implements SegmentShape {
 		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
-	@Override
 	public Segment toSegment() {
 		return cachedSegment;
+	}
+
+	@Override
+	public BoundingBox getBoundingBox() {
+		return cachedSegment.getBoundingBox();
 	}
 
 	public double getThickness() {

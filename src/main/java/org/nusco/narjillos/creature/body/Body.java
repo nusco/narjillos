@@ -12,7 +12,6 @@ import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.geometry.Angle;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
-import org.nusco.narjillos.core.geometry.SegmentShape;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 import org.nusco.narjillos.core.utilities.Configuration;
@@ -265,10 +264,10 @@ public class Body {
 	}
 
 	private BoundingBox calculateBoundingBox() {
-		Set<SegmentShape> organShapes = new LinkedHashSet<>();
+		Set<BoundingBox> organBoundingBoxes = new LinkedHashSet<>();
 		for (ConnectedOrgan connectedOrgan : getOrgans())
-			organShapes.add(connectedOrgan);
-		return new BoundingBox(organShapes);
+			organBoundingBoxes.add(connectedOrgan.getBoundingBox());
+		return BoundingBox.union(organBoundingBoxes);
 	}
 
 	// Creatures with a prevalence of red, green and blue mass breathe oxygen,

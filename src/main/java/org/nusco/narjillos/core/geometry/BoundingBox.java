@@ -1,7 +1,5 @@
 package org.nusco.narjillos.core.geometry;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 public class BoundingBox {
@@ -11,49 +9,56 @@ public class BoundingBox {
 	public final double bottom;
 	public final double top;
 
-	public BoundingBox(SegmentShape segmentShape) {
-		Segment segment = segmentShape.toSegment();
-		left = Math.min(segment.getStartPoint().x, segment.getEndPoint().x);
-		right = Math.max(segment.getStartPoint().x, segment.getEndPoint().x);
-		top = Math.max(segment.getStartPoint().y, segment.getEndPoint().y);
-		bottom = Math.min(segment.getStartPoint().y, segment.getEndPoint().y);
+	public BoundingBox(Segment segment) {
+		this(segment.getStartPoint().x, segment.getEndPoint().x, segment.getStartPoint().y, segment.getEndPoint().y);
 	}
 
-	public BoundingBox(Set<SegmentShape> segmentShapes) {
-		if (segmentShapes.isEmpty())
-			throw new RuntimeException("Empty bounding box");
-		
-		double minX = Double.POSITIVE_INFINITY;
-		double minY = Double.POSITIVE_INFINITY;
-		double maxX = Double.NEGATIVE_INFINITY;
-		double maxY = Double.NEGATIVE_INFINITY;
-
-		List<Vector> points = collectPoints(segmentShapes);
-		for (Vector point : points) {
-			minX = Math.min(minX, point.x);
-			maxX = Math.max(maxX, point.x);
-			minY = Math.min(minY, point.y);
-			maxY = Math.max(maxY, point.y);
-		}
-		
-		left = minX;
-		right = maxX;
-		bottom = minY;
-		top = maxY;
-	}
-
-	private List<Vector> collectPoints(Set<SegmentShape> shapes) {
-		List<Vector> result = new LinkedList<>();
-		
-		for (SegmentShape segmentShape : shapes) {
-			Segment segment = segmentShape.toSegment();
-			result.add(segment.getStartPoint());
-			result.add(segment.getEndPoint());
-		}
-		return result;
+	BoundingBox(double left, double right, double bottom, double top) {
+		this.left = Math.min(left, right);
+		this.right = Math.max(left, right);
+		this.bottom = Math.min(bottom, top);
+		this.top = Math.max(bottom, top);
 	}
 
 	public boolean overlaps(BoundingBox other) {
 		return !(top <= other.bottom || bottom >= other.top || right <= other.left || left >= other.right);
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)(bottom + top);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		BoundingBox other = (BoundingBox) obj;
+		if (Double.doubleToLongBits(bottom) != Double.doubleToLongBits(other.bottom))
+			return false;
+		if (Double.doubleToLongBits(left) != Double.doubleToLongBits(other.left))
+			return false;
+		if (Double.doubleToLongBits(right) != Double.doubleToLongBits(other.right))
+			return false;
+		if (Double.doubleToLongBits(top) != Double.doubleToLongBits(other.top))
+			return false;
+		return true;
+	}
+
+	public static BoundingBox union(Set<BoundingBox> boundingBoxes) {
+		if (boundingBoxes.isEmpty())
+			throw new RuntimeException("Empty bounding box union");
+		
+		double left = Double.POSITIVE_INFINITY;
+		double right = Double.NEGATIVE_INFINITY;
+		double bottom = Double.POSITIVE_INFINITY;
+		double top = Double.NEGATIVE_INFINITY;
+
+		for (BoundingBox boundingBox : boundingBoxes) {
+			left = Math.min(left, boundingBox.left);
+			right = Math.max(right, boundingBox.right);
+			bottom = Math.min(bottom, boundingBox.bottom);
+			top = Math.max(top, boundingBox.top);
+		}
+		
+		return new BoundingBox(left, right, bottom, top);
 	}
 }

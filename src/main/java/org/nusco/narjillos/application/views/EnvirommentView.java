@@ -84,8 +84,7 @@ public class EnvirommentView {
 
 		Group result = new Group();
 
-		Node backgroundFill = isInfrared ? infraredEmptySpace : emptySpace;
-		darkenWithDistance(backgroundFill, viewport.getZoomLevel());
+		Node backgroundFill = getBackgroundFill(isInfrared);
 		result.getChildren().add(backgroundFill);
 
 		Node speckles = specklesView.toNode(isInfrared);
@@ -102,18 +101,30 @@ public class EnvirommentView {
 		return result;
 	}
 
+	private Node getBackgroundFill(boolean isInfrared) {
+		Node backgroundFill = isInfrared ? infraredEmptySpace : emptySpace;
+		translateAndZoom(backgroundFill);
+		darkenWithDistance(backgroundFill, viewport.getZoomLevel());
+		return backgroundFill;
+	}
+
 	private Group getThingsGroup(boolean infraredOn, boolean effectsOn) {
-		Group things = new Group();
-		things.getChildren().addAll(getNodesForThingsInOrder(infraredOn, effectsOn));
+		Group result = new Group();
+		result.getChildren().addAll(getNodesForThingsInOrder(infraredOn, effectsOn));
 
 		if (VisualDebugger.DEBUG)
-			things.getChildren().add(getVisualDebuggingSegments());
+			result.getChildren().add(getVisualDebuggingSegments());
 
-		things.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
-		things.getTransforms().add(
+		translateAndZoom(result);
+
+		return result;
+	}
+
+	private void translateAndZoom(Node node) {
+		node.getTransforms().clear();
+		node.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
+		node.getTransforms().add(
 				new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(), viewport.getPositionEC().x, viewport.getPositionEC().y));
-
-		return things;
 	}
 
 	private Group getVisualDebuggingSegments() {

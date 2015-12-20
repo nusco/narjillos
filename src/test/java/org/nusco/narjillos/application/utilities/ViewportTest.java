@@ -132,14 +132,14 @@ public class ViewportTest {
 		Viewport viewport = new Viewport(new Ecosystem(300, false));
 		viewport.setSizeSC(Vector.cartesian(50, 60));
 		viewport.setCenterEC(Vector.cartesian(100, 200));
-		viewport.zoomTo(1);
+		viewport.zoomTo(1.2);
 		stabilize(viewport);
-		assertMoreOrLessEquals(Vector.cartesian(75, 170), viewport.getPositionEC());
+		assertMoreOrLessEquals(Vector.cartesian(58, 150), viewport.getPositionEC());
 		
 		viewport.setSizeSC(Vector.cartesian(40, 90));
 
 		assertMoreOrLessEquals(Vector.cartesian(100, 200), viewport.getCenterEC());
-		assertMoreOrLessEquals(Vector.cartesian(80, 155), viewport.getPositionEC());
+		assertMoreOrLessEquals(Vector.cartesian(67, 125), viewport.getPositionEC());
 	}
 
 	@Test
@@ -148,15 +148,15 @@ public class ViewportTest {
 		stabilize(viewport);
 		
 		viewport.setSizeSC(Vector.cartesian(50, 50));
-		viewport.zoomTo(0.5);
+		viewport.zoomTo(1);
 
 		viewport.zoomIn();
 		
-		assertEquals(0.515, viewport.getZoomLevel(), 0.01);
+		assertEquals(1.03, viewport.getZoomLevel(), 0.01);
 
 		viewport.zoomIn();
 		
-		assertEquals(0.5304, viewport.getZoomLevel(), 0.01);
+		assertEquals(1.061, viewport.getZoomLevel(), 0.01);
 	}
 
 	@Test
@@ -215,7 +215,7 @@ public class ViewportTest {
 		for (int i = 0; i < 300; i++)
 			viewport.zoomOut();
 		
-		assertEquals(0.4, viewport.getZoomLevel(), 0);
+		assertEquals(1.0, viewport.getZoomLevel(), 0);
 	}
 
 	private void assertMoreOrLessEquals(Vector expected, Vector actual) {

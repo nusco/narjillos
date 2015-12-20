@@ -26,7 +26,6 @@ public class Viewport {
 
 	private Vector targetCenterEC;
 	private double targetZoomLevel;
-	private final double fitInViewZoomLevel;
 	private volatile boolean userIsZooming = false;
 	final double minZoomLevel;
 	
@@ -36,16 +35,11 @@ public class Viewport {
 
 		double size = Math.min(environment.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
-		fitInViewZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / environmentSizeEC;
-		minZoomLevel = fitInViewZoomLevel / 2.5;
+		minZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / environmentSizeEC;
 		
 		centerOnEcosystem();
 		zoomLevel = minZoomLevel;
 		zoomToNextLevel();
-	}
-
-	private Vector getEcosystemCenterEC() {
-		return Vector.cartesian(environmentSizeEC / 2, environmentSizeEC / 2);
 	}
 
 	public Vector getSizeSC() {
@@ -63,10 +57,6 @@ public class Viewport {
 
 	public Vector getCenterEC() {
 		return centerEC;
-	}
-
-	void setCenterSC(Vector centerSC) {
-		centerEC = toEC(centerSC);
 	}
 
 	public void moveBy(Vector velocitySC) {
@@ -108,22 +98,11 @@ public class Viewport {
 		userIsZooming = false;
 	}
 
-	private void correctOverzooming() {
-		if (zoomLevel > ZOOM_OVERZOOMING_LEVEL) {
-			double highestCloseupLevel = getMaxZoomLevel();
-			targetZoomLevel = highestCloseupLevel;
-		}
-	}
-
 	public boolean isVisible(Vector pointEC, double marginEC) {
 		Vector distance = centerEC.minus(pointEC);
 		double maxAxialDistancePC = Math.max(Math.abs(distance.x), Math.abs(distance.y));
 		double maxVisibleAxialDistance = Math.max(toLengthEC(sizeSC.x), toLengthEC(sizeSC.y)) / 2;
 		return (maxAxialDistancePC <= maxVisibleAxialDistance + marginEC);
-	}
-
-	private double toLengthEC(double lengthSC) {
-		return lengthSC / zoomLevel;
 	}
 
 	public final Vector toEC(Vector pointSC) {
@@ -160,6 +139,14 @@ public class Viewport {
 		this.targetCenterEC = centerEC;
 	}
 
+	void setCenterSC(Vector centerSC) {
+		centerEC = toEC(centerSC);
+	}
+
+	private Vector getEcosystemCenterEC() {
+		return Vector.cartesian(environmentSizeEC / 2, environmentSizeEC / 2);
+	}
+
 	private void centerOnEcosystem() {
 		centerEC = getEcosystemCenterEC();
 	}
@@ -174,8 +161,19 @@ public class Viewport {
 		return Math.min(getSizeSC().x, getSizeSC().x);
 	}
 
+	private double toLengthEC(double lengthSC) {
+		return lengthSC / zoomLevel;
+	}
+
 	private double getMaxZoomLevel() {
 		return ZOOM_CLOSEUP_LEVELS[ZOOM_CLOSEUP_LEVELS.length - 1];
+	}
+
+	private void correctOverzooming() {
+		if (zoomLevel > ZOOM_OVERZOOMING_LEVEL) {
+			double highestCloseupLevel = getMaxZoomLevel();
+			targetZoomLevel = highestCloseupLevel;
+		}
 	}
 
 	private double nextZoomCloseupLevel() {

@@ -84,16 +84,13 @@ public class ViewportVisibilityTest {
 	@Test
 	public void takesZoomIntoAccountToDecideOnVisibility() {
 		assertFalse(viewport.isVisible(Vector.cartesian(49, 79), 0));
+		assertFalse(viewport.isVisible(Vector.cartesian(151, 121), 0));
 
-		viewport.zoomOut();
-
+		viewport.zoomTo(1.2);
 		stabilizeViewport();
 		
 		assertTrue(viewport.isVisible(Vector.cartesian(49, 79), 0));
-
-		assertFalse(viewport.isVisible(Vector.cartesian(1, 21), 0));
-
-		assertFalse(viewport.isVisible(Vector.cartesian(1, 21), 0));
+		assertTrue(viewport.isVisible(Vector.cartesian(151, 121), 0));
 	}
 
 	@Test
@@ -109,7 +106,7 @@ public class ViewportVisibilityTest {
 	}
 
 	private void stabilizeViewport() {
-		for (int i = 0; i < 300; i++)
+		for (int i = 0; i < 40; i++)
 			viewport.tick();
 	}
 }

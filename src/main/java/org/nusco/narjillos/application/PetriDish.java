@@ -22,18 +22,20 @@ public class PetriDish implements Dish {
 
 	private static boolean persistent = false;
 	private final Experiment experiment;
-	private final ExperimentLog experimentLog;
+	private ExperimentLog experimentLog;
 	private volatile boolean isSaving = false;
 	private volatile boolean isTerminated = false;
 	private volatile long lastSaveTime = System.currentTimeMillis();
 
 	public PetriDish(String version, CommandLineOptions options, int size) {
 		experiment = createExperiment(version, options, size);
-		experimentLog = new ExperimentLog(experiment.getId());
-		if (isNewExperiment(experiment))
-			experimentLog.save(experiment);
-		reportPersistenceOptions(options);
 		persistent = options.isPersistent();
+		if (persistent) {
+			experimentLog = new ExperimentLog(experiment.getId());
+			if (isNewExperiment(experiment))
+				experimentLog.save(experiment);
+		}
+		reportPersistenceOptions(options);
 		
 		System.out.println("Ticks:\tNarji:\tFood:");
 	}

@@ -63,6 +63,8 @@
 
     Smoother, nicer graphics.
 
+* Graphics scaling for performance    
+  Render in background at half resolution, then scale up for retina displays.  
 * Limit panning to inner space  
   Maybe with some margin.  
   Alternately, find a way to make the background solid everywhere (without impacting zoom performance).  

@@ -188,13 +188,11 @@ public class ViewportTest {
 		
 		viewport.setCenterSC(Vector.cartesian(60, 60));
 		viewport.zoomTo(1);
-		for (int i = 0; i < 100; i++)
-			viewport.tick();
+		stabilize(viewport);
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 
 		viewport.zoomOut();
-		for (int i = 0; i < 100; i++)
-			viewport.tick();
+		stabilize(viewport);
 		
 		assertMoreOrLessEquals(Vector.cartesian(50, 50), viewport.getCenterEC());
 	}
@@ -214,7 +212,7 @@ public class ViewportTest {
 		Viewport viewport = new Viewport(new Ecosystem(100, false));
 		for (int i = 0; i < 300; i++)
 			viewport.zoomOut();
-		
+
 		assertEquals(1.0, viewport.getZoomLevel(), 0);
 	}
 

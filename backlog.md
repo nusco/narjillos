@@ -1,27 +1,5 @@
 #Narjillos Backlog
 
-##Dish Edges
->goal: complex interactions  
-
-    Constrain the "world" inside defined edges.
-    
-    Note: think about this now that (thanks to the new chemistry) there are narjillos  
-    who can survive on breathing alone, without moving. It could cause issues for populations  
-    that happen to sit close to the edge of the dish.  
-
-    Right now, things can be placed anywhere, but only the central area of the dish is  
-    space-partitioned. The rest is "outer space". If we limit the world, we can make it  
-    all space-partitioned. The current space partitioning is OK-ish, but it would make  
-    it hard and expensive to implement generalized collision detection. At the moment,  
-    this is not a problem, because the only collision detection I have is "mouth colliding  
-    with food". But in the future, we want to have anything collide with anything.
-    After implementing this, I can probably remove the concept of "outer space" (the area  
-    outside the space-partitioned center of the dish).
-
-+ Limit panning to inner space  
-  with some margin.  
-
-
 ##Istincts
 >goal: complex interactions  
 
@@ -65,8 +43,8 @@
   collision detection on all organs. see:
   http://number-none.com/blow/papers/practical_collision_detection.pdf
   
-  However, see "hurt" story for an approach that might reduce collision detection to  
-  an intersection of vectors.
+  However, see "Narjillos hurt other narjillos" story for an approach
+  that might reduce collision detection to an intersection of vectors.  
 
 * Narjillos hurt other narjillos  
   ...stealing their energy when they "hit" them.
@@ -74,7 +52,31 @@
   the tangential movement of leaf segments as an attach. Spikes would  
   hurt more than blunt segments. The mouth might be spikey by default.
 
++ Show damage on narjillos  
+  "Bubbles" effect?  
+  
 - Narjillos eat eggs  
+
+
+##Eye Candy
+>goal: nice user experience  
+
+    Smoother, nicer graphics.
+
+* Limit panning to inner space  
+  Maybe with some margin.  
+  Alternately, find a way to make the background solid everywhere (without impacting zoom performance).  
+* Proportional mousewheel scrolling  
+  Right now it uses fixed-step zoomIn/zoomOut.  
+* Show damage on narjillos touching edges  
+  Flash their eyes, or use a "bubble" effect.  
++ Disable effects automatically when framerate drops  
++ Optimize graphics  
+- Independent eye pupils  
++ Smoother contours when zooming in infrared mode  
+- Show heat cloud when zooming out in infrared mode  
+- Skip quickly over less interesting creatures in Demo Mode  
++ Command-line argument to start without visual effects  
 
 
 ##Species Analysis
@@ -238,6 +240,8 @@
     More realistic behavior of body to avoid body shapes that "exploit" the current naive physics.
 
 + Fix "tail wiggles dog" effect  
+  if it's still there - I'm not sure
+  
 + Rotation inertia  
   but check comments in physics engine - it may break previous assumptions  
   
@@ -281,20 +285,6 @@
   
 - Tutorial  
 + In-app configuration panel  
-
-
-##Eye Candy
->goal: nice user experience  
-
-    Smoother, nicer graphics.
-
-+ Disable effects automatically when framerate drops  
-+ Optimize graphics  
-- Independent eye pupils  
-+ Smoother contours when zooming in infrared mode  
-- Show heat cloud when zooming out in infrared mode  
-- Skip quickly over less interesting creatures in Demo Mode  
-+ Command-line argument to start without visual effects  
 
 
 ##Sexual Reproduction

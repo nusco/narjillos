@@ -38,6 +38,8 @@ createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it 
 test {
   description "Runs standard suite of unit tests."
   include '**/*Test*'
+  exclude '**/*PeformanceTest*'
+  exclude '**/*DeterministicExperimentTest*'
   testLogging.showStandardStreams = true
 }
 

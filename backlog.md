@@ -1,5 +1,8 @@
 #Narjillos Backlog
 
++ Fix duplicated message  
+  "This experiment was started with version [...]"  
+  
 ##Istincts
 >goal: complex interactions  
 

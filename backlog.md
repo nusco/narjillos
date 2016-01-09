@@ -2,7 +2,21 @@
 
 + Fix duplicated message  
   "This experiment was started with version [...]"  
-  
+
+## Outer Space
+> goal: keeping navigation nice while paving the road to collision detection
+
+* Make edges visible when zoomed in  
+  Simple darker line. Good balance between nice graphics and clearly visible edges.  
+
++ Fix bug with unwanted centering when zooming near the edges
+
++ Make space grid visible in debug mode  
+  To have a clear visual indication of how large space areas are.  
+
++ Make narjillos's eyes flash when being damaged  
+  Useful to see what's happening when they touch edges.  
+
 ##Istincts
 >goal: complex interactions  
 
@@ -12,6 +26,9 @@
     "smart" species. It's also a precondition for Predators.
     
     I didn't decide how to do this yet. It may be weights-based.
+
+    Problem: what happens if narjillos keep hitting the edges while escaping something?  
+    Maybe build in edge-avoiding istinct?  
 
 * Species identification  
   Probably based on DNA SimHashes? Or fibers?  

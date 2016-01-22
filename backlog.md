@@ -9,12 +9,12 @@
 * Make edges visible when zoomed in  
   Simple darker line. Good balance between nice graphics and clearly visible edges.  
 
-+ Fix bug with unwanted centering when zooming near the edges
+* Fix bug with unwanted centering when zooming near the edges
 
 + Make space grid visible in debug mode  
   To have a clear visual indication of how large space areas are.  
 
-+ Make narjillos's eyes flash when being damaged  
+- Make narjillos's eyes flash when being damaged  
   Useful to see what's happening when they touch edges.  
 
 ##Istincts
@@ -167,6 +167,9 @@
 >goal: understand what is happening in the dish  
 
     Track historical data in experiment for analysis.
+
+* Re-introduce high memory configuration for lab analysis  
+  Currently it can fail when doing things like exporting ancestry on long experiments.  
 
 * Save current configuration to experiment file  
   Issue warning if continuing the experiment with a different configuration.

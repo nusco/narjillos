@@ -168,8 +168,8 @@
 
     Track historical data in experiment for analysis.
 
-* Re-introduce high memory configuration for lab analysis  
-  Currently it can fail when doing things like exporting ancestry on long experiments.  
++ Modify "g" to use the same scripts as distribution  
++ Document opportunity to use JAVA_OPTS, LAB_OPTS and so on to pass arguments to scripts  
 
 * Save current configuration to experiment file  
   Issue warning if continuing the experiment with a different configuration.

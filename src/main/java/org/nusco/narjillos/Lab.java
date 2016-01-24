@@ -32,9 +32,9 @@ public class Lab {
 		options.addOption("g", "germline", true, "print DNA germline (takes a DNA id)");
 		options.addOption("p", "primary", false, "print id of primary (most successful) DNA");
 		options.addOption("s", "stats", false, "print current statistics");
-		options.addOption("h", "history", false, "output history in CSV format");
-		options.addOption("c", "csv", false, "output ancestry in CSV format");
-		options.addOption("n", "nexus", false, "output ancestry in NEXUS format (needs deep Java stack)");
+		options.addOption("h", "history", false, "output history as CSV");
+		options.addOption("c", "csv", false, "output ancestry as CSV ('-Xmx' for memory)");
+		options.addOption("n", "nexus", false, "output ancestry as NEXUS ('-Xss' for deep stack)");
 
 		try {
 			CommandLine commandLine;

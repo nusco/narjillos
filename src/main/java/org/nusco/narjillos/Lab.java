@@ -51,7 +51,7 @@ public class Lab {
 			}
 
 			String databaseFile = args[0];
-			Experiment experiment = ExperimentLoader.load(databaseFile);
+			Experiment experiment = ExperimentLoader.load(databaseFile, true);
 			HistoryLog historyLog = new PersistentHistoryLog(experiment.getId());
 			DNAAnalyzer dnaAnalyzer = new DNAAnalyzer(new PersistentDNALog(experiment.getId()));
 

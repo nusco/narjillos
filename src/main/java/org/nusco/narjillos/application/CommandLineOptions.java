@@ -84,7 +84,7 @@ public class CommandLineOptions extends Options {
 	        if (getDna() != null || getSeed() != NO_SEED)
 	        	throw new RuntimeException("If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
 
-        	setFile(line.getArgs()[0]);
+        	setFile(line.getArgs()[0], printWarnings);
         	
         	if (printWarnings && getExperiment() != null && !isPersistent()) {
 				System.err.print("WARNING: you're continuing an existing experiment, but I won't update it on disk. ");
@@ -125,8 +125,8 @@ public class CommandLineOptions extends Options {
 		return "I don't understand these arguments.\n" + getHelpText();
 	}
 
-	private void setFile(String file) {
-		this.experiment = ExperimentLoader.load(file);
+	private void setFile(String file, boolean printWarnings) {
+		this.experiment = ExperimentLoader.load(file, printWarnings);
 	}
 
 	private void setFast(boolean fast) {

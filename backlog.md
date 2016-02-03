@@ -1,8 +1,5 @@
 #Narjillos Backlog
 
-+ Fix duplicated message  
-  "This experiment was started with version [...]"  
-
 ## Outer Space
 > goal: keeping navigation nice while paving the road to collision detection
 

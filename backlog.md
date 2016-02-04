@@ -6,8 +6,6 @@
 * Make edges visible when zoomed in  
   Simple darker line. Good balance between nice graphics and clearly visible edges.  
 
-* Fix bug with unwanted centering when zooming near the edges
-
 + Make space grid visible in debug mode  
   To have a clear visual indication of how large space areas are.  
 

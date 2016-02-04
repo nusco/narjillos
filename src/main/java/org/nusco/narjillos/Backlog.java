@@ -28,7 +28,7 @@ public class Backlog {
 		int numberOfUserStories = getNumberOfUserStories(features);
 		String header = "Narjllos Backlog (" + numberOfUserStories + " user stories in "+ features.size() + " features)";
 		System.out.println(header + ".");
-		System.out.println("(Look in backlog.md to see what this all means and read backlog comments).\n");
+		System.out.println("(Look in backlog.md for details).\n");
 		
 		int featuresToPrint = getNumberOfFeaturesToPrint(args, features);
 		for (int i = 0; i < featuresToPrint; i++)

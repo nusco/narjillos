@@ -3,5 +3,5 @@ jdk: oraclejdk8
 env:
   - TEST_SUITE=test
   - TEST_SUITE=testDeterministic
-script: "gradle --stacktrace $TEST_SUITE"
+script: "gradle --stacktrace $TEST_SUITE --info"
 sudo: false

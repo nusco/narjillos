@@ -46,6 +46,10 @@ public class DNA implements Iterable<Chromosome> {
 		return parentId;
 	}
 
+	public boolean hasParent() {
+		return parentId != NO_PARENT;
+	}
+
 	public Integer[] getGenes() {
 		return genes;
 	}

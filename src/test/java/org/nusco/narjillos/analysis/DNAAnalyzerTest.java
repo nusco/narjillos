@@ -60,4 +60,46 @@ public class DNAAnalyzerTest {
 		assertEquals(child2_2, ancestry.get(1));
 		assertEquals(child2_2_1, ancestry.get(2));
 	}
+
+	@Test
+	public void getsAnAncestor() {
+		NumGen numGen = new NumGen(123);
+
+		DNA parent = new DNA(1,"{0}");
+		dnaLog.save(parent);
+		DNA child1 = parent.mutate(2, numGen);
+		dnaLog.save(child1);
+		DNA child2 = child1.mutate(3, numGen);
+		dnaLog.save(child2);
+
+		assertEquals(parent, dnaAnalyzer.getGermline(child2).get(0));
+	}
+
+	@Test
+	public void countsLivingGermlines() {
+		NumGen numGen = new NumGen(123);
+
+		DNA ancestorOfGermline1 = new DNA(10,"{0}");
+		dnaLog.save(ancestorOfGermline1);
+		dnaLog.save(ancestorOfGermline1.mutate(11, numGen));
+		dnaLog.save(ancestorOfGermline1.mutate(12, numGen));
+		
+		DNA ancestorOfGermline2 = new DNA(20,"{0}");
+		dnaLog.save(ancestorOfGermline2);
+
+		DNA ancestorOfGermline3 = new DNA(30,"{0}");
+		dnaLog.save(ancestorOfGermline3);
+		dnaLog.save(ancestorOfGermline3.mutate(31, numGen));
+
+		dnaLog.markAsDead(10);
+		dnaLog.markAsDead(30);
+
+		assertEquals(3, dnaAnalyzer.getNumberOfLivingGermlines());
+		
+		dnaLog.markAsDead(20);
+		assertEquals(2, dnaAnalyzer.getNumberOfLivingGermlines());
+		
+		dnaLog.markAsDead(31);
+		assertEquals(1, dnaAnalyzer.getNumberOfLivingGermlines());
+	}
 }

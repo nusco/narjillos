@@ -2,7 +2,9 @@ package org.nusco.narjillos.genomics;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.NumGen;
@@ -72,6 +74,12 @@ public class DNATest {
 		DNA dna = new DNA(42, "{1_2_3}", 41);
 		
 		assertEquals(41, dna.getParentId());
+	}
+
+	@Test
+	public void knowsWetherItHasAParent() {
+		assertTrue(new DNA(42, "{1_2_3}", 41).hasParent());
+		assertFalse(new DNA(42, "{1_2_3}", 0).hasParent());
 	}
 
 	@Test

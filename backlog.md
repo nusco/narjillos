@@ -11,6 +11,7 @@
 
 - Make narjillos's eyes flash when being damaged  
   Useful to see what's happening when they touch edges.  
+  Flash their eyes, or use a "bubble" effect.  
 
 ##Istincts
 >goal: complex interactions  
@@ -85,8 +86,6 @@
   Alternately, find a way to make the background solid everywhere (without impacting zoom performance).  
 * Proportional mousewheel scrolling  
   Right now it uses fixed-step zoomIn/zoomOut.  
-* Show damage on narjillos touching edges  
-  Flash their eyes, or use a "bubble" effect.  
 + Disable effects automatically when framerate drops  
 + Optimize graphics  
 - Independent eye pupils  

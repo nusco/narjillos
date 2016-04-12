@@ -2,9 +2,11 @@ package org.nusco.narjillos.analysis;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -63,6 +65,22 @@ public class DNAAnalyzer {
 		return result.toString();
 	}
 
+	public int getNumberOfLivingGermlines() {
+		Set<DNA> originalAncestors = new LinkedHashSet<>();
+
+		// optimization: don't walk the same ancestry twice
+		// (this can have a big impact on performance)
+		Set<DNA> alreadyExplored = new LinkedHashSet<>();
+
+		for (DNA dna : dnaLog.getLiveDna()) {
+			DNA originalAncestor = findOriginalAncestor(dna, alreadyExplored);
+			if (originalAncestor != null)
+				originalAncestors.add(originalAncestor);
+		}
+
+		return originalAncestors.size();
+	}
+
 	Map<Long, Long> getChildrenToParents() {
 		Map<Long, Long> result = new LinkedHashMap<>();
 		for (DNA dna : getDnaById().values())
@@ -95,5 +113,24 @@ public class DNAAnalyzer {
 		for (DNA dna : dnaLog.getAllDna())
 			result.put(dna.getId(), dna);
 		return result;
+	}
+
+	/**
+	 * Returns the original ancestor, or null if the ancestry chain converges into
+	 * a chain that has already been explored.
+	 */
+	private DNA findOriginalAncestor(DNA dna, Set<DNA> alreadyExplored) {
+		DNA ancestor = dna;
+		while (true) {
+			if (alreadyExplored.contains(ancestor))
+				return null;
+
+			alreadyExplored.add(ancestor);
+			
+			if (!ancestor.hasParent())
+				return ancestor;
+			
+			ancestor = dnaLog.getDna(ancestor.getParentId());
+		}
 	}
 }

@@ -33,6 +33,7 @@ public class Lab {
 		options.addOption("p", "primary", false, "print id of primary (most successful) DNA");
 		options.addOption("s", "stats", false, "print current statistics");
 		options.addOption("h", "history", false, "output history as CSV");
+		options.addOption("G", "germlines-count", false, "print number of living germlines");
 		options.addOption("c", "csv", false, "output ancestry as CSV ('-Xmx' for memory)");
 		options.addOption("n", "nexus", false, "output ancestry as NEXUS ('-Xss' for deep stack)");
 
@@ -55,18 +56,20 @@ public class Lab {
 			HistoryLog historyLog = new PersistentHistoryLog(experiment.getId());
 			DNAAnalyzer dnaAnalyzer = new DNAAnalyzer(new PersistentDNALog(experiment.getId()));
 
-			if (commandLine.hasOption("history"))
-				dumpHistory(historyLog);
-			else if (commandLine.hasOption("stats"))
-				System.out.println(historyLog.getLatestEntry());
-			else if (commandLine.hasOption("primary"))
-				System.out.println(getPrimaryDNAId(dnaAnalyzer));
-			else if (commandLine.hasOption("dna"))
+			if (commandLine.hasOption("dna"))
 				System.out.println(getDna(dnaAnalyzer, commandLine.getOptionValue("dna")));
 			else if (commandLine.hasOption("dnastats"))
 				System.out.println(getDNAStats(dnaAnalyzer, commandLine.getOptionValue("dnastats")));
 			else if (commandLine.hasOption("germline"))
 				dumpGermline(dnaAnalyzer, commandLine.getOptionValue("germline"));
+			else if (commandLine.hasOption("primary"))
+				System.out.println(getPrimaryDNAId(dnaAnalyzer));
+			else if (commandLine.hasOption("stats"))
+				System.out.println(historyLog.getLatestEntry());
+			else if (commandLine.hasOption("history"))
+				dumpHistory(historyLog);
+			else if (commandLine.hasOption("germlines-count"))
+				System.out.println(dnaAnalyzer.getNumberOfLivingGermlines());
 			else if (commandLine.hasOption("csv"))
 				System.out.print(new DNAExporter(dnaAnalyzer).toCSVFormat());
 			else if (commandLine.hasOption("nexus"))

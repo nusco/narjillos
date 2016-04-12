@@ -23,8 +23,8 @@ public abstract class ConnectedOrganTest extends OrganTest {
 	@Test
 	public void knowsItsChildren() {
 		ConnectedOrgan organ = getOrgan();
-		ConnectedOrgan child1 = organ.addChild(new BodyPart(20, 10, 0, 0, 0, organ, 0, 45, 0, 0));
-		ConnectedOrgan child2 = organ.addChild(new BodyPart(20, 10, 0, 0, 0, organ, 0, -45, 0, 0));
+		ConnectedOrgan child1 = organ.addChild(new BodyPart(new BodyPartParameters(20, 10, organ, 45)));
+		ConnectedOrgan child2 = organ.addChild(new BodyPart(new BodyPartParameters(20, 10, organ, -45)));
 
 		List<ConnectedOrgan> expected = new LinkedList<>();
 		expected.add(child1);
@@ -41,7 +41,7 @@ public abstract class ConnectedOrganTest extends OrganTest {
 	@Test
 	public void canBeANonLeaf() {
 		ConnectedOrgan organ = getOrgan();
-		organ.addChild(new BodyPart(20, 10, 0, 0, 0, organ, 0, 45, 0, 0));
+		organ.addChild(new BodyPart(new BodyPartParameters(20, 10, organ, 0)));
 		assertFalse(organ.isLeaf());
 	}
 

@@ -9,6 +9,7 @@ import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.RE
 import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.SKEWING;
 
 import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.BodyPartParameters;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.genomics.Chromosome;
@@ -63,6 +64,13 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 
 	@Override
 	public MovingOrgan buildOrgan(ConnectedOrgan parent, int sign) {
-		return new BodyPart(getLength(), getThickness(), getRedShift(), getGreenShift(), getBlueShift(), parent, getDelay(), getAngleToParent(sign), getAmplitude(), getSkewing());
+		BodyPartParameters bodyPartParameters = new BodyPartParameters(getLength(), getThickness(), parent, getAngleToParent(sign));
+		bodyPartParameters.setDelay(getDelay());
+		bodyPartParameters.setAmplitude(getAmplitude());
+		bodyPartParameters.setSkewing(getSkewing());
+		bodyPartParameters.setRedShift(getRedShift());
+		bodyPartParameters.setGreenShift(getGreenShift());
+		bodyPartParameters.setBlueShift(getBlueShift());
+		return new BodyPart(bodyPartParameters);
 	}
 }

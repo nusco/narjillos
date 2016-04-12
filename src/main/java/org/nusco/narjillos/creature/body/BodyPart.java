@@ -17,22 +17,21 @@ public class BodyPart extends MovingOrgan {
 	private double currentSkewing = 0;
 	private double cachedMetabolicRate = -1;
 
-	// TODO: too many constructor arguments. introduce parameter object like I did for Head
-	public BodyPart(int adultLength, int adultThickness, int redShift, int greenShift, int blueShift, ConnectedOrgan parent, int delay, int angleToParentAtRest, int amplitude, int skewing) {
-		super(adultLength,
-			  adultThickness,
-			  parent.getFiber().shift(redShift, greenShift, blueShift),
-			  parent,
-			  new DelayNerve(delay),
-			  angleToParentAtRest);
-		this.angleToParentAtRest = angleToParentAtRest;
-		this.orientation = (int) Math.signum(angleToParentAtRest);
-		this.amplitude = amplitude;
-		this.skewing = skewing;
+	public BodyPart(BodyPartParameters parameters) {
+		super(parameters.getAdultLength(),
+			  parameters.getAdultThickness(),
+			  parameters.getParent().getFiber().shift(parameters.getRedShift(), parameters.getGreenShift(), parameters.getBlueShift()),
+			  parameters.getParent(),
+			  new DelayNerve(parameters.getDelay()),
+			  parameters.getAngleToParentAtRest());
+		this.angleToParentAtRest = parameters.getAngleToParentAtRest();
+		this.orientation = (int) Math.signum(parameters.getAngleToParentAtRest());
+		this.amplitude = parameters.getAmplitude();
+		this.skewing = parameters.getSkewing();
 	}
 
 	BodyPart(Nerve nerve) {
-		this(0, 0, 0, 0, 0, null, 13, 0, 1, 0);
+		this(new BodyPartParameters(0, 0, null, 0));
 	}
 
 	public double getAngleToParentAtRest() {

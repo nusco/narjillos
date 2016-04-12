@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.BodyPartParameters;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Head;
@@ -55,7 +56,14 @@ public class JSONBodyPartSerializationTest {
 	@Test
 	public void serializesAndDeserializesBodySegments() {
 		ConnectedOrgan parent = new Head(new HeadParameters(10, 20));
-		BodyPart bodySegment = new BodyPart(1, 2, 10, 20, 30, parent, 4, -5, 6, 7);
+		BodyPartParameters bodyPartParameters = new BodyPartParameters(1, 2, parent, -5);
+		bodyPartParameters.setDelay(4);
+		bodyPartParameters.setAmplitude(6);
+		bodyPartParameters.setSkewing(7);
+		bodyPartParameters.setRedShift(10);
+		bodyPartParameters.setGreenShift(20);
+		bodyPartParameters.setBlueShift(30);
+		BodyPart bodySegment = new BodyPart(bodyPartParameters);
 
 		for (int i = 0; i < 10; i++)
 			bodySegment.tick(10, 1, 2);
@@ -80,7 +88,11 @@ public class JSONBodyPartSerializationTest {
 	@Test
 	public void serializesAndDeserializesAnEntireTreeOfOrgans() {
 		MovingOrgan parent = new Head(new HeadParameters(100, 0));
-		ConnectedOrgan child = new BodyPart(200, 0, 10, 20, 30, parent, 0, 0, 0, 0);
+		BodyPartParameters bodyPartParameters = new BodyPartParameters(200, 0, parent, 0);
+		bodyPartParameters.setRedShift(10);
+		bodyPartParameters.setGreenShift(20);
+		bodyPartParameters.setBlueShift(30);
+		ConnectedOrgan child = new BodyPart(bodyPartParameters);
 		parent.addChild(child);
 		
 		String json = JSON.toJson(parent, MovingOrgan.class);

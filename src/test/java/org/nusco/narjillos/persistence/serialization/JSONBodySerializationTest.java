@@ -9,6 +9,7 @@ import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.Body;
 import org.nusco.narjillos.creature.body.BodyPart;
+import org.nusco.narjillos.creature.body.BodyPartParameters;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.HeadParameters;
@@ -32,13 +33,25 @@ public class JSONBodySerializationTest {
 		headParameters.setEggInterval(40);
 		Head head = new Head(headParameters);
 		
-		BodyPart child1 = new BodyPart(11, 12, 130, 131, 132, head, 14, 15, 16, 17);
+		BodyPartParameters bodyPartParameters1 = new BodyPartParameters(11, 12, head, 15);
+		bodyPartParameters1.setRedShift(130);
+		bodyPartParameters1.setGreenShift(131);
+		bodyPartParameters1.setBlueShift(132);
+		BodyPart child1 = new BodyPart(bodyPartParameters1);
 		head.addChild(child1);
 		
-		BodyPart child2_1 = new BodyPart(21, 22, 230, 231, 232, child1, 24, 25, 26, 27);
+		BodyPartParameters bodyPartParameters2_1 = new BodyPartParameters(21, 22, child1, 25);
+		bodyPartParameters2_1.setRedShift(230);
+		bodyPartParameters2_1.setGreenShift(231);
+		bodyPartParameters2_1.setBlueShift(232);
+		BodyPart child2_1 = new BodyPart(bodyPartParameters2_1);
 		child1.addChild(child2_1);
 		
-		BodyPart child2_2 = new BodyPart(31, 32, 330, 331, 332, child1, 34, 35, 36, 37);
+		BodyPartParameters bodyPartParameters2_2 = new BodyPartParameters(31, 32, child1, 35);
+		bodyPartParameters2_2.setRedShift(330);
+		bodyPartParameters2_2.setGreenShift(331);
+		bodyPartParameters2_2.setBlueShift(332);
+		BodyPart child2_2 = new BodyPart(bodyPartParameters2_2);
 		child1.addChild(child2_2);
 		
 		Body body = new Body(head);

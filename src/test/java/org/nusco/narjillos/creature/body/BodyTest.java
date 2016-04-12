@@ -32,7 +32,7 @@ public class BodyTest {
 		
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
-		head.addChild(new BodyPart(segmentLengthInMm, segmentThicknessInMm, 0, 0, 0, head, 0, 0, 0, 0));
+		head.addChild(new BodyPart(new BodyPartParameters(segmentLengthInMm, segmentThicknessInMm, head, 0)));
 		Body body = new Body(head);
 		
 		double expectedMassInGrams = 212;
@@ -42,7 +42,7 @@ public class BodyTest {
 	@Test
 	public void hasACenterOfMassAndARadius() {
 		Head head = new Head(new HeadParameters(10, 10));
-		head.addChild(new BodyPart(20, 5, 0, 0, 0, head, 0, 0, 0, 0));
+		head.addChild(new BodyPart(new BodyPartParameters(20, 5, head, 0)));
 		Body body = new Body(head);
 
 		body.growToAdultForm();
@@ -56,7 +56,8 @@ public class BodyTest {
 	@Test
 	public void hasABoundingBox() {
 		Head head = new Head(new HeadParameters(10, 1));
-		head.addChild(new BodyPart(20, 1, 0, 0, 0, head, 0, 90, 0, 0));
+		BodyPartParameters parameters = new BodyPartParameters(20, 1, head, 90);
+		head.addChild(new BodyPart(parameters));
 		Body body = new Body(head);
 
 		body.growToAdultForm();

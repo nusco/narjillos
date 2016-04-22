@@ -111,7 +111,10 @@ class EyesView implements ItemView {
 	private Color toEyeColor(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
 			return Color.WHITE;
-		return new Color(eyeRed, eyeGreen, eyeBlue, getZoomAlpha(zoomLevel));
+		double red = narjillo.isInPain() ? 1 : eyeRed;
+		double green = narjillo.isInPain() ? 0 : eyeGreen;
+		double blue = narjillo.isInPain() ? 0 : eyeBlue;
+		return new Color(red, green, blue, getZoomAlpha(zoomLevel));
 	}
 
 	private Color toPupilColor(double zoomLevel) {

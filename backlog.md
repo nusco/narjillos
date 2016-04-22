@@ -9,10 +9,6 @@
 + Make space grid visible in debug mode  
   To have a clear visual indication of how large space areas are.  
 
-- Make narjillos's eyes flash when being damaged  
-  Useful to see what's happening when they touch edges.  
-  Flash their eyes, or use a "bubble" effect.  
-
 ##Istincts
 >goal: complex interactions  
 

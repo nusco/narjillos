@@ -31,6 +31,8 @@ public class Narjillo implements Thing {
 	private long age = 0;
 	private long nextEggAge = 0;
 
+	private transient boolean isInPain = false;
+
 	public Narjillo(DNA dna, Vector position, double angle, Energy energy) {
 		this.body = new Embryo(dna).develop();
 		body.forcePosition(position, angle);
@@ -40,6 +42,8 @@ public class Narjillo implements Thing {
 
 	@Override
 	public Segment tick() {
+		forgetPain();
+		
 		growOlder();
 
 		Vector startingPosition = body.getStartPoint();
@@ -183,6 +187,15 @@ public class Narjillo implements Thing {
 
 	public void damage() {
 		energy.damage();
+		isInPain = true;
+	}
+
+	public boolean isInPain() {
+		return isInPain;
+	}
+
+	private void forgetPain() {
+		isInPain = false;
 	}
 
 	private void decideWhenToLayTheNextEgg() {

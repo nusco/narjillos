@@ -330,6 +330,7 @@
     
     I should also test navigation with a first-time user.
 
++ "Next" command during demo/following  
 + "Previous" command during demo/following  
 + Visual effect when tracking/untracking  
 - Mini-map  

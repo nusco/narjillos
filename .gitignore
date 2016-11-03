@@ -12,6 +12,8 @@ bin/
 # IntelliJ Idea files:
 narjillos.iml
 narjillos.ipr
+narjillos.iws
+out/
 
 # NetBeans files
 .nb-gradle/

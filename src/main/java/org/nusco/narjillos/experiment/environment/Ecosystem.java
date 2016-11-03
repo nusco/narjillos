@@ -255,7 +255,7 @@ public class Ecosystem extends Environment {
 	private void tickEgg(Egg egg, NumGen numGen) {
 		egg.tick();
 		if (egg.hatch(numGen))
-			insertNarjillo(egg.getHatchedNarjillo());
+			insertNarjillo(egg.getHatchedNarjillo().get());
 		if (egg.isDecayed())
 			remove(egg);
 	}

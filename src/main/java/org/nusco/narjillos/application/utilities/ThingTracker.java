@@ -49,23 +49,16 @@ public class ThingTracker {
 			}
 		}
 		
-		if (target.getLabel().equals("egg")) {
-			Narjillo hatched = ((Egg) target).getHatchedNarjillo();
-			if (hatched != null)
-				startTracking(hatched);
+		if (target.getLabel().equals("egg") || target.getLabel().equals("food_pellet")) {
+			Thing interactingThing = target.getLastInteractingThing();
+			if (interactingThing != Thing.NULL)
+				startTracking(interactingThing);
 			return;
 		}
-		
-		if (target.getLabel().equals("food_pellet")) {
-			Thing eater = ((FoodPellet) target).getEater();
-			if (eater != null)
-				startTracking(eater);
-			return;
-		}
-		
+
 		viewport.centerOn(target);
 	}
-
+	
 	public synchronized void stopTracking() {
 		target = null;
 		demoMode = false;

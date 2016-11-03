@@ -9,6 +9,8 @@ import org.nusco.narjillos.core.utilities.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
 
+import java.util.Optional;
+
 /**
  * A narjillo egg, that eventually hatches to spawn a cute baby narjillo.
  */
@@ -62,10 +64,20 @@ public class Egg implements Thing {
 		return true;
 	}
 
-	public Narjillo getHatchedNarjillo() {
+	public Thing getLastInteractingThing() {
+		if (hatchedNarjillo == null)
+			return Thing.NULL;
+
 		return hatchedNarjillo;
 	}
-	
+
+	public Optional<Narjillo> getHatchedNarjillo() {
+		if (hatchedNarjillo == null)
+			return Optional.empty();
+
+		return Optional.of(hatchedNarjillo);
+	}
+
 	@Override
 	public Vector getPosition() {
 		return position;

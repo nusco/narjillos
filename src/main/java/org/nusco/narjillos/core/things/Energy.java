@@ -6,19 +6,19 @@ public interface Energy {
 		@Override
 		public double getValue() {
 			return Double.MAX_VALUE;
-		};
+		}
 		
 		@Override
 		public double getMaximumValue() {
 			return Double.MAX_VALUE;
-		};
+		}
 
 		@Override
-		public void tick(double additionalEnergy) {};
+		public void tick(double additionalEnergy) {}
 		
 		@Override
 		public void increaseBy(double amount) {
-		};
+		}
 
 		@Override
 		public boolean isZero() {
@@ -26,9 +26,9 @@ public interface Energy {
 		}
 		
 		@Override
-		public void steal(Energy other) {
+		public void absorb(Energy other) {
 			other.dropToZero();
-		};
+		}
 
 		@Override
 		public void dropToZero() {
@@ -49,7 +49,7 @@ public interface Energy {
 
 	public boolean isZero();
 
-	void steal(Energy other);
+	void absorb(Energy other);
 
 	public void dropToZero();
 

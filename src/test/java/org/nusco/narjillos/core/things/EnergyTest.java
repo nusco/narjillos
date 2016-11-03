@@ -5,8 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.utilities.Configuration;
 
 public class EnergyTest {
@@ -50,19 +48,19 @@ public class EnergyTest {
 	}
 
 	@Test
-	public void increasesByConsumingThings() {
-		energy.steal(otherEnergy);
+	public void increasesByAbsorbingOtherEnergy() {
+		energy.absorb(otherEnergy);
 
 		double expected = initialValue * Configuration.CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY;
 		assertEquals(expected, energy.getValue(), 0.001);
 	}
 
 	@Test
-	public void neverRaisesHigherThanAMax() {
+	public void neverRaisesOverAAMax() {
 		fillToTheMax();
 		double initialEnergy = energy.getValue();
 
-		energy.steal(otherEnergy);
+		energy.absorb(otherEnergy);
 
 		assertEquals(initialEnergy, energy.getValue(), 0.00001);
 		assertEquals(energy.getMaximumValue(), energy.getValue(), 0.00001);
@@ -77,12 +75,12 @@ public class EnergyTest {
 		// get older
 		energy.tick(0);
 
-		energy.steal(otherEnergy);
+		energy.absorb(otherEnergy);
 		double fullEnergyWhenSlightlyOlder = energy.getValue();
 
 		assertTrue(fullEnergyWhenStillYoung > fullEnergyWhenSlightlyOlder);
 
-		energy.steal(otherEnergy);
+		energy.absorb(otherEnergy);
 
 		assertEquals(fullEnergyWhenSlightlyOlder, energy.getValue(), 0.001);
 	}
@@ -125,7 +123,7 @@ public class EnergyTest {
 		double energyValue;
 		do {
 			energyValue = energy.getValue();
-			energy.steal(otherEnergy);
+			energy.absorb(otherEnergy);
 		} while (energy.getValue() > energyValue);
 	}
 }

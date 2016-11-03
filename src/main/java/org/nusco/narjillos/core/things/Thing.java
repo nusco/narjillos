@@ -39,6 +39,11 @@ public interface Thing {
 		public String getLabel() {
 			return "null_thing";
 		}
+
+		@Override
+		public Thing getLastInteractingThing() {
+			return NULL;
+		}
 	};
 	
 	/**
@@ -50,4 +55,5 @@ public interface Thing {
 	public double getRadius();
 	public Energy getEnergy();
 	public String getLabel();
+	public Thing getLastInteractingThing();
 }

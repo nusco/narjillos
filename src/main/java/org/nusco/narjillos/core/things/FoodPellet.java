@@ -8,7 +8,7 @@ public class FoodPellet implements Thing {
 
 	public Vector position;
 	private final Energy energy = new LifeFormEnergy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
-	private Thing eater;
+	private Thing interactingThing;
 
 	public void setPosition(Vector position) {
 		this.position = position;
@@ -44,11 +44,11 @@ public class FoodPellet implements Thing {
 		return Configuration.FOOD_RADIUS;
 	}
 
-	public Thing getEater() {
-		return eater;
+	public Thing getLastInteractingThing() {
+		return interactingThing;
 	}
 	
-	public void setEater(Thing eater) {
-		this.eater = eater;
+	public void setInteractingThing(Thing interactingThing) {
+		this.interactingThing = interactingThing;
 	}
 }

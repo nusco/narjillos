@@ -224,7 +224,12 @@ class MockThing implements Thing {
 	public String getLabel() {
 		return label;
 	}
-	
+
+	@Override
+	public Thing getLastInteractingThing() {
+		return Thing.NULL;
+	}
+
 	@Override
 	public String toString() {
 		return getLabel();

@@ -55,7 +55,7 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void steal(Energy other) {
+	public void absorb(Energy other) {
 		increaseBy(other.getValue());
 		other.dropToZero();
 	}

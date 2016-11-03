@@ -61,7 +61,7 @@
 * Narjillos hurt other narjillos  
   ...stealing their energy when they "hit" them.
   Probably introduce the concept of "spikes" in the body and consider  
-  the tangential movement of leaf segments as an attach. Spikes would  
+  the tangential movement of leaf segments as an attack. Spikes would  
   hurt more than blunt segments. The mouth might be spikey by default.
 
 + Show damage on narjillos  

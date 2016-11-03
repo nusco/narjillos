@@ -84,6 +84,11 @@ public class Narjillo implements Thing {
 		return "narjillo";
 	}
 
+	@Override
+	public Thing getLastInteractingThing() {
+		return Thing.NULL;
+	}
+
 	public DNA getDNA() {
 		return dna;
 	}
@@ -105,8 +110,8 @@ public class Narjillo implements Thing {
 	}
 
 	public void feedOn(FoodPellet thing) {
-		getEnergy().steal(thing.getEnergy());
-		thing.setEater(this);
+		getEnergy().absorb(thing.getEnergy());
+		thing.setInteractingThing(this);
 	}
 
 	public boolean isDead() {

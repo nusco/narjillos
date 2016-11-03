@@ -28,7 +28,7 @@ abstract class NarjillosApplication extends Application {
 
 	// These fields are all just visualization stuff - no data will
 	// get corrupted if different threads see slightly outdated versions of
-	// them. So we can avoid synchronization altogether.
+	// them. So we can skip synchronization altogether.
 
 	private Dish dish;
 

@@ -10,20 +10,24 @@ import org.nusco.narjillos.creature.body.pns.Nerve;
 public class BodyPart extends MovingOrgan {
 
 	private final double angleToParentAtRest;
+
 	private final int orientation; // -1 or 1
+
 	private final int amplitude;
+
 	private final int skewing;
 
 	private double currentSkewing = 0;
+
 	private double cachedMetabolicRate = -1;
 
 	public BodyPart(BodyPartParameters parameters) {
 		super(parameters.getAdultLength(),
-			  parameters.getAdultThickness(),
-			  parameters.getParent().getFiber().shift(parameters.getRedShift(), parameters.getGreenShift(), parameters.getBlueShift()),
-			  parameters.getParent(),
-			  new DelayNerve(parameters.getDelay()),
-			  parameters.getAngleToParentAtRest());
+			parameters.getAdultThickness(),
+			parameters.getParent().getFiber().shift(parameters.getRedShift(), parameters.getGreenShift(), parameters.getBlueShift()),
+			parameters.getParent(),
+			new DelayNerve(parameters.getDelay()),
+			parameters.getAngleToParentAtRest());
 		this.angleToParentAtRest = parameters.getAngleToParentAtRest();
 		this.orientation = (int) Math.signum(parameters.getAngleToParentAtRest());
 		this.amplitude = parameters.getAmplitude();
@@ -59,7 +63,7 @@ public class BodyPart extends MovingOrgan {
 		double unbentAmplitude = orientation * targetAmplitudePercent * amplitude;
 		return angleToParentAtRest + unbentAmplitude + calculateSkewing(angleToTarget);
 	}
-	
+
 	@Override
 	protected double calculateAbsoluteAngle() {
 		return getParent().getAbsoluteAngle() + getAngleToParent();

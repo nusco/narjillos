@@ -15,6 +15,7 @@ import org.nusco.narjillos.genomics.DNALog;
 public abstract class Environment {
 
 	private final long size;
+
 	private final transient List<EnvironmentEventListener> eventListeners = new LinkedList<>();
 
 	public Environment(long size) {
@@ -29,7 +30,9 @@ public abstract class Environment {
 
 	public abstract int getNumberOfFoodPellets();
 
-	/** Runs one simulation tick */
+	/**
+	 * Runs one simulation tick
+	 */
 	public void tick(DNALog dnaLog, NumGen numGen) {
 		tickThings(dnaLog, numGen);
 

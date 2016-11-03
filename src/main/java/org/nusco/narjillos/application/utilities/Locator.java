@@ -28,7 +28,7 @@ public class Locator {
 	 * The minimum radius is used to artificially <i>enlarge</i> the things being searched
 	 * allowing better control on the precision of the search process.
 	 *
-	 * @param position where to find a Thing.
+	 * @param position       where to find a Thing.
 	 * @param thingMinRadius while searching, the radius of things is boosted to this value if smaller.
 	 * @return the first found Thing or null if nothing is present at the given position.
 	 */
@@ -62,7 +62,7 @@ public class Locator {
 	 * The minimum radius is used to artificially <i>enlarge</i> the things being searched
 	 * allowing better control on the precision of the search process.
 	 *
-	 * @param position where to find a Thing.
+	 * @param position       where to find a Thing.
 	 * @param thingMinRadius while searching, the radius of things is boosted to this value if smaller.
 	 * @return the found Narjillo or null if nothing is present at the given position.
 	 */
@@ -82,13 +82,14 @@ public class Locator {
 
 	/**
 	 * Returns a random {@link Narjillo} or {@link Egg} in the {@link Environment}.
+	 *
 	 * @return the found thing.
 	 */
 	public Thing findRandomLivingThing() {
 		List<Thing> allThings = new LinkedList<>();
 		allThings.addAll(environment.getThings("narjillo"));
 		allThings.addAll(environment.getThings("egg"));
-		return allThings.get((int)(Math.random() * allThings.size()));
+		return allThings.get((int) (Math.random() * allThings.size()));
 	}
 
 	private Thing findWithLabel(Vector position, double thingMinRadius, String label) {

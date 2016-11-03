@@ -12,6 +12,6 @@ class ViewportTransformer {
 		node.getTransforms().clear();
 		node.getTransforms().add(new Translate(-viewport.getPositionEC().x, -viewport.getPositionEC().y));
 		node.getTransforms().add(
-				new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(), viewport.getPositionEC().x, viewport.getPositionEC().y));
+			new Scale(viewport.getZoomLevel(), viewport.getZoomLevel(), viewport.getPositionEC().x, viewport.getPositionEC().y));
 	}
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 public class VolatileDNALog implements DNALog {
 
 	private final Map<Long, DNA> idToDna = new LinkedHashMap<>();
+
 	private final List<DNA> liveDna = new LinkedList<>();
 
 	@Override

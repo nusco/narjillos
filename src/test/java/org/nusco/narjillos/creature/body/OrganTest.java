@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 
 public abstract class OrganTest {
-	
+
 	protected ConnectedOrgan organ;
 
 	@Before
@@ -20,7 +20,7 @@ public abstract class OrganTest {
 	@Test
 	public void hasALengthThatGrowsWithTime() {
 		assertEquals(5, organ.getLength(), 0);
-		
+
 		((ConnectedOrgan) organ).growToAdultFormWithChildren();
 
 		assertEquals(50, organ.getLength(), 0);
@@ -29,22 +29,22 @@ public abstract class OrganTest {
 	@Test
 	public void hasAThicknessThatGrowsWithTime() {
 		assertEquals(1, organ.getThickness(), 0);
-		
+
 		organ.growToAdultFormWithChildren();
-		
+
 		assertEquals(20, organ.getThickness(), 0);
 	}
 
 	@Test
 	public abstract void hasAnEndPoint();
-	
+
 	@Test
 	public void hasAMassProportionalToItsArea() {
 		organ.growToAdultFormWithChildren();
-		
+
 		assertEquals(1000, organ.getMass(), 0.01);
 	}
-	
+
 	@Test
 	public void itsMassIsAlwaysAtLeast1() {
 		Organ verySmallBodyPart = new Organ(0, 0, new Fiber(0, 0, 0)) {

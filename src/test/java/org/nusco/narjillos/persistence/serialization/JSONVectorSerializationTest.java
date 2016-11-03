@@ -11,7 +11,7 @@ public class JSONVectorSerializationTest {
 	@Test
 	public void serializesAndDeserializesVectors() {
 		Vector vector = Vector.polar(-200, Double.MAX_VALUE);
-		
+
 		String json = JSON.toJson(vector, Vector.class);
 		Vector deserialized = JSON.fromJson(json, Vector.class);
 

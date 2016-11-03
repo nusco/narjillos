@@ -16,7 +16,9 @@ import org.nusco.narjillos.genomics.DNA;
 public class LocatorTest {
 
 	Ecosystem ecosystem;
+
 	Locator locator;
+
 	NumGen numGen = new NumGen(1234);
 
 	@Before
@@ -27,7 +29,8 @@ public class LocatorTest {
 
 	private Narjillo insertNarjillo(Vector position) {
 		// the position specifies the head position; the body center will be different
-		DNA dna = new DNA(1, "{145_227_116_072_163_201_077_221_217}{060_227_157_252_209_149_056_114_167}{250_253_092_189_010_247_016_214_009}{027_039_203_179_042_042_175_110_008}");
+		DNA dna = new DNA(1,
+			"{145_227_116_072_163_201_077_221_217}{060_227_157_252_209_149_056_114_167}{250_253_092_189_010_247_016_214_009}{027_039_203_179_042_042_175_110_008}");
 		Narjillo narjillo = new Narjillo(dna, position, 90, Energy.INFINITE);
 		ecosystem.insertNarjillo(narjillo);
 		return narjillo;

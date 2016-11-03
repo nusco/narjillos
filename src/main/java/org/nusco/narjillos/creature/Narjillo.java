@@ -24,11 +24,17 @@ import org.nusco.narjillos.genomics.DNALog;
 public class Narjillo implements Thing {
 
 	private final Body body;
+
 	private final DNA dna;
+
 	private final Energy energy;
+
 	private final Mouth mouth = new Mouth();
+
 	private Vector target = Vector.ZERO;
+
 	private long age = 0;
+
 	private long nextEggAge = 0;
 
 	private transient boolean isInPain = false;
@@ -43,7 +49,7 @@ public class Narjillo implements Thing {
 	@Override
 	public Segment tick() {
 		forgetPain();
-		
+
 		growOlder();
 
 		Vector startingPosition = body.getStartPoint();

@@ -16,8 +16,9 @@ public abstract class PersistentInformation {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private final String name;
+
 	private Connection connection;
 
 	public PersistentInformation(String name) {
@@ -33,7 +34,7 @@ public abstract class PersistentInformation {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public final void open() {
 		try {
 			if (connection != null && !connection.isClosed())
@@ -55,7 +56,7 @@ public abstract class PersistentInformation {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	protected void close(Statement stmt) {
 		try {
 			stmt.close();
@@ -63,7 +64,7 @@ public abstract class PersistentInformation {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public void delete() {
 		File databaseFile = new File(getName());
 		if (Files.exists(databaseFile.toPath()))

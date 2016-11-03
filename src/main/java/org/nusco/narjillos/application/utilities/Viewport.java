@@ -6,7 +6,7 @@ import org.nusco.narjillos.experiment.environment.Environment;
 
 /**
  * A Viewport is a zoomable, rectangular view over an ecosystem.
- * 
+ * <p>
  * It uses two systems of coordinates: SC are "screen coordinates" - the
  * position in the application window. EC are "ecosystem coordinates" - the
  * position in the ecosystem.
@@ -14,21 +14,31 @@ import org.nusco.narjillos.experiment.environment.Environment;
 public class Viewport {
 
 	static final double MAX_INITIAL_SIZE_SC = 800;
+
 	static final double ZOOM_MAX = 2;
+
 	private static final double ZOOM_OVERZOOMING_LEVEL = 1;
+
 	static final double[] ZOOM_CLOSEUP_LEVELS = new double[] { 0.15, 0.6 };
+
 	private static final double ZOOM_VELOCITY = 1.03;
 
 	private final double environmentSizeEC;
+
 	private Vector sizeSC;
+
 	private Vector centerEC;
+
 	private double zoomLevel;
 
 	private Vector targetCenterEC;
+
 	private double targetZoomLevel;
+
 	private volatile boolean userIsZooming = false;
+
 	final double minZoomLevel;
-	
+
 	public Viewport(Environment environment) {
 		this.environmentSizeEC = environment.getSize();
 		setCenterEC(getEcosystemCenterEC());
@@ -36,7 +46,7 @@ public class Viewport {
 		double size = Math.min(environment.getSize(), MAX_INITIAL_SIZE_SC);
 		sizeSC = Vector.cartesian(size, size);
 		minZoomLevel = Math.max(getSizeSC().x, getSizeSC().y) / environmentSizeEC;
-		
+
 		centerOnEcosystem();
 		zoomLevel = minZoomLevel;
 		zoomToNextLevel();
@@ -112,7 +122,7 @@ public class Viewport {
 	public void centerOn(Thing target) {
 		targetCenterEC = target.getCenter();
 	}
-	
+
 	public void centerAndZoomOn(Thing target) {
 		centerOn(target);
 		targetZoomLevel = Math.min(getMaxZoomLevel(), getZoomToFitLevel(target.getRadius()));

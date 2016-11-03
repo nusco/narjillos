@@ -14,13 +14,15 @@ import org.nusco.narjillos.creature.Egg;
 class EggView extends ThingView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.02;
+
 	private static final double RADIUS_VARIATION = 1.5;
+
 	private static final double BLOBBING_SPEED = 3;
-	
+
 	private final Ellipse shape;
-	
+
 	private double waveAngle = Math.random() * 360;
-	
+
 	public EggView(Egg egg) {
 		super(egg);
 		shape = new Ellipse(Configuration.EGG_RADIUS, Configuration.EGG_RADIUS);
@@ -42,7 +44,7 @@ class EggView extends ThingView {
 		shape.getTransforms().clear();
 		Translate translation = new Translate(getThing().getPosition().x, getThing().getPosition().y);
 		shape.getTransforms().add(translation);
-		
+
 		return shape;
 	}
 

@@ -22,7 +22,7 @@ public class ExperimentLogTest {
 	public void deleteDatabase() {
 		experimentLog.delete();
 	}
-	
+
 	@Test
 	public void testSavesAndLoadsExperiments() {
 		Experiment experiment = new SimpleExperiment();

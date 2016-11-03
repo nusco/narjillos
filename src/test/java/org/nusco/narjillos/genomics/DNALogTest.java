@@ -35,10 +35,10 @@ public abstract class DNALogTest {
 	@Test
 	public void savesAndLoadsDna() {
 		DNA dna = new DNA(42, "{1_2_3}", 41);
-	
+
 		dnaLog.save(dna);
 		DNA retrieved = dnaLog.getDna(42);
-	
+
 		assertNotNull(retrieved);
 		assertEquals(retrieved.getId(), dna.getId());
 		assertEquals(retrieved.toString(), dna.toString());
@@ -53,10 +53,10 @@ public abstract class DNALogTest {
 	@Test
 	public void silentlySkipsWritingIfADnaIsAlreadyInTheLog() {
 		DNA dna = new DNA(42, "{1_2_3}", 41);
-	
+
 		dnaLog.save(dna);
 		dnaLog.save(dna);
-	
+
 		assertEquals(1, dnaLog.getAllDna().size());
 	}
 
@@ -64,9 +64,9 @@ public abstract class DNALogTest {
 	public void returnsAllDnaSortedById() {
 		dnaLog.save(new DNA(43, "{1_2_3}", 0));
 		dnaLog.save(new DNA(42, "{1_2_3}", 42));
-	
+
 		List<DNA> genePool = dnaLog.getAllDna();
-		
+
 		assertEquals(2, genePool.size());
 		assertEquals(dnaLog.getDna(42), genePool.get(0));
 		assertEquals(dnaLog.getDna(43), genePool.get(1));
@@ -80,9 +80,9 @@ public abstract class DNALogTest {
 		dnaLog.save(dna2);
 		DNA dna3 = new DNA(41, "{3}", 41);
 		dnaLog.save(dna3);
-		
+
 		dnaLog.markAsDead(42);
-	
+
 		assertEquals(dna3, dnaLog.getLiveDna().get(0));
 		assertFalse(dnaLog.getLiveDna().contains(42));
 		assertEquals(dna2, dnaLog.getLiveDna().get(1));

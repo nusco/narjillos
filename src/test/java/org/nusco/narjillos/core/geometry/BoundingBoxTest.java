@@ -10,34 +10,34 @@ import java.util.Set;
 import org.junit.Test;
 
 public class BoundingBoxTest {
-	
+
 	@Test
 	public void definesTheBoundariesOfASegment() {
 		BoundingBox boundingBox = createBoundingBox(10, 20, 30, 40);
-		
+
 		assertEquals(10, boundingBox.left, 0.0);
 		assertEquals(40, boundingBox.right, 0.0);
 		assertEquals(20, boundingBox.bottom, 0.0);
 		assertEquals(60, boundingBox.top, 0.0);
 	}
-	
+
 	@Test
 	public void canBeUnited() {
 		Set<BoundingBox> shapes = new LinkedHashSet<>();
 		shapes.add(new BoundingBox(10, 20, 30, 60));
 		shapes.add(new BoundingBox(15, 30, -100, 40));
 		BoundingBox boundingBox = BoundingBox.union(shapes);
-		
+
 		assertEquals(10, boundingBox.left, 0.0);
 		assertEquals(30, boundingBox.right, 0.0);
 		assertEquals(-100, boundingBox.bottom, 0.0);
 		assertEquals(60, boundingBox.top, 0.0);
 	}
-	
+
 	@Test
 	public void worksWithNegativeBoundaries() {
 		BoundingBox boundingBox = createBoundingBox(-10, -20, 30, 40);
-		
+
 		assertEquals(-10, boundingBox.left, 0.0);
 		assertEquals(20, boundingBox.right, 0.0);
 		assertEquals(-20, boundingBox.bottom, 0.0);
@@ -47,7 +47,7 @@ public class BoundingBoxTest {
 	@Test
 	public void automaticallyFixesInvertedCoordinates() {
 		BoundingBox boundingBox = new BoundingBox(35, 10, 30, 20);
-		
+
 		assertEquals(10, boundingBox.left, 0.0);
 		assertEquals(35, boundingBox.right, 0.0);
 		assertEquals(20, boundingBox.bottom, 0.0);
@@ -57,7 +57,7 @@ public class BoundingBoxTest {
 	@Test
 	public void worksWithAnySegmentOrientation() {
 		BoundingBox boundingBox = createBoundingBox(35, 40, -10, -20);
-		
+
 		assertEquals(25, boundingBox.left, 0.0);
 		assertEquals(35, boundingBox.right, 0.0);
 		assertEquals(20, boundingBox.bottom, 0.0);
@@ -73,7 +73,7 @@ public class BoundingBoxTest {
 	public void overlapsWithAnotherBoundingBox() {
 		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
 		BoundingBox boundingBox2 = createBoundingBox(0, 9, 10, 10);
-		
+
 		assertTrue(boundingBox1.overlaps(boundingBox2));
 	}
 
@@ -81,7 +81,7 @@ public class BoundingBoxTest {
 	public void doesNotOverlapIfItIsToTheRightOfTheOtherBoundingBox() {
 		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
 		BoundingBox boundingBox2 = createBoundingBox(11, 0, 10, 10);
-		
+
 		assertFalse(boundingBox1.overlaps(boundingBox2));
 	}
 
@@ -89,7 +89,7 @@ public class BoundingBoxTest {
 	public void doesNotOverlapIfItIsToTheLeftOfTheOtherBoundingBox() {
 		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
 		BoundingBox boundingBox2 = createBoundingBox(-11, 0, 10, 10);
-		
+
 		assertFalse(boundingBox1.overlaps(boundingBox2));
 	}
 
@@ -97,7 +97,7 @@ public class BoundingBoxTest {
 	public void doesNotOverlapIfItIsBelowTheOtherBoundingBox() {
 		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
 		BoundingBox boundingBox2 = createBoundingBox(0, 11, 10, 10);
-		
+
 		assertFalse(boundingBox1.overlaps(boundingBox2));
 	}
 
@@ -105,7 +105,7 @@ public class BoundingBoxTest {
 	public void doesNotOverlapIfItIsAboveTheOtherBoundingBox() {
 		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
 		BoundingBox boundingBox2 = createBoundingBox(0, -11, 10, 10);
-		
+
 		assertFalse(boundingBox1.overlaps(boundingBox2));
 	}
 
@@ -113,14 +113,14 @@ public class BoundingBoxTest {
 	public void doesNotOverlapIfItTouchesOnTheEdge() {
 		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
 		BoundingBox boundingBox2 = createBoundingBox(0, 10, 20, 20);
-		
+
 		assertFalse(boundingBox1.overlaps(boundingBox2));
 	}
 
 	@Test
 	public void overlapsItself() {
 		BoundingBox boundingBox = createBoundingBox(0, 0, 10, 10);
-		
+
 		assertTrue(boundingBox.overlaps(boundingBox));
 	}
 
@@ -129,12 +129,12 @@ public class BoundingBoxTest {
 		BoundingBox big = new BoundingBox(0, 30, 0, 60);
 		BoundingBox tall = new BoundingBox(1, 29, 1, 100);
 		BoundingBox small = new BoundingBox(0, 0, 10, 10);
-		
+
 		assertTrue(small.isContainedIn(big));
 		assertFalse(big.isContainedIn(small));
-	
+
 		assertFalse(small.isContainedIn(tall));
-		
+
 		assertTrue(big.isContainedIn(big));
 	}
 
@@ -149,7 +149,7 @@ public class BoundingBoxTest {
 	public void canStillOverlapIfTheFirstBoxHasAreaZero() {
 		BoundingBox boundingBox1 = createBoundingBox(5, 5, 0, 0);
 		BoundingBox boundingBox2 = createBoundingBox(-10, -10, 20, 20);
-		
+
 		assertTrue(boundingBox1.overlaps(boundingBox2));
 	}
 
@@ -157,10 +157,10 @@ public class BoundingBoxTest {
 	public void canStillOverlapIfTheSecondBoxHasAreaZero() {
 		BoundingBox boundingBox1 = createBoundingBox(0, 0, 10, 10);
 		BoundingBox boundingBox2 = createBoundingBox(5, 5, 0, 0);
-		
+
 		assertTrue(boundingBox1.overlaps(boundingBox2));
 	}
-	
+
 	private BoundingBox createBoundingBox(int x, int y, int width, int height) {
 		return new Segment(Vector.cartesian(x, y), Vector.cartesian(width, height)).getBoundingBox();
 	}

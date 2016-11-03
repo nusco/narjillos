@@ -9,12 +9,17 @@ import org.nusco.narjillos.creature.Narjillo;
 public class ThingTracker {
 
 	private static final long DEMO_MODE_FOCUS_TIME_IN_SECONDS = 12;
+
 	private static final long DEMO_MODE_ZOOM_TIME_IN_SECONDS = 3;
 
 	private final Viewport viewport;
+
 	private final Locator locator;
+
 	private Thing target;
+
 	private boolean demoMode;
+
 	private long lastDemoTrackingTime;
 
 	public ThingTracker(Viewport viewport, Locator locator) {
@@ -32,7 +37,7 @@ public class ThingTracker {
 			else if (hasBeenDemoTrackingFor(DEMO_MODE_FOCUS_TIME_IN_SECONDS))
 				viewport.zoomOut();
 		}
-		
+
 		if (target.getLabel().equals("narjillo")) {
 			Narjillo narjillo = (Narjillo) target;
 			if (narjillo.isDead()) {
@@ -48,7 +53,7 @@ public class ThingTracker {
 				}
 			}
 		}
-		
+
 		if (target.getLabel().equals("egg") || target.getLabel().equals("food_pellet")) {
 			Thing interactingThing = target.getLastInteractingThing();
 			if (interactingThing != Thing.NULL)
@@ -58,7 +63,7 @@ public class ThingTracker {
 
 		viewport.centerOn(target);
 	}
-	
+
 	public synchronized void stopTracking() {
 		target = null;
 		demoMode = false;

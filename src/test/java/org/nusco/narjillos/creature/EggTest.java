@@ -15,6 +15,7 @@ import org.nusco.narjillos.genomics.DNA;
 public class EggTest {
 
 	DNA dna = new DNA(1, "{1_2_3}");
+
 	Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.ZERO, 100, new NumGen(1));
 
 	@Test
@@ -44,26 +45,26 @@ public class EggTest {
 	@Test
 	public void passesItsEnergyToTheHatchedNarjillo() {
 		assertEquals(100, egg.getEnergy().getValue(), 0);
-		
+
 		waitUntilItHatches(egg);
 		Narjillo narjillo = egg.getHatchedNarjillo().get();
 
 		assertEquals(0, egg.getEnergy().getValue(), 0);
 		assertEquals(100, narjillo.getEnergy().getValue(), 0);
 	}
-	
+
 	@Test
 	public void putsDNAIntoTheHatchedNarjillo() {
 		waitUntilItHatches(egg);
 		Narjillo narjillo = egg.getHatchedNarjillo().get();
-		
+
 		assertSame(dna, narjillo.getDNA());
 	}
-	
+
 	@Test
 	public void onlyHatchesOnce() {
 		waitUntilItHatches(egg);
-		
+
 		assertFalse(egg.hatch(new NumGen(1)));
 	}
 

@@ -53,14 +53,14 @@ public class CommandLineOptionsTest {
 	@Test
 	public void acceptsAnExperimentSeed() {
 		CommandLineOptions options = new CommandLineOptions("--seed", "1234");
-		
+
 		assertEquals(1234, options.getSeed());
 	}
 
 	@Test
 	public void stripsVersionFromExperimentSeed() {
 		CommandLineOptions options = new CommandLineOptions("-seed", EXPERIMENT_ID);
-		
+
 		assertEquals(1234, options.getSeed());
 	}
 
@@ -85,7 +85,7 @@ public class CommandLineOptionsTest {
 	@Test
 	public void acceptsADNADocument() {
 		CommandLineOptions options = new CommandLineOptions("-dna", "{1_2_3}");
-		
+
 		assertEquals("{1_2_3}", options.getDna());
 	}
 

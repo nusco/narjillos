@@ -13,7 +13,7 @@ public class JSONMouthSerializationTest {
 	public void serializesAndDeserializesCompasses() {
 		Mouth mouth = new Mouth();
 		mouth.tick(Vector.ZERO, Vector.polar(179, 1), 15);
-		
+
 		String json = JSON.toJson(mouth, Mouth.class);
 		Mouth deserialized = JSON.fromJson(json, Mouth.class);
 

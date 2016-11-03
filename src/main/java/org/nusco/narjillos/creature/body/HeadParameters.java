@@ -3,16 +3,27 @@ package org.nusco.narjillos.creature.body;
 import org.nusco.narjillos.core.chemistry.Element;
 
 public class HeadParameters {
+
 	private int adultLength;
+
 	private int adultThickness;
+
 	private int red;
+
 	private int green;
+
 	private int blue;
+
 	private double metabolicRate;
+
 	private double waveBeatRatio;
+
 	private Element byproduct = Element.OXYGEN;
+
 	private double energyToChildren;
+
 	private int eggVelocity;
+
 	private int eggInterval;
 
 	public HeadParameters() {

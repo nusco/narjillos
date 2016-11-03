@@ -18,23 +18,23 @@ public class BodyTest {
 	@Test
 	public void canBeForcedAtAGivenPosition() {
 		Body body = new Body(new Head(new HeadParameters()));
-		
+
 		body.forcePosition(Vector.cartesian(10, -10), 15);
 
 		assertEquals(Vector.cartesian(10, -10), body.getStartPoint());
 	}
-	
+
 	@Test
 	public void hasAMassProportionalToItsSize() {
 		int headLengthInMm = 3;
 		int headThicknessInMm = 4;
 		Head head = new Head(new HeadParameters(headLengthInMm, headThicknessInMm));
-		
+
 		int segmentLengthInMm = 10;
 		int segmentThicknessInMm = 20;
 		head.addChild(new BodyPart(new BodyPartParameters(segmentLengthInMm, segmentThicknessInMm, head, 0)));
 		Body body = new Body(head);
-		
+
 		double expectedMassInGrams = 212;
 		assertEquals(expectedMassInGrams, body.getAdultMass(), 0.001);
 	}
@@ -46,7 +46,7 @@ public class BodyTest {
 		Body body = new Body(head);
 
 		body.growToAdultForm();
-		
+
 		// calculateRadius() needs an explicit center of mass, because of optimizations.
 		// So these two are better tested together:
 		assertEquals(Vector.cartesian(12.5, 0), body.getCenterOfMass());
@@ -69,14 +69,14 @@ public class BodyTest {
 		assertEquals(4, boundingBox.bottom, 0.0);
 		assertEquals(24, boundingBox.top, 0.0);
 	}
-	
+
 	@Test
 	public void itsMinimumRadiusIsOne() {
 		Head head = new Head(new HeadParameters(0, 1));
 		Body body = new Body(head);
 		assertEquals(1, body.getRadius(), 0.0);
 	}
-	
+
 	@Test
 	public void hasTheSameByproductAsTheHead() {
 		HeadParameters headParameters = new HeadParameters();
@@ -97,7 +97,7 @@ public class BodyTest {
 
 		assertEquals(0.42, body.getEnergyToChildren(), 0.0);
 	}
-	
+
 	@Test
 	public void hasTheSameEggVelocityAsTheHead() {
 		HeadParameters headParameters = new HeadParameters();
@@ -107,7 +107,7 @@ public class BodyTest {
 
 		assertEquals(42, body.getEggVelocity(), 0.0);
 	}
-	
+
 	@Test
 	public void hasTheSameEggIntervalAsTheHead() {
 		HeadParameters headParameters = new HeadParameters();

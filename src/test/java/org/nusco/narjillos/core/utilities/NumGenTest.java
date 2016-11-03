@@ -14,7 +14,7 @@ public class NumGenTest {
 	public void generatesADeterministicSequenceOfNumbers() {
 		NumGen numGen1 = new NumGen(123);
 		NumGen numGen2 = new NumGen(123);
-		
+
 		assertAreInSynch(numGen1, numGen2);
 	}
 
@@ -25,18 +25,18 @@ public class NumGenTest {
 		// get to a known state
 		for (int i = 0; i < 10; i++)
 			numGen1.nextDouble();
-		
+
 		long seedBeforeNumberGeneration = numGen1.getSeed();
 
 		NumGen numGen2 = new NumGen(seedBeforeNumberGeneration);
-		
+
 		assertAreInSynch(numGen1, numGen2);
 	}
 
 	@Test
 	public void generatesASerialNumber() {
 		NumGen numGen = new NumGen(123);
-		
+
 		assertEquals(1, numGen.nextSerial());
 		assertEquals(2, numGen.nextSerial());
 	}
@@ -49,6 +49,7 @@ public class NumGenTest {
 		final ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();
 
 		new Thread() {
+
 			@Override
 			public void run() {
 				try {

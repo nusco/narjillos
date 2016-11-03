@@ -8,8 +8,12 @@ import org.nusco.narjillos.experiment.environment.Environment;
 public interface Dish {
 
 	public boolean tick();
+
 	public Environment getEnvironment();
+
 	public String getStatistics();
+
 	public void terminate();
+
 	public boolean isBusy();
 }

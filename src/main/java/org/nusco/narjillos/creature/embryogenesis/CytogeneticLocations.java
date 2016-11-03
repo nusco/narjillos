@@ -2,13 +2,14 @@ package org.nusco.narjillos.creature.embryogenesis;
 
 /**
  * The encoding of phenotipic characters in a chromosome's genes.
- * 
+ * <p>
  * Note that some locations are pleiotropic: they encode different
  * characters, depending on whether they're in the head or a non-head body
  * part. (Strictly speaking, this is not what "pleiotropic" really means -
  * but I couldn't resist using the word).
  */
 interface CytogeneticLocations {
+
 	// IN ALL BODY SEGMENTS:
 	// The instruction and parameter in the body plan program
 	static final int BODY_PLAN_INSTRUCTION = 0;

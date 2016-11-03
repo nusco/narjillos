@@ -24,7 +24,7 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 	protected Chromosome getChromosome() {
 		return chromosome;
 	}
-	
+
 	int getLength() {
 		final int ATROPHY_LENGTH = 29;
 		return getChromosome().getGene(LENGTH) <= ATROPHY_LENGTH ? 0 : chromosome.getGene(CytogeneticLocations.LENGTH);
@@ -32,7 +32,7 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 
 	int getThickness() {
 		final double MAX_THICKNESS = 50;
-		return (int)(getChromosome().getGene(THICKNESS) * (MAX_THICKNESS / 256)) + 1;
+		return (int) (getChromosome().getGene(THICKNESS) * (MAX_THICKNESS / 256)) + 1;
 	}
 
 	@Override

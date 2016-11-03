@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 
 public class BodyPartTest extends ConnectedOrganTest {
-	
+
 	private MovingOrgan parent;
-	
+
 	@Override
 	public ConnectedOrgan createConcreteOrgan(int length, int thickness) {
 		parent = new Head(new HeadParameters());
@@ -30,7 +30,7 @@ public class BodyPartTest extends ConnectedOrganTest {
 		head.growToAdultFormWithChildren();
 		organ1.growToAdultFormWithChildren();
 		organ2.growToAdultFormWithChildren();
-		
+
 		assertEquals(Vector.cartesian(20, 10), organ2.getEndPoint());
 	}
 
@@ -38,33 +38,33 @@ public class BodyPartTest extends ConnectedOrganTest {
 	public void startsAtItsParentsEndPoint() {
 		parent.updateGeometry();
 		getOrgan().updateGeometry();
-		
+
 		assertEquals(parent.getEndPoint(), getOrgan().getStartPoint());
 	}
-	
+
 	@Test
 	public void hasAnAbsoluteAngle() {
 		Head head = new Head(new HeadParameters());
 		ConnectedOrgan organ1 = new BodyPart(new BodyPartParameters(0, 0, head, 30));
 		Organ organ2 = new BodyPart(new BodyPartParameters(0, 0, organ1, -10));
-		
+
 		head.updateGeometry();
 		organ1.updateGeometry();
 		organ2.updateGeometry();
-		
+
 		assertEquals(20, organ2.getAbsoluteAngle(), 0);
 	}
-	
+
 	@Test
 	public void hasAnAmplitude() {
 		Head head = new Head(new HeadParameters());
 		BodyPartParameters bodyPartParameters = new BodyPartParameters(0, 0, head, -10);
 		bodyPartParameters.setAmplitude(42);
 		BodyPart organ = new BodyPart(bodyPartParameters);
-		
+
 		assertEquals(42, organ.getAmplitude(), 0);
 	}
-	
+
 	@Test
 	public void hasAFiberShiftedFromItsParent() {
 		HeadParameters parameters = new HeadParameters();
@@ -72,7 +72,7 @@ public class BodyPartTest extends ConnectedOrganTest {
 		parameters.setGreen(101);
 		parameters.setBlue(102);
 		Head head = new Head(parameters);
-		
+
 		BodyPartParameters bodyPartParameters = new BodyPartParameters(0, 0, head, -10);
 		bodyPartParameters.setRedShift(10);
 		bodyPartParameters.setGreenShift(20);
@@ -81,7 +81,7 @@ public class BodyPartTest extends ConnectedOrganTest {
 
 		assertEquals(new Fiber(110, 121, 132), organ.getFiber());
 	}
-	
+
 	@Test
 	public void hasACenterOfMass() {
 		Head head = new Head(new HeadParameters(10, 0));
@@ -89,9 +89,9 @@ public class BodyPartTest extends ConnectedOrganTest {
 		// uses the current angle, not the angle at rest
 		organ.setAngleToParent(45);
 		head.updateTree();
-		
+
 		organ.growToAdultFormWithChildren();
-		
+
 		final double lengthAt45Degrees = 7.07106;
 		double expectedX = head.getEndPoint().x + lengthAt45Degrees / 2;
 		double expectedY = head.getEndPoint().y + lengthAt45Degrees / 2;

@@ -8,12 +8,12 @@ import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * A segment of a body.
- * 
+ * <p>
  * Describes the geometry of the organ (length, thickness, mass, ...). It also
  * goes through the calculations needed to come up with angles, etc.
- * 
+ * <p>
  * It grows from a small minimum size at birth to adult size.
- * 
+ * <p>
  * This class is a micro-framework (sigh). In and by itself, it cannot change
  * state (apart from the growBy() method). Subclasses are supposed to override
  * calculateStartPoint() and calculateAbsoluteAngle(), and then call either
@@ -23,21 +23,32 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public abstract class Organ implements Bounded {
 
 	private final double adultLength;
+
 	private final int adultThickness;
+
 	private final double adultMass;
+
 	private final Fiber fiber;
+
 	private double length;
+
 	private double thickness;
 
 	// Caching - ugly, but has huge performance benefits. These will be updated
 	// at start, and in the update() methods.
 	// All volatile, to avoid too much synchronization.
 	private volatile double cachedAbsoluteAngle;
+
 	private volatile Vector cachedStartPoint;
+
 	private volatile Vector cachedVector;
+
 	private volatile Vector cachedEndPoint;
+
 	private volatile double cachedMass;
+
 	private volatile Vector cachedCenterOfMass;
+
 	private volatile Segment cachedSegment;
 
 	public Organ(int adultLength, int adultThickness, Fiber fiber) {
@@ -103,7 +114,7 @@ public abstract class Organ implements Bounded {
 		// Optimization: don't update the geometry here. Instead, let the
 		// client do it - it knows when that's needed.
 	}
-	
+
 	public boolean isFullyGrown() {
 		return getLength() >= adultLength && getThickness() >= adultThickness;
 	}
@@ -153,16 +164,17 @@ public abstract class Organ implements Bounded {
 	}
 
 	public String getVisualHash() {
-		int approximateAdultLength = (int)(getAdultLength() / 25);
-		int approximateAdultThickness = (int)(getAdultThickness() / 5);
+		int approximateAdultLength = (int) (getAdultLength() / 25);
+		int approximateAdultThickness = (int) (getAdultThickness() / 5);
 		return getFiber().getVisualHash() + "_" + approximateAdultLength + "_" + approximateAdultThickness;
 	}
-	
+
 	// The next two methods give subclasses a chance to change the geometry of
 	// the Organ. These are the only methods that can change the state of the
 	// Organ (apart from growBy(). Everything else in the organ will be
 	// calculated after these.
 	protected abstract Vector calculateStartPoint();
+
 	protected abstract double calculateAbsoluteAngle();
 
 	private Vector calculateVector() {

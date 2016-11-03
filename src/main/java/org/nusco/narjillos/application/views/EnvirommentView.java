@@ -25,10 +25,13 @@ import org.nusco.narjillos.experiment.environment.Environment;
 import org.nusco.narjillos.experiment.environment.EnvironmentEventListener;
 
 public class EnvirommentView {
-	
+
 	private final Viewport viewport;
+
 	private final Map<Thing, ThingView> thingsToViews = new LinkedHashMap<>();
+
 	private final AppState viewState;
+
 	private final BackgroundView backgroundView;
 
 	public EnvirommentView(Environment environment, Viewport viewport, AppState state) {
@@ -36,13 +39,14 @@ public class EnvirommentView {
 		this.viewState = state;
 
 		long size = environment.getSize();
-		
+
 		backgroundView = new BackgroundView(viewport, size);
 
 		for (Thing thing : environment.getThings(""))
 			addThingView(thing);
 
 		environment.addEventListener(new EnvironmentEventListener() {
+
 			@Override
 			public synchronized void added(Thing thing) {
 				addThingView(thing);
@@ -67,12 +71,12 @@ public class EnvirommentView {
 
 		if (!isLightOn)
 			return result;
-		
+
 		result.getChildren().add(getThingsGroup(isInfrared, areEffectsOn));
 
 		if (areEffectsOn)
 			setZoomLevelEffects(result);
-		
+
 		return result;
 	}
 

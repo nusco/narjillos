@@ -9,13 +9,19 @@ import org.nusco.narjillos.genomics.DNALog;
 public class Experiment {
 
 	private final String id;
+
 	private final Ecosystem ecosystem;
+
 	private final Chronometer ticksChronometer = new Chronometer();
+
 	private final NumGen numGen;
+
 	private long totalRunningTime = 0;
 
 	private transient DNALog dnaLog;
+
 	private transient HistoryLog historyLog;
+
 	private transient long lastRegisteredRunningTime;
 
 	public Experiment(long seed, Ecosystem ecosystem, String version) {

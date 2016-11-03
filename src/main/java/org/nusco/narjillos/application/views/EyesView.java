@@ -18,17 +18,25 @@ class EyesView implements ItemView {
 	private static final double MINIMUM_ZOOM_LEVEL = 0.15;
 
 	private final Narjillo narjillo;
+
 	private final Circle eye1;
+
 	private final Circle eye2;
+
 	private final Circle pupil1;
+
 	private final Circle pupil2;
+
 	private final Group group = new Group();
 
 	private final double eyeCenteringTranslation;
+
 	private final double pupilTranslation;
 
 	private final double eyeRed;
+
 	private final double eyeGreen;
+
 	private final double eyeBlue;
 
 	public EyesView(Narjillo narjillo) {
@@ -38,12 +46,12 @@ class EyesView implements ItemView {
 		this.eyeRed = fiber.getPercentOfRed();
 		this.eyeGreen = fiber.getPercentOfGreen();
 		this.eyeBlue = fiber.getPercentOfBlue();
-		
+
 		// "Random qualities": we want something that looks random across narjillos,
 		// but stays the same for the same narjillo even after saving and reloading
 		double someRandomQuality = narjillo.getBody().getAdultMass();
 		double someOtherRandomQuality = narjillo.getBody().getEnergyToChildren();
-		
+
 		this.eye1 = new Circle(someRandomQuality % 5 + 7);
 		this.eye2 = new Circle(someOtherRandomQuality % 5 + 7);
 		this.pupil1 = new Circle(Math.min(eye1.getRadius() - 2, someRandomQuality % 6 + 1));
@@ -60,13 +68,13 @@ class EyesView implements ItemView {
 	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 		if (zoomLevel < MINIMUM_ZOOM_LEVEL || !effectsOn)
 			return null;
-		
+
 		group.getChildren().clear();
-		
+
 		Color eyeColor = toEyeColor(zoomLevel, infraredOn);
 		eye1.setFill(eyeColor);
 		eye2.setFill(eyeColor);
-		
+
 		group.getChildren().add(eye1);
 		group.getChildren().add(eye2);
 
@@ -82,7 +90,7 @@ class EyesView implements ItemView {
 		} catch (ZeroVectorAngleException e) {
 			pupilDirection = 0;
 		}
-		
+
 		pupil1.getTransforms().clear();
 		pupil1.getTransforms().add(new Translate(eyeCenteringTranslation - eye1.getRadius() + 1, pupilTranslation));
 		pupil1.getTransforms().add(new Rotate(pupilDirection, 0, -pupilTranslation));
@@ -93,18 +101,18 @@ class EyesView implements ItemView {
 
 		group.getChildren().add(pupil1);
 		group.getChildren().add(pupil2);
-		
+
 		group.getTransforms().clear();
 		Vector position = narjillo.getPosition();
 		group.getTransforms().add(new Translate(position.x, position.y));
 		group.getTransforms().add(new Rotate(eyesDirection));
-		
+
 		return group;
 	}
 
 	@Override
 	public boolean isVisible(Viewport viewport) {
-		double margin = Math.max(eye1.getRadius() *2, eye2.getRadius() * 2);
+		double margin = Math.max(eye1.getRadius() * 2, eye2.getRadius() * 2);
 		return viewport.isVisible(narjillo.getPosition(), margin);
 	}
 

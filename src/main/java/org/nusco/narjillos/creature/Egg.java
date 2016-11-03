@@ -19,14 +19,21 @@ public class Egg implements Thing {
 	private static final int NOT_HATCHED_YET = -1;
 
 	private final DNA dna;
+
 	private final int incubationTime;
+
 	private int age = 0;
+
 	private Vector position;
+
 	private Vector velocity;
+
 	private double energy;
+
 	private int hatchAge = NOT_HATCHED_YET;
+
 	private transient Narjillo hatchedNarjillo = null;
-	
+
 	public Egg(DNA dna, Vector position, Vector velocity, double energy, NumGen numGen) {
 		this.dna = dna;
 		this.incubationTime = calculateIncubationTime(numGen);
@@ -44,7 +51,7 @@ public class Egg implements Thing {
 			velocity = velocity.by(Configuration.EGG_VELOCITY_DECAY);
 		} else
 			velocity = Vector.ZERO;
-		
+
 		return new Segment(position, velocity);
 	}
 
@@ -56,7 +63,6 @@ public class Egg implements Thing {
 		if (age < incubationTime)
 			return false;
 
-		
 		hatchAge = age;
 		double angle = numGen.nextInt() % 360;
 		hatchedNarjillo = new Narjillo(dna, getPosition(), angle, new LifeFormEnergy(energy, Configuration.CREATURE_MAX_LIFESPAN));
@@ -82,7 +88,7 @@ public class Egg implements Thing {
 	public Vector getPosition() {
 		return position;
 	}
-	
+
 	@Override
 	public Vector getCenter() {
 		return getPosition();
@@ -109,7 +115,7 @@ public class Egg implements Thing {
 	public double getDecay() {
 		if (!hasHatched())
 			return 0;
-		
+
 		return Math.min(1, Math.max(0, age - hatchAge) / 100.0);
 	}
 

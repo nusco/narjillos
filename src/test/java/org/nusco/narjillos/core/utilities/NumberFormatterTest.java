@@ -6,11 +6,12 @@ import org.junit.Test;
 import org.nusco.narjillos.core.utilities.NumberFormatter;
 
 public class NumberFormatterTest {
+
 	@Test
 	public void formatsNumbersToNiceStrings() {
 		assertEquals("0", NumberFormatter.format(0));
 		assertEquals("999", NumberFormatter.format(999));
-		
+
 		assertEquals("1K", NumberFormatter.format(1_000));
 		assertEquals("1.2K", NumberFormatter.format(1_200));
 		assertEquals("1.23K", NumberFormatter.format(1_234));

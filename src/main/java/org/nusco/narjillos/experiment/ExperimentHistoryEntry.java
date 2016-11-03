@@ -14,26 +14,41 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
 public class ExperimentHistoryEntry {
 
 	public final long ticks;
+
 	public final long runningTime;
+
 	public final int numberOfNarjillos;
+
 	public final int numberOfFoodPellets;
+
 	public final double oxygen;
+
 	public final double hydrogen;
+
 	public final double nitrogen;
+
 	public final int o2h;
+
 	public final int o2n;
+
 	public final int h2o;
+
 	public final int h2n;
+
 	public final int n2o;
+
 	public final int n2h;
+
 	public final int z2o;
+
 	public final int z2h;
+
 	public final int z2n;
 
 	public ExperimentHistoryEntry(long ticks, long runningTime,
-				int numberOfNarjillos, int numberOfFoodPellets,
-				double oxygen, double hydrogen, double nitrogen,
-				int o2h, int o2n, int h2o, int h2n, int n2o, int n2h, int z2o, int z2h, int z2n) {
+		int numberOfNarjillos, int numberOfFoodPellets,
+		double oxygen, double hydrogen, double nitrogen,
+		int o2h, int o2n, int h2o, int h2n, int n2o, int n2h, int z2o, int z2h, int z2n) {
 		this.ticks = ticks;
 		this.runningTime = runningTime;
 		this.numberOfNarjillos = numberOfNarjillos;
@@ -51,7 +66,7 @@ public class ExperimentHistoryEntry {
 		this.z2h = z2h;
 		this.z2n = z2n;
 	}
-	
+
 	public ExperimentHistoryEntry(Experiment experiment) {
 		this.ticks = experiment.getTicksChronometer().getTotalTicks();
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
@@ -92,39 +107,39 @@ public class ExperimentHistoryEntry {
 		if (Double.doubleToLongBits(nitrogen) != Double.doubleToLongBits(other.nitrogen))
 			return false;
 		if (h2n != other.h2n || h2o != other.h2o || n2h != other.n2h || n2o != other.n2o || o2h != other.o2h || o2n != other.o2n
-				|| z2h != other.z2h || z2n != other.z2n || z2o != other.z2o)
+			|| z2h != other.z2h || z2n != other.z2n || z2o != other.z2o)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return 	"" +
-				ticks + "," +
-				runningTime + "," +
-				numberOfNarjillos + "," +
-				numberOfFoodPellets + "," +
-				oxygen + "," +
-				hydrogen + "," +
-				nitrogen + "," +
-				o2h + "," +
-				o2n + "," +
-				h2o + "," +
-				h2n + "," +
-				n2o + "," +
-				n2h + "," +
-				z2o + "," +
-				z2h + "," +
-				z2n;
+		return "" +
+			ticks + "," +
+			runningTime + "," +
+			numberOfNarjillos + "," +
+			numberOfFoodPellets + "," +
+			oxygen + "," +
+			hydrogen + "," +
+			nitrogen + "," +
+			o2h + "," +
+			o2n + "," +
+			h2o + "," +
+			h2n + "," +
+			n2o + "," +
+			n2h + "," +
+			z2o + "," +
+			z2h + "," +
+			z2n;
 	}
-	
+
 	public static String toCsvHeader() {
-		return 	"Ticks,RunningTime," +
-				"NumberOfNarjillos,NumberOfFoodPellets," +
-				"Oxygen,Hydrogen,Nitrogen," +
-				"O2H,O2N,H2O,H2N,N2O,N2H,Z2O,Z2H,Z2N";
+		return "Ticks,RunningTime," +
+			"NumberOfNarjillos,NumberOfFoodPellets," +
+			"Oxygen,Hydrogen,Nitrogen," +
+			"O2H,O2N,H2O,H2N,N2O,N2H,Z2O,Z2H,Z2N";
 	}
-	
+
 	private Map<String, Integer> getChemicalCycles(Ecosystem ecosystem) {
 		Map<String, Integer> result = new LinkedHashMap<>();
 

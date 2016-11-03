@@ -11,7 +11,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public class Viscosity {
 
 	private static final double PHYSICS_VISCOSITY_VELOCITY_CLIPPING_VALUE = Configuration.PHYSICS_VISCOSITY_KICKIN_VELOCITY
-			+ FastMath.LOG_MAX;
+		+ FastMath.LOG_MAX;
 
 	public static double limit(double velocity) {
 		velocity = Math.min(Viscosity.PHYSICS_VISCOSITY_VELOCITY_CLIPPING_VALUE, velocity);
@@ -20,7 +20,7 @@ public class Viscosity {
 			return velocity;
 
 		return Configuration.PHYSICS_VISCOSITY_KICKIN_VELOCITY + 1
-				+ FastMath.log(velocity - Configuration.PHYSICS_VISCOSITY_KICKIN_VELOCITY);
+			+ FastMath.log(velocity - Configuration.PHYSICS_VISCOSITY_KICKIN_VELOCITY);
 	}
 
 	public static double getMaxVelocity() {

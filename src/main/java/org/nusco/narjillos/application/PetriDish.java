@@ -21,10 +21,15 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
 public class PetriDish implements Dish {
 
 	private static boolean persistent = false;
+
 	private final Experiment experiment;
+
 	private ExperimentLog experimentLog;
+
 	private volatile boolean isSaving = false;
+
 	private volatile boolean isTerminated = false;
+
 	private volatile long lastSaveTime = System.currentTimeMillis();
 
 	public PetriDish(String version, CommandLineOptions options, int size) {
@@ -36,7 +41,7 @@ public class PetriDish implements Dish {
 				experimentLog.save(experiment);
 		}
 		reportPersistenceOptions(options);
-		
+
 		System.out.println("Ticks:\tNarji:\tFood:");
 	}
 
@@ -135,7 +140,7 @@ public class PetriDish implements Dish {
 
 		experiment.saveHistoryEntry();
 		System.out.println(getReport());
-		
+
 		if (!experiment.thereAreSurvivors()) {
 			// extinction!
 			isTerminated = true;
@@ -151,9 +156,9 @@ public class PetriDish implements Dish {
 	}
 
 	private String getReport() {
-		return 	NumberFormatter.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
-				experiment.getEcosystem().getNumberOfNarjillos() + "\t" +
-				experiment.getEcosystem().getNumberOfFoodPellets();
+		return NumberFormatter.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
+			experiment.getEcosystem().getNumberOfNarjillos() + "\t" +
+			experiment.getEcosystem().getNumberOfFoodPellets();
 	}
 
 	private void save() {

@@ -11,7 +11,7 @@ public class CodonTest {
 		Codon codon = new Codon(10, 11, 12);
 
 		assertEquals(3, Codon.SIZE);
-		
+
 		assertEquals(10, codon.getGene(0));
 		assertEquals(11, codon.getGene(1));
 		assertEquals(12, codon.getGene(2));

@@ -15,16 +15,16 @@ public class ExperimentLog extends PersistentInformation {
 	}
 
 	public void save(Experiment experiment) {
-    	Statement statement = createStatement();
-	    try {
-	    	String sql = "INSERT INTO EXPERIMENT (JSON) VALUES ('" + JSON.toJson(experiment, Experiment.class) + "');";
+		Statement statement = createStatement();
+		try {
+			String sql = "INSERT INTO EXPERIMENT (JSON) VALUES ('" + JSON.toJson(experiment, Experiment.class) + "');";
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			close(statement);
 		}
-	    cleanOldExperiments();
+		cleanOldExperiments();
 	}
 
 	public Experiment load() {
@@ -35,8 +35,8 @@ public class ExperimentLog extends PersistentInformation {
 		Statement statement = createStatement();
 		try {
 			String sql = "CREATE TABLE IF NOT EXISTS EXPERIMENT "
-					+ "(ID        INTEGER	PRIMARY KEY AUTOINCREMENT,"
-					+ " JSON      BLOB      NOT NULL)";
+				+ "(ID        INTEGER	PRIMARY KEY AUTOINCREMENT,"
+				+ " JSON      BLOB      NOT NULL)";
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

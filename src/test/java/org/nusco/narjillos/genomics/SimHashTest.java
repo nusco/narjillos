@@ -12,22 +12,22 @@ public class SimHashTest {
 		int gene1 = 0b00000000;
 		int gene2 = 0b00001111;
 		int gene3 = 0b11111111;
-		
+
 		Codon[] codons = new Codon[] {
-				new Codon(gene1, gene1, gene2),
-				new Codon(gene1, gene2, gene3),
-				new Codon(gene2, gene3, gene3),
+			new Codon(gene1, gene1, gene2),
+			new Codon(gene1, gene2, gene3),
+			new Codon(gene2, gene3, gene3),
 		};
-		
+
 		int[] expected = new int[] {
-				-3, -3, -3, -3, -1, -1, -1, -1,
-				-1, -1, -1, -1, 1, 1, 1, 1,
-				1, 1, 1, 1, 3, 3, 3, 3
+			-3, -3, -3, -3, -1, -1, -1, -1,
+			-1, -1, -1, -1, 1, 1, 1, 1,
+			1, 1, 1, 1, 3, 3, 3, 3
 		};
-		
+
 		assertArrayEquals(expected, SimHash.calculateBitDensity(codons));
 	}
-	
+
 	@Test
 	public void calculatesSimHash() {
 		int gene1 = 0b00000000;
@@ -35,15 +35,15 @@ public class SimHashTest {
 		int gene3 = 0b11111111;
 
 		DNA dna = new DNA(1, new Integer[] {
-				gene1, gene1, gene2,
-				gene1, gene2, gene3,
-				gene2, gene3, gene3
+			gene1, gene1, gene2,
+			gene1, gene2, gene3,
+			gene2, gene3, gene3
 		}, DNA.NO_PARENT);
-		
+
 		int[] expected = new int[] {
-				0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 1, 1, 1, 1,
-				1, 1, 1, 1, 1, 1, 1, 1
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 1, 1, 1, 1,
+			1, 1, 1, 1, 1, 1, 1, 1
 		};
 		assertArrayEquals(expected, SimHash.calculateSimHash(dna));
 	}
@@ -54,10 +54,10 @@ public class SimHashTest {
 		int gene2 = 0b00001111;
 		int gene3 = 0b11111111;
 
-		DNA dna1 = new DNA(1, new Integer[] {gene1, gene1, gene1}, DNA.NO_PARENT);
-		DNA dna2 = new DNA(1, new Integer[] {gene1, gene1, gene2}, DNA.NO_PARENT);
-		DNA dna3 = new DNA(1, new Integer[] {gene3, gene3, gene3}, DNA.NO_PARENT);
-		
+		DNA dna1 = new DNA(1, new Integer[] { gene1, gene1, gene1 }, DNA.NO_PARENT);
+		DNA dna2 = new DNA(1, new Integer[] { gene1, gene1, gene2 }, DNA.NO_PARENT);
+		DNA dna3 = new DNA(1, new Integer[] { gene3, gene3, gene3 }, DNA.NO_PARENT);
+
 		assertEquals(0, dna1.getSimHashedDistanceFrom(dna1));
 		assertEquals(4, dna1.getSimHashedDistanceFrom(dna2));
 		assertEquals(24, dna1.getSimHashedDistanceFrom(dna3));

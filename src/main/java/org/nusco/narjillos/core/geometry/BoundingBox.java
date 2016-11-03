@@ -5,8 +5,11 @@ import java.util.Set;
 public class BoundingBox {
 
 	public final double left;
+
 	public final double right;
+
 	public final double bottom;
+
 	public final double top;
 
 	public BoundingBox(Segment segment) {
@@ -30,7 +33,7 @@ public class BoundingBox {
 
 	@Override
 	public int hashCode() {
-		return (int)(bottom + top);
+		return (int) (bottom + top);
 	}
 
 	@Override
@@ -50,7 +53,7 @@ public class BoundingBox {
 	public static BoundingBox union(Set<BoundingBox> boundingBoxes) {
 		if (boundingBoxes.isEmpty())
 			throw new RuntimeException("Empty bounding box union");
-		
+
 		double left = Double.POSITIVE_INFINITY;
 		double right = Double.NEGATIVE_INFINITY;
 		double bottom = Double.POSITIVE_INFINITY;
@@ -62,7 +65,7 @@ public class BoundingBox {
 			bottom = Math.min(bottom, boundingBox.bottom);
 			top = Math.max(top, boundingBox.top);
 		}
-		
+
 		return new BoundingBox(left, right, bottom, top);
 	}
 }

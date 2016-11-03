@@ -11,12 +11,12 @@ public class JSONExperimentSerializationTest {
 	@Test
 	public void serializesAndDeserializesExperiment() {
 		Experiment experiment = new SimpleExperiment();
-		
+
 		for (int i = 0; i < 10; i++) {
 			experiment.tick();
 			experiment.saveHistoryEntry();
 		}
-		
+
 		String json = JSON.toJson(experiment, Experiment.class);
 		Experiment deserialized = JSON.fromJson(json, Experiment.class);
 

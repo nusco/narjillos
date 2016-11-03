@@ -10,23 +10,25 @@ import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * The physics of translations.
- * 
+ * <p>
  * Here are the formulas it uses. See RotationsPhysicsEngine for details.
- * 
+ * <p>
  * Linear Momentum (for the body segments):
  * linear_momentum = mass * linear_velocity (in [pixelgrams points / tick])
- * 
+ * <p>
  * Linear Momentum (for the whole body):
  * total_linear_velocity = total_linear_momentum / mass (in [points / tick])
- * 
+ * <p>
  * translation_energy = mass * linear_velocity^2 / 2;
  */
 public class TranslationsPhysicsEngine {
 
 	private final double bodyMass;
+
 	private final List<Vector> linearMomenta = new LinkedList<>();
+
 	private double translationEnergy = 0;
-	
+
 	public TranslationsPhysicsEngine(double bodyMass) {
 		this.bodyMass = bodyMass;
 	}
@@ -44,7 +46,7 @@ public class TranslationsPhysicsEngine {
 
 		if (length == 0)
 			return result;
-		
+
 		try {
 			return Vector.polar(result.getAngle(), Viscosity.limit(length));
 		} catch (ZeroVectorAngleException e) {

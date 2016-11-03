@@ -9,14 +9,16 @@ import org.nusco.narjillos.core.geometry.Vector;
 abstract class RoundObjectView implements ItemView {
 
 	private final Circle shape;
+
 	private final double radius;
+
 	private Vector position = Vector.ZERO;
 
 	public RoundObjectView(double radius) {
 		this.shape = new Circle(radius);
 		this.radius = radius;
 	}
-	
+
 	protected final Circle getShape() {
 		return shape;
 	}

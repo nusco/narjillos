@@ -14,7 +14,7 @@ public abstract class ConnectedOrganTest extends OrganTest {
 
 	@Test
 	public abstract void hasAParent();
-	
+
 	@Test
 	public void hasAnEmptyListOfChildrenByDefault() {
 		assertEquals(Collections.EMPTY_LIST, getOrgan().getChildren());
@@ -29,15 +29,15 @@ public abstract class ConnectedOrganTest extends OrganTest {
 		List<ConnectedOrgan> expected = new LinkedList<>();
 		expected.add(child1);
 		expected.add(child2);
-		
+
 		assertEquals(expected, getOrgan().getChildren());
 	}
-	
+
 	@Test
 	public void canBeALeaf() {
 		assertTrue(getOrgan().isLeaf());
 	}
-	
+
 	@Test
 	public void canBeANonLeaf() {
 		ConnectedOrgan organ = getOrgan();
@@ -47,5 +47,5 @@ public abstract class ConnectedOrganTest extends OrganTest {
 
 	protected ConnectedOrgan getOrgan() {
 		return (ConnectedOrgan) organ;
-	}	
+	}
 }

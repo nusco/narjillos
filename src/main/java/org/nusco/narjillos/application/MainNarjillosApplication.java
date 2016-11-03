@@ -53,11 +53,12 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
 		CommandLineOptions options = CommandLineOptions.parse(true, arguments);
-		
+
 		if (options == null)
 			System.exit(1);
 
 		return new StoppableThread() {
+
 			public void run() {
 
 				String applicationVersion = Version.read();
@@ -79,11 +80,15 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	@Override
 	protected StoppableThread createViewThread(final Group root) {
 		return new StoppableThread() {
+
 			private final Chronometer framesChronometer = new Chronometer();
+
 			private volatile boolean renderingFinished = false;
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
+
 			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
+
 			private final StatusBarView statusBarView = new StatusBarView();
 
 			@Override
@@ -96,6 +101,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 					ecosystemView.tick();
 
 					Platform.runLater(new Runnable() {
+
 						@Override
 						public void run() {
 							update(root);
@@ -118,8 +124,9 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				root.getChildren().add(ecosystemView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
-				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(), getDishStatistics(), state.getSpeed(), state.getEffects(),
-						getTracker().getStatus(), isBusy());
+				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(),
+					getDishStatistics(), state.getSpeed(), state.getEffects(),
+					getTracker().getStatus(), isBusy());
 				root.getChildren().add(statusInfo);
 			}
 		};
@@ -127,6 +134,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 	private void registerKeyboardHandlers(final Scene scene) {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
 			public void handle(final KeyEvent keyEvent) {
 				if (keyEvent.getCode() == KeyCode.RIGHT)
 					panViewport(PAN_SPEED, 0, keyEvent);
@@ -154,12 +162,15 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				getTracker().stopTracking();
 				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
 				event.consume();
-			};
+			}
+
+			;
 		});
 	}
 
 	private void registerMouseClickHandlers(final Scene scene) {
 		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
 			public void handle(MouseEvent event) {
 				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
 				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
@@ -182,6 +193,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 		final double[] mouseY = new double[] { 0 };
 
 		scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+
 			@Override
 			public void handle(MouseEvent event) {
 				isDragging[0] = true;
@@ -190,12 +202,14 @@ public class MainNarjillosApplication extends NarjillosApplication {
 			}
 		});
 		scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
 			@Override
 			public void handle(MouseEvent event) {
 				isDragging[0] = false;
 			}
 		});
 		scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+
 			@Override
 			public void handle(MouseEvent event) {
 				getTracker().stopTracking();
@@ -212,6 +226,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 		// Prevent scrolling at start until the eggs are visible, to avoid
 		// confusing the user who might be inadvertently scrolling out.
 		new Thread(new Runnable() {
+
 			@Override
 			public void run() {
 				waitUntilViewportHasZoomedToEggs();
@@ -229,6 +244,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 			private EventHandler<ScrollEvent> createMouseScrollHandler() {
 				return new EventHandler<ScrollEvent>() {
+
 					@Override
 					public void handle(ScrollEvent event) {
 						if (event.getDeltaY() <= 0)
@@ -248,12 +264,14 @@ public class MainNarjillosApplication extends NarjillosApplication {
 		final double[] initialZoomLevel = new double[] { 0 };
 
 		scene.setOnZoomStarted(new EventHandler<ZoomEvent>() {
+
 			@Override
 			public void handle(ZoomEvent event) {
 				initialZoomLevel[0] = getViewport().getZoomLevel();
 			}
 		});
 		scene.setOnZoom(new EventHandler<ZoomEvent>() {
+
 			@Override
 			public void handle(ZoomEvent event) {
 				double zoomFactor = event.getTotalZoomFactor();

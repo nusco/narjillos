@@ -7,7 +7,9 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public class FoodPellet implements Thing {
 
 	public Vector position;
+
 	private final Energy energy = new LifeFormEnergy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
+
 	private Thing interactingThing;
 
 	public void setPosition(Vector position) {
@@ -18,7 +20,7 @@ public class FoodPellet implements Thing {
 	public Vector getPosition() {
 		return position;
 	}
-	
+
 	@Override
 	public Vector getCenter() {
 		return getPosition();
@@ -47,7 +49,7 @@ public class FoodPellet implements Thing {
 	public Thing getLastInteractingThing() {
 		return interactingThing;
 	}
-	
+
 	public void setInteractingThing(Thing interactingThing) {
 		this.interactingThing = interactingThing;
 	}

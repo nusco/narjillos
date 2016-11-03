@@ -32,28 +32,28 @@ public class JSONBodySerializationTest {
 		headParameters.setEggVelocity(30);
 		headParameters.setEggInterval(40);
 		Head head = new Head(headParameters);
-		
+
 		BodyPartParameters bodyPartParameters1 = new BodyPartParameters(11, 12, head, 15);
 		bodyPartParameters1.setRedShift(130);
 		bodyPartParameters1.setGreenShift(131);
 		bodyPartParameters1.setBlueShift(132);
 		BodyPart child1 = new BodyPart(bodyPartParameters1);
 		head.addChild(child1);
-		
+
 		BodyPartParameters bodyPartParameters2_1 = new BodyPartParameters(21, 22, child1, 25);
 		bodyPartParameters2_1.setRedShift(230);
 		bodyPartParameters2_1.setGreenShift(231);
 		bodyPartParameters2_1.setBlueShift(232);
 		BodyPart child2_1 = new BodyPart(bodyPartParameters2_1);
 		child1.addChild(child2_1);
-		
+
 		BodyPartParameters bodyPartParameters2_2 = new BodyPartParameters(31, 32, child1, 35);
 		bodyPartParameters2_2.setRedShift(330);
 		bodyPartParameters2_2.setGreenShift(331);
 		bodyPartParameters2_2.setBlueShift(332);
 		BodyPart child2_2 = new BodyPart(bodyPartParameters2_2);
 		child1.addChild(child2_2);
-		
+
 		Body body = new Body(head);
 		body.forcePosition(Vector.cartesian(100, 200), 90);
 
@@ -63,13 +63,13 @@ public class JSONBodySerializationTest {
 		// everything still works after ticking
 		body.tick(Vector.polar(10, 1));
 		deserialized.tick(Vector.polar(10, 1));
-		
+
 		assertEquals(body.getStartPoint(), deserialized.getStartPoint());
 		assertEquals(body.getMass(), deserialized.getMass(), 0.0);
 		assertEquals(body.getRedMass(), deserialized.getRedMass(), 0.0);
 		assertEquals(body.getGreenMass(), deserialized.getGreenMass(), 0.0);
 		assertEquals(body.getBlueMass(), deserialized.getBlueMass(), 0.0);
-		
+
 		List<ConnectedOrgan> organs = body.getOrgans();
 		List<ConnectedOrgan> deserializedOrgans = deserialized.getOrgans();
 		for (int i = 0; i < organs.size(); i++)

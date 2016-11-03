@@ -6,14 +6,14 @@ import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
 
 public class StatsTest {
-	
+
 	@Test
 	public void extractsDataFromExperiment() {
 		Experiment experiment = new SimpleExperiment();
 		for (int i = 0; i < 1000; i++)
 			experiment.tick();
 		ExperimentHistoryEntry stat = new ExperimentHistoryEntry(experiment);
-		
+
 		assertEquals(1000, stat.ticks);
 		assertEquals(experiment.getTotalRunningTimeInSeconds(), stat.runningTime);
 		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), stat.numberOfNarjillos);

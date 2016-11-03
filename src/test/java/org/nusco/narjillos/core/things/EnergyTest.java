@@ -10,9 +10,13 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public class EnergyTest {
 
 	final double initialValue = 10;
+
 	final double lifespan = 100;
+
 	Energy energy = new LifeFormEnergy(initialValue, lifespan);
+
 	Energy biggerMassEnergy = new LifeFormEnergy(initialValue * 2, lifespan);
+
 	private Energy otherEnergy = Energy.INFINITE;
 
 	@Test
@@ -88,7 +92,7 @@ public class EnergyTest {
 	@Test
 	public void depletesNaturallyDuringItsLifespan() {
 		fillToTheMax();
-		
+
 		for (int i = 0; i < lifespan - 1; i++)
 			energy.tick(0);
 
@@ -110,7 +114,7 @@ public class EnergyTest {
 	public void canBeDamaged() {
 		double value = energy.getValue();
 		energy.damage();
-		
+
 		assertTrue(energy.getValue() < value);
 
 		for (int i = 0; i < 100; i++)

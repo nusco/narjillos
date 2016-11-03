@@ -18,15 +18,21 @@ import org.nusco.narjillos.experiment.environment.EnvironmentEventListener;
 import org.nusco.narjillos.genomics.DNA;
 
 public class EcosystemTest {
-	
+
 	Ecosystem ecosystem;
+
 	FoodPellet foodPellet1;
+
 	FoodPellet foodPellet2;
+
 	FoodPellet foodPellet3;
+
 	Narjillo narjillo1;
+
 	Narjillo narjillo2;
+
 	NumGen numGen = new NumGen(1234);
-	
+
 	@Before
 	public void initialize() {
 		ecosystem = new Ecosystem(1000, false);
@@ -57,7 +63,7 @@ public class EcosystemTest {
 	@Test
 	public void returnsAllTheThings() {
 		Set<Thing> things = ecosystem.getThings("");
-		
+
 		assertEquals(5, things.size());
 		assertTrue(things.contains(narjillo1));
 		assertTrue(things.contains(foodPellet1));
@@ -66,7 +72,7 @@ public class EcosystemTest {
 	@Test
 	public void returnsAllNarjillos() {
 		Set<Thing> things = ecosystem.getThings("narjillo");
-		
+
 		assertEquals(2, things.size());
 		assertTrue(things.contains(narjillo1));
 	}
@@ -74,14 +80,14 @@ public class EcosystemTest {
 	@Test
 	public void returnsASubsetOfThings() {
 		Set<Thing> things = ecosystem.getThings("food_pellet");
-		
+
 		assertEquals(3, things.size());
 		assertTrue(things.contains(foodPellet1));
 	}
-	
+
 	@Test
 	public void sendsEventsWhenAddingThings() {
-		final boolean[] eventFired = {false};
+		final boolean[] eventFired = { false };
 		ecosystem.addEventListener(new EnvironmentEventListener() {
 
 			@Override
@@ -93,11 +99,11 @@ public class EcosystemTest {
 			public void removed(Thing thing) {
 			}
 		});
-		
+
 		ecosystem.spawnFood(Vector.ZERO);
 		assertTrue(eventFired[0]);
 	}
-	
+
 	@Test
 	public void findsTheClosestFoodToAGivenNarjillo() {
 		assertEquals(foodPellet1.getPosition(), ecosystem.findClosestFood(narjillo1));

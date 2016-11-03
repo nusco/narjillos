@@ -16,7 +16,7 @@ import org.nusco.narjillos.experiment.SimpleExperiment;
 public class PersistentHistoryLogTest {
 
 	private PersistentHistoryLog historyLog;
-	
+
 	@Before
 	public void createTestDababase() {
 		historyLog = new PersistentHistoryLog("123-TESTING");
@@ -27,19 +27,19 @@ public class PersistentHistoryLogTest {
 		historyLog.close();
 		historyLog.delete();
 	}
-	
+
 	@Test
 	public void doesNotRaiseAnErrorIfConnectingToTheSameDatabaseFromMultiplePlaces() {
 		PersistentHistoryLog logWithAnotherConnectionToTheSameDb = new PersistentHistoryLog("123-TESTING");
 		logWithAnotherConnectionToTheSameDb.close();
 	}
-	
+
 	@Test
 	public void savesAndLoadsEntries() {
 		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
 
 		Experiment experiment = new SimpleExperiment();
-		
+
 		for (int i = 0; i < 300; i++)
 			experiment.tick();
 		historyLog.saveEntry(experiment);
@@ -52,7 +52,7 @@ public class PersistentHistoryLogTest {
 		assertNotNull(latestStats);
 		assertEquals(new ExperimentHistoryEntry(experiment), latestStats);
 	}
-	
+
 	@Test
 	public void silentlySkipsWritingIfAnEntryIsAlreadyInTheDatabase() {
 		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
@@ -71,7 +71,7 @@ public class PersistentHistoryLogTest {
 
 		assertEquals(2, stats.size());
 	}
-	
+
 	@Test
 	public void returnsNullIfThereAreNoEntriesInTheDatabase() {
 		PersistentHistoryLog unknownDatabaseNameLog = new PersistentHistoryLog("unknown_experiment");

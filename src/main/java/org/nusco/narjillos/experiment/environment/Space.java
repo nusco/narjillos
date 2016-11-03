@@ -18,9 +18,11 @@ class Space {
 	private static final int SPACE_AREAS_PER_EDGE = 100;
 
 	private final double areaSize;
+
 	private final Set<Thing>[][] areas;
 
 	private final Set<Thing> allTheThings = new LinkedHashSet<>();
+
 	private final Map<String, Integer> countsByLabel = new HashMap<>();
 
 	// There is no visibility to/from outer space. The first would be
@@ -108,7 +110,8 @@ class Space {
 		Set<Thing> collidedFoodPellets = new LinkedHashSet<>();
 
 		getNearbyNeighbors(movement.getStartPoint(), label).stream()
-			.filter((neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
+			.filter(
+				(neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
 			.forEach((neighbor) -> {
 				collidedFoodPellets.add(neighbor);
 			});

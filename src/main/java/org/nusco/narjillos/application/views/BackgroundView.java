@@ -18,26 +18,38 @@ import org.nusco.narjillos.application.utilities.Viewport;
 /**
  * The background. It can be different colors depending on light conditions and
  * zoom level.
- * 
+ * <p>
  * This background also puts speckles in the petri dish's liquid, to give a
  * sense of the current speed and direction, especially when tracking things.
  */
 public class BackgroundView {
 
 	private static final double NORMAL_SPECKLE_RADIUS = 2;
+
 	private static final double INFRARED_SPECKLE_RADIUS = 2.5;
+
 	private static final Color BACKGROUND_COLOR = Color.ANTIQUEWHITE;
+
 	private static final Color INFRARED_BACKGROUND_COLOR = Color.DARKGRAY.darker();
+
 	private static final int TILE_SIZE = 800;
+
 	private static final double MINIMUM_ZOOM_LEVEL_TO_SEE_SPECS = 0.20;
+
 	private static final Color SPECKLE_COLOR = Color.ANTIQUEWHITE.darker();
+
 	private static final int SPECKLES_PER_TILE = 7;
 
 	private final Viewport viewport;
+
 	private final Shape darkBackground;
+
 	private final Shape background;
+
 	private final Shape infraredBackground;
+
 	private final Shape emptyBackground;
+
 	private final Shape infraredEmptyBackground;
 
 	public BackgroundView(Viewport viewport, long ecosystemSize) {

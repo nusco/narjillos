@@ -18,15 +18,15 @@ class HeadBuilder extends ConcreteOrganBuilder {
 	public HeadBuilder(Chromosome chromosome) {
 		super(chromosome);
 	}
-	
+
 	int getRed() {
 		return getChromosome().getGene(RED);
 	}
-	
+
 	int getGreen() {
 		return getChromosome().getGene(GREEN);
 	}
-	
+
 	int getBlue() {
 		return getChromosome().getGene(BLUE);
 	}

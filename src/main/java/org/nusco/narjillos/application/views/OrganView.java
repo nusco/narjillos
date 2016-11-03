@@ -22,25 +22,37 @@ import org.nusco.narjillos.creature.body.Fiber;
 public class OrganView implements ItemView {
 
 	private static final double MAX_OVERLAP = 7;
+
 	private static final double MIN_CIRCLE_RADIUS = 4;
 
 	private static final double VERY_LOW_MAGNIFICATION = 0.003;
+
 	private static final double LOW_MAGNIFICATION = 0.015;
+
 	private static final double MEDIUM_MAGNIFICATION = 0.025;
+
 	private static final double HIGH_MAGNIFICATION = 0.040;
+
 	private static final double VERY_HIGH_MAGNIFICATION = 0.14;
 
 	private static final double MOTION_BLUR_DISTANCE = 0.1;
+
 	private static final int MOTION_BLUR_THRESHOLD = 10;
+
 	private static final int MOTION_BLUR_INTENSITY = 2;
 
 	private final Narjillo narjillo;
+
 	private final ConnectedOrgan organ;
+
 	private final Color baseColor;
 
 	private final Rectangle segment;
+
 	private final boolean hasJoint;
+
 	private final Circle joint;
+
 	Group group = new Group();
 
 	private Segment previousOrganPosition;
@@ -52,13 +64,13 @@ public class OrganView implements ItemView {
 		baseColor = toRGBColor(this.organ.getFiber());
 
 		segment = createSegment();
-		
+
 		hasJoint = shouldHaveAJoint();
 		if (hasJoint)
 			joint = new Circle(MIN_CIRCLE_RADIUS);
 		else
 			joint = null;
-		
+
 		previousOrganPosition = this.organ.toSegment();
 	}
 
@@ -92,11 +104,11 @@ public class OrganView implements ItemView {
 
 	private Rectangle createSegment() {
 		Rectangle result = new Rectangle(0, 0, organ.getLength() + getOverlap() * 2, organ.getThickness());
-		
+
 		double arc = (organ.getAdultLength() * organ.getAdultThickness()) % 15 + 15;
 		result.setArcWidth(arc);
 		result.setArcHeight(arc);
-		
+
 		return result;
 	}
 
@@ -107,10 +119,10 @@ public class OrganView implements ItemView {
 	private boolean shouldHaveAJoint() {
 		if (organ.isAtrophic())
 			return false;
-		
+
 		if (organ.isLeaf())
 			return false;
-		
+
 		boolean isJointPotentiallyVisible = getJointRadius(organ.getAdultThickness()) > Math.min(organ.getAdultThickness(), getOverlap());
 		if (!isJointPotentiallyVisible)
 			return false;
@@ -122,7 +134,7 @@ public class OrganView implements ItemView {
 
 		segment.setWidth(organ.getLength() + getOverlap() * 2);
 		segment.setHeight(organ.getThickness());
-		
+
 		segment.getTransforms().clear();
 		// overlap slightly and shift to center based on thickness
 		double widthCenter = organ.getThickness() / 2;
@@ -131,12 +143,12 @@ public class OrganView implements ItemView {
 		segment.getTransforms().add(new Rotate(organ.getAbsoluteAngle(), getOverlap(), widthCenter));
 
 		boolean isHighDetail = hasJoint && zoomLevel >= VERY_HIGH_MAGNIFICATION && effectsOn;
-		
+
 		if (!isHighDetail)
 			return segment;
-		
+
 		joint.setRadius(getJointRadius(organ.getThickness()));
-		
+
 		joint.getTransforms().clear();
 		joint.getTransforms().add(moveToStartPoint());
 		joint.getTransforms().add(new Translate(organ.getLength(), 0));

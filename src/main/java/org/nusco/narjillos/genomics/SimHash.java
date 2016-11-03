@@ -4,7 +4,7 @@ package org.nusco.narjillos.genomics;
 // Similar DNAs get similar hashes. See:
 // http://matpalm.com/resemblance/simhash/
 public class SimHash {
-	
+
 	public static int[] calculateSimHash(DNA dna) {
 		int[] bitDensity = calculateBitDensity(dna.toCodons());
 
@@ -17,7 +17,7 @@ public class SimHash {
 
 	static int[] calculateBitDensity(Codon[] codons) {
 		int[] result = new int[Codon.HASH_SIZE];
-		
+
 		for (int i = 0; i < codons.length; i++) {
 			int codonHash = codons[i].hashCode();
 			for (int j = 0; j < result.length; j++) {
@@ -28,7 +28,7 @@ public class SimHash {
 					result[j]++;
 			}
 		}
-		
+
 		return result;
 	}
 }

@@ -21,7 +21,7 @@ import org.nusco.narjillos.persistence.serialization.JSON;
  * simulation running. This should be true even after an Experiment is
  * serialized and then deserialized, so this test also checks that top-level
  * serialization works.
- * 
+ * <p>
  * To check whether that's true, we run two experiments for about a thousands
  * cycles and compare the results. This is not particularly safe, because bugs
  * with non-deterministic behavior may only become visible after tens of
@@ -33,9 +33,13 @@ import org.nusco.narjillos.persistence.serialization.JSON;
 public class DeterministicExperimentTest {
 
 	private static PersistentDNALog genePoolLog1;
+
 	private static PersistentDNALog genePoolLog2;
+
 	private static PersistentHistoryLog historyLog1;
+
 	private static PersistentHistoryLog historyLog2;
+
 	private static boolean reporting = true;
 
 	// This test takes a few minutes. Run before packaging a release for
@@ -52,7 +56,7 @@ public class DeterministicExperimentTest {
 		} finally {
 			deleteDatabases();
 		}
-		
+
 		long totalTime = (System.currentTimeMillis() - startTime) / 1000;
 		System.out.println("OK! (" + cycles + " cycles in " + totalTime + " seconds)");
 		System.exit(0); // otherwise Gradle won't exit (god knows why)
@@ -60,9 +64,9 @@ public class DeterministicExperimentTest {
 
 	@BeforeClass
 	public static void silenceReporting() {
-		reporting  = false;
+		reporting = false;
 	}
-	
+
 	@AfterClass
 	public static void deleteDatabases() throws IOException {
 		genePoolLog1.delete();
@@ -81,13 +85,14 @@ public class DeterministicExperimentTest {
 		int halfCycles = cycles / 2;
 
 		// Run an experiment for a few ticks
-		Experiment experiment1 = new Experiment(1234, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false), "deterministic_experiment_test");
+		Experiment experiment1 = new Experiment(1234, new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false),
+			"deterministic_experiment_test");
 		genePoolLog1 = new PersistentDNALog("test_database1");
 		historyLog1 = new PersistentHistoryLog("test_database1");
 		experiment1.setDnaLog(genePoolLog1);
 		experiment1.setHistoryLog(historyLog1);
 		experiment1.populate();
-		
+
 		for (int cycle = 0; cycle < halfCycles; cycle++) {
 			maybeReport(cycle, cycles);
 			experiment1.tick();
@@ -95,7 +100,7 @@ public class DeterministicExperimentTest {
 
 		// Serialize the experiment
 		String json = JSON.toJson(experiment1, Experiment.class);
-		
+
 		// Copy the database
 		genePoolLog1.close();
 		historyLog1.close();

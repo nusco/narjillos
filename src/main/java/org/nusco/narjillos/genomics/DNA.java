@@ -13,9 +13,11 @@ import org.nusco.narjillos.core.utilities.NumGen;
 public class DNA implements Iterable<Chromosome> {
 
 	public static final long NO_PARENT = 0;
-	
+
 	private final long id;
+
 	private final Integer[] genes;
+
 	private final long parentId;
 
 	public DNA(long id, String dnaDocument) {
@@ -93,9 +95,9 @@ public class DNA implements Iterable<Chromosome> {
 			for (int j = 1; j <= otherGenes.length; j++) {
 				boolean equalGenes = theseGenes[i - 1].equals(otherGenes[j - 1]);
 				int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), equalGenes ? nw : nw + 1);
-                nw = costs[j];
-                costs[j] = cj;
-            }
+				nw = costs[j];
+				costs[j] = cj;
+			}
 		}
 
 		return costs[otherGenes.length];
@@ -104,6 +106,7 @@ public class DNA implements Iterable<Chromosome> {
 	@Override
 	public Iterator<Chromosome> iterator() {
 		return new Iterator<Chromosome>() {
+
 			private int indexInGenes = 0;
 
 			@Override

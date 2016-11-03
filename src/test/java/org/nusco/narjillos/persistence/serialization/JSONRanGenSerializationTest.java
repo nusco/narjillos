@@ -15,7 +15,7 @@ public class JSONRanGenSerializationTest {
 			numGen.nextDouble();
 			numGen.nextSerial();
 		}
-		
+
 		String json = JSON.toJson(numGen, NumGen.class);
 		NumGen deserialized = JSON.fromJson(json, NumGen.class);
 

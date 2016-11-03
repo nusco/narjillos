@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public class DelayNerve implements Nerve {
 
 	private final int delay;
+
 	private final LinkedList<Double> buffer = new LinkedList<>();
 
 	public DelayNerve(int delay) {
@@ -17,7 +18,7 @@ public class DelayNerve implements Nerve {
 	@Override
 	public double tick(double inputSignal) {
 		buffer.add(inputSignal);
-		if(buffer.size() < delay + 1)
+		if (buffer.size() < delay + 1)
 			return 0;
 		return buffer.pop();
 	}

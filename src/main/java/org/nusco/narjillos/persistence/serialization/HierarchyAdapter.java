@@ -13,6 +13,7 @@ import com.google.gson.JsonSerializer;
 abstract class HierarchyAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
 
 	protected abstract String getTypeTag(T obj);
+
 	protected abstract Class<?> getClass(String typeTag) throws JsonParseException;
 
 	protected void preSerialize(T obj) {
@@ -38,7 +39,7 @@ abstract class HierarchyAdapter<T> implements JsonSerializer<T>, JsonDeserialize
 		postDeserialize(result);
 		return result;
 	}
-	
+
 	protected Class<?> getClassForName(String className) throws JsonParseException {
 		try {
 			return Class.forName(className);

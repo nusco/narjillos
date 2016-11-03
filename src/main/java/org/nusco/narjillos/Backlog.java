@@ -15,21 +15,26 @@ import java.util.stream.Collectors;
  * (See https://github.com/nusco/backlog.txt).
  */
 public class Backlog {
+
 	private static final String ANSI_RED = "\u001B[31m";
+
 	private static final String ANSI_GREEN = "\u001B[32m";
+
 	private static final String ANSI_YELLOW = "\u001B[33m";
+
 	private static final String ANSI_CYAN = "\u001B[36m";
+
 	private static final String ANSI_RESET = "\u001B[0m";
-	
+
 	public static void main(String[] args) throws IOException {
 		final String BACKLOG_FILE = "backlog.md";
 		List<Feature> features = toFeatures(loadEntries(BACKLOG_FILE));
-		
+
 		int numberOfUserStories = getNumberOfUserStories(features);
-		String header = "Narjllos Backlog (" + numberOfUserStories + " user stories in "+ features.size() + " features)";
+		String header = "Narjllos Backlog (" + numberOfUserStories + " user stories in " + features.size() + " features)";
 		System.out.println(header + ".");
 		System.out.println("(Look in backlog.md for details).\n");
-		
+
 		int featuresToPrint = getNumberOfFeaturesToPrint(args, features);
 		for (int i = 0; i < featuresToPrint; i++)
 			System.out.print(features.get(i).toString() + "\n");
@@ -39,14 +44,14 @@ public class Backlog {
 
 	private static int getNumberOfUserStories(List<Feature> features) {
 		return features.stream()
-				.mapToInt(feature -> feature.size())
-				.sum();
+			.mapToInt(feature -> feature.size())
+			.sum();
 	}
 
 	private static List<Feature> toFeatures(List<String> lines) {
 		ArrayList<Feature> result = new ArrayList<Feature>();
 		LinkedList<String> linesQueue = new LinkedList<>(lines);
-		while(!linesQueue.isEmpty()) {
+		while (!linesQueue.isEmpty()) {
 			String line = linesQueue.pop();
 			if (isFeature(line))
 				result.add(new Feature(line));
@@ -71,36 +76,36 @@ public class Backlog {
 	private static boolean isComment(String line) {
 		if (line.isEmpty())
 			return true;
-		
+
 		return !isFeature(line) && !isUserStory(line);
 	}
 
 	private static List<String> loadEntries(final String BACKLOG_FILE) throws IOException {
 		List<String> lines = Files.readAllLines(Paths.get(BACKLOG_FILE), Charset.forName("UTF-8"));
 		return lines.stream()
-				.filter(line -> !isComment(line))
-				.collect(Collectors.toList());
+			.filter(line -> !isComment(line))
+			.collect(Collectors.toList());
 	}
 
 	private static int getNumberOfFeaturesToPrint(String[] args, List<Feature> marketFeatures) {
 		if (args.length == 0)
 			return marketFeatures.size();
-		
+
 		String arg = args[0];
-		
+
 		if (arg.equals("top"))
 			return 1;
-		
+
 		if (arg.equals("all"))
 			return marketFeatures.size();
-		
+
 		int requiredNumber = Integer.parseInt(arg);
 		return Math.min(requiredNumber, marketFeatures.size());
 	}
-	
+
 	@SuppressWarnings("serial")
 	static class Feature extends LinkedList<String> {
-		
+
 		public final String name;
 
 		public Feature(String name) {
@@ -113,10 +118,10 @@ public class Backlog {
 			result.append(ANSI_GREEN + name + ANSI_RESET + "\n");
 			for (String userStory : this) {
 				String storyName = userStory
-						.replaceFirst("^\\*", "")
-						.replaceFirst("^\\+", "")
-						.replaceFirst("^\\-", "")
-						.trim();
+					.replaceFirst("^\\*", "")
+					.replaceFirst("^\\+", "")
+					.replaceFirst("^\\-", "")
+					.trim();
 				result.append(toColor(userStory) + "    " + storyName + ANSI_RESET + "\n");
 			}
 			return result.toString();

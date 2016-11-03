@@ -85,21 +85,22 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		int delayGene = 90;
 		int amplitudeGene = 107;
 		int skewingGene = 150;
-		
-		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redShiftGene, greenShiftGene, blueShiftGene, angleToParentGene, delayGene, amplitudeGene, skewingGene);
+
+		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redShiftGene, greenShiftGene,
+			blueShiftGene, angleToParentGene, delayGene, amplitudeGene, skewingGene);
 		BodySegmentBuilder builder = getConcreteOrganBuilder(chromosome);
-		
+
 		HeadParameters headParameters = new HeadParameters();
 		headParameters.setRed(50);
 		headParameters.setGreen(60);
 		headParameters.setBlue(70);
 		Head head = new Head(headParameters);
-		
+
 		BodyPart bodyPart = (BodyPart) builder.buildOrgan(head, 1);
 
 		head.updateGeometry();
 		bodyPart.updateGeometry();
-		
+
 		assertEquals(new Fiber(47, 59, 71), bodyPart.getFiber());
 		assertEquals(-25, bodyPart.getAbsoluteAngle(), 0);
 		assertEquals(10, bodyPart.getDelay(), 0);
@@ -108,7 +109,7 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 
 		head.growToAdultFormWithChildren();
 		bodyPart.growToAdultFormWithChildren();
-		
+
 		assertEquals(30, bodyPart.getLength(), 0);
 		assertEquals(25, bodyPart.getThickness(), 0.01);
 	}

@@ -11,16 +11,19 @@ import org.nusco.narjillos.genomics.DNA;
 public class NarjilloEnergyLossTest {
 
 	Narjillo smallerNarjillo;
+
 	Narjillo biggerNarjillo;
-	
+
 	@Before
 	public void initializeNarjillos() {
-		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_10_10_255_255_255_255_0_0_0}{0_255_10_10_255_255_255_255_0_0_0}"), Vector.ZERO, 90, new LifeFormEnergy(1000, Double.MAX_VALUE));
-		
-		DNA dna = new DNA(2, "{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}");
+		smallerNarjillo = new Narjillo(new DNA(1, "{0_255_10_10_255_255_255_255_0_0_0}{0_255_10_10_255_255_255_255_0_0_0}"), Vector.ZERO,
+			90, new LifeFormEnergy(1000, Double.MAX_VALUE));
+
+		DNA dna = new DNA(2,
+			"{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}{0_255_255_255_255_255_255_255_0_0_0}");
 		biggerNarjillo = new Narjillo(dna, Vector.ZERO, 90, new LifeFormEnergy(1000, Double.MAX_VALUE));
 	}
-	
+
 	@Test
 	public void itLosesEnergyFasterWhileMovingIfItIsBigger() {
 		double smallerNarjilloEnergyLoss = getEnergyLossWithMovement(smallerNarjillo);

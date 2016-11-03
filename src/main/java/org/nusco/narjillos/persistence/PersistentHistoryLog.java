@@ -24,27 +24,27 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 			return;
 		Statement statement = createStatement();
 		try {
-	    	String sql = "INSERT INTO HISTORY_ENTRIES (TICKS, RUNNING_TIME, " +
-	    				 "NUMBER_OF_NARJILLOS, NUMBER_OF_FOOD_PELLETS, " +
-	    				 "OXYGEN, HYDROGEN, NITROGEN, " + 
-	    				 "O2H, O2N, H2O, H2N, N2O, N2H, Z2O, Z2H, Z2N) VALUES (" + 
-	    				 entry.ticks + ", " +
-	    				 entry.runningTime + ", " +
-	    				 entry.numberOfNarjillos + ", " +
-	    				 entry.numberOfFoodPellets + ", " +
-	    				 entry.oxygen + ", " +
-	    				 entry.hydrogen + ", " +
-	    				 entry.nitrogen + ", " +
-	    				 entry.o2h + ", " +
-	    				 entry.o2n + ", " +
-	    				 entry.h2o + ", " +
-	    				 entry.h2n + ", " +
-	    				 entry.n2o + ", " +
-	    				 entry.n2h + ", " +
-	    				 entry.z2o + ", " +
-	    				 entry.z2h + ", " +
-	    				 entry.z2n + ");";
-	    	statement.executeUpdate(sql);
+			String sql = "INSERT INTO HISTORY_ENTRIES (TICKS, RUNNING_TIME, " +
+				"NUMBER_OF_NARJILLOS, NUMBER_OF_FOOD_PELLETS, " +
+				"OXYGEN, HYDROGEN, NITROGEN, " +
+				"O2H, O2N, H2O, H2N, N2O, N2H, Z2O, Z2H, Z2N) VALUES (" +
+				entry.ticks + ", " +
+				entry.runningTime + ", " +
+				entry.numberOfNarjillos + ", " +
+				entry.numberOfFoodPellets + ", " +
+				entry.oxygen + ", " +
+				entry.hydrogen + ", " +
+				entry.nitrogen + ", " +
+				entry.o2h + ", " +
+				entry.o2n + ", " +
+				entry.h2o + ", " +
+				entry.h2n + ", " +
+				entry.n2o + ", " +
+				entry.n2h + ", " +
+				entry.z2o + ", " +
+				entry.z2h + ", " +
+				entry.z2n + ");";
+			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -87,22 +87,22 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 		Statement statement = createStatement();
 		try {
 			String sql = "CREATE TABLE IF NOT EXISTS HISTORY_ENTRIES "
-					+ "(TICKS                   INT PRIMARY KEY     NOT NULL,"
-					+ " RUNNING_TIME            INT                 NOT NULL,"
-					+ " NUMBER_OF_NARJILLOS     INT                 NOT NULL,"
-					+ " NUMBER_OF_FOOD_PELLETS  INT                 NOT NULL,"
-					+ " OXYGEN                  DOUBLE              NOT NULL,"
-					+ " HYDROGEN                DOUBLE              NOT NULL,"
-					+ " NITROGEN                DOUBLE              NOT NULL,"
-					+ " O2H                     INT                 NOT NULL,"
-					+ " O2N                     INT                 NOT NULL,"
-					+ " H2O                     INT                 NOT NULL,"
-					+ " H2N                     INT                 NOT NULL,"
-					+ " N2O                     INT                 NOT NULL,"
-					+ " N2H                     INT                 NOT NULL,"
-					+ " Z2O                     INT                 NOT NULL,"
-					+ " Z2H                     INT                 NOT NULL,"
-					+ " Z2N                     INT                 NOT NULL)";
+				+ "(TICKS                   INT PRIMARY KEY     NOT NULL,"
+				+ " RUNNING_TIME            INT                 NOT NULL,"
+				+ " NUMBER_OF_NARJILLOS     INT                 NOT NULL,"
+				+ " NUMBER_OF_FOOD_PELLETS  INT                 NOT NULL,"
+				+ " OXYGEN                  DOUBLE              NOT NULL,"
+				+ " HYDROGEN                DOUBLE              NOT NULL,"
+				+ " NITROGEN                DOUBLE              NOT NULL,"
+				+ " O2H                     INT                 NOT NULL,"
+				+ " O2N                     INT                 NOT NULL,"
+				+ " H2O                     INT                 NOT NULL,"
+				+ " H2N                     INT                 NOT NULL,"
+				+ " N2O                     INT                 NOT NULL,"
+				+ " N2H                     INT                 NOT NULL,"
+				+ " Z2O                     INT                 NOT NULL,"
+				+ " Z2H                     INT                 NOT NULL,"
+				+ " Z2N                     INT                 NOT NULL)";
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -125,20 +125,20 @@ public class PersistentHistoryLog extends PersistentInformation implements Histo
 
 	private ExperimentHistoryEntry toHistoryEntry(ResultSet rs) throws SQLException {
 		return new ExperimentHistoryEntry(rs.getInt("TICKS"),
-						rs.getInt("RUNNING_TIME"),
-						rs.getInt("NUMBER_OF_NARJILLOS"),
-						rs.getInt("NUMBER_OF_FOOD_PELLETS"),
-						rs.getDouble("OXYGEN"),
-						rs.getDouble("HYDROGEN"),
-						rs.getDouble("NITROGEN"),
-						rs.getInt("O2H"),
-						rs.getInt("O2N"),
-						rs.getInt("H2O"),
-						rs.getInt("H2N"),
-						rs.getInt("N2O"),
-						rs.getInt("N2H"),
-						rs.getInt("Z2O"),
-						rs.getInt("Z2H"),
-						rs.getInt("Z2N"));
+			rs.getInt("RUNNING_TIME"),
+			rs.getInt("NUMBER_OF_NARJILLOS"),
+			rs.getInt("NUMBER_OF_FOOD_PELLETS"),
+			rs.getDouble("OXYGEN"),
+			rs.getDouble("HYDROGEN"),
+			rs.getDouble("NITROGEN"),
+			rs.getInt("O2H"),
+			rs.getInt("O2N"),
+			rs.getInt("H2O"),
+			rs.getInt("H2N"),
+			rs.getInt("N2O"),
+			rs.getInt("N2H"),
+			rs.getInt("Z2O"),
+			rs.getInt("Z2H"),
+			rs.getInt("Z2N"));
 	}
 }

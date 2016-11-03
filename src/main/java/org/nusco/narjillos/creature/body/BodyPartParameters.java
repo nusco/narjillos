@@ -1,17 +1,27 @@
 package org.nusco.narjillos.creature.body;
 
 public class BodyPartParameters {
+
 	private int adultLength;
+
 	private int adultThickness;
+
 	private ConnectedOrgan parent;
+
 	private int delay;
+
 	private int amplitude;
+
 	private int angleToParentAtRest;
+
 	private int skewing;
+
 	private int redShift;
+
 	private int greenShift;
+
 	private int blueShift;
-	
+
 	public BodyPartParameters(int adultLength, int adultThickness, ConnectedOrgan parent, int angleToParentAtRest) {
 		this.adultLength = adultLength;
 		this.adultThickness = adultThickness;

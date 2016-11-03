@@ -15,7 +15,7 @@ public class MouthTest {
 		Vector position = Vector.cartesian(10, 10);
 		Vector target = Vector.cartesian(20, 0);
 		tickManyTimes(position, target, 0);
-		
+
 		assertMouthPointsTowards(Vector.polar(-45, 1));
 	}
 
@@ -24,7 +24,7 @@ public class MouthTest {
 		Vector position = Vector.cartesian(0, 0);
 		tickManyTimes(position, Vector.cartesian(10, -10), 0);
 		tickManyTimes(position, Vector.cartesian(10, 10), 0);
-		
+
 		assertMouthPointsTowards(Vector.polar(45, 1));
 	}
 
@@ -41,7 +41,7 @@ public class MouthTest {
 	public void locksAtAMinimumOfMinus135RelativeDegrees() {
 		Vector position = Vector.cartesian(0, 0);
 		Vector target = Vector.cartesian(-10, -1);
-		
+
 		tickManyTimes(position, target, 0);
 		assertMouthPointsTowards(Vector.polar(-135, 1));
 	}
@@ -51,7 +51,7 @@ public class MouthTest {
 		Vector position = Vector.cartesian(0, 0);
 		tickManyTimes(position, Vector.cartesian(-10, 1), 0);
 		tickManyTimes(position, Vector.cartesian(-10, -1), 0);
-		
+
 		assertMouthPointsTowards(Vector.polar(135, 1));
 	}
 

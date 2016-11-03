@@ -20,7 +20,7 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
  * It also prints an error message to get your attention in case the test
  * takes longer than a rule-of-thumb performance level (on my computer, 4000
  * ticks under 10 seconds).
- * 
+ * <p>
  * It can be also run as a unit test. In this case, it goes through way fewer ticks,
  * so it's faster. This is by its very nature a nondeterministic test that can fail
  * randomly, or fail consistently on slower or overloaded machines - so it shouldn't
@@ -31,12 +31,15 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
 public class PerformanceTest {
 
 	private final static double EXPECTED_MINIMUM_TICKS_PER_SECOND = 400;
-	
+
 	private static int ticks;
+
 	private static double timeSeconds;
+
 	private static DNALog dnaLog = new PersistentDNALog("x");
+
 	private static HistoryLog historyLog = new PersistentHistoryLog("x");
-	
+
 	public static void main(String[] args) throws IOException {
 		ticks = 10_000;
 		try {
@@ -71,7 +74,7 @@ public class PerformanceTest {
 		Experiment experiment = new SimpleExperiment();
 		experiment.setDnaLog(dnaLog);
 		experiment.setHistoryLog(historyLog);
-		
+
 		long startTimeMillis = System.currentTimeMillis();
 
 		for (int i = 0; i < ticks; i++)

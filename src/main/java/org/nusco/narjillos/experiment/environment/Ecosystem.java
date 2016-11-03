@@ -36,14 +36,19 @@ public class Ecosystem extends Environment {
 
 	private final ExecutorService executorService;
 
-	/** Counter used by the ThreadFactory to name threads. */
+	/**
+	 * Counter used by the ThreadFactory to name threads.
+	 */
 	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
 
 	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
 	private final Space space;
+
 	private final Vector center;
+
 	private final BoundingBox boundingBox;
+
 	private Atmosphere atmosphere;
 
 	public Ecosystem(final long size, boolean sizeCheck) {
@@ -275,14 +280,14 @@ public class Ecosystem extends Environment {
 		// multiple narjillos collide with the same food pellet.
 
 		breathe();
-		
+
 		// Consume food
 		narjillosToCollidedFood.entrySet().stream()
 			.forEach(entry -> {
-			Narjillo narjillo = entry.getKey();
-			Set<Thing> collidedFood = entry.getValue();
-			consume(narjillo, collidedFood, numGen);
-		});
+				Narjillo narjillo = entry.getKey();
+				Set<Thing> collidedFood = entry.getValue();
+				consume(narjillo, collidedFood, numGen);
+			});
 	}
 
 	private void breathe() {
@@ -326,7 +331,7 @@ public class Ecosystem extends Environment {
 			return false;
 
 		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK
-				/ getNumberOf1000SquarePointsBlocks();
+			/ getNumberOf1000SquarePointsBlocks();
 		return numGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
 	}
 

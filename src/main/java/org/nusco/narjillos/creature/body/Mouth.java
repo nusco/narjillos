@@ -11,18 +11,18 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public class Mouth {
 
 	private double directionAngle = 0;
-	
+
 	public void tick(Vector position, Vector target, double rotation) {
 		try {
 			double absoluteTargetAngle = target.minus(position).getAngle();
 			double relativeTargetAngle = Angle.normalize(absoluteTargetAngle - rotation);
-			
+
 			boolean targetIsInViewField = Math.abs(relativeTargetAngle) < Configuration.CREATURE_LATERAL_VIEWFIELD;
 			if (targetIsInViewField) {
 				shiftSmoothlyTowards(absoluteTargetAngle);
 				return;
 			}
-			
+
 			boolean targetJustExitedTheViewField = Math.abs(directionAngle) < Configuration.CREATURE_LATERAL_VIEWFIELD;
 			if (targetJustExitedTheViewField)
 				shiftSmoothlyTowards(rotation + Configuration.CREATURE_LATERAL_VIEWFIELD * Math.signum(relativeTargetAngle));

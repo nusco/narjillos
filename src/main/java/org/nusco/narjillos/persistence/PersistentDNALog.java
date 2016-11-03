@@ -20,12 +20,12 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	public void save(DNA dna) {
 		if (contains(dna))
 			return;
-    	Statement statement = createStatement();
-	    try {
-	    	String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID, IS_DEAD) VALUES (" + 
-	    				 dna.getId() + ", " +
-	    				 "'" + dna.toString() + "', " +
-	    				 dna.getParentId() +", 0);";
+		Statement statement = createStatement();
+		try {
+			String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID, IS_DEAD) VALUES (" +
+				dna.getId() + ", " +
+				"'" + dna.toString() + "', " +
+				dna.getParentId() + ", 0);";
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -97,10 +97,10 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 		Statement statement = createStatement();
 		try {
 			String sql = "CREATE TABLE IF NOT EXISTS DNA "
-					+ "(ID                   INT PRIMARY KEY     NOT NULL,"
-					+ " GENES                STRING              NOT NULL,"
-					+ " PARENT_ID            INT                 NOT NULL,"
-					+ " IS_DEAD              INT                 NOT NULL)";
+				+ "(ID                   INT PRIMARY KEY     NOT NULL,"
+				+ " GENES                STRING              NOT NULL,"
+				+ " PARENT_ID            INT                 NOT NULL,"
+				+ " IS_DEAD              INT                 NOT NULL)";
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -115,7 +115,7 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 
 	private DNA toDNA(ResultSet rs) throws SQLException {
 		return new DNA(rs.getLong("ID"),
-					   rs.getString("GENES"),
-					   rs.getInt("PARENT_ID"));
+			rs.getString("GENES"),
+			rs.getInt("PARENT_ID"));
 	}
 }

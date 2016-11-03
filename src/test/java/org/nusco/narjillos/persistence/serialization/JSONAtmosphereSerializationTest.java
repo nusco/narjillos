@@ -14,12 +14,12 @@ public class JSONAtmosphereSerializationTest {
 	@Test
 	public void serializesAndDeserializesAtmospheres() {
 		Atmosphere atmosphere = new Atmosphere(10, 15);
-		
+
 		for (int i = 0; i < 3; i++)
 			atmosphere.convert(OXYGEN, NITROGEN);
 		for (int i = 0; i < 2; i++)
 			atmosphere.convert(HYDROGEN, NITROGEN);
-		
+
 		String json = JSON.toJson(atmosphere, Atmosphere.class);
 		Atmosphere deserialized = (Atmosphere) JSON.fromJson(json, Atmosphere.class);
 

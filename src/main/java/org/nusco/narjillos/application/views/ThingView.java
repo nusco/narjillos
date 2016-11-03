@@ -26,24 +26,24 @@ abstract class ThingView implements ItemView {
 	public final Node toNode(Viewport viewport, boolean infraredOn, boolean effectsOn) {
 		if (!isVisible(viewport))
 			return null;
-		
+
 		return toNode(viewport.getZoomLevel(), infraredOn, effectsOn);
 	}
 
 	protected Effect getEffects(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
 			return getHaloEffect(zoomLevel * 1.5);
-		
+
 		return getHaloEffect(zoomLevel);
 	}
-	
+
 	static ThingView createViewFor(Thing thing) {
 		if (thing.getLabel().equals("narjillo"))
 			return new NarjilloView((Narjillo) thing);
 		else if (thing.getLabel().equals("food_pellet"))
-			return new FoodView((FoodPellet)thing);
+			return new FoodView((FoodPellet) thing);
 		else if (thing.getLabel().equals("egg"))
-			return new EggView((Egg)thing);
+			return new EggView((Egg) thing);
 		else
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());
 	}

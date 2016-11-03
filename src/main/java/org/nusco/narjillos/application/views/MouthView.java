@@ -16,17 +16,22 @@ import org.nusco.narjillos.creature.Narjillo;
 class MouthView implements ItemView {
 
 	private static final double MINIMUM_ZOOM_LEVEL = 0.1;
+
 	private static final int NUMBER_OF_LINES = 3;
+
 	private static final int LINE_LENGTH = 30;
+
 	private static final int MAX_LINE_ANGLE = 25;
 
 	private final Narjillo narjillo;
+
 	private final Group group = new Group();
+
 	private final Line[] lines = new Line[NUMBER_OF_LINES];
-	
+
 	public MouthView(Narjillo narjillo) {
 		this.narjillo = narjillo;
-		
+
 		for (int i = 0; i < lines.length; i++) {
 			lines[i] = createLine();
 			group.getChildren().add(lines[i]);
@@ -43,11 +48,11 @@ class MouthView implements ItemView {
 			lines[i].setStroke(color);
 			rotateLine(i);
 		}
-		
+
 		Vector position = getNarjillo().getPosition();
 		group.getTransforms().clear();
 		group.getTransforms().add(new Translate(position.x, position.y));
-		
+
 		return group;
 	}
 
@@ -55,7 +60,7 @@ class MouthView implements ItemView {
 	public boolean isVisible(Viewport viewport) {
 		return viewport.isVisible(getNarjillo().getPosition(), LINE_LENGTH);
 	}
-	
+
 	private void rotateLine(int index) {
 		double lineLag = (360 / (lines.length + 1) * index) % 360;
 		double lineAngle = FastMath.sin(getNarjillo().getBrainWaveAngle() - lineLag) * MAX_LINE_ANGLE;
@@ -81,10 +86,10 @@ class MouthView implements ItemView {
 		long age = getNarjillo().getAge();
 		if (age > AGE_OF_FULL_OPACITY)
 			return 1;
-		
+
 		return age / AGE_OF_FULL_OPACITY;
 	}
-	
+
 	private double getMouthAngle() {
 		try {
 			return getNarjillo().getMouth().getDirection().getAngle();

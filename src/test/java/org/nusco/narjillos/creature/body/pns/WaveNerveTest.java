@@ -13,7 +13,7 @@ public class WaveNerveTest {
 
 		WaveNerve nerve = new WaveNerve(1.0 / 8);
 		final double beatRatio = 2.0;
-		
+
 		assertEquals(0, nerve.tick(beatRatio), 0.01);
 		assertEquals(LENGTH_AT_45_DEGREES, nerve.tick(beatRatio), 0.01);
 		assertEquals(LENGTH, nerve.tick(beatRatio), 0.01);

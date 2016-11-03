@@ -37,9 +37,9 @@ public class JSONBodyPartSerializationTest {
 
 		for (int i = 0; i < 10; i++)
 			head.tick(20, 1, 1);
-		
+
 		String json = JSON.toJson(head, Organ.class);
-		Organ deserialized = (Head)JSON.fromJson(json, Organ.class);
+		Organ deserialized = (Head) JSON.fromJson(json, Organ.class);
 
 		assertEquals(head.getLength(), deserialized.getLength(), 0.0);
 		assertEquals(head.getThickness(), deserialized.getThickness(), 0.0);
@@ -67,10 +67,10 @@ public class JSONBodyPartSerializationTest {
 
 		for (int i = 0; i < 10; i++)
 			bodySegment.tick(10, 1, 2);
-		
+
 		String json = JSON.toJson(bodySegment, Organ.class);
-		BodyPart deserialized = (BodyPart)JSON.fromJson(json, Organ.class);
-		
+		BodyPart deserialized = (BodyPart) JSON.fromJson(json, Organ.class);
+
 		assertEquals(bodySegment.getLength(), deserialized.getLength(), 0);
 		assertEquals(bodySegment.getThickness(), deserialized.getThickness(), 0);
 		assertEquals(new Fiber(10, 20, 30), deserialized.getFiber());
@@ -94,10 +94,10 @@ public class JSONBodyPartSerializationTest {
 		bodyPartParameters.setBlueShift(30);
 		ConnectedOrgan child = new BodyPart(bodyPartParameters);
 		parent.addChild(child);
-		
+
 		String json = JSON.toJson(parent, MovingOrgan.class);
 		MovingOrgan deserializedParent = (MovingOrgan) JSON.fromJson(json, MovingOrgan.class);
-		
+
 		assertEquals(parent.getLength(), deserializedParent.getLength(), 0);
 		assertEquals(1, deserializedParent.getChildren().size());
 		ConnectedOrgan deserializedChild = deserializedParent.getChildren().get(0);

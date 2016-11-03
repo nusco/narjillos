@@ -14,8 +14,11 @@ public class MicroscopeView {
 	private final Viewport viewport;
 
 	private Vector currentScreenSize = null;
+
 	private Rectangle black;
+
 	private Circle hole;
+
 	private Shape microscope;
 
 	public MicroscopeView(Viewport viewport) {

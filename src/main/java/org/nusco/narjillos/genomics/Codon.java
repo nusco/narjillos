@@ -6,6 +6,7 @@ package org.nusco.narjillos.genomics;
 public class Codon {
 
 	public static final int SIZE = 3;
+
 	public static final int HASH_SIZE = SIZE * 8;
 
 	private final int[] genes = new int[SIZE];
@@ -34,7 +35,7 @@ public class Codon {
 				return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		String binaryString = "000000000000000000000000" + Integer.toBinaryString(hashCode());

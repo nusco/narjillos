@@ -6,11 +6,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Generates numbers (mostly pseudo-random ones).
- * 
+ * <p>
  * A bit like java.math.Random, but strictly deterministic. You must give it a
  * seed during construction, and it will spew out the same exact numbers every
  * time.
- * 
+ * <p>
  * You cannot call the same instance of this class from multiple threads,
  * because multithreading and deterministic behavior don't really match. If you
  * try, the NumGen will complain loudly.
@@ -18,7 +18,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class NumGen {
 
 	private final TransparentRanGen random = new TransparentRanGen();
+
 	private long serial = 0;
+
 	private transient Thread authorizedThread;
 
 	public NumGen(long seed) {

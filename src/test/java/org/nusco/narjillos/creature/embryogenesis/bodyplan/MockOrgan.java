@@ -7,6 +7,7 @@ import org.nusco.narjillos.creature.body.MovingOrgan;
 class MockOrgan extends MovingOrgan {
 
 	private final int id;
+
 	private final int sign;
 
 	public MockOrgan(int id, ConnectedOrgan parent, int sign) {
@@ -36,18 +37,18 @@ class MockOrgan extends MovingOrgan {
 		if (sign < 0)
 			result.append("^");
 		result.append(Integer.toString(id));
-		
+
 		ConnectedOrgan[] children = getChildren().toArray(new MovingOrgan[0]);
 		if (children.length == 0)
 			return result.toString();
-		
+
 		result.append("-");
-		
+
 		if (children.length == 1) {
 			result.append(children[0]);
 			return result.toString();
 		}
-		
+
 		result.append("(");
 		for (int i = 0; i < children.length; i++) {
 			result.append(children[i].toString());

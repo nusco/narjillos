@@ -23,7 +23,7 @@ public class JSONThingSerializationTest {
 
 		String json = JSON.toJson(food, Thing.class);
 		Thing deserialized = JSON.fromJson(json, Thing.class);
-		
+
 		assertEquals(food.getPosition(), deserialized.getPosition());
 	}
 
@@ -33,7 +33,7 @@ public class JSONThingSerializationTest {
 		Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.polar(10, 15), 101, new NumGen(1));
 
 		String json = JSON.toJson(egg, Thing.class);
-		Egg deserialized = (Egg)JSON.fromJson(json, Thing.class);
+		Egg deserialized = (Egg) JSON.fromJson(json, Thing.class);
 
 		assertEquals(dna.toString(), egg.getDNA().toString());
 		assertEquals(egg.getPosition(), deserialized.getPosition());
@@ -50,13 +50,13 @@ public class JSONThingSerializationTest {
 		narjillo.setTarget(Vector.cartesian(100, 200));
 		for (int i = 0; i < 10; i++)
 			narjillo.tick();
-		
+
 		String json = JSON.toJson(narjillo, Thing.class);
 		Narjillo deserialized = (Narjillo) JSON.fromJson(json, Thing.class);
-		
+
 		narjillo.tick();
 		deserialized.tick();
-		
+
 		assertEquals(narjillo.getPosition(), deserialized.getPosition());
 		assertEquals(genes, deserialized.getDNA().toString());
 		assertEquals(Vector.cartesian(100, 200), deserialized.getTarget());

@@ -21,7 +21,7 @@ class DNADocument {
 			if (cleanedUpLine.matches("_*\\d.*"))
 				return parseDNAString(cleanedUpLine);
 		}
-		return new Integer[] {0};
+		return new Integer[] { 0 };
 	}
 
 	public static String toString(DNA dna) {

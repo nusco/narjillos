@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 /**
  * Export historical DNA as a tree, in various formats.
- * 
+ * <p>
  * When converting the gene pool to a tree, it adds an artificial zero node that
  * acts as a root to the root nodes. This creates a single big tree (with the
  * caveat that the first level actually representes unrelated genotypes). The

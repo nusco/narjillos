@@ -25,17 +25,17 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 
 	int getDelay() {
 		final double MAX_DELAY = 30;
-		return (int)(getChromosome().getGene(DELAY) * ((MAX_DELAY + 1) / 256));
+		return (int) (getChromosome().getGene(DELAY) * ((MAX_DELAY + 1) / 256));
 	}
 
 	int getAngleToParent(int mirroringSign) {
 		int result = convertToRange(getChromosome().getGene(ANGLE_TO_PARENT), (double) 70);
-		return result * (int)Math.signum(mirroringSign);
+		return result * (int) Math.signum(mirroringSign);
 	}
 
 	int getAmplitude() {
 		final double MAX_AMPLITUDE = 80;
-		return (int)(getChromosome().getGene(AMPLITUDE) * (MAX_AMPLITUDE / 256)) + 1;
+		return (int) (getChromosome().getGene(AMPLITUDE) * (MAX_AMPLITUDE / 256)) + 1;
 	}
 
 	public int getSkewing() {
@@ -43,17 +43,17 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 	}
 
 	private int convertToRange(int gene, double maxAbsValue) {
-		return (int)((gene * ((maxAbsValue * 2 + 1) / 256)) - maxAbsValue);
+		return (int) ((gene * ((maxAbsValue * 2 + 1) / 256)) - maxAbsValue);
 	}
-	
+
 	int getRedShift() {
 		return getFiberShift(RED_SHIFT);
 	}
-	
+
 	int getGreenShift() {
 		return getFiberShift(GREEN_SHIFT);
 	}
-	
+
 	int getBlueShift() {
 		return getFiberShift(BLUE_SHIFT);
 	}

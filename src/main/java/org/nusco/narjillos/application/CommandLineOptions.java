@@ -21,11 +21,15 @@ import org.nusco.narjillos.persistence.ExperimentLoader;
 public class CommandLineOptions extends Options {
 
 	public static final int NO_SEED = -1;
-	
+
 	private Experiment experiment = null;
+
 	private boolean persistent = true;
+
 	private boolean fast = false;
+
 	private long seed = NO_SEED;
+
 	private String dna = null;
 
 	public static CommandLineOptions parse(boolean printWarnings, String... args) {
@@ -49,7 +53,7 @@ public class CommandLineOptions extends Options {
 		addOption("d", "dna", true, "populate experiment with specific DNA (takes genes, or a file containing genes)");
 
 		CommandLineParser parser = new BasicParser();
-		
+
 		try {
 			CommandLine line;
 			try {
@@ -57,42 +61,43 @@ public class CommandLineOptions extends Options {
 			} catch (UnrecognizedOptionException e) {
 				throw new RuntimeException(e.getMessage() + "\n" + getHelpText());
 			}
-			
-	        if (line.hasOption("help")) {
-	        	System.out.println(getHelpText());
-	        	System.exit(0);
-	        }
 
-	        setFast(line.hasOption("fast"));
-	        setPersistent(line.hasOption("save"));
+			if (line.hasOption("help")) {
+				System.out.println(getHelpText());
+				System.exit(0);
+			}
 
-	        if (line.hasOption("seed")) {
-	        	if (line.hasOption("dna"))
-	        		throw new RuntimeException("You cannot pick seed and dna at the same time. It's either one, or the other.");
-	        	setSeed(line.getOptionValue("seed"));
-	        }
-	        
-	        if (line.hasOption("dna"))
-	        	setDna(line.getOptionValue("dna"));
+			setFast(line.hasOption("fast"));
+			setPersistent(line.hasOption("save"));
 
-	        if (line.getArgs().length == 0)
-	        	return;
-	        
-	        if (line.getArgs().length > 1)
-	        	throw new RuntimeException(getDontUnderstandText());
-	        
-	        if (getDna() != null || getSeed() != NO_SEED)
-	        	throw new RuntimeException("If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
+			if (line.hasOption("seed")) {
+				if (line.hasOption("dna"))
+					throw new RuntimeException("You cannot pick seed and dna at the same time. It's either one, or the other.");
+				setSeed(line.getOptionValue("seed"));
+			}
 
-        	setFile(line.getArgs()[0], printWarnings);
-        	
-        	if (printWarnings && getExperiment() != null && !isPersistent()) {
+			if (line.hasOption("dna"))
+				setDna(line.getOptionValue("dna"));
+
+			if (line.getArgs().length == 0)
+				return;
+
+			if (line.getArgs().length > 1)
+				throw new RuntimeException(getDontUnderstandText());
+
+			if (getDna() != null || getSeed() != NO_SEED)
+				throw new RuntimeException(
+					"If you load the experiment from a file, then you cannot pick its seed or DNA.\n" + getHelpText());
+
+			setFile(line.getArgs()[0], printWarnings);
+
+			if (printWarnings && getExperiment() != null && !isPersistent()) {
 				System.err.print("WARNING: you're continuing an existing experiment, but I won't update it on disk. ");
 				System.err.println("If you want to update the experiment file, then use the --save option.");
 			}
-        } catch(ParseException e) {
-	        throw new RuntimeException(e);
-	    }
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public Experiment getExperiment() {

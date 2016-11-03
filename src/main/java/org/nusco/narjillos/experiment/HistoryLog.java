@@ -8,8 +8,12 @@ import java.util.List;
 public interface HistoryLog {
 
 	public List<ExperimentHistoryEntry> getEntries();
+
 	public ExperimentHistoryEntry getLatestEntry();
+
 	public void saveEntry(Experiment experiment);
+
 	public void close();
+
 	public void delete();
 }

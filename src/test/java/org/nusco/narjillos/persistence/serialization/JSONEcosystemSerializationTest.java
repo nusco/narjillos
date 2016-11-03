@@ -31,10 +31,10 @@ public class JSONEcosystemSerializationTest {
 		DNA dna = DNA.random(1, new NumGen(100));
 		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(100, 101), 90, Energy.INFINITE);
 		ecosystem.insertNarjillo(narjillo);
-		
+
 		for (int i = 0; i < 10; i++)
 			ecosystem.tick(new VolatileDNALog(), new NumGen(1234));
-		
+
 		String json = JSON.toJson(ecosystem, Ecosystem.class);
 		Ecosystem deserialized = JSON.fromJson(json, Ecosystem.class);
 
@@ -45,7 +45,7 @@ public class JSONEcosystemSerializationTest {
 		assertEquals(deserialized.getAtmosphere().getAmountOf(OXYGEN), ecosystem.getAtmosphere().getAmountOf(OXYGEN), 0.0);
 		assertEquals(deserialized.getAtmosphere().getAmountOf(HYDROGEN), ecosystem.getAtmosphere().getAmountOf(HYDROGEN), 0.0);
 		assertEquals(deserialized.getAtmosphere().getAmountOf(NITROGEN), ecosystem.getAtmosphere().getAmountOf(NITROGEN), 0.0);
-		
+
 		Iterator<Thing> thingsIterator = deserialized.getThings("").iterator();
 		assertEquals(narjillo.getPosition(), thingsIterator.next().getPosition());
 		assertEquals(food1.getPosition(), thingsIterator.next().getPosition());

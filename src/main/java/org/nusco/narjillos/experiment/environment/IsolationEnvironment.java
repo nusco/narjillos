@@ -58,7 +58,7 @@ public class IsolationEnvironment extends Environment {
 			narjillos.remove(existingNarjillo);
 			notifyThingRemoved(existingNarjillo);
 		}
-		
+
 		narjillos.add(narjillo);
 		notifyThingAdded(narjillo);
 	}
@@ -68,7 +68,7 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	public synchronized void rotateTarget() {
-		targetAngle  = (targetAngle + 90) % 360;
+		targetAngle = (targetAngle + 90) % 360;
 	}
 
 	public synchronized void setTarget() {

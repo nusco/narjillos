@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 
 public abstract class NeuralConnectionTest {
-	
+
 	@Test
 	public void sendsNerveSignalsToItsChildren() {
 		final ClickNerve nerve1 = new ClickNerve();
@@ -19,19 +19,20 @@ public abstract class NeuralConnectionTest {
 		head.addChild(new BodyPart(nerve3));
 
 		head.tick(0, 0, 1);
-		
+
 		assertTrue(nerve1.clicked);
 		assertTrue(nerve2.clicked);
 		assertTrue(nerve3.clicked);
 	}
-	
+
 	class ClickNerve implements Nerve {
+
 		public boolean clicked = false;
-		
+
 		@Override
 		public double tick(double inputSignal) {
 			clicked = true;
 			return 0;
-		}		
+		}
 	}
 }

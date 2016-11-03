@@ -28,14 +28,15 @@ import org.nusco.narjillos.genomics.DNA;
 /**
  * This application loads a list of genomes (typically a germline) and shows
  * phenotypes for each genome.
- * 
+ * <p>
  * (Alternately, it can also show a lineup of random creatures).
  */
 public class DNABrowserApplication extends NarjillosApplication {
 
 	private NarjillosApplicationState state = new NarjillosApplicationState();
+
 	private volatile boolean autoplay = false;
-	
+
 	@Override
 	protected void startSupportThreads() {
 		startAutoplayThread();
@@ -44,6 +45,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 	@Override
 	protected StoppableThread createModelThread(final String[] arguments, final boolean[] isModelInitialized) {
 		return new StoppableThread() {
+
 			@Override
 			public void run() {
 				if (arguments.length != 1 || arguments[0].equals("-?") || arguments[0].equals("--help")) {
@@ -107,10 +109,13 @@ public class DNABrowserApplication extends NarjillosApplication {
 	@Override
 	protected StoppableThread createViewThread(final Group root) {
 		return new StoppableThread() {
+
 			private volatile boolean renderingFinished = false;
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
+
 			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
+
 			private final StringView statusView = new StringView(40, state);
 
 			public void run() {
@@ -124,6 +129,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 					ecosystemView.tick();
 
 					Platform.runLater(new Runnable() {
+
 						@Override
 						public void run() {
 							update(root);
@@ -159,6 +165,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 	@Override
 	protected void registerInteractionHandlers(final Scene scene) {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
 			public void handle(final KeyEvent keyEvent) {
 				final int SKIP = 10;
 				if (keyEvent.getCode() == KeyCode.LEFT && keyEvent.isControlDown())
@@ -185,6 +192,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 		});
 
 		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
 			public void handle(MouseEvent event) {
 				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
 				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);

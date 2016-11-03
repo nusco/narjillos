@@ -7,12 +7,16 @@ public class Fiber {
 
 	// 0 to 255
 	private final int red;
+
 	private final int green;
+
 	private final int blue;
 
 	// 0.0 to 1.0
 	private final double percentOfRed;
+
 	private final double percentOfGreen;
+
 	private final double percentOfBlue;
 
 	public Fiber(int red, int green, int blue) {
@@ -46,15 +50,15 @@ public class Fiber {
 	public boolean equals(Object obj) {
 		Fiber other = (Fiber) obj;
 		return red == other.red && blue == other.blue && green == other.green
-				&& Double.doubleToLongBits(getPercentOfRed()) == Double.doubleToLongBits(other.getPercentOfRed())
-				&& Double.doubleToLongBits(getPercentOfGreen()) == Double.doubleToLongBits(other.getPercentOfGreen())
-				&& Double.doubleToLongBits(getPercentOfBlue()) == Double.doubleToLongBits(other.getPercentOfBlue());
+			&& Double.doubleToLongBits(getPercentOfRed()) == Double.doubleToLongBits(other.getPercentOfRed())
+			&& Double.doubleToLongBits(getPercentOfGreen()) == Double.doubleToLongBits(other.getPercentOfGreen())
+			&& Double.doubleToLongBits(getPercentOfBlue()) == Double.doubleToLongBits(other.getPercentOfBlue());
 	}
 
 	public String getVisualHash() {
 		return "" + approximate(red) + "_" + approximate(green) + "_" + approximate(blue);
 	}
-	
+
 	private int approximate(int color) {
 		return color / 25; // 0 to 10
 	}

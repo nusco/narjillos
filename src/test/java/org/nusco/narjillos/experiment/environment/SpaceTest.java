@@ -38,13 +38,13 @@ public class SpaceTest {
 	@Test
 	public void storesAndRetrievesThingsBasedOnTheirPosition() {
 		Thing[] things = new Thing[] {
-				new MockThing(Vector.cartesian(510, 310), 0), // area [5, 3]
-				new MockThing(Vector.cartesian(520, 320), 1), // area [5, 3]
-				new MockThing(Vector.cartesian(410, 210), 2), // area [4, 2]
-				new MockThing(Vector.cartesian(610, 310), 3), // area [6, 3]
-				new MockThing(Vector.cartesian(620, 320), 4), // area [6, 3]
-				new MockThing(Vector.cartesian(610, 410), 5), // area [6, 4]
-				new MockThing(Vector.cartesian(810, 810), 6), // area [8, 8]
+			new MockThing(Vector.cartesian(510, 310), 0), // area [5, 3]
+			new MockThing(Vector.cartesian(520, 320), 1), // area [5, 3]
+			new MockThing(Vector.cartesian(410, 210), 2), // area [4, 2]
+			new MockThing(Vector.cartesian(610, 310), 3), // area [6, 3]
+			new MockThing(Vector.cartesian(620, 320), 4), // area [6, 3]
+			new MockThing(Vector.cartesian(610, 410), 5), // area [6, 4]
+			new MockThing(Vector.cartesian(810, 810), 6), // area [8, 8]
 		};
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);
@@ -54,7 +54,7 @@ public class SpaceTest {
 
 		assertEquals(5, neighbors.size());
 		Iterator<Thing> thingsIterator = neighbors.iterator();
-		
+
 		assertEquals("2", thingsIterator.next().getLabel());
 		assertEquals("1", thingsIterator.next().getLabel());
 		assertEquals("3", thingsIterator.next().getLabel());
@@ -74,7 +74,7 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		space.remove(thingThatGoes);
-		
+
 		assertFalse(space.contains(thingThatGoes));
 	}
 
@@ -88,12 +88,12 @@ public class SpaceTest {
 
 		assertTrue(space.contains(thing));
 	}
-	
+
 	@Test
 	public void neighborsSearchIgnoresTheSearchedThing() {
 		Thing[] things = new Thing[] {
-				new MockThing(Vector.cartesian(510, 510), 0), // area [5, 5]
-				new MockThing(Vector.cartesian(520, 520), 1), // area [5, 5]
+			new MockThing(Vector.cartesian(510, 510), 0), // area [5, 5]
+			new MockThing(Vector.cartesian(520, 520), 1), // area [5, 5]
 		};
 		for (int i = 0; i < things.length; i++)
 			space.add(things[i]);
@@ -104,7 +104,7 @@ public class SpaceTest {
 		assertEquals(1, neighbors.size());
 		assertEquals("1", neighbors.iterator().next().getLabel());
 	}
-	
+
 	@Test
 	public void neighborsSearchWorksForThingsThatAreNotInTheSpace() {
 		MockThing thingOutOfSpace = new MockThing(Vector.cartesian(510, 510), 0); // area [5, 5]
@@ -184,7 +184,7 @@ public class SpaceTest {
 			space.add(things[i]);
 
 		Set<Thing> allTheThings = space.getAll("");
-		
+
 		assertEquals(3, allTheThings.size());
 		for (int i = 0; i < things.length; i++)
 			assertTrue(allTheThings.contains(things[i]));
@@ -193,7 +193,7 @@ public class SpaceTest {
 	@Test
 	public void knowsWhetherItIsEmpty() {
 		assertTrue(space.isEmpty());
-		
+
 		space.add(new MockThing(Vector.cartesian(9910, 9910), 0));
 
 		assertFalse(space.isEmpty());
@@ -203,6 +203,7 @@ public class SpaceTest {
 class MockThing implements Thing {
 
 	private final String label;
+
 	private final Vector position;
 
 	public MockThing(Vector position, Integer id) {
@@ -214,7 +215,7 @@ class MockThing implements Thing {
 	public Vector getPosition() {
 		return position;
 	}
-	
+
 	@Override
 	public Vector getCenter() {
 		return getPosition();

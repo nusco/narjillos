@@ -12,28 +12,29 @@ class FoodView extends ThingView {
 	private static final double MINIMUM_ZOOM_LEVEL = 0.035;
 
 	private final RoundObjectView roundObjectView;
-	
+
 	public FoodView(FoodPellet food) {
 		super(food);
-		
+
 		roundObjectView = new RoundObjectView(Configuration.FOOD_RADIUS) {
+
 			@Override
 			public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn) {
 				if (zoomLevel < MINIMUM_ZOOM_LEVEL)
 					return null;
 
 				getShape().setFill(getColor(infraredOn));
-				
+
 				if (infraredOn) {
 					getShape().setStroke(Color.WHITE);
 					getShape().setStrokeWidth(3);
 				} else {
 					getShape().setStrokeWidth(0);
 				}
-				
+
 				if (effectsOn)
 					getShape().setEffect(getEffects(zoomLevel, infraredOn));
-				
+
 				return getShape();
 			}
 

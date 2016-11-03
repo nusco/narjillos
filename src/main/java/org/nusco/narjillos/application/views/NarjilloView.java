@@ -12,11 +12,15 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 
 class NarjilloView extends ThingView {
-	
+
 	private final Group group = new Group();
+
 	private final List<OrganView> organs;
+
 	private final MouthView mouth;
+
 	private final ItemView eyes;
+
 	private final CenterOfMassView centerOfMass;
 
 	public NarjilloView(Narjillo narjillo) {
@@ -32,7 +36,7 @@ class NarjilloView extends ThingView {
 		group.getChildren().clear();
 
 		group.getChildren().addAll(getOrganNodes(zoomLevel, infraredOn, effectsOn));
-		
+
 		Node mouthNode = mouth.toNode(zoomLevel, infraredOn, effectsOn);
 		if (mouthNode != null)
 			group.getChildren().add(mouthNode);
@@ -68,7 +72,7 @@ class NarjilloView extends ThingView {
 	}
 
 	private Narjillo getNarjillo() {
-		return (Narjillo)getThing();
+		return (Narjillo) getThing();
 	}
 
 	@Override

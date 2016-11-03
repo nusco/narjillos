@@ -9,8 +9,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class StringView {
-	
+
 	private final int fontSize;
+
 	private final NarjillosApplicationState applicationState;
 
 	public StringView(int fontSize, NarjillosApplicationState state) {

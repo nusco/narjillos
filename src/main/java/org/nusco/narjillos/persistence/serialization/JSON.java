@@ -28,7 +28,7 @@ public class JSON {
 		.registerTypeAdapter(Thing.class, new ThingAdapter())
 		.registerTypeAdapter(Ecosystem.class, new EcosystemAdapter())
 		.enableComplexMapKeySerialization()
-        .create();
+		.create();
 
 	public static <T> String toJson(Object obj, Class<T> clazz) {
 		return gson.toJson(obj, clazz);

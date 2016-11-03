@@ -6,8 +6,11 @@ import org.nusco.narjillos.core.utilities.NumberFormatter;
 public class LifeFormEnergy implements Energy {
 
 	private final double initialValue;
+
 	private double value;
+
 	private double maxForAge;
+
 	private final double decay;
 
 	// for deserialization only
@@ -49,7 +52,7 @@ public class LifeFormEnergy implements Energy {
 	public void increaseBy(double amount) {
 		if (isZero())
 			return; // once it's gone, it's gone
-	
+
 		value += amount;
 		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
 	}
@@ -82,11 +85,11 @@ public class LifeFormEnergy implements Energy {
 	public boolean equals(Object obj) {
 		LifeFormEnergy other = (LifeFormEnergy) obj;
 		return Double.doubleToLongBits(decay) == Double.doubleToLongBits(other.decay)
-				&& Double.doubleToLongBits(initialValue) == Double.doubleToLongBits(other.initialValue)
-				&& Double.doubleToLongBits(maxForAge) == Double.doubleToLongBits(other.maxForAge)
-				&& Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
+			&& Double.doubleToLongBits(initialValue) == Double.doubleToLongBits(other.initialValue)
+			&& Double.doubleToLongBits(maxForAge) == Double.doubleToLongBits(other.maxForAge)
+			&& Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
 	}
-	
+
 	@Override
 	public String toString() {
 		return NumberFormatter.format(getValue()) + " of " + NumberFormatter.format(getMaximumValue());

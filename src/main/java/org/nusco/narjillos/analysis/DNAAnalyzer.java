@@ -43,7 +43,7 @@ public class DNAAnalyzer {
 		List<DNA> liveDna = dnaLog.getLiveDna();
 		DNA result = null;
 		int lowestLevenshteinDistance = Integer.MAX_VALUE;
-		for (DNA dna: liveDna) {
+		for (DNA dna : liveDna) {
 			int currentLevenshteinDistance = totalLevenshteinDistanceFromTheRestOfThePool(dna, liveDna);
 			if (currentLevenshteinDistance < lowestLevenshteinDistance) {
 				result = dna;
@@ -94,14 +94,14 @@ public class DNAAnalyzer {
 		result.put(0L, new LinkedList<Long>());
 		for (DNA dna : allDNA)
 			result.put(dna.getId(), new LinkedList<Long>());
-		for (DNA dna : allDNA) 
+		for (DNA dna : allDNA)
 			result.get(dna.getParentId()).add(dna.getId());
 		return result;
 	}
 
 	private int totalLevenshteinDistanceFromTheRestOfThePool(DNA dna, List<DNA> aliveDna) {
 		int result = 0;
-		for (DNA otherDna: aliveDna) {
+		for (DNA otherDna : aliveDna) {
 			if (!otherDna.equals(dna))
 				result += dna.getLevenshteinDistanceFrom(otherDna);
 		}
@@ -126,10 +126,10 @@ public class DNAAnalyzer {
 				return null;
 
 			alreadyExplored.add(ancestor);
-			
+
 			if (!ancestor.hasParent())
 				return ancestor;
-			
+
 			ancestor = dnaLog.getDna(ancestor.getParentId());
 		}
 	}

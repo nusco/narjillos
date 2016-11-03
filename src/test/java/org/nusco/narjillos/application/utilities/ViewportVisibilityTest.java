@@ -11,7 +11,7 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
 public class ViewportVisibilityTest {
 
 	Viewport viewport;
-	
+
 	@Before
 	public void setUpViewPort() {
 		//
@@ -71,7 +71,7 @@ public class ViewportVisibilityTest {
 	public void hasATolerance() {
 		assertFalse(viewport.isVisible(Vector.cartesian(49, 49), 0));
 		assertTrue(viewport.isVisible(Vector.cartesian(49, 49), 3));
-		
+
 		assertFalse(viewport.isVisible(Vector.cartesian(1, 1), 0));
 		assertTrue(viewport.isVisible(Vector.cartesian(1, 1), 100));
 	}
@@ -88,7 +88,7 @@ public class ViewportVisibilityTest {
 
 		viewport.zoomTo(1.2);
 		stabilizeViewport();
-		
+
 		assertTrue(viewport.isVisible(Vector.cartesian(49, 79), 0));
 		assertTrue(viewport.isVisible(Vector.cartesian(151, 121), 0));
 	}
@@ -97,7 +97,7 @@ public class ViewportVisibilityTest {
 	public void takesPositionIntoAccountToDecideOnVisibility() {
 		assertFalse(viewport.isVisible(Vector.cartesian(49, 79), 0));
 		assertTrue(viewport.isVisible(Vector.cartesian(149, 119), 0));
-		
+
 		viewport.moveBy(Vector.cartesian(-10, -10));
 		stabilizeViewport();
 

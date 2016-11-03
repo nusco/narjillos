@@ -83,12 +83,13 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 		int eggVelocityGene = 81;
 		int eggIntervalGene = 10;
 
-		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redGene, greenGene, blueGene, metabolicRateGene, waveBeatRatioGene, byproductGene, energyToChildrenGene, eggVelocityGene, eggIntervalGene);
+		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redGene, greenGene, blueGene,
+			metabolicRateGene, waveBeatRatioGene, byproductGene, energyToChildrenGene, eggVelocityGene, eggIntervalGene);
 		HeadBuilder builder = getConcreteOrganBuilder(chromosome);
-		Head head = (Head)builder.buildOrgan(null, 0);
-		
+		Head head = (Head) builder.buildOrgan(null, 0);
+
 		head.growToAdultFormWithChildren();
-		
+
 		assertEquals(30, head.getLength(), 0);
 		assertEquals(25, head.getThickness(), 0.01);
 		assertEquals(new Fiber(50, 51, 52), head.getFiber());

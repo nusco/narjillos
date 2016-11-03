@@ -12,10 +12,12 @@ public class Vector {
 	}
 
 	public final double x;
+
 	public final double y;
 
 	// cached fields (for performance)
 	private double angle = Double.NaN;
+
 	private double length = Double.NaN;
 
 	public static Vector polar(double degrees, double length) {
@@ -40,10 +42,10 @@ public class Vector {
 	public double getAngle() throws ZeroVectorAngleException {
 		if (isZero())
 			throw new ZeroVectorAngleException();
-		
+
 		if (Double.isNaN(angle))
 			angle = FastMath.atan(y, x);
-		
+
 		return angle;
 	}
 
@@ -87,7 +89,7 @@ public class Vector {
 			return false;
 		Vector other = (Vector) obj;
 		return Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
-				&& Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
+			&& Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
 	}
 
 	public boolean approximatelyEquals(Vector other) {

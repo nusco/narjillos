@@ -21,7 +21,7 @@ public class Embryo {
 	public Embryo(DNA dna) {
 		this.dna = dna;
 	}
-	
+
 	public Body develop() {
 		List<OrganBuilder> organBuilders = getOrganBuilders();
 		BodyPlan bodyPlan = new BodyPlan(organBuilders.toArray(new OrganBuilder[0]));
@@ -38,7 +38,7 @@ public class Embryo {
 			Chromosome chromosome = iterator.next();
 			result.add(new BodySegmentBuilder(chromosome));
 		}
-		
+
 		return result;
 	}
 }

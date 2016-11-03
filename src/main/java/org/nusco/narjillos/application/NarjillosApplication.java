@@ -33,13 +33,17 @@ abstract class NarjillosApplication extends Application {
 	private Dish dish;
 
 	protected StoppableThread modelThread;
+
 	protected StoppableThread viewThread;
 
 	private Viewport viewport;
+
 	private Locator locator;
+
 	private ThingTracker tracker;
 
 	private volatile boolean[] isModelInitialized = new boolean[] { false };
+
 	private volatile boolean mainApplicationStopped = false;
 
 	protected static String[] getProgramArguments() {
@@ -54,14 +58,14 @@ abstract class NarjillosApplication extends Application {
 	public void start(Stage primaryStage) {
 		FastMath.setUp();
 		Platform.setImplicitExit(true);
-		
+
 		// Use a single thread to tick narjillos when running an app.
 		// The idea is that parallel processing is essential for speed
 		// when you run a command-line experiment - but when you run
 		// with graphics, normal realtime speed is adequate, and you
 		// want to save CPU cores for the graphics instead.
 		Ecosystem.numberOfBackgroundThreads = 1;
-		
+
 		startModelThread(getProgramArguments());
 
 		System.gc(); // minimize GC during the first stages on animation
@@ -117,7 +121,7 @@ abstract class NarjillosApplication extends Application {
 	protected boolean isMainApplicationStopped() {
 		return mainApplicationStopped;
 	}
-	
+
 	private void startModelThread(final String[] arguments) {
 		modelThread = createModelThread(arguments, isModelInitialized);
 		modelThread.setName("model thread");
@@ -125,13 +129,13 @@ abstract class NarjillosApplication extends Application {
 		// (the current simulation runs just fine at 25 ticks per
 		// second on regular computers). So demote the priority
 		// of the simulation.
-		modelThread.setPriority(Thread.MIN_PRIORITY);	
+		modelThread.setPriority(Thread.MIN_PRIORITY);
 		modelThread.start();
 		while (!isModelInitialized[0])
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-		}
+			}
 	}
 
 	private void startViewThread(final Group root) {
@@ -142,12 +146,14 @@ abstract class NarjillosApplication extends Application {
 
 	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
+
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
 				viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
 			}
 		});
 		scene.heightProperty().addListener(new ChangeListener<Number>() {
+
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
 				viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
@@ -200,20 +206,20 @@ abstract class NarjillosApplication extends Application {
 	protected String getEnvironmentStatistics() {
 		Environment environment = getDish().getEnvironment();
 		return "Narj: " + environment.getNumberOfNarjillos()
-				+ " / Eggs: " + environment.getNumberOfEggs()
-				+ " / Food: " + environment.getNumberOfFoodPellets();
+			+ " / Eggs: " + environment.getNumberOfEggs()
+			+ " / Food: " + environment.getNumberOfFoodPellets();
 	}
 
 	protected boolean isBusy() {
 		return getDish().isBusy();
 	}
-	
+
 	protected void copyDNAToClipboard(Vector clickedPositionEC) {
 		Narjillo narjillo = (Narjillo) getLocator().findNarjilloAt(clickedPositionEC);
 
 		if (narjillo == null)
 			return;
-		
+
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 	}

@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 /**
  * Formats numbers for pretty printing.
- * 
+ * <p>
  * For example, 2000 becomes 2K, 1200000 becomes 1.2M, and so on.
  */
 public class NumberFormatter {

@@ -156,10 +156,8 @@ public class Ecosystem extends Environment {
 
 	public void updateTargets() {
 		synchronized (narjillos) {
-			narjillos.stream().forEach((narjillo) -> {
-				Vector closestTarget = findClosestFood(narjillo);
-				narjillo.setTarget(closestTarget);
-			});
+			narjillos.stream()
+				.forEach(narjillo -> setFoodTarget(narjillo));
 		}
 	}
 
@@ -210,11 +208,13 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
-		new LinkedList<>(space.getAll("egg")).stream().forEach((thing) -> tickEgg((Egg) thing, numGen));
+		new LinkedList<>(space.getAll("egg")).stream()
+			.forEach(thing -> tickEgg((Egg) thing, numGen));
 
 		synchronized (narjillos) {
-			new LinkedList<>(narjillos).stream().filter((narjillo) -> (narjillo.isDead()))
-					.forEach((narjillo) -> removeNarjillo(narjillo, dnaLog));
+			new LinkedList<>(narjillos).stream()
+				.filter(narjillo -> narjillo.isDead())
+				.forEach(narjillo -> removeNarjillo(narjillo, dnaLog));
 		}
 
 		tickNarjillos(numGen);
@@ -225,10 +225,14 @@ public class Ecosystem extends Environment {
 		}
 
 		synchronized (narjillos) {
-			narjillos.stream().forEach((narjillo) -> {
-				maybeLayEgg(narjillo, dnaLog, numGen);
-			});
+			narjillos.stream()
+				.forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
 		}
+	}
+
+	private void setFoodTarget(Narjillo narjillo) {
+		Vector closestTarget = findClosestFood(narjillo);
+		narjillo.setTarget(closestTarget);
 	}
 
 	private Set<Thing> getCollisions(Segment movement) {
@@ -273,7 +277,8 @@ public class Ecosystem extends Environment {
 		breathe();
 		
 		// Consume food
-		narjillosToCollidedFood.entrySet().stream().forEach((entry) -> {
+		narjillosToCollidedFood.entrySet().stream()
+			.forEach(entry -> {
 			Narjillo narjillo = entry.getKey();
 			Set<Thing> collidedFood = entry.getValue();
 			consume(narjillo, collidedFood, numGen);
@@ -331,17 +336,15 @@ public class Ecosystem extends Environment {
 
 	private void updateTargets(Thing food) {
 		synchronized (narjillos) {
-			narjillos.stream().filter((narjillo) -> (narjillo.getTarget().equals(food.getPosition()))).forEach((narjillo) -> {
-				Vector closestTarget = findClosestFood(narjillo);
-				narjillo.setTarget(closestTarget);
-			});
+			narjillos.stream()
+				.filter(narjillo -> narjillo.getTarget().equals(food.getPosition()))
+				.forEach(narjillo -> setFoodTarget(narjillo));
 		}
 	}
 
 	private void consume(Narjillo narjillo, Set<Thing> foodPellets, NumGen numGen) {
-		foodPellets.stream().forEach((foodPellet) -> {
-			consumeFood(narjillo, (FoodPellet) foodPellet, numGen);
-		});
+		foodPellets.stream()
+			.forEach(foodPellet -> consumeFood(narjillo, (FoodPellet) foodPellet, numGen));
 	}
 
 	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, NumGen numGen) {

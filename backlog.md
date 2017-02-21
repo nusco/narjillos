@@ -3,6 +3,8 @@
 ## Outer Space
 > goal: keeping navigation nice while paving the road to collision detection
 
+* Remove background box from DNA browser  
+
 * Make edges visible when zoomed in  
   Simple darker line. Good balance between nice graphics and clearly visible edges.  
 
@@ -340,6 +342,12 @@
 >goal: specialized creatures  
  
     More qualities of the creatures are determined by genes instead of being hard-coded.
+
+* Chromosome swapping mutation  
+* Chromosome removal mutation  
+* Chromosome duplication mutation  
+* Chromosome duplication with mirroring mutation  
++ Separated frequency configuration for different types of mutations  
 
 + Max lifespan is geneticaly determined  
   within a limit  

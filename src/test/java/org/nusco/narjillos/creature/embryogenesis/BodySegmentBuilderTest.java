@@ -98,8 +98,8 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 
 		BodyPart bodyPart = (BodyPart) builder.buildOrgan(head, 1);
 
-		head.updateGeometry();
-		bodyPart.updateGeometry();
+		head.update();
+		bodyPart.update();
 
 		assertEquals(new Fiber(47, 59, 71), bodyPart.getFiber());
 		assertEquals(-25, bodyPart.getAbsoluteAngle(), 0);

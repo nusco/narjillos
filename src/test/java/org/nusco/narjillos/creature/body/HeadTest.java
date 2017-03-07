@@ -45,7 +45,7 @@ public class HeadTest extends ConnectedOrganTest {
 	public void hasACenterOfMass() {
 		Head head = new Head(new HeadParameters(10, 6));
 		head.setAngleToParent(90);
-		head.updateGeometry();
+		head.update();
 
 		head.growToAdultFormWithChildren();
 

@@ -36,8 +36,8 @@ public class BodyPartTest extends ConnectedOrganTest {
 
 	@Test
 	public void startsAtItsParentsEndPoint() {
-		parent.updateGeometry();
-		getOrgan().updateGeometry();
+		parent.update();
+		getOrgan().update();
 
 		assertEquals(parent.getEndPoint(), getOrgan().getStartPoint());
 	}
@@ -48,9 +48,9 @@ public class BodyPartTest extends ConnectedOrganTest {
 		ConnectedOrgan organ1 = new BodyPart(new BodyPartParameters(0, 0, head, 30));
 		Organ organ2 = new BodyPart(new BodyPartParameters(0, 0, organ1, -10));
 
-		head.updateGeometry();
-		organ1.updateGeometry();
-		organ2.updateGeometry();
+		head.update();
+		organ1.update();
+		organ2.update();
 
 		assertEquals(20, organ2.getAbsoluteAngle(), 0);
 	}

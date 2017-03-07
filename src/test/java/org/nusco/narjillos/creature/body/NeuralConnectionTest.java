@@ -14,9 +14,9 @@ public abstract class NeuralConnectionTest {
 		final ClickNerve nerve3 = new ClickNerve();
 
 		MovingOrgan head = new Head(new HeadParameters());
-		ConnectedOrgan child1 = head.addChild(new BodyPart(nerve1));
-		child1.addChild(new BodyPart(nerve2));
-		head.addChild(new BodyPart(nerve3));
+		ConnectedOrgan child1 = head.addChild(new BodyPart(new BodyPartParameters(0, 0, head, 0), nerve1));
+		child1.addChild(new BodyPart(new BodyPartParameters(0, 0, child1, 0), nerve2));
+		head.addChild(new BodyPart(new BodyPartParameters(0, 0, head, 0), nerve3));
 
 		head.tick(0, 0, 1);
 

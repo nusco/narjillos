@@ -5,7 +5,7 @@ import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 
 /**
- * Enahnces organs with the notion of time , embodied by the tick() method. This
+ * Enhances organs with the notion of time, embodied by the tick() method. This
  * means that the organ moves (see calculateNewAngleToParent()).
  */
 public abstract class MovingOrgan extends ConnectedOrgan {
@@ -25,7 +25,7 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 		double processedPercentOfAmplitude = getNerve().tick(inputSignal);
 		setAngleToParent(calculateNewAngleToParent(processedPercentOfAmplitude, angleToTarget));
 
-		updateGeometry();
+		update();
 
 		for (ConnectedOrgan child : getChildren())
 			((MovingOrgan) child).tick(angleToTarget, processedPercentOfAmplitude, level + 1);
@@ -42,7 +42,7 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 	protected abstract double calculateNewAngleToParent(double targetAngle, double angleToTarget);
 
 	protected void updateTree() {
-		updateGeometry();
+		update();
 
 		for (ConnectedOrgan child : getChildren())
 			((MovingOrgan) child).updateTree();
@@ -54,7 +54,8 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 	}
 
 	protected void translateBy(Vector translation) {
-		updatePosition();
+		// TODO: is this early cache update really how it's supposed to work?
+		updateAfterTranslation();
 
 		for (ConnectedOrgan child : getChildren())
 			((MovingOrgan) child).translateBy(translation);

@@ -51,7 +51,7 @@ public abstract class ConnectedOrgan extends Organ {
 
 	public void growToAdultFormWithChildren() {
 		growBy(Integer.MAX_VALUE);
-		updateGeometry();
+		update();
 
 		for (ConnectedOrgan child : getChildren())
 			child.growToAdultFormWithChildren();

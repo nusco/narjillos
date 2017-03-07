@@ -34,9 +34,10 @@ public abstract class Organ implements Bounded {
 
 	private double thickness;
 
-	// Caching - ugly, but has huge performance benefits. These will be updated
-	// at start, and in the update() methods.
-	// All volatile, to avoid too much synchronization.
+	// Caching - ugly, but has huge performance benefits.
+	// The following fields will be updated at start, and
+	// then in the update*() methods.
+	// They're all volatile, to avoid too much synchronization.
 	private volatile double cachedAbsoluteAngle;
 
 	private volatile Vector cachedStartPoint;
@@ -71,7 +72,7 @@ public abstract class Organ implements Bounded {
 
 	// Must be called to update the state of the organ. It will call into
 	// calculateAbsoluteAngle() and calculateStartPoint().
-	public final void updateGeometry() {
+	public final void update() {
 		cachedAbsoluteAngle = calculateAbsoluteAngle();
 		cachedVector = calculateVector();
 		cachedStartPoint = calculateStartPoint();
@@ -81,10 +82,10 @@ public abstract class Organ implements Bounded {
 		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
-	// Like updateGeometry() but much cheaper. It can only be called after pure
-	// translations. Don't call after a rotation, because it doesn't update
+	// Like update() but much cheaper. It can only be called after pure
+	// translations. Don't call after a rotation, because it won't update
 	// angles.
-	public final void updatePosition() {
+	public final void updateAfterTranslation() {
 		cachedStartPoint = calculateStartPoint();
 		cachedEndPoint = calculateEndPoint();
 		cachedSegment = calculateSegment();

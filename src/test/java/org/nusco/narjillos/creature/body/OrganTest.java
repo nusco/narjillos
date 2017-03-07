@@ -21,7 +21,7 @@ public abstract class OrganTest {
 	public void hasALengthThatGrowsWithTime() {
 		assertEquals(5, organ.getLength(), 0);
 
-		((ConnectedOrgan) organ).growToAdultFormWithChildren();
+		organ.growToAdultFormWithChildren();
 
 		assertEquals(50, organ.getLength(), 0);
 	}

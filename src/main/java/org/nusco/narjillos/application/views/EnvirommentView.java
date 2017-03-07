@@ -143,7 +143,7 @@ public class EnvirommentView {
 	}
 
 	private synchronized Collection<ThingView> getThingViews() {
-		return new HashSet<ThingView>(thingsToViews.values());
+		return new HashSet<>(thingsToViews.values());
 	}
 
 	private synchronized ThingView addThingView(Thing thing) {

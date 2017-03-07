@@ -84,7 +84,7 @@ public abstract class DNALogTest {
 		dnaLog.markAsDead(42);
 
 		assertEquals(dna3, dnaLog.getLiveDna().get(0));
-		assertFalse(dnaLog.getLiveDna().contains(42));
+		assertFalse(dnaLog.getLiveDna().contains(dna1));
 		assertEquals(dna2, dnaLog.getLiveDna().get(1));
 	}
 

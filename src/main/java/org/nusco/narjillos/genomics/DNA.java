@@ -1,5 +1,6 @@
 package org.nusco.narjillos.genomics;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -164,7 +165,7 @@ public class DNA implements Iterable<Chromosome> {
 
 	private List<Integer[]> mutateChromosome(NumGen numGen, Chromosome chromosome) {
 		if (isSkipMutation(numGen))
-			return new LinkedList<Integer[]>();
+			return new LinkedList<>();
 
 		// duplicate the chromosome
 		List<Integer[]> resultChromosomes = new LinkedList<>();
@@ -209,8 +210,7 @@ public class DNA implements Iterable<Chromosome> {
 	private Integer[] flattenToGenes(List<Integer[]> chromosomes) {
 		List<Integer> result = new LinkedList<>();
 		for (Integer[] chromosome : chromosomes)
-			for (Integer gene : chromosome)
-				result.add(gene);
+			Collections.addAll(result, chromosome);
 		return result.toArray(new Integer[result.size()]);
 	}
 

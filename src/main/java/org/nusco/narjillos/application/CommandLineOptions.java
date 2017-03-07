@@ -160,8 +160,7 @@ public class CommandLineOptions extends Options {
 	private String loadDnaDocument(String fileName) {
 		try {
 			byte[] encoded = Files.readAllBytes(Paths.get(fileName));
-			String dnaDocument = new String(encoded, Charset.defaultCharset());
-			return dnaDocument;
+			return new String(encoded, Charset.defaultCharset());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

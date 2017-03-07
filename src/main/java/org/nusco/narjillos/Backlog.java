@@ -44,12 +44,12 @@ public class Backlog {
 
 	private static int getNumberOfUserStories(List<Feature> features) {
 		return features.stream()
-			.mapToInt(feature -> feature.size())
+			.mapToInt(LinkedList::size)
 			.sum();
 	}
 
 	private static List<Feature> toFeatures(List<String> lines) {
-		ArrayList<Feature> result = new ArrayList<Feature>();
+		ArrayList<Feature> result = new ArrayList<>();
 		LinkedList<String> linesQueue = new LinkedList<>(lines);
 		while (!linesQueue.isEmpty()) {
 			String line = linesQueue.pop();

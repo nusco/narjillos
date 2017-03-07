@@ -28,7 +28,7 @@ public class IsolationEnvironment extends Environment {
 	@Override
 	public synchronized Set<Thing> getThings(String label) {
 		if (label.equals("narjillo") || label.equals(""))
-			return new LinkedHashSet<Thing>(narjillos);
+			return new LinkedHashSet<>(narjillos);
 		return EMPTY_SET;
 	}
 

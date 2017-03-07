@@ -42,7 +42,7 @@ public class Configuration {
 		try {
 			if (result instanceof Double)
 				return (Double) result;
-			return new Double((int) result);
+			return (int) result;
 		} catch (ClassCastException e) {
 			fail("\"" + configSection + ":" + configKey + "\" in config.yaml is not a number");
 			return 0;

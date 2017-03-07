@@ -112,9 +112,7 @@ class Space {
 		getNearbyNeighbors(movement.getStartPoint(), label).stream()
 			.filter(
 				(neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
-			.forEach((neighbor) -> {
-				collidedFoodPellets.add(neighbor);
-			});
+			.forEach(collidedFoodPellets::add);
 
 		return collidedFoodPellets;
 	}
@@ -176,9 +174,7 @@ class Space {
 	private void populateWithFilteredArea(Set<Thing> collector, String label, Set<Thing> area) {
 		area.stream()
 			.filter((thing) -> (thing.getLabel().contains(label)))
-			.forEach((thing) -> {
-				collector.add(thing);
-			});
+			.forEach(collector::add);
 	}
 
 	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things, String label) {
@@ -214,17 +210,15 @@ class Space {
 		return getArea(x, y);
 	}
 
-	private int toAreaCoordinates(double x) {
-		return (int) Math.floor(x / areaSize);
+	private int toAreaCoordinates(double val) {
+		return (int) Math.floor(val / areaSize);
 	}
 
 	private Set<Thing> filterByLabel(Set<Thing> things, String label) {
 		Set<Thing> result = new LinkedHashSet<>();
 		things.stream()
 			.filter((thing) -> (matches(thing, label)))
-			.forEach((thing) -> {
-				result.add(thing);
-			});
+			.forEach(result::add);
 		return result;
 	}
 

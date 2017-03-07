@@ -66,7 +66,7 @@ public class BoundingBoxTest {
 
 	@Test(expected = RuntimeException.class)
 	public void cannotBeEmpty() {
-		BoundingBox.union(new LinkedHashSet<BoundingBox>());
+		BoundingBox.union(new LinkedHashSet<>());
 	}
 
 	@Test

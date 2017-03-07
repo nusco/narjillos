@@ -162,7 +162,7 @@ public class Ecosystem extends Environment {
 	public void updateTargets() {
 		synchronized (narjillos) {
 			narjillos.stream()
-				.forEach(narjillo -> setFoodTarget(narjillo));
+				.forEach(this::setFoodTarget);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class Ecosystem extends Environment {
 
 		synchronized (narjillos) {
 			new LinkedList<>(narjillos).stream()
-				.filter(narjillo -> narjillo.isDead())
+				.filter(Narjillo::isDead)
 				.forEach(narjillo -> removeNarjillo(narjillo, dnaLog));
 		}
 
@@ -343,7 +343,7 @@ public class Ecosystem extends Environment {
 		synchronized (narjillos) {
 			narjillos.stream()
 				.filter(narjillo -> narjillo.getTarget().equals(food.getPosition()))
-				.forEach(narjillo -> setFoodTarget(narjillo));
+				.forEach(this::setFoodTarget);
 		}
 	}
 

@@ -75,7 +75,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 			}
 
 			private List<DNA> randomGenomes() {
-				List<DNA> result = new LinkedList<DNA>();
+				List<DNA> result = new LinkedList<>();
 				NumGen numGen = new NumGen((int) (Math.random() * 100000));
 				for (int i = 0; i < 1000; i++)
 					result.add(DNA.random(i, numGen));
@@ -90,7 +90,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(genomesFileName));
 
-					List<DNA> result = new ArrayList<DNA>();
+					List<DNA> result = new ArrayList<>();
 					String nextLine = reader.readLine();
 					while (nextLine != null) {
 						result.add(new DNA(1, nextLine.trim()));
@@ -128,13 +128,9 @@ public class DNABrowserApplication extends NarjillosApplication {
 					getTracker().tick();
 					ecosystemView.tick();
 
-					Platform.runLater(new Runnable() {
-
-						@Override
-						public void run() {
-							update(root);
-							renderingFinished = true;
-						}
+					Platform.runLater(() -> {
+						update(root);
+						renderingFinished = true;
 					});
 
 					waitFor(state.getFramesPeriod(), startTime);
@@ -164,42 +160,36 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 	@Override
 	protected void registerInteractionHandlers(final Scene scene) {
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			public void handle(final KeyEvent keyEvent) {
-				final int SKIP = 10;
-				if (keyEvent.getCode() == KeyCode.LEFT && keyEvent.isControlDown())
-					moveBack(SKIP);
-				else if (keyEvent.getCode() == KeyCode.RIGHT && keyEvent.isControlDown())
-					moveForward(SKIP);
-				else if (keyEvent.getCode() == KeyCode.LEFT && keyEvent.isShiftDown())
-					moveToFirst();
-				else if (keyEvent.getCode() == KeyCode.RIGHT && keyEvent.isShiftDown())
-					moveToLast();
-				else if (keyEvent.getCode() == KeyCode.LEFT)
-					moveBack(1);
-				else if (keyEvent.getCode() == KeyCode.RIGHT)
-					moveForward(1);
-				else if (keyEvent.getCode() == KeyCode.DOWN)
-					resetSpecimen();
-				else if (keyEvent.getCode() == KeyCode.ENTER)
-					getDish().rotateTarget();
-				else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
-					state.toggleSpeed();
-				else if (keyEvent.getCode() == KeyCode.SPACE)
-					autoplay = !autoplay;
-			}
+		scene.setOnKeyPressed(keyEvent -> {
+			final int SKIP = 10;
+			if (keyEvent.getCode() == KeyCode.LEFT && keyEvent.isControlDown())
+				moveBack(SKIP);
+			else if (keyEvent.getCode() == KeyCode.RIGHT && keyEvent.isControlDown())
+				moveForward(SKIP);
+			else if (keyEvent.getCode() == KeyCode.LEFT && keyEvent.isShiftDown())
+				moveToFirst();
+			else if (keyEvent.getCode() == KeyCode.RIGHT && keyEvent.isShiftDown())
+				moveToLast();
+			else if (keyEvent.getCode() == KeyCode.LEFT)
+				moveBack(1);
+			else if (keyEvent.getCode() == KeyCode.RIGHT)
+				moveForward(1);
+			else if (keyEvent.getCode() == KeyCode.DOWN)
+				resetSpecimen();
+			else if (keyEvent.getCode() == KeyCode.ENTER)
+				getDish().rotateTarget();
+			else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
+				state.toggleSpeed();
+			else if (keyEvent.getCode() == KeyCode.SPACE)
+				autoplay = !autoplay;
 		});
 
-		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		scene.setOnMouseClicked(event -> {
+			Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
+			Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
 
-			public void handle(MouseEvent event) {
-				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
-
-				if (event.getClickCount() == 3)
-					copyDNAToClipboard(clickedPositionEC);
-			}
+			if (event.getClickCount() == 3)
+				copyDNAToClipboard(clickedPositionEC);
 		});
 	}
 

@@ -14,8 +14,7 @@ public class Codon {
 	public Codon(int... genes) {
 		if (genes.length != SIZE)
 			throw new RuntimeException("A codon must contain " + SIZE + " genes");
-		for (int i = 0; i < genes.length; i++)
-			this.genes[i] = genes[i];
+		System.arraycopy(genes, 0, this.genes, 0, genes.length);
 	}
 
 	public int getGene(int pos) {

@@ -54,7 +54,7 @@ public class Atmosphere {
 		if (element == ZERO)
 			return 0.0;
 
-		return ((double) levels.get(element)) / saturationElementLevels;
+		return levels.get(element) / saturationElementLevels;
 	}
 
 	@Override

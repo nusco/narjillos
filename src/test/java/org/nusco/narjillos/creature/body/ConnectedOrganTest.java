@@ -46,6 +46,6 @@ public abstract class ConnectedOrganTest extends OrganTest {
 	}
 
 	protected ConnectedOrgan getOrgan() {
-		return (ConnectedOrgan) organ;
+		return organ;
 	}
 }

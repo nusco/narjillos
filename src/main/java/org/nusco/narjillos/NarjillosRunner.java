@@ -26,13 +26,7 @@ public class NarjillosRunner {
 		String applicationVersion = Version.read();
 		final PetriDish dish = new PetriDish(applicationVersion, options, Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_EXPERIMENT * 1000);
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-
-			@Override
-			public void run() {
-				dish.terminate();
-			}
-		});
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> dish.terminate()));
 
 		while (dish.tick())
 			;

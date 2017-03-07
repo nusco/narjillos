@@ -119,9 +119,9 @@ public class SpaceTest {
 	@Test
 	public void neighborsSearchWorksForEdgeAreas() {
 		Thing[] things = new Thing[] {
-			new MockThing(Vector.cartesian(010, 310), 0), // area [0, 3]
-			new MockThing(Vector.cartesian(020, 320), 1), // area [0, 3]
-			new MockThing(Vector.cartesian(010, 210), 2), // area [0, 2]
+			new MockThing(Vector.cartesian(10, 310), 0), // area [0, 3]
+			new MockThing(Vector.cartesian(20, 320), 1), // area [0, 3]
+			new MockThing(Vector.cartesian(10, 210), 2), // area [0, 2]
 			new MockThing(Vector.cartesian(110, 410), 3), // area [1, 4]
 		};
 		for (int i = 0; i < things.length; i++)

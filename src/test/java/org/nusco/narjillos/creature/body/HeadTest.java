@@ -24,7 +24,7 @@ public class HeadTest extends ConnectedOrganTest {
 
 	@Override
 	public void hasAnEndPoint() {
-		((ConnectedOrgan) organ).growToAdultFormWithChildren();
+		organ.growToAdultFormWithChildren();
 
 		assertEquals(Vector.cartesian(50, 0), organ.getEndPoint());
 	}

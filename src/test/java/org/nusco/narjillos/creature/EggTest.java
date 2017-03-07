@@ -1,16 +1,12 @@
 package org.nusco.narjillos.creature;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
+
+import static org.junit.Assert.*;
 
 public class EggTest {
 

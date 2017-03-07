@@ -91,9 +91,9 @@ public class DNAAnalyzer {
 	Map<Long, List<Long>> getParentsToChildren() {
 		List<DNA> allDNA = dnaLog.getAllDna();
 		Map<Long, List<Long>> result = new LinkedHashMap<>();
-		result.put(0L, new LinkedList<Long>());
+		result.put(0L, new LinkedList<>());
 		for (DNA dna : allDNA)
-			result.put(dna.getId(), new LinkedList<Long>());
+			result.put(dna.getId(), new LinkedList<>());
 		for (DNA dna : allDNA)
 			result.get(dna.getParentId()).add(dna.getId());
 		return result;

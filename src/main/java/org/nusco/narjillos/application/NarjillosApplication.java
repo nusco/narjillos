@@ -145,20 +145,10 @@ abstract class NarjillosApplication extends Application {
 	}
 
 	private void bindViewportSizeToWindowSize(final Scene scene, final Viewport viewport) {
-		scene.widthProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-				viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y));
-			}
-		});
-		scene.heightProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-				viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue()));
-			}
-		});
+		scene.widthProperty().addListener(
+			(observableValue, oldSceneWidth, newSceneWidth) -> viewport.setSizeSC(Vector.cartesian(newSceneWidth.doubleValue(), viewport.getSizeSC().y)));
+		scene.heightProperty().addListener(
+			(observableValue, oldSceneHeight, newSceneHeight) -> viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue())));
 	}
 
 	protected abstract void registerInteractionHandlers(Scene scene);

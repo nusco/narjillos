@@ -95,8 +95,7 @@ public class Lab {
 	private static long getPrimaryDNAId(DNAAnalyzer dnaAnalyzer) {
 		DNA dna = dnaAnalyzer.getMostSuccessfulDna();
 		validateDna(dna);
-		long id = dna.getId();
-		return id;
+		return dna.getId();
 	}
 
 	private static void dumpHistory(HistoryLog historyLog) {

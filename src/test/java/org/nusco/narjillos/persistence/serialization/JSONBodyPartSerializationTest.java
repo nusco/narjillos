@@ -39,7 +39,7 @@ public class JSONBodyPartSerializationTest {
 			head.tick(20, 1, 1);
 
 		String json = JSON.toJson(head, Organ.class);
-		Organ deserialized = (Head) JSON.fromJson(json, Organ.class);
+		Organ deserialized = JSON.fromJson(json, Organ.class);
 
 		assertEquals(head.getLength(), deserialized.getLength(), 0.0);
 		assertEquals(head.getThickness(), deserialized.getThickness(), 0.0);
@@ -96,7 +96,7 @@ public class JSONBodyPartSerializationTest {
 		parent.addChild(child);
 
 		String json = JSON.toJson(parent, MovingOrgan.class);
-		MovingOrgan deserializedParent = (MovingOrgan) JSON.fromJson(json, MovingOrgan.class);
+		MovingOrgan deserializedParent = JSON.fromJson(json, MovingOrgan.class);
 
 		assertEquals(parent.getLength(), deserializedParent.getLength(), 0);
 		assertEquals(1, deserializedParent.getChildren().size());

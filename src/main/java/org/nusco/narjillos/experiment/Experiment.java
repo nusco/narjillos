@@ -71,7 +71,7 @@ public class Experiment {
 		updateTotalRunningTime();
 		String result = toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
 			+ getTicksChronometer().getTotalTicks() + " ticks";
-		if (!thereAreSurvivors())
+		if (lifeIsExtinct())
 			result += " (EXTINCTION)";
 		return result;
 	}
@@ -82,8 +82,8 @@ public class Experiment {
 		historyLog.saveEntry(this);
 	}
 
-	public boolean thereAreSurvivors() {
-		return ecosystem.getNumberOfNarjillos() > 0 || ecosystem.getNumberOfEggs() > 0;
+	public boolean lifeIsExtinct() {
+		return ecosystem.getNumberOfNarjillos() == 0 && ecosystem.getNumberOfEggs() == 0;
 	}
 
 	// for testing

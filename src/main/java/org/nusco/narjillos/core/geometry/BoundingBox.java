@@ -45,9 +45,7 @@ public class BoundingBox {
 			return false;
 		if (Double.doubleToLongBits(right) != Double.doubleToLongBits(other.right))
 			return false;
-		if (Double.doubleToLongBits(top) != Double.doubleToLongBits(other.top))
-			return false;
-		return true;
+		return Double.doubleToLongBits(top) == Double.doubleToLongBits(other.top);
 	}
 
 	public static BoundingBox union(Set<BoundingBox> boundingBoxes) {

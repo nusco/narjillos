@@ -106,10 +106,8 @@ public class ExperimentHistoryEntry {
 			return false;
 		if (Double.doubleToLongBits(nitrogen) != Double.doubleToLongBits(other.nitrogen))
 			return false;
-		if (h2n != other.h2n || h2o != other.h2o || n2h != other.n2h || n2o != other.n2o || o2h != other.o2h || o2n != other.o2n
-			|| z2h != other.z2h || z2n != other.z2n || z2o != other.z2o)
-			return false;
-		return true;
+		return !(h2n != other.h2n || h2o != other.h2o || n2h != other.n2h || n2o != other.n2o || o2h != other.o2h || o2n != other.o2n
+			|| z2h != other.z2h || z2n != other.z2n || z2o != other.z2o);
 	}
 
 	@Override

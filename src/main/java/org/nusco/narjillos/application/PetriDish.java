@@ -141,7 +141,7 @@ public class PetriDish implements Dish {
 		experiment.saveHistoryEntry();
 		System.out.println(getReport());
 
-		if (!experiment.thereAreSurvivors()) {
+		if (experiment.lifeIsExtinct()) {
 			// extinction!
 			isTerminated = true;
 			if (persistent)

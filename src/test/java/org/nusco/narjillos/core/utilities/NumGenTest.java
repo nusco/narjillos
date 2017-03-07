@@ -48,19 +48,15 @@ public class NumGenTest {
 
 		final ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();
 
-		new Thread() {
-
-			@Override
-			public void run() {
-				try {
-					numGen.nextByte();
-				} catch (RuntimeException e) {
-					results.add(e.getMessage());
-					return;
-				}
-				results.add("no exception");
+		new Thread(() -> {
+			try {
+				numGen.nextByte();
+			} catch (RuntimeException e) {
+				results.add(e.getMessage());
+				return;
 			}
-		}.start();
+			results.add("no exception");
+		}).start();
 
 		while (results.isEmpty())
 			Thread.sleep(10);

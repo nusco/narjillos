@@ -1,5 +1,6 @@
 package org.nusco.narjillos.creature.embryogenesis.bodyplan;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 import org.nusco.narjillos.creature.body.MovingOrgan;
@@ -50,7 +51,7 @@ public class BodyPlan {
 		case SKIP:
 			if (parent == null) {
 				// never skip the first organ (it's the head)
-				result = nextBuilder.buildOrgan(parent, sign);
+				result = nextBuilder.buildOrgan(null, sign);
 				buildChild(result, buildersQueue, sign);
 			} else
 				result = buildBodyTree(parent, buildersQueue, sign);
@@ -66,15 +67,14 @@ public class BodyPlan {
 	}
 
 	private LinkedList<OrganBuilder> copyOf(LinkedList<OrganBuilder> queue) {
-		LinkedList<OrganBuilder> result = new LinkedList<OrganBuilder>();
+		LinkedList<OrganBuilder> result = new LinkedList<>();
 		result.addAll(queue);
 		return result;
 	}
 
 	private LinkedList<OrganBuilder> getBuildersQueue() {
 		LinkedList<OrganBuilder> result = new LinkedList<>();
-		for (int i = 0; i < builders.length; i++)
-			result.add(builders[i]);
+		Collections.addAll(result, builders);
 		return result;
 	}
 }

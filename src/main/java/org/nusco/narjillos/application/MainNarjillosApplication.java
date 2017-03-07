@@ -100,13 +100,9 @@ public class MainNarjillosApplication extends NarjillosApplication {
 					getTracker().tick();
 					ecosystemView.tick();
 
-					Platform.runLater(new Runnable() {
-
-						@Override
-						public void run() {
-							update(root);
-							renderingFinished = true;
-						}
+					Platform.runLater(() -> {
+						update(root);
+						renderingFinished = true;
 					});
 
 					waitFor(state.getFramesPeriod(), startTime);
@@ -167,56 +163,36 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	}
 
 	private void registerMouseClickHandlers(final Scene scene) {
-		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		scene.setOnMouseClicked(event -> {
+			Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
+			Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
 
-			public void handle(MouseEvent event) {
-				Vector clickedPositionSC = Vector.cartesian(event.getSceneX(), event.getSceneY());
-				Vector clickedPositionEC = getViewport().toEC(clickedPositionSC);
+			if (event.getClickCount() == 1)
+				getTracker().stopTracking();
 
-				if (event.getClickCount() == 1)
-					getTracker().stopTracking();
+			if (event.getClickCount() == 2)
+				getTracker().startTrackingThingAt(clickedPositionEC);
 
-				if (event.getClickCount() == 2)
-					getTracker().startTrackingThingAt(clickedPositionEC);
-
-				if (event.getClickCount() == 3)
-					copyDNAToClipboard(clickedPositionEC);
-			}
+			if (event.getClickCount() == 3)
+				copyDNAToClipboard(clickedPositionEC);
 		});
 	}
 
 	private void registerMouseDragHandlers(final Scene scene) {
-		final boolean[] isDragging = new boolean[] { false };
 		final double[] mouseX = new double[] { 0 };
 		final double[] mouseY = new double[] { 0 };
 
-		scene.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				isDragging[0] = true;
-				mouseX[0] = event.getX();
-				mouseY[0] = event.getY();
-			}
+		scene.setOnMousePressed(event -> {
+			mouseX[0] = event.getX();
+			mouseY[0] = event.getY();
 		});
-		scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				isDragging[0] = false;
-			}
-		});
-		scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				getTracker().stopTracking();
-				double translateX = event.getX() - mouseX[0];
-				double translateY = event.getY() - mouseY[0];
-				getViewport().translateBy(Vector.cartesian(-translateX, -translateY));
-				mouseX[0] = event.getX();
-				mouseY[0] = event.getY();
-			}
+		scene.setOnMouseDragged(event -> {
+			getTracker().stopTracking();
+			double translateX = event.getX() - mouseX[0];
+			double translateY = event.getY() - mouseY[0];
+			getViewport().translateBy(Vector.cartesian(-translateX, -translateY));
+			mouseX[0] = event.getX();
+			mouseY[0] = event.getY();
 		});
 	}
 
@@ -241,17 +217,13 @@ public class MainNarjillosApplication extends NarjillosApplication {
 			}
 
 			private EventHandler<ScrollEvent> createMouseScrollHandler() {
-				return new EventHandler<ScrollEvent>() {
-
-					@Override
-					public void handle(ScrollEvent event) {
-						if (event.getDeltaY() <= 0)
-							getViewport().zoomIn();
-						else {
-							getViewport().zoomOut();
-							if (getViewport().isZoomedOutCompletely())
-								getTracker().stopTracking();
-						}
+				return event -> {
+					if (event.getDeltaY() <= 0)
+						getViewport().zoomIn();
+					else {
+						getViewport().zoomOut();
+						if (getViewport().isZoomedOutCompletely())
+							getTracker().stopTracking();
 					}
 				};
 			}
@@ -261,22 +233,12 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	private void registerTouchHandlers(Scene scene) {
 		final double[] initialZoomLevel = new double[] { 0 };
 
-		scene.setOnZoomStarted(new EventHandler<ZoomEvent>() {
-
-			@Override
-			public void handle(ZoomEvent event) {
-				initialZoomLevel[0] = getViewport().getZoomLevel();
-			}
-		});
-		scene.setOnZoom(new EventHandler<ZoomEvent>() {
-
-			@Override
-			public void handle(ZoomEvent event) {
-				double zoomFactor = event.getTotalZoomFactor();
-				getViewport().zoomTo(initialZoomLevel[0] * zoomFactor);
-				if (getViewport().isZoomedOutCompletely())
-					getTracker().stopTracking();
-			}
+		scene.setOnZoomStarted(event -> initialZoomLevel[0] = getViewport().getZoomLevel());
+		scene.setOnZoom(event -> {
+			double zoomFactor = event.getTotalZoomFactor();
+			getViewport().zoomTo(initialZoomLevel[0] * zoomFactor);
+			if (getViewport().isZoomedOutCompletely())
+				getTracker().stopTracking();
 		});
 	}
 

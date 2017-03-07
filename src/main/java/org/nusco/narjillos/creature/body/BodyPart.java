@@ -22,20 +22,20 @@ public class BodyPart extends MovingOrgan {
 	private double cachedMetabolicRate = -1;
 
 	public BodyPart(BodyPartParameters parameters) {
+		this(parameters, new DelayNerve(parameters.getDelay()));
+	}
+
+	public BodyPart(BodyPartParameters parameters, Nerve nerve) {
 		super(parameters.getAdultLength(),
 			parameters.getAdultThickness(),
 			parameters.getParent().getFiber().shift(parameters.getRedShift(), parameters.getGreenShift(), parameters.getBlueShift()),
 			parameters.getParent(),
-			new DelayNerve(parameters.getDelay()),
+			nerve,
 			parameters.getAngleToParentAtRest());
 		this.angleToParentAtRest = parameters.getAngleToParentAtRest();
 		this.orientation = (int) Math.signum(parameters.getAngleToParentAtRest());
 		this.amplitude = parameters.getAmplitude();
 		this.skewing = parameters.getSkewing();
-	}
-
-	BodyPart(Nerve nerve) {
-		this(new BodyPartParameters(0, 0, null, 0));
 	}
 
 	public double getAngleToParentAtRest() {

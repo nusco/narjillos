@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 
-public abstract class NeuralConnectionTest {
+public class NeuralConnectionsTest {
 
 	@Test
 	public void sendsNerveSignalsToItsChildren() {

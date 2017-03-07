@@ -5,11 +5,8 @@
  * semantics. In other words, the classes in here don't know what a
  * specific DNA mean - they treat genes as meaningless data.
  * <p>
- * The most important classes and interfaces here are
- * {@link org.nusco.narjillos.genomics.DNA},
- * {@link org.nusco.narjillos.genomics.Chromosome}, the
- * {@link org.nusco.narjillos.creature.genetics.Creature} interface, and
- * a few support classes that process genes.
+ * The most important classes here are {@link org.nusco.narjillos.genomics.DNA}
+ * and {@link org.nusco.narjillos.genomics.Chromosome}.
  */
 package org.nusco.narjillos.genomics;
 

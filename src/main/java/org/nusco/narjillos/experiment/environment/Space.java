@@ -99,11 +99,11 @@ class Space {
 	}
 
 	/**
-	 * This only searches in the neibhoring areas. So, if the movement is able
+	 * This only searches in the neighboring areas. So, if the movement is able
 	 * to span more than one area, it will fail to check all potential
 	 * collisions. The assumption here is that movements are smaller than the
 	 * areaSize. If this assumption ever becomes limiting, then we'll have to
-	 * make this method smarter, and search all the areas that are intersecated
+	 * make this method smarter, and search all the areas that are intersected
 	 * by the movement, plus their neighbors (potentially including outerSpace).
 	 */
 	public Set<Thing> detectCollisions(Segment movement, String label) {

@@ -31,7 +31,7 @@ public class Backlog {
 		List<Feature> features = toFeatures(loadEntries(BACKLOG_FILE));
 
 		int numberOfUserStories = getNumberOfUserStories(features);
-		String header = "Narjllos Backlog (" + numberOfUserStories + " user stories in " + features.size() + " features)";
+		String header = "Narjillos Backlog (" + numberOfUserStories + " user stories in " + features.size() + " features)";
 		System.out.println(header + ".");
 		System.out.println("(Look in backlog.md for details).\n");
 

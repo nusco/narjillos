@@ -6,7 +6,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
 /**
  * Quick hacky functions to calculate limited velocity in a viscous fluid. No
  * relation to real-life physics, but good enough for our needs. We just want
- * to give dimishing returns to narjillos that get overly fast.
+ * to give diminishing returns to narjillos that get overly fast.
  */
 public class Viscosity {
 

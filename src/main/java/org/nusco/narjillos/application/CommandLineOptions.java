@@ -83,7 +83,7 @@ public class CommandLineOptions extends Options {
 				return;
 
 			if (line.getArgs().length > 1)
-				throw new RuntimeException(getDontUnderstandText());
+				throw new RuntimeException(getDoNotUnderstandText());
 
 			if (getDna() != null || getSeed() != NO_SEED)
 				throw new RuntimeException(
@@ -126,7 +126,7 @@ public class CommandLineOptions extends Options {
 		return stringWriter.getBuffer().toString();
 	}
 
-	private String getDontUnderstandText() {
+	private String getDoNotUnderstandText() {
 		return "I don't understand these arguments.\n" + getHelpText();
 	}
 

@@ -86,7 +86,7 @@ public class ThingTracker {
 			return "demo";
 		if (isFollowing())
 			return "following";
-		return "freeroam";
+		return "freeroaming";
 	}
 
 	private boolean hasBeenDemoTrackingFor(long seconds) {

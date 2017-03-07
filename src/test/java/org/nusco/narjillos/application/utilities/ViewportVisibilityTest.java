@@ -77,7 +77,7 @@ public class ViewportVisibilityTest {
 	}
 
 	@Test
-	public void approximateToTheLongesViewportSize() {
+	public void approximateToTheLongestViewportSize() {
 		assertTrue(viewport.isVisible(Vector.cartesian(100, 70), 0));
 	}
 

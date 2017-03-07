@@ -1,7 +1,7 @@
 package org.nusco.narjillos.creature.embryogenesis;
 
 /**
- * The encoding of phenotipic characters in a chromosome's genes.
+ * The encoding of phenotypic characters in a chromosome's genes.
  * <p>
  * Note that some locations are pleiotropic: they encode different
  * characters, depending on whether they're in the head or a non-head body

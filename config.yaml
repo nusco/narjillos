@@ -2,7 +2,7 @@ dna:
   # A creature's DNA contains a fixed number of chromosomes.
   number_of_chromosomes: 16
 
-  # During copy, a gene can mutate. The likelyhood of that
+  # During copy, a gene can mutate. The likelihood of that
   # happening is mutation_rate. If it does mutate, then the
   # gene's value is either incremented or decremented by a
   # random amount in the range [0, mutation_range].
@@ -81,7 +81,7 @@ egg:
   max_incubation_time: 800
 
   # As a newly laid egg moves, its velocity decays: with each
-  # tick, the velocity is multipled by velocity_decay. Once
+  # tick, the velocity is multiplied by velocity_decay. Once
   # it gets below min_velocity, the velocity is zeroed. 
   velocity_decay: 0.98
   min_velocity: 0.1
@@ -112,7 +112,7 @@ ecosystem:
   # is food_respawn_average_interval_per_block divided by the
   # total number of blocks). If food density ever gets over
   # a maximum (defined by max_food_density_per_1000_blocks),
-  # then food stops respawing.
+  # then food stops respawning.
   food_respawn_average_interval_per_block: 800000
   max_food_density_per_1000_blocks: 0.3
 

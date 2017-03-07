@@ -11,7 +11,7 @@
 + Make space grid visible in debug mode  
   To have a clear visual indication of how large space areas are.  
 
-##Istincts
+##Instincts
 >goal: complex interactions  
 
     Narjillos decide where to go based on their attraction/repulsion to other creatures and things.
@@ -27,17 +27,17 @@
 * Species identification  
   Probably based on DNA SimHashes? Or fibers?  
   
-* Istinct genes  
+* Instinct genes  
   How? Probably just a set of SimHashes and weights?
   Maybe a small set of curves with multiplies and shifters, all determined by the genes?  
 
-+ Attach istincts to food  
++ Attach instincts to food  
   Maybe every Thing must be SimHashed?
 
-* Decide target direction based on istincts  
+* Decide target direction based on instincts  
 
-- Visualize istinct directions  
-- Visualize istincts on other creatures when following a narjillo  
+- Visualize instinct directions  
+- Visualize instincts on other creatures when following a narjillo  
 
 
 ##Predators
@@ -64,7 +64,7 @@
   ...stealing their energy when they "hit" them.
   Probably introduce the concept of "spikes" in the body and consider  
   the tangential movement of leaf segments as an attack. Spikes would  
-  hurt more than blunt segments. The mouth might be spikey by default.
+  hurt more than blunt segments. The mouth might be spiky by default.
 
 + Show damage on narjillos  
   "Bubbles" effect?  
@@ -84,7 +84,7 @@
   Alternately, find a way to make the background solid everywhere (without impacting zoom performance).  
 * Proportional mousewheel scrolling  
   Right now it uses fixed-step zoomIn/zoomOut.  
-+ Disable effects automatically when framerate drops  
++ Disable effects automatically when frame rate drops  
 + Optimize graphics  
 - Independent eye pupils  
 + Smoother contours when zooming in infrared mode  
@@ -120,7 +120,7 @@
   See "Identifying Species by Genetic Clustering" (Murdock, Yaeger) and "The Stochastic QT–Clust Algorithm" (Scharl, Leisch).  
 
 - Track genera/species/mutations separately  
-  They are just different cluster radiuses.  
+  They are just different cluster radii.  
 
 - Track history separately for separate species  
   It's interesting to look at things like average generation for different species, instead of
@@ -133,7 +133,7 @@
 *  Show narjillo stats while browsing germline  
    Pick a few:
    Breathing cycle, adult mass, cumulative body angles, energy to children, metabolic  
-   rate, number of organs (atrophic and not), bodyplan program,  
+   rate, number of organs (atrophic and not), body plan program,  
    total delay, total amplitude, total skewing, total fiber shift, egg velocity, egg interval.  
 
 + Start browser directly from inside Lab program  

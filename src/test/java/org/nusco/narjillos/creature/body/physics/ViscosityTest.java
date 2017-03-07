@@ -9,7 +9,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
 public class ViscosityTest {
 
 	@Test
-	public void doesntKickInUntilACertainVelocity() {
+	public void doesNotKickInUntilACertainVelocityIsReached() {
 		for (int velocity = 0; velocity <= Configuration.PHYSICS_VISCOSITY_KICKIN_VELOCITY; velocity++)
 			assertEquals(velocity, Viscosity.limit(velocity), 0.0);
 	}

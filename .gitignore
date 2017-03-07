@@ -14,6 +14,7 @@ narjillos.iml
 narjillos.ipr
 narjillos.iws
 out/
+.idea/
 
 # NetBeans files
 .nb-gradle/

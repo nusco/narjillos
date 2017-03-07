@@ -8,7 +8,7 @@ import org.nusco.narjillos.core.geometry.Vector;
  */
 public interface Thing {
 
-	public static Thing NULL = new Thing() {
+	Thing NULL = new Thing() {
 
 		@Override
 		public Segment tick() {
@@ -49,17 +49,17 @@ public interface Thing {
 	/**
 	 * @return The movement segment.
 	 */
-	public Segment tick();
+	Segment tick();
 
-	public Vector getPosition();
+	Vector getPosition();
 
-	public Vector getCenter();
+	Vector getCenter();
 
-	public double getRadius();
+	double getRadius();
 
-	public Energy getEnergy();
+	Energy getEnergy();
 
-	public String getLabel();
+	String getLabel();
 
-	public Thing getLastInteractingThing();
+	Thing getLastInteractingThing();
 }

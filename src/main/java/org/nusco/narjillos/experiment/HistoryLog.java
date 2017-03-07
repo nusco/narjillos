@@ -7,13 +7,13 @@ import java.util.List;
  */
 public interface HistoryLog {
 
-	public List<ExperimentHistoryEntry> getEntries();
+	List<ExperimentHistoryEntry> getEntries();
 
-	public ExperimentHistoryEntry getLatestEntry();
+	ExperimentHistoryEntry getLatestEntry();
 
-	public void saveEntry(Experiment experiment);
+	void saveEntry(Experiment experiment);
 
-	public void close();
+	void close();
 
-	public void delete();
+	void delete();
 }

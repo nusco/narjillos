@@ -2,7 +2,7 @@ package org.nusco.narjillos.core.things;
 
 public interface Energy {
 
-	public static final Energy INFINITE = new Energy() {
+	Energy INFINITE = new Energy() {
 
 		@Override
 		public double getValue() {
@@ -41,19 +41,19 @@ public interface Energy {
 		}
 	};
 
-	public double getValue();
+	double getValue();
 
-	public void tick(double additionalEnergy);
+	void tick(double additionalEnergy);
 
-	public double getMaximumValue();
+	double getMaximumValue();
 
-	public void increaseBy(double amount);
+	void increaseBy(double amount);
 
-	public boolean isZero();
+	boolean isZero();
 
 	void absorb(Energy other);
 
-	public void dropToZero();
+	void dropToZero();
 
-	public void damage();
+	void damage();
 }

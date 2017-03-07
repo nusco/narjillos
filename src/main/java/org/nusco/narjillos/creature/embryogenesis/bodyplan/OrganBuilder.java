@@ -8,7 +8,7 @@ import org.nusco.narjillos.creature.body.MovingOrgan;
  */
 public interface OrganBuilder {
 
-	public MovingOrgan buildOrgan(ConnectedOrgan parent, int sign);
+	MovingOrgan buildOrgan(ConnectedOrgan parent, int sign);
 
-	public BodyPlanInstruction getBodyPlanInstruction();
+	BodyPlanInstruction getBodyPlanInstruction();
 }

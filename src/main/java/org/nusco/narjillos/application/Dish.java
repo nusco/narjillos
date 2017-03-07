@@ -7,13 +7,13 @@ import org.nusco.narjillos.experiment.environment.Environment;
  */
 public interface Dish {
 
-	public boolean tick();
+	boolean tick();
 
-	public Environment getEnvironment();
+	Environment getEnvironment();
 
-	public String getStatistics();
+	String getStatistics();
 
-	public void terminate();
+	void terminate();
 
-	public boolean isBusy();
+	boolean isBusy();
 }

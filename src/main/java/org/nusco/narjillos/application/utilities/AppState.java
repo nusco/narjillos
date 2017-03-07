@@ -2,11 +2,11 @@ package org.nusco.narjillos.application.utilities;
 
 public interface AppState {
 
-	public Light getLight();
+	Light getLight();
 
-	public Effects getEffects();
+	Effects getEffects();
 
-	public Speed getSpeed();
+	Speed getSpeed();
 
-	public int getFramesPeriod();
+	int getFramesPeriod();
 }

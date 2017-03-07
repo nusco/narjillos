@@ -6,7 +6,7 @@ import org.nusco.narjillos.application.utilities.Viewport;
 
 public interface ItemView {
 
-	public Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn);
+	Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn);
 
-	public boolean isVisible(Viewport viewport);
+	boolean isVisible(Viewport viewport);
 }

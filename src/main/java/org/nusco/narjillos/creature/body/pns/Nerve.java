@@ -5,5 +5,5 @@ package org.nusco.narjillos.creature.body.pns;
  */
 public interface Nerve {
 
-	public double tick(double inputSignal);
+	double tick(double inputSignal);
 }

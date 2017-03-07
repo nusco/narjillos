@@ -10,7 +10,7 @@ public enum Speed {
 
 	private String description;
 
-	private Speed(String description) {
+	Speed(String description) {
 		this.description = description;
 	}
 

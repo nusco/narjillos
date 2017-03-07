@@ -163,8 +163,6 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
 				event.consume();
 			}
-
-			;
 		});
 	}
 

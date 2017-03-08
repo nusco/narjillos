@@ -16,7 +16,7 @@ import org.nusco.narjillos.core.things.Thing;
 
 public class SpaceTest {
 
-	private Space space = new Space(10_000);
+	private final Space space = new Space(10_000);
 
 	@Test
 	public void isDividedIntoAGridOfSquareAreas() {
@@ -46,8 +46,8 @@ public class SpaceTest {
 			new MockThing(Vector.cartesian(610, 410), 5), // area [6, 4]
 			new MockThing(Vector.cartesian(810, 810), 6), // area [8, 8]
 		};
-		for (int i = 0; i < things.length; i++)
-			space.add(things[i]);
+		for (Thing thing1 : things)
+			space.add(thing1);
 
 		Thing thing = things[0]; // area [5, 3]
 		Set<Thing> neighbors = space.getNearbyNeighbors(thing, "");
@@ -70,8 +70,8 @@ public class SpaceTest {
 			thingThatStays,
 			thingThatGoes
 		};
-		for (int i = 0; i < things.length; i++)
-			space.add(things[i]);
+		for (Thing thing : things)
+			space.add(thing);
 
 		space.remove(thingThatGoes);
 
@@ -95,8 +95,8 @@ public class SpaceTest {
 			new MockThing(Vector.cartesian(510, 510), 0), // area [5, 5]
 			new MockThing(Vector.cartesian(520, 520), 1), // area [5, 5]
 		};
-		for (int i = 0; i < things.length; i++)
-			space.add(things[i]);
+		for (Thing thing : things)
+			space.add(thing);
 
 		Thing referenceThing = things[0]; // area [5, 5]
 		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
@@ -124,8 +124,8 @@ public class SpaceTest {
 			new MockThing(Vector.cartesian(10, 210), 2), // area [0, 2]
 			new MockThing(Vector.cartesian(110, 410), 3), // area [1, 4]
 		};
-		for (int i = 0; i < things.length; i++)
-			space.add(things[i]);
+		for (Thing thing : things)
+			space.add(thing);
 
 		Thing referenceThing = things[0]; // area [0, 3]
 		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
@@ -145,8 +145,8 @@ public class SpaceTest {
 			new MockThing(Vector.cartesian(9810, 9910), 2), // area [98, 99]
 			new MockThing(Vector.cartesian(9910, 9810), 3), // area [99, 98]
 		};
-		for (int i = 0; i < things.length; i++)
-			space.add(things[i]);
+		for (Thing thing : things)
+			space.add(thing);
 
 		Thing referenceThing = things[0]; // area [99, 99]
 		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
@@ -163,8 +163,8 @@ public class SpaceTest {
 			new MockThing(Vector.cartesian(-1, -1), 0),     // outer space
 			new MockThing(Vector.cartesian(10_010, 10_010), 1), // outer space
 		};
-		for (int i = 0; i < things.length; i++)
-			space.add(things[i]);
+		for (Thing thing : things)
+			space.add(thing);
 
 		Thing referenceThing = things[0]; // outer space
 		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
@@ -180,14 +180,14 @@ public class SpaceTest {
 			new MockThing(Vector.cartesian(9920, 9920), 1),
 			new MockThing(Vector.cartesian(10_010, 10_010), 1),
 		};
-		for (int i = 0; i < things.length; i++)
-			space.add(things[i]);
+		for (Thing thing : things)
+			space.add(thing);
 
 		Set<Thing> allTheThings = space.getAll("");
 
 		assertEquals(3, allTheThings.size());
-		for (int i = 0; i < things.length; i++)
-			assertTrue(allTheThings.contains(things[i]));
+		for (Thing thing : things)
+			assertTrue(allTheThings.contains(thing));
 	}
 
 	@Test

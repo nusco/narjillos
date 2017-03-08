@@ -35,7 +35,7 @@ public class StatusBarView {
 	private String getBusyMessage(boolean isSaving) {
 		if (!isSaving)
 			return "";
-		StringBuffer result = new StringBuffer("Busy");
+		StringBuilder result = new StringBuilder("Busy");
 		long halfSecondsCounter = Math.round(System.currentTimeMillis() / 500.0) % 4;
 		for (int i = 0; i < halfSecondsCounter; i++)
 			result.append(".");

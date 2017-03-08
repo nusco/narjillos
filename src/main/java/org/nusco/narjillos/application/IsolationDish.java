@@ -20,11 +20,11 @@ class IsolationDish implements Dish {
 
 	private int currentDnaIndex = 0;
 
-	private IsolationEnvironment environment;
+	private final IsolationEnvironment environment;
 
-	private DNALog dnaLog = new VolatileDNALog();
+	private final DNALog dnaLog = new VolatileDNALog();
 
-	private NumGen numGen = new NumGen(1234);
+	private final NumGen numGen = new NumGen(1234);
 
 	public IsolationDish(List<DNA> dnas) {
 		this.dnas = dnas;

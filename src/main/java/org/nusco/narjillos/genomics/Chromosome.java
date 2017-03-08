@@ -27,7 +27,7 @@ public class Chromosome {
 	@Override
 	public String toString() {
 		final DecimalFormat threeDigits = new DecimalFormat("000");
-		StringBuffer result = new StringBuffer("{");
+		StringBuilder result = new StringBuilder("{");
 		for (int i = 0; i < genes.length - 1; i++)
 			result.append(threeDigits.format(genes[i]) + "_");
 		result.append(threeDigits.format(genes[genes.length - 1]) + "}");

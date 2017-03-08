@@ -12,8 +12,4 @@ public interface HistoryLog {
 	ExperimentHistoryEntry getLatestEntry();
 
 	void saveEntry(Experiment experiment);
-
-	void close();
-
-	void delete();
 }

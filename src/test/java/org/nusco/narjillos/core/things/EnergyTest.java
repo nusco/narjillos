@@ -13,11 +13,9 @@ public class EnergyTest {
 
 	private final double lifespan = 100;
 
-	private Energy energy = new LifeFormEnergy(initialValue, lifespan);
+	private final Energy energy = new LifeFormEnergy(initialValue, lifespan);
 
-	private Energy biggerMassEnergy = new LifeFormEnergy(initialValue * 2, lifespan);
-
-	private Energy otherEnergy = Energy.INFINITE;
+	private final Energy otherEnergy = Energy.INFINITE;
 
 	@Test
 	public void itStartsWithTheInitialValue() {

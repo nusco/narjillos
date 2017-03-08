@@ -114,7 +114,7 @@ public class Backlog {
 
 		@Override
 		public String toString() {
-			StringBuffer result = new StringBuffer();
+			StringBuilder result = new StringBuilder();
 			result.append(ANSI_GREEN + name + ANSI_RESET + "\n");
 			for (String userStory : this) {
 				String storyName = userStory

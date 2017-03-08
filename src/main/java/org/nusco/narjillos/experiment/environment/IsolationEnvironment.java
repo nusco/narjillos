@@ -17,7 +17,7 @@ public class IsolationEnvironment extends Environment {
 
 	private static final Set<Thing> EMPTY_SET = Collections.unmodifiableSet(new LinkedHashSet<Thing>());
 
-	private Set<Narjillo> narjillos = new LinkedHashSet<>();
+	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
 	private double targetAngle = 0;
 

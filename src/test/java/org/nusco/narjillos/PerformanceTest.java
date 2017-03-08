@@ -36,9 +36,9 @@ public class PerformanceTest {
 
 	private static double timeSeconds;
 
-	private static DNALog dnaLog = new PersistentDNALog("x");
+	private static final DNALog dnaLog = new PersistentDNALog("x");
 
-	private static HistoryLog historyLog = new PersistentHistoryLog("x");
+	private static final HistoryLog historyLog = new PersistentHistoryLog("x");
 
 	public static void main(String[] args) throws IOException {
 		ticks = 10_000;
@@ -57,7 +57,6 @@ public class PerformanceTest {
 	@AfterClass
 	public static void deleteDatabase() throws IOException {
 		dnaLog.delete();
-		historyLog.delete();
 	}
 
 	@Before

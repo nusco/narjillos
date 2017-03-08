@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class DNABrowserApplication extends NarjillosApplication {
 
-	private NarjillosApplicationState state = new NarjillosApplicationState();
+	private final NarjillosApplicationState state = new NarjillosApplicationState();
 
 	private volatile boolean autoplay = false;
 
@@ -190,7 +190,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 	}
 
 	@Override
-	protected synchronized IsolationDish getDish() {
+	synchronized IsolationDish getDish() {
 		return (IsolationDish) super.getDish();
 	}
 

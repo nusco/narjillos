@@ -64,8 +64,6 @@ public class Experiment {
 	}
 
 	public String terminate() {
-		dnaLog.close();
-		historyLog.close();
 		ecosystem.terminate();
 
 		updateTotalRunningTime();

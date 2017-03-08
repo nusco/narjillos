@@ -14,7 +14,5 @@ public interface DNALog {
 
 	List<DNA> getLiveDna();
 
-	void close();
-
 	void delete();
 }

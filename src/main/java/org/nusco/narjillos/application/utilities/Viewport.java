@@ -187,9 +187,9 @@ public class Viewport {
 	}
 
 	private double nextZoomCloseupLevel() {
-		for (int i = 0; i < ZOOM_CLOSEUP_LEVELS.length; i++)
-			if (ZOOM_CLOSEUP_LEVELS[i] > targetZoomLevel + 0.01)
-				return ZOOM_CLOSEUP_LEVELS[i];
+		for (double zoomCloseupLevel : ZOOM_CLOSEUP_LEVELS)
+			if (zoomCloseupLevel > targetZoomLevel + 0.01)
+				return zoomCloseupLevel;
 		return getMaxZoomLevel();
 	}
 

@@ -8,7 +8,7 @@ import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 
 public class MouthTest {
 
-	private Mouth mouth = new Mouth();
+	private final Mouth mouth = new Mouth();
 
 	@Test
 	public void pointsAtTarget() {

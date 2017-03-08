@@ -18,8 +18,8 @@ public class SimHash {
 	static int[] calculateBitDensity(Codon[] codons) {
 		int[] result = new int[Codon.HASH_SIZE];
 
-		for (int i = 0; i < codons.length; i++) {
-			int codonHash = codons[i].hashCode();
+		for (Codon codon : codons) {
+			int codonHash = codon.hashCode();
 			for (int j = 0; j < result.length; j++) {
 				int bitMask = 0b1 << (Codon.HASH_SIZE - j - 1);
 				if ((codonHash & bitMask) == 0)

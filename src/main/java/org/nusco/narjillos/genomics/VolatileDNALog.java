@@ -41,10 +41,6 @@ public class VolatileDNALog implements DNALog {
 	}
 
 	@Override
-	public void close() {
-	}
-
-	@Override
 	public void delete() {
 		idToDna.clear();
 		liveDna.clear();

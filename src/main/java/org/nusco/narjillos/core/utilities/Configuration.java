@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.Yaml;
 
 public class Configuration {
 
-	private static Map<String, Map<String, Object>> data = loadConfigurationData();
+	private static final Map<String, Map<String, Object>> data = loadConfigurationData();
 
 	@SuppressWarnings("unchecked")
 	private static Map<String, Map<String, Object>> loadConfigurationData() {

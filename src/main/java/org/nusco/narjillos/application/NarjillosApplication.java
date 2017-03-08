@@ -1,10 +1,17 @@
 package org.nusco.narjillos.application;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import org.nusco.narjillos.application.utilities.Locator;
 import org.nusco.narjillos.application.utilities.StoppableThread;
 import org.nusco.narjillos.application.utilities.ThingTracker;
@@ -14,10 +21,6 @@ import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
-
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 
 abstract class NarjillosApplication extends Application {
 
@@ -39,6 +42,7 @@ abstract class NarjillosApplication extends Application {
 
 	private ThingTracker tracker;
 
+	// TODO: making this volatile means nothing, since it's a final array. Fix.
 	private volatile boolean[] isModelInitialized = new boolean[] { false };
 
 	private volatile boolean mainApplicationStopped = false;

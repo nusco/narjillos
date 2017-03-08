@@ -31,7 +31,7 @@ public class EcosystemTest {
 
 	private Narjillo narjillo2;
 
-	private NumGen numGen = new NumGen(1234);
+	private final NumGen numGen = new NumGen(1234);
 
 	@Before
 	public void initialize() {

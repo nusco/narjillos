@@ -12,9 +12,9 @@ import org.nusco.narjillos.genomics.VolatileDNALog;
 
 public class DNAExporterTest {
 
-	private NumGen numGen = new NumGen(1234);
+	private final NumGen numGen = new NumGen(1234);
 
-	private DNALog dnaLog = new VolatileDNALog();
+	private final DNALog dnaLog = new VolatileDNALog();
 
 	@Before
 	public void setUpGenePool() {

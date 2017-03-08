@@ -18,12 +18,4 @@ public class VolatileHistoryLog implements HistoryLog {
 	@Override
 	public void saveEntry(Experiment experiment) {
 	}
-
-	@Override
-	public void close() {
-	}
-
-	@Override
-	public void delete() {
-	}
 }

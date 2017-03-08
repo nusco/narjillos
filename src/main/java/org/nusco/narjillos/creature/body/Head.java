@@ -12,7 +12,7 @@ public class Head extends MovingOrgan {
 
 	private final double metabolicRate;
 
-	private double waveBeatRatio;
+	private final double waveBeatRatio;
 
 	private final Element byproduct;
 

@@ -16,8 +16,8 @@ class DNADocument {
 
 	public Integer[] toGenes() {
 		String[] lines = document.split("\n");
-		for (int i = 0; i < lines.length; i++) {
-			String cleanedUpLine = stripBraces(lines[i].trim());
+		for (String line : lines) {
+			String cleanedUpLine = stripBraces(line.trim());
 			if (cleanedUpLine.matches("_*\\d.*"))
 				return parseDNAString(cleanedUpLine);
 		}
@@ -25,7 +25,7 @@ class DNADocument {
 	}
 
 	public static String toString(DNA dna) {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		for (Chromosome chromosome : dna)
 			result.append(chromosome.toString());
 		return result.toString();
@@ -39,9 +39,9 @@ class DNADocument {
 		String[] numbers = dnaString.split("_");
 		List<Integer> result = new LinkedList<>();
 		try {
-			for (int i = 0; i < numbers.length; i++)
-				if (!numbers[i].isEmpty())
-					result.add(Integer.parseInt(numbers[i]));
+			for (String number : numbers)
+				if (!number.isEmpty())
+					result.add(Integer.parseInt(number));
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Illegal DNA syntax: " + dnaString);
 		}

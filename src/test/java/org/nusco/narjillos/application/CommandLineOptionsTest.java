@@ -9,7 +9,7 @@ import org.nusco.narjillos.core.utilities.Version;
 
 public class CommandLineOptionsTest {
 
-	private String EXPERIMENT_ID = "1234-" + Version.read();
+	private final String EXPERIMENT_ID = "1234-" + Version.read();
 
 	@Test
 	public void acceptsEmptyArguments() {

@@ -27,7 +27,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 	private static final long PAN_SPEED = 200;
 
-	private NarjillosApplicationState state = new NarjillosApplicationState();
+	private final NarjillosApplicationState state = new NarjillosApplicationState();
 
 	@Override
 	protected String getName() {

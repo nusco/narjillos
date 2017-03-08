@@ -262,9 +262,9 @@ public class Body {
 
 		double totalX = 0;
 		double totalY = 0;
-		for (int i = 0; i < weightedCentersOfMass.length; i++) {
-			totalX += weightedCentersOfMass[i].x;
-			totalY += weightedCentersOfMass[i].y;
+		for (Vector weightedCenterOfMass : weightedCentersOfMass) {
+			totalX += weightedCenterOfMass.x;
+			totalY += weightedCenterOfMass.y;
 		}
 
 		return Vector.cartesian(totalX / mass, totalY / mass);

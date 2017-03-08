@@ -5,7 +5,7 @@ import org.nusco.narjillos.experiment.environment.Environment;
 /**
  * A microscope dish. It contains an environment for narjillos.
  */
-public interface Dish {
+interface Dish {
 
 	boolean tick();
 

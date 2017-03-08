@@ -55,14 +55,12 @@ public class DNAAnalyzer {
 
 	public String getDNAStatistics(DNA dna) {
 		Narjillo specimen = new Narjillo(dna, Vector.ZERO, 90, Energy.INFINITE);
-		StringBuilder result = new StringBuilder();
-		result.append("Number of organs   => ").append(specimen.getOrgans().size()).append("\n");
-		result.append("Adult mass         => ").append(NumberFormatter.format(specimen.getBody().getAdultMass())).append("\n");
-		result.append("Wave beat ratio    => ").append(NumberFormatter.format(specimen.getBody().getWaveBeatRatio())).append("\n");
-		result.append("Energy to children => ").append(NumberFormatter.format(specimen.getBody().getEnergyToChildren())).append("\n");
-		result.append("Egg interval       => ").append(specimen.getBody().getEggInterval()).append("\n");
-		result.append("Egg velocity       => ").append(specimen.getBody().getEggVelocity()).append("\n");
-		return result.toString();
+		return "Number of organs   => " + specimen.getOrgans().size() + "\n" +
+			"Adult mass         => " + NumberFormatter.format(specimen.getBody().getAdultMass()) + "\n" +
+			"Wave beat ratio    => " + NumberFormatter.format(specimen.getBody().getWaveBeatRatio()) + "\n" +
+			"Energy to children => " + NumberFormatter.format(specimen.getBody().getEnergyToChildren()) + "\n" +
+			"Egg interval       => " + specimen.getBody().getEggInterval() + "\n" +
+			"Egg velocity       => " + specimen.getBody().getEggVelocity() + "\n";
 	}
 
 	public int getNumberOfLivingGermlines() {

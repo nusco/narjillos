@@ -33,7 +33,7 @@ class MockOrgan extends MovingOrgan {
 
 	@Override
 	public String toString() {
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		if (sign < 0)
 			result.append("^");
 		result.append(Integer.toString(id));

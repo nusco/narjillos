@@ -8,7 +8,7 @@ public enum Speed {
 
 	private static final int TICKS_PER_SECOND = 30;
 
-	private String description;
+	private final String description;
 
 	Speed(String description) {
 		this.description = description;

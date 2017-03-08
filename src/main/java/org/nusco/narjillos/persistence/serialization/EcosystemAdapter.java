@@ -3,7 +3,7 @@ package org.nusco.narjillos.persistence.serialization;
 import java.lang.reflect.Type;
 
 import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.things.FoodPellet;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;

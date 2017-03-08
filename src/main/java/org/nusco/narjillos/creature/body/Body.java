@@ -14,9 +14,9 @@ import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
-import org.nusco.narjillos.core.utilities.Configuration;
-import org.nusco.narjillos.creature.body.physics.RotationsPhysicsEngine;
-import org.nusco.narjillos.creature.body.physics.TranslationsPhysicsEngine;
+import org.nusco.narjillos.core.configuration.Configuration;
+import org.nusco.narjillos.core.physics.RotationsPhysicsEngine;
+import org.nusco.narjillos.core.physics.TranslationsPhysicsEngine;
 
 /**
  * The physical body of a Narjillo, with all its organs and their position in space.

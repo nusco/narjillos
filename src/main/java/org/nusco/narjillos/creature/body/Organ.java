@@ -4,7 +4,7 @@ import org.nusco.narjillos.core.geometry.Bounded;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 /**
  * A segment of a body.

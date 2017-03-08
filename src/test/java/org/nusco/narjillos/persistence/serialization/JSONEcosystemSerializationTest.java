@@ -10,7 +10,7 @@ import java.util.Iterator;
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.things.FoodPellet;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Egg;

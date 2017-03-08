@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
 
 /**

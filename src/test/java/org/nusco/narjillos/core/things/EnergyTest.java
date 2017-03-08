@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 public class EnergyTest {
 

@@ -32,7 +32,7 @@ public interface Thing {
 
 		@Override
 		public Energy getEnergy() {
-			return new LifeFormEnergy(0, 0);
+			return Energy.INFINITE;
 		}
 
 		@Override

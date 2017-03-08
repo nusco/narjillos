@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.core.things.FoodPellet;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;

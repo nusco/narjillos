@@ -7,8 +7,7 @@ import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 import static org.nusco.narjillos.core.chemistry.Element.ZERO;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 public class AtmosphereTest {
 

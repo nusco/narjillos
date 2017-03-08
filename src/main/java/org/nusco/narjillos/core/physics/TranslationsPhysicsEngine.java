@@ -1,4 +1,4 @@
-package org.nusco.narjillos.creature.body.physics;
+package org.nusco.narjillos.core.physics;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 /**
  * The physics of translations.

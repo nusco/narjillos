@@ -1,6 +1,6 @@
 package org.nusco.narjillos.core.things;
 
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumberFormatter;
 
 public class LifeFormEnergy implements Energy {

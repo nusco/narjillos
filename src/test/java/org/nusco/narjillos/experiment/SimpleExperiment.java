@@ -1,8 +1,7 @@
 package org.nusco.narjillos.experiment;
 
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.Version;
-import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.VolatileDNALog;
 

@@ -1,4 +1,4 @@
-package org.nusco.narjillos.core.utilities;
+package org.nusco.narjillos.core.configuration;
 
 import java.io.File;
 import java.io.FileNotFoundException;

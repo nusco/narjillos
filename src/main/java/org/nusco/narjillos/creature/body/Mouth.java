@@ -3,7 +3,7 @@ package org.nusco.narjillos.creature.body;
 import org.nusco.narjillos.core.geometry.Angle;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 /**
  * The mouth of a creature. It reactively points towards food.

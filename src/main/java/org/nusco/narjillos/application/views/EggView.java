@@ -8,7 +8,7 @@ import javafx.scene.transform.Translate;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.geometry.Angle;
 import org.nusco.narjillos.core.geometry.FastMath;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.creature.Egg;
 
 class EggView extends ThingView {

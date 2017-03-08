@@ -1,10 +1,10 @@
-package org.nusco.narjillos.creature.body.physics;
+package org.nusco.narjillos.core.physics;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 public class ViscosityTest {
 

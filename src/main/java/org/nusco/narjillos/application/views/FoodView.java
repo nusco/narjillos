@@ -4,8 +4,8 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
 import org.nusco.narjillos.application.utilities.Viewport;
-import org.nusco.narjillos.core.things.FoodPellet;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 class FoodView extends ThingView {
 

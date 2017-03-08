@@ -5,7 +5,7 @@ import static org.nusco.narjillos.core.chemistry.Element.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 public class Atmosphere {
 

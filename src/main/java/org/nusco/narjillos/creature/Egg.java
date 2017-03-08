@@ -5,7 +5,7 @@ import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
 
@@ -70,6 +70,7 @@ public class Egg implements Thing {
 		return true;
 	}
 
+	@Override
 	public Thing getLastInteractingThing() {
 		if (hatchedNarjillo == null)
 			return Thing.NULL;

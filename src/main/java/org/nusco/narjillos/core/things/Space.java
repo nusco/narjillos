@@ -1,4 +1,4 @@
-package org.nusco.narjillos.experiment.environment;
+package org.nusco.narjillos.core.things;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -7,8 +7,7 @@ import java.util.Set;
 
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 
 /**
  * Partitioned space for fast neighbor searches, collision detection, etc.
@@ -17,7 +16,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
  * So the system needs simulation-level constraints that prevent Things from moving into outer space. (For example, destroying
  * things when they venture into outer space).
  */
-class Space {
+public class Space {
 
 	private static final int SPACE_AREAS_PER_EDGE = 100;
 
@@ -139,7 +138,7 @@ class Space {
 		}
 	}
 
-	double getAreaSize() {
+	public double getAreaSize() {
 		return areaSize;
 	}
 

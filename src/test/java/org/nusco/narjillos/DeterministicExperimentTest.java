@@ -8,7 +8,7 @@ import java.nio.file.Files;
 
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.persistence.PersistentDNALog;

@@ -1,11 +1,9 @@
-package org.nusco.narjillos.experiment.environment;
+package org.nusco.narjillos.core.things;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.things.Thing;
 
 import java.util.Iterator;
 import java.util.Set;

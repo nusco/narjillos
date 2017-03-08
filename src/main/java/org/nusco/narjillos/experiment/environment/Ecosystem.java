@@ -17,13 +17,13 @@ import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.core.things.FoodPellet;
+import org.nusco.narjillos.core.things.Space;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.utilities.Configuration;
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.physics.Viscosity;
+import org.nusco.narjillos.core.physics.Viscosity;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNALog;
 

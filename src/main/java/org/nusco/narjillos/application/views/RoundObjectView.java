@@ -19,22 +19,22 @@ abstract class RoundObjectView implements ItemView {
 		this.radius = radius;
 	}
 
-	protected final Circle getShape() {
-		return shape;
-	}
-
-	protected void moveTo(Vector position) {
-		this.position = position;
-		getShape().getTransforms().clear();
-		getShape().getTransforms().add(new Translate(position.x, position.y));
-	}
-
 	@Override
 	public boolean isVisible(Viewport viewport) {
 		return viewport.isVisible(position, getRadius());
 	}
 
-	protected final double getRadius() {
+	final Circle getShape() {
+		return shape;
+	}
+
+	void moveTo(Vector position) {
+		this.position = position;
+		getShape().getTransforms().clear();
+		getShape().getTransforms().add(new Translate(position.x, position.y));
+	}
+
+	private final double getRadius() {
 		return radius;
 	}
 }

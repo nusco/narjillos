@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 
 public class EggTest {
 
-	DNA dna = new DNA(1, "{1_2_3}");
+	private DNA dna = new DNA(1, "{1_2_3}");
 
-	Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.ZERO, 100, new NumGen(1));
+	private Egg egg = new Egg(dna, Vector.cartesian(10, 20), Vector.ZERO, 100, new NumGen(1));
 
 	@Test
 	public void hatchesANarjilloAfterAnIncubationPeriod() {

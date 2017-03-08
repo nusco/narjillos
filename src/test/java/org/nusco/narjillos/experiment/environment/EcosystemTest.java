@@ -19,19 +19,19 @@ import org.nusco.narjillos.genomics.DNA;
 
 public class EcosystemTest {
 
-	Ecosystem ecosystem;
+	private Ecosystem ecosystem;
 
-	FoodPellet foodPellet1;
+	private FoodPellet foodPellet1;
 
-	FoodPellet foodPellet2;
+	private FoodPellet foodPellet2;
 
-	FoodPellet foodPellet3;
+	private FoodPellet foodPellet3;
 
-	Narjillo narjillo1;
+	private Narjillo narjillo1;
 
-	Narjillo narjillo2;
+	private Narjillo narjillo2;
 
-	NumGen numGen = new NumGen(1234);
+	private NumGen numGen = new NumGen(1234);
 
 	@Before
 	public void initialize() {

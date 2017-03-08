@@ -45,7 +45,7 @@ public abstract class ConnectedOrganTest extends OrganTest {
 		assertFalse(organ.isLeaf());
 	}
 
-	protected ConnectedOrgan getOrgan() {
+	ConnectedOrgan getOrgan() {
 		return organ;
 	}
 }

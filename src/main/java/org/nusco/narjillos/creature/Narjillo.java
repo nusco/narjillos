@@ -170,12 +170,6 @@ public class Narjillo implements Thing {
 		return new Egg(childDNA, position, velocity, energyToChild, numGen);
 	}
 
-	public DNA mutateDna(DNALog dnaLog, DNA parent, NumGen numGen) {
-		DNA result = parent.mutate(numGen.nextSerial(), numGen);
-		dnaLog.save(result);
-		return result;
-	}
-
 	public Element getBreathedElement() {
 		return body.getBreathedElement();
 	}
@@ -203,6 +197,12 @@ public class Narjillo implements Thing {
 
 	public boolean isInPain() {
 		return isInPain;
+	}
+
+	private DNA mutateDna(DNALog dnaLog, DNA parent, NumGen numGen) {
+		DNA result = parent.mutate(numGen.nextSerial(), numGen);
+		dnaLog.save(result);
+		return result;
 	}
 
 	private void forgetPain() {

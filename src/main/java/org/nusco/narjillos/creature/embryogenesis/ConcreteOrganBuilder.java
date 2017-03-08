@@ -17,11 +17,11 @@ abstract class ConcreteOrganBuilder implements OrganBuilder {
 
 	private final Chromosome chromosome;
 
-	public ConcreteOrganBuilder(Chromosome chromosome) {
+	ConcreteOrganBuilder(Chromosome chromosome) {
 		this.chromosome = chromosome;
 	}
 
-	protected Chromosome getChromosome() {
+	Chromosome getChromosome() {
 		return chromosome;
 	}
 

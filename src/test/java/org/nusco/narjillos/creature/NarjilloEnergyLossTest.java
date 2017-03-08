@@ -10,9 +10,9 @@ import org.nusco.narjillos.genomics.DNA;
 
 public class NarjilloEnergyLossTest {
 
-	Narjillo smallerNarjillo;
+	private Narjillo smallerNarjillo;
 
-	Narjillo biggerNarjillo;
+	private Narjillo biggerNarjillo;
 
 	@Before
 	public void initializeNarjillos() {

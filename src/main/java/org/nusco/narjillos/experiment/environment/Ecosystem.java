@@ -195,22 +195,6 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	protected boolean isShuttingDown() {
-		return executorService.isShutdown();
-	}
-
-	protected Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Set<Narjillo> narjillos) {
-		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
-		for (final Narjillo narjillo : narjillos) {
-			result.put(narjillo, executorService.submit(() -> {
-				Segment movement = narjillo.tick();
-				damageIfTouchingEdges(narjillo);
-				return getCollisions(movement);
-			}));
-		}
-		return result;
-	}
-
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
 		new LinkedList<>(space.getAll("egg")).stream()
@@ -233,6 +217,22 @@ public class Ecosystem extends Environment {
 			narjillos.stream()
 				.forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
 		}
+	}
+
+	private Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Set<Narjillo> narjillos) {
+		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
+		for (final Narjillo narjillo : narjillos) {
+			result.put(narjillo, executorService.submit(() -> {
+				Segment movement = narjillo.tick();
+				damageIfTouchingEdges(narjillo);
+				return getCollisions(movement);
+			}));
+		}
+		return result;
+	}
+
+	private boolean isShuttingDown() {
+		return executorService.isShutdown();
 	}
 
 	private void setFoodTarget(Narjillo narjillo) {

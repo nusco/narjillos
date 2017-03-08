@@ -3,7 +3,7 @@ package org.nusco.narjillos.genomics;
 /**
  * A triplet of DNA nucleotides.
  */
-public class Codon {
+class Codon {
 
 	public static final int SIZE = 3;
 

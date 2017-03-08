@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class ViewModeTest {
 
-	NarjillosApplicationState viewMode = new NarjillosApplicationState();
+	private NarjillosApplicationState viewMode = new NarjillosApplicationState();
 
 	@Test
 	public void turningOffTheLightSwitchesToHighSpeed() {

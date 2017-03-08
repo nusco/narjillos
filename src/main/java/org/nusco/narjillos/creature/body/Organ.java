@@ -82,16 +82,6 @@ public abstract class Organ implements Bounded {
 		cachedCenterOfMass = calculateCenterOfMass();
 	}
 
-	// Like update() but much cheaper. It can only be called after pure
-	// translations. Don't call after a rotation, because it won't update
-	// angles.
-	public final void updateAfterTranslation() {
-		cachedStartPoint = calculateStartPoint();
-		cachedEndPoint = calculateEndPoint();
-		cachedSegment = calculateSegment();
-		cachedCenterOfMass = calculateCenterOfMass();
-	}
-
 	public Segment toSegment() {
 		return cachedSegment;
 	}
@@ -105,6 +95,16 @@ public abstract class Organ implements Bounded {
 		return thickness;
 	}
 
+	// Like update() but much cheaper. It can only be called after pure
+	// translations. Don't call after a rotation, because it won't update
+	// angles.
+	final void updateAfterTranslation() {
+		cachedStartPoint = calculateStartPoint();
+		cachedEndPoint = calculateEndPoint();
+		cachedSegment = calculateSegment();
+		cachedCenterOfMass = calculateCenterOfMass();
+	}
+
 	void growBy(int amount) {
 		if (isFullyGrown())
 			return;
@@ -114,10 +114,6 @@ public abstract class Organ implements Bounded {
 
 		// Optimization: don't update the geometry here. Instead, let the
 		// client do it - it knows when that's needed.
-	}
-
-	public boolean isFullyGrown() {
-		return getLength() >= adultLength && getThickness() >= adultThickness;
 	}
 
 	public boolean isAtrophic() {
@@ -171,6 +167,10 @@ public abstract class Organ implements Bounded {
 	protected abstract Vector calculateStartPoint();
 
 	protected abstract double calculateAbsoluteAngle();
+
+	private boolean isFullyGrown() {
+		return getLength() >= adultLength && getThickness() >= adultThickness;
+	}
 
 	private Vector calculateVector() {
 		return Vector.polar(getAbsoluteAngle(), getLength());

@@ -76,7 +76,7 @@ public class BodyPart extends MovingOrgan {
 		return cachedMetabolicRate;
 	}
 
-	protected double calculateSkewing(double angleToTarget) {
+	private double calculateSkewing(double angleToTarget) {
 		double targetSkewing = (angleToTarget % 180) / 180 * getSkewing();
 		currentSkewing += getSkewingVelocity(targetSkewing);
 		return currentSkewing;

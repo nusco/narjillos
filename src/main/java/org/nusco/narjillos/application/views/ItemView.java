@@ -4,7 +4,7 @@ import javafx.scene.Node;
 
 import org.nusco.narjillos.application.utilities.Viewport;
 
-public interface ItemView {
+interface ItemView {
 
 	Node toNode(double zoomLevel, boolean infraredOn, boolean effectsOn);
 

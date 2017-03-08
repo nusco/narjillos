@@ -9,13 +9,13 @@ import org.nusco.narjillos.core.utilities.Configuration;
 
 public class EnergyTest {
 
-	final double initialValue = 10;
+	private final double initialValue = 10;
 
-	final double lifespan = 100;
+	private final double lifespan = 100;
 
-	Energy energy = new LifeFormEnergy(initialValue, lifespan);
+	private Energy energy = new LifeFormEnergy(initialValue, lifespan);
 
-	Energy biggerMassEnergy = new LifeFormEnergy(initialValue * 2, lifespan);
+	private Energy biggerMassEnergy = new LifeFormEnergy(initialValue * 2, lifespan);
 
 	private Energy otherEnergy = Energy.INFINITE;
 

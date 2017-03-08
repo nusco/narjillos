@@ -8,14 +8,14 @@ import org.nusco.narjillos.core.geometry.Vector;
 
 public abstract class OrganTest {
 
-	protected ConnectedOrgan organ;
+	ConnectedOrgan organ;
 
 	@Before
 	public void setUpPart() {
 		organ = createConcreteOrgan(50, 20);
 	}
 
-	public abstract ConnectedOrgan createConcreteOrgan(int length, int thickness);
+	protected abstract ConnectedOrgan createConcreteOrgan(int length, int thickness);
 
 	@Test
 	public void hasALengthThatGrowsWithTime() {

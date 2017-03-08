@@ -13,9 +13,9 @@ import org.nusco.narjillos.genomics.VolatileDNALog;
 
 public class DNAAnalyzerTest {
 
-	DNALog dnaLog = new VolatileDNALog();
+	private DNALog dnaLog = new VolatileDNALog();
 
-	DNAAnalyzer dnaAnalyzer = new DNAAnalyzer(dnaLog);
+	private DNAAnalyzer dnaAnalyzer = new DNAAnalyzer(dnaLog);
 
 	@Test
 	public void getsMostSuccessfulDNA() {

@@ -16,7 +16,7 @@ import org.nusco.narjillos.core.things.Thing;
 
 public class SpaceTest {
 
-	Space space = new Space(10_000);
+	private Space space = new Space(10_000);
 
 	@Test
 	public void isDividedIntoAGridOfSquareAreas() {

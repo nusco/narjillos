@@ -32,9 +32,9 @@ abstract class NarjillosApplication extends Application {
 
 	private Dish dish;
 
-	protected StoppableThread modelThread;
+	private StoppableThread modelThread;
 
-	protected StoppableThread viewThread;
+	private StoppableThread viewThread;
 
 	private Viewport viewport;
 
@@ -45,14 +45,6 @@ abstract class NarjillosApplication extends Application {
 	private volatile boolean[] isModelInitialized = new boolean[] { false };
 
 	private volatile boolean mainApplicationStopped = false;
-
-	protected static String[] getProgramArguments() {
-		return programArguments;
-	}
-
-	protected static void setProgramArguments(String[] programArguments) {
-		NarjillosApplication.programArguments = programArguments;
-	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -88,8 +80,6 @@ abstract class NarjillosApplication extends Application {
 		primaryStage.show();
 	}
 
-	protected abstract void startSupportThreads();
-
 	@Override
 	public void stop() {
 		// exit threads cleanly to avoid rare exception
@@ -109,7 +99,23 @@ abstract class NarjillosApplication extends Application {
 		Platform.exit();
 	}
 
-	protected void waitFor(int time, long since) {
+	protected abstract void startSupportThreads();
+
+	protected abstract void registerInteractionHandlers(Scene scene);
+
+	// Remember: we need to initialize the random number generator inside this
+	// thread, because it will complain if it is called from multiple threads.
+	protected abstract StoppableThread createModelThread(String[] arguments, boolean[] isModelInitialized);
+
+	protected abstract StoppableThread createViewThread(Group root);
+
+	protected abstract String getName();
+
+	protected static void setProgramArguments(String[] programArguments) {
+		NarjillosApplication.programArguments = programArguments;
+	}
+
+	void waitFor(int time, long since) {
 		long timeTaken = System.currentTimeMillis() - since;
 		long waitTime = Math.max(time - timeTaken, 1);
 		try {
@@ -118,8 +124,57 @@ abstract class NarjillosApplication extends Application {
 		}
 	}
 
-	protected boolean isMainApplicationStopped() {
+	boolean isMainApplicationStopped() {
 		return mainApplicationStopped;
+	}
+
+	Viewport getViewport() {
+		return viewport;
+	}
+
+	ThingTracker getTracker() {
+		return tracker;
+	}
+
+	synchronized Dish getDish() {
+		return dish;
+	}
+
+	synchronized void setDish(Dish dish) {
+		this.dish = dish;
+	}
+
+	Environment getEcosystem() {
+		return getDish().getEnvironment();
+	}
+
+	boolean tick() {
+		return getDish().tick();
+	}
+
+	String getDishStatistics() {
+		return getDish().getStatistics();
+	}
+
+	String getEnvironmentStatistics() {
+		Environment environment = getDish().getEnvironment();
+		return "Narj: " + environment.getNumberOfNarjillos()
+			+ " / Eggs: " + environment.getNumberOfEggs()
+			+ " / Food: " + environment.getNumberOfFoodPellets();
+	}
+
+	boolean isBusy() {
+		return getDish().isBusy();
+	}
+
+	void copyDNAToClipboard(Vector clickedPositionEC) {
+		Narjillo narjillo = (Narjillo) getLocator().findNarjilloAt(clickedPositionEC);
+
+		if (narjillo == null)
+			return;
+
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 	}
 
 	private void startModelThread(final String[] arguments) {
@@ -138,6 +193,10 @@ abstract class NarjillosApplication extends Application {
 			}
 	}
 
+	private static String[] getProgramArguments() {
+		return programArguments;
+	}
+
 	private void startViewThread(final Group root) {
 		viewThread = createViewThread(root);
 		viewThread.setName("view thread");
@@ -151,66 +210,7 @@ abstract class NarjillosApplication extends Application {
 			(observableValue, oldSceneHeight, newSceneHeight) -> viewport.setSizeSC(Vector.cartesian(viewport.getSizeSC().x, newSceneHeight.doubleValue())));
 	}
 
-	protected abstract void registerInteractionHandlers(Scene scene);
-
-	// Remember: we need to initialize the random number generator inside this
-	// thread, because it will complain if it is called from multiple threads.
-	protected abstract StoppableThread createModelThread(String[] arguments, boolean[] isModelInitialized);
-
-	protected abstract StoppableThread createViewThread(Group root);
-
-	protected abstract String getName();
-
-	protected Viewport getViewport() {
-		return viewport;
-	}
-
-	protected Locator getLocator() {
+	private Locator getLocator() {
 		return locator;
-	}
-
-	protected ThingTracker getTracker() {
-		return tracker;
-	}
-
-	protected synchronized Dish getDish() {
-		return dish;
-	}
-
-	protected synchronized void setDish(Dish dish) {
-		this.dish = dish;
-	}
-
-	protected Environment getEcosystem() {
-		return getDish().getEnvironment();
-	}
-
-	protected boolean tick() {
-		return getDish().tick();
-	}
-
-	protected String getDishStatistics() {
-		return getDish().getStatistics();
-	}
-
-	protected String getEnvironmentStatistics() {
-		Environment environment = getDish().getEnvironment();
-		return "Narj: " + environment.getNumberOfNarjillos()
-			+ " / Eggs: " + environment.getNumberOfEggs()
-			+ " / Food: " + environment.getNumberOfFoodPellets();
-	}
-
-	protected boolean isBusy() {
-		return getDish().isBusy();
-	}
-
-	protected void copyDNAToClipboard(Vector clickedPositionEC) {
-		Narjillo narjillo = (Narjillo) getLocator().findNarjilloAt(clickedPositionEC);
-
-		if (narjillo == null)
-			return;
-
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(new StringSelection(narjillo.getDNA().toString()), null);
 	}
 }

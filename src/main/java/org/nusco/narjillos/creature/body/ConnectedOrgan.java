@@ -15,7 +15,7 @@ public abstract class ConnectedOrgan extends Organ {
 
 	private final List<ConnectedOrgan> children = new ArrayList<>();
 
-	protected final Nerve nerve;
+	private final Nerve nerve;
 
 	public ConnectedOrgan(int adultLength, int adultThickness, Fiber fiber, ConnectedOrgan parent, Nerve nerve) {
 		super(adultLength, adultThickness, fiber);
@@ -59,7 +59,7 @@ public abstract class ConnectedOrgan extends Organ {
 
 	protected abstract double getMetabolicRate();
 
-	protected Nerve getNerve() {
+	Nerve getNerve() {
 		return nerve;
 	}
 }

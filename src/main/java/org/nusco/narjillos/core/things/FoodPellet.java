@@ -6,7 +6,7 @@ import org.nusco.narjillos.core.utilities.Configuration;
 
 public class FoodPellet implements Thing {
 
-	public Vector position;
+	private Vector position;
 
 	private final Energy energy = new LifeFormEnergy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
 

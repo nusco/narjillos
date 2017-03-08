@@ -18,7 +18,7 @@ public abstract class Environment {
 
 	private final transient List<EnvironmentEventListener> eventListeners = new LinkedList<>();
 
-	public Environment(long size) {
+	Environment(long size) {
 		this.size = size;
 	}
 
@@ -50,11 +50,11 @@ public abstract class Environment {
 
 	protected abstract void tickThings(DNALog dnaLog, NumGen numGen);
 
-	protected final void notifyThingAdded(Thing thing) {
+	final void notifyThingAdded(Thing thing) {
 		eventListeners.stream().forEach(ecosystemEvent -> ecosystemEvent.added(thing));
 	}
 
-	protected final void notifyThingRemoved(Thing thing) {
+	final void notifyThingRemoved(Thing thing) {
 		eventListeners.stream().forEach(ecosystemEvent -> ecosystemEvent.removed(thing));
 	}
 }

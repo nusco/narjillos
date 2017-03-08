@@ -31,33 +31,33 @@ public abstract class MovingOrgan extends ConnectedOrgan {
 			((MovingOrgan) child).tick(angleToTarget, processedPercentOfAmplitude, level + 1);
 	}
 
-	protected final double getAngleToParent() {
+	public void rotateBy(double rotation) {
+		setAngleToParent(Angle.normalize(getAngleToParent() + rotation));
+		updateTree();
+	}
+
+	final double getAngleToParent() {
 		return angleToParent;
 	}
 
-	protected final void setAngleToParent(double newAngleToParent) {
+	final void setAngleToParent(double newAngleToParent) {
 		angleToParent = newAngleToParent;
 	}
 
-	protected abstract double calculateNewAngleToParent(double targetAngle, double angleToTarget);
-
-	protected void updateTree() {
+	void updateTree() {
 		update();
 
 		for (ConnectedOrgan child : getChildren())
 			((MovingOrgan) child).updateTree();
 	}
 
-	public void rotateBy(double rotation) {
-		setAngleToParent(Angle.normalize(getAngleToParent() + rotation));
-		updateTree();
-	}
-
-	protected void translateBy(Vector translation) {
+	void translateBy(Vector translation) {
 		// TODO: is this early cache update really how it's supposed to work?
 		updateAfterTranslation();
 
 		for (ConnectedOrgan child : getChildren())
 			((MovingOrgan) child).translateBy(translation);
 	}
+
+	protected abstract double calculateNewAngleToParent(double targetAngle, double angleToTarget);
 }

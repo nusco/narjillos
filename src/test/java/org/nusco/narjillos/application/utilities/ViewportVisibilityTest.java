@@ -10,7 +10,7 @@ import org.nusco.narjillos.experiment.environment.Ecosystem;
 
 public class ViewportVisibilityTest {
 
-	Viewport viewport;
+	private Viewport viewport;
 
 	@Before
 	public void setUpViewPort() {

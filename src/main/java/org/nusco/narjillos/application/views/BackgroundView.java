@@ -22,7 +22,7 @@ import org.nusco.narjillos.application.utilities.Viewport;
  * This background also puts speckles in the petri dish's liquid, to give a
  * sense of the current speed and direction, especially when tracking things.
  */
-public class BackgroundView {
+class BackgroundView {
 
 	private static final double NORMAL_SPECKLE_RADIUS = 2;
 

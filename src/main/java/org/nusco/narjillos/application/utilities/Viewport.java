@@ -128,10 +128,6 @@ public class Viewport {
 		targetZoomLevel = Math.min(getMaxZoomLevel(), getZoomToFitLevel(target.getRadius()));
 	}
 
-	public void zoomToNextLevel() {
-		targetZoomLevel = nextZoomCloseupLevel();
-	}
-
 	public void zoomToMaxLevel() {
 		targetZoomLevel = getMaxZoomLevel();
 	}
@@ -151,6 +147,10 @@ public class Viewport {
 
 	void setCenterSC(Vector centerSC) {
 		centerEC = toEC(centerSC);
+	}
+
+	private void zoomToNextLevel() {
+		targetZoomLevel = nextZoomCloseupLevel();
 	}
 
 	private Vector getEcosystemCenterEC() {

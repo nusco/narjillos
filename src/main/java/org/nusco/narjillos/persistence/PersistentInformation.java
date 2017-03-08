@@ -21,7 +21,7 @@ public abstract class PersistentInformation {
 
 	private Connection connection;
 
-	public PersistentInformation(String name) {
+	PersistentInformation(String name) {
 		this.name = name + ".exp";
 		open();
 	}
@@ -45,11 +45,13 @@ public abstract class PersistentInformation {
 		}
 	}
 
-	private String getName() {
-		return name;
+	public void delete() {
+		File databaseFile = new File(getName());
+		if (Files.exists(databaseFile.toPath()))
+			databaseFile.delete();
 	}
 
-	protected Statement createStatement() {
+	Statement createStatement() {
 		try {
 			return connection.createStatement();
 		} catch (SQLException e) {
@@ -57,7 +59,7 @@ public abstract class PersistentInformation {
 		}
 	}
 
-	protected void close(Statement stmt) {
+	void close(Statement stmt) {
 		try {
 			stmt.close();
 		} catch (SQLException e) {
@@ -65,9 +67,7 @@ public abstract class PersistentInformation {
 		}
 	}
 
-	public void delete() {
-		File databaseFile = new File(getName());
-		if (Files.exists(databaseFile.toPath()))
-			databaseFile.delete();
+	private String getName() {
+		return name;
 	}
 }

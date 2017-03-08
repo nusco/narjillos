@@ -15,11 +15,9 @@ import org.nusco.narjillos.genomics.DNA;
 
 public class LocatorTest {
 
-	Ecosystem ecosystem;
+	private Ecosystem ecosystem;
 
-	Locator locator;
-
-	NumGen numGen = new NumGen(1234);
+	private Locator locator;
 
 	@Before
 	public void initialize() {

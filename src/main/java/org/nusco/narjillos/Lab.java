@@ -22,7 +22,7 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
  * The "lab" program. It reads data from an experiment and does analysis and
  * conversions.
  */
-public class Lab {
+class Lab {
 
 	public static void main(String[] args) throws IOException {
 		Options options = new Options();

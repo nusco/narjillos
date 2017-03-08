@@ -67,10 +67,6 @@ public class ThingTracker {
 		demoMode = false;
 	}
 
-	public synchronized boolean isFollowing() {
-		return target != null;
-	}
-
 	public void toggleDemoMode() {
 		demoMode = !demoMode;
 		if (!isDemoMode())
@@ -85,6 +81,10 @@ public class ThingTracker {
 		if (isFollowing())
 			return "following";
 		return "freeroaming";
+	}
+
+	private synchronized boolean isFollowing() {
+		return target != null;
 	}
 
 	private boolean hasBeenDemoTrackingFor(long seconds) {

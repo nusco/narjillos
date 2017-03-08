@@ -32,7 +32,7 @@ public class Locator {
 	 * @param thingMinRadius while searching, the radius of things is boosted to this value if smaller.
 	 * @return the first found Thing or null if nothing is present at the given position.
 	 */
-	public Thing findThingAt(Vector position, double thingMinRadius) {
+	private Thing findThingAt(Vector position, double thingMinRadius) {
 		Thing result = findWithLabel(position, thingMinRadius, "food");
 
 		if (result != null)

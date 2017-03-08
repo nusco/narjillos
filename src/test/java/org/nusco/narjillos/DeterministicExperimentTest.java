@@ -64,8 +64,6 @@ public class DeterministicExperimentTest {
 
 		try {
 			runTest(CYCLES_FOR_SAFE_TEST, true);
-		} catch (Throwable t) {
-			throw t;
 		} finally {
 			deleteDatabases();
 		}
@@ -88,7 +86,7 @@ public class DeterministicExperimentTest {
 		runTest(CYCLES_FOR_FAST_TEST, false);
 	}
 
-	public static void runTest(int cycles, boolean showProgress) throws IOException {
+	private static void runTest(int cycles, boolean showProgress) throws IOException {
 		// Set up an experiment
 		final int arbitrarySeed = 1234;
 		final Ecosystem ecosystem = new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false);

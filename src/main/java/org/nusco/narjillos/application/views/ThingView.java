@@ -15,7 +15,7 @@ abstract class ThingView implements ItemView {
 
 	private final Thing thing;
 
-	public ThingView(Thing thing) {
+	ThingView(Thing thing) {
 		this.thing = thing;
 	}
 
@@ -30,7 +30,7 @@ abstract class ThingView implements ItemView {
 		return toNode(viewport.getZoomLevel(), infraredOn, effectsOn);
 	}
 
-	protected Effect getEffects(double zoomLevel, boolean infraredOn) {
+	Effect getEffects(double zoomLevel, boolean infraredOn) {
 		if (infraredOn)
 			return getHaloEffect(zoomLevel * 1.5);
 

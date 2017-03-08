@@ -125,10 +125,6 @@ public class Body {
 		return adultMass;
 	}
 
-	public boolean hasStoppedGrowing() {
-		return mass >= getAdultMass();
-	}
-
 	public synchronized double getRadius() {
 		if (Double.isNaN(cachedRadius))
 			cachedRadius = calculateRadius(getCenterOfMass());
@@ -210,20 +206,6 @@ public class Body {
 		return getEnergyConsumed(rotationEnergy, translationEnergy);
 	}
 
-	final void updateMasses() {
-		mass = 0;
-		redMass = 0;
-		greenMass = 0;
-		blueMass = 0;
-		for (Organ organ : getOrgans()) {
-			double organMass = organ.getMass();
-			mass += organMass;
-			redMass += organMass * organ.getFiber().getPercentOfRed();
-			greenMass += organMass * organ.getFiber().getPercentOfGreen();
-			blueMass += organMass * organ.getFiber().getPercentOfBlue();
-		}
-	}
-
 	@Override
 	public String toString() {
 		return head.toString();
@@ -237,6 +219,24 @@ public class Body {
 		getHead().growToAdultFormWithChildren();
 		resetCaches();
 		updateMasses();
+	}
+
+	private final void updateMasses() {
+		mass = 0;
+		redMass = 0;
+		greenMass = 0;
+		blueMass = 0;
+		for (Organ organ : getOrgans()) {
+			double organMass = organ.getMass();
+			mass += organMass;
+			redMass += organMass * organ.getFiber().getPercentOfRed();
+			greenMass += organMass * organ.getFiber().getPercentOfGreen();
+			blueMass += organMass * organ.getFiber().getPercentOfBlue();
+		}
+	}
+
+	private boolean hasStoppedGrowing() {
+		return mass >= getAdultMass();
 	}
 
 	private synchronized void resetCaches() {

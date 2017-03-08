@@ -1,18 +1,16 @@
 package org.nusco.narjillos.experiment.environment;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Iterator;
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.Thing;
+
+import java.util.Iterator;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class SpaceTest {
 
@@ -79,10 +77,19 @@ public class SpaceTest {
 	}
 
 	@Test
-	public void knowsWhetherAThingExists() {
+	public void identifiesSpecificThings() {
 		MockThing thing = new MockThing(Vector.cartesian(100, 200), 1);
 
 		assertFalse(space.contains(thing));
+
+		space.add(thing);
+
+		assertTrue(space.contains(thing));
+	}
+
+	@Test
+	public void identifiesSpecificThingsEvenInOuterSpace() {
+		MockThing thing = new MockThing(Vector.cartesian(-1000, -2000), 1);
 
 		space.add(thing);
 

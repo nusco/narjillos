@@ -12,6 +12,10 @@ import org.nusco.narjillos.core.utilities.Configuration;
 
 /**
  * Partitioned space for fast neighbor searches, collision detection, etc.
+ *
+ * The space is a large square grid. The space around this grid is called "outer space", and it's unusable for our purposes.
+ * So the system needs simulation-level constraints that prevent Things from moving into outer space. (For example, destroying
+ * things when they venture into outer space).
  */
 class Space {
 
@@ -21,14 +25,13 @@ class Space {
 
 	private final Set<Thing>[][] areas;
 
-	private final Set<Thing> allTheThings = new LinkedHashSet<>();
-
-	private final Map<String, Integer> countsByLabel = new HashMap<>();
+	private final Set<Thing> things = new LinkedHashSet<>();
 
 	// There is no visibility to/from outer space. The first would be
-	// easy, the second would be hard. It's better to find simulation-level
-	// tricks to prevent Things from moving into outer space.
+	// easy, the second would be hard. We just choose to ignore outer space.
 	private final Set<Thing> outerSpace = new LinkedHashSet<>();
+
+	private final Map<String, Integer> countsByLabel = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
 	public Space(long size) {
@@ -48,8 +51,8 @@ class Space {
 
 		area.add(thing);
 
-		synchronized (allTheThings) {
-			allTheThings.add(thing);
+		synchronized (things) {
+			things.add(thing);
 		}
 
 		String label = thing.getLabel();
@@ -67,8 +70,8 @@ class Space {
 	public void remove(Thing thing) {
 		getArea(thing).remove(thing);
 
-		synchronized (allTheThings) {
-			allTheThings.remove(thing);
+		synchronized (things) {
+			things.remove(thing);
 		}
 
 		synchronized (countsByLabel) {
@@ -81,9 +84,7 @@ class Space {
 	}
 
 	public Thing findClosestTo(Thing thing, String labelRegExp) {
-		// Naive three-step approximation.
-		// (It can be replaced with spiral search if we ever need more
-		// performance).
+		// Naive three-step approximation. (It can be replaced with spiral search if we ever need more performance).
 
 		if (isEmpty())
 			return null;
@@ -93,8 +94,8 @@ class Space {
 		if (!nearbyNeighbors.isEmpty())
 			return findClosestTo_Amongst(thing, nearbyNeighbors, labelRegExp);
 
-		synchronized (allTheThings) {
-			return findClosestTo_Amongst(thing, allTheThings, labelRegExp);
+		synchronized (things) {
+			return findClosestTo_Amongst(thing, things, labelRegExp);
 		}
 	}
 
@@ -118,14 +119,14 @@ class Space {
 	}
 
 	public Set<Thing> getAll(String label) {
-		synchronized (allTheThings) {
-			return filterByLabel(allTheThings, label);
+		synchronized (things) {
+			return filterByLabel(things, label);
 		}
 	}
 
 	public boolean isEmpty() {
-		synchronized (allTheThings) {
-			return allTheThings.isEmpty();
+		synchronized (things) {
+			return things.isEmpty();
 		}
 	}
 

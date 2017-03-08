@@ -5,8 +5,4 @@ public interface AppState {
 	Light getLight();
 
 	Effects getEffects();
-
-	Speed getSpeed();
-
-	int getFramesPeriod();
 }

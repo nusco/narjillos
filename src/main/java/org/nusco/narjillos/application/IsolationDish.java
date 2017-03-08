@@ -32,7 +32,7 @@ class IsolationDish implements Dish {
 			System.out.println("Empty genomes list");
 			System.exit(1);
 		}
-		environment = new IsolationEnvironment(10_000, numGen);
+		environment = new IsolationEnvironment(10_000);
 	}
 
 	@Override

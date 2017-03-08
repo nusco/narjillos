@@ -53,8 +53,6 @@ public class OrganView implements ItemView {
 
 	private final Circle joint;
 
-	Group group = new Group();
-
 	private Segment previousOrganPosition;
 
 	public OrganView(ConnectedOrgan organ, Narjillo narjillo) {

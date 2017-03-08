@@ -55,14 +55,6 @@ public class Fiber {
 			&& Double.doubleToLongBits(getPercentOfBlue()) == Double.doubleToLongBits(other.getPercentOfBlue());
 	}
 
-	public String getVisualHash() {
-		return "" + approximate(red) + "_" + approximate(green) + "_" + approximate(blue);
-	}
-
-	private int approximate(int color) {
-		return color / 25; // 0 to 10
-	}
-
 	@Override
 	public int hashCode() {
 		return red ^ green ^ blue;

@@ -206,7 +206,7 @@ public class Ecosystem extends Environment {
 				.forEach(narjillo -> removeNarjillo(narjillo, dnaLog));
 		}
 
-		tickNarjillos(numGen);
+		tickNarjillos();
 
 		if (shouldSpawnFood(numGen)) {
 			spawnFood(randomPosition(getSize(), numGen));
@@ -269,7 +269,7 @@ public class Ecosystem extends Environment {
 			remove(egg);
 	}
 
-	private synchronized void tickNarjillos(NumGen numGen) {
+	private synchronized void tickNarjillos() {
 		Map<Narjillo, Set<Thing>> narjillosToCollidedFood;
 		synchronized (narjillos) {
 			narjillosToCollidedFood = tick(narjillos);
@@ -286,7 +286,7 @@ public class Ecosystem extends Environment {
 			.forEach(entry -> {
 				Narjillo narjillo = entry.getKey();
 				Set<Thing> collidedFood = entry.getValue();
-				consume(narjillo, collidedFood, numGen);
+				consume(narjillo, collidedFood);
 			});
 	}
 
@@ -347,12 +347,12 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	private void consume(Narjillo narjillo, Set<Thing> foodPellets, NumGen numGen) {
+	private void consume(Narjillo narjillo, Set<Thing> foodPellets) {
 		foodPellets.stream()
-			.forEach(foodPellet -> consumeFood(narjillo, (FoodPellet) foodPellet, numGen));
+			.forEach(foodPellet -> consumeFood(narjillo, (FoodPellet) foodPellet));
 	}
 
-	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet, NumGen numGen) {
+	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet) {
 		if (!space.contains(foodPellet))
 			return; // race condition: already consumed
 

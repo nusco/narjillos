@@ -21,7 +21,7 @@ public class IsolationEnvironment extends Environment {
 
 	private double targetAngle = 0;
 
-	public IsolationEnvironment(long size, NumGen numGen) {
+	public IsolationEnvironment(long size) {
 		super(size);
 	}
 

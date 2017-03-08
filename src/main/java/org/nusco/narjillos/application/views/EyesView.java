@@ -126,10 +126,10 @@ class EyesView implements ItemView {
 	}
 
 	private Color toPupilColor(double zoomLevel) {
-		return new Color(0, 0, 0, Math.min(getZoomAlpha(zoomLevel), getEnergyAlpha(zoomLevel)));
+		return new Color(0, 0, 0, Math.min(getZoomAlpha(zoomLevel), getEnergyAlpha()));
 	}
 
-	private double getEnergyAlpha(double zoomLevel) {
+	private double getEnergyAlpha() {
 		double maxEnergy = narjillo.getEnergy().getMaximumValue();
 		if (maxEnergy <= 0)
 			return 0;

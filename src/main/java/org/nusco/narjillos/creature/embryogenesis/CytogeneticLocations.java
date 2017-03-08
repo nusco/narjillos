@@ -11,9 +11,9 @@ package org.nusco.narjillos.creature.embryogenesis;
 interface CytogeneticLocations {
 
 	// IN ALL BODY SEGMENTS:
-	// The instruction and parameter in the body plan program
+	// The instruction and the (so far unused) parameter in the body plan program
 	int BODY_PLAN_INSTRUCTION = 0;
-	int BODY_PLAN_PARAMETER = 1;
+	int _BODY_PLAN_PARAMETER = 1;
 	// The segment's geometry
 	int LENGTH = 2;
 	int THICKNESS = 3;

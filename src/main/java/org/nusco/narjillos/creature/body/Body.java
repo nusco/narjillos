@@ -184,7 +184,7 @@ public class Body {
 		// Changing the angles in the body results in a rotational force.
 		// Rotate the body to match the force. In other words, keep the body's
 		// moment of inertia equal to zero.
-		double rotationEnergy = tick_step2_rotate(initialAnglesOfOrgans, initialPositionsOfOrgans, initialCenterOfMass, mass);
+		double rotationEnergy = tick_step2_rotate(initialAnglesOfOrgans, initialCenterOfMass, mass);
 
 		// The previous updates moved the center of mass. Remember, we're
 		// in a vacuum - so the center of mass shouldn't move. Let's put it
@@ -198,7 +198,7 @@ public class Body {
 		// body position in space, and this different position generates
 		// translational forces. We can update the body position based on
 		// these translations.
-		double translationEnergy = tick_step4_translate(initialPositionsOfOrgans, initialCenterOfMass, mass);
+		double translationEnergy = tick_step4_translate(initialPositionsOfOrgans, mass);
 
 		resetCaches();
 
@@ -292,7 +292,7 @@ public class Body {
 		getHead().tick(angleToTarget);
 	}
 
-	private double tick_step2_rotate(Map<Organ, Double> initialAnglesOfOrgans, Map<Organ, Segment> initialPositions, Vector centerOfMass,
+	private double tick_step2_rotate(Map<Organ, Double> initialAnglesOfOrgans, Vector centerOfMass,
 		double mass) {
 		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (Organ bodyPart : getOrgans())
@@ -307,7 +307,7 @@ public class Body {
 		getHead().translateBy(centerOfMassOffset);
 	}
 
-	private double tick_step4_translate(Map<Organ, Segment> initialPositions, Vector centerOfMass, double mass) {
+	private double tick_step4_translate(Map<Organ, Segment> initialPositions, double mass) {
 		TranslationsPhysicsEngine forceField = new TranslationsPhysicsEngine(mass);
 		for (Organ bodyPart : getOrgans())
 			forceField.registerMovement(initialPositions.get(bodyPart), bodyPart.toSegment(), bodyPart.getMass());

@@ -26,7 +26,6 @@ public class NarjillosApplicationState implements AppState {
 		return effects;
 	}
 
-	@Override
 	public Speed getSpeed() {
 		return speed;
 	}
@@ -70,7 +69,6 @@ public class NarjillosApplicationState implements AppState {
 		speed = speed.down();
 	}
 
-	@Override
 	public int getFramesPeriod() {
 		if (getLight() == Light.OFF)
 			return FRAMES_PERIOD_WITH_LIGHT_OFF;

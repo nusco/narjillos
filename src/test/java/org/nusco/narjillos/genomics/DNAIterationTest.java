@@ -45,6 +45,7 @@ public class DNAIterationTest {
 		assertFalse(iterator.hasNext());
 	}
 
+	@Test
 	public void alwaysReturnsAtLeastOneChromosome() {
 		DNA dna = new DNA(1, "{}");
 

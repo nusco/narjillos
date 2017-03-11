@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import org.nusco.narjillos.application.utilities.NarjillosApplicationState;
 import org.nusco.narjillos.application.utilities.StoppableThread;
-import org.nusco.narjillos.application.views.EnvirommentView;
+import org.nusco.narjillos.application.views.EnvironmentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.StringView;
 import org.nusco.narjillos.core.geometry.Vector;
@@ -110,7 +110,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
 
-			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
+			private final EnvironmentView ecosystemView = new EnvironmentView(getEcosystem(), getViewport(), state);
 
 			private final StringView statusView = new StringView(40, state);
 

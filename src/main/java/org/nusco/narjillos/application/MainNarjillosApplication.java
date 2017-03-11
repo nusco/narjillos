@@ -11,7 +11,7 @@ import javafx.scene.input.ScrollEvent;
 import org.nusco.narjillos.application.utilities.NarjillosApplicationState;
 import org.nusco.narjillos.application.utilities.Speed;
 import org.nusco.narjillos.application.utilities.StoppableThread;
-import org.nusco.narjillos.application.views.EnvirommentView;
+import org.nusco.narjillos.application.views.EnvironmentView;
 import org.nusco.narjillos.application.views.MicroscopeView;
 import org.nusco.narjillos.application.views.StatusBarView;
 import org.nusco.narjillos.core.geometry.Vector;
@@ -84,7 +84,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 			private final MicroscopeView foregroundView = new MicroscopeView(getViewport());
 
-			private final EnvirommentView ecosystemView = new EnvirommentView(getEcosystem(), getViewport(), state);
+			private final EnvironmentView environmentView = new EnvironmentView(getEcosystem(), getViewport(), state);
 
 			private final StatusBarView statusBarView = new StatusBarView();
 
@@ -95,7 +95,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 					renderingFinished = false;
 
 					getTracker().tick();
-					ecosystemView.tick();
+					environmentView.tick();
 
 					Platform.runLater(() -> {
 						update(root);
@@ -114,7 +114,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 
 			private void update(final Group root) {
 				root.getChildren().clear();
-				root.getChildren().add(ecosystemView.toNode());
+				root.getChildren().add(environmentView.toNode());
 				root.getChildren().add(foregroundView.toNode());
 
 				Node statusInfo = statusBarView.toNode(framesChronometer.getTicksInLastSecond(), getEnvironmentStatistics(),

@@ -22,7 +22,7 @@ public class EcosystemTest {
 
 	private FoodPellet foodPellet2;
 
-	private FoodPellet foodPellet3;
+	//private FoodPellet foodPellet3;
 
 	private Narjillo narjillo1;
 
@@ -35,7 +35,7 @@ public class EcosystemTest {
 		ecosystem = new Ecosystem(1000, false);
 		foodPellet1 = ecosystem.spawnFood(Vector.cartesian(100, 100));
 		foodPellet2 = ecosystem.spawnFood(Vector.cartesian(1000, 1000));
-		foodPellet3 = ecosystem.spawnFood(Vector.cartesian(10000, 10000));
+		ecosystem.spawnFood(Vector.cartesian(10000, 10000));
 		narjillo1 = insertNarjillo(Vector.cartesian(150, 150));
 		narjillo2 = insertNarjillo(Vector.cartesian(1050, 1050));
 	}

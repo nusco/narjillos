@@ -1,6 +1,5 @@
 package org.nusco.narjillos.application.views;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.paint.Color;

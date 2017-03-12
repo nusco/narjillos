@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNA;

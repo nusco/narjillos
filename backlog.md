@@ -1,15 +1,40 @@
 #Narjillos Backlog
 
-## Outer Space
-> goal: keeping navigation nice while paving the road to collision detection
+##Collision Detection
+> goal: complex interactions
 
-* Remove background box from DNA browser  
+    See: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection  
+    Maybe also see: http://number-none.com/blow/papers/practical_collision_detection.pdf  
 
-* Make edges visible when zoomed in  
-  Simple darker line. Good balance between nice graphics and clearly visible edges.  
++ Maybe avoid square roots in vectors by comparing to squared distances  
 
-+ Make space grid visible in debug mode  
-  To have a clear visual indication of how large space areas are.  
+* Implement first-pass collision detection  
+  Then use it to find candidate food to collide with. The second pass will still use the old approach.
+
+* Fix vector math  
+  See TODOs and FIXMEs, in particular around vector projections.  
+  This is probably the cause of sketchy narjillo-to-food collision detection  
+  
+* Rewrite second-pass collision detection
+  Initially, only narjillo-to-food, but the new code must allow for generalized C.D. (that will be used
+  in the "Predators" theme).  
+  Importantly, this story will remove the concept of "outer space" and make collisions work anywhere.  
+
+* Use "speed boxes" instad of bounding boxes  
+  As described in https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection  
+  Possibly make them by interpenetrating previous and current bboxes.  
+  This should make collision detection independent of max speed, so remove "safety speed" code
+  if the approach works.  
+  
++ Check Manhattan distance as first collision filter  
+  Maybe I already do it? Does it make a difference (probably not).
+
+* Progressively damage out-of-bounds Narjillos
+  Identifying things should work up to a limited distance.  
+  Now that Outer Space is gone, damage creatures progressively for getting farther beyond
+  the expected boundaries.
+  
+* Optimize collision detection  
 
 ##Instincts
 >goal: complex interactions  
@@ -22,7 +47,7 @@
     I didn't decide how to do this yet. It may be weights-based.
 
     Problem: what happens if narjillos keep hitting the edges while escaping something?  
-    Maybe build in edge-avoiding istinct?  
+    Maybe build in edge-avoidance istinct?  
 
 * Species identification  
   Probably based on DNA SimHashes? Or fibers?  
@@ -48,17 +73,10 @@
     This is a complex direct interaction that might pave the road to an arms race amongst species.
     I should consider removing food by default after this is implemented.
 
-* Fix vector math  
-  See TODOs and FIXMEs, in particular around vector projections.  
-  This is probably the cause of sketchy collision detection  
-
-+ Rewrite collision detection to be independent of max speed  
-  This can be almost as simple as it is now, but we should probably aim for generalized
-  collision detection on all organs. see:
-  http://number-none.com/blow/papers/practical_collision_detection.pdf
-  
-  However, see "Narjillos hurt other narjillos" story for an approach
-  that might reduce collision detection to an intersection of vectors.  
+* Narjillos collide with other narjillos  
+  This should work in a generalized way.  
+  (However, see "Narjillos hurt other narjillos" story for an approach that might reduce collision
+  detection to an intersection of vectors).  
 
 * Narjillos hurt other narjillos  
   ...stealing their energy when they "hit" them.
@@ -72,6 +90,39 @@
 - Narjillos eat eggs  
 
 
+##Flexible Genes
+>goal: specialized creatures  
+ 
+    More qualities of the creatures are determined by genes instead of being hard-coded.
+
+* Chromosome swapping mutation  
+* Chromosome removal mutation  
+* Chromosome duplication mutation  
+* Chromosome duplication with mirroring mutation  
++ Separated frequency configuration for different types of mutations  
+
++ Max lifespan is geneticaly determined  
+  within a limit  
+  
+- Lateral viewfield is genetically determined  
+- Growth rate is genetically determined  
+  maybe? (Consumes energy?)  
+  
+- Egg incubation time is genetically determined  
+  maybe. (Makes sense if egg contains green fibers)  
+  
+- Adult body size is genetically determined  
+
++ Gene mutation rate itself is determined by genes
+  This is a very interesting concept, and something that I should think about carefully.
+
+##Brains
+>goal: complex interactions  
+
+    Still just an idea... Do the Predators theme and then consider this.  
+
+* Creatures have neural networks for brains  
+
 ##Eye Candy
 >goal: nice user experience  
 
@@ -79,19 +130,20 @@
 
 * Graphics scaling for performance    
   Render in background at half resolution, then scale up for retina displays.  
-* Limit panning to inner space  
-  Maybe with some margin.  
-  Alternately, find a way to make the background solid everywhere (without impacting zoom performance).  
 * Proportional mousewheel scrolling  
   Right now it uses fixed-step zoomIn/zoomOut.  
 + Disable effects automatically when frame rate drops  
 + Optimize graphics  
-- Independent eye pupils  
++ Limit panning to central area  
+  Maybe with some margin.  
+  Alternately, find a way to make the background solid everywhere (without impacting zoom performance).  
++ Change background color when panning far from center  
+  Does this make sense in conjunction with zooming, etc?  
+- Independent creature eye pupils  
 + Smoother contours when zooming in infrared mode  
 - Show heat cloud when zooming out in infrared mode  
 - Skip quickly over less interesting creatures in Demo Mode  
 + Command-line argument to start without visual effects  
-
 
 ##Species Analysis
 >goal: understand what is happening in the dish  
@@ -234,23 +286,6 @@
   Apparently, the scripts have problem starting in Ubuntu? Check. If not true, then remove this story  
 
 
-##Seasons
->goal: faster evolution  
-
-    Cyclically vary the amount of food that spawns.
-    
-    Studies show that evolution works best if there are enough resources (food),
-    but not too many. The problem is that it's hard to know what "enough but 
-    not too many" means. So I want to try this: food amount is cyclical. I'm 
-    hoping that along the way from "almost starving" to "economy of
-    abundance", the system will hit a few evolutionary sweet spots.
-
-* Seasons  
-
-* Configurable seasonal cycle  
-  Max, min and period in config.yaml  
-
-
 ##Realistic Physics
 >goal: specialized creatures  
 
@@ -276,6 +311,23 @@
 
 + Simpler senescence mechanism  
   the current one feels too complicated for its own good.
+
+
+##Seasons
+>goal: faster evolution  
+
+    Cyclically vary the amount of food that spawns.
+    
+    Studies show that evolution works best if there are enough resources (food),
+    but not too many. The problem is that it's hard to know what "enough but 
+    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    hoping that along the way from "almost starving" to "economy of
+    abundance", the system will hit a few evolutionary sweet spots.
+
+* Seasons  
+
+* Configurable seasonal cycle  
+  Max, min and period in config.yaml  
 
 
 ##GUI
@@ -315,8 +367,8 @@
 * Basic Sexual Reproduction  
   just to set up for Assortative Mating  
 
-* Assortative Mating  
-  to encourage speciation  
+* Encourage Speciation  
+  Either via assortative mating, or by making DNAs that are too different sterile.  
 
 + Species clustering control reproductive success  
   maybe. (to keep species apart)  
@@ -338,33 +390,6 @@
 - Mini-map  
 
 
-##Flexible Genes
->goal: specialized creatures  
- 
-    More qualities of the creatures are determined by genes instead of being hard-coded.
-
-* Chromosome swapping mutation  
-* Chromosome removal mutation  
-* Chromosome duplication mutation  
-* Chromosome duplication with mirroring mutation  
-+ Separated frequency configuration for different types of mutations  
-
-+ Max lifespan is geneticaly determined  
-  within a limit  
-  
-- Lateral viewfield is genetically determined  
-- Growth rate is genetically determined  
-  maybe? (Consumes energy?)  
-  
-- Egg incubation time is genetically determined  
-  maybe. (Makes sense if egg contains green fibers)  
-  
-- Adult body size is genetically determined  
-
-+ Gene mutation rate itself is determined by genes
-  This is a very interesting concept, and something that I should think about carefully.
-
-
 ##Multi-dish World
 >goal: distributed experiments
 
@@ -376,5 +401,4 @@
 
 ##Crazy Ideas
 
-- Creatures have neural networks for brains  
 - Demiurge (an entity that dynamically tweaks the environment to maximize evolutionary speed)  

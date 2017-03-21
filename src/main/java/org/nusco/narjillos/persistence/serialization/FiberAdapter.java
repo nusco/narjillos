@@ -21,7 +21,7 @@ class FiberAdapter implements JsonSerializer<Fiber>, JsonDeserializer<Fiber> {
 	@Override
 	public Fiber deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 		String fiberDescription = context.deserialize(json, String.class);
-		String[] fiberComponents = fiberDescription.replace("(", "").replace(")", "").split("\\, ");
+		String[] fiberComponents = fiberDescription.replace("(", "").replace(")", "").split(", ");
 		int red = Integer.parseInt(fiberComponents[0]);
 		int green = Integer.parseInt(fiberComponents[1]);
 		int blue = Integer.parseInt(fiberComponents[2]);

@@ -120,7 +120,7 @@ public class Backlog {
 				String storyName = userStory
 					.replaceFirst("^\\*", "")
 					.replaceFirst("^\\+", "")
-					.replaceFirst("^\\-", "")
+					.replaceFirst("^-", "")
 					.trim();
 				result.append(toColor(userStory) + "    " + storyName + ANSI_RESET + "\n");
 			}

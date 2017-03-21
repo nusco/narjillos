@@ -32,7 +32,7 @@ class DNADocument {
 	}
 
 	private String stripBraces(String line) {
-		return line.replaceAll("[\\{\\}]", "_");
+		return line.replaceAll("[{}]", "_");
 	}
 
 	private Integer[] parseDNAString(String dnaString) {

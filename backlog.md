@@ -6,34 +6,41 @@
     See: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection  
     Maybe also see: http://number-none.com/blow/papers/practical_collision_detection.pdf  
 
-+ Maybe avoid square roots in vectors by comparing to squared distances  
++ First-pass collision detection filter using Manhattan distance    
+  Maybe I'm already doing it? Does it make a difference? (probably not).
 
-* Implement first-pass collision detection  
-  Then use it to find candidate food to collide with. The second pass will still use the old approach.
+* Second-pass collision detection filter
+  Then use it to find candidate food to collide with. 
+  Maybe use bounding boxes or even oriented bounding boxes (https://en.wikipedia.org/wiki/Minimum_bounding_box_algorithms).
+  Maybe even apply a convex hull algorithm (https://en.wikipedia.org/wiki/Minimum_bounding_box_algorithms). Then, a good approach is to find a dividing line as suggested in practical_collision_detection.pdf.
 
 * Fix vector math  
   See TODOs and FIXMEs, in particular around vector projections.  
   This is probably the cause of sketchy narjillo-to-food collision detection  
   
 * Rewrite second-pass collision detection
-  Initially, only narjillo-to-food, but the new code must allow for generalized C.D. (that will be used
-  in the "Predators" theme).  
-  Importantly, this story will remove the concept of "outer space" and make collisions work anywhere.  
+  Initially, only narjillo-to-food, but the new code must allow for generalized C.D.
+  (that is a precondition for the "Predators" theme).  
+  Importantly, this story removes the concept of "outer space" and makes collisions work anywhere.  
 
-* Use "speed boxes" instad of bounding boxes  
+* Use "speed boxes" instead of bounding boxes  
   As described in https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection  
-  Possibly make them by interpenetrating previous and current bboxes.  
+  Probably calculate them by over-boxing previous and current position's b-boxes.  
   This should make collision detection independent of max speed, so remove "safety speed" code
   if the approach works.  
-  
-+ Check Manhattan distance as first collision filter  
-  Maybe I already do it? Does it make a difference (probably not).
 
 * Progressively damage out-of-bounds Narjillos
   Identifying things should work up to a limited distance.  
   Now that Outer Space is gone, damage creatures progressively for getting farther beyond
   the expected boundaries.
-  
+
++ Avoid square roots in vectors by comparing to squared distances  
+  In other words, never do a square root (in particular, in Vector#length()) - instead,
+  keep things squared throughout. I doubt this is worth it, because my ceiling tests
+  indicate that this optimization would gain maybe 20% speed but probably make the code
+  harder to reason about. Still something worth considering after the main collision
+  detection algorithm is done, because by that time it will be easier to judge impact.  
+
 * Optimize collision detection  
 
 ##Instincts
@@ -101,7 +108,7 @@
 * Chromosome duplication with mirroring mutation  
 + Separated frequency configuration for different types of mutations  
 
-+ Max lifespan is geneticaly determined  
++ Max lifespan is genetically determined  
   within a limit  
   
 - Lateral viewfield is genetically determined  
@@ -116,12 +123,14 @@
 + Gene mutation rate itself is determined by genes
   This is a very interesting concept, and something that I should think about carefully.
 
+
 ##Brains
 >goal: complex interactions  
 
-    Still just an idea... Do the Predators theme and then consider this.  
+    Still just an idea. Do the Predators theme and then consider this.  
 
 * Creatures have neural networks for brains  
+
 
 ##Eye Candy
 >goal: nice user experience  
@@ -144,6 +153,7 @@
 - Show heat cloud when zooming out in infrared mode  
 - Skip quickly over less interesting creatures in Demo Mode  
 + Command-line argument to start without visual effects  
+
 
 ##Species Analysis
 >goal: understand what is happening in the dish  

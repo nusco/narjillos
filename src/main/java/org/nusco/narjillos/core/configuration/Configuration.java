@@ -145,8 +145,7 @@ public class Configuration {
 
 	public static final double ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK = getDouble("ecosystem", "max_food_density_per_1000_blocks");
 
-	public static final int ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = getInt("ecosystem",
-		"food_respawn_average_interval_per_block");
+	public static final int ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK = getInt("ecosystem", "food_respawn_average_interval_per_block");
 
 	public static final int ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL = getInt("ecosystem", "update_food_targets_interval");
 

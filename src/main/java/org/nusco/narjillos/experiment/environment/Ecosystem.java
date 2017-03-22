@@ -28,7 +28,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNALog;
 
 /**
- * A complex environment populate with narjillos, eggs and food.
+ * A complex environment populated with narjillos, eggs and food.
  */
 public class Ecosystem extends Environment {
 
@@ -161,8 +161,7 @@ public class Ecosystem extends Environment {
 
 	public void updateTargets() {
 		synchronized (narjillos) {
-			narjillos.stream()
-				.forEach(this::setFoodTarget);
+			narjillos.forEach(this::setFoodTarget);
 		}
 	}
 
@@ -197,7 +196,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
-		new LinkedList<>(space.getAll("egg")).stream()
+		new LinkedList<>(space.getAll("egg"))
 			.forEach(thing -> tickEgg((Egg) thing, numGen));
 
 		synchronized (narjillos) {
@@ -214,8 +213,7 @@ public class Ecosystem extends Environment {
 		}
 
 		synchronized (narjillos) {
-			narjillos.stream()
-				.forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
+			narjillos.forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
 		}
 	}
 
@@ -282,8 +280,7 @@ public class Ecosystem extends Environment {
 		breathe();
 
 		// Consume food
-		narjillosToCollidedFood.entrySet().stream()
-			.forEach(entry -> {
+		narjillosToCollidedFood.entrySet().forEach(entry -> {
 				Narjillo narjillo = entry.getKey();
 				Set<Thing> collidedFood = entry.getValue();
 				consume(narjillo, collidedFood);
@@ -348,8 +345,7 @@ public class Ecosystem extends Environment {
 	}
 
 	private void consume(Narjillo narjillo, Set<Thing> foodPellets) {
-		foodPellets.stream()
-			.forEach(foodPellet -> consumeFood(narjillo, (FoodPellet) foodPellet));
+		foodPellets.forEach(foodPellet -> consumeFood(narjillo, (FoodPellet) foodPellet));
 	}
 
 	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet) {

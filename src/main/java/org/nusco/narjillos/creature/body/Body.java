@@ -221,7 +221,7 @@ public class Body {
 		updateMasses();
 	}
 
-	private final void updateMasses() {
+	private void updateMasses() {
 		mass = 0;
 		redMass = 0;
 		greenMass = 0;

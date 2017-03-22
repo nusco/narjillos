@@ -178,8 +178,8 @@ public class EnvironmentView {
 		return new HashSet<>(thingsToViews.values());
 	}
 
-	private synchronized ThingView addThingView(Thing thing) {
-		return thingsToViews.put(thing, ThingView.createViewFor(thing));
+	private synchronized void addThingView(Thing thing) {
+		thingsToViews.put(thing, ThingView.createViewFor(thing));
 	}
 
 	private synchronized void removeThingView(Thing thing) {
@@ -190,7 +190,7 @@ public class EnvironmentView {
 		viewport.tick();
 	}
 
-	void darkenWithDistance(Node node, double zoomLevel) {
+	private void darkenWithDistance(Node node, double zoomLevel) {
 		double brightnessAdjust = -zoomLevel / 5;
 		node.setEffect(new ColorAdjust(0, 0, brightnessAdjust, 0));
 	}

@@ -15,10 +15,6 @@ public class MicroscopeView {
 
 	private Vector currentScreenSize = null;
 
-	private Rectangle black;
-
-	private Circle hole;
-
 	private Shape microscope;
 
 	public MicroscopeView(Viewport viewport) {
@@ -37,9 +33,9 @@ public class MicroscopeView {
 
 		// Leave an ample left/bottom black margin - otherwise, the background
 		// will be visible for a moment while enlarging the window.
-		black = new Rectangle(-10, -10, maxScreenSize + 1000, maxScreenSize + 1000);
+		Rectangle black = new Rectangle(-10, -10, maxScreenSize + 1000, maxScreenSize + 1000);
 
-		hole = new Circle(screenSize.x / 2, screenSize.y / 2, minScreenSize / 2.03);
+		Circle hole = new Circle(screenSize.x / 2, screenSize.y / 2, minScreenSize / 2.03);
 		microscope = Shape.subtract(black, hole);
 		microscope.setEffect(new BoxBlur(5, 5, 1));
 

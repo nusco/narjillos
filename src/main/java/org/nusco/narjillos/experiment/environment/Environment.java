@@ -51,10 +51,10 @@ public abstract class Environment {
 	protected abstract void tickThings(DNALog dnaLog, NumGen numGen);
 
 	final void notifyThingAdded(Thing thing) {
-		eventListeners.stream().forEach(ecosystemEvent -> ecosystemEvent.added(thing));
+		eventListeners.forEach(ecosystemEvent -> ecosystemEvent.added(thing));
 	}
 
 	final void notifyThingRemoved(Thing thing) {
-		eventListeners.stream().forEach(ecosystemEvent -> ecosystemEvent.removed(thing));
+		eventListeners.forEach(ecosystemEvent -> ecosystemEvent.removed(thing));
 	}
 }

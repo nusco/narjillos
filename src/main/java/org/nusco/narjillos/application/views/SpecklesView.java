@@ -18,7 +18,7 @@ import org.nusco.narjillos.application.utilities.Viewport;
  * The speckles in the petri dish's liquid. They provide a sense of a tracked
  * narjillo's movement, speed and direction.
  */
-public class SpecklesView {
+class SpecklesView {
 
 	private static final double NORMAL_SPECKLE_RADIUS = 2;
 	private static final double INFRARED_SPECKLE_RADIUS = 2.5;

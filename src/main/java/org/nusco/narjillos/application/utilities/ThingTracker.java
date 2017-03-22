@@ -95,25 +95,21 @@ public class ThingTracker {
 	public void startTrackingThingAt(Vector position) {
 		Thing target = locator.findThingAt(position);
 
+		startTracking(target);
+	}
+
+	public void startTracking(Thing target) {
 		if (target == null) {
 			stopTracking();
 			return;
 		}
 
-		startTracking(target);
-	}
-
-	public void startTracking(Thing target) {
 		this.target = target;
 		viewport.centerAndZoomOn(target);
 	}
 
 	private void startTrackingRandomLivingThing() {
 		Thing target = locator.findRandomLivingThing();
-		if (target == null) {
-			stopTracking();
-			return;
-		}
 		startTracking(target);
 		lastDemoTrackingTime = System.currentTimeMillis();
 	}

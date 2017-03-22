@@ -86,7 +86,6 @@ applicationDistribution.from(
 
 task writeDockerfile() {
     description = 'Generates a new Dockerfile for the current version.'
-    def version = file('version').getText().trim()
     def dockerfile = new File('Dockerfile')
     dockerfile.write ""
     dockerfile << "FROM java\n"

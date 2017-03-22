@@ -120,8 +120,11 @@ public class OrganView implements ItemView {
 		if (organ.isLeaf())
 			return false;
 
-		boolean isJointPotentiallyVisible = getJointRadius(organ.getAdultThickness()) > Math.min(organ.getAdultThickness(), getOverlap());
-		return isJointPotentiallyVisible;
+		return isJointPotentiallyVisible();
+	}
+
+	private boolean isJointPotentiallyVisible() {
+		return getJointRadius(organ.getAdultThickness()) > Math.min(organ.getAdultThickness(), getOverlap());
 	}
 
 	private Shape getShape(double zoomLevel, boolean effectsOn) {

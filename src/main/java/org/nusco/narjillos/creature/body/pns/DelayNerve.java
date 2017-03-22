@@ -23,10 +23,6 @@ public class DelayNerve implements Nerve {
 		return buffer.pop();
 	}
 
-	public LinkedList<Double> getBuffer() {
-		return buffer;
-	}
-
 	public int getDelay() {
 		return delay;
 	}

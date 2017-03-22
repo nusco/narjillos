@@ -8,12 +8,12 @@ import java.util.concurrent.atomic.AtomicLong;
  * Generates numbers (mostly pseudo-random ones).
  * <p>
  * A bit like java.math.Random, but strictly deterministic. You must give it a
- * seed during construction, and it will spew out the same exact numbers every
- * time.
+ * seed during construction, and it will spew out the same exact numbers given
+ * the same sequence of calls.
  * <p>
  * You cannot call the same instance of this class from multiple threads,
- * because multithreading and deterministic behavior don't really match. If you
- * try, the NumGen will complain loudly.
+ * because multithreading and deterministic behavior don't mix. If you try,
+ * the NumGen will complain loudly.
  */
 public class NumGen {
 
@@ -74,30 +74,30 @@ public class NumGen {
 	private static String getExplanation() {
 		return "(Don't do that, or else there is no guarantee that the same " + "seed will generate the same sequence of numbers.)";
 	}
-}
 
-// A Random that allows you to get/set the current seed.
-class TransparentRanGen extends Random {
+	// A Random that allows you to get/set the current seed.
+	private static class TransparentRanGen extends Random {
 
-	private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
-	@Override
-	public void setSeed(long seed) {
-		extractSeed().set(seed);
-	}
+		@Override
+		public void setSeed(long seed) {
+			extractSeed().set(seed);
+		}
 
-	long getSeed() {
-		return extractSeed().get();
-	}
+		long getSeed() {
+			return extractSeed().get();
+		}
 
-	private AtomicLong extractSeed() {
-		// Put on your gloves - this is going to be dirty.
-		try {
-			Field seedField = Random.class.getDeclaredField("seed");
-			seedField.setAccessible(true);
-			return (AtomicLong) seedField.get(this);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		private AtomicLong extractSeed() {
+			// Put on your gloves - this is going to be dirty.
+			try {
+				Field seedField = Random.class.getDeclaredField("seed");
+				seedField.setAccessible(true);
+				return (AtomicLong) seedField.get(this);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }

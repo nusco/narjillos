@@ -37,15 +37,6 @@ public class AtmosphereTest {
 	}
 
 	@Test
-	public void hasElementDensities() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
-
-		assertEquals(0.33, atmosphere.getDensityOf(OXYGEN), 0.01);
-		assertEquals(0.33, atmosphere.getDensityOf(HYDROGEN), 0.01);
-		assertEquals(0.33, atmosphere.getDensityOf(NITROGEN), 0.01);
-	}
-
-	@Test
 	public void hasNoElementZero() {
 		Atmosphere atmosphere = new Atmosphere(10, 0);
 

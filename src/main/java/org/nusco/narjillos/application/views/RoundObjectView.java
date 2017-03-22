@@ -34,7 +34,7 @@ abstract class RoundObjectView implements ItemView {
 		getShape().getTransforms().add(new Translate(position.x, position.y));
 	}
 
-	private final double getRadius() {
+	private double getRadius() {
 		return radius;
 	}
 }

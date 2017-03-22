@@ -1,18 +1,12 @@
 package org.nusco.narjillos.creature.embryogenesis;
 
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.AMPLITUDE;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.ANGLE_TO_PARENT;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.BLUE_SHIFT;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.DELAY;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.GREEN_SHIFT;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.RED_SHIFT;
-import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.SKEWING;
-
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.BodyPartParameters;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.genomics.Chromosome;
+
+import static org.nusco.narjillos.creature.embryogenesis.CytogeneticLocations.*;
 
 /**
  * Builds a BodySegment from a chromosome.

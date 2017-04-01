@@ -41,7 +41,7 @@ public class PerformanceTest {
 	private static final HistoryLog historyLog = new PersistentHistoryLog("x");
 
 	public static void main(String[] args) throws IOException {
-		ticks = 10_000;
+		ticks = 20_000;
 		try {
 			new PerformanceTest().testPerformance();
 		} catch (AssertionError e) {

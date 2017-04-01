@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class HashedSpace {
@@ -24,19 +25,24 @@ public class HashedSpace {
 		locations.stream().forEach(location -> addThingToLocation(location, thing));
 	}
 
+	public void remove(Thing thing) {
+		final Set<HashedLocation> locations = thingsToLocations.get(thing);
+		thingsToLocations.remove(thing);
+		locations.stream().forEach(location -> locationsToThings.get(location).remove(thing));
+	}
+
 	public Set<Thing> getThings() {
 		return thingsToLocations.keySet();
 	}
 
-	public Set<HashedLocation> getHashedLocationsOf(Thing thing) {
-		return thingsToLocations.get(thing);
+	public Optional<Set<HashedLocation>> getHashedLocationsOf(Thing thing) {
+		Set<HashedLocation> result = thingsToLocations.get(thing);
+		return result != null ? Optional.of(result) : Optional.empty();
 	}
 
 	List<Thing> getThingsAtHashedLocation(int lx, int ly) {
 		List<Thing> result = locationsToThings.get(HashedLocation.at(lx, ly));
-		if (result == null)
-			return Collections.emptyList();
-		return result;
+		return result != null ? result : Collections.emptyList();
 	}
 
 	private Set<HashedLocation> calculateHashedLocationsOf(Thing thing) {

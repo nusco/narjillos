@@ -6,8 +6,10 @@ import org.nusco.narjillos.core.geometry.Vector;
 
 import java.util.Set;
 
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,14 +27,26 @@ public class HashedSpaceTest {
 	}
 
 	@Test
+	public void removesThings() {
+		Thing thing = new TestThing(Vector.cartesian(1, 1), 123);
+
+		HashedSpace hashedSpace = new HashedSpace();
+		hashedSpace.add(thing);
+		hashedSpace.remove(thing);
+
+		assertThat(hashedSpace.getThings(), is(emptyCollectionOf(Thing.class)));
+		assertThat(hashedSpace.getHashedLocationsOf(thing).isPresent(), is(false));
+		assertThat(hashedSpace.getThingsAtHashedLocation(1, 1), is(emptyCollectionOf(Thing.class)));
+	}
+
+	@Test
 	public void thingsHaveHashedLocations() {
-		Thing punctiformThing = mock(Thing.class);
-		when(punctiformThing.getBoundingBox()).thenReturn(BoundingBox.punctiform(Vector.cartesian(-1000, 3000)));
+		Thing punctiformThing = new TestThing(Vector.cartesian(-1000, 3000), 1);
 
 		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(punctiformThing);
 
-		assertThat(hashedSpace.getHashedLocationsOf(punctiformThing), contains(HashedLocation.at(-4, 11)));
+		assertThat(hashedSpace.getHashedLocationsOf(punctiformThing).get(), contains(HashedLocation.at(-4, 11)));
 	}
 
 	@Test
@@ -43,7 +57,7 @@ public class HashedSpaceTest {
 		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(thing);
 
-		final Set<HashedLocation> hashedLocationsOf = hashedSpace.getHashedLocationsOf(thing);
+		final Set<HashedLocation> hashedLocationsOf = hashedSpace.getHashedLocationsOf(thing).get();
 		assertThat(hashedLocationsOf, containsInAnyOrder(
 			HashedLocation.at(-1, 1),
 			HashedLocation.at(1, 1),

@@ -22,7 +22,8 @@ dependencies {
     compile 'commons-cli:commons-cli:1.2'
     compile 'org.yaml:snakeyaml:1.15'
     compile 'org.xerial:sqlite-jdbc:3.8.11.1'
-    testCompile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
 }
 
 // Programs

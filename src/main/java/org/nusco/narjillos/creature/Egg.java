@@ -1,15 +1,14 @@
 package org.nusco.narjillos.creature;
 
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Optional;
 
@@ -114,7 +113,7 @@ public class Egg implements Thing {
 
 	@Override
 	public BoundingBox getBoundingBox() {
-		throw new NotImplementedException(); // TODO
+		throw new RuntimeException("NOT IMPLEMENTED - TODO"); // TODO
 	}
 
 	public DNA getDNA() {

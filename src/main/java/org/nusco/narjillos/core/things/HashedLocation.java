@@ -6,18 +6,13 @@ class HashedLocation {
 
 	private static final long GRID_SIZE = 300;
 
-	private final long lx;
+	final long lx;
 
-	private final long ly;
+	final long ly;
 
-	public HashedLocation(long lx, long ly) {
+	private HashedLocation(long lx, long ly) {
 		this.lx = lx;
 		this.ly = ly;
-	}
-
-	public HashedLocation(Thing thing) {
-		this.lx = toGrid(thing.getCenter().x);
-		this.ly = toGrid(thing.getCenter().y);
 	}
 
 	@Override
@@ -40,7 +35,17 @@ class HashedLocation {
 		return String.format("[%s, %s]", lx, ly);
 	}
 
-	private long toGrid(double n) {
-		return (long) (n / GRID_SIZE);
+	public static HashedLocation at(long lx, long ly) {
+		return new HashedLocation(lx, ly);
+	}
+
+	public static HashedLocation ofCoordinates(double x, double y) {
+		return new HashedLocation(toGrid(x), toGrid(y));
+	}
+
+	private static long toGrid(double n) {
+		if (n < 0)
+			return -toGrid(-n);
+		return (long) (n / GRID_SIZE) + 1;
 	}
 }

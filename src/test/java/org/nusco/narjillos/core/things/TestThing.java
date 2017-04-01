@@ -57,6 +57,6 @@ class PunctiformTestThing implements Thing {
 
 	@Override
 	public BoundingBox getBoundingBox() {
-		return new BoundingBox(0, 0, 0, 0);
+		return BoundingBox.punctiform(getPosition());
 	}
 }

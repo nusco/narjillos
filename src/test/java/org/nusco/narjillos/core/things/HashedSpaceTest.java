@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Vector;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
@@ -25,21 +27,23 @@ public class HashedSpaceTest {
 		assertThat(hashedSpace.getThings(), contains(thing));
 	}
 
-	@Test @Ignore
-	public void eachThingOccupiesHashedLocations() {
+	@Test
+	public void thingsOccupyHashedLocations() {
 		Thing punctiformThing = mock(Thing.class);
-		when(punctiformThing.getBoundingBox()).thenReturn(new BoundingBox(-1000, -1000, -3000, -3000));
+		when(punctiformThing.getBoundingBox()).thenReturn(BoundingBox.punctiform(Vector.cartesian(-1000, 3000)));
 
 		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(punctiformThing);
 
-		assertThat(hashedSpace.getHashedLocationsOf(punctiformThing), contains(new HashedLocation(-3, 10)));
+		final List<HashedLocation> hashedLocationsOf = hashedSpace.getHashedLocationsOf(punctiformThing);
+		final HashedLocation hashedLocation = new HashedLocation(-3, 10);
+		assertThat(hashedLocationsOf, contains(hashedLocation));
 	}
 
 	@Test @Ignore
-	public void aLargeThingCanOccupyMultipleLocations() {
+	public void aLargeThingCanSpanMultipleLocations() {
 		Thing largeThing = mock(Thing.class);
-		when(largeThing.getBoundingBox()).thenReturn(new BoundingBox(-1000, -1000, -3000, -3000));
+		when(largeThing.getBoundingBox()).thenReturn(new BoundingBox(-1000, -1000, 3000, 3000));
 
 		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(largeThing);

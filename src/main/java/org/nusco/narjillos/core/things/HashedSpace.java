@@ -18,7 +18,7 @@ public class HashedSpace {
 	private final Map<HashedLocation, List<Thing>> locationsToThings = new HashMap<>();
 
 	public void add(Thing thing) {
-		// TODO: add check that Thing dimension doesn't exceed grid size
+		validateMaximumSize(thing);
 
 		Set<HashedLocation> locations = calculateHashedLocationsOf(thing);
 		thingsToLocations.put(thing, locations);
@@ -43,6 +43,14 @@ public class HashedSpace {
 	List<Thing> getThingsAtHashedLocation(int lx, int ly) {
 		List<Thing> result = locationsToThings.get(HashedLocation.at(lx, ly));
 		return result != null ? result : Collections.emptyList();
+	}
+
+	private void validateMaximumSize(Thing thing) {
+		if (thing.getRadius() <= HashedLocation.GRID_SIZE)
+			return;
+
+		String message = String.format("Things with a radius over %s can cause failures in collision detection", HashedLocation.GRID_SIZE);
+		throw new RuntimeException(message);
 	}
 
 	private Set<HashedLocation> calculateHashedLocationsOf(Thing thing) {

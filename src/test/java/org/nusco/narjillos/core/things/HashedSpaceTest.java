@@ -16,21 +16,29 @@ import static org.mockito.Mockito.when;
 
 public class HashedSpaceTest {
 
+	HashedSpace hashedSpace = new HashedSpace();
+
 	@Test
 	public void addsThings() {
 		Thing thing = new TestThing(Vector.cartesian(1000, 2000), 123);
 
-		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(thing);
 
 		assertThat(hashedSpace.getThings(), contains(thing));
+	}
+
+	@Test(expected=RuntimeException.class)
+	public void throwsExceptionIfAThingIsTooLargeForTheCurrentGrid() {
+		Thing thing = mock(Thing.class);
+		when(thing.getRadius()).thenReturn(HashedLocation.GRID_SIZE + 1d);
+
+		hashedSpace.add(thing);
 	}
 
 	@Test
 	public void removesThings() {
 		Thing thing = new TestThing(Vector.cartesian(1, 1), 123);
 
-		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(thing);
 		hashedSpace.remove(thing);
 
@@ -43,18 +51,16 @@ public class HashedSpaceTest {
 	public void thingsHaveHashedLocations() {
 		Thing punctiformThing = new TestThing(Vector.cartesian(-1000, 3000), 1);
 
-		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(punctiformThing);
 
 		assertThat(hashedSpace.getHashedLocationsOf(punctiformThing).get(), contains(HashedLocation.at(-4, 11)));
 	}
 
 	@Test
-	public void aThingCanSpanMultipleLocations() {
+	public void aThingCanSpanOverMultipleLocations() {
 		Thing thing = mock(Thing.class);
 		when(thing.getBoundingBox()).thenReturn(new BoundingBox(-10, 10, 290, 310));
 
-		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(thing);
 
 		final Set<HashedLocation> hashedLocationsOf = hashedSpace.getHashedLocationsOf(thing).get();
@@ -63,7 +69,7 @@ public class HashedSpaceTest {
 			HashedLocation.at(1, 1),
 			HashedLocation.at(-1, 2),
 			HashedLocation.at(1, 2)
-			));
+		));
 	}
 
 	@Test
@@ -72,7 +78,6 @@ public class HashedSpaceTest {
 		Thing punctiformThing2 = new TestThing(Vector.cartesian(1100, 3100), 2);
 		Thing punctiformThing3 = new TestThing(Vector.cartesian(1500, 3100), 3);
 
-		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(punctiformThing1);
 		hashedSpace.add(punctiformThing2);
 		hashedSpace.add(punctiformThing3);

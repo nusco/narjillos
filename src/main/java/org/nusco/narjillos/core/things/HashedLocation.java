@@ -4,7 +4,7 @@ import java.util.Objects;
 
 class HashedLocation {
 
-	private static final long GRID_SIZE = 300;
+	public static final long GRID_SIZE = 300;
 
 	final long lx;
 

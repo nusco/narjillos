@@ -12,6 +12,8 @@ public class HashedSpace {
 	private final Map<HashedLocation, List<Thing>> locationsToThings = new HashMap<>();
 
 	public void add(Thing thing) {
+		// TODO: add check that Thing dimension doesn't exceed grid size
+
 		List<HashedLocation> locations = calculateHashedLocationsOf(thing);
 		thingsToLocations.put(thing, locations);
 		locations.stream().forEach(location -> addThingToLocation(location, thing));

@@ -22,8 +22,18 @@ public class HashedSpaceTest {
 	}
 
 	@Test
-	public void eachThingGetsAHashedLocation() {
+	public void eachThingOccupiesHashedLocations() {
 		Thing thing = new PunctiformTestThing(Vector.cartesian(-1000, 3000), 123);
+
+		HashedSpace hashedSpace = new HashedSpace();
+		hashedSpace.add(thing);
+
+		assertThat(hashedSpace.getHashedLocationsOf(thing), contains(new HashedLocation(-3, 10)));
+	}
+
+	@Test
+	public void aLargeThingCanOccupyMultipleLocations() {
+		Thing largeThing = new Thing();
 
 		HashedSpace hashedSpace = new HashedSpace();
 		hashedSpace.add(thing);

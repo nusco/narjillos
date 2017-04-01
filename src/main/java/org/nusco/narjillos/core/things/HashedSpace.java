@@ -1,6 +1,11 @@
 package org.nusco.narjillos.core.things;
 
+import org.nusco.narjillos.core.geometry.BoundingBox;
+import org.nusco.narjillos.core.geometry.Vector;
+
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +13,13 @@ import java.util.Set;
 
 public class HashedSpace {
 
-	private final Map<Thing, List<HashedLocation>> thingsToLocations = new HashMap<>();
+	private final Map<Thing, Set<HashedLocation>> thingsToLocations = new HashMap<>();
 	private final Map<HashedLocation, List<Thing>> locationsToThings = new HashMap<>();
 
 	public void add(Thing thing) {
 		// TODO: add check that Thing dimension doesn't exceed grid size
 
-		List<HashedLocation> locations = calculateHashedLocationsOf(thing);
+		Set<HashedLocation> locations = calculateHashedLocationsOf(thing);
 		thingsToLocations.put(thing, locations);
 		locations.stream().forEach(location -> addThingToLocation(location, thing));
 	}
@@ -23,24 +28,30 @@ public class HashedSpace {
 		return thingsToLocations.keySet();
 	}
 
-	public List<HashedLocation> getHashedLocationsOf(Thing thing) {
+	public Set<HashedLocation> getHashedLocationsOf(Thing thing) {
 		return thingsToLocations.get(thing);
 	}
 
-	public List<Thing> getThingsAtHashedLocation(int lx, int ly) {
-		return locationsToThings.get(new HashedLocation(lx, ly));
+	List<Thing> getThingsAtHashedLocation(int lx, int ly) {
+		List<Thing> result = locationsToThings.get(HashedLocation.at(lx, ly));
+		if (result == null)
+			return Collections.emptyList();
+		return result;
 	}
 
-	private List<HashedLocation> calculateHashedLocationsOf(Thing thing) {
-		// TODO: support multiple locations
-		List<HashedLocation> result = new LinkedList<>();
-		result.add(new HashedLocation(thing));
+	private Set<HashedLocation> calculateHashedLocationsOf(Thing thing) {
+		Set<HashedLocation> result = new HashSet<>();
+		BoundingBox boundingBox = thing.getBoundingBox();
+		result.add(HashedLocation.ofCoordinates(boundingBox.right, boundingBox.bottom));
+		result.add(HashedLocation.ofCoordinates(boundingBox.right, boundingBox.top));
+		result.add(HashedLocation.ofCoordinates(boundingBox.left, boundingBox.bottom));
+		result.add(HashedLocation.ofCoordinates(boundingBox.left, boundingBox.top));
 		return result;
 	}
 
 	private void addThingToLocation(HashedLocation location, Thing thing) {
 		if (!locationsToThings.containsKey(location))
-			locationsToThings.put(location, new LinkedList<Thing>());
+			locationsToThings.put(location, new LinkedList<>());
 		locationsToThings.get(location).add(thing);
 	}
 }

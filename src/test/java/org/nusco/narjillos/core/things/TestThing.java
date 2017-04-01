@@ -4,13 +4,13 @@ import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 
-class PunctiformTestThing implements Thing {
+class TestThing implements Thing {
 
 	private final String label;
 
 	private final Vector position;
 
-	public PunctiformTestThing(Vector position, Integer id) {
+	public TestThing(Vector position, Integer id) {
 		this.position = position;
 		this.label = id.toString();
 	}

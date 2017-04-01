@@ -6,22 +6,23 @@
     See: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection  
     Maybe also see: http://number-none.com/blow/papers/practical_collision_detection.pdf  
 
-+ First-pass collision detection filter using Manhattan distance    
-  Maybe I'm already doing it? Does it make a difference? (probably not).
-
-* Second-pass collision detection filter
-  Then use it to find candidate food to collide with. 
+* Broad CD pass to find candidate colliders--
+  Use it for food collisions for now.--
+  Spatial hashing.
   Maybe use bounding boxes or even oriented bounding boxes (https://en.wikipedia.org/wiki/Minimum_bounding_box_algorithms).
   Maybe even apply a convex hull algorithm (https://en.wikipedia.org/wiki/Minimum_bounding_box_algorithms). Then, a good approach is to find a dividing line as suggested in practical_collision_detection.pdf.
+  Importantly, this story removes the concept of "outer space" and makes collisions work anywhere.  
+  Make it visualizable.
+
++ Ultra-broad CD pass to remove isolated creatures- 
+  Use Manhattan distance (axis-aligned bounding boxes).
+  Maybe I'm already doing it? Does it make a difference?
 
 * Fix vector math  
   See TODOs and FIXMEs, in particular around vector projections.  
   This is probably the cause of sketchy narjillo-to-food collision detection  
-  
-* Rewrite second-pass collision detection
-  Initially, only narjillo-to-food, but the new code must allow for generalized C.D.
-  (that is a precondition for the "Predators" theme).  
-  Importantly, this story removes the concept of "outer space" and makes collisions work anywhere.  
+
+* Fine organ-based CD pass--
 
 * Use "speed boxes" instead of bounding boxes  
   As described in https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection  

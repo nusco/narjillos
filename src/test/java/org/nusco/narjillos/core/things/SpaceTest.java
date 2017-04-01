@@ -50,17 +50,17 @@ public class SpaceTest {
 
 	@Test
 	public void thingsHaveHashedLocations() {
-		Thing punctiformThing = new TestThing(Vector.cartesian(-1000, 3000), 1);
+		Thing punctiformThing = new TestThing(Vector.cartesian(-1000, 4000), 1);
 
 		space.add(punctiformThing);
 
-		assertThat(space.getHashedLocationsOf(punctiformThing).get(), contains(HashedLocation.at(-4, 11)));
+		assertThat(space.getHashedLocationsOf(punctiformThing).get(), contains(HashedLocation.at(-3, 11)));
 	}
 
 	@Test
 	public void aThingCanSpanOverMultipleLocations() {
 		Thing thing = mock(Thing.class);
-		when(thing.getBoundingBox()).thenReturn(new BoundingBox(-10, 10, 290, 310));
+		when(thing.getBoundingBox()).thenReturn(new BoundingBox(-10, 10, 390, 410));
 
 		space.add(thing);
 
@@ -75,9 +75,9 @@ public class SpaceTest {
 
 	@Test
 	public void aLocationCanContainMultipleThings() {
-		Thing punctiformThing1 = new TestThing(Vector.cartesian(1000, 3000), 1);
-		Thing punctiformThing2 = new TestThing(Vector.cartesian(1100, 3100), 2);
-		Thing punctiformThing3 = new TestThing(Vector.cartesian(1500, 3100), 3);
+		Thing punctiformThing1 = new TestThing(Vector.cartesian(1200, 4000), 1);
+		Thing punctiformThing2 = new TestThing(Vector.cartesian(1300, 4100), 2);
+		Thing punctiformThing3 = new TestThing(Vector.cartesian(1700, 4100), 3);
 
 		space.add(punctiformThing1);
 		space.add(punctiformThing2);
@@ -144,13 +144,13 @@ public class SpaceTest {
 	@Test
 	public void storesAndRetrievesThingsBasedOnTheirPosition() {
 		Thing[] things = new Thing[] {
-			new TestThing(Vector.cartesian(510, 310), 0), // area [5, 3]
-			new TestThing(Vector.cartesian(520, 320), 1), // area [5, 3]
-			new TestThing(Vector.cartesian(410, 210), 2), // area [4, 2]
-			new TestThing(Vector.cartesian(610, 310), 3), // area [6, 3]
-			new TestThing(Vector.cartesian(620, 320), 4), // area [6, 3]
-			new TestThing(Vector.cartesian(610, 410), 5), // area [6, 4]
-			new TestThing(Vector.cartesian(900, 900), 6), // area [8, 8]
+			new TestThing(Vector.cartesian(680, 410), 0), // area [5, 3]
+			new TestThing(Vector.cartesian(520, 420), 1), // area [5, 3]
+			new TestThing(Vector.cartesian(550, 280), 2), // area [4, 2]
+			new TestThing(Vector.cartesian(810, 410), 3), // area [6, 3]
+			new TestThing(Vector.cartesian(820, 420), 4), // area [6, 3]
+			new TestThing(Vector.cartesian(810, 550), 5), // area [6, 4]
+			new TestThing(Vector.cartesian(1300, 1300), 6), // area [8, 8]
 		};
 		for (Thing thing1 : things)
 			space.add(thing1);

@@ -18,15 +18,15 @@ public class HashedLocationTest {
 	@Test
 	public void hashesCoordinatesToAGrid() {
 		assertThat(HashedLocation.ofCoordinates(1, 1), is(HashedLocation.at(1, 1)));
-		assertThat(HashedLocation.ofCoordinates(299, 300), is(HashedLocation.at(1, 2)));
-		assertThat(HashedLocation.ofCoordinates(500, 1000), is(HashedLocation.at(2, 4)));
+		assertThat(HashedLocation.ofCoordinates(299, 400), is(HashedLocation.at(1, 2)));
+		assertThat(HashedLocation.ofCoordinates(500, 1200), is(HashedLocation.at(2, 4)));
 	}
 
 	@Test
 	public void hashesNegativeCoordinates() {
 		assertThat(HashedLocation.ofCoordinates(-1, -1), is(HashedLocation.at(-1, -1)));
-		assertThat(HashedLocation.ofCoordinates(-299, -300), is(HashedLocation.at(-1, -2)));
-		assertThat(HashedLocation.ofCoordinates(500, -1000), is(HashedLocation.at(2, -4)));
+		assertThat(HashedLocation.ofCoordinates(-299, -400), is(HashedLocation.at(-1, -2)));
+		assertThat(HashedLocation.ofCoordinates(500, -1200), is(HashedLocation.at(2, -4)));
 	}
 
 	@Test

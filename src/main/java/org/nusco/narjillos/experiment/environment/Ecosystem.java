@@ -69,7 +69,7 @@ public class Ecosystem extends Environment {
 		// TODO: fix magic number
 		// check that things cannot move faster than a space area in a single
 		// tick (which would make collision detection unreliable)
-		if (sizeCheck && 300 < Viscosity.getMaxVelocity())
+		if (sizeCheck && 400 < Viscosity.getMaxVelocity())
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 

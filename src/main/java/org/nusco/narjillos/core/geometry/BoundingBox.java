@@ -23,6 +23,10 @@ public class BoundingBox {
 		this.top = Math.max(bottom, top);
 	}
 
+	public static BoundingBox punctiform(Vector v) {
+		return new BoundingBox(v.x, v.x, v.y, v.y);
+	}
+
 	public boolean overlaps(BoundingBox other) {
 		return !(top <= other.bottom || bottom >= other.top || right <= other.left || left >= other.right);
 	}

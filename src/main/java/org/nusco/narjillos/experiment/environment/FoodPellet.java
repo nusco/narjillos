@@ -1,5 +1,6 @@
 package org.nusco.narjillos.experiment.environment;
 
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -9,14 +10,17 @@ import org.nusco.narjillos.core.configuration.Configuration;
 
 public class FoodPellet implements Thing {
 
-	private Vector position;
+	private final Vector position;
+
+	private final BoundingBox boundingBox;
 
 	private final Energy energy = new LifeFormEnergy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
 
 	private Thing interactingThing;
 
-	public void setPosition(Vector position) {
+	public FoodPellet(Vector position) {
 		this.position = position;
+		this.boundingBox = BoundingBox.punctiform(position); // TODO
 	}
 
 	@Override
@@ -49,8 +53,14 @@ public class FoodPellet implements Thing {
 		return Configuration.FOOD_RADIUS;
 	}
 
+	@Override
 	public Thing getLastInteractingThing() {
 		return interactingThing;
+	}
+
+	@Override
+	public BoundingBox getBoundingBox() {
+		return boundingBox;
 	}
 
 	public void setInteractingThing(Thing interactingThing) {

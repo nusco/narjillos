@@ -19,12 +19,13 @@ public class JSONThingSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesFoodPellet() {
-		Thing food = new FoodPellet();
+		Thing food = new FoodPellet(Vector.cartesian(10, 20));
 
 		String json = JSON.toJson(food, Thing.class);
 		Thing deserialized = JSON.fromJson(json, Thing.class);
 
 		assertEquals(food.getPosition(), deserialized.getPosition());
+		assertEquals(food.getBoundingBox(), deserialized.getBoundingBox());
 	}
 
 	@Test
@@ -62,6 +63,7 @@ public class JSONThingSerializationTest {
 		assertEquals(Vector.cartesian(100, 200), deserialized.getTarget());
 		assertEquals(narjillo.getEnergy().getValue(), deserialized.getEnergy().getValue(), 0.0);
 		assertEquals(narjillo.getMouth().getDirection(), deserialized.getMouth().getDirection());
+		assertEquals(narjillo.getBoundingBox(), deserialized.getBoundingBox());
 
 		List<ConnectedOrgan> organs = narjillo.getOrgans();
 		List<ConnectedOrgan> deserializedOrgans = deserialized.getOrgans();

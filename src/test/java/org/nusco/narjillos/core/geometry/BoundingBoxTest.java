@@ -161,6 +161,13 @@ public class BoundingBoxTest {
 		assertTrue(boundingBox1.overlaps(boundingBox2));
 	}
 
+	@Test
+	public void canBePunctiform() {
+		BoundingBox boundingBox = BoundingBox.punctiform(Vector.cartesian(10, 20));
+
+		assertTrue(boundingBox.equals(new BoundingBox(10, 10, 20, 20)));
+	}
+
 	private BoundingBox createBoundingBox(int x, int y, int width, int height) {
 		return new Segment(Vector.cartesian(x, y), Vector.cartesian(width, height)).getBoundingBox();
 	}

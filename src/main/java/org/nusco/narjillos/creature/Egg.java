@@ -1,5 +1,6 @@
 package org.nusco.narjillos.creature;
 
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -8,6 +9,7 @@ import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Optional;
 
@@ -105,6 +107,16 @@ public class Egg implements Thing {
 		return "egg";
 	}
 
+	@Override
+	public double getRadius() {
+		return Configuration.EGG_RADIUS;
+	}
+
+	@Override
+	public BoundingBox getBoundingBox() {
+		throw new NotImplementedException(); // TODO
+	}
+
 	public DNA getDNA() {
 		return dna;
 	}
@@ -134,11 +146,6 @@ public class Egg implements Thing {
 
 	private boolean hasStopped() {
 		return getVelocity().equals(Vector.ZERO);
-	}
-
-	@Override
-	public double getRadius() {
-		return Configuration.EGG_RADIUS;
 	}
 
 	public int getIncubationTime() {

@@ -1,14 +1,21 @@
 package org.nusco.narjillos.core.things;
 
+import org.nusco.narjillos.core.geometry.Bounded;
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 
 /**
  * Something that has a physical representation in the environment.
  */
-public interface Thing {
+public interface Thing extends Bounded {
 
 	Thing NULL = new Thing() {
+
+		@Override
+		public BoundingBox getBoundingBox() {
+			return BoundingBox.punctiform(Vector.ZERO);
+		}
 
 		@Override
 		public Segment tick() {

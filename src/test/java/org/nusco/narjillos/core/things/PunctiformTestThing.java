@@ -1,5 +1,6 @@
 package org.nusco.narjillos.core.things;
 
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 
@@ -52,5 +53,10 @@ class PunctiformTestThing implements Thing {
 	@Override
 	public double getRadius() {
 		return 0;
+	}
+
+	@Override
+	public BoundingBox getBoundingBox() {
+		return new BoundingBox(0, 0, 0, 0);
 	}
 }

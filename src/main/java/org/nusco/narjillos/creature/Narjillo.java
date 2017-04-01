@@ -86,6 +86,11 @@ public class Narjillo implements Thing {
 	}
 
 	@Override
+	public BoundingBox getBoundingBox() {
+		return body.getBoundingBox();
+	}
+
+	@Override
 	public String getLabel() {
 		return "narjillo";
 	}
@@ -109,10 +114,6 @@ public class Narjillo implements Thing {
 
 	public Vector getCenterOfMass() {
 		return body.getCenterOfMass();
-	}
-
-	public BoundingBox getBoundingBox() {
-		return body.getBoundingBox();
 	}
 
 	public void feedOn(FoodPellet thing) {

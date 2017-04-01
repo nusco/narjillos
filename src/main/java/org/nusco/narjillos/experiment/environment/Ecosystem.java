@@ -112,8 +112,7 @@ public class Ecosystem extends Environment {
 	}
 
 	public final FoodPellet spawnFood(Vector position) {
-		FoodPellet newFood = new FoodPellet();
-		newFood.setPosition(position);
+		FoodPellet newFood = new FoodPellet(position);
 		insert(newFood);
 		return newFood;
 	}

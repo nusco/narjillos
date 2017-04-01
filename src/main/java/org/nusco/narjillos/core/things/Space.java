@@ -1,85 +1,152 @@
 package org.nusco.narjillos.core.things;
 
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
+import org.nusco.narjillos.core.configuration.Configuration;
+import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.core.configuration.Configuration;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Partitioned space for fast neighbor searches, collision detection, etc.
- *
- * The space is a large square grid. The space around this grid is called "outer space", and it's unusable for our purposes.
- * So the system needs simulation-level constraints that prevent Things from moving into outer space. (For example, destroying
- * things when they venture into outer space).
  */
 public class Space {
 
-	private static final int SPACE_AREAS_PER_EDGE = 100;
-
-	private final double areaSize;
-
-	private final Set<Thing>[][] areas;
-
-	private final Set<Thing> things = new LinkedHashSet<>();
-
-	// There is no visibility to/from outer space. The first would be
-	// easy, the second would be hard. We just choose to ignore outer space.
-	private final Set<Thing> outerSpace = new LinkedHashSet<>();
-
+	private final Map<Thing, Set<HashedLocation>> thingsToLocations = new LinkedHashMap<>();
+	private final Map<HashedLocation, List<Thing>> locationsToThings = new LinkedHashMap<>();
 	private final Map<String, Integer> countsByLabel = new HashMap<>();
 
-	@SuppressWarnings("unchecked")
-	public Space(long size) {
-		areaSize = ((double) size) / Space.SPACE_AREAS_PER_EDGE;
-		this.areas = new Set[Space.SPACE_AREAS_PER_EDGE][Space.SPACE_AREAS_PER_EDGE];
-		for (Set<Thing>[] area : areas) {
-			for (int j = 0; j < area.length; j++) {
-				area[j] = new LinkedHashSet<>();
-			}
+	public void add(Thing thing) {
+		validateMaximumSize(thing);
+
+		Set<HashedLocation> locations = calculateHashedLocationsOf(thing);
+
+		synchronized (thingsToLocations) {
+			thingsToLocations.put(thing, locations);
 		}
-	}
 
-	public int[] add(Thing thing) {
-		int x = toAreaCoordinates(thing.getPosition().x);
-		int y = toAreaCoordinates(thing.getPosition().y);
-		Set<Thing> area = getArea(x, y);
-
-		area.add(thing);
-
-		synchronized (things) {
-			things.add(thing);
-		}
+		locations.stream().forEach(location -> addThingToLocation(location, thing));
 
 		String label = thing.getLabel();
-
 		synchronized (countsByLabel) {
 			if (countsByLabel.containsKey(label))
 				countsByLabel.put(label, countsByLabel.get(label) + 1);
 			else
 				countsByLabel.put(label, 1);
 		}
-
-		return new int[] { x, y };
 	}
 
 	public void remove(Thing thing) {
-		getArea(thing).remove(thing);
+		final Set<HashedLocation> locations = thingsToLocations.get(thing);
 
-		synchronized (things) {
-			things.remove(thing);
+		synchronized (thingsToLocations) {
+			thingsToLocations.remove(thing);
 		}
+
+		locations.stream().forEach(location -> locationsToThings.get(location).remove(thing));
 
 		synchronized (countsByLabel) {
 			countsByLabel.put(thing.getLabel(), countsByLabel.get(thing.getLabel()) - 1);
 		}
 	}
 
+	public Set<Thing> getThings() {
+		return thingsToLocations.keySet();
+	}
+
+	public Optional<Set<HashedLocation>> getHashedLocationsOf(Thing thing) {
+		Set<HashedLocation> result = thingsToLocations.get(thing);
+		return result != null ? Optional.of(result) : Optional.empty();
+	}
+
+	public Set<Thing> getAll() {
+		synchronized (thingsToLocations) {
+			return thingsToLocations.keySet();
+		}
+	}
+
+	List<Thing> getThingsAtHashedLocation(int lx, int ly) {
+		List<Thing> result = locationsToThings.get(HashedLocation.at(lx, ly));
+		return result != null ? result : Collections.emptyList();
+	}
+
+	private void validateMaximumSize(Thing thing) {
+		if (thing.getRadius() <= HashedLocation.GRID_SIZE)
+			return;
+
+		String message = String.format("Things with a radius over %s can cause failures in collision detection", HashedLocation.GRID_SIZE);
+		throw new RuntimeException(message);
+	}
+
+	private Set<HashedLocation> calculateHashedLocationsOf(Thing thing) {
+		Set<HashedLocation> result = new LinkedHashSet<>();
+		BoundingBox boundingBox = thing.getBoundingBox();
+		result.add(HashedLocation.ofCoordinates(boundingBox.left, boundingBox.bottom));
+		result.add(HashedLocation.ofCoordinates(boundingBox.left, boundingBox.top));
+		result.add(HashedLocation.ofCoordinates(boundingBox.right, boundingBox.top));
+		result.add(HashedLocation.ofCoordinates(boundingBox.right, boundingBox.bottom));
+		return result;
+	}
+
+	private void addThingToLocation(HashedLocation location, Thing thing) {
+		if (!locationsToThings.containsKey(location))
+			locationsToThings.put(location, new LinkedList<>());
+		locationsToThings.get(location).add(thing);
+	}
+
+	public boolean isEmpty() {
+		synchronized (thingsToLocations) {
+			return thingsToLocations.isEmpty();
+		}
+	}
+
+	Set<Thing> getNearbyNeighbors(Thing thing, String label) {
+		Set<Thing> result = getNearbyNeighbors(thing.getPosition(), label);
+		result.remove(thing);
+		return result;
+	}
+
+	private Set<Thing> getNearbyNeighbors(Vector position, String label) {
+		HashedLocation location = HashedLocation.ofCoordinates(position.x, position.y);
+		long x = location.lx;
+		long y = location.ly;
+
+		Set<Thing> result = new LinkedHashSet<>();
+
+		populateWithFilteredArea(result, label, HashedLocation.at(x - 1, y - 1));
+		populateWithFilteredArea(result, label, HashedLocation.at(x - 1, y));
+		populateWithFilteredArea(result, label, HashedLocation.at(x - 1, y + 1));
+		populateWithFilteredArea(result, label, HashedLocation.at(x, y - 1));
+		populateWithFilteredArea(result, label, HashedLocation.at(x, y));
+		populateWithFilteredArea(result, label, HashedLocation.at(x, y + 1));
+		populateWithFilteredArea(result, label, HashedLocation.at(x + 1, y - 1));
+		populateWithFilteredArea(result, label, HashedLocation.at(x + 1, y));
+		populateWithFilteredArea(result, label, HashedLocation.at(x + 1, y + 1));
+
+		return result;
+	}
+
+	private void populateWithFilteredArea(Set<Thing> collector, String label, HashedLocation location) {
+		List<Thing> things = locationsToThings.get(location);
+
+		if (things == null)
+			return;
+
+		things.stream()
+			.filter((thing) -> (thing.getLabel().contains(label)))
+			.forEach(collector::add);
+	}
+
 	public boolean contains(Thing thing) {
-		return getArea(thing).contains(thing);
+		return thingsToLocations.containsKey(thing);
 	}
 
 	public Thing findClosestTo(Thing thing, String labelRegExp) {
@@ -93,9 +160,8 @@ public class Space {
 		if (!nearbyNeighbors.isEmpty())
 			return findClosestTo_Amongst(thing, nearbyNeighbors, labelRegExp);
 
-		synchronized (things) {
-			return findClosestTo_Amongst(thing, things, labelRegExp);
-		}
+		Set<Thing> things = getAll();
+		return findClosestTo_Amongst(thing, things, labelRegExp);
 	}
 
 	/**
@@ -117,66 +183,6 @@ public class Space {
 		return collidedFoodPellets;
 	}
 
-	public Set<Thing> getAll(String label) {
-		synchronized (things) {
-			return filterByLabel(things, label);
-		}
-	}
-
-	public boolean isEmpty() {
-		synchronized (things) {
-			return things.isEmpty();
-		}
-	}
-
-	public int count(String label) {
-		synchronized (countsByLabel) {
-			Integer result = countsByLabel.get(label);
-			if (result == null)
-				return 0;
-			return result;
-		}
-	}
-
-	public double getAreaSize() {
-		return areaSize;
-	}
-
-	Set<Thing> getNearbyNeighbors(Thing thing, String label) {
-		Set<Thing> result = getNearbyNeighbors(thing.getPosition(), label);
-		result.remove(thing);
-		return result;
-	}
-
-	private Set<Thing> getNearbyNeighbors(Vector position, String label) {
-		int x = toAreaCoordinates(position.x);
-		int y = toAreaCoordinates(position.y);
-		Set<Thing> result = new LinkedHashSet<>();
-
-		if (isInOuterSpace(x, y)) {
-			populateWithFilteredArea(result, label, outerSpace);
-			return result;
-		}
-
-		populateWithFilteredArea(result, label, getArea(x - 1, y - 1));
-		populateWithFilteredArea(result, label, getArea(x - 1, y));
-		populateWithFilteredArea(result, label, getArea(x - 1, y + 1));
-		populateWithFilteredArea(result, label, getArea(x, y - 1));
-		populateWithFilteredArea(result, label, getArea(x, y));
-		populateWithFilteredArea(result, label, getArea(x, y + 1));
-		populateWithFilteredArea(result, label, getArea(x + 1, y - 1));
-		populateWithFilteredArea(result, label, getArea(x + 1, y));
-		populateWithFilteredArea(result, label, getArea(x + 1, y + 1));
-
-		return result;
-	}
-
-	private void populateWithFilteredArea(Set<Thing> collector, String label, Set<Thing> area) {
-		area.stream()
-			.filter((thing) -> (thing.getLabel().contains(label)))
-			.forEach(collector::add);
-	}
-
 	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things, String label) {
 		double minDistance = Double.MAX_VALUE;
 		Thing result = null;
@@ -194,35 +200,24 @@ public class Space {
 		return result;
 	}
 
-	private boolean isInOuterSpace(int x, int y) {
-		return x < 0 || x >= Space.SPACE_AREAS_PER_EDGE || y < 0 || y >= Space.SPACE_AREAS_PER_EDGE;
+	private boolean matches(Thing thing, String label) {
+		return thing.getLabel().contains(label);
 	}
 
-	private Set<Thing> getArea(int x, int y) {
-		if (isInOuterSpace(x, y))
-			return outerSpace;
-		return areas[x][y];
-	}
-
-	private Set<Thing> getArea(Thing thing) {
-		int x = toAreaCoordinates(thing.getPosition().x);
-		int y = toAreaCoordinates(thing.getPosition().y);
-		return getArea(x, y);
-	}
-
-	private int toAreaCoordinates(double val) {
-		return (int) Math.floor(val / areaSize);
-	}
-
-	private Set<Thing> filterByLabel(Set<Thing> things, String label) {
+	public Set<Thing> getAll(String label) {
 		Set<Thing> result = new LinkedHashSet<>();
-		things.stream()
+		getAll().stream()
 			.filter((thing) -> (matches(thing, label)))
 			.forEach(result::add);
 		return result;
 	}
 
-	private boolean matches(Thing thing, String label) {
-		return thing.getLabel().contains(label);
+	public int count(String label) {
+		synchronized (countsByLabel) {
+			Integer result = countsByLabel.get(label);
+			if (result == null)
+				return 0;
+			return result;
+		}
 	}
 }

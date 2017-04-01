@@ -35,10 +35,13 @@ public class Egg implements Thing {
 
 	private transient Narjillo hatchedNarjillo = null;
 
+	private BoundingBox boundingBox;
+
 	public Egg(DNA dna, Vector position, Vector velocity, double energy, NumGen numGen) {
 		this.dna = dna;
 		this.incubationTime = calculateIncubationTime(numGen);
 		this.position = position;
+		this.boundingBox = BoundingBox.punctiform(position);
 		this.velocity = velocity;
 		this.energy = energy;
 	}
@@ -50,6 +53,7 @@ public class Egg implements Thing {
 		if (velocity.getLength() > Configuration.EGG_MIN_VELOCITY) {
 			position = position.plus(velocity);
 			velocity = velocity.by(Configuration.EGG_VELOCITY_DECAY);
+			boundingBox = BoundingBox.punctiform(position);
 		} else
 			velocity = Vector.ZERO;
 
@@ -113,7 +117,7 @@ public class Egg implements Thing {
 
 	@Override
 	public BoundingBox getBoundingBox() {
-		throw new RuntimeException("NOT IMPLEMENTED - TODO"); // TODO
+		return boundingBox;
 	}
 
 	public DNA getDNA() {

@@ -61,14 +61,15 @@ public class Ecosystem extends Environment {
 		};
 		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 
-		this.space = new Space(size);
+		this.space = new Space();
 		this.center = Vector.cartesian(size, size).by(0.5);
 		this.boundingBox = new BoundingBox(0, size, 0, size);
 		this.atmosphere = new Atmosphere();
 
+		// TODO: fix magic number
 		// check that things cannot move faster than a space area in a single
 		// tick (which would make collision detection unreliable)
-		if (sizeCheck && space.getAreaSize() < Viscosity.getMaxVelocity())
+		if (sizeCheck && 300 < Viscosity.getMaxVelocity())
 			throw new RuntimeException("Bug: Area size smaller than max velocity");
 	}
 

@@ -47,7 +47,7 @@ public class Experiment {
 
 	public void tick() {
 		if (ticksChronometer.getTotalTicks() % Configuration.ECOSYSTEM_UPDATE_FOOD_TARGETS_INTERVAL == 0)
-			ecosystem.updateTargets();
+			ecosystem.setFoodTargets();
 
 		ecosystem.tick(dnaLog, numGen);
 		ticksChronometer.tick();

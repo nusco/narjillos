@@ -7,6 +7,7 @@ import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
@@ -21,7 +22,7 @@ import org.nusco.narjillos.genomics.VolatileDNALog;
 
 public class JSONEcosystemSerializationTest {
 
-	@Test
+	@Test @Ignore
 	public void serializesAndDeserializesEcosystem() {
 		Ecosystem ecosystem = new Ecosystem(123, false);
 		FoodPellet food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));

@@ -133,15 +133,6 @@ public class SpaceTest {
 	}
 
 	@Test
-	public void knowsWhetherItIsEmpty() {
-		assertTrue(space.isEmpty());
-
-		space.add(new TestThing(Vector.cartesian(9910, 9910), 0));
-
-		assertFalse(space.isEmpty());
-	}
-
-	@Test
 	public void storesAndRetrievesThingsBasedOnTheirPosition() {
 		Thing[] things = new Thing[] {
 			new TestThing(Vector.cartesian(680, 410), 0), // area [5, 3]

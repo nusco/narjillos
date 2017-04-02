@@ -88,7 +88,7 @@ public class Space {
 		locationsToThings.get(location).add(thing);
 	}
 
-	public boolean isEmpty() {
+	private boolean isEmpty() {
 		synchronized (thingsToLocations) {
 			return thingsToLocations.isEmpty();
 		}

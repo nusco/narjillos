@@ -127,6 +127,7 @@ public class Ecosystem extends Environment {
 			narjillos.add(narjillo);
 			notifyThingAdded(narjillo);
 		}
+		thingsCounter.add("narjillo");
 	}
 
 	public final Egg spawnEgg(DNA genes, Vector position, NumGen numGen) {
@@ -147,9 +148,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	public int getNumberOfNarjillos() {
-		synchronized (narjillos) {
-			return narjillos.size();
-		}
+		return thingsCounter.count("narjillo");
 	}
 
 	public Set<Narjillo> getNarjillos() {

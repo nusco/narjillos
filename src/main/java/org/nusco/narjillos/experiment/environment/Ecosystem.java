@@ -2,7 +2,6 @@ package org.nusco.narjillos.experiment.environment;
 
 import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.configuration.Configuration;
-import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.physics.Viscosity;
@@ -219,7 +218,7 @@ public class Ecosystem extends Environment {
 		egg.tick();
 		if (egg.hatch(numGen))
 			insert(egg.getHatchedNarjillo().get());
-		if (egg.isDecayed())
+		if (egg.isDead())
 			remove(egg);
 	}
 
@@ -304,7 +303,7 @@ public class Ecosystem extends Environment {
 			return; // race condition: already consumed
 
 		remove(foodPellet);
-		narjillo.feedOn(foodPellet);
+		foodPellet.getEaten(narjillo);
 
 		updateTargets(foodPellet);
 	}

@@ -7,7 +7,6 @@ import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.experiment.environment.FoodPellet;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
@@ -116,11 +115,6 @@ public class Narjillo implements Thing {
 
 	public Vector getCenterOfMass() {
 		return body.getCenterOfMass();
-	}
-
-	public void feedOn(FoodPellet thing) {
-		getEnergy().absorb(thing.getEnergy());
-		thing.setFeeder(this);
 	}
 
 	public boolean isDead() {

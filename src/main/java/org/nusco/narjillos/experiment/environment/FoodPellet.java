@@ -7,6 +7,7 @@ import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.configuration.Configuration;
+import org.nusco.narjillos.creature.Narjillo;
 
 public class FoodPellet implements Thing {
 
@@ -51,6 +52,11 @@ public class FoodPellet implements Thing {
 	}
 
 	@Override
+	public boolean isDead() {
+		return getEnergy().isZero();
+	}
+
+	@Override
 	public double getRadius() {
 		return Configuration.FOOD_RADIUS;
 	}
@@ -65,7 +71,8 @@ public class FoodPellet implements Thing {
 		return boundingBox;
 	}
 
-	public void setFeeder(Thing interactor) {
-		this.interactor = interactor;
+	public void getEaten(Thing feeder) {
+		feeder.getEnergy().absorb(getEnergy());
+		this.interactor = feeder;
 	}
 }

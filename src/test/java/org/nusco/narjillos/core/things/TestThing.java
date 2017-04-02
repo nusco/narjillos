@@ -48,6 +48,11 @@ class TestThing implements Thing {
 	}
 
 	@Override
+	public boolean isDead() {
+		return false;
+	}
+
+	@Override
 	public double getRadius() {
 		return 0;
 	}

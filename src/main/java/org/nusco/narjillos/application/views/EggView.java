@@ -54,7 +54,7 @@ class EggView extends ThingView {
 	}
 
 	private double getOpacity() {
-		return 1 - getEgg().getDecay();
+		return 1 - getEgg().getFading();
 	}
 
 	private Egg getEgg() {

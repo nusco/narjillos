@@ -122,15 +122,16 @@ public class Egg implements Thing {
 		return boundingBox;
 	}
 
+	@Override
+	public boolean isDead() {
+		return getFading() >= 1;
+	}
+
 	public DNA getDNA() {
 		return dna;
 	}
 
-	public boolean isDecayed() {
-		return getDecay() >= 1;
-	}
-
-	public double getDecay() {
+	public double getFading() {
 		if (!hasHatched())
 			return 0;
 

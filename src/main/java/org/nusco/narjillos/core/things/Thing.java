@@ -43,6 +43,11 @@ public interface Thing extends Bounded {
 		}
 
 		@Override
+		public boolean isDead() {
+			return false;
+		}
+
+		@Override
 		public String getLabel() {
 			return "null_thing";
 		}
@@ -65,6 +70,8 @@ public interface Thing extends Bounded {
 	double getRadius();
 
 	Energy getEnergy();
+
+	boolean isDead();
 
 	String getLabel();
 

@@ -32,7 +32,7 @@ public class EggTest {
 	}
 
 	@Test
-	public void theHatchedNarjilloBecomesItsLastInteractingThing() {
+	public void theHatchedNarjilloBecomesItsInteractor() {
 		waitUntilItHatches(egg);
 
 		assertSame(egg.getHatchedNarjillo().get(), egg.getInteractor());
@@ -66,22 +66,22 @@ public class EggTest {
 
 	@Test
 	public void decaysUpTo100PercentAfterHatching() {
-		assertFalse(egg.isDecayed());
-		assertEquals(0, egg.getDecay(), 0);
+		assertFalse(egg.isDead());
+		assertEquals(0, egg.getFading(), 0);
 
 		waitUntilItHatches(egg);
 
 		for (int i = 0; i < 100; i++) {
-			assertFalse(egg.isDecayed());
-			assertEquals(i / 100.0, egg.getDecay(), 0);
+			assertFalse(egg.isDead());
+			assertEquals(i / 100.0, egg.getFading(), 0);
 			egg.tick();
 		}
 
-		assertTrue(egg.isDecayed());
-		assertEquals(1, egg.getDecay(), 0);
+		assertTrue(egg.isDead());
+		assertEquals(1, egg.getFading(), 0);
 
 		egg.tick();
-		assertEquals(1, egg.getDecay(), 0);
+		assertEquals(1, egg.getFading(), 0);
 	}
 
 	private void waitUntilItHatches(Egg egg) {

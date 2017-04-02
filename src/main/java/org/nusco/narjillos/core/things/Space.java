@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Partitioned space for fast neighbor searches, collision detection, etc.
@@ -55,7 +56,7 @@ public class Space {
 
 	public Set<Thing> getAll() {
 		synchronized (thingsToLocations) {
-			return thingsToLocations.keySet();
+			return new LinkedHashSet<>(thingsToLocations.keySet());
 		}
 	}
 
@@ -190,11 +191,7 @@ public class Space {
 		return thing.getLabel().contains(label);
 	}
 
-	public Set<Thing> getAll(String label) {
-		Set<Thing> result = new LinkedHashSet<>();
-		getAll().stream()
-			.filter((thing) -> (matches(thing, label)))
-			.forEach(result::add);
-		return result;
+	public Stream<Thing> getAll(String label) {
+		return getAll().stream().filter((thing) -> (matches(thing, label)));
 	}
 }

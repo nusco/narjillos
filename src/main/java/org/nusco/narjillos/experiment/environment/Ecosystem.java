@@ -97,7 +97,7 @@ public class Ecosystem extends Environment {
 				result.addAll(narjillos);
 			}
 		}
-		result.addAll(space.getAll(label));
+		space.getAll(label).forEach(thing -> result.add(thing));
 		return result;
 	}
 
@@ -194,8 +194,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
-		new LinkedList<>(space.getAll("egg"))
-			.forEach(thing -> tickEgg((Egg) thing, numGen));
+		space.getAll("egg").forEach(thing -> tickEgg((Egg) thing, numGen));
 
 		synchronized (narjillos) {
 			new LinkedList<>(narjillos).stream()

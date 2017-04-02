@@ -5,6 +5,7 @@ import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Vector;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyCollectionOf;
@@ -129,7 +130,7 @@ public class SpaceTest {
 		space.add(thing2);
 		space.add(thing3);
 
-		assertThat(space.getAll("a"), contains(thing1, thing3));
+		assertThat(space.getAll("a").collect(Collectors.toList()), contains(thing1, thing3));
 	}
 
 	@Test

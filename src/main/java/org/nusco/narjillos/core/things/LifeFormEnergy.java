@@ -26,22 +26,22 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public double getValue() {
+	public synchronized double getValue() {
 		return value;
 	}
 
 	@Override
-	public double getMaximumValue() {
+	public synchronized double getMaximumValue() {
 		return maxForAge;
 	}
 
 	@Override
-	public boolean isZero() {
+	public synchronized boolean isZero() {
 		return value <= 0;
 	}
 
 	@Override
-	public void tick(double additionalEnergy) {
+	public synchronized void tick(double additionalEnergy) {
 		if (maxForAge >= 0)
 			maxForAge -= decay;
 
@@ -49,7 +49,7 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void increaseBy(double amount) {
+	public synchronized void increaseBy(double amount) {
 		if (isZero())
 			return; // once it's gone, it's gone
 
@@ -58,18 +58,18 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public void absorb(Energy other) {
+	public synchronized void absorb(Energy other) {
 		increaseBy(other.getValue());
 		other.dropToZero();
 	}
 
 	@Override
-	public void dropToZero() {
+	public synchronized void dropToZero() {
 		value = 0;
 	}
 
 	@Override
-	public void damage() {
+	public synchronized void damage() {
 		if (value < 10)
 			increaseBy(-1);
 		else

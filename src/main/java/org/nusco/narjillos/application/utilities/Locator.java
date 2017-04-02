@@ -88,8 +88,8 @@ public class Locator {
 	 */
 	public Thing findRandomLivingThing() {
 		List<Thing> allThings = new LinkedList<>();
-		allThings.addAll(environment.getThings(Narjillo.LABEL));
-		allThings.addAll(environment.getThings(Egg.LABEL));
+		allThings.addAll(environment.getAll(Narjillo.LABEL));
+		allThings.addAll(environment.getAll(Egg.LABEL));
 		return allThings.get((int) (Math.random() * allThings.size()));
 	}
 
@@ -97,7 +97,7 @@ public class Locator {
 		Thing result = null;
 		double minDistance = Double.MAX_VALUE;
 
-		for (Thing thing : environment.getThings(label)) {
+		for (Thing thing : environment.getAll(label)) {
 			double distance = thing.getCenter().minus(position).getLength();
 			double radius = Math.max(thing.getRadius(), thingMinRadius);
 

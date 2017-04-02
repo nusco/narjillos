@@ -6,13 +6,10 @@ import org.nusco.narjillos.core.geometry.Vector;
 
 class TestThing implements Thing {
 
-	private final String label;
-
 	private final Vector position;
 
-	public TestThing(Vector position, Integer id) {
+	public TestThing(Vector position) {
 		this.position = position;
-		this.label = id.toString();
 	}
 
 	@Override
@@ -27,7 +24,7 @@ class TestThing implements Thing {
 
 	@Override
 	public String getLabel() {
-		return label;
+		return "thing";
 	}
 
 	@Override

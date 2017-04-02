@@ -22,11 +22,42 @@ public class SpaceTest {
 
 	@Test
 	public void addsThings() {
-		Thing thing = new TestThing(Vector.cartesian(1000, 2000), 123);
+		Thing thing = new TestThing(Vector.cartesian(1000, 2000));
 
 		space.add(thing);
 
-		assertThat(space.getThings(), contains(thing));
+		assertThat(space.getAll(thing.getLabel()), contains(thing));
+	}
+
+	@Test
+	public void returnsThingsByLabel() {
+		Thing thing1 = new TestThing(Vector.cartesian(1, 1)) {
+
+			@Override
+			public String getLabel() {
+				return "a";
+			}
+		};
+		Thing thing2 = new TestThing(Vector.cartesian(2, 2)) {
+
+			@Override
+			public String getLabel() {
+				return "b";
+			}
+		};
+		Thing thing3 = new TestThing(Vector.cartesian(1000, 1000)) {
+
+			@Override
+			public String getLabel() {
+				return "a";
+			}
+		};;
+
+		space.add(thing1);
+		space.add(thing2);
+		space.add(thing3);
+
+		assertThat(space.getAll("a"), contains(thing1, thing3));
 	}
 
 	@Test(expected=RuntimeException.class)
@@ -39,19 +70,19 @@ public class SpaceTest {
 
 	@Test
 	public void removesThings() {
-		Thing thing = new TestThing(Vector.cartesian(1, 1), 123);
+		Thing thing = new TestThing(Vector.cartesian(1, 1));
 
 		space.add(thing);
 		space.remove(thing);
 
-		assertThat(space.getThings(), is(emptyCollectionOf(Thing.class)));
+		assertThat(space.getAll(""), is(emptyCollectionOf(Thing.class)));
 		assertThat(space.getHashedLocationsOf(thing).isPresent(), is(false));
 		assertThat(space.getThingsAtHashedLocation(1, 1), is(emptyCollectionOf(Thing.class)));
 	}
 
 	@Test
 	public void thingsHaveHashedLocations() {
-		Thing punctiformThing = new TestThing(Vector.cartesian(-1000, 4000), 1);
+		Thing punctiformThing = new TestThing(Vector.cartesian(-1000, 4000));
 
 		space.add(punctiformThing);
 
@@ -76,9 +107,9 @@ public class SpaceTest {
 
 	@Test
 	public void aLocationCanContainMultipleThings() {
-		Thing punctiformThing1 = new TestThing(Vector.cartesian(1200, 4000), 1);
-		Thing punctiformThing2 = new TestThing(Vector.cartesian(1300, 4100), 2);
-		Thing punctiformThing3 = new TestThing(Vector.cartesian(1700, 4100), 3);
+		Thing punctiformThing1 = new TestThing(Vector.cartesian(1200, 4000));
+		Thing punctiformThing2 = new TestThing(Vector.cartesian(1300, 4100));
+		Thing punctiformThing3 = new TestThing(Vector.cartesian(1700, 4100));
 
 		space.add(punctiformThing1);
 		space.add(punctiformThing2);
@@ -91,58 +122,27 @@ public class SpaceTest {
 
 	@Test
 	public void returnsAllTheThings() {
-		Thing thing1 = new TestThing(Vector.cartesian(1, 1), 1);
-		Thing thing2 = new TestThing(Vector.cartesian(2, 2), 2);
-		Thing thing3 = new TestThing(Vector.cartesian(1000, 1000), 3);
+		Thing thing1 = new TestThing(Vector.cartesian(1, 1));
+		Thing thing2 = new TestThing(Vector.cartesian(2, 2));
+		Thing thing3 = new TestThing(Vector.cartesian(1000, 1000));
 
 		space.add(thing1);
 		space.add(thing2);
 		space.add(thing3);
 
-		assertThat(space.getAll(), contains(thing1, thing2, thing3));
-	}
-
-	@Test
-	public void returnsAllTheThingsWithAGivenLabel() {
-		Thing thing1 = new TestThing(Vector.cartesian(1, 1), 1) {
-
-			@Override
-			public String getLabel() {
-				return "a";
-			}
-		};
-		Thing thing2 = new TestThing(Vector.cartesian(2, 2), 2) {
-
-			@Override
-			public String getLabel() {
-				return "b";
-			}
-		};
-		Thing thing3 = new TestThing(Vector.cartesian(1000, 1000), 3) {
-
-			@Override
-			public String getLabel() {
-				return "a";
-			}
-		};;
-
-		space.add(thing1);
-		space.add(thing2);
-		space.add(thing3);
-
-		assertThat(space.getAll("a").collect(Collectors.toList()), contains(thing1, thing3));
+		assertThat(space.getAll("thing"), contains(thing1, thing2, thing3));
 	}
 
 	@Test
 	public void storesAndRetrievesThingsBasedOnTheirPosition() {
 		Thing[] things = new Thing[] {
-			new TestThing(Vector.cartesian(680, 410), 0), // area [5, 3]
-			new TestThing(Vector.cartesian(520, 420), 1), // area [5, 3]
-			new TestThing(Vector.cartesian(550, 280), 2), // area [4, 2]
-			new TestThing(Vector.cartesian(810, 410), 3), // area [6, 3]
-			new TestThing(Vector.cartesian(820, 420), 4), // area [6, 3]
-			new TestThing(Vector.cartesian(810, 550), 5), // area [6, 4]
-			new TestThing(Vector.cartesian(1300, 1300), 6), // area [8, 8]
+			new TestThing(Vector.cartesian(680, 410)), // area [5, 3]
+			new TestThing(Vector.cartesian(520, 420)), // area [5, 3]
+			new TestThing(Vector.cartesian(550, 280)), // area [4, 2]
+			new TestThing(Vector.cartesian(810, 410)), // area [6, 3]
+			new TestThing(Vector.cartesian(820, 420)), // area [6, 3]
+			new TestThing(Vector.cartesian(810, 550)), // area [6, 4]
+			new TestThing(Vector.cartesian(1300, 1300)), // area [8, 8]
 		};
 		for (Thing thing1 : things)
 			space.add(thing1);
@@ -156,8 +156,8 @@ public class SpaceTest {
 	@Test
 	public void neighborsSearchIgnoresTheSearchedThing() {
 		Thing[] things = new Thing[] {
-			new TestThing(Vector.cartesian(510, 510), 0), // area [5, 5]
-			new TestThing(Vector.cartesian(520, 520), 1), // area [5, 5]
+			new TestThing(Vector.cartesian(510, 510)), // area [5, 5]
+			new TestThing(Vector.cartesian(520, 520)), // area [5, 5]
 		};
 		for (Thing thing : things)
 			space.add(thing);
@@ -166,25 +166,25 @@ public class SpaceTest {
 		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
 
 		assertThat(neighbors.size(), is(1));
-		assertThat(neighbors.iterator().next().getLabel(), is("1"));
+		assertThat(neighbors.iterator().next().getPosition(), is(Vector.cartesian(520, 520)));
 	}
 
 	@Test
 	public void neighborsSearchWorksForThingsThatAreNotInTheSpace() {
-		TestThing thingOutOfSpace = new TestThing(Vector.cartesian(510, 510), 0); // area [5, 5]
-		space.add(new TestThing(Vector.cartesian(520, 520), 1)); // area [5, 5]
+		TestThing thingOutOfSpace = new TestThing(Vector.cartesian(510, 510)); // area [5, 5]
+		space.add(new TestThing(Vector.cartesian(520, 520))); // area [5, 5]
 
 		Set<Thing> neighbors = space.getNearbyNeighbors(thingOutOfSpace, "");
 
 		assertFalse(space.contains(thingOutOfSpace));
 
 		assertThat(neighbors.size(), is(1));
-		assertThat(neighbors.iterator().next().getLabel(), is("1"));
+		assertThat(neighbors.iterator().next().getPosition(), is(Vector.cartesian(520, 520)));
 	}
 
 	@Test
 	public void identifiesSpecificThings() {
-		TestThing thing = new TestThing(Vector.cartesian(100, 200), 1);
+		TestThing thing = new TestThing(Vector.cartesian(100, 200));
 
 		assertFalse(space.contains(thing));
 

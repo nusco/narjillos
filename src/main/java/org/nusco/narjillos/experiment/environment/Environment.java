@@ -21,14 +21,14 @@ public abstract class Environment {
 		this.size = size;
 	}
 
-	public abstract List<Thing> getThings(String label);
+	public abstract List<Thing> getAll(String label);
 
 	public abstract long getCount(String label);
 
 	/**
 	 * Runs one simulation tick
 	 */
-	public void tick(DNALog dnaLog, NumGen numGen) {
+	public final void tick(DNALog dnaLog, NumGen numGen) {
 		tickThings(dnaLog, numGen);
 
 		if (VisualDebugger.DEBUG)
@@ -45,11 +45,11 @@ public abstract class Environment {
 
 	protected abstract void tickThings(DNALog dnaLog, NumGen numGen);
 
-	final void notifyThingAdded(Thing thing) {
+	protected final void notifyThingAdded(Thing thing) {
 		eventListeners.forEach(ecosystemEvent -> ecosystemEvent.added(thing));
 	}
 
-	final void notifyThingRemoved(Thing thing) {
+	protected final void notifyThingRemoved(Thing thing) {
 		eventListeners.forEach(ecosystemEvent -> ecosystemEvent.removed(thing));
 	}
 }

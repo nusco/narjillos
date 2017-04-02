@@ -13,56 +13,103 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Partitioned space for fast neighbor searches, collision detection, etc.
  */
 public class Space {
 
-	private final Map<Thing, Set<HashedLocation>> thingsToLocations = new LinkedHashMap<>();
+	private final Map<String, Map<Thing, Set<HashedLocation>>> labelsToThingsToLocations = new LinkedHashMap<>();
 	private final Map<HashedLocation, List<Thing>> locationsToThings = new LinkedHashMap<>();
+	private final List<Thing> allThings = new LinkedList<>();
 
-	public void add(Thing thing) {
+	public synchronized void add(Thing thing) {
 		validateMaximumSize(thing);
 
 		Set<HashedLocation> locations = calculateHashedLocationsOf(thing);
 
-		synchronized (thingsToLocations) {
-			thingsToLocations.put(thing, locations);
-		}
-
+		getThingsToLocations(thing.getLabel()).put(thing, locations);
 		locations.stream().forEach(location -> addThingToLocation(location, thing));
+		allThings.add(thing);
 	}
 
-	public void remove(Thing thing) {
-		final Set<HashedLocation> locations = thingsToLocations.get(thing);
+	public synchronized void remove(Thing thing) {
+		final Set<HashedLocation> locations = getThingsToLocations(thing.getLabel()).get(thing);
 
-		synchronized (thingsToLocations) {
-			thingsToLocations.remove(thing);
-		}
-
+		getThingsToLocations(thing.getLabel()).remove(thing);
 		locations.stream().forEach(location -> locationsToThings.get(location).remove(thing));
+		allThings.remove(thing);
 	}
 
-	public Set<Thing> getThings() {
-		return thingsToLocations.keySet();
+	public synchronized boolean contains(Thing thing) {
+		return getThingsToLocations(thing.getLabel()).containsKey(thing);
 	}
 
-	public Optional<Set<HashedLocation>> getHashedLocationsOf(Thing thing) {
-		Set<HashedLocation> result = thingsToLocations.get(thing);
-		return result != null ? Optional.of(result) : Optional.empty();
+	public synchronized Thing findClosestTo(Thing thing, String label) {
+		// Naive three-step approximation. (It can be replaced with spiral search if we ever need more performance).
+
+		if (allThings.isEmpty())
+			return null;
+
+		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing, label);
+
+		if (!nearbyNeighbors.isEmpty())
+			return findClosestTo_Amongst(thing.getPosition(), nearbyNeighbors);
+
+		return findClosestTo_Amongst(thing.getPosition(), getAll(label));
 	}
 
-	public Set<Thing> getAll() {
-		synchronized (thingsToLocations) {
-			return new LinkedHashSet<>(thingsToLocations.keySet());
+	/**
+	 * This only searches in the neighboring areas. So, if the movement is able
+	 * to span more than one area, it will fail to check all potential
+	 * collisions. The assumption here is that movements are smaller than the
+	 * areaSize. If this assumption ever becomes limiting, then we'll have to
+	 * make this method smarter, and search all the areas that are intersected
+	 * by the movement, plus their neighbors (potentially including outerSpace).
+	 */
+	public synchronized Set<Thing> detectCollisions(Segment movement, String label) {
+		Set<Thing> collidedFoodPellets = new LinkedHashSet<>();
+
+		getNearbyNeighbors(movement.getStartPoint(), label).stream()
+			.filter(
+				(neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
+			.forEach(collidedFoodPellets::add);
+
+		return collidedFoodPellets;
+	}
+
+	public synchronized Set<Thing> getAll(String label) {
+		if (label.equals(""))
+			return new LinkedHashSet<>(allThings);
+
+		return new LinkedHashSet<>(getThingsToLocations(label).keySet());
+	}
+
+	private Map<Thing, Set<HashedLocation>> getThingsToLocations(String label) {
+		Map<Thing, Set<HashedLocation>> result = labelsToThingsToLocations.get(label);
+
+		if (result == null) {
+			result = new LinkedHashMap<>();
+			labelsToThingsToLocations.put(label, result);
 		}
+
+		return result;
+	}
+
+	Optional<Set<HashedLocation>> getHashedLocationsOf(Thing thing) {
+		Set<HashedLocation> result = getThingsToLocations(thing.getLabel()).get(thing);
+		return result != null ? Optional.of(result) : Optional.empty();
 	}
 
 	List<Thing> getThingsAtHashedLocation(int lx, int ly) {
 		List<Thing> result = locationsToThings.get(HashedLocation.at(lx, ly));
 		return result != null ? result : Collections.emptyList();
+	}
+
+	Set<Thing> getNearbyNeighbors(Thing thing, String label) {
+		Set<Thing> result = getNearbyNeighbors(thing.getPosition(), label);
+		result.remove(thing);
+		return result;
 	}
 
 	private void validateMaximumSize(Thing thing) {
@@ -87,18 +134,6 @@ public class Space {
 		if (!locationsToThings.containsKey(location))
 			locationsToThings.put(location, new LinkedList<>());
 		locationsToThings.get(location).add(thing);
-	}
-
-	private boolean isEmpty() {
-		synchronized (thingsToLocations) {
-			return thingsToLocations.isEmpty();
-		}
-	}
-
-	Set<Thing> getNearbyNeighbors(Thing thing, String label) {
-		Set<Thing> result = getNearbyNeighbors(thing.getPosition(), label);
-		result.remove(thing);
-		return result;
 	}
 
 	private Set<Thing> getNearbyNeighbors(Vector position, String label) {
@@ -132,66 +167,18 @@ public class Space {
 			.forEach(collector::add);
 	}
 
-	public boolean contains(Thing thing) {
-		return thingsToLocations.containsKey(thing);
-	}
+	private Thing findClosestTo_Amongst(Vector position, Set<Thing> things) {
+		final double[] minDistance = { Double.MAX_VALUE };
+		final Thing[] result = { null };
 
-	public Thing findClosestTo(Thing thing, String labelRegExp) {
-		// Naive three-step approximation. (It can be replaced with spiral search if we ever need more performance).
-
-		if (isEmpty())
-			return null;
-
-		Set<Thing> nearbyNeighbors = getNearbyNeighbors(thing, labelRegExp);
-
-		if (!nearbyNeighbors.isEmpty())
-			return findClosestTo_Amongst(thing, nearbyNeighbors, labelRegExp);
-
-		Set<Thing> things = getAll();
-		return findClosestTo_Amongst(thing, things, labelRegExp);
-	}
-
-	/**
-	 * This only searches in the neighboring areas. So, if the movement is able
-	 * to span more than one area, it will fail to check all potential
-	 * collisions. The assumption here is that movements are smaller than the
-	 * areaSize. If this assumption ever becomes limiting, then we'll have to
-	 * make this method smarter, and search all the areas that are intersected
-	 * by the movement, plus their neighbors (potentially including outerSpace).
-	 */
-	public Set<Thing> detectCollisions(Segment movement, String label) {
-		Set<Thing> collidedFoodPellets = new LinkedHashSet<>();
-
-		getNearbyNeighbors(movement.getStartPoint(), label).stream()
-			.filter(
-				(neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
-			.forEach(collidedFoodPellets::add);
-
-		return collidedFoodPellets;
-	}
-
-	private Thing findClosestTo_Amongst(Thing thing, Set<Thing> things, String label) {
-		double minDistance = Double.MAX_VALUE;
-		Thing result = null;
-
-		for (Thing neighbor : things) {
-			if (matches(neighbor, label)) {
-				double distance = neighbor.getPosition().minus(thing.getPosition()).getLength();
-				if (distance < minDistance) {
-					minDistance = distance;
-					result = neighbor;
-				}
+		things.forEach(thing -> {
+			double distance = thing.getPosition().minus(position).getLength();
+			if (distance < minDistance[0]) {
+				minDistance[0] = distance;
+				result[0] = thing;
 			}
-		}
+		});
 
-		return result;
-	}
-
-	private boolean matches(Thing thing, String label) {
-		return thing.getLabel().contains(label);
-	}
-
-	public Stream<Thing> getAll(String label) {
-		return getAll().stream().filter((thing) -> (matches(thing, label)));
+		return result[0];
 	}
 }

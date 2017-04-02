@@ -145,7 +145,7 @@ public class ExperimentHistoryEntry {
 		for (String chemicalCycle : Element.CYCLES)
 			result.put(chemicalCycle, 0);
 
-		ecosystem.getThings(Narjillo.LABEL).forEach(thing -> {
+		ecosystem.getAll(Narjillo.LABEL).forEach(thing -> {
 			Narjillo narjillo = (Narjillo) thing;
 			String cycle = "" + narjillo.getBreathedElement() + "2" + narjillo.getByproduct();
 			result.put(cycle, result.get(cycle) + 1);

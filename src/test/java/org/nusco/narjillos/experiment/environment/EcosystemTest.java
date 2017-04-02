@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +21,6 @@ public class EcosystemTest {
 	private FoodPellet foodPellet1;
 
 	private FoodPellet foodPellet2;
-
-	//private FoodPellet foodPellet3;
 
 	private Narjillo narjillo1;
 
@@ -51,7 +47,7 @@ public class EcosystemTest {
 
 	@Test
 	public void returnsAllTheThings() {
-		List<Thing> things = ecosystem.getThings("");
+		List<Thing> things = ecosystem.getAll("");
 
 		assertEquals(5, things.size());
 		assertTrue(things.contains(narjillo1));
@@ -65,8 +61,8 @@ public class EcosystemTest {
 	}
 
 	@Test
-	public void returnsASubsetOfThings() {
-		List<Thing> things = ecosystem.getThings(FoodPellet.LABEL);
+	public void returnsASubsetOfTheThings() {
+		List<Thing> things = ecosystem.getAll(FoodPellet.LABEL);
 
 		assertEquals(3, things.size());
 		assertTrue(things.contains(foodPellet1));
@@ -93,15 +89,15 @@ public class EcosystemTest {
 
 	@Test
 	public void findsTheClosestFoodToAGivenNarjillo() {
-		assertEquals(foodPellet1.getPosition(), ecosystem.findClosestFood(narjillo1));
-		assertEquals(foodPellet2.getPosition(), ecosystem.findClosestFood(narjillo2));
+		assertEquals(foodPellet1.getPosition(), ecosystem.findClosestFoodTo(narjillo1));
+		assertEquals(foodPellet2.getPosition(), ecosystem.findClosestFoodTo(narjillo2));
 	}
 
 	@Test
 	public void pointsAtCenterOfEcosystemIfThereIsNoFood() {
 		Ecosystem emptyEcosystem = new Ecosystem(1000, false);
 		Narjillo narjillo = insertNarjillo(Vector.cartesian(100, 100));
-		Vector target = emptyEcosystem.findClosestFood(narjillo);
+		Vector target = emptyEcosystem.findClosestFoodTo(narjillo);
 		assertEquals(Vector.cartesian(500, 500), target);
 	}
 }

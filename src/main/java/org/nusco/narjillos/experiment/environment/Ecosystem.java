@@ -15,6 +15,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNALog;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +26,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -78,19 +78,11 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	public void tick(DNALog dnaLog, NumGen numGen) {
-		if (isShuttingDown())
-			return; // we're leaving, apparently
-
-		super.tick(dnaLog, numGen);
+	public List<Thing> getAll(String label) {
+		return new LinkedList<>(space.getAll(label));
 	}
 
-	@Override
-	public List<Thing> getThings(String label) {
-		return space.getAll(label).collect(Collectors.toList());
-	}
-
-	public Vector findClosestFood(Thing thing) {
+	public Vector findClosestFoodTo(Thing thing) {
 		Thing target = space.findClosestTo(thing, FoodPellet.LABEL);
 
 		if (target == null)
@@ -122,10 +114,6 @@ public class Ecosystem extends Environment {
 		return thingsCounter.count(label);
 	}
 
-	private Stream<Narjillo> getNarjillos() {
-		return space.getAll(Narjillo.LABEL).map(thing -> (Narjillo) thing);
-	}
-
 	public void updateTargets() {
 		getNarjillos().forEach(this::setFoodTarget);
 	}
@@ -135,12 +123,6 @@ public class Ecosystem extends Environment {
 
 		for (int i = 0; i < getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_EGGS_DENSITY_PER_BLOCK; i++)
 			spawnEgg(createDna(dna, dnaLog, numGen), randomPosition(getSize(), numGen), numGen);
-	}
-
-	private DNA createDna(String dna, DNALog dnaLog, NumGen numGen) {
-		DNA result = new DNA(numGen.nextSerial(), dna, DNA.NO_PARENT);
-		dnaLog.save(result);
-		return result;
 	}
 
 	public void populate(DNALog dnaLog, NumGen numGen) {
@@ -161,6 +143,9 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
+		if (isShuttingDown())
+			return; // we're leaving, apparently
+
 		space.getAll(Egg.LABEL).forEach(thing -> tickEgg((Egg) thing, numGen));
 
 		getNarjillos()
@@ -174,7 +159,18 @@ public class Ecosystem extends Environment {
 			updateTargets();
 		}
 
-		getNarjillos().forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
+		getNarjillos().forEach(narjillo -> maybeLayEgg((Narjillo) narjillo, dnaLog, numGen));
+	}
+
+	private Stream<Narjillo> getNarjillos() {
+		return space.getAll(Narjillo.LABEL).stream()
+			.map(narjillo -> (Narjillo) narjillo);
+	}
+
+	private DNA createDna(String dna, DNALog dnaLog, NumGen numGen) {
+		DNA result = new DNA(numGen.nextSerial(), dna, DNA.NO_PARENT);
+		dnaLog.save(result);
+		return result;
 	}
 
 	private Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Stream<Narjillo> narjillos) {
@@ -194,7 +190,7 @@ public class Ecosystem extends Environment {
 	}
 
 	private void setFoodTarget(Narjillo narjillo) {
-		Vector closestTarget = findClosestFood(narjillo);
+		Vector closestTarget = findClosestFoodTo(narjillo);
 		narjillo.setTarget(closestTarget);
 	}
 

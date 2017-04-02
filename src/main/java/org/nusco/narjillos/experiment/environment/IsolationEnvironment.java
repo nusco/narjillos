@@ -1,11 +1,8 @@
 package org.nusco.narjillos.experiment.environment;
 
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
@@ -27,7 +24,7 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	@Override
-	public synchronized List<Thing> getThings(String label) {
+	public synchronized List<Thing> getAll(String label) {
 		if (label.equals(Narjillo.LABEL) || label.equals(""))
 			return new LinkedList<>(narjillos);
 		return Collections.emptyList();

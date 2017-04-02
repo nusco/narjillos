@@ -94,6 +94,10 @@
 
 + Show damage on narjillos  
   "Bubbles" effect?  
+
++ Remove the concept of ecosystem size  
+  Replace with something else. Right now it's only used for graphics (viewport size),
+  spawn area, and maybe to damage narjillos too far from the center.
   
 - Narjillos eat eggs  
 

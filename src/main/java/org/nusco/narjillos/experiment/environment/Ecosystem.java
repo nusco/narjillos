@@ -43,13 +43,11 @@ public class Ecosystem extends Environment {
 
 	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
-	private final Space space;
+	private final Space space = new Space();
 
 	private final ThingsCounter thingsCounter = new ThingsCounter();
 
 	private final Vector center;
-
-	private final BoundingBox boundingBox;
 
 	private Atmosphere atmosphere;
 
@@ -63,9 +61,7 @@ public class Ecosystem extends Environment {
 		};
 		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 
-		this.space = new Space();
 		this.center = Vector.cartesian(size, size).by(0.5);
-		this.boundingBox = new BoundingBox(0, size, 0, size);
 		this.atmosphere = new Atmosphere();
 
 		// TODO: fix magic number
@@ -247,8 +243,6 @@ public class Ecosystem extends Environment {
 
 	private void damageIfTouchingEdges(final Narjillo narjillo) {
 		BoundingBox boundingBox2 = narjillo.getBoundingBox();
-		if (!boundingBox2.isContainedIn(boundingBox))
-			narjillo.damage();
 	}
 
 	private DNA createRandomDna(DNALog dnaLog, NumGen numGen) {

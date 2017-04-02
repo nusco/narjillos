@@ -15,8 +15,7 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNALog;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -26,6 +25,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A complex environment populated with narjillos, eggs and food.
@@ -40,8 +41,6 @@ public class Ecosystem extends Environment {
 	 * Counter used by the ThreadFactory to name threads.
 	 */
 	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
-
-	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
 	private final Space space = new Space();
 
@@ -88,17 +87,8 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	public Set<Thing> getThings(String label) {
-		Set<Thing> result = new LinkedHashSet<>();
-		// this ugliness will stay until we have narjillos
-		// in the same space as other things
-		if (label.equals("narjillo") || label.equals("")) {
-			synchronized (narjillos) {
-				result.addAll(narjillos);
-			}
-		}
-		space.getAll(label).forEach(thing -> result.add(thing));
-		return result;
+	public List<Thing> getThings(String label) {
+		return space.getAll(label).collect(Collectors.toList());
 	}
 
 	public Vector findClosestFood(Thing thing) {
@@ -123,10 +113,8 @@ public class Ecosystem extends Environment {
 	}
 
 	public void insertNarjillo(Narjillo narjillo) {
-		synchronized (narjillos) {
-			narjillos.add(narjillo);
-			notifyThingAdded(narjillo);
-		}
+		space.add(narjillo);
+		notifyThingAdded(narjillo);
 		thingsCounter.add("narjillo");
 	}
 
@@ -151,16 +139,12 @@ public class Ecosystem extends Environment {
 		return thingsCounter.count("narjillo");
 	}
 
-	public Set<Narjillo> getNarjillos() {
-		synchronized (narjillos) {
-			return new LinkedHashSet<>(narjillos);
-		}
+	private Stream<Narjillo> getNarjillos() {
+		return space.getAll("narjillo").map(thing -> (Narjillo) thing);
 	}
 
 	public void updateTargets() {
-		synchronized (narjillos) {
-			narjillos.forEach(this::setFoodTarget);
-		}
+		getNarjillos().forEach(this::setFoodTarget);
 	}
 
 	public void populate(String dna, DNALog dnaLog, NumGen numGen) {
@@ -196,11 +180,9 @@ public class Ecosystem extends Environment {
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
 		space.getAll("egg").forEach(thing -> tickEgg((Egg) thing, numGen));
 
-		synchronized (narjillos) {
-			new LinkedList<>(narjillos).stream()
-				.filter(Narjillo::isDead)
-				.forEach(narjillo -> removeNarjillo(narjillo, dnaLog));
-		}
+		getNarjillos()
+			.filter(Narjillo::isDead)
+			.forEach(narjillo -> removeNarjillo(narjillo, dnaLog));
 
 		tickNarjillos();
 
@@ -209,20 +191,18 @@ public class Ecosystem extends Environment {
 			updateTargets();
 		}
 
-		synchronized (narjillos) {
-			narjillos.forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
-		}
+		getNarjillos().forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
 	}
 
-	private Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Set<Narjillo> narjillos) {
+	private Map<Narjillo, Future<Set<Thing>>> tickNarjillos(Stream<Narjillo> narjillos) {
 		Map<Narjillo, Future<Set<Thing>>> result = new LinkedHashMap<>();
-		for (final Narjillo narjillo : narjillos) {
+		narjillos.forEach(narjillo -> {
 			result.put(narjillo, executorService.submit(() -> {
 				Segment movement = narjillo.tick();
 				damageIfTouchingEdges(narjillo);
 				return getCollisions(movement);
 			}));
-		}
+		});
 		return result;
 	}
 
@@ -263,10 +243,7 @@ public class Ecosystem extends Environment {
 	}
 
 	private synchronized void tickNarjillos() {
-		Map<Narjillo, Set<Thing>> narjillosToCollidedFood;
-		synchronized (narjillos) {
-			narjillosToCollidedFood = tick(narjillos);
-		}
+		Map<Narjillo, Set<Thing>> narjillosToCollidedFood = tick(getNarjillos());
 
 		// The next operations happen in a predictable order, to avoid
 		// non-deterministic behavior or race conditions - for example, when
@@ -289,19 +266,19 @@ public class Ecosystem extends Environment {
 		double breathingPowerPerNarjillo = Math.min(1, (double) getAtmosphere().getCatalystLevel() / getNumberOfNarjillos());
 
 		// Increase energies
-		for (Narjillo narjillo : narjillos) {
+		getNarjillos().forEach(narjillo -> {
 			double densityOfBreathableElement = getAtmosphere().getDensityOf(narjillo.getBreathedElement());
 			double energyObtainedByBreathing = densityOfBreathableElement * breathingPowerPerNarjillo;
 			narjillo.getEnergy().increaseBy(energyObtainedByBreathing);
-		}
+		});
 
 		// Consume elements
-		for (Narjillo narjillo : narjillos) {
+		getNarjillos().forEach(narjillo -> {
 			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
-		}
+		});
 	}
 
-	private Map<Narjillo, Set<Thing>> tick(Set<Narjillo> narjillos) {
+	private Map<Narjillo, Set<Thing>> tick(Stream<Narjillo> narjillos) {
 		// Calculate collisions in parallel...
 		Map<Narjillo, Future<Set<Thing>>> collisionFutures = tickNarjillos(narjillos);
 
@@ -332,11 +309,9 @@ public class Ecosystem extends Environment {
 	}
 
 	private void updateTargets(Thing food) {
-		synchronized (narjillos) {
-			narjillos.stream()
-				.filter(narjillo -> narjillo.getTarget().equals(food.getPosition()))
-				.forEach(this::setFoodTarget);
-		}
+		getNarjillos()
+			.filter(narjillo -> narjillo.getTarget().equals(food.getPosition()))
+			.forEach(this::setFoodTarget);
 	}
 
 	private void consume(Narjillo narjillo, Set<Thing> foodPellets) {
@@ -361,9 +336,7 @@ public class Ecosystem extends Environment {
 
 	private void removeNarjillo(Narjillo narjillo, DNALog dnaLog) {
 		notifyThingRemoved(narjillo);
-		synchronized (narjillos) {
-			narjillos.remove(narjillo);
-		}
+		space.remove(narjillo);
 		dnaLog.markAsDead(narjillo.getDNA().getId());
 	}
 

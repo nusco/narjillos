@@ -41,7 +41,7 @@ public class JSONEcosystemSerializationTest {
 
 		assertEquals(123, deserialized.getSize());
 		assertEquals(4, deserialized.getThings("").size());
-		assertEquals(1, deserialized.getNarjillos().size());
+		assertEquals(1, deserialized.getThings("narjillo").size());
 
 		assertEquals(deserialized.getAtmosphere().getAmountOf(OXYGEN), ecosystem.getAtmosphere().getAmountOf(OXYGEN), 0.0);
 		assertEquals(deserialized.getAtmosphere().getAmountOf(HYDROGEN), ecosystem.getAtmosphere().getAmountOf(HYDROGEN), 0.0);

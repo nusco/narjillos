@@ -2,7 +2,6 @@ package org.nusco.narjillos.experiment.environment;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
@@ -22,7 +21,7 @@ public abstract class Environment {
 		this.size = size;
 	}
 
-	public abstract Set<Thing> getThings(String label);
+	public abstract List<Thing> getThings(String label);
 
 	public abstract int getNumberOfNarjillos();
 

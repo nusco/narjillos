@@ -3,7 +3,9 @@ package org.nusco.narjillos.experiment.environment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +61,7 @@ public class EcosystemTest {
 
 	@Test
 	public void returnsAllTheThings() {
-		Set<Thing> things = ecosystem.getThings("");
+		List<Thing> things = ecosystem.getThings("");
 
 		assertEquals(5, things.size());
 		assertTrue(things.contains(narjillo1));
@@ -67,16 +69,8 @@ public class EcosystemTest {
 	}
 
 	@Test
-	public void returnsAllNarjillos() {
-		Set<Thing> things = ecosystem.getThings("narjillo");
-
-		assertEquals(2, things.size());
-		assertTrue(things.contains(narjillo1));
-	}
-
-	@Test
 	public void returnsASubsetOfThings() {
-		Set<Thing> things = ecosystem.getThings("food_pellet");
+		List<Thing> things = ecosystem.getThings("food_pellet");
 
 		assertEquals(3, things.size());
 		assertTrue(things.contains(foodPellet1));

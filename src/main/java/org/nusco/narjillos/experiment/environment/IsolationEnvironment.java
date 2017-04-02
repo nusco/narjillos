@@ -2,7 +2,10 @@ package org.nusco.narjillos.experiment.environment;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
@@ -15,9 +18,7 @@ import org.nusco.narjillos.genomics.DNALog;
  */
 public class IsolationEnvironment extends Environment {
 
-	private static final Set<Thing> EMPTY_SET = Collections.unmodifiableSet(new LinkedHashSet<Thing>());
-
-	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
+	private final List<Narjillo> narjillos = new LinkedList<>();
 
 	private double targetAngle = 0;
 
@@ -26,10 +27,10 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	@Override
-	public synchronized Set<Thing> getThings(String label) {
+	public synchronized List<Thing> getThings(String label) {
 		if (label.equals("narjillo") || label.equals(""))
-			return new LinkedHashSet<>(narjillos);
-		return EMPTY_SET;
+			return new LinkedList<>(narjillos);
+		return Collections.emptyList();
 	}
 
 	@Override

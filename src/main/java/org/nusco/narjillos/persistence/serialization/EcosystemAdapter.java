@@ -30,7 +30,7 @@ class EcosystemAdapter implements JsonSerializer<Ecosystem>, JsonDeserializer<Ec
 		final JsonElement eggs = context.serialize(ecosystem.getThings("egg"));
 		jsonObject.add("eggs", eggs);
 
-		final JsonElement narjillos = context.serialize(ecosystem.getNarjillos());
+		final JsonElement narjillos = context.serialize(ecosystem.getThings("narjillo"));
 		jsonObject.add("narjillos", narjillos);
 
 		final JsonElement atmosphere = context.serialize(ecosystem.getAtmosphere());

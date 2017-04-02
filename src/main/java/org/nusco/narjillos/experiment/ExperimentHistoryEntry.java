@@ -144,10 +144,11 @@ public class ExperimentHistoryEntry {
 		for (String chemicalCycle : Element.CYCLES)
 			result.put(chemicalCycle, 0);
 
-		for (Narjillo narjillo : ecosystem.getNarjillos()) {
+		ecosystem.getThings("narjillo").forEach(thing -> {
+			Narjillo narjillo = (Narjillo) thing;
 			String cycle = "" + narjillo.getBreathedElement() + "2" + narjillo.getByproduct();
 			result.put(cycle, result.get(cycle) + 1);
-		}
+		});
 
 		return result;
 	}

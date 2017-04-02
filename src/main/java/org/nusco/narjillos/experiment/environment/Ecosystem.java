@@ -178,7 +178,6 @@ public class Ecosystem extends Environment {
 		narjillos.forEach(narjillo -> {
 			result.put(narjillo, executorService.submit(() -> {
 				Segment movement = narjillo.tick();
-				damageIfTouchingEdges(narjillo);
 				return getCollisions(movement);
 			}));
 		});
@@ -196,10 +195,6 @@ public class Ecosystem extends Environment {
 
 	private Set<Thing> getCollisions(Segment movement) {
 		return space.detectCollisions(movement, FoodPellet.LABEL);
-	}
-
-	private void damageIfTouchingEdges(final Narjillo narjillo) {
-		BoundingBox boundingBox2 = narjillo.getBoundingBox();
 	}
 
 	private DNA createRandomDna(DNALog dnaLog, NumGen numGen) {

@@ -31,7 +31,7 @@ public class JSONEcosystemSerializationTest {
 
 		DNA dna = DNA.random(1, new NumGen(100));
 		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(100, 101), 90, Energy.INFINITE);
-		ecosystem.insertNarjillo(narjillo);
+		ecosystem.insert(narjillo);
 
 		for (int i = 0; i < 10; i++)
 			ecosystem.tick(new VolatileDNALog(), new NumGen(1234));

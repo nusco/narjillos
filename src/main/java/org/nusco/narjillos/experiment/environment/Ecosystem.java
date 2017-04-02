@@ -112,12 +112,6 @@ public class Ecosystem extends Environment {
 		notifyThingAdded(thing);
 	}
 
-	public void insertNarjillo(Narjillo narjillo) {
-		space.add(narjillo);
-		notifyThingAdded(narjillo);
-		thingsCounter.add("narjillo");
-	}
-
 	public final Egg spawnEgg(DNA genes, Vector position, NumGen numGen) {
 		Egg egg = new Egg(genes, position, Vector.ZERO, Configuration.CREATURE_SEED_ENERGY, numGen);
 		insert(egg);
@@ -237,7 +231,7 @@ public class Ecosystem extends Environment {
 	private void tickEgg(Egg egg, NumGen numGen) {
 		egg.tick();
 		if (egg.hatch(numGen))
-			insertNarjillo(egg.getHatchedNarjillo().get());
+			insert(egg.getHatchedNarjillo().get());
 		if (egg.isDecayed())
 			remove(egg);
 	}

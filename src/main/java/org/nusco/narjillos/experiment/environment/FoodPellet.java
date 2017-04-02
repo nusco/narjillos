@@ -18,7 +18,7 @@ public class FoodPellet implements Thing {
 
 	private final Energy energy = new LifeFormEnergy(Configuration.FOOD_ENERGY, Double.MAX_VALUE);
 
-	private Thing interactingThing;
+	private Thing interactor;
 
 	public FoodPellet(Vector position) {
 		this.position = position;
@@ -56,8 +56,8 @@ public class FoodPellet implements Thing {
 	}
 
 	@Override
-	public Thing getLastInteractingThing() {
-		return interactingThing;
+	public Thing getInteractor() {
+		return interactor;
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class FoodPellet implements Thing {
 		return boundingBox;
 	}
 
-	public void setInteractingThing(Thing interactingThing) {
-		this.interactingThing = interactingThing;
+	public void setFeeder(Thing interactor) {
+		this.interactor = interactor;
 	}
 }

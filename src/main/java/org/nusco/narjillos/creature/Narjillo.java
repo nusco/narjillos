@@ -98,7 +98,7 @@ public class Narjillo implements Thing {
 	}
 
 	@Override
-	public Thing getLastInteractingThing() {
+	public Thing getInteractor() {
 		return Thing.NULL;
 	}
 
@@ -120,7 +120,7 @@ public class Narjillo implements Thing {
 
 	public void feedOn(FoodPellet thing) {
 		getEnergy().absorb(thing.getEnergy());
-		thing.setInteractingThing(this);
+		thing.setFeeder(this);
 	}
 
 	public boolean isDead() {
@@ -144,8 +144,7 @@ public class Narjillo implements Thing {
 	}
 
 	/**
-	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay
-	 * it.
+	 * Returns the newly laid egg, or null if the narjillo doesn't want to lay it.
 	 */
 	public Egg layEgg(DNALog dnaLog, NumGen numGen) {
 		if (getAge() < nextEggAge)

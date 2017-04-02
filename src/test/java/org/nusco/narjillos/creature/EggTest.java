@@ -26,7 +26,7 @@ public class EggTest {
 
 	@Test
 	public void itsLastInteractingThingIsInitiallyNull() {
-		Thing lastInteractingThing = egg.getLastInteractingThing();
+		Thing lastInteractingThing = egg.getInteractor();
 
 		assertSame(Thing.NULL, lastInteractingThing);
 	}
@@ -35,7 +35,7 @@ public class EggTest {
 	public void theHatchedNarjilloBecomesItsLastInteractingThing() {
 		waitUntilItHatches(egg);
 
-		assertSame(egg.getHatchedNarjillo().get(), egg.getLastInteractingThing());
+		assertSame(egg.getHatchedNarjillo().get(), egg.getInteractor());
 	}
 
 	@Test

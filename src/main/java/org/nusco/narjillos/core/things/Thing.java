@@ -48,8 +48,8 @@ public interface Thing extends Bounded {
 		}
 
 		@Override
-		public Thing getLastInteractingThing() {
-			return NULL;
+		public Thing getInteractor() {
+			return this;
 		}
 	};
 
@@ -68,5 +68,5 @@ public interface Thing extends Bounded {
 
 	String getLabel();
 
-	Thing getLastInteractingThing();
+	Thing getInteractor();
 }

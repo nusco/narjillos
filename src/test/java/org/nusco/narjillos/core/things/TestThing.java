@@ -28,7 +28,7 @@ class TestThing implements Thing {
 	}
 
 	@Override
-	public Thing getLastInteractingThing() {
+	public Thing getInteractor() {
 		return Thing.NULL;
 	}
 

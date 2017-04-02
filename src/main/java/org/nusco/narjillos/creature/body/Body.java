@@ -292,8 +292,7 @@ public class Body {
 		getHead().tick(angleToTarget);
 	}
 
-	private double tick_step2_rotate(Map<Organ, Double> initialAnglesOfOrgans, Vector centerOfMass,
-		double mass) {
+	private double tick_step2_rotate(Map<Organ, Double> initialAnglesOfOrgans, Vector centerOfMass, double mass) {
 		RotationsPhysicsEngine forceField = new RotationsPhysicsEngine(mass, calculateRadius(centerOfMass), centerOfMass);
 		for (Organ bodyPart : getOrgans())
 			forceField.registerMovement(initialAnglesOfOrgans.get(bodyPart), bodyPart.getAbsoluteAngle(), bodyPart.toSegment(),

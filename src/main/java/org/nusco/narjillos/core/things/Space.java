@@ -41,6 +41,10 @@ public class Space {
 		allThings.remove(thing);
 	}
 
+	public synchronized void update(Thing thing) {
+		// TODO
+	}
+
 	public synchronized boolean contains(Thing thing) {
 		return getThingsToLocations(thing.getLabel()).containsKey(thing);
 	}
@@ -116,8 +120,12 @@ public class Space {
 		if (thing.getRadius() <= HashedLocation.GRID_SIZE)
 			return;
 
-		String message = String.format("Things with a radius over %s can cause failures in collision detection", HashedLocation.GRID_SIZE);
-		throw new RuntimeException(message);
+		// FIXME: temporarily disabled until we have the concept of composite things
+		// (right now, a narjillo can easily grow past grid size, although its individual
+		// organs can't)
+
+//		String message = String.format("Things with a radius over %s can cause failures in collision detection", HashedLocation.GRID_SIZE);
+//		throw new RuntimeException(message);
 	}
 
 	private Set<HashedLocation> calculateHashedLocationsOf(Thing thing) {

@@ -45,20 +45,13 @@ public class ThingTracker {
 					startTrackingRandomLivingThing();
 				else {
 					Thing nextClosestNarjillo = locator.findNarjilloAt(narjillo.getPosition());
-					if (nextClosestNarjillo == null) {
-						stopTracking();
-						return;
-					} else
-						startTracking(nextClosestNarjillo);
+					startTracking(nextClosestNarjillo);
 				}
 			}
 		}
 
 		if (target.getLabel().equals(Egg.LABEL) || target.getLabel().equals(FoodPellet.LABEL)) {
-			Thing interactingThing = target.getLastInteractingThing();
-			if (interactingThing != Thing.NULL)
-				startTracking(interactingThing);
-			return;
+			startTracking(target.getInteractor());
 		}
 
 		viewport.centerOn(target);
@@ -95,13 +88,11 @@ public class ThingTracker {
 	}
 
 	public void startTrackingThingAt(Vector position) {
-		Thing target = locator.findThingAt(position);
-
-		startTracking(target);
+		startTracking(locator.findThingAt(position));
 	}
 
 	public void startTracking(Thing target) {
-		if (target == null) {
+		if (target == null || target == Thing.NULL) {
 			stopTracking();
 			return;
 		}

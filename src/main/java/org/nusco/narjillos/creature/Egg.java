@@ -78,7 +78,7 @@ public class Egg implements Thing {
 	}
 
 	@Override
-	public Thing getLastInteractingThing() {
+	public Thing getInteractor() {
 		if (hatchedNarjillo == null)
 			return Thing.NULL;
 

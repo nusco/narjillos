@@ -146,13 +146,14 @@ public class Ecosystem extends Environment {
 		if (isShuttingDown())
 			return; // we're leaving, apparently
 
-		space.getAll(Egg.LABEL).forEach(thing -> tickEgg((Egg) thing, numGen));
-
-		getNarjillos()
-			.filter(Narjillo::isDead)
-			.forEach(narjillo -> removeNarjillo(narjillo, dnaLog));
+		// TODO: generalize the concept of "dead" to all things
+		// remember to synchronize things to avoid critical races around
+		// death and energy
+		removeDeadNarjillos(dnaLog);
 
 		tickNarjillos();
+
+		space.getAll(Egg.LABEL).forEach(thing -> tickEgg((Egg) thing, numGen));
 
 		if (shouldSpawnFood(numGen)) {
 			spawnFood(randomPosition(getSize(), numGen));
@@ -160,6 +161,12 @@ public class Ecosystem extends Environment {
 		}
 
 		getNarjillos().forEach(narjillo -> maybeLayEgg((Narjillo) narjillo, dnaLog, numGen));
+	}
+
+	private void removeDeadNarjillos(DNALog dnaLog) {
+		getNarjillos()
+			.filter(Narjillo::isDead)
+			.forEach(narjillo -> removeNarjillo(narjillo, dnaLog));
 	}
 
 	private Stream<Narjillo> getNarjillos() {

@@ -15,7 +15,7 @@ public class ThingsCounterTest {
 		thingsCounter.add("label1");
 		thingsCounter.add("label2");
 
-		assertThat(thingsCounter.count("label1"), is(2));
+		assertThat(thingsCounter.count("label1"), is(2L));
 	}
 
 	@Test
@@ -24,12 +24,12 @@ public class ThingsCounterTest {
 		thingsCounter.add("label1");
 		thingsCounter.remove("label1");
 
-		assertThat(thingsCounter.count("label1"), is(1));
+		assertThat(thingsCounter.count("label1"), is(1L));
 	}
 
 	@Test
 	public void returnsZeroIfNoThingWasEverAdded() {
-		assertThat(thingsCounter.count("label1"), is(0));
+		assertThat(thingsCounter.count("label1"), is(0L));
 	}
 
 	@Test(expected = RuntimeException.class)

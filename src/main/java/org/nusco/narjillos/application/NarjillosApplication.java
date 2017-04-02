@@ -16,9 +16,11 @@ import org.nusco.narjillos.application.utilities.ThingTracker;
 import org.nusco.narjillos.application.utilities.Viewport;
 import org.nusco.narjillos.core.geometry.FastMath;
 import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 
 abstract class NarjillosApplication extends Application {
 
@@ -157,9 +159,9 @@ abstract class NarjillosApplication extends Application {
 
 	String getEnvironmentStatistics() {
 		Environment environment = getDish().getEnvironment();
-		return "Narj: " + environment.getNumberOfNarjillos()
-			+ " / Eggs: " + environment.getNumberOfEggs()
-			+ " / Food: " + environment.getNumberOfFoodPellets();
+		return "Narj: " + environment.getCount(Narjillo.LABEL)
+			+ " / Eggs: " + environment.getCount(Egg.LABEL)
+			+ " / Food: " + environment.getCount(FoodPellet.LABEL);
 	}
 
 	boolean isBusy() {

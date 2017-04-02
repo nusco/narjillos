@@ -23,11 +23,7 @@ public abstract class Environment {
 
 	public abstract List<Thing> getThings(String label);
 
-	public abstract int getNumberOfNarjillos();
-
-	public abstract int getNumberOfEggs();
-
-	public abstract int getNumberOfFoodPellets();
+	public abstract long getCount(String label);
 
 	/**
 	 * Runs one simulation tick

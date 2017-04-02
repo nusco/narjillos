@@ -23,6 +23,8 @@ import org.nusco.narjillos.genomics.DNALog;
  */
 public class Narjillo implements Thing {
 
+	public static final String LABEL = "narjillo";
+
 	private final Body body;
 
 	private final DNA dna;
@@ -92,7 +94,7 @@ public class Narjillo implements Thing {
 
 	@Override
 	public String getLabel() {
-		return "narjillo";
+		return Narjillo.LABEL;
 	}
 
 	@Override

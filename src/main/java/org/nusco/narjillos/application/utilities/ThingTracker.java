@@ -2,7 +2,9 @@ package org.nusco.narjillos.application.utilities;
 
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 
 public class ThingTracker {
 
@@ -36,7 +38,7 @@ public class ThingTracker {
 				viewport.zoomOut();
 		}
 
-		if (target.getLabel().equals("narjillo")) {
+		if (target.getLabel().equals(Narjillo.LABEL)) {
 			Narjillo narjillo = (Narjillo) target;
 			if (narjillo.isDead()) {
 				if (isDemoMode())
@@ -52,7 +54,7 @@ public class ThingTracker {
 			}
 		}
 
-		if (target.getLabel().equals("egg") || target.getLabel().equals("food_pellet")) {
+		if (target.getLabel().equals(Egg.LABEL) || target.getLabel().equals(FoodPellet.LABEL)) {
 			Thing interactingThing = target.getLastInteractingThing();
 			if (interactingThing != Thing.NULL)
 				startTracking(interactingThing);

@@ -50,16 +50,6 @@ public class EcosystemTest {
 	}
 
 	@Test
-	public void countsFoodPellets() {
-		assertEquals(3, ecosystem.getNumberOfFoodPellets());
-	}
-
-	@Test
-	public void countsNarjillos() {
-		assertEquals(2, ecosystem.getNumberOfNarjillos());
-	}
-
-	@Test
 	public void returnsAllTheThings() {
 		List<Thing> things = ecosystem.getThings("");
 
@@ -69,8 +59,14 @@ public class EcosystemTest {
 	}
 
 	@Test
+	public void countsThings() {
+		assertEquals(3, ecosystem.getCount(FoodPellet.LABEL));
+		assertEquals(2, ecosystem.getCount(Narjillo.LABEL));
+	}
+
+	@Test
 	public void returnsASubsetOfThings() {
-		List<Thing> things = ecosystem.getThings("food_pellet");
+		List<Thing> things = ecosystem.getThings(FoodPellet.LABEL);
 
 		assertEquals(3, things.size());
 		assertTrue(things.contains(foodPellet1));

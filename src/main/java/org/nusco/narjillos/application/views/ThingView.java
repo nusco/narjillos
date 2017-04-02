@@ -38,11 +38,11 @@ abstract class ThingView implements ItemView {
 	}
 
 	static ThingView createViewFor(Thing thing) {
-		if (thing.getLabel().equals("narjillo"))
+		if (thing.getLabel().equals(Narjillo.LABEL))
 			return new NarjilloView((Narjillo) thing);
-		else if (thing.getLabel().equals("food_pellet"))
+		else if (thing.getLabel().equals(FoodPellet.LABEL))
 			return new FoodView((FoodPellet) thing);
-		else if (thing.getLabel().equals("egg"))
+		else if (thing.getLabel().equals(Egg.LABEL))
 			return new EggView((Egg) thing);
 		else
 			throw new RuntimeException("Unknown thing: " + thing.getLabel());

@@ -44,11 +44,11 @@ public class Ecosystem extends Environment {
 
 	private final Space space = new Space();
 
+	private Atmosphere atmosphere = new Atmosphere();
+
 	private final ThingsCounter thingsCounter = new ThingsCounter();
 
 	private final Vector center;
-
-	private Atmosphere atmosphere;
 
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
@@ -61,7 +61,6 @@ public class Ecosystem extends Environment {
 		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 
 		this.center = Vector.cartesian(size, size).by(0.5);
-		this.atmosphere = new Atmosphere();
 
 		// TODO: fix magic number
 		// check that things cannot move faster than a space area in a single
@@ -92,7 +91,7 @@ public class Ecosystem extends Environment {
 	}
 
 	public Vector findClosestFood(Thing thing) {
-		Thing target = space.findClosestTo(thing, "food_pellet");
+		Thing target = space.findClosestTo(thing, FoodPellet.LABEL);
 
 		if (target == null)
 			return center;
@@ -119,22 +118,12 @@ public class Ecosystem extends Environment {
 	}
 
 	@Override
-	public int getNumberOfFoodPellets() {
-		return thingsCounter.count("food_pellet");
-	}
-
-	@Override
-	public int getNumberOfEggs() {
-		return thingsCounter.count("egg");
-	}
-
-	@Override
-	public int getNumberOfNarjillos() {
-		return thingsCounter.count("narjillo");
+	public long getCount(String label) {
+		return thingsCounter.count(label);
 	}
 
 	private Stream<Narjillo> getNarjillos() {
-		return space.getAll("narjillo").map(thing -> (Narjillo) thing);
+		return space.getAll(Narjillo.LABEL).map(thing -> (Narjillo) thing);
 	}
 
 	public void updateTargets() {
@@ -172,7 +161,7 @@ public class Ecosystem extends Environment {
 
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
-		space.getAll("egg").forEach(thing -> tickEgg((Egg) thing, numGen));
+		space.getAll(Egg.LABEL).forEach(thing -> tickEgg((Egg) thing, numGen));
 
 		getNarjillos()
 			.filter(Narjillo::isDead)
@@ -210,7 +199,7 @@ public class Ecosystem extends Environment {
 	}
 
 	private Set<Thing> getCollisions(Segment movement) {
-		return space.detectCollisions(movement, "food_pellet");
+		return space.detectCollisions(movement, FoodPellet.LABEL);
 	}
 
 	private void damageIfTouchingEdges(final Narjillo narjillo) {
@@ -257,7 +246,7 @@ public class Ecosystem extends Environment {
 		// The maximum amount of energy that each creature can extract from
 		// breathing, depending on the amount of catalyst available to all the
 		// creatures. Varies between 0 and 1 included.
-		double breathingPowerPerNarjillo = Math.min(1, (double) getAtmosphere().getCatalystLevel() / getNumberOfNarjillos());
+		double breathingPowerPerNarjillo = Math.min(1, (double) getAtmosphere().getCatalystLevel() / getCount(Narjillo.LABEL));
 
 		// Increase energies
 		getNarjillos().forEach(narjillo -> {
@@ -290,7 +279,7 @@ public class Ecosystem extends Environment {
 
 	private boolean shouldSpawnFood(NumGen numGen) {
 		double maxFoodPellets = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK;
-		if (getNumberOfFoodPellets() >= maxFoodPellets)
+		if (getCount(FoodPellet.LABEL) >= maxFoodPellets)
 			return false;
 
 		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK

@@ -10,6 +10,8 @@ import org.nusco.narjillos.core.configuration.Configuration;
 
 public class FoodPellet implements Thing {
 
+	public static final String LABEL = "food_pellet";
+
 	private final Vector position;
 
 	private final BoundingBox boundingBox;
@@ -40,7 +42,7 @@ public class FoodPellet implements Thing {
 
 	@Override
 	public String getLabel() {
-		return "food_pellet";
+		return FoodPellet.LABEL;
 	}
 
 	@Override

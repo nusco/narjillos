@@ -8,6 +8,7 @@ import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Environment;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 
 /**
  * Provides methods to find {@link Thing}s in a {@link Environment}.
@@ -33,12 +34,12 @@ public class Locator {
 	 * @return the first found Thing or null if nothing is present at the given position.
 	 */
 	private Thing findThingAt(Vector position, double thingMinRadius) {
-		Thing result = findWithLabel(position, thingMinRadius, "food");
+		Thing result = findWithLabel(position, thingMinRadius, FoodPellet.LABEL);
 
 		if (result != null)
 			return result;
 
-		result = findWithLabel(position, thingMinRadius, "egg");
+		result = findWithLabel(position, thingMinRadius, Egg.LABEL);
 
 		if (result != null)
 			return result;
@@ -67,7 +68,7 @@ public class Locator {
 	 * @return the found Narjillo or null if nothing is present at the given position.
 	 */
 	public Thing findNarjilloAt(Vector position, double thingMinRadius) {
-		return findWithLabel(position, thingMinRadius, "narjillo");
+		return findWithLabel(position, thingMinRadius, Narjillo.LABEL);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class Locator {
 	 * @return the found Narjillo or null if nothing is present at the given position.
 	 */
 	public Thing findNarjilloAt(Vector position) {
-		return findWithLabel(position, DEFAULT_RADIUS, "narjillo");
+		return findWithLabel(position, DEFAULT_RADIUS, Narjillo.LABEL);
 	}
 
 	/**
@@ -87,8 +88,8 @@ public class Locator {
 	 */
 	public Thing findRandomLivingThing() {
 		List<Thing> allThings = new LinkedList<>();
-		allThings.addAll(environment.getThings("narjillo"));
-		allThings.addAll(environment.getThings("egg"));
+		allThings.addAll(environment.getThings(Narjillo.LABEL));
+		allThings.addAll(environment.getThings(Egg.LABEL));
 		return allThings.get((int) (Math.random() * allThings.size()));
 	}
 

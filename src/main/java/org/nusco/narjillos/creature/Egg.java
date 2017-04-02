@@ -17,6 +17,8 @@ import java.util.Optional;
  */
 public class Egg implements Thing {
 
+	public static final String LABEL = "egg";
+
 	private static final int NOT_HATCHED_YET = -1;
 
 	private final DNA dna;
@@ -107,7 +109,7 @@ public class Egg implements Thing {
 
 	@Override
 	public String getLabel() {
-		return "egg";
+		return Egg.LABEL;
 	}
 
 	@Override

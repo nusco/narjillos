@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
+import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 
 public class StatsTest {
 
@@ -16,8 +18,8 @@ public class StatsTest {
 
 		assertEquals(1000, stat.ticks);
 		assertEquals(experiment.getTotalRunningTimeInSeconds(), stat.runningTime);
-		assertEquals(experiment.getEcosystem().getNumberOfNarjillos(), stat.numberOfNarjillos);
-		assertEquals(experiment.getEcosystem().getNumberOfFoodPellets(), stat.numberOfFoodPellets);
+		assertEquals(experiment.getEcosystem().getCount(Narjillo.LABEL), stat.numberOfNarjillos);
+		assertEquals(experiment.getEcosystem().getCount(FoodPellet.LABEL), stat.numberOfFoodPellets);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.OXYGEN), stat.oxygen, 0.0);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.HYDROGEN), stat.hydrogen, 0.0);
 		assertEquals(experiment.getEcosystem().getAtmosphere().getDensityOf(Element.NITROGEN), stat.nitrogen, 0.0);

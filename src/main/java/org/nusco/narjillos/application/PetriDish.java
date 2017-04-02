@@ -4,11 +4,13 @@ import java.util.Random;
 
 import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumberFormatter;
+import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.HistoryLog;
 import org.nusco.narjillos.experiment.VolatileHistoryLog;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.experiment.environment.Environment;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 import org.nusco.narjillos.genomics.DNALog;
 import org.nusco.narjillos.genomics.VolatileDNALog;
 import org.nusco.narjillos.persistence.ExperimentLog;
@@ -157,8 +159,8 @@ public class PetriDish implements Dish {
 
 	private String getReport() {
 		return NumberFormatter.format(experiment.getTicksChronometer().getTotalTicks()) + "\t" +
-			experiment.getEcosystem().getNumberOfNarjillos() + "\t" +
-			experiment.getEcosystem().getNumberOfFoodPellets();
+			experiment.getEcosystem().getCount(Narjillo.LABEL) + "\t" +
+			experiment.getEcosystem().getCount(FoodPellet.LABEL);
 	}
 
 	private void save() {

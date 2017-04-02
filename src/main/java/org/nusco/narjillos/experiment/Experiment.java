@@ -3,6 +3,8 @@ package org.nusco.narjillos.experiment;
 import org.nusco.narjillos.core.utilities.Chronometer;
 import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.NumGen;
+import org.nusco.narjillos.creature.Egg;
+import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
 import org.nusco.narjillos.genomics.DNALog;
 
@@ -81,7 +83,7 @@ public class Experiment {
 	}
 
 	public boolean lifeIsExtinct() {
-		return ecosystem.getNumberOfNarjillos() == 0 && ecosystem.getNumberOfEggs() == 0;
+		return ecosystem.getCount(Narjillo.LABEL) == 0 && ecosystem.getCount(Egg.LABEL) == 0;
 	}
 
 	// for testing

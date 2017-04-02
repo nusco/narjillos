@@ -10,6 +10,7 @@ import java.util.Map;
 import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
+import org.nusco.narjillos.experiment.environment.FoodPellet;
 
 public class ExperimentHistoryEntry {
 
@@ -17,9 +18,9 @@ public class ExperimentHistoryEntry {
 
 	public final long runningTime;
 
-	public final int numberOfNarjillos;
+	public final long numberOfNarjillos;
 
-	public final int numberOfFoodPellets;
+	public final long numberOfFoodPellets;
 
 	public final double oxygen;
 
@@ -70,8 +71,8 @@ public class ExperimentHistoryEntry {
 	public ExperimentHistoryEntry(Experiment experiment) {
 		this.ticks = experiment.getTicksChronometer().getTotalTicks();
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
-		this.numberOfNarjillos = experiment.getEcosystem().getNumberOfNarjillos();
-		this.numberOfFoodPellets = experiment.getEcosystem().getNumberOfFoodPellets();
+		this.numberOfNarjillos = experiment.getEcosystem().getCount(Narjillo.LABEL);
+		this.numberOfFoodPellets = experiment.getEcosystem().getCount(FoodPellet.LABEL);
 		this.oxygen = experiment.getEcosystem().getAtmosphere().getDensityOf(OXYGEN);
 		this.hydrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(HYDROGEN);
 		this.nitrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(NITROGEN);
@@ -144,7 +145,7 @@ public class ExperimentHistoryEntry {
 		for (String chemicalCycle : Element.CYCLES)
 			result.put(chemicalCycle, 0);
 
-		ecosystem.getThings("narjillo").forEach(thing -> {
+		ecosystem.getThings(Narjillo.LABEL).forEach(thing -> {
 			Narjillo narjillo = (Narjillo) thing;
 			String cycle = "" + narjillo.getBreathedElement() + "2" + narjillo.getByproduct();
 			result.put(cycle, result.get(cycle) + 1);

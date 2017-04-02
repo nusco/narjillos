@@ -28,23 +28,16 @@ public class IsolationEnvironment extends Environment {
 
 	@Override
 	public synchronized List<Thing> getThings(String label) {
-		if (label.equals("narjillo") || label.equals(""))
+		if (label.equals(Narjillo.LABEL) || label.equals(""))
 			return new LinkedList<>(narjillos);
 		return Collections.emptyList();
 	}
 
 	@Override
-	public int getNumberOfNarjillos() {
-		return 1;
-	}
+	public long getCount(String label) {
+		if (label.equals(Narjillo.LABEL))
+			return 1;
 
-	@Override
-	public int getNumberOfEggs() {
-		return 0;
-	}
-
-	@Override
-	public int getNumberOfFoodPellets() {
 		return 0;
 	}
 

@@ -1,5 +1,19 @@
 package org.nusco.narjillos.experiment.environment;
 
+import org.nusco.narjillos.core.chemistry.Atmosphere;
+import org.nusco.narjillos.core.configuration.Configuration;
+import org.nusco.narjillos.core.geometry.BoundingBox;
+import org.nusco.narjillos.core.geometry.Segment;
+import org.nusco.narjillos.core.geometry.Vector;
+import org.nusco.narjillos.core.physics.Viscosity;
+import org.nusco.narjillos.core.things.Space;
+import org.nusco.narjillos.core.things.Thing;
+import org.nusco.narjillos.core.utilities.NumGen;
+import org.nusco.narjillos.creature.Egg;
+import org.nusco.narjillos.creature.Narjillo;
+import org.nusco.narjillos.genomics.DNA;
+import org.nusco.narjillos.genomics.DNALog;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -12,20 +26,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.core.geometry.BoundingBox;
-import org.nusco.narjillos.core.geometry.Segment;
-import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.core.things.Space;
-import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.configuration.Configuration;
-import org.nusco.narjillos.core.utilities.NumGen;
-import org.nusco.narjillos.creature.Egg;
-import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.core.physics.Viscosity;
-import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.DNALog;
 
 /**
  * A complex environment populated with narjillos, eggs and food.
@@ -44,6 +44,8 @@ public class Ecosystem extends Environment {
 	private final Set<Narjillo> narjillos = new LinkedHashSet<>();
 
 	private final Space space;
+
+	private final ThingsCounter thingsCounter = new ThingsCounter();
 
 	private final Vector center;
 
@@ -120,6 +122,7 @@ public class Ecosystem extends Environment {
 
 	public void insert(Thing thing) {
 		space.add(thing);
+		thingsCounter.add(thing.getLabel());
 		notifyThingAdded(thing);
 	}
 
@@ -138,12 +141,12 @@ public class Ecosystem extends Environment {
 
 	@Override
 	public int getNumberOfFoodPellets() {
-		return space.count("food_pellet");
+		return thingsCounter.count("food_pellet");
 	}
 
 	@Override
 	public int getNumberOfEggs() {
-		return space.count("egg");
+		return thingsCounter.count("egg");
 	}
 
 	@Override
@@ -361,6 +364,7 @@ public class Ecosystem extends Environment {
 	private void remove(Thing thing) {
 		notifyThingRemoved(thing);
 		space.remove(thing);
+		thingsCounter.remove(thing.getLabel());
 	}
 
 	private void removeNarjillo(Narjillo narjillo, DNALog dnaLog) {

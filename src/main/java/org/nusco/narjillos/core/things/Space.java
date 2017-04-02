@@ -6,7 +6,6 @@ import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -22,7 +21,6 @@ public class Space {
 
 	private final Map<Thing, Set<HashedLocation>> thingsToLocations = new LinkedHashMap<>();
 	private final Map<HashedLocation, List<Thing>> locationsToThings = new LinkedHashMap<>();
-	private final Map<String, Integer> countsByLabel = new HashMap<>();
 
 	public void add(Thing thing) {
 		validateMaximumSize(thing);
@@ -34,14 +32,6 @@ public class Space {
 		}
 
 		locations.stream().forEach(location -> addThingToLocation(location, thing));
-
-		String label = thing.getLabel();
-		synchronized (countsByLabel) {
-			if (countsByLabel.containsKey(label))
-				countsByLabel.put(label, countsByLabel.get(label) + 1);
-			else
-				countsByLabel.put(label, 1);
-		}
 	}
 
 	public void remove(Thing thing) {
@@ -52,10 +42,6 @@ public class Space {
 		}
 
 		locations.stream().forEach(location -> locationsToThings.get(location).remove(thing));
-
-		synchronized (countsByLabel) {
-			countsByLabel.put(thing.getLabel(), countsByLabel.get(thing.getLabel()) - 1);
-		}
 	}
 
 	public Set<Thing> getThings() {
@@ -210,14 +196,5 @@ public class Space {
 			.filter((thing) -> (matches(thing, label)))
 			.forEach(result::add);
 		return result;
-	}
-
-	public int count(String label) {
-		synchronized (countsByLabel) {
-			Integer result = countsByLabel.get(label);
-			if (result == null)
-				return 0;
-			return result;
-		}
 	}
 }

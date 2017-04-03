@@ -90,24 +90,16 @@ public class Space {
 	}
 
 	private Map<Thing, Set<HashedLocation>> getThingsToLocations(String label) {
-		Map<Thing, Set<HashedLocation>> result = labelsToThingsToLocations.get(label);
-
-		if (result == null) {
-			result = new LinkedHashMap<>();
-			labelsToThingsToLocations.put(label, result);
-		}
-
-		return result;
+		return labelsToThingsToLocations.computeIfAbsent(label, k -> new LinkedHashMap<>());
 	}
 
 	Optional<Set<HashedLocation>> getHashedLocationsOf(Thing thing) {
 		Set<HashedLocation> result = getThingsToLocations(thing.getLabel()).get(thing);
-		return result != null ? Optional.of(result) : Optional.empty();
+		return Optional.ofNullable(result);
 	}
 
 	List<Thing> getThingsAtHashedLocation(int lx, int ly) {
-		List<Thing> result = locationsToThings.get(HashedLocation.at(lx, ly));
-		return result != null ? result : Collections.emptyList();
+		return locationsToThings.getOrDefault(HashedLocation.at(lx, ly), Collections.emptyList());
 	}
 
 	Set<Thing> getNearbyNeighbors(Thing thing, String label) {

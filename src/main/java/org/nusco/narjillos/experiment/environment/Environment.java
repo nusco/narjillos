@@ -35,7 +35,7 @@ public abstract class Environment {
 			VisualDebugger.clear();
 	}
 
-	public long getSize() {
+	public final long getSize() {
 		return size;
 	}
 

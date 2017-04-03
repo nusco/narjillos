@@ -49,6 +49,8 @@ public class Ecosystem extends Environment {
 
 	private final Vector center;
 
+	private final FoodClock foodClock;
+
 	public Ecosystem(final long size, boolean sizeCheck) {
 		super(size);
 
@@ -59,6 +61,7 @@ public class Ecosystem extends Environment {
 		};
 		executorService = Executors.newFixedThreadPool(numberOfBackgroundThreads, tickWorkerFactory);
 
+		foodClock = new FoodClock(getNumberOf1000SquarePointsBlocks());
 		this.center = Vector.cartesian(size, size).by(0.5);
 
 		// TODO: fix magic number
@@ -136,7 +139,7 @@ public class Ecosystem extends Environment {
 		}
 	}
 
-	public void setFoodTargets() {
+	public void resetFoodTargets() {
 		space.getAll(Narjillo.LABEL).forEach(narjillo -> {
 			Vector closestTarget = findClosestFoodTo(narjillo);
 			((Narjillo) narjillo).setTarget(closestTarget);
@@ -173,9 +176,9 @@ public class Ecosystem extends Environment {
 
 		space.getAll(Egg.LABEL).forEach(thing -> tickEgg((Egg) thing, numGen));
 
-		if (shouldSpawnFood(numGen)) {
+		if (foodClock.shouldSpawnFood(getCount(FoodPellet.LABEL), numGen)) {
 			spawnFood(randomPosition(getSize(), numGen));
-			setFoodTargets();
+			resetFoodTargets();
 		}
 
 		narjillos.forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
@@ -261,16 +264,6 @@ public class Ecosystem extends Environment {
 		return result;
 	}
 
-	private boolean shouldSpawnFood(NumGen numGen) {
-		double maxFoodPellets = getNumberOf1000SquarePointsBlocks() * Configuration.ECOSYSTEM_MAX_FOOD_DENSITY_PER_1000_BLOCK;
-		if (getCount(FoodPellet.LABEL) >= maxFoodPellets)
-			return false;
-
-		double foodRespawnAverageInterval = Configuration.ECOSYSTEM_FOOD_RESPAWN_AVERAGE_INTERVAL_PER_BLOCK
-			/ getNumberOf1000SquarePointsBlocks();
-		return numGen.nextDouble() < 1.0 / foodRespawnAverageInterval;
-	}
-
 	private Vector randomPosition(long size, NumGen numGen) {
 		return Vector.cartesian(numGen.nextDouble() * size, numGen.nextDouble() * size);
 	}
@@ -281,7 +274,7 @@ public class Ecosystem extends Environment {
 
 	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet) {
 		foodPellet.getEaten(narjillo);
-		setFoodTargets();
+		resetFoodTargets();
 	}
 
 	private void remove(Thing thing) {

@@ -72,6 +72,9 @@ public class FoodPellet implements Thing {
 	}
 
 	public void getEaten(Thing feeder) {
+		if (getEnergy().isZero())
+			return;
+
 		feeder.getEnergy().absorb(getEnergy());
 		this.interactor = feeder;
 	}

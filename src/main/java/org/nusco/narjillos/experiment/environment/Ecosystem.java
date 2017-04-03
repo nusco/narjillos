@@ -203,10 +203,6 @@ public class Ecosystem extends Environment {
 		return executorService.isShutdown();
 	}
 
-	private Set<Thing> getCollisions(Segment movement) {
-		return space.detectCollisions(movement, FoodPellet.LABEL);
-	}
-
 	private DNA createRandomDna(DNALog dnaLog, NumGen numGen) {
 		DNA result = DNA.random(numGen.nextSerial(), numGen);
 		dnaLog.save(result);
@@ -246,10 +242,10 @@ public class Ecosystem extends Environment {
 	private Map<Narjillo, Set<Thing>> tick(List<Narjillo> narjillos) {
 		// Calculate collisions in parallel...
 		Map<Narjillo, Future<Set<Thing>>> collisionFutures = new LinkedHashMap<>();
-		narjillos.forEach(narjillo1 -> {
-			collisionFutures.put(narjillo1, executorService.submit(() -> {
-				Segment movement = narjillo1.tick();
-				return getCollisions(movement);
+		narjillos.forEach(narjillo -> {
+			collisionFutures.put(narjillo, executorService.submit(() -> {
+				Segment movement = narjillo.tick();
+				return space.detectCollisions(movement, FoodPellet.LABEL);
 			}));
 		});
 
@@ -284,9 +280,6 @@ public class Ecosystem extends Environment {
 	}
 
 	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet) {
-		if (!space.contains(foodPellet))
-			return; // race condition: already consumed
-
 		foodPellet.getEaten(narjillo);
 		setFoodTargets();
 	}

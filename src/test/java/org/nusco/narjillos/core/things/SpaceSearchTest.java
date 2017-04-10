@@ -17,15 +17,35 @@ public class SpaceSearchTest {
 
 	@Test
 	public void findsNeighboringThings() {
-		// translate to area around 0
 		Thing[] things = new Thing[] {
-			new TestThing(at(5, 3)),
-			new TestThing(at(5, 3)),
-			new TestThing(at(4, 2)),
-			new TestThing(at(6, 3)),
-			new TestThing(at(6, 3)),
-			new TestThing(at(6, 4)),
-			new TestThing(at(8, 8))
+			new TestThing(at(1, -1)),
+			new TestThing(at(1, -1)),
+			new TestThing(at(-1, -2)),
+			new TestThing(at(2, -1)),
+			new TestThing(at(2, -1)),
+			new TestThing(at(2, 1)),
+			new TestThing(at(3, 2))
+		};
+		for (Thing thing : things)
+			space.add(thing);
+
+		Thing thing = things[0];
+		Set<Thing> neighbors = space.getNearbyNeighbors(thing, "");
+
+		assertThat(neighbors, contains(things[2], things[1], things[3], things[4], things[5]));
+	}
+
+	@Test
+	public void findsFarawayThingsIfTheyAreLargeEnoughToBecomNeighbors() {
+		fail();
+		Thing[] things = new Thing[] {
+			new TestThing(at(1, -1)),
+			new TestThing(at(1, -1)),
+			new TestThing(at(-1, -2)),
+			new TestThing(at(2, -1)),
+			new TestThing(at(2, -1)),
+			new TestThing(at(2, 1)),
+			new TestThing(at(3, 2))
 		};
 		for (Thing thing : things)
 			space.add(thing);
@@ -38,6 +58,7 @@ public class SpaceSearchTest {
 
 	@Test
 	public void neighborsSearchIgnoresTheSearchedThing() {
+		// TODO: probably irrelevant now that narjillos share the same space as food
 		Thing[] things = new Thing[] {
 			new TestThing(at(5, 5)),
 			new TestThing(at(5, 5))
@@ -53,6 +74,7 @@ public class SpaceSearchTest {
 
 	@Test
 	public void theReferenceThingNeedsNotBeInTheSpace() {
+		// TODO: probably irrelevant now that narjillos share the same space as food
 		TestThing thingOutOfSpace = new TestThing(Vector.cartesian(at(5), at(5)));
 
 		TestThing thingInSpace = new TestThing(at(5, 5));

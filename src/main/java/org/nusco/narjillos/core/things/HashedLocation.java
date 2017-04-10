@@ -1,7 +1,10 @@
 package org.nusco.narjillos.core.things;
 
 import java.util.Objects;
-
+/**
+ * A location in Space. There is no grid location (0, *) or (*,0). Both coordinate
+ * move from location -1 to location 1.
+ */
 class HashedLocation {
 
 	public static final long GRID_SIZE = 400;
@@ -41,6 +44,16 @@ class HashedLocation {
 
 	public static HashedLocation ofCoordinates(double x, double y) {
 		return new HashedLocation(toGrid(x), toGrid(y));
+	}
+
+	static  long inc(long coordinate) {
+		long result = coordinate + 1;
+		return result == 0 ? 1 : result;
+	}
+
+	static long dec(long coordinate) {
+		long result = coordinate - 1;
+		return result == 0 ? -1 : result;
 	}
 
 	private static long toGrid(double n) {

@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.nusco.narjillos.core.things.HashedLocation.inc;
+import static org.nusco.narjillos.core.things.HashedLocation.dec;
+
 /**
  * Partitioned space for fast neighbor searches, collision detection, etc.
  */
@@ -143,15 +146,15 @@ public class Space {
 
 		Set<Thing> result = new LinkedHashSet<>();
 
-		populateWithFilteredArea(result, label, HashedLocation.at(x - 1, y - 1));
-		populateWithFilteredArea(result, label, HashedLocation.at(x - 1, y));
-		populateWithFilteredArea(result, label, HashedLocation.at(x - 1, y + 1));
-		populateWithFilteredArea(result, label, HashedLocation.at(x, y - 1));
+		populateWithFilteredArea(result, label, HashedLocation.at(dec(x), dec(y)));
+		populateWithFilteredArea(result, label, HashedLocation.at(dec(x), y));
+		populateWithFilteredArea(result, label, HashedLocation.at(dec(x), inc(y)));
+		populateWithFilteredArea(result, label, HashedLocation.at(x, dec(y)));
 		populateWithFilteredArea(result, label, HashedLocation.at(x, y));
-		populateWithFilteredArea(result, label, HashedLocation.at(x, y + 1));
-		populateWithFilteredArea(result, label, HashedLocation.at(x + 1, y - 1));
-		populateWithFilteredArea(result, label, HashedLocation.at(x + 1, y));
-		populateWithFilteredArea(result, label, HashedLocation.at(x + 1, y + 1));
+		populateWithFilteredArea(result, label, HashedLocation.at(x, inc(y)));
+		populateWithFilteredArea(result, label, HashedLocation.at(inc(x), dec(y)));
+		populateWithFilteredArea(result, label, HashedLocation.at(inc(x), y));
+		populateWithFilteredArea(result, label, HashedLocation.at(inc(x), inc(y)));
 
 		return result;
 	}

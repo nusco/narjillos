@@ -37,7 +37,6 @@ public class SpaceSearchTest {
 
 	@Test
 	public void findsFarawayThingsIfTheyAreLargeEnoughToBecomNeighbors() {
-		fail();
 		Thing[] things = new Thing[] {
 			new TestThing(at(1, -1)),
 			new TestThing(at(1, -1)),

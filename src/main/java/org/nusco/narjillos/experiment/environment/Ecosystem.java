@@ -39,6 +39,7 @@ public class Ecosystem extends Environment {
 	/**
 	 * Counter used by the ThreadFactory to name threads.
 	 */
+	// TODO: can probably be put more locally to the closure that uses it
 	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
 
 	private final Space space = new Space();
@@ -82,15 +83,6 @@ public class Ecosystem extends Environment {
 	@Override
 	public List<Thing> getAll(String label) {
 		return new LinkedList<>(space.getAll(label));
-	}
-
-	public Vector findClosestFoodTo(Thing thing) {
-		Thing target = space.findClosestTo(thing, FoodPellet.LABEL);
-
-		if (target == null)
-			return center;
-
-		return target.getPosition();
 	}
 
 	public final FoodPellet spawnFood(Vector position) {
@@ -146,6 +138,15 @@ public class Ecosystem extends Environment {
 		});
 	}
 
+	Vector findClosestFoodTo(Thing thing) {
+		Thing target = space.findClosestTo(thing, FoodPellet.LABEL);
+
+		if (target == null)
+			return center;
+
+		return target.getPosition();
+	}
+
 	@Override
 	protected void tickThings(DNALog dnaLog, NumGen numGen) {
 		if (isShuttingDown())
@@ -167,11 +168,8 @@ public class Ecosystem extends Environment {
 
 			breathe(narjillos);
 
-			narjillosToCollidedFood.entrySet().forEach(entry -> {
-					Narjillo narjillo1 = entry.getKey();
-					Set<Thing> collidedFood = entry.getValue();
-					consume(narjillo1, collidedFood);
-				});
+			narjillosToCollidedFood.entrySet().forEach(entry -> consume(entry.getKey(), entry.getValue()));
+			resetFoodTargets();
 		}
 
 		space.getAll(Egg.LABEL).forEach(thing -> tickEgg((Egg) thing, numGen));
@@ -182,6 +180,12 @@ public class Ecosystem extends Environment {
 		}
 
 		narjillos.forEach(narjillo -> maybeLayEgg(narjillo, dnaLog, numGen));
+	}
+
+	private void consume(Narjillo narjillo, Set<Thing> collidedFood) {
+		collidedFood.stream()
+			.map(foodPellet -> (FoodPellet) foodPellet)
+			.forEach(foodPellet -> foodPellet.getEaten(narjillo));
 	}
 
 	private void removeDeadThings(DNALog dnaLog) {
@@ -266,15 +270,6 @@ public class Ecosystem extends Environment {
 
 	private Vector randomPosition(long size, NumGen numGen) {
 		return Vector.cartesian(numGen.nextDouble() * size, numGen.nextDouble() * size);
-	}
-
-	private void consume(Narjillo narjillo, Set<Thing> foodPellets) {
-		foodPellets.forEach(foodPellet -> consumeFood(narjillo, (FoodPellet) foodPellet));
-	}
-
-	private void consumeFood(Narjillo narjillo, FoodPellet foodPellet) {
-		foodPellet.getEaten(narjillo);
-		resetFoodTargets();
 	}
 
 	private void remove(Thing thing) {

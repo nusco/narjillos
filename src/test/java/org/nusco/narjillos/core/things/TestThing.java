@@ -1,5 +1,6 @@
 package org.nusco.narjillos.core.things;
 
+import org.junit.Test;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
@@ -33,11 +34,6 @@ class TestThing implements Thing {
 	}
 
 	@Override
-	public String toString() {
-		return getLabel();
-	}
-
-	@Override
 	public Segment tick() {
 		return null;
 	}
@@ -60,5 +56,10 @@ class TestThing implements Thing {
 	@Override
 	public BoundingBox getBoundingBox() {
 		return BoundingBox.punctiform(getPosition());
+	}
+
+	@Override
+	public String toString() {
+		return getPosition().toString();
 	}
 }

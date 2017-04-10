@@ -69,7 +69,7 @@ public class Space {
 	 * collisions. The assumption here is that movements are smaller than the
 	 * areaSize. If this assumption ever becomes limiting, then we'll have to
 	 * make this method smarter, and search all the areas that are intersected
-	 * by the movement, plus their neighbors (potentially including outerSpace).
+	 * by the movement, plus their neighbors.
 	 */
 	public synchronized Set<Thing> detectCollisions(Segment movement, String label) {
 		Set<Thing> collidedFoodPellets = new LinkedHashSet<>();

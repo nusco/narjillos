@@ -5,7 +5,6 @@ import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Vector;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyCollectionOf;
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SpaceTest {
+public class SpaceGridTest {
 
 	Space space = new Space();
 
@@ -131,55 +130,6 @@ public class SpaceTest {
 		space.add(thing3);
 
 		assertThat(space.getAll("thing"), contains(thing1, thing2, thing3));
-	}
-
-	@Test
-	public void storesAndRetrievesThingsBasedOnTheirPosition() {
-		Thing[] things = new Thing[] {
-			new TestThing(Vector.cartesian(680, 410)), // area [5, 3]
-			new TestThing(Vector.cartesian(520, 420)), // area [5, 3]
-			new TestThing(Vector.cartesian(550, 280)), // area [4, 2]
-			new TestThing(Vector.cartesian(810, 410)), // area [6, 3]
-			new TestThing(Vector.cartesian(820, 420)), // area [6, 3]
-			new TestThing(Vector.cartesian(810, 550)), // area [6, 4]
-			new TestThing(Vector.cartesian(1300, 1300)), // area [8, 8]
-		};
-		for (Thing thing1 : things)
-			space.add(thing1);
-
-		Thing thing = things[0]; // area [5, 3]
-		Set<Thing> neighbors = space.getNearbyNeighbors(thing, "");
-
-		assertThat(neighbors, contains(things[2], things[1], things[3], things[4], things[5]));
-	}
-
-	@Test
-	public void neighborsSearchIgnoresTheSearchedThing() {
-		Thing[] things = new Thing[] {
-			new TestThing(Vector.cartesian(510, 510)), // area [5, 5]
-			new TestThing(Vector.cartesian(520, 520)), // area [5, 5]
-		};
-		for (Thing thing : things)
-			space.add(thing);
-
-		Thing referenceThing = things[0]; // area [5, 5]
-		Set<Thing> neighbors = space.getNearbyNeighbors(referenceThing, "");
-
-		assertThat(neighbors.size(), is(1));
-		assertThat(neighbors.iterator().next().getPosition(), is(Vector.cartesian(520, 520)));
-	}
-
-	@Test
-	public void neighborsSearchWorksForThingsThatAreNotInTheSpace() {
-		TestThing thingOutOfSpace = new TestThing(Vector.cartesian(510, 510)); // area [5, 5]
-		space.add(new TestThing(Vector.cartesian(520, 520))); // area [5, 5]
-
-		Set<Thing> neighbors = space.getNearbyNeighbors(thingOutOfSpace, "");
-
-		assertFalse(space.contains(thingOutOfSpace));
-
-		assertThat(neighbors.size(), is(1));
-		assertThat(neighbors.iterator().next().getPosition(), is(Vector.cartesian(520, 520)));
 	}
 
 	@Test

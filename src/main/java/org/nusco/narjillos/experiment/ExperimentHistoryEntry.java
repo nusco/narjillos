@@ -7,6 +7,7 @@ import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
@@ -71,13 +72,17 @@ public class ExperimentHistoryEntry {
 	public ExperimentHistoryEntry(Experiment experiment) {
 		this.ticks = experiment.getTicksChronometer().getTotalTicks();
 		this.runningTime = experiment.getTotalRunningTimeInSeconds();
-		this.numberOfNarjillos = experiment.getEcosystem().getCount(Narjillo.LABEL);
-		this.numberOfFoodPellets = experiment.getEcosystem().getCount(FoodPellet.LABEL);
-		this.oxygen = experiment.getEcosystem().getAtmosphere().getDensityOf(OXYGEN);
-		this.hydrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(HYDROGEN);
-		this.nitrogen = experiment.getEcosystem().getAtmosphere().getDensityOf(NITROGEN);
 
-		Map<String, Integer> chemicalCycles = getChemicalCycles(experiment.getEcosystem());
+		Ecosystem ecosystem = experiment.getEcosystem();
+		this.numberOfNarjillos = ecosystem.getCount(Narjillo.LABEL);
+		this.numberOfFoodPellets = ecosystem.getCount(FoodPellet.LABEL);
+
+		Atmosphere atmosphere = ecosystem.getAtmosphere();
+		this.oxygen = atmosphere.getDensityOf(OXYGEN);
+		this.hydrogen = atmosphere.getDensityOf(HYDROGEN);
+		this.nitrogen = atmosphere.getDensityOf(NITROGEN);
+
+		Map<String, Integer> chemicalCycles = getChemicalCycles(ecosystem);
 		this.o2h = chemicalCycles.get("O2H");
 		this.o2n = chemicalCycles.get("O2N");
 		this.h2o = chemicalCycles.get("H2O");
@@ -96,6 +101,7 @@ public class ExperimentHistoryEntry {
 
 	@Override
 	public boolean equals(Object obj) {
+		// TODO: can probably be reduced to checking the ticks
 		ExperimentHistoryEntry other = (ExperimentHistoryEntry) obj;
 		if (numberOfNarjillos != other.numberOfNarjillos || numberOfFoodPellets != other.numberOfFoodPellets)
 			return false;

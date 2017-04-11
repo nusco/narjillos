@@ -28,31 +28,26 @@ public class Segment implements Bounded {
 		return vector;
 	}
 
-	public double getMinimumDistanceFromPoint(Vector point) {
-		// TODO: this was probably meant to avoid zerovectorexceptions,
-		// but it's just wrong. fix it.
+	public double getMinimumDistanceFromPointSquared(Vector point) {
 		if (vector.isZero())
-			return startPoint.getDistanceFrom(point);
+			return startPoint.getDistanceSquaredFrom(point);
 
-		double length = vector.getLength();
+		double lengthSquared = vector.getLengthSquared();
 
-		// TODO: do we need this?
-		if (length < 0.0001)
-			return startPoint.getDistanceFrom(point);
-
-		double lengthSquared = length * length;
+		if (lengthSquared < 0.00001)
+			return startPoint.getDistanceSquaredFrom(point);
 
 		double t =
 			((point.x - startPoint.x) * (vector.x - startPoint.x) + (point.y - startPoint.y) * (vector.y - startPoint.y)) / lengthSquared;
 
 		if (t < 0)
-			return startPoint.getDistanceFrom(point);
+			return startPoint.getDistanceSquaredFrom(point);
 
 		if (t > 1)
-			return vector.getDistanceFrom(point);
+			return (getEndPoint()).getDistanceSquaredFrom(point);
 
 		Vector projection = startPoint.plus(vector.minus(startPoint).by(t));
-		return projection.minus(point).getLength();
+		return projection.minus(point).getLengthSquared();
 	}
 
 	public Vector getDistanceFrom(Segment other) {

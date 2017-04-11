@@ -77,9 +77,13 @@ public class Space {
 	public synchronized Set<Thing> detectCollisions(Segment movement, String label) {
 		Set<Thing> collidedFoodPellets = new LinkedHashSet<>();
 
+		final double COLLISION_DISTANCE_SQUARED = Configuration.PHYSICS_COLLISION_DISTANCE * Configuration.PHYSICS_COLLISION_DISTANCE;
+
 		getNearbyNeighbors(movement.getStartPoint(), label).stream()
 			.filter(
-				(neighbor) -> (movement.getMinimumDistanceFromPoint(neighbor.getPosition()) <= Configuration.PHYSICS_COLLISION_DISTANCE))
+				(neighbor) -> {
+					return (movement.getMinimumDistanceFromPointSquared(neighbor.getPosition()) <= COLLISION_DISTANCE_SQUARED);
+				})
 			.forEach(collidedFoodPellets::add);
 
 		return collidedFoodPellets;

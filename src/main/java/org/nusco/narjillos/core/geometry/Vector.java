@@ -56,6 +56,10 @@ public class Vector {
 		return length;
 	}
 
+	public double getLengthSquared() {
+		return x * x + y * y;
+	}
+
 	public Vector plus(Vector other) {
 		return Vector.cartesian(x + other.x, y + other.y);
 	}
@@ -70,6 +74,10 @@ public class Vector {
 
 	double getDistanceFrom(Vector other) {
 		return this.minus(other).getLength();
+	}
+
+	double getDistanceSquaredFrom(Vector other) {
+		return this.minus(other).getLengthSquared();
 	}
 
 	public Vector getNormalComponentOn(Vector other) throws ZeroVectorAngleException {

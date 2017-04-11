@@ -3,8 +3,6 @@ package org.nusco.narjillos.core.geometry;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.geometry.Segment;
-import org.nusco.narjillos.core.geometry.Vector;
 
 public class SegmentTest {
 
@@ -22,16 +20,16 @@ public class SegmentTest {
 	public void hasAMinimumDistanceFromAPoint() {
 		Segment segment = new Segment(Vector.ZERO, Vector.cartesian(90, 0));
 
-		assertEquals(10, segment.getMinimumDistanceFromPoint(Vector.cartesian(50, 10)), 0.001);
-		assertEquals(0, segment.getMinimumDistanceFromPoint(Vector.cartesian(50, 0)), 0.001);
-		assertEquals(30, segment.getMinimumDistanceFromPoint(Vector.cartesian(120, 0)), 0.001);
+		assertEquals(10, Math.sqrt(segment.getMinimumDistanceFromPointSquared(Vector.cartesian(50, 10))), 0.001);
+		assertEquals(0, Math.sqrt(segment.getMinimumDistanceFromPointSquared(Vector.cartesian(50, 0))), 0.001);
+		assertEquals(30, Math.sqrt(segment.getMinimumDistanceFromPointSquared(Vector.cartesian(120, 0))), 0.001);
 	}
 
 	@Test
 	public void canCalculateTheMinimumDistanceOnAZeroLengthSegment() {
 		Segment segment = new Segment(Vector.cartesian(90, 0), Vector.cartesian(90, 0));
 
-		assertEquals(40, segment.getMinimumDistanceFromPoint(Vector.cartesian(50, 0)), 0.001);
+		assertEquals(40, Math.sqrt(segment.getMinimumDistanceFromPointSquared(Vector.cartesian(50, 0))), 0.001);
 	}
 
 	@Test

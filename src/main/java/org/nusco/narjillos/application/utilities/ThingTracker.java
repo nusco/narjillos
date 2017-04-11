@@ -31,7 +31,9 @@ public class ThingTracker {
 		if (!isTracking())
 			return;
 
-		viewport.centerOn(target);
+		Thing currentTarget = target;
+
+		viewport.centerOn(currentTarget);
 
 		if (isDemoMode()) {
 			if (hasBeenDemoTrackingFor(DEMO_MODE_FOCUS_TIME_IN_SECONDS + DEMO_MODE_ZOOM_TIME_IN_SECONDS))
@@ -40,8 +42,8 @@ public class ThingTracker {
 				viewport.zoomOut();
 		}
 
-		if (target.getLabel().equals(Narjillo.LABEL)) {
-			Narjillo narjillo = (Narjillo) target;
+		if (currentTarget.getLabel().equals(Narjillo.LABEL)) {
+			Narjillo narjillo = (Narjillo) currentTarget;
 			if (narjillo.isDead()) {
 				if (isDemoMode())
 					startTrackingRandomLivingThing();
@@ -52,9 +54,9 @@ public class ThingTracker {
 			}
 		}
 
-		if (target.getLabel().equals(Egg.LABEL) || target.getLabel().equals(FoodPellet.LABEL)) {
-			if (target.getInteractor() != Thing.NULL)
-				startTracking(target.getInteractor());
+		if (currentTarget.getLabel().equals(Egg.LABEL) || currentTarget.getLabel().equals(FoodPellet.LABEL)) {
+			if (currentTarget.getInteractor() != Thing.NULL)
+				startTracking(currentTarget.getInteractor());
 		}
 	}
 
@@ -92,7 +94,7 @@ public class ThingTracker {
 		startTracking(locator.findThingAt(position));
 	}
 
-	public void startTracking(Thing target) {
+	public synchronized void startTracking(Thing target) {
 		if (target == null || target == Thing.NULL) {
 			stopTracking();
 			return;

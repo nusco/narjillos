@@ -117,8 +117,6 @@ public class SpaceGridTest {
 		assertThat(space.getThingsAtHashedLocation(4, 11), contains(punctiformThing1, punctiformThing2));
 	}
 
-	// TODO: the next tests come from the old "grid" space concept. Review. Are these features still the best way to do things?
-
 	@Test
 	public void returnsAllTheThings() {
 		Thing thing1 = new TestThing(Vector.cartesian(1, 1));

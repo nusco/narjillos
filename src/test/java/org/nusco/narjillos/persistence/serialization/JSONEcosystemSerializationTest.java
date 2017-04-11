@@ -22,7 +22,7 @@ import org.nusco.narjillos.genomics.VolatileDNALog;
 
 public class JSONEcosystemSerializationTest {
 
-	@Test @Ignore
+	@Test
 	public void serializesAndDeserializesEcosystem() {
 		Ecosystem ecosystem = new Ecosystem(123, false);
 		FoodPellet food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));
@@ -48,9 +48,9 @@ public class JSONEcosystemSerializationTest {
 		assertEquals(deserialized.getAtmosphere().getAmountOf(NITROGEN), ecosystem.getAtmosphere().getAmountOf(NITROGEN), 0.0);
 
 		Iterator<Thing> thingsIterator = deserialized.getAll("").iterator();
-		assertEquals(narjillo.getPosition(), thingsIterator.next().getPosition());
 		assertEquals(food1.getPosition(), thingsIterator.next().getPosition());
 		assertEquals(food2.getPosition(), thingsIterator.next().getPosition());
 		assertEquals(egg.getPosition(), thingsIterator.next().getPosition());
+		assertEquals(narjillo.getPosition(), thingsIterator.next().getPosition());
 	}
 }

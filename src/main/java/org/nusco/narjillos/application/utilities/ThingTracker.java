@@ -28,8 +28,10 @@ public class ThingTracker {
 	}
 
 	public synchronized void tick() {
-		if (!isFollowing())
+		if (!isTracking())
 			return;
+
+		viewport.centerOn(target);
 
 		if (isDemoMode()) {
 			if (hasBeenDemoTrackingFor(DEMO_MODE_FOCUS_TIME_IN_SECONDS + DEMO_MODE_ZOOM_TIME_IN_SECONDS))
@@ -51,10 +53,9 @@ public class ThingTracker {
 		}
 
 		if (target.getLabel().equals(Egg.LABEL) || target.getLabel().equals(FoodPellet.LABEL)) {
-			startTracking(target.getInteractor());
+			if (target.getInteractor() != Thing.NULL)
+				startTracking(target.getInteractor());
 		}
-
-		viewport.centerOn(target);
 	}
 
 	public synchronized void stopTracking() {
@@ -73,13 +74,13 @@ public class ThingTracker {
 	public String getStatus() {
 		if (isDemoMode())
 			return "demo";
-		if (isFollowing())
+		if (isTracking())
 			return "following";
 		return "freeroaming";
 	}
 
-	private synchronized boolean isFollowing() {
-		return target != null;
+	private synchronized boolean isTracking() {
+		return target != null && target != Thing.NULL;
 	}
 
 	private boolean hasBeenDemoTrackingFor(long seconds) {

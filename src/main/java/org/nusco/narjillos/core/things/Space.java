@@ -143,6 +143,16 @@ public class Space {
 		locationsToThings.get(location).add(thing);
 	}
 
+	public Set<Thing> getPotentialColliders(Thing thing, String label) {
+		Set<HashedLocation> locations = labelsToThingsToLocations.get(label).get(thing);
+		Set<Thing> result = new LinkedHashSet<>();
+		locations.stream().forEach(location -> {
+			result.addAll(locationsToThings.get(location));
+		});
+		result.remove(thing);
+		return result;
+	}
+
 	private Set<Thing> getNearbyNeighbors(Vector position, String label) {
 		HashedLocation location = HashedLocation.ofCoordinates(position.x, position.y);
 		long x = location.lx;

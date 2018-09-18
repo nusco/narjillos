@@ -19,6 +19,24 @@ public class SpaceSearchTest {
 	Space space = new Space();
 	Random random = new Random(12345);
 
+	// FIXME: raise exception if called with "" label?
+	@Test
+	public void findsPotentialCollidersAmongstPunctiformThings() {
+		Thing punctiformThing1 = new TestThing(at(1, -1));
+		Thing punctiformThing2 = new TestThing(at(1, -1));
+		Thing punctiformThing3 = new TestThing(at(1, 1));
+		Thing punctiformThing4 = new TestThing(at(2, -1));
+
+		space.add(punctiformThing1);
+		space.add(punctiformThing2);
+		space.add(punctiformThing3);
+		space.add(punctiformThing4);
+
+		Set<Thing> potentialColliders = space.getPotentialColliders(punctiformThing1, "thing");
+
+		assertThat(potentialColliders, contains(punctiformThing2));
+	}
+
 	@Test
 	public void findsNeighboringThings() {
 		Thing[] things = new Thing[7];

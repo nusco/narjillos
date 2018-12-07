@@ -1,15 +1,22 @@
 // Plugins
 
-apply plugin: 'java'
-apply plugin: 'application'     // loads also the 'distribution' plugin
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+plugins {
+  id 'java'
+  id 'application'     // loads also the 'distribution' plugin
+  id 'eclipse'
+  id 'idea'
+  id 'org.openjfx.javafxplugin' version '0.0.5'
+}
 
 // Basic Configuration
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 mainClassName = 'org.nusco.narjillos.NarjillosRunner'
+
+javafx {
+    modules = [ 'javafx.controls' ]
+}
 
 // Dependencies
 

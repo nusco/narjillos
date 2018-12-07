@@ -1,13 +1,12 @@
 package org.nusco.narjillos.experiment.environment;
 
+import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.core.things.Thing;
-import org.nusco.narjillos.core.configuration.Configuration;
-import org.nusco.narjillos.creature.Narjillo;
 
 public class FoodPellet implements Thing {
 

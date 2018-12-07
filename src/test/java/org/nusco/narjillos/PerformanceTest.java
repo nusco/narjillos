@@ -21,7 +21,7 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
  * takes longer than a rule-of-thumb performance level (on my computer, 4000
  * ticks under 10 seconds).
  * <p>
- * It can be also run as a unit test. In this case, it goes through way fewer ticks,
+ * It can be also run as a unit test. In .this case, it goes through way fewer ticks,
  * so it's faster. This is by its very nature a nondeterministic test that can fail
  * randomly, or fail consistently on slower or overloaded machines - so it shouldn't
  * be run as part of an official build. But it's useful while developing, to catch

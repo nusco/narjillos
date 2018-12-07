@@ -1,6 +1,5 @@
 package org.nusco.narjillos.core.things;
 
-import org.junit.Test;
 import org.nusco.narjillos.core.geometry.BoundingBox;
 import org.nusco.narjillos.core.geometry.Segment;
 import org.nusco.narjillos.core.geometry.Vector;

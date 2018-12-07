@@ -1,18 +1,13 @@
 package org.nusco.narjillos.core.things;
 
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.nusco.narjillos.core.geometry.BoundingBox;
-import org.nusco.narjillos.core.geometry.Vector;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.assertThat;
 
 import java.util.Random;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.Test;
+import org.nusco.narjillos.core.geometry.Vector;
 
 public class SpaceSearchTest {
 

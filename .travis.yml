@@ -1,5 +1,5 @@
 language: java
-jdk: oraclejdk8
+jdk: oraclejdk12
 env:
   - TEST_SUITE=test
   - TEST_SUITE=testDeterministic

@@ -14,7 +14,7 @@
   Importantly, this story removes the concept of "outer space" and makes collisions work anywhere.  
   Make it visualizable.
 
-+ Ultra-broad CD pass to remove isolated creatures- 
++ Ultra-broad CD pass to remove isolated creatures-
   Use Manhattan distance (axis-aligned bounding boxes).
   Maybe I'm already doing it? Does it make a difference?
 
@@ -48,10 +48,10 @@
 >goal: complex interactions  
 
     Narjillos decide where to go based on their attraction/repulsion to other creatures and things.
-    
+
     This is another example of complex interactions. It might result in interesting behaviors and  
     "smart" species. It's also a precondition for Predators.
-    
+
     I didn't decide how to do this yet. It may be weights-based.
 
     Problem: what happens if narjillos keep hitting the edges while escaping something?  
@@ -59,7 +59,7 @@
 
 * Species identification  
   Probably based on DNA SimHashes? Or fibers?  
-  
+
 * Instinct genes  
   How? Probably just a set of SimHashes and weights?
   Maybe a small set of curves with multiplies and shifters, all determined by the genes?  
@@ -77,7 +77,7 @@
 >goal: complex interactions  
 
     Narjillos can eat each other.
-    
+
     This is a complex direct interaction that might pave the road to an arms race amongst species.
     I should consider removing food by default after this is implemented.
 
@@ -98,13 +98,13 @@
 + Remove the concept of ecosystem size  
   Replace with something else. Right now it's only used for graphics (viewport size),
   spawn area, and maybe to damage narjillos too far from the center.
-  
+
 - Narjillos eat eggs  
 
 
 ##Flexible Genes
 >goal: specialized creatures  
- 
+
     More qualities of the creatures are determined by genes instead of being hard-coded.
 
 * Chromosome swapping mutation  
@@ -115,14 +115,14 @@
 
 + Max lifespan is genetically determined  
   within a limit  
-  
+
 - Lateral viewfield is genetically determined  
 - Growth rate is genetically determined  
   maybe? (Consumes energy?)  
-  
+
 - Egg incubation time is genetically determined  
   maybe. (Makes sense if egg contains green fibers)  
-  
+
 - Adult body size is genetically determined  
 
 + Gene mutation rate itself is determined by genes
@@ -287,7 +287,7 @@
 
 * Native Mac app
   See https://bitbucket.org/infinitekind/appbundler (from Cipster)
-    
+
 * Allow multiple configurations  
   With a -c switch. Also have a default configuration
 
@@ -308,13 +308,13 @@
 
 + Fix "tail wiggles dog" effect  
   if it's still there - I'm not sure
-  
+
 + Rotation inertia  
   but check comments in physics engine - it may break previous assumptions  
-  
+
 + Translation inertia  
   but check comments in physics engine - it may break previous assumptions  
-  
+
 + Limit rotation speed  
   is this a good idea?  
 
@@ -332,10 +332,10 @@
 >goal: faster evolution  
 
     Cyclically vary the amount of food that spawns.
-    
+
     Studies show that evolution works best if there are enough resources (food),
-    but not too many. The problem is that it's hard to know what "enough but 
-    not too many" means. So I want to try this: food amount is cyclical. I'm 
+    but not too many. The problem is that it's hard to know what "enough but
+    not too many" means. So I want to try this: food amount is cyclical. I'm
     hoping that along the way from "almost starving" to "economy of
     abundance", the system will hit a few evolutionary sweet spots.
 
@@ -366,7 +366,7 @@
 - Show graphs for historical data  
 + View stats for followed narjillo  
   age, energy, radius, times eaten, genome...  
-  
+
 - Tutorial  
 + In-app configuration panel  
 
@@ -375,7 +375,7 @@
 >goal: different species  
 
     Creatures mate and generate mixed-DNA offsprings.
-    
+
     A lot of things to decide here. do I really need this stuff to get speciation? Probably  
     not – so I'll leave it as a low priority for now.
 
@@ -387,7 +387,7 @@
 
 + Species clustering control reproductive success  
   maybe. (to keep species apart)  
-  
+
 - Diploid creatures  
   maybe. would this be useful?
 
@@ -396,7 +396,7 @@
 >goal: nice user experience  
 
     Make it easier to move around the dish in a graphical run.
-    
+
     I should also test navigation with a first-time user.
 
 + "Next" command during demo/following  

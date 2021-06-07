@@ -13,7 +13,6 @@ import org.nusco.narjillos.creature.body.BodyPartParameters;
 import org.nusco.narjillos.creature.body.ConnectedOrgan;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.HeadParameters;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONBodySerializationTest {
 

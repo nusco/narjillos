@@ -10,8 +10,6 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.genomics.DNALog;
 
 public abstract class DNALogTest {
 

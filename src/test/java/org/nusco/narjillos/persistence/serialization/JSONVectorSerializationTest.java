@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONVectorSerializationTest {
 

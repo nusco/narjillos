@@ -14,7 +14,6 @@ import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.creature.body.HeadParameters;
 import org.nusco.narjillos.creature.body.MovingOrgan;
 import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONBodyPartSerializationTest {
 

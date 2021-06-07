@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.NumGen;
 
 public class NumGenTest {
 

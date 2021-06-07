@@ -3,7 +3,6 @@ package org.nusco.narjillos.core.geometry;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.geometry.FastMath;
 
 public class FastMathTest {
 

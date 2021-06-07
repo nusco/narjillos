@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONEnergySerializationTest {
 

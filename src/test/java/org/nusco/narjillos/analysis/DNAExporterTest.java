@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nusco.narjillos.analysis.DNAExporter;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNALog;

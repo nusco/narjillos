@@ -7,7 +7,6 @@ import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 import static org.nusco.narjillos.core.chemistry.Element.ZERO;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.chemistry.Element;
 
 public class ElementTest {
 

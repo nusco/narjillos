@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.Mouth;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONMouthSerializationTest {
 

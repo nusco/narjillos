@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.nusco.narjillos.genomics.DNA;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONDNASerializationTest {
 

@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.nusco.narjillos.creature.body.pns.DelayNerve;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONNerveSerializationTest {
 

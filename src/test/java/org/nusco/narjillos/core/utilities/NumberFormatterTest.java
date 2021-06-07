@@ -3,7 +3,6 @@ package org.nusco.narjillos.core.utilities;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.nusco.narjillos.core.utilities.NumberFormatter;
 
 public class NumberFormatterTest {
 

@@ -7,7 +7,6 @@ import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
 
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Atmosphere;
-import org.nusco.narjillos.persistence.serialization.JSON;
 
 public class JSONAtmosphereSerializationTest {
 

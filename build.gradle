@@ -1,11 +1,11 @@
 // Plugins
 
 plugins {
-  id 'java'
-  id 'application'     // loads also the 'distribution' plugin
-  id 'eclipse'
-  id 'idea'
-  id 'org.openjfx.javafxplugin' version '0.0.7'
+    id 'java'
+    id 'application'     // loads also the 'distribution' plugin
+    id 'eclipse'
+    id 'idea'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 // Basic Configuration
@@ -26,13 +26,13 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'commons-cli:commons-cli:1.2'
-    compile 'org.yaml:snakeyaml:1.15'
-    compile 'org.xerial:sqlite-jdbc:3.8.11.1'
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.8.4'
+    implementation 'com.google.code.gson:gson:2.3.1'
+    implementation 'commons-cli:commons-cli:1.2'
+    implementation 'org.yaml:snakeyaml:1.15'
+    implementation 'org.xerial:sqlite-jdbc:3.8.11.1'
+    testImplementation 'org.hamcrest:hamcrest-all:1.3'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.8.4'
 }
 
 // Programs
@@ -86,12 +86,12 @@ task(backlog, dependsOn: 'bl') {
 // Packaging
 
 applicationDistribution.from(
-        files(
-                'version',
-                'LICENSE',
-                'README.md',
-                'config.yaml'
-        )
+  files(
+    'version',
+    'LICENSE',
+    'README.md',
+    'config.yaml'
+  )
 )
 
 task writeDockerfile() {
@@ -140,7 +140,7 @@ def createScript(name, mainClass) {
         outputDir = new File(buildDir, 'scripts')
         mainClassName = mainClass
         applicationName = name
-        classpath = tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + configurations.runtime
+        classpath = tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + configurations.runtimeClasspath
     }
 
     tasks[taskName].dependsOn(project.jar)

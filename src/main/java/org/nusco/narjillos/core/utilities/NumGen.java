@@ -89,6 +89,7 @@ public class NumGen {
 			return extractSeed().get();
 		}
 
+		// TODO: Fix the now-illegal private field access before it gets removed from Java
 		private AtomicLong extractSeed() {
 			// Put on your gloves - this is going to be dirty.
 			try {

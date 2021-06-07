@@ -2,7 +2,7 @@
 
 plugins {
     id 'java'
-    id 'application'     // loads also the 'distribution' plugin
+    id 'application'     // also loads the 'distribution' plugin
     id 'eclipse'
     id 'idea'
     id 'org.openjfx.javafxplugin' version '0.0.7'
@@ -84,6 +84,13 @@ task(backlog, dependsOn: 'bl') {
 }
 
 // Packaging
+
+// TODO: remove these once the issue with duplicatesStrategy has been fixed
+// (see: https://github.com/gradle/gradle/issues/17236)
+tasks.named('distTar') { duplicatesStrategy = 'include' }
+tasks.named('distZip') { duplicatesStrategy = 'include' }
+tasks.named('installDist') { duplicatesStrategy = 'include' }
+// END TODO
 
 applicationDistribution.from(
   files(

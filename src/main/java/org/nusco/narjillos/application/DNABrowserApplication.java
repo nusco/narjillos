@@ -33,6 +33,11 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 	private volatile boolean autoplay = false;
 
+	public static void main(String... args) throws Exception {
+		setProgramArguments(args);
+		launch(args);
+	}
+	
 	@Override
 	protected void startSupportThreads() {
 		startAutoplayThread();

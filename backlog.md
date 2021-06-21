@@ -1,5 +1,12 @@
 #Narjillos Backlog
 
+## Technical Issues
+> goal: make Narjillos easy to run on the latest Java/Gradle
+
+* Fix JavaFX launchers
+Right now it works through a hack, but since JavaFX was removed from the Java distro, the system should be modularized. See: https://edencoding.com/runtime-components-error/ for the cause of the problem, the description of the hack, and a long-term fix.
+
+
 ##Collision Detection
 > goal: complex interactions
 

@@ -3,9 +3,22 @@
 ## Technical Issues
 > goal: make Narjillos easy to run on the latest Java/Gradle
 
+    I came back to the project after a few years, and found that the code has many issues (mostly system-related more than strictly code-related) compiling and running on recent versions of the Java stack.
+
 * Fix JavaFX launchers
 Right now it works through a hack, but since JavaFX was removed from the Java distro, the system should be modularized. See: https://edencoding.com/runtime-components-error/ for the cause of the problem, the description of the hack, and a long-term fix.
 
+* Fix illegal reflective access
+The reflective access used by TransparentRanGen has been deprecated and will be removed. This code should be fixed to run on future Javas.
+
+* Fix project generation
+Project generation for Eclipse and Idea don't seem to work anymore. Investigate.
+
+* Fix Gradle warnings/issues
+Some Gradle tasks complain with warnings, or fail altogether(?). Check that all tasks work on recent Gradles and Javas.
+
+* Fix Travis Build
+It's apparently broken.
 
 ##Collision Detection
 > goal: complex interactions

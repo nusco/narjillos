@@ -1,0 +1,1 @@
+g dnabrowser specimen.germline

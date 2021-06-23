@@ -70,7 +70,9 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 				while (!hasBeenAskedToStop()) {
 					long startTime = System.currentTimeMillis();
-					tick();
+					// HACK for demo: bodies don't move in --random mode
+					if (!arguments[0].equals("--random"))
+						tick();
 					waitFor(state.getSpeed().getTicksPeriod(), startTime);
 				}
 			}

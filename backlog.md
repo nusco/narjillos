@@ -23,6 +23,9 @@ It's apparently broken.
 * Find the bug that allows creatures to stay around after death
 Try removing all energy sources except for food: food_density_per_block, initial_element_level and catalyst_level at 0. That configuration triggers the bug.
 
+* Fix random number generator
+  I had to hack together a few algorithms to make it compile under modern versions of Java. I'm not sure they work as expected. I should probably use a sound, serializable random generator.
+
 ##Collision Detection
 > goal: complex interactions
 

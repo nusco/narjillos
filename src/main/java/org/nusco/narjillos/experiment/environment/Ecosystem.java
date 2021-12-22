@@ -39,8 +39,7 @@ public class Ecosystem extends Environment {
 	/**
 	 * Counter used by the ThreadFactory to name threads.
 	 */
-	// TODO: can probably be put more locally to the closure that uses it
-	private final AtomicInteger tickWorkerCounter = new AtomicInteger(1);
+	private int tickWorkerCounter = 0;
 
 	private final Space space = new Space();
 
@@ -56,7 +55,10 @@ public class Ecosystem extends Environment {
 		super(size);
 
 		ThreadFactory tickWorkerFactory = (Runnable r) -> {
-			Thread result = new Thread(r, "tick-worker-" + tickWorkerCounter.getAndIncrement());
+			synchronized(Ecosystem.this) {
+				tickWorkerCounter++;
+			}
+			Thread result = new Thread(r, "tick-worker-" + (tickWorkerCounter + 1));
 			result.setPriority(Thread.currentThread().getPriority());
 			return result;
 		};

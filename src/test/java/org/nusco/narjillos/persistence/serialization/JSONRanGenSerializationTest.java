@@ -18,7 +18,8 @@ public class JSONRanGenSerializationTest {
 		String json = JSON.toJson(numGen, NumGen.class);
 		NumGen deserialized = JSON.fromJson(json, NumGen.class);
 
-		assertEquals(numGen.getSeed(), deserialized.getSeed());
+		assertEquals(numGen.nextInt(), deserialized.nextInt(), 0.0);
+		assertEquals(numGen.nextByte(), deserialized.nextByte(), 0.0);
 		assertEquals(numGen.nextDouble(), deserialized.nextDouble(), 0.0);
 		assertEquals(numGen.nextSerial(), deserialized.nextSerial());
 	}

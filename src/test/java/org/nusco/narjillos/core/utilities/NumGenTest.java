@@ -18,21 +18,6 @@ public class NumGenTest {
 	}
 
 	@Test
-	public void returnsItsCurrentSeed() {
-		NumGen numGen1 = new NumGen(123);
-
-		// get to a known state
-		for (int i = 0; i < 10; i++)
-			numGen1.nextDouble();
-
-		long seedBeforeNumberGeneration = numGen1.getSeed();
-
-		NumGen numGen2 = new NumGen(seedBeforeNumberGeneration);
-
-		assertAreInSynch(numGen1, numGen2);
-	}
-
-	@Test
 	public void generatesASerialNumber() {
 		NumGen numGen = new NumGen(123);
 
@@ -60,7 +45,7 @@ public class NumGenTest {
 		while (results.isEmpty())
 			Thread.sleep(10);
 
-		assertTrue(results.peek().startsWith("RanGen accessed from multiple threads"));
+		assertTrue(results.peek().startsWith("NumGen accessed from multiple threads"));
 	}
 
 	private void assertAreInSynch(NumGen numGen1, NumGen numGen2) {

@@ -77,7 +77,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 			private List<DNA> randomGenomes() {
 				List<DNA> result = new LinkedList<>();
-				NumGen numGen = new NumGen((int) (Math.random() * 100000));
+				NumGen numGen = new NumGen((int) (Math.random() * 100_000_000));
 				for (int i = 0; i < 1000; i++)
 					result.add(DNA.random(i, numGen));
 				return result;

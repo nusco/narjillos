@@ -10,11 +10,7 @@ plugins {
 
 // Basic Configuration
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
+sourceCompatibility = JavaVersion.VERSION_17
 
 application {
     mainClass = 'org.nusco.narjillos.NarjillosRunner'

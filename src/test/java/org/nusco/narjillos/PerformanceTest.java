@@ -18,8 +18,9 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
 /**
  * Runs a short experiment for a few thousands ticks and times the result.
  * It also prints an error message to get your attention in case the test
- * takes longer than a rule-of-thumb performance level (on my computer, 8000
- * ticks under 10 seconds).
+ * takes longer than a rule-of-thumb performance level (my computer,
+ * an M1 Max MacBook Pro 2021, takes a bit less than 10 seconds to do
+ * 10000 ticks).
  * <p>
  * It can be also run as a unit test. In .this case, it goes through way fewer ticks,
  * so it's faster. This is by its very nature a nondeterministic test that can fail

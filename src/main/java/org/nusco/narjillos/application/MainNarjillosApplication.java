@@ -126,7 +126,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	}
 
 	private void registerKeyboardHandlers(final Scene scene) {
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		scene.setOnKeyPressed(new EventHandler<>() {
 
 			public void handle(final KeyEvent keyEvent) {
 				if (keyEvent.getCode() == KeyCode.RIGHT)

@@ -81,9 +81,7 @@ public class Space {
 
 		getNearbyNeighbors(movement.getStartPoint(), label).stream()
 			.filter(
-				(neighbor) -> {
-					return (movement.getMinimumDistanceFromPointSquared(neighbor.getPosition()) <= COLLISION_DISTANCE_SQUARED);
-				})
+				(neighbor) -> (movement.getMinimumDistanceFromPointSquared(neighbor.getPosition()) <= COLLISION_DISTANCE_SQUARED))
 			.forEach(collidedFoodPellets::add);
 
 		return collidedFoodPellets;

@@ -106,7 +106,7 @@ public class DNA implements Iterable<Chromosome> {
 
 	@Override
 	public Iterator<Chromosome> iterator() {
-		return new Iterator<Chromosome>() {
+		return new Iterator<>() {
 
 			private int indexInGenes = 0;
 

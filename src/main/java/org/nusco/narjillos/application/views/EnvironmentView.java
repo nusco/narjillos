@@ -69,7 +69,7 @@ public class EnvironmentView {
 
 		specklesView = new SpecklesView(viewport, size);
 
-		environment.getAll("").forEach(thing -> addThingView(thing));
+		environment.getAll("").forEach(this::addThingView);
 
 		environment.addEventListener(new EnvironmentEventListener() {
 

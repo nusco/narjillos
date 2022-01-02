@@ -1,30 +1,49 @@
 #Narjillos Backlog
 
-## Technical Issues
-> goal: make Narjillos easy to run on the latest Java/Gradle
 
-    I came back to the project after a few years, and found that the code has many issues (mostly system-related more than strictly code-related) compiling and running on recent versions of the Java stack.
+## Project Issues
+> goal: make Narjillos easy to run on modern platforms
 
-* Fix JavaFX launchers
-Right now it works through a hack, but since JavaFX was removed from the Java distro, the system should be modularized. See: https://edencoding.com/runtime-components-error/ for the cause of the problem, the description of the hack, and a long-term fix.
+* Run on Java 17
+I came back to the project after a few years, and found that the code has many issues (mostly system-related more than strictly code-related) compiling and running on recent versions of the Java stack.
 
-* Fix illegal reflective access
-The reflective access used by TransparentRanGen has been deprecated and will be removed. This code should be fixed to run on future Javas.
+* Update Gradle build
+The Gradle build has plenty of issues. Either find a way to fix them, or just do away with Gradle for good. It's been a terrible experience since the start. Right now, I'm running on IntelliJ just to avoid the myriad of problems that Gradle is giving me.
 
-* Fix project generation
-Project generation for Eclipse and Idea don't seem to work anymore. Investigate.
+* Update to Java 17-style code
+Fix all warnings, and also switch to modern Java constructs where appropriate.
 
-* Fix Gradle warnings/issues
-Some Gradle tasks complain with warnings, or fail altogether(?). Check that all tasks work on recent Gradles and Javas.
+* Make project modular
+Java has a modules system now. Use it.
+
+* Fix distribution
+Use jpackage, probably remove Docker build, and possibly remove batch files. At the very least, have a Mac build. Also consider making Windows and Linux builds.
 
 * Fix Travis Build
 It's apparently broken.
 
+* Add explicit mention of Ventrella's paper
+I should give him credit for the idea behind this system–in particular, for his paper about making the creatures move.
+
++ Fix JavaFX launchers
+Right now it works through a hack, but since JavaFX was removed from the Java distro, the system should be modularized. See: https://edencoding.com/runtime-components-error/ for the cause of the problem, the description of the hack, and a long-term fix. (Note: this might be obsolete once I update the Gradle build, or remove Gradle altogether)
+
++ Rename "master" branch
+"main" is the common name these days, and also a better name.
+
++ Fix project generation
+Project generation for Eclipse and Idea don't seem to work anymore. Investigate. (But this might be obsolete if I remove Gradle.)
+
++ Fix Gradle warnings/issues
+Some Gradle tasks complain with warnings, or fail altogether(?). Check that all tasks work on recent Gradles and Javas. (Again, this might be obsolete if I remove Gradle.)
+
+
+## Technical Issues
+> goal: fix long-standing bugs
+
 * Find the bug that allows creatures to stay around after death
 Try removing all energy sources except for food: food_density_per_block, initial_element_level and catalyst_level at 0. That configuration triggers the bug.
 
-* Fix random number generator
-  I had to hack together a few algorithms to make it compile under modern versions of Java. I'm not sure they work as expected. I should probably use a sound, serializable random generator.
 
 ##Collision Detection
 > goal: complex interactions
@@ -69,6 +88,7 @@ Try removing all energy sources except for food: food_density_per_block, initial
   detection algorithm is done, because by that time it will be easier to judge impact.  
 
 * Optimize collision detection  
+
 
 ##Instincts
 >goal: complex interactions  

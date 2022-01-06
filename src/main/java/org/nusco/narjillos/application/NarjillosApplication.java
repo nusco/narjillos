@@ -43,7 +43,7 @@ abstract class NarjillosApplication extends Application {
 	private ThingTracker tracker;
 
 	// TODO: making this volatile means nothing, since it's a final array. Fix.
-	private volatile boolean[] isModelInitialized = new boolean[] { false };
+	private final boolean[] isModelInitialized = new boolean[] { false };
 
 	private volatile boolean mainApplicationStopped = false;
 

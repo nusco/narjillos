@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.is;
 
 public class ThingsCounterTest {
 
-	ThingsCounter thingsCounter = new ThingsCounter();
+	final ThingsCounter thingsCounter = new ThingsCounter();
 
 	@Test
 	public void addsThingsByLabel() {

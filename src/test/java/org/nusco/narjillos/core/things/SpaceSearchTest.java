@@ -11,8 +11,8 @@ import static org.hamcrest.Matchers.contains;
 
 public class SpaceSearchTest {
 
-	Space space = new Space();
-	Random random = new Random(12345);
+	final Space space = new Space();
+	final Random random = new Random(12345);
 
 	@Test
 	public void findsNeighboringThings() {

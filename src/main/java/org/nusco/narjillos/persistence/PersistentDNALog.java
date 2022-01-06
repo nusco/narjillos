@@ -24,7 +24,7 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 		try {
 			String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID, IS_DEAD) VALUES (" +
 				dna.getId() + ", " +
-				"'" + dna.toString() + "', " +
+				"'" + dna + "', " +
 				dna.getParentId() + ", 0);";
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {

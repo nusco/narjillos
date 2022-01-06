@@ -239,7 +239,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 		});
 	}
 
-	public static void main(String... args) throws Exception {
+	public static void main(String... args) {
 		setProgramArguments(args);
 		launch(args);
 	}

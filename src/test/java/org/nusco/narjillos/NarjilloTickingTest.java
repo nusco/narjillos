@@ -118,7 +118,7 @@ public class NarjilloTickingTest {
 	// Reads stuff from a Narjillo to check that read accesses don't
 	// break deterministic behavior. I tried to call all interesting
 	// read methods here.
-	private class NarjilloReader extends Thread {
+	private static class NarjilloReader extends Thread {
 
 		private final Narjillo narjillo;
 

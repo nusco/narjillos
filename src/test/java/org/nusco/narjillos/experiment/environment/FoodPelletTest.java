@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 
 public class FoodPelletTest {
 
-	FoodPellet foodPellet = new FoodPellet(Vector.ZERO);
+	final FoodPellet foodPellet = new FoodPellet(Vector.ZERO);
 
 	@Test
 	public void diesWhenSomeoneEatsIt() {

@@ -12,8 +12,8 @@ import static org.mockito.Mockito.when;
 
 public class NarjilloTest {
 
-	Energy energy = new LifeFormEnergy(10, Double.MAX_VALUE);
-	Narjillo narjillo = mock(Narjillo.class);
+	final Energy energy = new LifeFormEnergy(10, Double.MAX_VALUE);
+	final Narjillo narjillo = mock(Narjillo.class);
 
 	@Before
 	public void setupMocks() {

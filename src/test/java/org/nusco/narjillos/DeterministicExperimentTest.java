@@ -74,7 +74,7 @@ public class DeterministicExperimentTest {
 	}
 
 	@AfterClass
-	public static void deleteDatabases() throws IOException {
+	public static void deleteDatabases() {
 		genePoolLog1.delete();
 		historyLog1.delete();
 		genePoolLog2.delete();

@@ -23,7 +23,7 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 	}
 
 	int getAngleToParent(int mirroringSign) {
-		int result = convertToRange(getChromosome().getGene(ANGLE_TO_PARENT), (double) 70);
+		int result = convertToRange(getChromosome().getGene(ANGLE_TO_PARENT), 70);
 		return result * (int) Math.signum(mirroringSign);
 	}
 
@@ -33,7 +33,7 @@ class BodySegmentBuilder extends ConcreteOrganBuilder {
 	}
 
 	public int getSkewing() {
-		return convertToRange(getChromosome().getGene(SKEWING), (double) 90);
+		return convertToRange(getChromosome().getGene(SKEWING), 90);
 	}
 
 	private int convertToRange(int gene, double maxAbsValue) {

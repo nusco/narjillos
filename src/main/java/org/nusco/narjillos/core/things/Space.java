@@ -32,7 +32,7 @@ public class Space {
 		Set<HashedLocation> locations = calculateHashedLocationsOf(thing);
 
 		getThingsToLocations(thing.getLabel()).put(thing, locations);
-		locations.stream().forEach(location -> addThingToLocation(location, thing));
+		locations.forEach(location -> addThingToLocation(location, thing));
 		allThings.add(thing);
 	}
 
@@ -40,7 +40,7 @@ public class Space {
 		final Set<HashedLocation> locations = getThingsToLocations(thing.getLabel()).get(thing);
 
 		getThingsToLocations(thing.getLabel()).remove(thing);
-		locations.stream().forEach(location -> locationsToThings.get(location).remove(thing));
+		locations.forEach(location -> locationsToThings.get(location).remove(thing));
 		allThings.remove(thing);
 	}
 

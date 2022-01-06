@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class SpaceGridTest {
 
-	Space space = new Space();
+	final Space space = new Space();
 
 	@Test
 	public void addsThings() {
@@ -48,7 +48,7 @@ public class SpaceGridTest {
 			public String getLabel() {
 				return "a";
 			}
-		};;
+		};
 
 		space.add(thing1);
 		space.add(thing2);

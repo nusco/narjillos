@@ -69,7 +69,7 @@ public class Experiment {
 		ecosystem.terminate();
 
 		updateTotalRunningTime();
-		String result = toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
+		String result = this + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
 			+ getTicksChronometer().getTotalTicks() + " ticks";
 		if (lifeIsExtinct())
 			result += " (EXTINCTION)";

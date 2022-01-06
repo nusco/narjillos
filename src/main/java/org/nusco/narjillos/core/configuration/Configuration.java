@@ -15,7 +15,7 @@ public class Configuration {
 	private static Map<String, Map<String, Object>> loadConfigurationData() {
 		File configurationFile = locateConfigurationFile();
 		try {
-			return (Map<String, Map<String, Object>>) new Yaml().load(new FileReader(configurationFile));
+			return new Yaml().load(new FileReader(configurationFile));
 		} catch (FileNotFoundException e) {
 			fail("cannot find a configuration file (config.yaml) in the current working directory");
 			return null;

@@ -56,7 +56,7 @@ public class PerformanceTest {
 	}
 
 	@AfterClass
-	public static void deleteDatabase() throws IOException {
+	public static void deleteDatabase() {
 		dnaLog.delete();
 	}
 
@@ -66,7 +66,7 @@ public class PerformanceTest {
 	}
 
 	@Test
-	public void testPerformance() throws IOException {
+	public void testPerformance() {
 		// pay up front for the setup of FastMath, in case
 		// it hasn't been loaded yet
 		FastMath.setUp();

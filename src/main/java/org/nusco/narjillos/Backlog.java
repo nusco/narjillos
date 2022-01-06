@@ -2,6 +2,7 @@ package org.nusco.narjillos;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class Backlog {
 	}
 
 	private static List<String> loadEntries(final String BACKLOG_FILE) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get(BACKLOG_FILE), Charset.forName("UTF-8"));
+		List<String> lines = Files.readAllLines(Paths.get(BACKLOG_FILE), StandardCharsets.UTF_8);
 		return lines.stream()
 			.filter(line -> !isComment(line))
 			.collect(Collectors.toList());

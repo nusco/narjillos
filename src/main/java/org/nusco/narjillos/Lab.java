@@ -1,13 +1,6 @@
 package org.nusco.narjillos;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.nusco.narjillos.analysis.DNAAnalyzer;
 import org.nusco.narjillos.analysis.DNAExporter;
 import org.nusco.narjillos.experiment.Experiment;
@@ -17,6 +10,9 @@ import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.persistence.ExperimentLoader;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * The "lab" program. It reads data from an experiment and does analysis and
@@ -40,7 +36,7 @@ class Lab {
 		try {
 			CommandLine commandLine;
 			try {
-				commandLine = new BasicParser().parse(options, args);
+				commandLine = new DefaultParser().parse(options, args);
 			} catch (ParseException e) {
 				printHelpText(options);
 				return;

@@ -1,13 +1,13 @@
 package org.nusco.narjillos.core.things;
 
-import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
+import org.junit.Test;
+import org.nusco.narjillos.core.geometry.Vector;
 
 import java.util.Random;
 import java.util.Set;
 
-import org.junit.Test;
-import org.nusco.narjillos.core.geometry.Vector;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 
 public class SpaceSearchTest {
 

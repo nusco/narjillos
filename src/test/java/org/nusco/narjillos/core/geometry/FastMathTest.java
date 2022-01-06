@@ -8,10 +8,6 @@ public class FastMathTest {
 
 	private final double EXPECTED_TRIG_PRECISION = 0.001; // 1/1000th of a point
 
-	private final double EXPECTED_ATAN_PRECISION = 0.01;  // 1/100th of a degree
-
-	private final double EXPECTED_LOG_PRECISION = 0.01;
-
 	@Test
 	public void preciselyCalculatesSinForMainAngles() {
 		assertEquals(0, FastMath.sin(0), EXPECTED_TRIG_PRECISION);
@@ -101,6 +97,8 @@ public class FastMathTest {
 	private void assertEqualsAtan(double y, double x) {
 		double javaAtan = Math.toDegrees(Math.atan2(y, x));
 		double fastAtan = FastMath.atan(y, x);
+
+		double EXPECTED_ATAN_PRECISION = 0.01;  // 1/100th of a degree
 		assertEquals("Mismatched atan(" + y + ", " + x + ")", javaAtan, fastAtan, EXPECTED_ATAN_PRECISION);
 	}
 
@@ -110,6 +108,8 @@ public class FastMathTest {
 		for (double log = FastMath.LOG_MIN; log <= FastMath.LOG_MAX; log += step) {
 			double javaLog = Math.log(log);
 			double fastLog = FastMath.log(log);
+
+			double EXPECTED_LOG_PRECISION = 0.01;
 			assertEquals("Mismatched log(" + log + ")", javaLog, fastLog, EXPECTED_LOG_PRECISION);
 		}
 	}

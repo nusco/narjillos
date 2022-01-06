@@ -4,14 +4,11 @@
 ## Project Issues
 > goal: make Narjillos easy to run on modern platforms
 
-* Run on Java 17
-I came back to the project after a few years, and found that the code has many issues (mostly system-related more than strictly code-related) compiling and running on recent versions of the Java stack.
+* Update to Java 17-style code
+Fix all warnings, and also switch to modern Java constructs where appropriate.
 
 * Update Gradle build
 The Gradle build has plenty of issues. Either find a way to fix them, or just do away with Gradle for good. It's been a terrible experience since the start. Right now, I'm running on IntelliJ just to avoid the myriad of problems that Gradle is giving me.
-
-* Update to Java 17-style code
-Fix all warnings, and also switch to modern Java constructs where appropriate.
 
 * Make project modular
 Java has a modules system now. Use it.

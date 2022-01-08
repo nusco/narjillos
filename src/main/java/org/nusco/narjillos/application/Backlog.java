@@ -1,4 +1,4 @@
-package org.nusco.narjillos;
+package org.nusco.narjillos.application;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

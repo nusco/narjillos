@@ -1,4 +1,4 @@
-package org.nusco.narjillos;
+package org.nusco.narjillos.application;
 
 import org.apache.commons.cli.*;
 import org.nusco.narjillos.analysis.DNAAnalyzer;

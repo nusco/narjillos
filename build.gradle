@@ -13,7 +13,7 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_17
 
 application {
-    mainClass = 'org.nusco.narjillos.NarjillosRunner'
+    mainClass = 'org.nusco.narjillos.application.NarjillosRunner'
 }
 
 javafx {
@@ -46,8 +46,8 @@ dependencies {
 
 // Programs
 
-createProgramTask('narjillos', 'org.nusco.narjillos.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
-createProgramTask('dnabrowser', 'org.nusco.narjillos.DNABrowserRunner', 'Runs the DNA Browser (pass it the *.germline filename).')
+createProgramTask('narjillos', 'org.nusco.narjillos.application.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
+createProgramTask('dnabrowser', 'org.nusco.narjillos.application.DNABrowserRunner', 'Runs the DNA Browser (pass it the *.germline filename).')
 createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it the *.exp filename).')
 
 // Tests
@@ -82,7 +82,7 @@ task testAll(dependsOn: ['test', 'testDeterministic', 'testPerformance']) {
 // Backlog Management
 
 task(bl, dependsOn: 'build', type: JavaExec) {
-    mainClass = 'org.nusco.narjillos.Backlog'
+    mainClass = 'org.nusco.narjillos.application.Backlog'
     classpath = sourceSets.main.runtimeClasspath
     args commandLineArgsOr('all')
 }
@@ -123,7 +123,7 @@ task writeDockerfile() {
 
 task createStartupScripts(dependsOn: 'installDist') {
     createScript('lab', 'org.nusco.narjillos.Lab')
-    createScript('dnabrowser', 'org.nusco.narjillos.DNABrowserRunner')
+    createScript('dnabrowser', 'org.nusco.narjillos.application.DNABrowserRunner')
 }
 
 task release(dependsOn: ['writeDockerfile', 'testAll', 'createStartupScripts', 'assemble']) {

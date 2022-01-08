@@ -1,4 +1,4 @@
-package org.nusco.narjillos;
+package org.nusco.narjillos.application;
 
 import org.nusco.narjillos.application.CommandLineOptions;
 import org.nusco.narjillos.application.MainNarjillosApplication;

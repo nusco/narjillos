@@ -1,21 +1,17 @@
 package org.nusco.narjillos.persistence.serialization;
 
-import static org.junit.Assert.assertEquals;
-import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.nusco.narjillos.core.chemistry.Element.*;
 
 import java.util.Iterator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
-import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
-import org.nusco.narjillos.experiment.environment.FoodPellet;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.VolatileDNALog;
 
@@ -23,13 +19,15 @@ public class JSONEcosystemSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesEcosystem() {
-		Ecosystem ecosystem = new Ecosystem(123, false);
-		FoodPellet food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));
-		FoodPellet food2 = ecosystem.spawnFood(Vector.cartesian(20, 20));
-		Egg egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new NumGen(0));
+		var ecosystem = new Ecosystem(123, false);
 
-		DNA dna = DNA.random(1, new NumGen(100));
-		Narjillo narjillo = new Narjillo(dna, Vector.cartesian(100, 101), 90, Energy.INFINITE);
+		var food1 = ecosystem.spawnFood(Vector.cartesian(10, 10));
+		var food2 = ecosystem.spawnFood(Vector.cartesian(20, 20));
+		var egg = ecosystem.spawnEgg(new DNA(1, "{1_2_3_4_5_6_7_8}"), Vector.cartesian(30, 30), new NumGen(0));
+
+		var dna = DNA.random(1, new NumGen(100));
+
+		var narjillo = new Narjillo(dna, Vector.cartesian(100, 101), 90, Energy.INFINITE);
 		ecosystem.insert(narjillo);
 
 		for (int i = 0; i < 10; i++)
@@ -38,18 +36,19 @@ public class JSONEcosystemSerializationTest {
 		String json = JSON.toJson(ecosystem, Ecosystem.class);
 		Ecosystem deserialized = JSON.fromJson(json, Ecosystem.class);
 
-		assertEquals(123, deserialized.getSize());
-		assertEquals(4, deserialized.getAll("").size());
-		assertEquals(1, deserialized.getAll(Narjillo.LABEL).size());
+		assertThat(deserialized.getSize()).isEqualTo(123);
+		assertThat(deserialized.getAll("")).hasSize(4);
+		assertThat(deserialized.getAll(Narjillo.LABEL)).hasSize(1);
 
-		assertEquals(deserialized.getAtmosphere().getAmountOf(OXYGEN), ecosystem.getAtmosphere().getAmountOf(OXYGEN), 0.0);
-		assertEquals(deserialized.getAtmosphere().getAmountOf(HYDROGEN), ecosystem.getAtmosphere().getAmountOf(HYDROGEN), 0.0);
-		assertEquals(deserialized.getAtmosphere().getAmountOf(NITROGEN), ecosystem.getAtmosphere().getAmountOf(NITROGEN), 0.0);
+		assertThat(deserialized.getAtmosphere().getAmountOf(OXYGEN)).isEqualTo(ecosystem.getAtmosphere().getAmountOf(OXYGEN));
+		assertThat(deserialized.getAtmosphere().getAmountOf(HYDROGEN)).isEqualTo(ecosystem.getAtmosphere().getAmountOf(HYDROGEN));
+		assertThat(deserialized.getAtmosphere().getAmountOf(NITROGEN)).isEqualTo(ecosystem.getAtmosphere().getAmountOf(NITROGEN));
 
 		Iterator<Thing> thingsIterator = deserialized.getAll("").iterator();
-		assertEquals(food1.getPosition(), thingsIterator.next().getPosition());
-		assertEquals(food2.getPosition(), thingsIterator.next().getPosition());
-		assertEquals(egg.getPosition(), thingsIterator.next().getPosition());
-		assertEquals(narjillo.getPosition(), thingsIterator.next().getPosition());
+
+		assertThat(thingsIterator.next().getPosition()).isEqualTo(food1.getPosition());
+		assertThat(thingsIterator.next().getPosition()).isEqualTo(food2.getPosition());
+		assertThat(thingsIterator.next().getPosition()).isEqualTo(egg.getPosition());
+		assertThat(thingsIterator.next().getPosition()).isEqualTo(narjillo.getPosition());
 	}
 }

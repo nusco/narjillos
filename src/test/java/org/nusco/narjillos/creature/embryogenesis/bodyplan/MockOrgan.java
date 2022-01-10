@@ -33,7 +33,7 @@ class MockOrgan extends MovingOrgan {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
+		var result = new StringBuilder();
 		if (sign < 0)
 			result.append("^");
 		result.append(id);
@@ -56,6 +56,7 @@ class MockOrgan extends MovingOrgan {
 				result.append(", ");
 		}
 		result.append(")");
+
 		return result.toString();
 	}
 }

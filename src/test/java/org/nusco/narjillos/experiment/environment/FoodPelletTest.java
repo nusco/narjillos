@@ -1,14 +1,13 @@
 package org.nusco.narjillos.experiment.environment;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Energy;
 import org.nusco.narjillos.core.things.Thing;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class FoodPelletTest {
 
@@ -16,13 +15,13 @@ public class FoodPelletTest {
 
 	@Test
 	public void diesWhenSomeoneEatsIt() {
-		assertThat(foodPellet.isDead(), is(false));
+		assertThat(foodPellet.isDead()).isFalse();
 
 		Thing feeder = mock(Thing.class);
 		when(feeder.getEnergy()).thenReturn(Energy.INFINITE);
 
 		foodPellet.getEaten(feeder);
 
-		assertThat(foodPellet.isDead(), is(true));
+		assertThat(foodPellet.isDead()).isTrue();
 	}
 }

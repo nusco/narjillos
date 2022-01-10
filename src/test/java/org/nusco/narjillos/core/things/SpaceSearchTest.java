@@ -1,13 +1,12 @@
 package org.nusco.narjillos.core.things;
 
-import org.junit.Test;
-import org.nusco.narjillos.core.geometry.Vector;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
 import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import org.junit.jupiter.api.Test;
+import org.nusco.narjillos.core.geometry.Vector;
 
 public class SpaceSearchTest {
 
@@ -28,10 +27,10 @@ public class SpaceSearchTest {
 		for (Thing thing : things)
 			space.add(thing);
 
-		Thing thing = things[0];
+		var thing = things[0];
 		Set<Thing> neighbors = space.getNearbyNeighbors(thing, "");
 
-		assertThat(neighbors, contains(things[2], things[1], things[3], things[4], things[5]));
+		assertThat(neighbors).contains(things[2], things[1], things[3], things[4], things[5]);
 	}
 
 	// A pseudorandom location in square "n, m" of the grid

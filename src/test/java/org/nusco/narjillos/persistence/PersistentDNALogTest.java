@@ -1,6 +1,6 @@
 package org.nusco.narjillos.persistence;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.genomics.DNALog;
 import org.nusco.narjillos.genomics.DNALogTest;
 

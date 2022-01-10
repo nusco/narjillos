@@ -1,9 +1,8 @@
 package org.nusco.narjillos.core.physics;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.configuration.Configuration;
 
 public class ViscosityTest {
@@ -11,20 +10,20 @@ public class ViscosityTest {
 	@Test
 	public void doesNotKickInUntilACertainVelocityIsReached() {
 		for (int velocity = 0; velocity <= Configuration.PHYSICS_VISCOSITY_KICKIN_VELOCITY; velocity++)
-			assertEquals(velocity, Viscosity.limit(velocity), 0.0);
+			assertThat(Viscosity.limit(velocity)).isEqualTo(velocity);
 	}
 
 	@Test
 	public void limitsVelocityOverTheKickInValue() {
 		double previousVelocity = 0;
 		for (double velocity = Configuration.PHYSICS_VISCOSITY_KICKIN_VELOCITY; velocity <= Viscosity.getMaxVelocity(); velocity += 0.3) {
-			assertTrue(velocity > previousVelocity);
+			assertThat(velocity > previousVelocity).isTrue();
 			previousVelocity = velocity;
 		}
 	}
 
 	@Test
 	public void neverGetsOverAMaxVelocity() {
-		assertEquals(Viscosity.limit(Double.MAX_VALUE), Viscosity.getMaxVelocity(), 0.0);
+		assertThat(Viscosity.getMaxVelocity()).isEqualTo(Viscosity.limit(Double.MAX_VALUE));
 	}
 }

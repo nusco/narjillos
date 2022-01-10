@@ -1,15 +1,15 @@
 package org.nusco.narjillos.persistence.serialization;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.utilities.NumGen;
 
 public class JSONRanGenSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesRanGens() {
-		NumGen numGen = new NumGen(42);
+		var numGen = new NumGen(42);
 		for (int i = 0; i < 1000; i++) {
 			numGen.nextDouble();
 			numGen.nextSerial();
@@ -18,9 +18,9 @@ public class JSONRanGenSerializationTest {
 		String json = JSON.toJson(numGen, NumGen.class);
 		NumGen deserialized = JSON.fromJson(json, NumGen.class);
 
-		assertEquals(numGen.nextInt(), deserialized.nextInt(), 0.0);
-		assertEquals(numGen.nextByte(), deserialized.nextByte(), 0.0);
-		assertEquals(numGen.nextDouble(), deserialized.nextDouble(), 0.0);
-		assertEquals(numGen.nextSerial(), deserialized.nextSerial());
+		assertThat(deserialized.nextInt()).isEqualTo(numGen.nextInt());
+		assertThat(deserialized.nextByte()).isEqualTo(numGen.nextByte());
+		assertThat(deserialized.nextDouble()).isEqualTo(numGen.nextDouble());
+		assertThat(deserialized.nextSerial()).isEqualTo(numGen.nextSerial());
 	}
 }

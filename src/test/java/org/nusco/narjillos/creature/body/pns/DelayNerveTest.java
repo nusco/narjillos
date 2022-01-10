@@ -1,29 +1,29 @@
 package org.nusco.narjillos.creature.body.pns;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DelayNerveTest {
 
 	@Test
 	public void delaysASignal() {
-		DelayNerve nerve = new DelayNerve(3);
+		var nerve = new DelayNerve(3);
 
-		assertEquals(0, nerve.tick(1), 0);
-		assertEquals(0, nerve.tick(2), 0);
-		assertEquals(0, nerve.tick(3), 0);
-		assertEquals(1, nerve.tick(4), 0);
-		assertEquals(2, nerve.tick(5), 0);
-		assertEquals(3, nerve.tick(6), 0);
+		assertThat(nerve.tick(1)).isEqualTo(0);
+		assertThat(nerve.tick(2)).isEqualTo(0);
+		assertThat(nerve.tick(3)).isEqualTo(0);
+		assertThat(nerve.tick(4)).isEqualTo(1);
+		assertThat(nerve.tick(5)).isEqualTo(2);
+		assertThat(nerve.tick(6)).isEqualTo(3);
 	}
 
 	@Test
 	public void becomesAPassNerveWhenTheDelayIsZero() {
-		DelayNerve nerve = new DelayNerve(0);
+		var nerve = new DelayNerve(0);
 
-		assertEquals(1, nerve.tick(1), 0);
-		assertEquals(2, nerve.tick(2), 0);
-		assertEquals(3, nerve.tick(3), 0);
+		assertThat(nerve.tick(1)).isEqualTo(1);
+		assertThat(nerve.tick(2)).isEqualTo(2);
+		assertThat(nerve.tick(3)).isEqualTo(3);
 	}
 }

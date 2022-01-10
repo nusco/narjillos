@@ -1,8 +1,9 @@
 package org.nusco.narjillos.creature.embryogenesis;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.creature.body.BodyPart;
 import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Head;
@@ -18,58 +19,58 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 
 	@Test
 	public void decodesAFiberShift() {
-		Chromosome chromosome1 = new Chromosome(0, 0, 0, 0, 0, 255, 1);
-		assertEquals(-255, getConcreteOrganBuilder(chromosome1).getRedShift());
-		assertEquals(255, getConcreteOrganBuilder(chromosome1).getGreenShift());
-		assertEquals(-253, getConcreteOrganBuilder(chromosome1).getBlueShift());
+		var chromosome1 = new Chromosome(0, 0, 0, 0, 0, 255, 1);
+		assertThat(getConcreteOrganBuilder(chromosome1).getRedShift()).isEqualTo(-255);
+		assertThat(getConcreteOrganBuilder(chromosome1).getGreenShift()).isEqualTo(255);
+		assertThat(getConcreteOrganBuilder(chromosome1).getBlueShift()).isEqualTo(-253);
 
-		Chromosome chromosome2 = new Chromosome(0, 0, 0, 0, 126, 127, 128);
-		assertEquals(-3, getConcreteOrganBuilder(chromosome2).getRedShift());
-		assertEquals(-1, getConcreteOrganBuilder(chromosome2).getGreenShift());
-		assertEquals(1, getConcreteOrganBuilder(chromosome2).getBlueShift());
+		var chromosome2 = new Chromosome(0, 0, 0, 0, 126, 127, 128);
+		assertThat(getConcreteOrganBuilder(chromosome2).getRedShift()).isEqualTo(-3);
+		assertThat(getConcreteOrganBuilder(chromosome2).getGreenShift()).isEqualTo(-1);
+		assertThat(getConcreteOrganBuilder(chromosome2).getBlueShift()).isEqualTo(1);
 	}
 
 	@Test
 	public void decodesAnAngleToTheParentBetweenMinus70And70() {
-		assertEquals(-70, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0)).getAngleToParent(1));
-		assertEquals(-69, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 1)).getAngleToParent(1));
-		assertEquals(-68, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 2)).getAngleToParent(1));
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 128)).getAngleToParent(1));
-		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 129)).getAngleToParent(1));
-		assertEquals(70, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 255)).getAngleToParent(1));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0)).getAngleToParent(1)).isEqualTo(-70);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 1)).getAngleToParent(1)).isEqualTo(-69);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 2)).getAngleToParent(1)).isEqualTo(-68);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 128)).getAngleToParent(1)).isEqualTo(0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 129)).getAngleToParent(1)).isEqualTo(1);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 255)).getAngleToParent(1)).isEqualTo(70);
 	}
 
 	@Test
 	public void mirrorsTheAngleToTheParentIfTheMirrorSignIsNegative() {
-		assertEquals(70, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0)).getAngleToParent(-1));
-		assertEquals(69, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 1)).getAngleToParent(-1));
-		assertEquals(68, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 2)).getAngleToParent(-1));
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 128)).getAngleToParent(-1));
-		assertEquals(-1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 129)).getAngleToParent(-1));
-		assertEquals(-70, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 255)).getAngleToParent(-1));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0)).getAngleToParent(-1)).isEqualTo(70);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 1)).getAngleToParent(-1)).isEqualTo(69);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 2)).getAngleToParent(-1)).isEqualTo(68);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 128)).getAngleToParent(-1)).isEqualTo(0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 129)).getAngleToParent(-1)).isEqualTo(-1);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 255)).getAngleToParent(-1)).isEqualTo(-70);
 	}
 
 	@Test
 	public void decodesADelayBetween0And30() {
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0)).getDelay());
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 8)).getDelay());
-		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 9)).getDelay());
-		assertEquals(30, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 255)).getDelay());
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0)).getDelay()).isEqualTo(0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 8)).getDelay()).isEqualTo(0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 9)).getDelay()).isEqualTo(1);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 255)).getDelay()).isEqualTo(30);
 	}
 
 	@Test
 	public void decodesAnAmplitudeBetween1And100() {
-		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 1)).getAmplitude());
-		assertEquals(2, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 5)).getAmplitude());
-		assertEquals(80, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getAmplitude());
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 1)).getAmplitude()).isEqualTo(1);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 5)).getAmplitude()).isEqualTo(2);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getAmplitude()).isEqualTo(80);
 	}
 
 	@Test
 	public void decodesASkewingBetweenMinus90And90() {
-		assertEquals(-90, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getSkewing());
-		assertEquals(-45, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63)).getSkewing());
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127)).getSkewing());
-		assertEquals(90, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getSkewing());
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getSkewing()).isEqualTo(-90);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63)).getSkewing()).isEqualTo(-45);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127)).getSkewing()).isEqualTo(0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getSkewing()).isEqualTo(90);
 	}
 
 	@Test
@@ -86,31 +87,32 @@ public class BodySegmentBuilderTest extends ConcreteOrganBuilderTest {
 		int amplitudeGene = 107;
 		int skewingGene = 150;
 
-		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redShiftGene, greenShiftGene,
-			blueShiftGene, angleToParentGene, delayGene, amplitudeGene, skewingGene);
+		var chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redShiftGene,
+			greenShiftGene, blueShiftGene, angleToParentGene, delayGene, amplitudeGene, skewingGene);
 		BodySegmentBuilder builder = getConcreteOrganBuilder(chromosome);
 
-		HeadParameters headParameters = new HeadParameters();
+		var headParameters = new HeadParameters();
 		headParameters.setRed(50);
 		headParameters.setGreen(60);
 		headParameters.setBlue(70);
-		Head head = new Head(headParameters);
+		var head = new Head(headParameters);
 
-		BodyPart bodyPart = (BodyPart) builder.buildOrgan(head, 1);
+		var bodyPart = (BodyPart) builder.buildOrgan(head, 1);
 
 		head.update();
 		bodyPart.update();
 
-		assertEquals(new Fiber(47, 59, 71), bodyPart.getFiber());
-		assertEquals(-25, bodyPart.getAbsoluteAngle(), 0);
-		assertEquals(10, bodyPart.getDelay(), 0);
-		assertEquals(34, bodyPart.getAmplitude(), 0);
-		assertEquals(16, bodyPart.getSkewing(), 0);
+		assertThat(bodyPart.getFiber()).isEqualTo(new Fiber(47, 59, 71));
+
+		assertThat(bodyPart.getAbsoluteAngle()).isEqualTo(-25.0);
+		assertThat(bodyPart.getDelay()).isEqualTo(10);
+		assertThat(bodyPart.getAmplitude()).isEqualTo(34);
+		assertThat(bodyPart.getSkewing()).isEqualTo(16);
 
 		head.growToAdultFormWithChildren();
 		bodyPart.growToAdultFormWithChildren();
 
-		assertEquals(30, bodyPart.getLength(), 0);
-		assertEquals(25, bodyPart.getThickness(), 0.01);
+		assertThat(bodyPart.getLength()).isEqualTo(30.0);
+		assertThat(bodyPart.getThickness()).isEqualTo(25.0, within(0.01));
 	}
 }

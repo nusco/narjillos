@@ -1,59 +1,60 @@
 package org.nusco.narjillos.core.chemistry;
 
-import static org.junit.Assert.assertEquals;
-import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
-import static org.nusco.narjillos.core.chemistry.Element.ZERO;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
+import static org.nusco.narjillos.core.chemistry.Element.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.configuration.Configuration;
 
 public class AtmosphereTest {
 
+	private static final double MARGIN = 0.01;
+	private static final double MARGIN_SMALL = 0.0001;
+
 	@Test
 	public void hasElementAmountsAtStart() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
-		assertEquals(10, atmosphere.getAmountOf(OXYGEN), 0.0);
-		assertEquals(10, atmosphere.getAmountOf(HYDROGEN), 0.0);
-		assertEquals(10, atmosphere.getAmountOf(NITROGEN), 0.0);
+		assertThat(atmosphere.getAmountOf(OXYGEN)).isEqualTo(10, within(MARGIN_SMALL));
+		assertThat(atmosphere.getAmountOf(HYDROGEN)).isEqualTo(10, within(MARGIN_SMALL));
+		assertThat(atmosphere.getAmountOf(NITROGEN)).isEqualTo(10, within(MARGIN_SMALL));
 	}
 
 	@Test
 	public void hasEqualDensitiesAtStart() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
-		assertEquals(0.33, atmosphere.getDensityOf(OXYGEN), 0.01);
-		assertEquals(0.33, atmosphere.getDensityOf(HYDROGEN), 0.01);
-		assertEquals(0.33, atmosphere.getDensityOf(NITROGEN), 0.01);
+		assertThat(atmosphere.getDensityOf(OXYGEN)).isEqualTo(0.33, within(MARGIN));
+		assertThat(atmosphere.getDensityOf(HYDROGEN)).isEqualTo(0.33, within(MARGIN));
+		assertThat(atmosphere.getDensityOf(NITROGEN)).isEqualTo(0.33, within(MARGIN));
 	}
 
 	@Test
 	public void theDefaultInitialLevelIsReadFromConfiguration() {
-		Atmosphere atmosphere = new Atmosphere();
+		var atmosphere = new Atmosphere();
 
-		assertEquals(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL, atmosphere.getAmountOf(OXYGEN), 0.0);
+		assertThat(atmosphere.getAmountOf(OXYGEN)).isEqualTo(Configuration.ECOSYSTEM_INITIAL_ELEMENT_LEVEL);
 	}
 
 	@Test
 	public void hasNoElementZero() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
-		assertEquals(0, atmosphere.getAmountOf(ZERO), 0.0);
-		assertEquals(0.0, atmosphere.getDensityOf(ZERO), 0.0);
+		assertThat(atmosphere.getAmountOf(ZERO)).isZero();
+		assertThat(atmosphere.getDensityOf(ZERO)).isZero();
 	}
 
 	@Test
 	public void hasAFixedCatalystLevel() {
-		Atmosphere atmosphere = new Atmosphere(10, 15);
+		var atmosphere = new Atmosphere(10, 15);
 
-		assertEquals(15, atmosphere.getCatalystLevel());
+		assertThat(atmosphere.getCatalystLevel()).isEqualTo(15);
 	}
 
 	@Test
 	public void theSumOfTheDensitiesIsAlwaysOne() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
 		for (int i = 0; i < 3; i++) {
 			atmosphere.convert(HYDROGEN, NITROGEN);
@@ -61,52 +62,53 @@ public class AtmosphereTest {
 		}
 
 		double sumOfDensities = atmosphere.getDensityOf(OXYGEN) + atmosphere.getDensityOf(HYDROGEN) + atmosphere.getDensityOf(NITROGEN);
-		assertEquals(1.0, sumOfDensities, 0.0001);
+
+		assertThat(sumOfDensities).isEqualTo(1.0, within(MARGIN_SMALL));
 	}
 
 	@Test
 	public void convertsElements() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
 		atmosphere.convert(OXYGEN, HYDROGEN);
 
-		assertEquals(9, atmosphere.getAmountOf(OXYGEN), 0.0);
-		assertEquals(11, atmosphere.getAmountOf(HYDROGEN), 0.0);
-		assertEquals(10, atmosphere.getAmountOf(NITROGEN), 0.0);
+		assertThat(atmosphere.getAmountOf(OXYGEN)).isEqualTo(9, within(MARGIN_SMALL));
+		assertThat(atmosphere.getAmountOf(HYDROGEN)).isEqualTo(11, within(MARGIN_SMALL));
+		assertThat(atmosphere.getAmountOf(NITROGEN)).isEqualTo(10, within(MARGIN_SMALL));
 	}
 
 	@Test
 	public void densitiesNeverGetBelowZeroOrAboveOne() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
 		for (int i = 0; i < 30; i++) {
 			atmosphere.convert(OXYGEN, HYDROGEN);
 			atmosphere.convert(NITROGEN, HYDROGEN);
 		}
 
-		assertEquals(0.0, atmosphere.getDensityOf(OXYGEN), 0.0001);
-		assertEquals(1.0, atmosphere.getDensityOf(HYDROGEN), 0.0001);
-		assertEquals(0.0, atmosphere.getDensityOf(NITROGEN), 0.0001);
+		assertThat(atmosphere.getDensityOf(OXYGEN)).isEqualTo(0.0, within(MARGIN_SMALL));
+		assertThat(atmosphere.getDensityOf(HYDROGEN)).isEqualTo(1.0, within(MARGIN_SMALL));
+		assertThat(atmosphere.getDensityOf(NITROGEN)).isEqualTo(0.0, within(MARGIN_SMALL));
 	}
 
 	@Test
 	public void neverConvertsFromTheZeroElement() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
 		atmosphere.convert(ZERO, HYDROGEN);
 
-		assertEquals(0, atmosphere.getAmountOf(ZERO), 0.0);
-		assertEquals(10, atmosphere.getAmountOf(HYDROGEN), 0.0);
+		assertThat(atmosphere.getAmountOf(ZERO)).isZero();
+		assertThat(atmosphere.getAmountOf(HYDROGEN)).isEqualTo(10.0, within(MARGIN_SMALL));
 	}
 
 	@Test
 	public void neverConvertsToTheZeroElement() {
-		Atmosphere atmosphere = new Atmosphere(10, 0);
+		var atmosphere = new Atmosphere(10, 0);
 
 		atmosphere.convert(OXYGEN, ZERO);
 
-		assertEquals(10, atmosphere.getAmountOf(OXYGEN), 0.0);
-		assertEquals(0, atmosphere.getAmountOf(ZERO), 0.0);
+		assertThat(atmosphere.getAmountOf(OXYGEN)).isEqualTo(10.0, within(MARGIN_SMALL));
+		assertThat(atmosphere.getAmountOf(ZERO)).isZero();
 	}
 
 	@Test
@@ -118,8 +120,8 @@ public class AtmosphereTest {
 			atmosphere.convert(OXYGEN, NITROGEN);
 		}
 
-		assertEquals(0, atmosphere.getAmountOf(OXYGEN), 0.0);
-		assertEquals(15, atmosphere.getAmountOf(HYDROGEN), 0.0);
-		assertEquals(15, atmosphere.getAmountOf(NITROGEN), 0.0);
+		assertThat(atmosphere.getAmountOf(OXYGEN)).isZero();
+		assertThat(atmosphere.getAmountOf(HYDROGEN)).isEqualTo(15.0, within(MARGIN_SMALL));
+		assertThat(atmosphere.getAmountOf(NITROGEN)).isEqualTo(15.0, within(MARGIN_SMALL));
 	}
 }

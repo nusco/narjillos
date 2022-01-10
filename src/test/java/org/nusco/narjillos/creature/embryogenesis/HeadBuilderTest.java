@@ -1,14 +1,17 @@
 package org.nusco.narjillos.creature.embryogenesis;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.creature.body.Fiber;
 import org.nusco.narjillos.creature.body.Head;
 import org.nusco.narjillos.genomics.Chromosome;
 
 public class HeadBuilderTest extends ConcreteOrganBuilderTest {
+
+	private static final double PRECISION = 0.01;
 
 	@Override
 	protected HeadBuilder getConcreteOrganBuilder(Chromosome chromosome) {
@@ -17,54 +20,64 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 
 	@Test
 	public void decodesFiberComponents() {
-		Chromosome chromosome = new Chromosome(0, 0, 0, 0, 10, 20, 30);
-		assertEquals(10, getConcreteOrganBuilder(chromosome).getRed());
-		assertEquals(20, getConcreteOrganBuilder(chromosome).getGreen());
-		assertEquals(30, getConcreteOrganBuilder(chromosome).getBlue());
+		var chromosome = new Chromosome(0, 0, 0, 0, 10, 20, 30);
+		assertThat(getConcreteOrganBuilder(chromosome).getRed()).isEqualTo(10);
+		assertThat(getConcreteOrganBuilder(chromosome).getGreen()).isEqualTo(20);
+		assertThat(getConcreteOrganBuilder(chromosome).getBlue()).isEqualTo(30);
 	}
 
 	@Test
 	public void decodesAMetabolicRateBetween0And3() {
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0)).getMetabolicRate(), 0.01);
-		assertEquals(0.74, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 63)).getMetabolicRate(), 0.01);
-		assertEquals(1, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 85)).getMetabolicRate(), 0.01);
-		assertEquals(3, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 255)).getMetabolicRate(), 0.01);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0)).getMetabolicRate())
+			.isEqualTo(0.0, within(PRECISION));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 63)).getMetabolicRate())
+			.isEqualTo(0.74, within(PRECISION));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 85)).getMetabolicRate())
+			.isEqualTo(1.0, within(PRECISION));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 255)).getMetabolicRate())
+			.isEqualTo(3.0, within(PRECISION));
 	}
 
 	@Test
 	public void decodesAWaveBeatRatioBetween0dot2And5() {
-		assertEquals(0.2, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0)).getWaveBeatRatio(), 0.01);
-		assertEquals(2.59, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 127)).getWaveBeatRatio(), 0.01);
-		assertEquals(5.0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 255)).getWaveBeatRatio(), 0.01);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0)).getWaveBeatRatio())
+			.isEqualTo(0.2, within(PRECISION));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 127)).getWaveBeatRatio())
+			.isEqualTo(2.59, within(PRECISION));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 255)).getWaveBeatRatio())
+			.isEqualTo(5.0, within(PRECISION));
 	}
 
 	@Test
 	public void decodesAByproduct() {
-		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getByproduct());
-		assertEquals(Element.HYDROGEN, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 1)).getByproduct());
-		assertEquals(Element.NITROGEN, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 2)).getByproduct());
-		assertEquals(Element.OXYGEN, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 3)).getByproduct());
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getByproduct()).isEqualTo(Element.OXYGEN);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 1)).getByproduct()).isEqualTo(Element.HYDROGEN);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 2)).getByproduct()).isEqualTo(Element.NITROGEN);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 3)).getByproduct()).isEqualTo(Element.OXYGEN);
 	}
 
 	@Test
 	public void decodesAnEnergyToChildrenBetween10000And35500() {
-		assertEquals(10000, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getEnergyToChildren(), 0.0);
-		assertEquals(22600, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126)).getEnergyToChildren(), 0.01);
-		assertEquals(35500, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getEnergyToChildren(), 0.0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getEnergyToChildren())
+			.isEqualTo(10000.0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126)).getEnergyToChildren())
+			.isEqualTo(22600.0, within(PRECISION));
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getEnergyToChildren())
+			.isEqualTo(35500.0);
 	}
 
 	@Test
 	public void decodesAnEggVelocityBetween0and255() {
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getEggVelocity(), 0.01);
-		assertEquals(10, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10)).getEggVelocity(), 0.01);
-		assertEquals(255, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getEggVelocity(), 0.01);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getEggVelocity()).isEqualTo(0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10)).getEggVelocity()).isEqualTo(10);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getEggVelocity()).isEqualTo(255);
 	}
 
 	@Test
 	public void decodesAnEggLayingIntervalBetween0and25500() {
-		assertEquals(0, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getEggInterval(), 0.01);
-		assertEquals(1000, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10)).getEggInterval(), 0.01);
-		assertEquals(25500, getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getEggInterval(), 0.01);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)).getEggInterval()).isEqualTo(0);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10)).getEggInterval()).isEqualTo(1000);
+		assertThat(getConcreteOrganBuilder(new Chromosome(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255)).getEggInterval()).isEqualTo(25500);
 	}
 
 	@Test
@@ -83,21 +96,21 @@ public class HeadBuilderTest extends ConcreteOrganBuilderTest {
 		int eggVelocityGene = 81;
 		int eggIntervalGene = 10;
 
-		Chromosome chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redGene, greenGene, blueGene,
+		var chromosome = new Chromosome(controlFlowGene, controlLoopGene, lengthGene, thicknessGene, redGene, greenGene, blueGene,
 			metabolicRateGene, waveBeatRatioGene, byproductGene, energyToChildrenGene, eggVelocityGene, eggIntervalGene);
 		HeadBuilder builder = getConcreteOrganBuilder(chromosome);
-		Head head = (Head) builder.buildOrgan(null, 0);
+		var head = (Head) builder.buildOrgan(null, 0);
 
 		head.growToAdultFormWithChildren();
 
-		assertEquals(30, head.getLength(), 0);
-		assertEquals(25, head.getThickness(), 0.01);
-		assertEquals(new Fiber(50, 51, 52), head.getFiber());
-		assertEquals(1.764, head.getMetabolicRate(), 0.01);
-		assertEquals(2.64, head.getWaveBeatRatio(), 0.01);
-		assertEquals(Element.NITROGEN, head.getByproduct());
-		assertEquals(22600, head.getEnergyToChildren(), 0.0);
-		assertEquals(81, head.getEggVelocity());
-		assertEquals(1000, head.getEggInterval());
+		assertThat(head.getLength()).isEqualTo(30.0);
+		assertThat(head.getThickness()).isEqualTo(25.0, within(PRECISION));
+		assertThat(head.getFiber()).isEqualTo(new Fiber(50, 51, 52));
+		assertThat(head.getMetabolicRate()).isEqualTo(1.764, within(PRECISION));
+		assertThat(head.getWaveBeatRatio()).isEqualTo(2.64, within(PRECISION));
+		assertThat(head.getByproduct()).isEqualTo(Element.NITROGEN);
+		assertThat(head.getEnergyToChildren()).isEqualTo(22600.0);
+		assertThat(head.getEggVelocity()).isEqualTo(81);
+		assertThat(head.getEggInterval()).isEqualTo(1000);
 	}
 }

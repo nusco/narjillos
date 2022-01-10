@@ -1,12 +1,12 @@
 package org.nusco.narjillos.creature;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.Thing;
 import org.nusco.narjillos.core.utilities.NumGen;
 import org.nusco.narjillos.genomics.DNA;
-
-import static org.junit.Assert.*;
 
 public class EggTest {
 
@@ -16,72 +16,72 @@ public class EggTest {
 
 	@Test
 	public void hatchesANarjilloAfterAnIncubationPeriod() {
-		assertFalse(egg.getHatchedNarjillo().isPresent());
+		assertThat(egg.getHatchedNarjillo().isPresent()).isFalse();
 
 		waitUntilItHatches(egg);
-		Narjillo narjillo = egg.getHatchedNarjillo().get();
+		var narjillo = egg.getHatchedNarjillo().get();
 
-		assertEquals(egg.getPosition(), narjillo.getPosition());
+		assertThat(narjillo.getPosition()).isEqualTo(egg.getPosition());
 	}
 
 	@Test
 	public void itsLastInteractingThingIsInitiallyNull() {
 		Thing lastInteractingThing = egg.getInteractor();
 
-		assertSame(Thing.NULL, lastInteractingThing);
+		assertThat(lastInteractingThing).isSameAs(Thing.NULL);
 	}
 
 	@Test
 	public void theHatchedNarjilloBecomesItsInteractor() {
 		waitUntilItHatches(egg);
 
-		assertSame(egg.getHatchedNarjillo().get(), egg.getInteractor());
+		assertThat(egg.getInteractor()).isSameAs(egg.getHatchedNarjillo().get());
 	}
 
 	@Test
 	public void passesItsEnergyToTheHatchedNarjillo() {
-		assertEquals(100, egg.getEnergy().getValue(), 0);
+		assertThat(egg.getEnergy().getValue()).isEqualTo(100.0);
 
 		waitUntilItHatches(egg);
-		Narjillo narjillo = egg.getHatchedNarjillo().get();
+		var narjillo = egg.getHatchedNarjillo().get();
 
-		assertEquals(0, egg.getEnergy().getValue(), 0);
-		assertEquals(100, narjillo.getEnergy().getValue(), 0);
+		assertThat(egg.getEnergy().getValue()).isEqualTo(0.0);
+		assertThat(narjillo.getEnergy().getValue()).isEqualTo(100.0);
 	}
 
 	@Test
 	public void putsDNAIntoTheHatchedNarjillo() {
 		waitUntilItHatches(egg);
-		Narjillo narjillo = egg.getHatchedNarjillo().get();
+		var narjillo = egg.getHatchedNarjillo().get();
 
-		assertSame(dna, narjillo.getDNA());
+		assertThat(narjillo.getDNA()).isSameAs(dna);
 	}
 
 	@Test
 	public void onlyHatchesOnce() {
 		waitUntilItHatches(egg);
 
-		assertFalse(egg.hatch(new NumGen(1)));
+		assertThat(egg.hatch(new NumGen(1))).isFalse();
 	}
 
 	@Test
 	public void decaysUpTo100PercentAfterHatching() {
-		assertFalse(egg.isDead());
-		assertEquals(0, egg.getFading(), 0);
+		assertThat(egg.isDead()).isFalse();
+		assertThat(egg.getFading()).isEqualTo(0.0);
 
 		waitUntilItHatches(egg);
 
 		for (int i = 0; i < 100; i++) {
-			assertFalse(egg.isDead());
-			assertEquals(i / 100.0, egg.getFading(), 0);
+			assertThat(egg.isDead()).isFalse();
+			assertThat(egg.getFading()).isEqualTo(i / 100.0);
 			egg.tick();
 		}
 
-		assertTrue(egg.isDead());
-		assertEquals(1, egg.getFading(), 0);
+		assertThat(egg.isDead()).isTrue();
+		assertThat(egg.getFading()).isEqualTo(1.0);
 
 		egg.tick();
-		assertEquals(1, egg.getFading(), 0);
+		assertThat(egg.getFading()).isEqualTo(1.0);
 	}
 
 	private void waitUntilItHatches(Egg egg) {

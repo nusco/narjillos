@@ -1,9 +1,8 @@
 package org.nusco.narjillos.core.things;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import org.junit.jupiter.api.Test;
 
 public class HashedLocationTest {
 
@@ -11,26 +10,26 @@ public class HashedLocationTest {
 	public void canBePlacedDirectly() {
 		HashedLocation hashedLocation = HashedLocation.at(10, -100);
 
-		assertThat(hashedLocation.lx, is(10L));
-		assertThat(hashedLocation.ly, is(-100L));
+		assertThat(hashedLocation.lx).isEqualTo(10L);
+		assertThat(hashedLocation.ly).isEqualTo(-100L);
 	}
 
 	@Test
 	public void hashesCoordinatesToAGrid() {
-		assertThat(HashedLocation.ofCoordinates(1, 1), is(HashedLocation.at(1, 1)));
-		assertThat(HashedLocation.ofCoordinates(299, 400), is(HashedLocation.at(1, 2)));
-		assertThat(HashedLocation.ofCoordinates(500, 1200), is(HashedLocation.at(2, 4)));
+		assertThat(HashedLocation.ofCoordinates(1, 1)).isEqualTo(HashedLocation.at(1, 1));
+		assertThat(HashedLocation.ofCoordinates(299, 400)).isEqualTo(HashedLocation.at(1, 2));
+		assertThat(HashedLocation.ofCoordinates(500, 1200)).isEqualTo(HashedLocation.at(2, 4));
 	}
 
 	@Test
 	public void hashesNegativeCoordinates() {
-		assertThat(HashedLocation.ofCoordinates(-1, -1), is(HashedLocation.at(-1, -1)));
-		assertThat(HashedLocation.ofCoordinates(-299, -400), is(HashedLocation.at(-1, -2)));
-		assertThat(HashedLocation.ofCoordinates(500, -1200), is(HashedLocation.at(2, -4)));
+		assertThat(HashedLocation.ofCoordinates(-1, -1)).isEqualTo(HashedLocation.at(-1, -1));
+		assertThat(HashedLocation.ofCoordinates(-299, -400)).isEqualTo(HashedLocation.at(-1, -2));
+		assertThat(HashedLocation.ofCoordinates(500, -1200)).isEqualTo(HashedLocation.at(2, -4));
 	}
 
 	@Test
 	public void hashesZeroCoordinatesToTheFirstGridSquare() {
-		assertThat(HashedLocation.ofCoordinates(0, -0), is(HashedLocation.at(1, 1)));
+		assertThat(HashedLocation.ofCoordinates(0, -0)).isEqualTo(HashedLocation.at(1, 1));
 	}
 }

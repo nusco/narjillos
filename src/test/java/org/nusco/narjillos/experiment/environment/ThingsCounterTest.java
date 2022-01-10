@@ -1,9 +1,9 @@
 package org.nusco.narjillos.experiment.environment;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import org.junit.jupiter.api.Test;
 
 public class ThingsCounterTest {
 
@@ -15,7 +15,7 @@ public class ThingsCounterTest {
 		thingsCounter.add("label1");
 		thingsCounter.add("label2");
 
-		assertThat(thingsCounter.count("label1"), is(2L));
+		assertThat(thingsCounter.count("label1")).isEqualTo(2);
 	}
 
 	@Test
@@ -24,16 +24,18 @@ public class ThingsCounterTest {
 		thingsCounter.add("label1");
 		thingsCounter.remove("label1");
 
-		assertThat(thingsCounter.count("label1"), is(1L));
+		assertThat(thingsCounter.count("label1")).isEqualTo(1);
 	}
 
 	@Test
 	public void returnsZeroIfNoThingWasEverAdded() {
-		assertThat(thingsCounter.count("label1"), is(0L));
+		assertThat(thingsCounter.count("label1")).isZero();
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void failsIfTryingToCountInTheNegatives() {
-		thingsCounter.remove("label1");
+
+		assertThatThrownBy(() -> thingsCounter.remove("label1"))
+			.isInstanceOf(RuntimeException.class);
 	}
 }

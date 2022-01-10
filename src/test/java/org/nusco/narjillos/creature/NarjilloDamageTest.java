@@ -1,9 +1,8 @@
 package org.nusco.narjillos.creature;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.things.LifeFormEnergy;
 import org.nusco.narjillos.genomics.DNA;
@@ -17,24 +16,25 @@ public class NarjilloDamageTest {
 	public void loosesEnergyWhenDamaged() {
 		double initialEnergy = narjillo.getEnergy().getValue();
 		narjillo.damage();
-		assertTrue(narjillo.getEnergy().getValue() < initialEnergy);
+
+		assertThat(narjillo.getEnergy().getValue() < initialEnergy).isTrue();
 	}
 
 	@Test
 	public void isNormallyNotInPain() {
-		assertFalse(narjillo.isInPain());
+		assertThat(narjillo.isInPain()).isFalse();
 	}
 
 	@Test
 	public void isInPainWhenDamaged() {
 		narjillo.damage();
-		assertTrue(narjillo.isInPain());
+		assertThat(narjillo.isInPain()).isTrue();
 	}
 
 	@Test
 	public void forgetsPainAfterATick() {
 		narjillo.damage();
 		narjillo.tick();
-		assertFalse(narjillo.isInPain());
+		assertThat(narjillo.isInPain()).isFalse();
 	}
 }

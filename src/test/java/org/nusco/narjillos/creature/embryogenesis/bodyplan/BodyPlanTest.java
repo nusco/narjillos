@@ -1,40 +1,42 @@
 package org.nusco.narjillos.creature.embryogenesis.bodyplan;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BodyPlanTest {
 
 	@Test
 	public void executesContinues() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(2, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(3, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(4, BodyPlanInstruction.CONTINUE),
 		});
 
-		String expectedBodyPlan = "1-2-3-4";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-2-3-4";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void ignoresInstructionsAfterTheStop() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(2, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(3, BodyPlanInstruction.STOP),
 			new MockOrganBuilder(4, BodyPlanInstruction.CONTINUE),
 		});
 
-		String expectedBodyPlan = "1-2-3";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-2-3";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void executesBranches() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(2, BodyPlanInstruction.BRANCH),
 			new MockOrganBuilder(3, BodyPlanInstruction.CONTINUE),
@@ -43,13 +45,14 @@ public class BodyPlanTest {
 			new MockOrganBuilder(6, BodyPlanInstruction.STOP),
 		});
 
-		String expectedBodyPlan = "1-2-(3-4, 5-6)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-2-(3-4, 5-6)";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void executesRecursiveBranches() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(2, BodyPlanInstruction.BRANCH),
 			new MockOrganBuilder(3, BodyPlanInstruction.CONTINUE),
@@ -61,26 +64,28 @@ public class BodyPlanTest {
 			new MockOrganBuilder(9, BodyPlanInstruction.STOP),
 		});
 
-		String expectedBodyPlan = "1-2-(3-4-(5, 6-7), 8-9)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-2-(3-4-(5, 6-7), 8-9)";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void ignoresInstructionsAfterTheSecondBranchStop() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.BRANCH),
 			new MockOrganBuilder(2, BodyPlanInstruction.STOP),
 			new MockOrganBuilder(3, BodyPlanInstruction.STOP),
 			new MockOrganBuilder(4, BodyPlanInstruction.CONTINUE),
 		});
 
-		String expectedBodyPlan = "1-(2, 3)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-(2, 3)";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void executesMirroring() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.MIRROR),
 			new MockOrganBuilder(2, BodyPlanInstruction.BRANCH),
 			new MockOrganBuilder(3, BodyPlanInstruction.STOP),
@@ -89,13 +94,14 @@ public class BodyPlanTest {
 			new MockOrganBuilder(6, BodyPlanInstruction.STOP),
 		});
 
-		String expectedBodyPlan = "1-(2-(3, 4), ^2-(^3, ^4), 5-6)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-(2-(3, 4), ^2-(^3, ^4), 5-6)";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void executesRecursiveMirroring() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.MIRROR),
 			new MockOrganBuilder(2, BodyPlanInstruction.MIRROR),
 			new MockOrganBuilder(3, BodyPlanInstruction.STOP),
@@ -104,13 +110,14 @@ public class BodyPlanTest {
 			new MockOrganBuilder(6, BodyPlanInstruction.STOP),
 		});
 
-		String expectedBodyPlan = "1-(2-(3, ^3, 4), ^2-(^3, 3, ^4), 5)";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-(2-(3, ^3, 4), ^2-(^3, 3, ^4), 5)";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void executesSkips() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.CONTINUE),
 			new MockOrganBuilder(2, BodyPlanInstruction.SKIP),
 			new MockOrganBuilder(3, BodyPlanInstruction.CONTINUE),
@@ -121,19 +128,21 @@ public class BodyPlanTest {
 			new MockOrganBuilder(8, BodyPlanInstruction.SKIP),
 		});
 
-		String expectedBodyPlan = "1-3-4-7";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-3-4-7";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 
 	@Test
 	public void neverSkipsTheHead() {
-		BodyPlan bodyPlan = new BodyPlan(new OrganBuilder[] {
+		var bodyPlan = new BodyPlan(new OrganBuilder[]{
 			new MockOrganBuilder(1, BodyPlanInstruction.SKIP),
 			new MockOrganBuilder(2, BodyPlanInstruction.SKIP),
 			new MockOrganBuilder(3, BodyPlanInstruction.CONTINUE),
 		});
 
-		String expectedBodyPlan = "1-3";
-		assertEquals(expectedBodyPlan, bodyPlan.buildBodyTree().toString());
+		var expectedBodyPlan = "1-3";
+
+		assertThat(bodyPlan.buildBodyTree().toString()).isEqualTo(expectedBodyPlan);
 	}
 }

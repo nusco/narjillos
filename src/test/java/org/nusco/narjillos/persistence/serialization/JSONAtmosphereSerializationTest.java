@@ -1,18 +1,16 @@
 package org.nusco.narjillos.persistence.serialization;
 
-import static org.junit.Assert.assertEquals;
-import static org.nusco.narjillos.core.chemistry.Element.HYDROGEN;
-import static org.nusco.narjillos.core.chemistry.Element.NITROGEN;
-import static org.nusco.narjillos.core.chemistry.Element.OXYGEN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.nusco.narjillos.core.chemistry.Element.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.chemistry.Atmosphere;
 
 public class JSONAtmosphereSerializationTest {
 
 	@Test
 	public void serializesAndDeserializesAtmospheres() {
-		Atmosphere atmosphere = new Atmosphere(10, 15);
+		var atmosphere = new Atmosphere(10, 15);
 
 		for (int i = 0; i < 3; i++)
 			atmosphere.convert(OXYGEN, NITROGEN);
@@ -22,10 +20,10 @@ public class JSONAtmosphereSerializationTest {
 		String json = JSON.toJson(atmosphere, Atmosphere.class);
 		Atmosphere deserialized = JSON.fromJson(json, Atmosphere.class);
 
-		assertEquals(atmosphere.getAmountOf(OXYGEN), deserialized.getAmountOf(OXYGEN), 0.0);
-		assertEquals(atmosphere.getAmountOf(HYDROGEN), deserialized.getAmountOf(HYDROGEN), 0.0);
-		assertEquals(atmosphere.getAmountOf(NITROGEN), deserialized.getAmountOf(NITROGEN), 0.0);
+		assertThat(deserialized.getAmountOf(OXYGEN)).isEqualTo(atmosphere.getAmountOf(OXYGEN));
+		assertThat(deserialized.getAmountOf(HYDROGEN)).isEqualTo(atmosphere.getAmountOf(HYDROGEN));
+		assertThat(deserialized.getAmountOf(NITROGEN)).isEqualTo(atmosphere.getAmountOf(NITROGEN));
 
-		assertEquals(atmosphere.getCatalystLevel(), deserialized.getCatalystLevel());
+		assertThat(deserialized.getCatalystLevel()).isEqualTo(atmosphere.getCatalystLevel());
 	}
 }

@@ -1,15 +1,12 @@
 package org.nusco.narjillos.genomics;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public abstract class DNALogTest {
 
@@ -19,42 +16,41 @@ public abstract class DNALogTest {
 		super();
 	}
 
-	@Before
+	@BeforeEach
 	public void createDababaseHistory() {
 		dnaLog = createNewInstance();
 	}
 
-	@After
+	@AfterEach
 	public void deleteTestDatabase() {
 		dnaLog.delete();
 	}
 
 	@Test
 	public void savesAndLoadsDna() {
-		DNA dna = new DNA(42, "{1_2_3}", 41);
-
+		var dna = new DNA(42, "{1_2_3}", 41);
 		dnaLog.save(dna);
-		DNA retrieved = dnaLog.getDna(42);
 
-		assertNotNull(retrieved);
-		assertEquals(retrieved.getId(), dna.getId());
-		assertEquals(retrieved.toString(), dna.toString());
-		assertEquals(retrieved.getParentId(), dna.getParentId());
+		var retrieved = dnaLog.getDna(42);
+
+		assertThat(retrieved).isNotNull();
+		assertThat(dna.getId()).isEqualTo(retrieved.getId());
+		assertThat(dna.toString()).isEqualTo(retrieved.toString());
+		assertThat(dna.getParentId()).isEqualTo(retrieved.getParentId());
 	}
 
 	@Test
 	public void returnsNullIfTheDnaIsNotInTheLog() {
-		assertNull(dnaLog.getDna(42));
+		assertThat(dnaLog.getDna(42)).isNull();
 	}
 
 	@Test
 	public void silentlySkipsWritingIfADnaIsAlreadyInTheLog() {
-		DNA dna = new DNA(42, "{1_2_3}", 41);
-
+		var dna = new DNA(42, "{1_2_3}", 41);
 		dnaLog.save(dna);
 		dnaLog.save(dna);
 
-		assertEquals(1, dnaLog.getAllDna().size());
+		assertThat(dnaLog.getAllDna()).hasSize(1);
 	}
 
 	@Test
@@ -64,25 +60,25 @@ public abstract class DNALogTest {
 
 		List<DNA> genePool = dnaLog.getAllDna();
 
-		assertEquals(2, genePool.size());
-		assertEquals(dnaLog.getDna(42), genePool.get(0));
-		assertEquals(dnaLog.getDna(43), genePool.get(1));
+		assertThat(genePool).hasSize(2);
+		assertThat(genePool.get(0)).isEqualTo(dnaLog.getDna(42));
+		assertThat(genePool.get(1)).isEqualTo(dnaLog.getDna(43));
 	}
 
 	@Test
 	public void returnsLiveDnaSortedById() {
-		DNA dna1 = new DNA(42, "{1}", 41);
+		var dna1 = new DNA(42, "{1}", 41);
+		var dna2 = new DNA(43, "{2}", 41);
+		var dna3 = new DNA(41, "{3}", 41);
 		dnaLog.save(dna1);
-		DNA dna2 = new DNA(43, "{2}", 41);
 		dnaLog.save(dna2);
-		DNA dna3 = new DNA(41, "{3}", 41);
 		dnaLog.save(dna3);
 
 		dnaLog.markAsDead(42);
 
-		assertEquals(dna3, dnaLog.getLiveDna().get(0));
-		assertFalse(dnaLog.getLiveDna().contains(dna1));
-		assertEquals(dna2, dnaLog.getLiveDna().get(1));
+		assertThat(dnaLog.getLiveDna().get(0)).isEqualTo(dna3);
+		assertThat(dnaLog.getLiveDna().contains(dna1)).isFalse();
+		assertThat(dnaLog.getLiveDna().get(1)).isEqualTo(dna2);
 	}
 
 	protected abstract DNALog createNewInstance();

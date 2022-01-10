@@ -1,14 +1,12 @@
 package org.nusco.narjillos.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.ExperimentHistoryEntry;
 import org.nusco.narjillos.experiment.SimpleExperiment;
@@ -17,12 +15,12 @@ public class PersistentHistoryLogTest {
 
 	private PersistentHistoryLog historyLog;
 
-	@Before
+	@BeforeEach
 	public void createTestDababase() {
 		historyLog = new PersistentHistoryLog("123-TESTING");
 	}
 
-	@After
+	@AfterEach
 	public void deleteTestDatabase() {
 		historyLog.close();
 		historyLog.delete();
@@ -30,13 +28,13 @@ public class PersistentHistoryLogTest {
 
 	@Test
 	public void doesNotRaiseAnErrorIfConnectingToTheSameDatabaseFromMultiplePlaces() {
-		PersistentHistoryLog logWithAnotherConnectionToTheSameDb = new PersistentHistoryLog("123-TESTING");
+		var logWithAnotherConnectionToTheSameDb = new PersistentHistoryLog("123-TESTING");
 		logWithAnotherConnectionToTheSameDb.close();
 	}
 
 	@Test
 	public void savesAndLoadsEntries() {
-		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
+		var historyLog = new PersistentHistoryLog("123-TESTING");
 
 		Experiment experiment = new SimpleExperiment();
 
@@ -49,13 +47,13 @@ public class PersistentHistoryLogTest {
 
 		ExperimentHistoryEntry latestStats = historyLog.getLatestEntry();
 
-		assertNotNull(latestStats);
-		assertEquals(new ExperimentHistoryEntry(experiment), latestStats);
+		assertThat(latestStats).isNotNull();
+		assertThat(latestStats).isEqualTo(new ExperimentHistoryEntry(experiment));
 	}
 
 	@Test
 	public void silentlySkipsWritingIfAnEntryIsAlreadyInTheDatabase() {
-		PersistentHistoryLog historyLog = new PersistentHistoryLog("123-TESTING");
+		var historyLog = new PersistentHistoryLog("123-TESTING");
 
 		Experiment experiment = new SimpleExperiment();
 
@@ -69,14 +67,14 @@ public class PersistentHistoryLogTest {
 
 		List<ExperimentHistoryEntry> stats = historyLog.getEntries();
 
-		assertEquals(2, stats.size());
+		assertThat(stats).hasSize(2);
 	}
 
 	@Test
 	public void returnsNullIfThereAreNoEntriesInTheDatabase() {
-		PersistentHistoryLog unknownDatabaseNameLog = new PersistentHistoryLog("unknown_experiment");
+		var unknownDatabaseNameLog = new PersistentHistoryLog("unknown_experiment");
 		try {
-			assertNull(unknownDatabaseNameLog.getLatestEntry());
+			assertThat(unknownDatabaseNameLog.getLatestEntry()).isNull();
 		} finally {
 			unknownDatabaseNameLog.close();
 			unknownDatabaseNameLog.delete();

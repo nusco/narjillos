@@ -1,0 +1,12 @@
+// Needed to use a snapshot version of the JavaFX plugin that
+// supports building on M1 Macs
+// See: https://github.com/openjfx/javafx-gradle-plugin/pull/113
+pluginManagement {
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        gradlePluginPortal()
+    }
+}
+
+// Useful in CI environments
+rootProject.name = 'narjillos'

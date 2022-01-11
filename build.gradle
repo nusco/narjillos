@@ -1,5 +1,3 @@
-// Plugins
-
 plugins {
     id 'application'
 
@@ -9,7 +7,9 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.11-SNAPSHOT'     // needed for M1 Mac support
 }
 
-// Basic Configuration
+version = '1.0'
+
+group = 'com.example.javamod'
 
 version = '0.8.1'
 
@@ -28,6 +28,7 @@ application {
 
 javafx {
     // The correct jars are automatically added everywhere they are needed
+    // 17.0.1 should support M1 Macs
     version = '17.0.1'
     modules = [ 'javafx.controls' ]
 }
@@ -101,93 +102,6 @@ task testAll(dependsOn: ['test', 'testDeterministic', 'testPerformance']) {
 }
 
 // Backlog Management
-
-task(bl, dependsOn: 'build', type: JavaExec) {
-    mainClass = 'org.nusco.narjillos.application.Backlog'
-    classpath = sourceSets.main.runtimeClasspath
-    args commandLineArgsOr('all')
-}
-
-task(backlog, dependsOn: 'bl') {
-    description = 'Prints the top of the backlog. Also aliased to \'bl\'.'
-    group = 'development'
-}
-
-// Packaging
-
-// TODO: remove these once the issue with duplicatesStrategy has been fixed
-// (see: https://github.com/gradle/gradle/issues/17236)
-tasks.named('distTar') { duplicatesStrategy = 'include' }
-tasks.named('distZip') { duplicatesStrategy = 'include' }
-tasks.named('installDist') { duplicatesStrategy = 'include' }
-// END TODO
-
-applicationDistribution.from(
-  files(
-    'version',
-    'LICENSE',
-    'README.md',
-    'config.yaml'
-  )
-)
-
-task writeDockerfile() {
-    description = 'Generates a new Dockerfile for the current version.'
-    def dockerfile = new File('Dockerfile')
-    dockerfile.write ""
-    dockerfile << "FROM java\n"
-    dockerfile << "MAINTAINER Paolo \"Nusco\" Perrotta <paolo.nusco.perrotta@gmail.com>\n\n"
-    dockerfile << "RUN wget https://github.com/nusco/narjillos/releases/download/v0.8.1/narjillos.zip -O narjillos.zip && unzip -o narjillos.zip && rm narjillos.zip\n"
-    dockerfile << "WORKDIR narjillos\n"
-    dockerfile << "CMD sh narjillos -f -s\n"
-}
-
-task createStartupScripts(dependsOn: 'installDist') {
-    createScript('lab', 'org.nusco.narjillos.Lab')
-    createScript('dnabrowser', 'org.nusco.narjillos.application.DNABrowserRunner')
-}
-
-task release(dependsOn: ['writeDockerfile', 'testAll', 'createStartupScripts', 'assemble']) {
-    description = 'Runs all tests and packages a release.'
-    group = 'distribution'
-}
-
-// Helpers
-
-def createProgramTask(taskName, mainClassName, taskDescription) {
-    tasks.create(name: taskName, type: JavaExec) {
-        description = taskDescription
-        group = 'programs'
-        mainClass = mainClassName
-        classpath = sourceSets.main.runtimeClasspath
-        args commandLineArgsOr([])
-    }
-}
-
-def commandLineArgsOr(defaultArgs) {
-    if (project.hasProperty('args') && project.getProperty('args').trim().length() > 0)
-        return project.args.split('\\s+')
-    else
-        return defaultArgs
-}
-
-def createScript(name, mainClassName) {
-    def taskName = name + 'StartScript'
-    tasks.create(name: taskName, type: CreateStartScripts) {
-        outputDir = new File(buildDir, 'scripts')
-        mainClass = mainClassName
-        applicationName = name
-        classpath = tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + configurations.runtimeClasspath
-    }
-
-    tasks[taskName].dependsOn(project.jar)
-
-    applicationDistribution.with {
-        into('bin/') {
-            from(tasks[taskName])
-            fileMode = 0755
-        }
-    }
-}
+=======
 
 */

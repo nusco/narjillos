@@ -323,7 +323,8 @@ Try removing all energy sources except for food: food_density_per_block, initial
 
 + Issue warning when running on CPU with the "wrong" word size
   We don't use strictfp, because it harms performance. So you could get non-deterministic results if you run
-  on a CPU with a different flotpoint precision than the expected one. NOTE: Use the latest Java feature? Or does it also harm performance?
+  on a CPU with a different flotpoint precision than the expected one. NOTE: Maybe use the strict FP in the latest
+  Javas? Or does it also harm performance?
 
 
 ##Packaged Application

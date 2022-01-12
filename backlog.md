@@ -16,6 +16,9 @@ Java has a modules system now. Use it.
 * Fix distribution
 Use jpackage, probably remove Docker build, and possibly remove batch files. At the very least, have a Mac build. Also consider making Windows and Linux builds.
 
+* Fix localization bug
+In human-readable formatting test. (Reported by Cipster.)
+
 * Fix Travis Build
 It's apparently broken.
 
@@ -320,7 +323,7 @@ Try removing all energy sources except for food: food_density_per_block, initial
 
 + Issue warning when running on CPU with the "wrong" word size
   We don't use strictfp, because it harms performance. So you could get non-deterministic results if you run
-  on a CPU with a different flotpoint precision than the expected one.  
+  on a CPU with a different flotpoint precision than the expected one. NOTE: Use the latest Java feature? Or does it also harm performance?
 
 
 ##Packaged Application

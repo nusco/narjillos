@@ -1,8 +1,8 @@
 package org.nusco.narjillos.creature.body;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 
 public class NeuralConnectionsTest {
@@ -20,9 +20,9 @@ public class NeuralConnectionsTest {
 
 		head.tick(0, 0, 1);
 
-		assertTrue(nerve1.clicked);
-		assertTrue(nerve2.clicked);
-		assertTrue(nerve3.clicked);
+		assertThat(nerve1.clicked).isTrue();
+		assertThat(nerve2.clicked).isTrue();
+		assertThat(nerve3.clicked).isTrue();
 	}
 
 	static class ClickNerve implements Nerve {

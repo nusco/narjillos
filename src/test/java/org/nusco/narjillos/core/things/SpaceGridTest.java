@@ -1,17 +1,15 @@
 package org.nusco.narjillos.core.things;
 
-import org.junit.Test;
-import org.nusco.narjillos.core.geometry.BoundingBox;
-import org.nusco.narjillos.core.geometry.Vector;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
+import org.nusco.narjillos.core.geometry.BoundingBox;
+import org.nusco.narjillos.core.geometry.Vector;
 
 public class SpaceGridTest {
 
@@ -19,31 +17,28 @@ public class SpaceGridTest {
 
 	@Test
 	public void addsThings() {
-		Thing thing = new TestThing(Vector.cartesian(1000, 2000));
+		var thing = new TestThing(Vector.cartesian(1000, 2000));
 
 		space.add(thing);
 
-		assertThat(space.getAll(thing.getLabel()), contains(thing));
+		assertThat(space.getAll(thing.getLabel())).contains(thing);
 	}
 
 	@Test
 	public void returnsThingsByLabel() {
-		Thing thing1 = new TestThing(Vector.cartesian(1, 1)) {
-
+		var thing1 = new TestThing(Vector.cartesian(1, 1)) {
 			@Override
 			public String getLabel() {
 				return "a";
 			}
 		};
-		Thing thing2 = new TestThing(Vector.cartesian(2, 2)) {
-
+		var thing2 = new TestThing(Vector.cartesian(2, 2)) {
 			@Override
 			public String getLabel() {
 				return "b";
 			}
 		};
-		Thing thing3 = new TestThing(Vector.cartesian(1000, 1000)) {
-
+		var thing3 = new TestThing(Vector.cartesian(1000, 1000)) {
 			@Override
 			public String getLabel() {
 				return "a";
@@ -54,15 +49,16 @@ public class SpaceGridTest {
 		space.add(thing2);
 		space.add(thing3);
 
-		assertThat(space.getAll("a"), contains(thing1, thing3));
+		assertThat(space.getAll("a")).contains(thing1, thing3);
 	}
 
-	@Test(expected=RuntimeException.class)
+	@Test
 	public void throwsExceptionIfAThingIsTooLargeForTheCurrentGrid() {
 		Thing thing = mock(Thing.class);
-		when(thing.getRadius()).thenReturn(HashedLocation.GRID_SIZE + 1d);
+		when(thing.getRadius()).thenReturn(HashedLocation.GRID_SIZE + 1.0);
 
-		space.add(thing);
+		assertThatThrownBy(() -> space.add(thing))
+			.isInstanceOf(RuntimeException.class);
 	}
 
 	@Test
@@ -72,9 +68,9 @@ public class SpaceGridTest {
 		space.add(thing);
 		space.remove(thing);
 
-		assertThat(space.getAll(""), is(emptyCollectionOf(Thing.class)));
-		assertThat(space.getHashedLocationsOf(thing).isPresent(), is(false));
-		assertThat(space.getThingsAtHashedLocation(1, 1), is(emptyCollectionOf(Thing.class)));
+		assertThat(space.getAll("")).isEmpty();
+		assertThat(space.getHashedLocationsOf(thing).isPresent()).isFalse();
+		assertThat(space.getThingsAtHashedLocation(1, 1)).isEmpty();
 	}
 
 	@Test
@@ -83,7 +79,7 @@ public class SpaceGridTest {
 
 		space.add(punctiformThing);
 
-		assertThat(space.getHashedLocationsOf(punctiformThing).get(), contains(HashedLocation.at(-3, 11)));
+		assertThat(space.getHashedLocationsOf(punctiformThing).get()).contains(HashedLocation.at(-3, 11));
 	}
 
 	@Test
@@ -94,12 +90,12 @@ public class SpaceGridTest {
 		space.add(thing);
 
 		final Set<HashedLocation> hashedLocationsOf = space.getHashedLocationsOf(thing).get();
-		assertThat(hashedLocationsOf, contains(
+		assertThat(hashedLocationsOf).contains(
 			HashedLocation.at(-1, 1),
 			HashedLocation.at(-1, 2),
 			HashedLocation.at(1, 2),
 			HashedLocation.at(1, 1)
-		));
+		);
 	}
 
 	@Test
@@ -112,7 +108,7 @@ public class SpaceGridTest {
 		space.add(punctiformThing2);
 		space.add(punctiformThing3);
 
-		assertThat(space.getThingsAtHashedLocation(4, 11), contains(punctiformThing1, punctiformThing2));
+		assertThat(space.getThingsAtHashedLocation(4, 11)).contains(punctiformThing1, punctiformThing2);
 	}
 
 	@Test
@@ -125,17 +121,17 @@ public class SpaceGridTest {
 		space.add(thing2);
 		space.add(thing3);
 
-		assertThat(space.getAll("thing"), contains(thing1, thing2, thing3));
+		assertThat(space.getAll("thing")).contains(thing1, thing2, thing3);
 	}
 
 	@Test
 	public void identifiesSpecificThings() {
-		TestThing thing = new TestThing(Vector.cartesian(100, 200));
+		Thing thing = new TestThing(Vector.cartesian(100, 200));
 
-		assertFalse(space.contains(thing));
+		assertThat(space.contains(thing)).isFalse();
 
 		space.add(thing);
 
-		assertTrue(space.contains(thing));
+		assertThat(space.contains(thing)).isTrue();
 	}
 }

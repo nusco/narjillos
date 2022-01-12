@@ -1,36 +1,36 @@
 package org.nusco.narjillos.core.utilities;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NumGenTest {
 
 	@Test
 	public void generatesADeterministicSequenceOfNumbers() {
-		NumGen numGen1 = new NumGen(123);
-		NumGen numGen2 = new NumGen(123);
+		var numGen1 = new NumGen(123);
+		var numGen2 = new NumGen(123);
 
 		assertAreInSynch(numGen1, numGen2);
 	}
 
 	@Test
 	public void generatesASerialNumber() {
-		NumGen numGen = new NumGen(123);
+		var numGen = new NumGen(123);
 
-		assertEquals(1, numGen.nextSerial());
-		assertEquals(2, numGen.nextSerial());
+		assertThat(numGen.nextSerial()).isEqualTo(1);
+		assertThat(numGen.nextSerial()).isEqualTo(2);
 	}
 
 	@Test
 	public void throwsAnExceptionIfCalledFromMultipleThreads() throws InterruptedException {
-		final NumGen numGen = new NumGen(123456);
+		var numGen = new NumGen(123456);
 		numGen.nextByte();
 
-		final ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();
+		var results = new ConcurrentLinkedQueue<String>();
 
 		new Thread(() -> {
 			try {
@@ -45,7 +45,7 @@ public class NumGenTest {
 		while (results.isEmpty())
 			Thread.sleep(10);
 
-		assertTrue(results.peek().startsWith("NumGen accessed from multiple threads"));
+		assertThat(results.peek()).startsWith("NumGen accessed from multiple threads");
 	}
 
 	private void assertAreInSynch(NumGen numGen1, NumGen numGen2) {

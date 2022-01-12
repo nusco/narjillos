@@ -1,13 +1,13 @@
 package org.nusco.narjillos.application;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.junit.AfterClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.environment.Ecosystem;
@@ -73,7 +73,7 @@ public class DeterministicExperimentTest {
 		System.exit(0); // otherwise Gradle won't exit (god knows why)
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void deleteDatabases() {
 		genePoolLog1.delete();
 		historyLog1.delete();
@@ -145,7 +145,7 @@ public class DeterministicExperimentTest {
 			Files.write(new File("json2").toPath(), json2.getBytes());
 
 		// Did it work?
-		assertEquals(json1, json2);
+		assertThat(json1).isEqualTo(json2);
 	}
 
 	private static void maybeShowProgress(boolean showProgress, int cycle, int totalCycles) {

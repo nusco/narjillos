@@ -1,12 +1,12 @@
 package org.nusco.narjillos.application;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.geometry.FastMath;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.HistoryLog;
@@ -55,12 +55,12 @@ public class PerformanceTest {
 		System.exit(0); // exit Gradle
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void deleteDatabase() {
 		dnaLog.delete();
 	}
 
-	@Before
+	@BeforeEach
 	public void initializeTicks() {
 		ticks = 1500;
 	}
@@ -86,8 +86,10 @@ public class PerformanceTest {
 
 		long tps = getTicksPerSecond();
 
-		String errorMessage = "PERFORMANCE FAILURE: slower than expected (" + tps + " ticks per second)";
-		assertTrue(errorMessage, tps > EXPECTED_MINIMUM_TICKS_PER_SECOND);
+		var errorMessage = "PERFORMANCE FAILURE: slower than expected (" + tps + " ticks per second)";
+		assertThat(tps > EXPECTED_MINIMUM_TICKS_PER_SECOND)
+				.as(errorMessage)
+				.isTrue();
 	}
 
 	private static long getTicksPerSecond() {

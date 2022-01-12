@@ -1,52 +1,51 @@
 package org.nusco.narjillos.core.things;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.configuration.Configuration;
 
 public class EnergyTest {
 
-	private final double initialValue = 10;
+	private static final double PRECISION_0001 = 0.001;
 
+	private final double initialValue = 10;
 	private final double lifespan = 100;
 
 	private final Energy energy = new LifeFormEnergy(initialValue, lifespan);
-
 	private final Energy otherEnergy = Energy.INFINITE;
 
 	@Test
 	public void itStartsWithTheInitialValue() {
-		assertEquals(energy.getValue(), initialValue, 0.0);
+		assertThat(initialValue).isEqualTo(energy.getValue());
 	}
 
 	@Test
 	public void canBeDepleted() {
-		assertFalse(energy.isZero());
+		assertThat(energy.isZero()).isFalse();
 
 		energy.tick(-initialValue);
 
-		assertTrue(energy.isZero());
+		assertThat(energy.isZero()).isTrue();
 	}
 
 	@Test
 	public void cannotFallBelowZero() {
 		energy.tick(-initialValue);
-		assertEquals(0, energy.getValue(), 0.001);
+		assertThat(energy.getValue()).isEqualTo(0, within(PRECISION_0001));
 
 		energy.tick(-10);
-		assertEquals(0, energy.getValue(), 0.001);
+		assertThat(energy.getValue()).isEqualTo(0, within(PRECISION_0001));
 	}
 
 	@Test
 	public void cannotIncreaseAgainAfterBeingDepleted() {
 		energy.tick(-initialValue);
-		assertEquals(0, energy.getValue(), 0.001);
+		assertThat(energy.getValue()).isEqualTo(0, within(PRECISION_0001));
 
 		energy.tick(10);
-		assertEquals(0, energy.getValue(), 0.001);
+		assertThat(energy.getValue()).isEqualTo(0, within(PRECISION_0001));
 	}
 
 	@Test
@@ -54,7 +53,7 @@ public class EnergyTest {
 		energy.absorb(otherEnergy);
 
 		double expected = initialValue * Configuration.CREATURE_MAX_ENERGY_TO_INITIAL_ENERGY;
-		assertEquals(expected, energy.getValue(), 0.001);
+		assertThat(energy.getValue()).isEqualTo(expected, within(PRECISION_0001));
 	}
 
 	@Test
@@ -64,8 +63,8 @@ public class EnergyTest {
 
 		energy.absorb(otherEnergy);
 
-		assertEquals(initialEnergy, energy.getValue(), 0.00001);
-		assertEquals(energy.getMaximumValue(), energy.getValue(), 0.00001);
+		assertThat(energy.getValue()).isEqualTo(initialEnergy, within(0.00001));
+		assertThat(energy.getValue()).isEqualTo(energy.getMaximumValue(), within(0.00001));
 	}
 
 	@Test
@@ -80,11 +79,11 @@ public class EnergyTest {
 		energy.absorb(otherEnergy);
 		double fullEnergyWhenSlightlyOlder = energy.getValue();
 
-		assertTrue(fullEnergyWhenStillYoung > fullEnergyWhenSlightlyOlder);
+		assertThat(fullEnergyWhenStillYoung > fullEnergyWhenSlightlyOlder).isTrue();
 
 		energy.absorb(otherEnergy);
 
-		assertEquals(fullEnergyWhenSlightlyOlder, energy.getValue(), 0.001);
+		assertThat(energy.getValue()).isEqualTo(fullEnergyWhenSlightlyOlder, within(PRECISION_0001));
 	}
 
 	@Test
@@ -94,18 +93,18 @@ public class EnergyTest {
 		for (int i = 0; i < lifespan - 1; i++)
 			energy.tick(0);
 
-		assertFalse(energy.isZero());
+		assertThat(energy.isZero()).isFalse();
 
 		energy.tick(0);
 
-		assertTrue(energy.isZero());
+		assertThat(energy.isZero()).isTrue();
 	}
 
 	@Test
 	public void canBeDroppedToZero() {
 		energy.dropToZero();
 
-		assertTrue(energy.isZero());
+		assertThat(energy.isZero()).isTrue();
 	}
 
 	@Test
@@ -113,12 +112,12 @@ public class EnergyTest {
 		double value = energy.getValue();
 		energy.damage();
 
-		assertTrue(energy.getValue() < value);
+		assertThat(energy.getValue() < value).isTrue();
 
 		for (int i = 0; i < 100; i++)
 			energy.damage();
 
-		assertTrue(energy.isZero());
+		assertThat(energy.isZero()).isTrue();
 	}
 
 	private void fillToTheMax() {

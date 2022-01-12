@@ -1,10 +1,10 @@
 package org.nusco.narjillos.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.utilities.Version;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.experiment.SimpleExperiment;
@@ -13,12 +13,12 @@ public class ExperimentLogTest {
 
 	private ExperimentLog experimentLog;
 
-	@Before
+	@BeforeEach
 	public void createDababase() {
 		experimentLog = new ExperimentLog("test-" + Version.read());
 	}
 
-	@After
+	@AfterEach
 	public void deleteDatabase() {
 		experimentLog.delete();
 	}
@@ -28,6 +28,6 @@ public class ExperimentLogTest {
 		Experiment experiment = new SimpleExperiment();
 		experimentLog.save(experiment);
 
-		assertEquals(experiment.getId(), experimentLog.load().getId());
+		assertThat(experimentLog.load().getId()).isEqualTo(experiment.getId());
 	}
 }

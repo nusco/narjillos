@@ -1,58 +1,60 @@
 package org.nusco.narjillos.creature.body;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FiberTest {
 
+	private static final double PRECISION = 0.01;
+
 	@Test
 	public void hasProportionalComponents_1() {
-		Fiber fiber = new Fiber(100, 100, 100);
+		var fiber = new Fiber(100, 100, 100);
 
-		assertEquals(0.33, fiber.getPercentOfRed(), 0.01);
-		assertEquals(0.33, fiber.getPercentOfGreen(), 0.01);
-		assertEquals(0.33, fiber.getPercentOfBlue(), 0.01);
+		assertThat(fiber.getPercentOfRed()).isEqualTo(0.33, within(PRECISION));
+		assertThat(fiber.getPercentOfGreen()).isEqualTo(0.33, within(PRECISION));
+		assertThat(fiber.getPercentOfBlue()).isEqualTo(0.33, within(PRECISION));
 	}
 
 	@Test
 	public void hasProportionalComponents_2() {
-		Fiber fiber = new Fiber(100, 100, 0);
+		var fiber = new Fiber(100, 100, 0);
 
-		assertEquals(0.5, fiber.getPercentOfRed(), 0.01);
-		assertEquals(0.5, fiber.getPercentOfGreen(), 0.01);
-		assertEquals(0.0, fiber.getPercentOfBlue(), 0.01);
+		assertThat(fiber.getPercentOfRed()).isEqualTo(0.5, within(PRECISION));
+		assertThat(fiber.getPercentOfGreen()).isEqualTo(0.5, within(PRECISION));
+		assertThat(fiber.getPercentOfBlue()).isEqualTo(0.0, within(PRECISION));
 	}
 
 	@Test
 	public void hasProportionalComponents_3() {
-		Fiber fiber = new Fiber(100, 0, 0);
+		var fiber = new Fiber(100, 0, 0);
 
-		assertEquals(1.0, fiber.getPercentOfRed(), 0.01);
-		assertEquals(0.0, fiber.getPercentOfGreen(), 0.01);
-		assertEquals(0.0, fiber.getPercentOfBlue(), 0.01);
+		assertThat(fiber.getPercentOfRed()).isEqualTo(1.0, within(PRECISION));
+		assertThat(fiber.getPercentOfGreen()).isEqualTo(0.0, within(PRECISION));
+		assertThat(fiber.getPercentOfBlue()).isEqualTo(0.0, within(PRECISION));
 	}
 
 	@Test
 	public void clipsComponentsBelowZero() {
-		Fiber fiber = new Fiber(-100, 100, 100);
+		var fiber = new Fiber(-100, 100, 100);
 
-		assertEquals(new Fiber(0, 100, 100), fiber);
+		assertThat(fiber).isEqualTo(new Fiber(0, 100, 100));
 	}
 
 	@Test
 	public void clipsComponentsAbove255() {
-		Fiber fiber = new Fiber(300, 100, 100);
+		var fiber = new Fiber(300, 100, 100);
 
-		assertEquals(new Fiber(255, 100, 100), fiber);
+		assertThat(fiber).isEqualTo(new Fiber(255, 100, 100));
 	}
 
 	@Test
 	public void canShift() {
-		Fiber fiber = new Fiber(100, 200, 10);
+		var fiber = new Fiber(100, 200, 10);
+		var shiftedFiber = fiber.shift(-10, 10, 1);
 
-		Fiber shiftedFiber = fiber.shift(-10, 10, 1);
-
-		assertEquals(new Fiber(90, 210, 11), shiftedFiber);
+		assertThat(shiftedFiber).isEqualTo(new Fiber(90, 210, 11));
 	}
 }

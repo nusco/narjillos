@@ -1,8 +1,8 @@
 package org.nusco.narjillos.persistence.serialization;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.creature.Egg;
 import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.experiment.Experiment;
@@ -23,11 +23,11 @@ public class JSONExperimentSerializationTest {
 		String json = JSON.toJson(experiment, Experiment.class);
 		Experiment deserialized = JSON.fromJson(json, Experiment.class);
 
-		assertEquals(experiment.getId(), deserialized.getId());
-		assertEquals(experiment.getTotalRunningTimeInSeconds(), deserialized.getTotalRunningTimeInSeconds());
-		assertEquals(experiment.getEcosystem().getCount(Egg.LABEL), deserialized.getEcosystem().getCount(Egg.LABEL));
-		assertEquals(experiment.getEcosystem().getCount(FoodPellet.LABEL), deserialized.getEcosystem().getCount(FoodPellet.LABEL));
-		assertEquals(experiment.getEcosystem().getCount(Narjillo.LABEL), deserialized.getEcosystem().getCount(Narjillo.LABEL));
-		assertEquals(10, deserialized.getTicksChronometer().getTotalTicks());
+		assertThat(deserialized.getId()).isEqualTo(experiment.getId());
+		assertThat(deserialized.getTotalRunningTimeInSeconds()).isEqualTo(experiment.getTotalRunningTimeInSeconds());
+		assertThat(deserialized.getEcosystem().getCount(Egg.LABEL)).isEqualTo(experiment.getEcosystem().getCount(Egg.LABEL));
+		assertThat(deserialized.getEcosystem().getCount(FoodPellet.LABEL)).isEqualTo(experiment.getEcosystem().getCount(FoodPellet.LABEL));
+		assertThat(deserialized.getEcosystem().getCount(Narjillo.LABEL)).isEqualTo(experiment.getEcosystem().getCount(Narjillo.LABEL));
+		assertThat(deserialized.getTicksChronometer().getTotalTicks()).isEqualTo(10);
 	}
 }

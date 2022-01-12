@@ -1,21 +1,20 @@
 package org.nusco.narjillos.creature;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.nusco.narjillos.core.things.Energy;
-import org.nusco.narjillos.core.things.LifeFormEnergy;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.nusco.narjillos.core.things.Energy;
+import org.nusco.narjillos.core.things.LifeFormEnergy;
 
 public class NarjilloTest {
 
 	final Energy energy = new LifeFormEnergy(10, Double.MAX_VALUE);
 	final Narjillo narjillo = mock(Narjillo.class);
 
-	@Before
+	@BeforeEach
 	public void setupMocks() {
 		when(narjillo.getEnergy()).thenReturn(energy);
 		when(narjillo.isDead()).thenCallRealMethod();
@@ -23,10 +22,10 @@ public class NarjilloTest {
 
 	@Test
 	public void diesWhenItsEnergyDropsToZero() {
-		assertThat(narjillo.isDead(), is(false));
+		assertThat(narjillo.isDead()).isFalse();
 
 		energy.dropToZero();
 
-		assertThat(narjillo.isDead(), is(true));
+		assertThat(narjillo.isDead()).isTrue();
 	}
 }

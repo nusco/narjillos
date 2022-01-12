@@ -1,8 +1,9 @@
 package org.nusco.narjillos.creature.body;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.core.geometry.ZeroVectorAngleException;
 
@@ -12,8 +13,8 @@ public class MouthTest {
 
 	@Test
 	public void pointsAtTarget() {
-		Vector position = Vector.cartesian(10, 10);
-		Vector target = Vector.cartesian(20, 0);
+		var position = Vector.cartesian(10, 10);
+		var target = Vector.cartesian(20, 0);
 		tickManyTimes(position, target, 0);
 
 		assertMouthPointsTowards(Vector.polar(-45, 1));
@@ -21,7 +22,7 @@ public class MouthTest {
 
 	@Test
 	public void tracksMovingTarget() {
-		Vector position = Vector.cartesian(0, 0);
+		var position = Vector.cartesian(0, 0);
 		tickManyTimes(position, Vector.cartesian(10, -10), 0);
 		tickManyTimes(position, Vector.cartesian(10, 10), 0);
 
@@ -30,8 +31,8 @@ public class MouthTest {
 
 	@Test
 	public void locksAtAMaximumOf135RelativeDegrees() {
-		Vector position = Vector.cartesian(0, 0);
-		Vector target = Vector.cartesian(-10, 0);
+		var position = Vector.cartesian(0, 0);
+		var target = Vector.cartesian(-10, 0);
 
 		tickManyTimes(position, target, 0);
 		assertMouthPointsTowards(Vector.polar(135, 1));
@@ -39,8 +40,8 @@ public class MouthTest {
 
 	@Test
 	public void locksAtAMinimumOfMinus135RelativeDegrees() {
-		Vector position = Vector.cartesian(0, 0);
-		Vector target = Vector.cartesian(-10, -1);
+		var position = Vector.cartesian(0, 0);
+		var target = Vector.cartesian(-10, -1);
 
 		tickManyTimes(position, target, 0);
 		assertMouthPointsTowards(Vector.polar(-135, 1));
@@ -48,7 +49,7 @@ public class MouthTest {
 
 	@Test
 	public void keepsPointingInTheSameDirectionIfTheTargetIsNotVisible() {
-		Vector position = Vector.cartesian(0, 0);
+		var position = Vector.cartesian(0, 0);
 		tickManyTimes(position, Vector.cartesian(-10, 1), 0);
 		tickManyTimes(position, Vector.cartesian(-10, -1), 0);
 
@@ -57,8 +58,8 @@ public class MouthTest {
 
 	@Test
 	public void keepsTheLockedDirectionUntilTheTargetIsVisibleAgain() {
-		Vector position = Vector.cartesian(0, 0);
-		Vector target = Vector.cartesian(-10, 0);
+		var position = Vector.cartesian(0, 0);
+		var target = Vector.cartesian(-10, 0);
 
 		tickManyTimes(position, target, 0);
 		assertMouthPointsTowards(Vector.polar(135, 1));
@@ -77,7 +78,7 @@ public class MouthTest {
 
 	private void assertMouthPointsTowards(Vector direction) {
 		try {
-			assertEquals(mouth.getDirection().getAngle(), direction.getAngle(), 1);
+			assertThat(direction.getAngle()).isEqualTo(mouth.getDirection().getAngle(), within(1.0));
 		} catch (ZeroVectorAngleException e) {
 			throw new RuntimeException(e);
 		}

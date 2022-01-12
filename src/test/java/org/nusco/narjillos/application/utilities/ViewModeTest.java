@@ -1,8 +1,8 @@
 package org.nusco.narjillos.application.utilities;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ViewModeTest {
 
@@ -12,36 +12,33 @@ public class ViewModeTest {
 	public void turningOffTheLightSwitchesToHighSpeed() {
 		viewMode.toggleLight();
 
-		assertEquals(Speed.FAST, viewMode.getSpeed());
+		assertThat(viewMode.getSpeed()).isEqualTo(Speed.FAST);
 	}
 
 	@Test
 	public void turningOnTheLightSwitchesToRealtimeSpeed() {
 		viewMode.toggleLight();
-		assertEquals(Speed.FAST, viewMode.getSpeed());
+		assertThat(viewMode.getSpeed()).isEqualTo(Speed.FAST);
 
 		viewMode.toggleLight();
-
-		assertEquals(Speed.REALTIME, viewMode.getSpeed());
+		assertThat(viewMode.getSpeed()).isEqualTo(Speed.REALTIME);
 	}
 
 	@Test
 	public void turningOnInfraredFromDarknessSwitchesToRealtimeSpeed() {
 		viewMode.toggleLight();
-		assertEquals(Speed.FAST, viewMode.getSpeed());
+		assertThat(viewMode.getSpeed()).isEqualTo(Speed.FAST);
 
 		viewMode.toggleInfrared();
-
-		assertEquals(Speed.REALTIME, viewMode.getSpeed());
+		assertThat(viewMode.getSpeed()).isEqualTo(Speed.REALTIME);
 	}
 
 	@Test
 	public void turningOffInfraredSwitchesToRegularLight() {
 		viewMode.toggleInfrared();
-		assertEquals(Light.INFRARED, viewMode.getLight());
+		assertThat(viewMode.getLight()).isEqualTo(Light.INFRARED);
 
 		viewMode.toggleInfrared();
-
-		assertEquals(Light.ON, viewMode.getLight());
+		assertThat(viewMode.getLight()).isEqualTo(Light.ON);
 	}
 }

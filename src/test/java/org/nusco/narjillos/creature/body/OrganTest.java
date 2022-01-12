@@ -1,16 +1,17 @@
 package org.nusco.narjillos.creature.body;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.nusco.narjillos.core.geometry.Vector;
 
 public abstract class OrganTest {
 
 	ConnectedOrgan organ;
 
-	@Before
+	@BeforeEach
 	public void setUpPart() {
 		organ = createConcreteOrgan(50, 20);
 	}
@@ -19,20 +20,20 @@ public abstract class OrganTest {
 
 	@Test
 	public void hasALengthThatGrowsWithTime() {
-		assertEquals(5, organ.getLength(), 0);
+		assertThat(organ.getLength()).isEqualTo(5.0);
 
 		organ.growToAdultFormWithChildren();
 
-		assertEquals(50, organ.getLength(), 0);
+		assertThat(organ.getLength()).isEqualTo(50.0);
 	}
 
 	@Test
 	public void hasAThicknessThatGrowsWithTime() {
-		assertEquals(1, organ.getThickness(), 0);
+		assertThat(organ.getThickness()).isEqualTo(1.0);
 
 		organ.growToAdultFormWithChildren();
 
-		assertEquals(20, organ.getThickness(), 0);
+		assertThat(organ.getThickness()).isEqualTo(20.0);
 	}
 
 	@Test
@@ -42,13 +43,12 @@ public abstract class OrganTest {
 	public void hasAMassProportionalToItsArea() {
 		organ.growToAdultFormWithChildren();
 
-		assertEquals(1000, organ.getMass(), 0.01);
+		assertThat(organ.getMass()).isEqualTo(1000.0, within(0.01));
 	}
 
 	@Test
 	public void itsMassIsAlwaysAtLeast1() {
-		Organ verySmallBodyPart = new Organ(0, 0, new Fiber(0, 0, 0)) {
-
+		var verySmallBodyPart = new Organ(0, 0, new Fiber(0, 0, 0)) {
 			@Override
 			protected double calculateAbsoluteAngle() {
 				return 0;
@@ -60,6 +60,6 @@ public abstract class OrganTest {
 			}
 		};
 
-		assertEquals(1, verySmallBodyPart.getMass(), 0.0001);
+		assertThat(verySmallBodyPart.getMass()).isEqualTo(1.0, within(0.0001));
 	}
 }

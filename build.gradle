@@ -29,7 +29,7 @@ application {
 javafx {
     // The correct jars are automatically added everywhere they are needed
     version = '17.0.1'
-    modules = [ 'javafx.controls' ]
+    modules = [ 'javafx.graphics' ]
 }
 
 // Dependencies

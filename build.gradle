@@ -89,15 +89,6 @@ task testAll(dependsOn: ['test', 'testDeterministic', 'testPerformance']) {
 }
 
 
-/*
-
-// Programs
-
-createProgramTask('narjillos', 'org.nusco.narjillos.application.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
-createProgramTask('dnabrowser', 'org.nusco.narjillos.application.DNABrowserRunner', 'Runs the DNA Browser (pass it the *.germline filename).')
-createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it the *.exp filename).')
-
-
 // Backlog Management
 
 task(bl, dependsOn: 'build', type: JavaExec) {
@@ -110,6 +101,26 @@ task(backlog, dependsOn: 'bl') {
     description = 'Prints the top of the backlog. Also aliased to \'bl\'.'
     group = 'development'
 }
+
+// Helpers
+
+def commandLineArgsOr(defaultArgs) {
+    if (project.hasProperty('args') && project.getProperty('args').trim().length() > 0)
+        return project.args.split('\\s+')
+    else
+        return defaultArgs
+}
+
+
+/*
+
+// Programs
+
+createProgramTask('narjillos', 'org.nusco.narjillos.application.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
+createProgramTask('dnabrowser', 'org.nusco.narjillos.application.DNABrowserRunner', 'Runs the DNA Browser (pass it the *.germline filename).')
+createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it the *.exp filename).')
+
+
 
 // Packaging
 
@@ -149,13 +160,6 @@ def createProgramTask(taskName, mainClassName, taskDescription) {
         classpath = sourceSets.main.runtimeClasspath
         args commandLineArgsOr([])
     }
-}
-
-def commandLineArgsOr(defaultArgs) {
-    if (project.hasProperty('args') && project.getProperty('args').trim().length() > 0)
-        return project.args.split('\\s+')
-    else
-        return defaultArgs
 }
 
 def createScript(name, mainClassName) {

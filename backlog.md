@@ -14,7 +14,7 @@ The Gradle build has plenty of issues. Either find a way to fix them, or just do
 Java has a modules system now. Use it.
 
 * Fix distribution
-Use jpackage, probably remove Docker build, and possibly remove batch files. At the very least, have a Mac build. Also consider making Windows and Linux builds.
+Use jpackage, and possibly remove batch files. (I already removed the Docker build.) At the very least, have a Mac build. Also consider making Windows and Linux builds.
 
 * Fix localization bug
 In human-readable formatting test. (Reported by Cipster.)

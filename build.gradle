@@ -69,8 +69,24 @@ test {
     }
 }
 
+task(testPerformance, dependsOn: 'compileJava', type: JavaExec) {
+    description = 'Runs performance test.'
+    group = 'verification'
+    mainClass = 'org.nusco.narjillos.application.PerformanceTest'
+    classpath = sourceSets.test.runtimeClasspath
+}
 
+task(testDeterministic, dependsOn: 'compileJava', type: JavaExec) {
+    description = 'Runs the (slow) test that checks whether the system is deterministic.'
+    group = 'verification'
+    mainClass = 'org.nusco.narjillos.application.DeterministicExperimentTest'
+    classpath = sourceSets.test.runtimeClasspath
+}
 
+task testAll(dependsOn: ['test', 'testDeterministic', 'testPerformance']) {
+    description = 'Runs all the tests, including the slow tests, the database tests and the performance tests.'
+    group = 'verification'
+}
 
 
 /*
@@ -81,24 +97,6 @@ createProgramTask('narjillos', 'org.nusco.narjillos.application.NarjillosRunner'
 createProgramTask('dnabrowser', 'org.nusco.narjillos.application.DNABrowserRunner', 'Runs the DNA Browser (pass it the *.germline filename).')
 createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it the *.exp filename).')
 
-task(testPerformance, dependsOn: 'compileJava', type: JavaExec) {
-    description = 'Runs performance test.'
-    group = 'verification'
-    mainClass = 'org.nusco.narjillos.PerformanceTest'
-    classpath = sourceSets.test.runtimeClasspath
-}
-
-task(testDeterministic, dependsOn: 'compileJava', type: JavaExec) {
-    description = 'Runs the (slow) test that checks whether the system is deterministic.'
-    group = 'verification'
-    mainClass = 'org.nusco.narjillos.DeterministicExperimentTest'
-    classpath = sourceSets.test.runtimeClasspath
-}
-
-task testAll(dependsOn: ['test', 'testDeterministic', 'testPerformance']) {
-    description = 'Runs all the tests, including the slow tests, the database tests and the performance tests.'
-    group = 'verification'
-}
 
 // Backlog Management
 
@@ -130,7 +128,6 @@ applicationDistribution.from(
     'config.yaml'
   )
 )
-
 
 task createStartupScripts(dependsOn: 'installDist') {
     createScript('lab', 'org.nusco.narjillos.Lab')

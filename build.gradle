@@ -31,8 +31,7 @@ application {
 }
 
 javafx {
-    // The correct jars are automatically added everywhere they are needed
-    version = '17.0.1'
+    version = '18-ea+10'  // TODO: update to a stable version once the bugs with Apple's M1 are fixed
     modules = [ 'javafx.graphics' ]
 }
 

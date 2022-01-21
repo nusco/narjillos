@@ -4,7 +4,6 @@
 #
 # rather than:
 #
-#   gradle backlog -Pargs="3"
+#   ./gradlew backlog -Pargs="3"
 
-gradle --quiet --no-daemon $1 -Pargs="$2 $3 $4 $5 $6 $7"
-
+./gradlew --quiet --no-daemon $1 -Pargs="$2 $3 $4 $5 $6 $7"

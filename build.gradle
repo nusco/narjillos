@@ -11,6 +11,7 @@ plugins {
     // a dependency from an updated, working version of moduleplugin:
     id 'org.openjfx.javafxplugin' version '0.0.12-SNAPSHOT'    // needed for M1 Mac support
     id 'org.javamodularity.moduleplugin' version '1.8.10'      // needed to fix bug in older version that the JFX plugin depends on
+    id "com.google.osdetector" version "1.7.0"                 // needed for M1 Mac support? maybe remove later?
 }
 
 // Basic Configuration

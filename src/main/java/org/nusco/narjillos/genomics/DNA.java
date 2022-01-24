@@ -136,6 +136,8 @@ public class DNA implements Iterable<Chromosome> {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
 		DNA other = (DNA) obj;
 		return other.getId() == getId();
 	}
@@ -211,7 +213,7 @@ public class DNA implements Iterable<Chromosome> {
 		List<Integer> result = new LinkedList<>();
 		for (Integer[] chromosome : chromosomes)
 			Collections.addAll(result, chromosome);
-		return result.toArray(new Integer[result.size()]);
+		return result.toArray(new Integer[0]);
 	}
 
 	private Integer[] padToSameGenomeLength(Integer[] otherGenes, NumGen numGen) {

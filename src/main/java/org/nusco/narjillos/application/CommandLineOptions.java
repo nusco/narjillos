@@ -11,7 +11,6 @@ import org.apache.commons.cli.*;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.persistence.ExperimentLoader;
 
-@SuppressWarnings("serial")
 public class CommandLineOptions extends Options {
 
 	public static final int NO_SEED = -1;

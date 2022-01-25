@@ -20,7 +20,7 @@ public class FastMath {
 	private static final double[] SIN_TABLE = new double[ANGLE_TABLES_LENGTH];
 
 	// The resolution of the arctangent table must be enough to
-	// accomodate changes of 1/100th of a degree. I did some empirical
+	// track changes of 1/100th of a degree. I did some empirical
 	// calculations here, by looking at the minimum distance between consecutive
 	// values in the tan table (that is compiled in the static initializer
 	// below). We need a much higher resolution than ANGLE_RESOLUTION here

@@ -11,7 +11,6 @@ import org.nusco.narjillos.persistence.ExperimentLoader;
 import org.nusco.narjillos.persistence.PersistentDNALog;
 import org.nusco.narjillos.persistence.PersistentHistoryLog;
 
-import java.io.IOException;
 import java.util.List;
 
 /**

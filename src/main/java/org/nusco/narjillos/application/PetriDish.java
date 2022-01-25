@@ -97,7 +97,7 @@ public class PetriDish implements Dish {
 			setPersistenceStrategies(experiment, options);
 			experiment.populate(dna);
 		} else if (options.getExperiment() != null) {
-			System.out.print("Continuining experiment " + options.getExperiment().getId());
+			System.out.print("Continuing experiment " + options.getExperiment().getId());
 			experiment = options.getExperiment();
 			setPersistenceStrategies(experiment, options);
 			return experiment;

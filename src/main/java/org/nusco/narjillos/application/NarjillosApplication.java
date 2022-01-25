@@ -121,7 +121,7 @@ abstract class NarjillosApplication extends Application {
 		long waitTime = Math.max(time - timeTaken, 1);
 		try {
 			Thread.sleep(waitTime);
-		} catch (InterruptedException e) {
+		} catch (InterruptedException ignored) {
 		}
 	}
 
@@ -190,7 +190,7 @@ abstract class NarjillosApplication extends Application {
 		while (!isModelInitialized[0])
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException e) {
+			} catch (InterruptedException ignored) {
 			}
 	}
 

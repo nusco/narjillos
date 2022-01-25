@@ -14,7 +14,7 @@ import org.nusco.narjillos.core.configuration.Configuration;
  * Here are the formulas it uses. To understand them, consider that we don't use
  * inertia - so we can safely replace velocities with positions in space. (In
  * other words, we assume that after each movement of each body, the body's
- * velocity drops down to zero).
+ * velocity drops to zero).
  * <p>
  * Angular Momentum (for the body segments, approximated as thin rods):
  * angular_momentum = moment_of_inertia * angular_velocity

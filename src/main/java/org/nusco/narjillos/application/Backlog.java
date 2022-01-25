@@ -1,7 +1,6 @@
 package org.nusco.narjillos.application;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -81,8 +80,8 @@ public class Backlog {
 		return !isFeature(line) && !isUserStory(line);
 	}
 
-	private static List<String> loadEntries(final String BACKLOG_FILE) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get(BACKLOG_FILE), StandardCharsets.UTF_8);
+	private static List<String> loadEntries(final String backlogFile) throws IOException {
+		List<String> lines = Files.readAllLines(Paths.get(backlogFile), StandardCharsets.UTF_8);
 		return lines.stream()
 			.filter(line -> !isComment(line))
 			.collect(Collectors.toList());
@@ -104,7 +103,6 @@ public class Backlog {
 		return Math.min(requiredNumber, marketFeatures.size());
 	}
 
-	@SuppressWarnings("serial")
 	static class Feature extends LinkedList<String> {
 
 		public final String name;
@@ -116,14 +114,14 @@ public class Backlog {
 		@Override
 		public String toString() {
 			StringBuilder result = new StringBuilder();
-			result.append(ANSI_GREEN + name + ANSI_RESET + "\n");
+			result.append(ANSI_GREEN).append(name).append(ANSI_RESET).append("\n");
 			for (String userStory : this) {
 				String storyName = userStory
 					.replaceFirst("^\\*", "")
 					.replaceFirst("^\\+", "")
 					.replaceFirst("^-", "")
 					.trim();
-				result.append(toColor(userStory) + "    " + storyName + ANSI_RESET + "\n");
+				result.append(toColor(userStory)).append("    ").append(storyName).append(ANSI_RESET).append("\n");
 			}
 			return result.toString();
 		}

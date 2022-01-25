@@ -106,7 +106,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 					while (!renderingFinished && !hasBeenAskedToStop())
 						try {
 							Thread.sleep(10);
-						} catch (InterruptedException e) {
+						} catch (InterruptedException ignored) {
 						}
 					framesChronometer.tick();
 				}
@@ -208,7 +208,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				while (!getViewport().isZoomCloseToTarget() && !isMainApplicationStopped()) {
 					try {
 						Thread.sleep(10);
-					} catch (InterruptedException e) {
+					} catch (InterruptedException ignored) {
 					}
 				}
 			}

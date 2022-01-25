@@ -195,7 +195,7 @@ public class OrganView implements ItemView {
 
 		try {
 			organShape.setEffect(new MotionBlur(movement.getAngle(), velocity / MOTION_BLUR_THRESHOLD * MOTION_BLUR_INTENSITY));
-		} catch (ZeroVectorAngleException e) {
+		} catch (ZeroVectorAngleException ignored) {
 		}
 	}
 

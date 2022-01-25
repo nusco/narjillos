@@ -24,7 +24,7 @@ public class DNAExporter {
 	public String toCSVFormat() {
 		StringBuilder result = new StringBuilder();
 		for (Entry<Long, Long> entry : dnaAnalyzer.getChildrenToParents().entrySet())
-			result.append(entry.getValue() + ";" + entry.getKey() + "\n");
+			result.append(String.format("%d;%d\n", entry.getValue(), entry.getKey()));
 		return result.toString();
 	}
 
@@ -34,7 +34,7 @@ public class DNAExporter {
 
 		Map<Long, List<Long>> parentsToChildren = dnaAnalyzer.getParentsToChildren();
 		String toNewickTree = toNewickTree(0L, parentsToChildren);
-		result.append("tree genotypes = " + toNewickTree + ";\n");
+		result.append(String.format("tree genotypes = %s;\n", toNewickTree));
 		result.append("end;");
 		return result.toString();
 	}
@@ -48,7 +48,7 @@ public class DNAExporter {
 
 		StringBuilder childrenTreeBuilder = new StringBuilder();
 		for (Long childId : children)
-			childrenTreeBuilder.append(toNewickTree(childId, parentsToChildren) + ",");
+			childrenTreeBuilder.append(toNewickTree(childId, parentsToChildren)).append(",");
 		String childrenTree = childrenTreeBuilder.toString();
 		String trimmedChildrenTree = childrenTree.substring(0, childrenTree.length() - 1);
 		return "(" + trimmedChildrenTree + ")" + rootId;

@@ -32,32 +32,26 @@ public class NarjillosApplicationState implements AppState {
 
 	public void toggleLight() {
 		switch (light) {
-		case INFRARED:
-			this.light = Light.ON;
-			break;
-		case ON:
-			this.light = Light.OFF;
-			this.speed = Speed.FAST;
-			break;
-		case OFF:
-			this.light = Light.ON;
-			this.speed = Speed.REALTIME;
-			break;
+			case INFRARED -> this.light = Light.ON;
+			case ON -> {
+				this.light = Light.OFF;
+				this.speed = Speed.FAST;
+			}
+			case OFF -> {
+				this.light = Light.ON;
+				this.speed = Speed.REALTIME;
+			}
 		}
 	}
 
 	public void toggleInfrared() {
 		switch (light) {
-		case INFRARED:
-			this.light = Light.ON;
-			break;
-		case ON:
-			this.light = Light.INFRARED;
-			break;
-		case OFF:
-			this.light = Light.INFRARED;
-			this.speed = Speed.REALTIME;
-			break;
+			case INFRARED -> this.light = Light.ON;
+			case ON -> this.light = Light.INFRARED;
+			case OFF -> {
+				this.light = Light.INFRARED;
+				this.speed = Speed.REALTIME;
+			}
 		}
 	}
 

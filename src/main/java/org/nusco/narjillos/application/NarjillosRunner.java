@@ -1,8 +1,5 @@
 package org.nusco.narjillos.application;
 
-import org.nusco.narjillos.application.CommandLineOptions;
-import org.nusco.narjillos.application.MainNarjillosApplication;
-import org.nusco.narjillos.application.PetriDish;
 import org.nusco.narjillos.core.configuration.Configuration;
 import org.nusco.narjillos.core.utilities.Version;
 

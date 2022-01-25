@@ -11,7 +11,6 @@ public class Configuration {
 
 	private static final Map<String, Map<String, Object>> data = loadConfigurationData();
 
-	@SuppressWarnings("unchecked")
 	private static Map<String, Map<String, Object>> loadConfigurationData() {
 		File configurationFile = locateConfigurationFile();
 		try {

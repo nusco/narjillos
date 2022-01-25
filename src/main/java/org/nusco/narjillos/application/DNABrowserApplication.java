@@ -37,7 +37,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 		setProgramArguments(args);
 		launch(args);
 	}
-	
+
 	@Override
 	protected void startSupportThreads() {
 		startAutoplayThread();
@@ -138,7 +138,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 					while (!renderingFinished && !hasBeenAskedToStop())
 						try {
 							Thread.sleep(10);
-						} catch (InterruptedException e) {
+						} catch (InterruptedException ignored) {
 						}
 				}
 			}
@@ -216,7 +216,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 			private void sleep(int timeMillis) {
 				try {
 					Thread.sleep(timeMillis);
-				} catch (InterruptedException e) {
+				} catch (InterruptedException ignored) {
 				}
 			}
 		});

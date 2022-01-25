@@ -62,7 +62,7 @@ class MouthView implements ItemView {
 	}
 
 	private void rotateLine(int index) {
-		double lineLag = (360 / (lines.length + 1) * index) % 360;
+		double lineLag = (360.0 / (lines.length + 1) * index) % 360;
 		double lineAngle = FastMath.sin(getNarjillo().getBrainWaveAngle() - lineLag) * MAX_LINE_ANGLE;
 		lines[index].getTransforms().clear();
 		lines[index].getTransforms().add(new Rotate(getMouthAngle() + lineAngle));

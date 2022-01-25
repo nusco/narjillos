@@ -1,9 +1,7 @@
 package org.nusco.narjillos.application;
 
-import org.nusco.narjillos.application.DNABrowserApplication;
-
 /**
- * The entry point to the "dnabrowser" program.
+ * The entry point to the DNA browser program.
  */
 public class DNABrowserRunner {
 

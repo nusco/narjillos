@@ -115,14 +115,25 @@ def commandLineArgsOr(defaultArgs) {
         return defaultArgs
 }
 
+def createProgramTask(taskName, mainClassName, taskDescription) {
+    tasks.create(name: taskName, type: JavaExec) {
+        description = taskDescription
+        group = 'programs'
+        mainClass = mainClassName
+        classpath = sourceSets.main.runtimeClasspath
+        args commandLineArgsOr([])
+    }
+}
 
-/*
 
 // Programs
 
 createProgramTask('narjillos', 'org.nusco.narjillos.application.NarjillosRunner', 'Runs Narjillos (same arguments as the \'narjillos\' script).')
 createProgramTask('dnabrowser', 'org.nusco.narjillos.application.DNABrowserRunner', 'Runs the DNA Browser (pass it the *.germline filename).')
-createProgramTask('lab', 'org.nusco.narjillos.Lab', 'Runs lab analysis (pass it the *.exp filename).')
+createProgramTask('lab', 'org.nusco.narjillos.application.Lab', 'Runs lab analysis (pass it the *.exp filename).')
+
+
+/*
 
 // Packaging
 
@@ -153,16 +164,6 @@ task release(dependsOn: ['testAll', 'createStartupScripts', 'assemble']) {
 }
 
 // Helpers
-
-def createProgramTask(taskName, mainClassName, taskDescription) {
-    tasks.create(name: taskName, type: JavaExec) {
-        description = taskDescription
-        group = 'programs'
-        mainClass = mainClassName
-        classpath = sourceSets.main.runtimeClasspath
-        args commandLineArgsOr([])
-    }
-}
 
 def createScript(name, mainClassName) {
     def taskName = name + 'StartScript'

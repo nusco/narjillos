@@ -4,6 +4,9 @@
 ## Project Issues
 > goal: make Narjillos easy to run on modern platforms
 
+* Fix SQLite bug
+String too big? Why? Check, then maybe replace SQLite with H2.
+
 * Update to Java 17-style code
 Fix all warnings, and also switch to modern Java constructs where appropriate.
 

@@ -47,12 +47,14 @@ public class Fiber {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		Fiber other = (Fiber) obj;
-		return red == other.red && blue == other.blue && green == other.green
-			&& Double.doubleToLongBits(getPercentOfRed()) == Double.doubleToLongBits(other.getPercentOfRed())
-			&& Double.doubleToLongBits(getPercentOfGreen()) == Double.doubleToLongBits(other.getPercentOfGreen())
-			&& Double.doubleToLongBits(getPercentOfBlue()) == Double.doubleToLongBits(other.getPercentOfBlue());
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Fiber fiber = (Fiber) o;
+		return red == fiber.red && green == fiber.green && blue == fiber.blue
+			&& Double.compare(fiber.percentOfRed, percentOfRed) == 0
+			&& Double.compare(fiber.percentOfGreen, percentOfGreen) == 0
+			&& Double.compare(fiber.percentOfBlue, percentOfBlue) == 0;
 	}
 
 	@Override

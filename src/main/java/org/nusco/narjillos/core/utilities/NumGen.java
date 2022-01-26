@@ -1,8 +1,5 @@
 package org.nusco.narjillos.core.utilities;
 
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
-
 /**
  * Generates numbers (mostly pseudo-random ones).
  * <p>

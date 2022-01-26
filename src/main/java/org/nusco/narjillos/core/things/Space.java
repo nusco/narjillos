@@ -104,7 +104,7 @@ public class Space {
 	}
 
 	List<Thing> getThingsAtHashedLocation(int lx, int ly) {
-		return locationsToThings.getOrDefault(HashedLocation.at(lx, ly), Collections.emptyList());
+		return locationsToThings.getOrDefault(new HashedLocation(lx, ly), Collections.emptyList());
 	}
 
 	Set<Thing> getNearbyNeighbors(Thing thing, String label) {
@@ -143,20 +143,20 @@ public class Space {
 
 	private Set<Thing> getNearbyNeighbors(Vector position, String label) {
 		HashedLocation location = HashedLocation.ofCoordinates(position.x, position.y);
-		long x = location.lx;
-		long y = location.ly;
+		long x = location.lx();
+		long y = location.ly();
 
 		Set<Thing> result = new LinkedHashSet<>();
 
-		populateWithFilteredArea(result, label, HashedLocation.at(dec(x), dec(y)));
-		populateWithFilteredArea(result, label, HashedLocation.at(dec(x), y));
-		populateWithFilteredArea(result, label, HashedLocation.at(dec(x), inc(y)));
-		populateWithFilteredArea(result, label, HashedLocation.at(x, dec(y)));
-		populateWithFilteredArea(result, label, HashedLocation.at(x, y));
-		populateWithFilteredArea(result, label, HashedLocation.at(x, inc(y)));
-		populateWithFilteredArea(result, label, HashedLocation.at(inc(x), dec(y)));
-		populateWithFilteredArea(result, label, HashedLocation.at(inc(x), y));
-		populateWithFilteredArea(result, label, HashedLocation.at(inc(x), inc(y)));
+		populateWithFilteredArea(result, label, new HashedLocation(dec(x), dec(y)));
+		populateWithFilteredArea(result, label, new HashedLocation(dec(x), y));
+		populateWithFilteredArea(result, label, new HashedLocation(dec(x), inc(y)));
+		populateWithFilteredArea(result, label, new HashedLocation(x, dec(y)));
+		populateWithFilteredArea(result, label, new HashedLocation(x, y));
+		populateWithFilteredArea(result, label, new HashedLocation(x, inc(y)));
+		populateWithFilteredArea(result, label, new HashedLocation(inc(x), dec(y)));
+		populateWithFilteredArea(result, label, new HashedLocation(inc(x), y));
+		populateWithFilteredArea(result, label, new HashedLocation(inc(x), inc(y)));
 
 		return result;
 	}

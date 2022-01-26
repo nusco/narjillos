@@ -82,12 +82,14 @@ public class LifeFormEnergy implements Energy {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		LifeFormEnergy other = (LifeFormEnergy) obj;
-		return Double.doubleToLongBits(decay) == Double.doubleToLongBits(other.decay)
-			&& Double.doubleToLongBits(initialValue) == Double.doubleToLongBits(other.initialValue)
-			&& Double.doubleToLongBits(maxForAge) == Double.doubleToLongBits(other.maxForAge)
-			&& Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		LifeFormEnergy that = (LifeFormEnergy) o;
+		return Double.compare(that.initialValue, initialValue) == 0
+			&& Double.compare(that.value, value) == 0
+			&& Double.compare(that.maxForAge, maxForAge) == 0
+			&& Double.compare(that.decay, decay) == 0;
 	}
 
 	@Override

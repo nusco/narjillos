@@ -27,9 +27,7 @@ public class VisualDebugger {
 	public synchronized static List<Segment> getSegments() {
 		// The reading thread might peek in during an update,
 		// so we always maintain a backup of the previous update
-		List<Segment> result = new LinkedList<>();
-		result.addAll(previousSegments);
-		return result;
+		return new LinkedList<>(previousSegments);
 	}
 
 	public synchronized static void add(Segment s) {

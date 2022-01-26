@@ -13,18 +13,8 @@ import org.nusco.narjillos.creature.Narjillo;
 import org.nusco.narjillos.genomics.DNA;
 import org.nusco.narjillos.genomics.DNALog;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -170,7 +160,7 @@ public class Ecosystem extends Environment {
 
 			breathe(narjillos);
 
-			narjillosToCollidedFood.forEach((key, value) -> consume(key, value));
+			narjillosToCollidedFood.forEach(this::consume);
 			resetFoodTargets();
 		}
 

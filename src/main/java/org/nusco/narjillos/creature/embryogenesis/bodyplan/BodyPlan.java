@@ -67,9 +67,7 @@ public class BodyPlan {
 	}
 
 	private LinkedList<OrganBuilder> copyOf(LinkedList<OrganBuilder> queue) {
-		LinkedList<OrganBuilder> result = new LinkedList<>();
-		result.addAll(queue);
-		return result;
+		return new LinkedList<>(queue);
 	}
 
 	private LinkedList<OrganBuilder> getBuildersQueue() {

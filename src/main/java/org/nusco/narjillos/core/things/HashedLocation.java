@@ -1,22 +1,14 @@
 package org.nusco.narjillos.core.things;
 
 import java.util.Objects;
+
 /**
  * A location in Space. There is no grid location (0, *) or (*,0). Both coordinate
  * move from location -1 to location 1.
  */
-class HashedLocation {
+record HashedLocation(long lx, long ly) {
 
 	public static final long GRID_SIZE = 400;
-
-	final long lx;
-
-	final long ly;
-
-	private HashedLocation(long lx, long ly) {
-		this.lx = lx;
-		this.ly = ly;
-	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -36,10 +28,6 @@ class HashedLocation {
 	@Override
 	public String toString() {
 		return String.format("[%s, %s]", lx, ly);
-	}
-
-	public static HashedLocation at(long lx, long ly) {
-		return new HashedLocation(lx, ly);
 	}
 
 	public static HashedLocation ofCoordinates(double x, double y) {

@@ -79,7 +79,7 @@ public class SpaceGridTest {
 
 		space.add(punctiformThing);
 
-		assertThat(space.getHashedLocationsOf(punctiformThing).get()).contains(HashedLocation.at(-3, 11));
+        assertThat(space.getHashedLocationsOf(punctiformThing).get()).contains(new HashedLocation(-3, 11));
 	}
 
 	@Test
@@ -90,11 +90,11 @@ public class SpaceGridTest {
 		space.add(thing);
 
 		final Set<HashedLocation> hashedLocationsOf = space.getHashedLocationsOf(thing).get();
-		assertThat(hashedLocationsOf).contains(
-			HashedLocation.at(-1, 1),
-			HashedLocation.at(-1, 2),
-			HashedLocation.at(1, 2),
-			HashedLocation.at(1, 1)
+        assertThat(hashedLocationsOf).contains(
+                new HashedLocation(-1, 1),
+                new HashedLocation(-1, 2),
+                new HashedLocation(1, 2),
+                new HashedLocation(1, 1)
 		);
 	}
 

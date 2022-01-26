@@ -29,8 +29,8 @@ public class Chromosome {
 		final DecimalFormat threeDigits = new DecimalFormat("000");
 		StringBuilder result = new StringBuilder("{");
 		for (int i = 0; i < genes.length - 1; i++)
-			result.append(threeDigits.format(genes[i]) + "_");
-		result.append(threeDigits.format(genes[genes.length - 1]) + "}");
+			result.append(threeDigits.format(genes[i])).append("_");
+		result.append(threeDigits.format(genes[genes.length - 1])).append("}");
 		return result.toString();
 	}
 
@@ -40,7 +40,10 @@ public class Chromosome {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return Arrays.equals(genes, ((Chromosome) obj).genes);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Chromosome that = (Chromosome) o;
+		return Arrays.equals(genes, that.genes);
 	}
 }

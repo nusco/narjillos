@@ -14,7 +14,7 @@ import org.nusco.narjillos.core.configuration.Configuration;
  * Here are the formulas it uses. See RotationsPhysicsEngine for details.
  * <p>
  * Linear Momentum (for the body segments):
- * linear_momentum = mass * linear_velocity (in [pixelgrams points / tick])
+ * linear_momentum = mass * linear_velocity (in [points / tick])
  * <p>
  * Linear Momentum (for the whole body):
  * total_linear_velocity = total_linear_momentum / mass (in [points / tick])

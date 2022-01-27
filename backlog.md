@@ -5,7 +5,7 @@
 > goal: make Narjillos easy to run on modern platforms
 
 * Fix SQLite bug
-String too big? Why? Check, then maybe replace SQLite with H2.
+String too big? Why? Check, or just swap SQLite with H2, or simply MVStore (http://www.h2database.com/html/mvstore.html).
 
 * Update to Java 17-style code
 Fix all warnings, and also switch to modern Java constructs where appropriate.

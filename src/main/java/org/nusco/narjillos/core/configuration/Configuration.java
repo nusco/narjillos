@@ -39,8 +39,8 @@ public class Configuration {
 	private static double getDouble(String configSection, String configKey) {
 		Object result = get(configSection, configKey);
 		try {
-			if (result instanceof Double)
-				return (Double) result;
+			if (result instanceof Double rd)
+				return rd;
 			return (int) result;
 		} catch (ClassCastException e) {
 			fail("\"" + configSection + ":" + configKey + "\" in config.yaml is not a number");

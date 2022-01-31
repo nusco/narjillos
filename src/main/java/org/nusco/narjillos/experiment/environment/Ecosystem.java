@@ -187,8 +187,8 @@ public class Ecosystem extends Environment {
 				remove(thing);
 
 				// TODO: fix this ugliness
-				if (thing instanceof Narjillo)
-					dnaLog.markAsDead(((Narjillo) thing).getDNA().getId());
+				if (thing instanceof Narjillo n)
+					dnaLog.markAsDead(n.getDNA().getId());
 			});
 	}
 

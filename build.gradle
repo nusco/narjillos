@@ -2,16 +2,7 @@
 
 plugins {
     id 'application'
-
-    // Also applies the following plugins
-    // - com.google.osdetector
-    // - org.javamodularity.moduleplugin
-    // TODO: switch to a stable version once we get both the Apple M1 support,
-    // and a fix for the command arguments. For now, we have to explicity add
-    // a dependency from an updated, working version of moduleplugin:
-    id 'org.openjfx.javafxplugin' version '0.0.12-SNAPSHOT'    // needed for M1 Mac support
-    id 'org.javamodularity.moduleplugin' version '1.8.10'      // needed to fix bug in older version that the JFX plugin depends on
-    id "com.google.osdetector" version "1.7.0"                 // needed for M1 Mac support? maybe remove later?
+    id 'org.openjfx.javafxplugin' version '0.0.12'
 }
 
 // Basic Configuration
@@ -32,7 +23,7 @@ application {
 }
 
 javafx {
-    version = '18-ea+10'  // TODO: update to a stable version once the bugs with Apple's M1 are fixed
+    version = '19-ea+3'
     modules = [ 'javafx.graphics' ]
 }
 

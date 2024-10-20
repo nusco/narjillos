@@ -1,44 +1,57 @@
 package org.nusco.narjillos.core.utilities;
 
-import java.lang.reflect.Field;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
+
+import io.github.jrlucier.xoro.Xoroshiro128Plus;
 
 /**
- * Generates numbers (mostly pseudo-random ones).
+ * Generates serial numbers or a deterministic, seeded sequence of pseudo-random
+ * numbers.
  * <p>
- * A bit like java.math.Random, but strictly deterministic. You must give it a
- * seed during construction, and it will spew out the same exact numbers given
- * the same sequence of calls.
- * <p>
- * You cannot call the same instance of this class from multiple threads,
- * because multithreading and deterministic behavior don't mix. If you try,
- * the NumGen will complain loudly.
+ * This generator protects deterministic behavior in a multithreaded environment:
+ * you can only call it from a single thread. If you try to call the same NumGen
+ * from another thread (presumably by mistake), it will rise an exception.
  */
 public class NumGen {
 
-	private final TransparentRanGen random = new TransparentRanGen();
+	private final Xoroshiro128Plus rng;
 
 	private long serial = 0;
 
 	private transient Thread authorizedThread;
 
 	public NumGen(long seed) {
-		random.setSeed(seed);
+		this(seed, seed, 0);
+	}
+
+	public NumGen(long seed1, long seed2, long lastSerial) {
 		authorizedThread = Thread.currentThread();
+		rng = new Xoroshiro128Plus(seed1, seed2);
+		this.serial = lastSerial;
+	}
+
+	public long getSeed1() {
+		return rng.getStateA();
+	}
+
+	public long getSeed2() {
+		return rng.getStateB();
+	}
+
+	public long getSerial() {
+		return serial;
 	}
 
 	/**
 	 * Returns a value between 0.0 (inclusive) and 1.0 (exclusive).
 	 */
 	public double nextDouble() {
-		checkThreadIsAuthorized();
-		return random.nextDouble();
+		validateAccess();
+		return rng.nextDouble();
 	}
 
 	public int nextInt() {
-		checkThreadIsAuthorized();
-		return random.nextInt();
+		validateAccess();
+		return rng.nextInt();
 	}
 
 	public int nextByte() {
@@ -46,15 +59,12 @@ public class NumGen {
 	}
 
 	public long nextSerial() {
-		checkThreadIsAuthorized();
-		return ++serial;
+		validateAccess();
+		serial++;
+		return serial;
 	}
 
-	public long getSeed() {
-		return random.getSeed();
-	}
-
-	private synchronized void checkThreadIsAuthorized() {
+	private synchronized void validateAccess() {
 		// I apologize for this slightly paranoid defensive code. Bugs with
 		// non-deterministic random generators are hard to find, so I have to be
 		// extra careful here.
@@ -68,37 +78,10 @@ public class NumGen {
 		}
 
 		if (Thread.currentThread() != authorizedThread)
-			throw new RuntimeException("RanGen accessed from multiple threads. " + getExplanation());
+			throw new RuntimeException("NumGen accessed from multiple threads. " + getExplanation());
 	}
 
 	private static String getExplanation() {
 		return "(Don't do that, or else there is no guarantee that the same " + "seed will generate the same sequence of numbers.)";
-	}
-
-	// A Random that allows you to get/set the current seed.
-	private static class TransparentRanGen extends Random {
-
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public void setSeed(long seed) {
-			extractSeed().set(seed);
-		}
-
-		long getSeed() {
-			return extractSeed().get();
-		}
-
-		// TODO: Fix the now-illegal private field access before it gets removed from Java
-		private AtomicLong extractSeed() {
-			// Put on your gloves - this is going to be dirty.
-			try {
-				Field seedField = Random.class.getDeclaredField("seed");
-				seedField.setAccessible(true);
-				return (AtomicLong) seedField.get(this);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
 	}
 }

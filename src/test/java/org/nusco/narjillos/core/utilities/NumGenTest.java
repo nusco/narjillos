@@ -1,14 +1,14 @@
 package org.nusco.narjillos.core.utilities;
 
+import org.junit.Test;
+
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.junit.Test;
-
 public class NumGenTest {
-
 	@Test
 	public void generatesADeterministicSequenceOfNumbers() {
 		NumGen numGen1 = new NumGen(123);
@@ -18,22 +18,30 @@ public class NumGenTest {
 	}
 
 	@Test
-	public void returnsItsCurrentSeed() {
+	public void creatingItWithASingleSeedIsTheSameAsCreatingItWithTwoEqualSeeds() {
 		NumGen numGen1 = new NumGen(123);
-
-		// get to a known state
-		for (int i = 0; i < 10; i++)
-			numGen1.nextDouble();
-
-		long seedBeforeNumberGeneration = numGen1.getSeed();
-
-		NumGen numGen2 = new NumGen(seedBeforeNumberGeneration);
+		NumGen numGen2 = new NumGen(123, 123, 0);
 
 		assertAreInSynch(numGen1, numGen2);
 	}
 
 	@Test
-	public void generatesASerialNumber() {
+	public void aNewOneCanBeCreatedFromTheDataOfAnExistingOne() {
+		NumGen numGen1 = new NumGen(123, 456, 789);
+		for (int i = 0; i < 100; i++) {
+			numGen1.nextInt();
+			numGen1.nextDouble();
+			numGen1.nextByte();
+			numGen1.nextSerial();
+		}
+
+		NumGen numGen2 = new NumGen(numGen1.getSeed1(), numGen1.getSeed2(), numGen1.getSerial());
+
+		assertAreInSynch(numGen1, numGen2);
+	}
+
+	@Test
+	public void generatesSerialNumbers() {
 		NumGen numGen = new NumGen(123);
 
 		assertEquals(1, numGen.nextSerial());
@@ -41,8 +49,16 @@ public class NumGenTest {
 	}
 
 	@Test
+	public void canBeGivenASerialNumberToStartFrom() {
+		NumGen numGen = new NumGen(321, 654, 10);
+
+		assertEquals(11, numGen.nextSerial());
+		assertEquals(12, numGen.nextSerial());
+	}
+
+	@Test
 	public void throwsAnExceptionIfCalledFromMultipleThreads() throws InterruptedException {
-		final NumGen numGen = new NumGen(123456);
+		final NumGen numGen = new NumGen(123);
 		numGen.nextByte();
 
 		final ConcurrentLinkedQueue<String> results = new ConcurrentLinkedQueue<>();
@@ -60,7 +76,7 @@ public class NumGenTest {
 		while (results.isEmpty())
 			Thread.sleep(10);
 
-		assertTrue(results.peek().startsWith("RanGen accessed from multiple threads"));
+		assertTrue(results.peek().startsWith("NumGen accessed from multiple threads"));
 	}
 
 	private void assertAreInSynch(NumGen numGen1, NumGen numGen2) {

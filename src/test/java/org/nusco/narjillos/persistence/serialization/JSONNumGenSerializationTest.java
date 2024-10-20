@@ -1,14 +1,14 @@
 package org.nusco.narjillos.persistence.serialization;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.nusco.narjillos.core.utilities.NumGen;
 
-public class JSONRanGenSerializationTest {
+import static org.junit.Assert.assertEquals;
+
+public class JSONNumGenSerializationTest {
 
 	@Test
-	public void serializesAndDeserializesRanGens() {
+	public void serializesAndDeserializesNumGens() {
 		NumGen numGen = new NumGen(42);
 		for (int i = 0; i < 1000; i++) {
 			numGen.nextDouble();
@@ -18,7 +18,8 @@ public class JSONRanGenSerializationTest {
 		String json = JSON.toJson(numGen, NumGen.class);
 		NumGen deserialized = JSON.fromJson(json, NumGen.class);
 
-		assertEquals(numGen.getSeed(), deserialized.getSeed());
+		assertEquals(numGen.nextByte(), deserialized.nextByte());
+		assertEquals(numGen.nextInt(), deserialized.nextInt());
 		assertEquals(numGen.nextDouble(), deserialized.nextDouble(), 0.0);
 		assertEquals(numGen.nextSerial(), deserialized.nextSerial());
 	}

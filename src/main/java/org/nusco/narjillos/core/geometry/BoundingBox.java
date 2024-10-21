@@ -40,7 +40,7 @@ public class BoundingBox {
 		return (int) (bottom + top);
 	}
 
-	@Override
+    @Override
 	public boolean equals(Object obj) {
 		BoundingBox other = (BoundingBox) obj;
 		if (Double.doubleToLongBits(bottom) != Double.doubleToLongBits(other.bottom))

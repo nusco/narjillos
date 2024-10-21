@@ -30,7 +30,7 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
  */
 public class PerformanceTest {
 
-	private final static double EXPECTED_MINIMUM_TICKS_PER_SECOND = 800;
+	private final static double EXPECTED_MINIMUM_TICKS_PER_SECOND = 1300;
 
 	private static int ticks;
 

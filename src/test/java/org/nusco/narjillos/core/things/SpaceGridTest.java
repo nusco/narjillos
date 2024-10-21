@@ -48,7 +48,7 @@ public class SpaceGridTest {
 			public String getLabel() {
 				return "a";
 			}
-		};;
+		};
 
 		space.add(thing1);
 		space.add(thing2);
@@ -77,15 +77,18 @@ public class SpaceGridTest {
 		assertThat(space.getThingsAtHashedLocation(1, 1), is(emptyCollectionOf(Thing.class)));
 	}
 
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	@Test
 	public void thingsHaveHashedLocations() {
 		Thing punctiformThing = new TestThing(Vector.cartesian(-1000, 4000));
 
 		space.add(punctiformThing);
 
-		assertThat(space.getHashedLocationsOf(punctiformThing).get(), contains(HashedLocation.at(-3, 11)));
+		Set<HashedLocation> hashedLocations = space.getHashedLocationsOf(punctiformThing).get();
+		assertThat(hashedLocations, contains(HashedLocation.at(-3, 11)));
 	}
 
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	@Test
 	public void aThingCanSpanOverMultipleLocations() {
 		Thing thing = mock(Thing.class);
@@ -93,8 +96,8 @@ public class SpaceGridTest {
 
 		space.add(thing);
 
-		final Set<HashedLocation> hashedLocationsOf = space.getHashedLocationsOf(thing).get();
-		assertThat(hashedLocationsOf, contains(
+		Set<HashedLocation> hashedLocations = space.getHashedLocationsOf(thing).get();
+		assertThat(hashedLocations, contains(
 			HashedLocation.at(-1, 1),
 			HashedLocation.at(-1, 2),
 			HashedLocation.at(1, 2),

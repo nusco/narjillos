@@ -52,7 +52,7 @@ import org.nusco.narjillos.persistence.serialization.JSON;
  * (This test will also break if I make "legitimate" changes, like changing
  * physics or embryology - but in that case, I just need to update the expected
  * result in the test. This happens often, but it's worth it. To make it less
- * of a chore, see the ).
+ * of a chore, see the comment to PRINT_NEW_EXPECTED_STATE_DECLARATION).
  */
 public class NarjilloTickingTest {
 

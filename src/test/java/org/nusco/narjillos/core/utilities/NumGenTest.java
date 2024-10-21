@@ -2,7 +2,6 @@ package org.nusco.narjillos.core.utilities;
 
 import org.junit.Test;
 
-import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.junit.Assert.assertEquals;
@@ -14,7 +13,7 @@ public class NumGenTest {
 		NumGen numGen1 = new NumGen(123);
 		NumGen numGen2 = new NumGen(123);
 
-		assertAreInSynch(numGen1, numGen2);
+		assertAreInSync(numGen1, numGen2);
 	}
 
 	@Test
@@ -22,7 +21,7 @@ public class NumGenTest {
 		NumGen numGen1 = new NumGen(123);
 		NumGen numGen2 = new NumGen(123, 123, 0);
 
-		assertAreInSynch(numGen1, numGen2);
+		assertAreInSync(numGen1, numGen2);
 	}
 
 	@Test
@@ -37,7 +36,7 @@ public class NumGenTest {
 
 		NumGen numGen2 = new NumGen(numGen1.getSeed1(), numGen1.getSeed2(), numGen1.getSerial());
 
-		assertAreInSynch(numGen1, numGen2);
+		assertAreInSync(numGen1, numGen2);
 	}
 
 	@Test
@@ -79,7 +78,7 @@ public class NumGenTest {
 		assertTrue(results.peek().startsWith("NumGen accessed from multiple threads"));
 	}
 
-	private void assertAreInSynch(NumGen numGen1, NumGen numGen2) {
+	private void assertAreInSync(NumGen numGen1, NumGen numGen2) {
 		for (int i = 0; i < 100; i++) {
 			assertEquals(numGen2.nextDouble(), numGen1.nextDouble(), 0.0);
 			assertEquals(numGen2.nextInt(), numGen1.nextInt(), 0.0);

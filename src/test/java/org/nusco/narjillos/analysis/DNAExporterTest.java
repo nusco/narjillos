@@ -39,12 +39,14 @@ public class DNAExporterTest {
 	public void convertsAGenePoolToACSVTree() {
 		DNAExporter dnaExporter = new DNAExporter(new DNAAnalyzer(dnaLog));
 
-		String expected = "0;1\n"
-			+ "1;2\n"
-			+ "1;3\n"
-			+ "2;4\n"
-			+ "0;5\n"
-			+ "5;6\n";
+		String expected = """
+                0;1
+                1;2
+                1;3
+                2;4
+                0;5
+                5;6
+                """;
 		assertEquals(expected, dnaExporter.toCSVFormat());
 	}
 
@@ -52,9 +54,10 @@ public class DNAExporterTest {
 	public void convertsAGenePoolToANEXUSTree() {
 		DNAExporter dnaExporter = new DNAExporter(new DNAAnalyzer(dnaLog));
 
-		String expected = "begin trees;\n" +
-			"tree genotypes = (((4)2,3)1,(6)5)0;\n" +
-			"end;";
+		String expected = """
+                begin trees;
+                tree genotypes = (((4)2,3)1,(6)5)0;
+                end;""";
 		assertEquals(expected, dnaExporter.toNEXUSFormat());
 	}
 }

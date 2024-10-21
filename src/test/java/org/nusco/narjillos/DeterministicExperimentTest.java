@@ -29,7 +29,7 @@ import org.nusco.narjillos.persistence.serialization.JSON;
  * Kcycles. That's not enough to catch all non-deterministic-behavior bugs, which
  * may only cause visible effects after tens of thousands of cycles - especially
  * considering that things tend to get more interesting after all eggs have hatched,
- * and narjillos have grown enough to get to food). Every now and then, it's worth
+ * and narjillos have grown enough to get to food. Every now and then, it's worth
  * running this test from the main(), that uses around 50 Kcycles but takes minutes
  * even on a fast computer.
  * <p/>
@@ -74,7 +74,7 @@ public class DeterministicExperimentTest {
 	}
 
 	@AfterClass
-	public static void deleteDatabases() throws IOException {
+	public static void deleteDatabases() {
 		genePoolLog1.delete();
 		historyLog1.delete();
 		genePoolLog2.delete();
@@ -89,7 +89,7 @@ public class DeterministicExperimentTest {
 	private static void runTest(int cycles, boolean showProgress) throws IOException {
 		// Set up an experiment
 		final int arbitrarySeed = 1234;
-		final Ecosystem ecosystem = new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000, false);
+		final Ecosystem ecosystem = new Ecosystem(Configuration.ECOSYSTEM_BLOCKS_PER_EDGE_IN_APP * 1000L, false);
 		Experiment experiment1 = new Experiment(arbitrarySeed, ecosystem, "deterministic_experiment_test");
 		genePoolLog1 = new PersistentDNALog("test_database1");
 		historyLog1 = new PersistentHistoryLog("test_database1");

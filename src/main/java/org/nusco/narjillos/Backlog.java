@@ -2,6 +2,7 @@ package org.nusco.narjillos;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * A utility program to print the top of the backlog. Just an ugly Java hack
  * until backlog.txt has its own Python utilities.
- * (See https://github.com/nusco/backlog.txt).
+ * (See <a href="https://github.com/nusco/backlog.txt">current backlog</a>).
  */
 public class Backlog {
 
@@ -56,7 +57,7 @@ public class Backlog {
 			if (isFeature(line))
 				result.add(new Feature(line));
 			else {
-				if (result.size() > 0) {
+				if (!result.isEmpty()) {
 					Feature currentMarketFeature = result.get(result.size() - 1);
 					currentMarketFeature.add(line);
 				}
@@ -81,7 +82,7 @@ public class Backlog {
 	}
 
 	private static List<String> loadEntries(final String BACKLOG_FILE) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get(BACKLOG_FILE), Charset.forName("UTF-8"));
+		List<String> lines = Files.readAllLines(Paths.get(BACKLOG_FILE), StandardCharsets.UTF_8);
 		return lines.stream()
 			.filter(line -> !isComment(line))
 			.collect(Collectors.toList());

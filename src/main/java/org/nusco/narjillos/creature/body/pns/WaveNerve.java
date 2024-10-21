@@ -8,7 +8,7 @@ import org.nusco.narjillos.core.geometry.FastMath;
  * <p>
  * The left semiplane of the sinusoidal wave (from +90 to -90 degrees) has a
  * higher frequency than the right semiplane (from -90 to 90). This generates
- * an organic-like motion, where organs move more slower in one direction and
+ * an organic-like motion, where organs move slower in one direction and
  * quicker in the other.
  */
 public class WaveNerve implements Nerve {

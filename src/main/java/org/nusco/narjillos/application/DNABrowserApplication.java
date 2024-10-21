@@ -33,7 +33,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 
 	private volatile boolean autoplay = false;
 
-	public static void main(String... args) throws Exception {
+	public static void main(String... args) {
 		setProgramArguments(args);
 		launch(args);
 	}
@@ -138,7 +138,7 @@ public class DNABrowserApplication extends NarjillosApplication {
 					while (!renderingFinished && !hasBeenAskedToStop())
 						try {
 							Thread.sleep(10);
-						} catch (InterruptedException e) {
+						} catch (InterruptedException ignored) {
 						}
 				}
 			}
@@ -181,8 +181,9 @@ public class DNABrowserApplication extends NarjillosApplication {
 				getDish().rotateTarget();
 			else if (keyEvent.getCode() == KeyCode.O || keyEvent.getCode() == KeyCode.P)
 				state.toggleSpeed();
-			else if (keyEvent.getCode() == KeyCode.SPACE)
+			else if (keyEvent.getCode() == KeyCode.SPACE) {
 				autoplay = !autoplay;
+			}
 		});
 
 		scene.setOnMouseClicked(event -> {

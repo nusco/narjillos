@@ -36,7 +36,7 @@ class MockOrgan extends MovingOrgan {
 		StringBuilder result = new StringBuilder();
 		if (sign < 0)
 			result.append("^");
-		result.append(Integer.toString(id));
+		result.append(id);
 
 		ConnectedOrgan[] children = getChildren().toArray(new MovingOrgan[0]);
 		if (children.length == 0)

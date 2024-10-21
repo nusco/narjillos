@@ -24,11 +24,13 @@ public class DNADocumentTest {
 
 	@Test
 	public void ignoresAnythingInTheDNAStringThatDoesntBeginWithANumber() {
-		String dnaString = "comment 1\n" +
-			"\n" +
-			"1_0_255\n" +
-			"comment 2\n" +
-			"\n";
+		String dnaString = """
+                comment 1
+                
+                1_0_255
+                comment 2
+                
+                """;
 		DNADocument dnaDocument = new DNADocument(dnaString);
 
 		assertArrayEquals(new Integer[] { 1, 0, 255 }, dnaDocument.toGenes());
@@ -60,9 +62,10 @@ public class DNADocumentTest {
 
 	@Test
 	public void ignoresAnythingAfterTheGenesLine() {
-		String dnaString = "comment\n" +
-			" {1_2_3}\n" +
-			"4_5_6_7_ignored_anyway";
+		String dnaString = """
+                comment
+                 {1_2_3}
+                4_5_6_7_ignored_anyway""";
 		DNADocument dnaDocument = new DNADocument(dnaString);
 
 		assertArrayEquals(new Integer[] { 1, 2, 3 }, dnaDocument.toGenes());

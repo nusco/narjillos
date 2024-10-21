@@ -25,7 +25,7 @@ public class NeuralConnectionsTest {
 		assertTrue(nerve3.clicked);
 	}
 
-	class ClickNerve implements Nerve {
+	static class ClickNerve implements Nerve {
 
 		public boolean clicked = false;
 

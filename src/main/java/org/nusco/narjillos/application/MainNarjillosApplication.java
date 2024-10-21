@@ -106,7 +106,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 					while (!renderingFinished && !hasBeenAskedToStop())
 						try {
 							Thread.sleep(10);
-						} catch (InterruptedException e) {
+						} catch (InterruptedException ignored) {
 						}
 					framesChronometer.tick();
 				}
@@ -126,37 +126,37 @@ public class MainNarjillosApplication extends NarjillosApplication {
 	}
 
 	private void registerKeyboardHandlers(final Scene scene) {
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		scene.setOnKeyPressed(new EventHandler<>() {
 
-			public void handle(final KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.RIGHT)
-					panViewport(PAN_SPEED, 0, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.LEFT)
-					panViewport(-PAN_SPEED, 0, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.UP)
-					panViewport(0, -PAN_SPEED, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.DOWN)
-					panViewport(0, PAN_SPEED, keyEvent);
-				else if (keyEvent.getCode() == KeyCode.P)
-					state.speedUp();
-				else if (keyEvent.getCode() == KeyCode.O)
-					state.speedDown();
-				else if (keyEvent.getCode() == KeyCode.L)
-					state.toggleLight();
-				else if (keyEvent.getCode() == KeyCode.I)
-					state.toggleInfrared();
-				else if (keyEvent.getCode() == KeyCode.E && keyEvent.isControlDown())
-					state.toggleEffects();
-				else if (keyEvent.getCode() == KeyCode.D && keyEvent.isControlDown())
-					getTracker().toggleDemoMode();
-			}
+            public void handle(final KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.RIGHT)
+                    panViewport(PAN_SPEED, 0, keyEvent);
+                else if (keyEvent.getCode() == KeyCode.LEFT)
+                    panViewport(-PAN_SPEED, 0, keyEvent);
+                else if (keyEvent.getCode() == KeyCode.UP)
+                    panViewport(0, -PAN_SPEED, keyEvent);
+                else if (keyEvent.getCode() == KeyCode.DOWN)
+                    panViewport(0, PAN_SPEED, keyEvent);
+                else if (keyEvent.getCode() == KeyCode.P)
+                    state.speedUp();
+                else if (keyEvent.getCode() == KeyCode.O)
+                    state.speedDown();
+                else if (keyEvent.getCode() == KeyCode.L)
+                    state.toggleLight();
+                else if (keyEvent.getCode() == KeyCode.I)
+                    state.toggleInfrared();
+                else if (keyEvent.getCode() == KeyCode.E && keyEvent.isControlDown())
+                    state.toggleEffects();
+                else if (keyEvent.getCode() == KeyCode.D && keyEvent.isControlDown())
+                    getTracker().toggleDemoMode();
+            }
 
-			private void panViewport(long velocityX, long velocityY, KeyEvent event) {
-				getTracker().stopTracking();
-				getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
-				event.consume();
-			}
-		});
+            private void panViewport(long velocityX, long velocityY, KeyEvent event) {
+                getTracker().stopTracking();
+                getViewport().moveBy(Vector.cartesian(velocityX, velocityY));
+                event.consume();
+            }
+        });
 	}
 
 	private void registerMouseClickHandlers(final Scene scene) {
@@ -208,7 +208,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 				while (!getViewport().isZoomCloseToTarget() && !isMainApplicationStopped()) {
 					try {
 						Thread.sleep(10);
-					} catch (InterruptedException e) {
+					} catch (InterruptedException ignored) {
 					}
 				}
 			}
@@ -239,7 +239,7 @@ public class MainNarjillosApplication extends NarjillosApplication {
 		});
 	}
 
-	public static void main(String... args) throws Exception {
+	public static void main(String... args) {
 		setProgramArguments(args);
 		launch(args);
 	}

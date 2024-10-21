@@ -16,7 +16,7 @@ import org.nusco.narjillos.persistence.serialization.JSON;
 
 /**
  * A test that raises a red flag whenever the Narjillo-related code changes.
- *
+ * <p>
  * The code that moves Narjillos, and in particular the code in the Organ
  * hierarchy, is quite complicated. Blame it on difficult, conflicting
  * requirements:
@@ -110,7 +110,7 @@ public class NarjilloTickingTest {
 			while (narjilloReader.isAlive())
 				try {
 					Thread.sleep(10);
-				} catch (InterruptedException e) {
+				} catch (InterruptedException ignored) {
 				}
 		}
 	}
@@ -118,7 +118,7 @@ public class NarjilloTickingTest {
 	// Reads stuff from a Narjillo to check that read accesses don't
 	// break deterministic behavior. I tried to call all interesting
 	// read methods here.
-	private class NarjilloReader extends Thread {
+	private static class NarjilloReader extends Thread {
 
 		private final Narjillo narjillo;
 

@@ -16,14 +16,11 @@ class ThingAdapter extends HierarchyAdapter<Thing> {
 
 	@Override
 	protected Class<?> getClass(String typeTag) throws JsonParseException {
-		switch (typeTag) {
-		case FoodPellet.LABEL:
-			return FoodPellet.class;
-		case Egg.LABEL:
-			return Egg.class;
-		case Narjillo.LABEL:
-			return Narjillo.class;
-		}
-		throw new RuntimeException("Unknown subtype of Thing: " + typeTag);
-	}
+        return switch (typeTag) {
+            case FoodPellet.LABEL -> FoodPellet.class;
+            case Egg.LABEL -> Egg.class;
+            case Narjillo.LABEL -> Narjillo.class;
+            default -> throw new RuntimeException("Unknown subtype of Thing: " + typeTag);
+        };
+    }
 }

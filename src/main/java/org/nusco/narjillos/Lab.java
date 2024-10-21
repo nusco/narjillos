@@ -24,7 +24,7 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
  */
 class Lab {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Options options = new Options();
 		options.addOption("?", "help", false, "print this message");
 		options.addOption("d", "dna", true, "print DNA (takes a DNA id)");

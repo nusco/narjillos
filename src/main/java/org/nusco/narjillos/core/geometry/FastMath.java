@@ -3,8 +3,8 @@ package org.nusco.narjillos.core.geometry;
 /**
  * Fast approximated trigonometry functions based on lookup tables.
  * <p>
- * Inspired by the algorithms in
- * http://blog.numfum.com/2007/09/java-fixed-point-maths.html.
+ * Inspired by the algorithms in a blog post that used to be
+ * <a href="http://blog.numfum.com/2007/09/java-fixed-point-maths.html">here</a>.
  */
 public class FastMath {
 
@@ -13,7 +13,7 @@ public class FastMath {
 
 	// Only store angles in the first quadrant, from 0 to 90 included.
 	// Results in the remaining three quadrants can be calculated from these.
-	private static final int ANGLE_TABLES_LENGTH = (int) (90 * ANGLE_RESOLUTION + 1);
+	private static final int ANGLE_TABLES_LENGTH = 90 * ANGLE_RESOLUTION + 1;
 
 	// The sin table matches angles (in degree) to their sin. The same
 	// table is also used to calculate cos.
@@ -95,7 +95,7 @@ public class FastMath {
 			LOG_TABLE[currentIndexInLogTable] = Math.log(LOG_MIN + currentIndexInLogTable * LOG_RESOLUTION);
 	}
 
-	public static void setUp() {
+    public static void setUp() {
 		// just an excuse to load the class and run the static initializer.
 	}
 

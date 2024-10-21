@@ -22,8 +22,8 @@ class VectorAdapter implements JsonSerializer<Vector>, JsonDeserializer<Vector> 
 	public Vector deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 		String vectorDescription = context.deserialize(json, String.class);
 		String[] cartesianCoordinates = vectorDescription.replace("(", "").replace(")", "").split(", ");
-		Double x = Double.parseDouble(cartesianCoordinates[0]);
-		Double y = Double.parseDouble(cartesianCoordinates[1]);
+		double x = Double.parseDouble(cartesianCoordinates[0]);
+		double y = Double.parseDouble(cartesianCoordinates[1]);
 		return Vector.cartesian(x, y);
 	}
 }

@@ -41,7 +41,7 @@ public class DNAIterationTest {
 		DNA dna = new DNA(1, genes);
 		Iterator<Chromosome> iterator = dna.iterator();
 
-		assertEquals(new Chromosome(new int[] { 1, 2, 3, 0, 0, 0, 0 }), iterator.next());
+		assertEquals(new Chromosome(1, 2, 3, 0, 0, 0, 0), iterator.next());
 		assertFalse(iterator.hasNext());
 	}
 
@@ -52,7 +52,7 @@ public class DNAIterationTest {
 		Iterator<Chromosome> iterator = dna.iterator();
 
 		assertTrue(iterator.hasNext());
-		assertEquals(new Chromosome(new int[] { 0, 0, 0, 0, 0, 0, 0 }), iterator.next());
+		assertEquals(new Chromosome(0, 0, 0, 0, 0, 0, 0), iterator.next());
 		assertFalse(iterator.hasNext());
 	}
 }

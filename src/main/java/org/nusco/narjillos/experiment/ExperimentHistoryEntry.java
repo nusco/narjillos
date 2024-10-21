@@ -119,8 +119,7 @@ public class ExperimentHistoryEntry {
 
 	@Override
 	public String toString() {
-		return "" +
-			ticks + "," +
+		return ticks + "," +
 			runningTime + "," +
 			numberOfNarjillos + "," +
 			numberOfFoodPellets + "," +
@@ -153,7 +152,7 @@ public class ExperimentHistoryEntry {
 
 		ecosystem.getAll(Narjillo.LABEL).forEach(thing -> {
 			Narjillo narjillo = (Narjillo) thing;
-			String cycle = "" + narjillo.getBreathedElement() + "2" + narjillo.getByproduct();
+			String cycle = narjillo.getBreathedElement() + "2" + narjillo.getByproduct();
 			result.put(cycle, result.get(cycle) + 1);
 		});
 

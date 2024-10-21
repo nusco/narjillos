@@ -1,17 +1,7 @@
 package org.nusco.narjillos.persistence.serialization;
 
 import com.google.gson.*;
-import org.nusco.narjillos.core.chemistry.Atmosphere;
 import org.nusco.narjillos.core.utilities.NumGen;
-import org.nusco.narjillos.creature.Egg;
-import org.nusco.narjillos.creature.Narjillo;
-import org.nusco.narjillos.creature.body.ConnectedOrgan;
-import org.nusco.narjillos.creature.body.Head;
-import org.nusco.narjillos.creature.body.MovingOrgan;
-import org.nusco.narjillos.creature.body.Organ;
-import org.nusco.narjillos.creature.body.pns.Nerve;
-import org.nusco.narjillos.experiment.environment.Ecosystem;
-import org.nusco.narjillos.experiment.environment.FoodPellet;
 
 import java.lang.reflect.Type;
 

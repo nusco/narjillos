@@ -90,7 +90,7 @@ class IsolationDish implements Dish {
 
 	@Override
 	public String getStatistics() {
-		return "" + (currentDnaIndex + 1) + " of " + dnas.size();
+		return (currentDnaIndex + 1) + " of " + dnas.size();
 	}
 
 	public synchronized Narjillo getNarjillo() {

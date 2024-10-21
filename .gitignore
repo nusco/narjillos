@@ -25,6 +25,3 @@ out/
 
 # Gradle files:
 .gradle/
-
-# OS files:
-.DS_Store

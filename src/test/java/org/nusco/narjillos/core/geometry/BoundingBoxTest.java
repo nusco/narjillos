@@ -165,7 +165,7 @@ public class BoundingBoxTest {
 	public void canBePunctiform() {
 		BoundingBox boundingBox = BoundingBox.punctiform(Vector.cartesian(10, 20));
 
-		assertTrue(boundingBox.equals(new BoundingBox(10, 10, 20, 20)));
+        assertEquals(boundingBox, new BoundingBox(10, 10, 20, 20));
 	}
 
 	private BoundingBox createBoundingBox(int x, int y, int width, int height) {

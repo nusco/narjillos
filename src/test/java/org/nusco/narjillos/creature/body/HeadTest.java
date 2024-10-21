@@ -1,13 +1,12 @@
 package org.nusco.narjillos.creature.body;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 import org.nusco.narjillos.core.chemistry.Element;
 import org.nusco.narjillos.core.geometry.Vector;
 import org.nusco.narjillos.creature.body.pns.Nerve;
 import org.nusco.narjillos.creature.body.pns.WaveNerve;
+
+import static org.junit.Assert.*;
 
 public class HeadTest extends ConnectedOrganTest {
 
@@ -19,7 +18,7 @@ public class HeadTest extends ConnectedOrganTest {
 	@Override
 	public void hasAParent() {
 		// ...only it's null
-		assertEquals(null, getOrgan().getParent());
+        assertNull(getOrgan().getParent());
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class Experiment {
 	}
 
 	private Experiment(long seed, String version, Ecosystem ecosystem) {
-		id = "" + seed + "-" + version;
+		id = seed + "-" + version;
 		timeStamp();
 		numGen = new NumGen(seed);
 		this.ecosystem = ecosystem;
@@ -69,7 +69,7 @@ public class Experiment {
 		ecosystem.terminate();
 
 		updateTotalRunningTime();
-		String result = toString() + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
+		String result = this + " interrupted at " + getTotalRunningTimeInSeconds() + " seconds, "
 			+ getTicksChronometer().getTotalTicks() + " ticks";
 		if (lifeIsExtinct())
 			result += " (EXTINCTION)";

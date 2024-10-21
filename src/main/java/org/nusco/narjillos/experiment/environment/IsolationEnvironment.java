@@ -25,7 +25,7 @@ public class IsolationEnvironment extends Environment {
 
 	@Override
 	public synchronized List<Thing> getAll(String label) {
-		if (label.equals(Narjillo.LABEL) || label.equals(""))
+		if (label.equals(Narjillo.LABEL) || label.isEmpty())
 			return new LinkedList<>(narjillos);
 		return Collections.emptyList();
 	}

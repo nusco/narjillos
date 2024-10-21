@@ -40,7 +40,7 @@ public class PerformanceTest {
 
 	private static final HistoryLog historyLog = new PersistentHistoryLog("x");
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		ticks = 20_000;
 		try {
 			new PerformanceTest().testPerformance();
@@ -55,7 +55,7 @@ public class PerformanceTest {
 	}
 
 	@AfterClass
-	public static void deleteDatabase() throws IOException {
+	public static void deleteDatabase() {
 		dnaLog.delete();
 	}
 
@@ -65,7 +65,7 @@ public class PerformanceTest {
 	}
 
 	@Test
-	public void testPerformance() throws IOException {
+	public void testPerformance() {
 		// pay up front for the setup of FastMath, in case
 		// it hasn't been loaded yet
 		FastMath.setUp();
@@ -94,6 +94,6 @@ public class PerformanceTest {
 	}
 
 	private static void reportTicks() {
-		System.out.println("" + getTicksPerSecond() + " ticks per second");
+		System.out.println(getTicksPerSecond() + " ticks per second");
 	}
 }

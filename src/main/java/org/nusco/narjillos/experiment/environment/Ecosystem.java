@@ -168,7 +168,7 @@ public class Ecosystem extends Environment {
 
 			breathe(narjillos);
 
-			narjillosToCollidedFood.entrySet().forEach(entry -> consume(entry.getKey(), entry.getValue()));
+			narjillosToCollidedFood.forEach((key, value) -> consume(key, value));
 			resetFoodTargets();
 		}
 
@@ -241,20 +241,16 @@ public class Ecosystem extends Environment {
 		});
 
 		// Consume elements
-		narjillos.forEach(narjillo -> {
-			getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct());
-		});
+		narjillos.forEach(narjillo -> getAtmosphere().convert(narjillo.getBreathedElement(), narjillo.getByproduct()));
 	}
 
 	private Map<Narjillo, Set<Thing>> tick(List<Narjillo> narjillos) {
 		// Calculate collisions in parallel...
 		Map<Narjillo, Future<Set<Thing>>> collisionFutures = new LinkedHashMap<>();
-		narjillos.forEach(narjillo -> {
-			collisionFutures.put(narjillo, executorService.submit(() -> {
-				Segment movement = narjillo.tick();
-				return space.detectCollisions(movement, FoodPellet.LABEL);
-			}));
-		});
+		narjillos.forEach(narjillo -> collisionFutures.put(narjillo, executorService.submit(() -> {
+            Segment movement = narjillo.tick();
+            return space.detectCollisions(movement, FoodPellet.LABEL);
+        })));
 
 		// ...but collect the results in a predictable sequential order
 		Map<Narjillo, Set<Thing>> result = new LinkedHashMap<>();

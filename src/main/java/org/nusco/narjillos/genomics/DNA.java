@@ -106,27 +106,27 @@ public class DNA implements Iterable<Chromosome> {
 
 	@Override
 	public Iterator<Chromosome> iterator() {
-		return new Iterator<Chromosome>() {
+		return new Iterator<>() {
 
-			private int indexInGenes = 0;
+            private int indexInGenes = 0;
 
-			@Override
-			public boolean hasNext() {
-				return indexInGenes == 0 || indexInGenes < getGenes().length;
-			}
+            @Override
+            public boolean hasNext() {
+                return indexInGenes == 0 || indexInGenes < getGenes().length;
+            }
 
-			@Override
-			public Chromosome next() {
-				int[] result = new int[Chromosome.SIZE];
-				int index_in_result = 0;
-				while (index_in_result < result.length && indexInGenes < getGenes().length) {
-					result[index_in_result] = getGenes()[indexInGenes];
-					index_in_result++;
-					indexInGenes++;
-				}
-				return new Chromosome(result);
-			}
-		};
+            @Override
+            public Chromosome next() {
+                int[] result = new int[Chromosome.SIZE];
+                int index_in_result = 0;
+                while (index_in_result < result.length && indexInGenes < getGenes().length) {
+                    result[index_in_result] = getGenes()[indexInGenes];
+                    index_in_result++;
+                    indexInGenes++;
+                }
+                return new Chromosome(result);
+            }
+        };
 	}
 
 	@Override

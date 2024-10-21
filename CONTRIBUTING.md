@@ -16,7 +16,7 @@
 * Create a location to download .zip file `mkdir -p ~/opt/packages/gradle && cd $_`
 * Download the .zip file `wget https://services.gradle.org/distributions/gradle-2.3-bin.zip`
 * Unzip the file `unzip gradle-2.3-bin.zip`
-* Create an symlink which will allow us update Gradle easier later `ln -s ~/opt/packages/gradle-2.3/ ~/opt/gradle`
+* Create a symlink which will allow us update Gradle easier later `ln -s ~/opt/packages/gradle-2.3/ ~/opt/gradle`
 * Open a text editor and edit (gedit as an example) `gedit ~/.profile`
 * Add the following to the bottom of your `.profile` file
 ```

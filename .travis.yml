@@ -1,8 +1,0 @@
-language: java
-jdk: oraclejdk12
-env:
-  - TEST_SUITE=test
-  - TEST_SUITE=testDeterministic
-script: "gradle --stacktrace $TEST_SUITE --debug"
-sudo: required
-dist: trusty

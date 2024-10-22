@@ -1,9 +1,3 @@
-.gradle/
-build/
-core/
-petridish/
-.classpath
-.project
-.settings/
-bin/
+.idea/
+out/
 .DS_Store

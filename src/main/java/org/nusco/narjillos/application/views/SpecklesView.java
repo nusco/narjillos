@@ -59,34 +59,28 @@ class SpecklesView {
 	}
 
 	private void createBackgroundTextures() {
+		backgroundTexture = createBackgroundTextures(EnvironmentView.BACKGROUND_COLOR, NORMAL_SPECKLE_RADIUS);
+		infraredBackgroundTexture = createBackgroundTextures(EnvironmentView.INFRARED_BACKGROUND_COLOR, INFRARED_SPECKLE_RADIUS);
+	}
+
+	private WritableImage createBackgroundTextures(Color backgroundColor, double speckleRadius) {
 		final int tileSize = 600;
 
-		// TODO: remove this duplication
-
-		Group backgroundGroup = new Group();
-		Scene offScreenBackgroundScene = new Scene(backgroundGroup, tileSize, tileSize);
-		Shape emptySpace = new Rectangle(0, 0, tileSize, tileSize);
-		emptySpace.setFill(EnvironmentView.BACKGROUND_COLOR);
+        Group backgroundGroup = new Group();
+        Shape emptySpace = new Rectangle(0, 0, tileSize, tileSize);
+		emptySpace.setFill(backgroundColor);
 		backgroundGroup.getChildren().add(emptySpace);
-
-		Group infraredBackgroundGroup = new Group();
-		Scene offScreenInfraredBackgroundScene = new Scene(infraredBackgroundGroup, tileSize, tileSize);
-		Shape infraredEmptySpace = new Rectangle(0, 0, tileSize, tileSize);
-		infraredEmptySpace.setFill(EnvironmentView.INFRARED_BACKGROUND_COLOR);
-		infraredBackgroundGroup.getChildren().add(infraredEmptySpace);
 
 		for (int i = 0; i < 5; i++) {
 			int x = getRandomCoordinate(tileSize);
 			int y = getRandomCoordinate(tileSize);
-			backgroundGroup.getChildren().add(createSpeckle(x, y, NORMAL_SPECKLE_RADIUS));
-			infraredBackgroundGroup.getChildren().add(createSpeckle(x, y, INFRARED_SPECKLE_RADIUS));
+			backgroundGroup.getChildren().add(createSpeckle(x, y, speckleRadius));
 		}
 
-		backgroundTexture = new WritableImage(tileSize, tileSize);
-		offScreenBackgroundScene.snapshot(backgroundTexture);
-
-		infraredBackgroundTexture = new WritableImage(tileSize, tileSize);
-		offScreenInfraredBackgroundScene.snapshot(infraredBackgroundTexture);
+		Scene offScreenScene = new Scene(backgroundGroup, tileSize, tileSize);
+		WritableImage texture = new WritableImage(tileSize, tileSize);
+		offScreenScene.snapshot(texture);
+		return texture;
 	}
 
 	private Shape createSpeckle(int x, int y, double radius) {

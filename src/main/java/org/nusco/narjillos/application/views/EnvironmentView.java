@@ -13,7 +13,6 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -37,7 +36,7 @@ public class EnvironmentView {
 
 	static final Color BACKGROUND_COLOR = Color.ANTIQUEWHITE;
 
-	static final Paint INFRARED_BACKGROUND_COLOR = Color.DARKGRAY.darker();
+	static final Color INFRARED_BACKGROUND_COLOR = Color.DARKGRAY.darker();
 
 	private final Viewport viewport;
 

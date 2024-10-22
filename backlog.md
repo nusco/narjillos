@@ -1,29 +1,20 @@
 #Narjillos Backlog
 
 ## Technical Issues
-> goal: make Narjillos easy to run on the latest Java/Gradle
+> goal: make Narjillos easy to run on the latest Java
 
     I came back to the project after a few years, and found that the code has many issues (mostly system-related more than strictly code-related) compiling and running on recent versions of the Java stack.
 
-* Fix JavaFX launchers
-Right now it works through a hack, but since JavaFX was removed from the Java distro, the system should be modularized. See: https://edencoding.com/runtime-components-error/ for the cause of the problem, the description of the hack, and a long-term fix.
+* Reintroduce Build system
+Just not Gradle or Maven, that have proven absolutely painful. Maybe old-fashioned Ant, or Rake w. JRuby?
 
-* Fix illegal reflective access
-The reflective access used by TransparentRanGen has been deprecated and will be removed. This code should be fixed to run on future Javas.
-
-* Fix project generation
-Project generation for Eclipse and Idea don't seem to work anymore. Investigate.
-
-* Fix Gradle warnings/issues
-Some Gradle tasks complain with warnings, or fail altogether(?). Check that all tasks work on recent Gradles and Javas.
-
-* Fix Travis Build
-It's apparently broken.
+* Reintroduce Travis Build
+Once I have a build system, I can have this again.
 
 * Find the bug that allows creatures to stay around after death
 Try removing all energy sources except for food: food_density_per_block, initial_element_level and catalyst_level at 0. That configuration triggers the bug.
 
-##Collision Detection
+## Collision Detection
 > goal: complex interactions
 
     See: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection  

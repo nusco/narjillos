@@ -1,27 +1,12 @@
+# IntelliJ Idea artifacts:
+out/
+
+# IntelliJ Idea local configuration:
+.idea/workspace.xml
+
 # Experiment files:
 *.exp
 *.history
 
-# Eclipse files:
-.classpath
-.project
-.settings/
-build/
-bin/
-
-# IntelliJ Idea files:
-narjillos.iml
-narjillos.ipr
-narjillos.iws
-out/
-.idea/
-
-# NetBeans files
-.nb-gradle/
-.nb-gradle-properties
-
 # OS X files:
 .DS_Store
-
-# Gradle files:
-.gradle/

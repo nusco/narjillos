@@ -2,8 +2,6 @@ package org.nusco.narjillos;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +19,10 @@ import org.nusco.narjillos.persistence.PersistentHistoryLog;
  * takes longer than a rule-of-thumb performance level (on my computer, 8000
  * ticks under 10 seconds).
  * <p>
- * It can be also run as a unit test. In .this case, it goes through way fewer ticks,
+ * It can be also run as a unit test. In this case, it goes through way fewer ticks,
  * so it's faster. This is by its very nature a nondeterministic test that can fail
- * randomly, or fail consistently on slower or overloaded machines - so it shouldn't
- * be run as part of an official build. But it's useful while developing, to catch
+ * randomly or fail consistently on slower or overloaded machines - so it shouldn't
+ * be run as part of an official build. But it's useful while developing to catch
  * slowdowns as early as possible - so it's a good idea to put it in the local build
  * (assuming that your computer is exactly as fast as mine).
  */
@@ -40,7 +38,7 @@ public class PerformanceTest {
 
 	private static final HistoryLog historyLog = new PersistentHistoryLog("x");
 
-	public static void main(String[] args) {
+	static void main() {
 		ticks = 20_000;
 		try {
 			new PerformanceTest().testPerformance();

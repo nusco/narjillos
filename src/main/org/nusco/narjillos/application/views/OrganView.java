@@ -216,6 +216,8 @@ public class OrganView implements ItemView {
 		if (areDistant(position1.getStartPoint(), position2.getStartPoint()))
 			return true;
 
+		// TODO: is the following a bug? Why does it always return false?
+
 		if (areDistant(position1.getEndPoint(), position2.getEndPoint()))
 			return false;
 

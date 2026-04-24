@@ -1,7 +1,6 @@
 package org.nusco.narjillos;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,7 +26,7 @@ public class Backlog {
 
 	private static final String ANSI_RESET = "\u001B[0m";
 
-	public static void main(String[] args) throws IOException {
+	static void main(String[] args) throws IOException {
 		final String BACKLOG_FILE = "backlog.md";
 		List<Feature> features = toFeatures(loadEntries(BACKLOG_FILE));
 

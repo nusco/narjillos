@@ -58,7 +58,7 @@ public class DeterministicExperimentTest {
 
 	// This test takes a few minutes.
 	// Run before packaging a release for complete peace of mind.
-	public static void main(String[] args) throws IOException {
+	static void main(String[] args) throws IOException {
 		System.out.println("Running long deterministic experiment test. This will take a few minutes...");
 		long startTime = System.currentTimeMillis();
 

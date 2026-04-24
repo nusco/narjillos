@@ -7,7 +7,7 @@ import org.nusco.narjillos.application.DNABrowserApplication;
  */
 public class DNABrowserRunner {
 
-	public static void main(String... args) throws Exception {
+	static void main(String... args) {
 		DNABrowserApplication.main(args);
 	}
 }

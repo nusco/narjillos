@@ -180,7 +180,7 @@ public class FastMath {
 		return (int) (degrees * ANGLE_RESOLUTION);
 	}
 
-	public static void main(String[] args) {
+	static void main() {
 		// Quick performance test. I'll leave this around - I'll probably need
 		// it in the future.
 		System.out.println("Starting performance test");

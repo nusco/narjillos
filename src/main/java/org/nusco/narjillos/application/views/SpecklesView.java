@@ -33,7 +33,7 @@ class SpecklesView {
 	public SpecklesView(Viewport viewport, long ecosystemSize) {
 		this.viewport = viewport;
 
-		createBackgroundTextures();
+		initializeBackgroundTexture();
 
 		background = new Rectangle(0, 0, ecosystemSize, ecosystemSize);
 		background.setFill(new ImagePattern(backgroundTexture, 0, 0, viewport.getSizeSC().x, viewport.getSizeSC().y, false));
@@ -58,12 +58,12 @@ class SpecklesView {
 		return result;
 	}
 
-	private void createBackgroundTextures() {
-		backgroundTexture = createBackgroundTextures(EnvironmentView.BACKGROUND_COLOR, NORMAL_SPECKLE_RADIUS);
-		infraredBackgroundTexture = createBackgroundTextures(EnvironmentView.INFRARED_BACKGROUND_COLOR, INFRARED_SPECKLE_RADIUS);
+	private void initializeBackgroundTexture() {
+		backgroundTexture = initializeBackgroundTexture(EnvironmentView.BACKGROUND_COLOR, NORMAL_SPECKLE_RADIUS);
+		infraredBackgroundTexture = initializeBackgroundTexture(EnvironmentView.INFRARED_BACKGROUND_COLOR, INFRARED_SPECKLE_RADIUS);
 	}
 
-	private WritableImage createBackgroundTextures(Color backgroundColor, double speckleRadius) {
+	private WritableImage initializeBackgroundTexture(Color backgroundColor, double speckleRadius) {
 		final int tileSize = 600;
 
         Group backgroundGroup = new Group();

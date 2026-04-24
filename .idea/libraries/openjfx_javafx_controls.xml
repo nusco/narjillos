@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="openjfx.javafx.controls" type="repository">
-    <properties maven-id="org.openjfx:javafx-controls:21.0.5" />
+    <properties maven-id="org.openjfx:javafx-controls:12.0.1" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/21.0.5/javafx-controls-21.0.5.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/21.0.5/javafx-controls-21.0.5-mac-aarch64.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/21.0.5/javafx-graphics-21.0.5.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/21.0.5/javafx-graphics-21.0.5-mac-aarch64.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-base/21.0.5/javafx-base-21.0.5.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-base/21.0.5/javafx-base-21.0.5-mac-aarch64.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/12.0.1/javafx-controls-12.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/12.0.1/javafx-controls-12.0.1-mac.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/12.0.1/javafx-graphics-12.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/12.0.1/javafx-graphics-12.0.1-mac.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-base/12.0.1/javafx-base-12.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-base/12.0.1/javafx-base-12.0.1-mac.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,0 +1,94 @@
+plugins {
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "27-ea+14"
+    modules = [ 'javafx.controls', 'javafx.graphics' ]
+}
+
+dependencies {
+    implementation 'commons-cli:commons-cli:1.11.0'
+    implementation 'com.google.code.gson:gson:2.14.0'
+    implementation 'io.github.jrlucier.xoro:xoroshiro128plus:1.1'
+    implementation 'org.xerial:sqlite-jdbc:3.53.0.0'
+    implementation 'org.yaml:snakeyaml:2.6'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest-all:1.3'
+    testImplementation 'org.mockito:mockito-core:5.23.0'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main']
+        }
+        resources {
+            srcDirs = ['src/main']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test']
+        }
+        resources {
+            srcDirs = ['src/test']
+        }
+    }
+}
+
+test {
+    description = "Runs standard suite of unit tests."
+    exclude '**/PerformanceTest.class'
+    exclude '**/DeterministicExperimentTest.class'
+}
+
+task testPerformance(type: JavaExec) {
+    description = "Runs performance test."
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.nusco.narjillos.PerformanceTest'
+}
+
+task testDeterministic(type: JavaExec) {
+    description = "Runs the (slow) test that checks whether the system is deterministic."
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'org.nusco.narjillos.DeterministicExperimentTest'
+}
+
+task testAll {
+    description = "Runs all the tests, including the slow tests, the database tests and the performance tests."
+    dependsOn test, testPerformance, testDeterministic
+}
+
+task narjillos(type: JavaExec) {
+    description = "Runs Narjillos (same arguments as the 'narjillos' script)."
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.nusco.narjillos.NarjillosRunner'
+    if (project.hasProperty('args')) {
+        args = project.getProperty('args').split()
+    }
+}
+
+task dnabrowser(type: JavaExec) {
+    description = "Runs the DNA Browser (pass it the *.germline filename)."
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.nusco.narjillos.DNABrowserRunner'
+    if (project.hasProperty('args')) {
+        args = project.getProperty('args').split()
+    }
+}
+
+task lab(type: JavaExec) {
+    description = "Runs lab analysis (pass it the *.exp filename)."
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.nusco.narjillos.Lab'
+    if (project.hasProperty('args')) {
+        args = project.getProperty('args').split()
+    }
+}

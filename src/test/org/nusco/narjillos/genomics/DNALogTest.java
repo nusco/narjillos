@@ -37,9 +37,9 @@ public abstract class DNALogTest {
 		DNA retrieved = dnaLog.getDna(42);
 
 		assertNotNull(retrieved);
-		assertEquals(retrieved.getId(), dna.getId());
+		assertEquals(retrieved.id(), dna.id());
 		assertEquals(retrieved.toString(), dna.toString());
-		assertEquals(retrieved.getParentId(), dna.getParentId());
+		assertEquals(retrieved.parentId(), dna.parentId());
 	}
 
 	@Test

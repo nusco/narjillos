@@ -15,14 +15,14 @@ public class DNATest {
 	public void hasASerialId() {
 		DNA dna = new DNA(42, "{1_2_3}");
 
-		assertEquals(42, dna.getId());
+		assertEquals(42, dna.id());
 	}
 
 	@Test
 	public void hasAnArrayOfGenes() {
 		DNA dna = new DNA(1, "{1_2_255}");
 
-		assertArrayEquals(new Integer[] { 1, 2, 255 }, dna.getGenes());
+		assertArrayEquals(new Integer[] { 1, 2, 255 }, dna.genes());
 	}
 
 	@Test
@@ -43,14 +43,14 @@ public class DNATest {
 	public void clipsGenesToByteSizeWhenCreatedWithAnArray() {
 		DNA dna = new DNA(1, "1_-1_256");
 
-		assertArrayEquals(new Integer[] { 1, 0, 255 }, dna.getGenes());
+		assertArrayEquals(new Integer[] { 1, 0, 255 }, dna.genes());
 	}
 
 	@Test
 	public void clipsGenesToByteSizeWhenCreatedWithAString() {
 		DNA dna = new DNA(1, "1_0_256");
 
-		assertArrayEquals(new Integer[] { 1, 0, 255 }, dna.getGenes());
+		assertArrayEquals(new Integer[] { 1, 0, 255 }, dna.genes());
 	}
 
 	@Test
@@ -59,21 +59,21 @@ public class DNATest {
 			"1_022_255";
 		DNA dna = new DNA(1, dnaString);
 
-		assertArrayEquals(new Integer[] { 1, 22, 255 }, dna.getGenes());
+		assertArrayEquals(new Integer[] { 1, 22, 255 }, dna.genes());
 	}
 
 	@Test
 	public void hasNoParentIdByDefault() {
 		DNA dna = new DNA(42, "{1_2_3}");
 
-		assertEquals(DNA.NO_PARENT, dna.getParentId());
+		assertEquals(DNA.NO_PARENT, dna.parentId());
 	}
 
 	@Test
 	public void canHaveAParentId() {
 		DNA dna = new DNA(42, "{1_2_3}", 41);
 
-		assertEquals(41, dna.getParentId());
+		assertEquals(41, dna.parentId());
 	}
 
 	@Test
@@ -122,6 +122,6 @@ public class DNATest {
 
 		DNA child = parent.mutate(43, new NumGen(123));
 
-		assertEquals(42, child.getParentId());
+		assertEquals(42, child.parentId());
 	}
 }

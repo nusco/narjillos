@@ -23,9 +23,9 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 		Statement statement = createStatement();
 		try {
 			String sql = "INSERT INTO DNA (ID, GENES, PARENT_ID, IS_DEAD) VALUES (" +
-				dna.getId() + ", " +
+				dna.id() + ", " +
 				"'" + dna + "', " +
-				dna.getParentId() + ", 0);";
+				dna.parentId() + ", 0);";
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -110,7 +110,7 @@ public class PersistentDNALog extends PersistentInformation implements DNALog {
 	}
 
 	private boolean contains(DNA dna) {
-		return getDna(dna.getId()) != null;
+		return getDna(dna.id()) != null;
 	}
 
 	private DNA toDNA(ResultSet rs) throws SQLException {

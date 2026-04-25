@@ -15,8 +15,8 @@ public class JSONDNASerializationTest {
 		String json = JSON.toJson(dna, DNA.class);
 		DNA deserialized = JSON.fromJson(json, DNA.class);
 
-		assertEquals(dna.getId(), deserialized.getId());
-		assertArrayEquals(dna.getGenes(), deserialized.getGenes());
-		assertEquals(dna.getParentId(), deserialized.getParentId());
+		assertEquals(dna.id(), deserialized.id());
+		assertArrayEquals(dna.genes(), deserialized.genes());
+		assertEquals(dna.parentId(), deserialized.parentId());
 	}
 }

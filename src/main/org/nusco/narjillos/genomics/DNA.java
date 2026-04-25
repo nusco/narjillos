@@ -11,24 +11,16 @@ import org.nusco.narjillos.core.utilities.NumGen;
 /**
  * A sequence of genes.
  */
-public class DNA implements Iterable<Chromosome> {
+public record DNA(long id, Integer[] genes, long parentId) implements Iterable<Chromosome> {
 
 	public static final long NO_PARENT = 0;
-
-	private final long id;
-
-	private final Integer[] genes;
-
-	private final long parentId;
 
 	public DNA(long id, String dnaDocument) {
 		this(id, dnaDocument, NO_PARENT);
 	}
 
 	public DNA(long id, String dnaDocument, long parentId) {
-		this.id = id;
-		this.genes = clipGenes(new DNADocument(dnaDocument).toGenes());
-		this.parentId = parentId;
+		this(id, clipGenes(new DNADocument(dnaDocument).toGenes()), parentId);
 	}
 
 	public DNA(long id, Integer[] genes, long parentId) {
@@ -37,24 +29,8 @@ public class DNA implements Iterable<Chromosome> {
 		this.parentId = parentId;
 	}
 
-	public static DNA random(long id, NumGen numGen) {
-		return new DNA(id, randomGenes(getDefaultSize(), numGen), 0);
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public long getParentId() {
-		return parentId;
-	}
-
 	public boolean hasParent() {
 		return parentId != NO_PARENT;
-	}
-
-	public Integer[] getGenes() {
-		return genes;
 	}
 
 	public DNA mutate(long id, NumGen numGen) {
@@ -65,7 +41,7 @@ public class DNA implements Iterable<Chromosome> {
 			else
 				resultChromosomes.add(copyChromosome(chromosome, numGen));
 		Integer[] resultGenes = flattenToGenes(resultChromosomes);
-		return new DNA(id, padToSameGenomeLength(resultGenes, numGen), getId());
+		return new DNA(id, padToSameGenomeLength(resultGenes, numGen), id());
 	}
 
 	public int getSimHashedDistanceFrom(DNA other) {
@@ -79,8 +55,8 @@ public class DNA implements Iterable<Chromosome> {
 	// From: http://rosettacode.org/wiki/Levenshtein_distance#Java,
 	// with slight changes.
 	public int getLevenshteinDistanceFrom(DNA other) {
-		Integer[] theseGenes = getGenes();
-		Integer[] otherGenes = other.getGenes();
+		Integer[] theseGenes = genes();
+		Integer[] otherGenes = other.genes();
 
 		if (theseGenes.length == 0 || otherGenes.length == 0)
 			return Math.max(theseGenes.length, otherGenes.length);
@@ -108,36 +84,36 @@ public class DNA implements Iterable<Chromosome> {
 	public Iterator<Chromosome> iterator() {
 		return new Iterator<>() {
 
-            private int indexInGenes = 0;
+			private int indexInGenes = 0;
 
-            @Override
-            public boolean hasNext() {
-                return indexInGenes == 0 || indexInGenes < getGenes().length;
-            }
+			@Override
+			public boolean hasNext() {
+				return indexInGenes == 0 || indexInGenes < genes().length;
+			}
 
-            @Override
-            public Chromosome next() {
-                int[] result = new int[Chromosome.SIZE];
-                int index_in_result = 0;
-                while (index_in_result < result.length && indexInGenes < getGenes().length) {
-                    result[index_in_result] = getGenes()[indexInGenes];
-                    index_in_result++;
-                    indexInGenes++;
-                }
-                return new Chromosome(result);
-            }
-        };
+			@Override
+			public Chromosome next() {
+				int[] result = new int[Chromosome.SIZE];
+				int index_in_result = 0;
+				while (index_in_result < result.length && indexInGenes < genes().length) {
+					result[index_in_result] = genes()[indexInGenes];
+					index_in_result++;
+					indexInGenes++;
+				}
+				return new Chromosome(result);
+			}
+		};
 	}
 
 	@Override
 	public int hashCode() {
-		return (int) getId();
+		return (int) id();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		DNA other = (DNA) obj;
-		return other.getId() == getId();
+		return other.id() == id();
 	}
 
 	@Override
@@ -152,15 +128,8 @@ public class DNA implements Iterable<Chromosome> {
 		return result;
 	}
 
-	private static int getDefaultSize() {
-		return Chromosome.SIZE * Configuration.DNA_NUMBER_OF_CHROMOSOMES;
-	}
-
-	private static Integer[] randomGenes(int size, NumGen numGen) {
-		Integer[] genes = new Integer[size];
-		for (int i = 0; i < genes.length; i++)
-			genes[i] = numGen.nextByte();
-		return genes;
+	public static DNA random(long id, NumGen numGen) {
+		return new DNA(id, randomGenes(getDefaultSize(), numGen), 0);
 	}
 
 	private List<Integer[]> mutateChromosome(NumGen numGen, Chromosome chromosome) {
@@ -198,10 +167,6 @@ public class DNA implements Iterable<Chromosome> {
 		return numGen.nextDouble() < (Configuration.DNA_MUTATION_RATE / (Chromosome.SIZE * 2));
 	}
 
-	private Integer[] clipGenes(Integer[] genes) {
-		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[] { 0 };
-	}
-
 	private int mutate(int gene, NumGen numGen) {
 		int randomFactor = (int) ((numGen.nextDouble() * Configuration.DNA_MUTATION_RANGE * 2) - Configuration.DNA_MUTATION_RANGE);
 		return gene + randomFactor;
@@ -211,7 +176,7 @@ public class DNA implements Iterable<Chromosome> {
 		List<Integer> result = new LinkedList<>();
 		for (Integer[] chromosome : chromosomes)
 			Collections.addAll(result, chromosome);
-		return result.toArray(new Integer[result.size()]);
+		return result.toArray(Integer[]::new);
 	}
 
 	private Integer[] padToSameGenomeLength(Integer[] otherGenes, NumGen numGen) {
@@ -221,20 +186,35 @@ public class DNA implements Iterable<Chromosome> {
 		return result;
 	}
 
-	private Integer[] clipToByteSize(Integer[] genes) {
+	private static Integer[] clipToByteSize(Integer[] genes) {
 		Integer[] result = new Integer[genes.length];
 		for (int i = 0; i < result.length; i++)
 			result[i] = clipToByteSize(genes[i]);
 		return result;
 	}
 
-	private int clipToByteSize(int number) {
-		return Math.max(0, Math.min(255, number));
+	private static int clipToByteSize(int number) {
+		return Math.clamp(number, 0, 255);
 	}
 
 	private Integer safeGetGene(int i) {
 		if (i >= genes.length)
 			return 0;
 		return genes[i];
+	}
+
+	private static int getDefaultSize() {
+		return Chromosome.SIZE * Configuration.DNA_NUMBER_OF_CHROMOSOMES;
+	}
+
+	private static Integer[] randomGenes(int size, NumGen numGen) {
+		Integer[] genes = new Integer[size];
+		for (int i = 0; i < genes.length; i++)
+			genes[i] = numGen.nextByte();
+		return genes;
+	}
+
+	private static Integer[] clipGenes(Integer[] genes) {
+		return (genes.length > 0) ? clipToByteSize(genes) : new Integer[]{0};
 	}
 }

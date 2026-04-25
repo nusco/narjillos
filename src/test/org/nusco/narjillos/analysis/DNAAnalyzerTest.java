@@ -27,7 +27,7 @@ public class DNAAnalyzerTest {
 
 		DNA mostSuccessful = dnaAnalyzer.getMostSuccessfulDna();
 
-		assertEquals(1, mostSuccessful.getId());
+		assertEquals(1, mostSuccessful.id());
 	}
 
 	@Test

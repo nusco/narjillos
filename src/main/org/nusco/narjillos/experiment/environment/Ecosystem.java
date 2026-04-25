@@ -196,7 +196,7 @@ public class Ecosystem extends Environment {
 
 				// TODO: fix this ugliness
 				if (thing instanceof Narjillo)
-					dnaLog.markAsDead(((Narjillo) thing).getDNA().getId());
+					dnaLog.markAsDead(((Narjillo) thing).getDNA().id());
 			});
 	}
 

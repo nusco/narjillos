@@ -32,7 +32,7 @@ public class DNAAnalyzer {
 
 		while (dna != null) {
 			result.add(dna);
-			dna = dnaLog.getDna(dna.getParentId());
+			dna = dnaLog.getDna(dna.parentId());
 		}
 
 		Collections.reverse(result);
@@ -82,7 +82,7 @@ public class DNAAnalyzer {
 	Map<Long, Long> getChildrenToParents() {
 		Map<Long, Long> result = new LinkedHashMap<>();
 		for (DNA dna : getDnaById().values())
-			result.put(dna.getId(), dna.getParentId());
+			result.put(dna.id(), dna.parentId());
 		return result;
 	}
 
@@ -91,9 +91,9 @@ public class DNAAnalyzer {
 		Map<Long, List<Long>> result = new LinkedHashMap<>();
 		result.put(0L, new LinkedList<>());
 		for (DNA dna : allDNA)
-			result.put(dna.getId(), new LinkedList<>());
+			result.put(dna.id(), new LinkedList<>());
 		for (DNA dna : allDNA)
-			result.get(dna.getParentId()).add(dna.getId());
+			result.get(dna.parentId()).add(dna.id());
 		return result;
 	}
 
@@ -109,7 +109,7 @@ public class DNAAnalyzer {
 	private Map<Long, DNA> getDnaById() {
 		Map<Long, DNA> result = new LinkedHashMap<>();
 		for (DNA dna : dnaLog.getAllDna())
-			result.put(dna.getId(), dna);
+			result.put(dna.id(), dna);
 		return result;
 	}
 
@@ -128,7 +128,7 @@ public class DNAAnalyzer {
 			if (!ancestor.hasParent())
 				return ancestor;
 
-			ancestor = dnaLog.getDna(ancestor.getParentId());
+			ancestor = dnaLog.getDna(ancestor.parentId());
 		}
 	}
 }

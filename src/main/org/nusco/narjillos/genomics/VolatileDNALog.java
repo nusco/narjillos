@@ -13,7 +13,7 @@ public class VolatileDNALog implements DNALog {
 
 	@Override
 	public void save(DNA dna) {
-		idToDna.put(dna.getId(), dna);
+		idToDna.put(dna.id(), dna);
 		liveDna.add(dna);
 	}
 
@@ -30,13 +30,13 @@ public class VolatileDNALog implements DNALog {
 	@Override
 	public List<DNA> getAllDna() {
 		LinkedList<DNA> result = new LinkedList<>(idToDna.values());
-		result.sort((dna1, dna2) -> (int) (dna1.getId() - dna2.getId()));
+		result.sort((dna1, dna2) -> (int) (dna1.id() - dna2.id()));
 		return result;
 	}
 
 	@Override
 	public List<DNA> getLiveDna() {
-		liveDna.sort((dna1, dna2) -> (int) (dna1.getId() - dna2.getId()));
+		liveDna.sort((dna1, dna2) -> (int) (dna1.id() - dna2.id()));
 		return liveDna;
 	}
 

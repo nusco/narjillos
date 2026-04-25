@@ -18,8 +18,8 @@ class DNAAdapter implements JsonSerializer<DNA>, JsonDeserializer<DNA> {
 	public JsonElement serialize(DNA dna, Type type, JsonSerializationContext context) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("genes", dna.toString());
-		jsonObject.addProperty("id", dna.getId());
-		jsonObject.addProperty("parentId", dna.getParentId());
+		jsonObject.addProperty("id", dna.id());
+		jsonObject.addProperty("parentId", dna.parentId());
 		return jsonObject;
 	}
 

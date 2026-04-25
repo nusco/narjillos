@@ -1,0 +1,1 @@
+- Whenever I ask you to commit, explicitly ask for a commit message. Also, always add yourself as a co-author unless I tell you otherwise.

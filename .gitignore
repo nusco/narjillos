@@ -4,6 +4,10 @@ out/
 # IntelliJ Idea local configuration:
 .idea/workspace.xml
 
+# Gradle temporary and output files:
+.gradle
+build/
+
 # Experiment files:
 *.exp
 *.history

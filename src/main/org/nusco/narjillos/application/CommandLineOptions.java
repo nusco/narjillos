@@ -7,13 +7,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.UnrecognizedOptionException;
+import org.apache.commons.cli.*;
+import org.apache.commons.cli.help.HelpFormatter;
+import org.apache.commons.cli.help.TextHelpAppendable;
 import org.nusco.narjillos.experiment.Experiment;
 import org.nusco.narjillos.persistence.ExperimentLoader;
 
@@ -52,7 +48,7 @@ public class CommandLineOptions extends Options {
 		addOption("e", "seed", true, "start experiment with given seed");
 		addOption("d", "dna", true, "populate experiment with specific DNA (takes genes, or a file containing genes)");
 
-		CommandLineParser parser = new BasicParser();
+		CommandLineParser parser = new DefaultParser();
 
 		try {
 			CommandLine line;
@@ -121,9 +117,16 @@ public class CommandLineOptions extends Options {
 	}
 
 	private String getHelpText() {
-		StringWriter stringWriter = new StringWriter();
-		new HelpFormatter().printHelp(new PrintWriter(stringWriter), 1000, " ", "", this, 2, 2, "");
-		return stringWriter.getBuffer().toString();
+		try {
+			StringWriter stringWriter = new StringWriter();
+			HelpFormatter formatter = HelpFormatter.builder()
+				.setHelpAppendable(new TextHelpAppendable(new PrintWriter(stringWriter)))
+				.get();
+			formatter.printHelp(" ", "", this, "", true);
+			return stringWriter.getBuffer().toString();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private String getDoNotUnderstandText() {

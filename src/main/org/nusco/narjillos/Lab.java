@@ -2,11 +2,11 @@ package org.nusco.narjillos;
 
 import java.util.List;
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import org.apache.commons.cli.*;
+import org.apache.commons.cli.help.HelpFormatter;
+import org.apache.commons.cli.help.TextHelpAppendable;
 import org.nusco.narjillos.analysis.DNAAnalyzer;
 import org.nusco.narjillos.analysis.DNAExporter;
 import org.nusco.narjillos.experiment.Experiment;
@@ -39,7 +39,7 @@ class Lab {
 		try {
 			CommandLine commandLine;
 			try {
-				commandLine = new BasicParser().parse(options, args);
+				commandLine = new DefaultParser().parse(options, args);
 			} catch (ParseException e) {
 				printHelpText(options);
 				return;
@@ -116,6 +116,13 @@ class Lab {
 	}
 
 	private static void printHelpText(Options commandLineOptions) {
-		new HelpFormatter().printHelp("lab <experiment_file.exp> <options>", commandLineOptions);
+		try {
+			HelpFormatter formatter = HelpFormatter.builder()
+				.setHelpAppendable(new TextHelpAppendable(new PrintWriter(System.out, true)))
+				.get();
+			formatter.printHelp("lab <experiment_file.exp> <options>", null, commandLineOptions, null, true);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

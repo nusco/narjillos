@@ -66,11 +66,7 @@ public class Fiber {
 	}
 
 	private int clipToByte(int n) {
-		if (n < 0)
-			return 0;
-		if (n > 255)
-			return 255;
-		return n;
+		return Math.clamp(n, 0, 255);
 	}
 
 	private double percent(double n, double total) {

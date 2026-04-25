@@ -1,21 +1,9 @@
 #Narjillos Backlog
 
 ## Technical Issues
-> goal: make Narjillos easy to run on the latest Java
+> goal: make Narjillos stable
 
-    I came back to the project after a few years, and found that the code has many issues (mostly system-related more than strictly code-related) compiling and running on recent versions of the Java stack.
-
-* Define run configurations
-  To run the main program, the support programs and the tests in IntelliJ.
-
-* Define distribution procedure
-  Redefine the distribution inside IntelliJ and release an update for modern Java.
-
-+ Reintroduce Build system
-  Just not Gradle or Maven, that have proven absolutely painful. Maybe old-fashioned Ant, or Rake w. JRuby?
-
-+ Reintroduce Travis Build
-  Once I have a build system, I can have this again.
+    I had a few bugs left the last time I worked on the program.
 
 * Find the bug that allows creatures to stay around after death
   Try removing all energy sources except for food: food_density_per_block, initial_element_level and catalyst_level at 0. That configuration triggers the bug.

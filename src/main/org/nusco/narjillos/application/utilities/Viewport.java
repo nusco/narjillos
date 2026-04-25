@@ -93,7 +93,7 @@ public class Viewport {
 	}
 
 	public void zoomTo(double zoomLevel) {
-		this.zoomLevel = Math.min(Math.max(zoomLevel, minZoomLevel), ZOOM_MAX);
+		this.zoomLevel = Math.clamp(zoomLevel, minZoomLevel, ZOOM_MAX);
 		this.targetZoomLevel = this.zoomLevel;
 		if (isZoomedOutCompletely())
 			targetCenterEC = getEcosystemCenterEC();

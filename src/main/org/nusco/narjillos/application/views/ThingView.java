@@ -53,7 +53,7 @@ abstract class ThingView implements ItemView {
 		if (zoomLevel <= minZoomLevel)
 			return null;
 		double alpha = (zoomLevel - minZoomLevel) * 2.5;
-		double limitedAlpha = Math.max(0, Math.min(1, alpha));
+		double limitedAlpha = Math.clamp(alpha, 0, 1);
 		Color color = new Color(0.9, 0.9, 0.9, limitedAlpha);
 		return new DropShadow(20, 7, 7, color);
 	}

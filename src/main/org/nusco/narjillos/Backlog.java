@@ -57,7 +57,7 @@ public class Backlog {
 				result.add(new Feature(line));
 			else {
 				if (!result.isEmpty()) {
-					Feature currentMarketFeature = result.get(result.size() - 1);
+					Feature currentMarketFeature = result.getLast();
 					currentMarketFeature.add(line);
 				}
 			}
@@ -109,7 +109,7 @@ public class Backlog {
 		public final String name;
 
 		public Feature(String name) {
-			this.name = name.replaceAll("#", "").trim();
+			this.name = name.replace("#", "").trim();
 		}
 
 		@Override

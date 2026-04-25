@@ -99,7 +99,7 @@ public class JSONBodyPartSerializationTest {
 
 		assertEquals(parent.getLength(), deserializedParent.getLength(), 0);
 		assertEquals(1, deserializedParent.getChildren().size());
-		ConnectedOrgan deserializedChild = deserializedParent.getChildren().get(0);
+		ConnectedOrgan deserializedChild = deserializedParent.getChildren().getFirst();
 		assertEquals(child.getLength(), deserializedChild.getLength(), 0);
 		assertSame(deserializedParent, deserializedChild.getParent());
 

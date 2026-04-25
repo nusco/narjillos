@@ -80,7 +80,7 @@ class NarjilloView extends ThingView {
 		for (OrganView organView : organs)
 			if (organView.isVisible(viewport))
 				return true;
-		OrganView organView = organs.get(0);
+		OrganView organView = organs.getFirst();
 		organView.isVisible(viewport);
 		// ignore the mouth and eyes, too small to make a visible difference
 		return false;

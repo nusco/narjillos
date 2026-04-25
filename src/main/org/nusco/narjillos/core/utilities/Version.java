@@ -8,7 +8,7 @@ public class Version {
 
 	public static String read() {
 		try {
-			return Files.readAllLines(Paths.get("version")).get(0);
+			return Files.readAllLines(Paths.get("version")).getFirst();
 		} catch (IOException e) {
 			return "0.0.0";
 		}

@@ -54,7 +54,7 @@ public class LifeFormEnergy implements Energy {
 			return; // once it's gone, it's gone
 
 		value += amount;
-		value = Math.max(0, Math.min(maxForAge, Math.max(0, value)));
+		value = Math.clamp(value, 0, maxForAge);
 	}
 
 	@Override

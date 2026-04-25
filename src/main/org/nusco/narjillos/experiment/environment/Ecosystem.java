@@ -168,7 +168,7 @@ public class Ecosystem extends Environment {
 
 			breathe(narjillos);
 
-			narjillosToCollidedFood.forEach((key, value) -> consume(key, value));
+			narjillosToCollidedFood.forEach(this::consume);
 			resetFoodTargets();
 		}
 

@@ -77,7 +77,7 @@ class MouthView implements ItemView {
 	private double getOpacity(double zoomLevel) {
 		double opacityBasedOnZoom = (zoomLevel - MINIMUM_ZOOM_LEVEL) * 20;
 		double opacity = Math.min(opacityBasedOnZoom, getOpacityBasedOnAge());
-		return Math.max(0, Math.min(1, opacity));
+		return Math.clamp(opacity, 0, 1);
 	}
 
 	private double getOpacityBasedOnAge() {

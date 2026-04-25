@@ -45,7 +45,7 @@ public class IsolationEnvironment extends Environment {
 
 	public synchronized void updateSpecimen(Narjillo narjillo) {
 		if (!narjillos.isEmpty()) {
-			Narjillo existingNarjillo = narjillos.iterator().next();
+			Narjillo existingNarjillo = narjillos.getFirst();
 			narjillos.remove(existingNarjillo);
 			notifyThingRemoved(existingNarjillo);
 		}
@@ -55,7 +55,7 @@ public class IsolationEnvironment extends Environment {
 	}
 
 	public synchronized Narjillo getNarjillo() {
-		return narjillos.iterator().next();
+		return narjillos.getFirst();
 	}
 
 	public synchronized void rotateTarget() {

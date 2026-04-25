@@ -137,10 +137,7 @@ class EyesView implements ItemView {
 	}
 
 	private double getZoomAlpha(double zoomLevel) {
-		return clipToRange((zoomLevel - MINIMUM_ZOOM_LEVEL) * 4, 0, 1);
+		return Math.clamp((zoomLevel - MINIMUM_ZOOM_LEVEL) * 4, 0, 1);
 	}
 
-	private double clipToRange(double result, double min, double max) {
-		return Math.max(min, Math.min(max, result));
-	}
 }

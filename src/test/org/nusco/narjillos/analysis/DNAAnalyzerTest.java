@@ -73,7 +73,7 @@ public class DNAAnalyzerTest {
 		DNA child2 = child1.mutate(3, numGen);
 		dnaLog.save(child2);
 
-		assertEquals(parent, dnaAnalyzer.getGermline(child2).get(0));
+		assertEquals(parent, dnaAnalyzer.getGermline(child2).getFirst());
 	}
 
 	@Test
